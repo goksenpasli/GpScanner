@@ -85,6 +85,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private bool dragMoveStarted;
     private Task fileloadtask;
     private double height;
+    private bool helpIsOpened;
     private byte[] ımgData;
     private bool isMouseDown;
     private bool isRightMouseDown;
@@ -290,6 +291,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         ExploreFile =
             new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
+
+        OpenHelpDialog = new RelayCommand<object>(parameter => HelpIsOpened = !HelpIsOpened, parameter => true);
 
         Kaydet = new RelayCommand<object>(
             parameter =>
@@ -1581,6 +1584,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand FastScanImage { get; }
 
+    public bool HelpIsOpened
+    {
+        get => helpIsOpened;
+        set
+        {
+            if (helpIsOpened != value)
+            {
+                helpIsOpened = value;
+                OnPropertyChanged(nameof(HelpIsOpened));
+            }
+        }
+    }
+
     public byte[] ImgData
     {
         get => ımgData;
@@ -1624,6 +1640,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand MaximizePdfControl { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
+
+    public RelayCommand<object> OpenHelpDialog { get; }
 
     public ObservableCollection<Paper> Papers
     {

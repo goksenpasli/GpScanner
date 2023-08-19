@@ -28,17 +28,19 @@
         <Converter:NumberRangeToColorConverter x:Key="UpdateNumberRangeToColorConverter" MaxNumber="120" MinNumber="1" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxPdfNumberRangeToColorConverter" MaxNumber="1200" MinNumber="12" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
-        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+        <Converter:PageSizePreviewWidthConverter x:Key="PageSizePreviewWidthConverter" />
+        <Converter:PageSizePreviewHeightConverter x:Key="PageSizePreviewHeightConverter" />
+        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
-        <Style TargetType="ListBox">
+        <Style TargetType="{x:Type ListBox}">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
-        <Style TargetType="ComboBox">
+        <Style TargetType="{x:Type ComboBox}">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
-        <Style TargetType="Hyperlink">
+        <Style TargetType="{x:Type Hyperlink}">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
     </Window.Resources>
@@ -263,7 +265,7 @@
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                     Description="{twainctrl:Loc FILE}"
                                     IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                                    ResetButtonVisibility="Collapsed"
+                                    PasteButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                                     Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                                 <Button Grid.Column="1" twainctrl:Policy.PolicyName="ChangeDataFolder" Command="{Binding ChangeDataFolder}">
                                     <StackPanel Orientation="Horizontal">
@@ -374,7 +376,7 @@
                         </GroupBox>
                         <GroupBox Grid.Row="3">
                             <StackPanel>
-                                <UniformGrid Columns="7">
+                                <UniformGrid Columns="8">
                                     <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                                         <Run Text="{twainctrl:Loc FILE}" />
                                         <Run Text="{twainctrl:Loc RES}" />
@@ -400,6 +402,29 @@
                                             </Style>
                                         </ComboBox.ItemContainerStyle>
                                     </ComboBox>
+                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                        FontFamily="Webdings" FontSize="32"
+                                        Foreground="Red" Text="N">
+                                        <TextBlock.ToolTip>
+                                            <Canvas Width="210" Height="297">
+                                                <Canvas.Resources>
+                                                    <Style TargetType="Rectangle">
+                                                        <Setter Property="StrokeThickness" Value="2" />
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Style>
+                                                </Canvas.Resources>
+                                                <Rectangle Width="210" Height="297" Stroke="Black" />
+                                                <Rectangle Canvas.Bottom="0"
+                                                    Width="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource PageSizePreviewWidthConverter}}"
+                                                    Height="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource PageSizePreviewHeightConverter}}"
+                                                    Stroke="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                            </Canvas>
+                                        </TextBlock.ToolTip>
+                                    </TextBlock>
                                     <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
                                     <ComboBox VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="DefaultThumbNailDpi" ItemStringFormat="{}{0} Dpi"

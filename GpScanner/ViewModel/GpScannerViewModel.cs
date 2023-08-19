@@ -659,6 +659,7 @@ public class GpScannerViewModel : InpcBase
                 {
                     (parameter as Twainsettings.Settings)?.Reset();
                     Settings.Default.Reset();
+                    _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), Application.Current?.MainWindow.Title);
                 }
             });
 
@@ -1616,13 +1617,13 @@ public class GpScannerViewModel : InpcBase
             }
             else
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
+                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), Application.Current?.MainWindow.Title);
             }
         }
 
         if (e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
         {
-            _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"));
+            _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), Application.Current?.MainWindow.Title);
         }
 
         if (e.PropertyName is "BatchFolder" && Settings.Default.BatchFolder?.Length == 0)

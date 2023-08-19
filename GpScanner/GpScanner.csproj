@@ -120,6 +120,8 @@
     <Compile Include="Converter\FolderExsistToVisibilityConverter.cs" />
     <Compile Include="Converter\LanguageStringConverter.cs" />
     <Compile Include="Converter\NumberRangeToColorConverter.cs" />
+    <Compile Include="Converter\PageSizePreviewHeightConverter.cs" />
+    <Compile Include="Converter\PageSizePreviewWidthConverter.cs" />
     <Compile Include="Converter\SelectedSizeToCacheLengthConverter.cs" />
     <Compile Include="Converter\StringToIntConverter.cs" />
     <Compile Include="Converter\StringToQrBitmapImageConverter.cs" />

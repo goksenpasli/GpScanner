@@ -604,7 +604,7 @@
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="35.2" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <Grid>

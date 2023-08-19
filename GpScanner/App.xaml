@@ -272,12 +272,19 @@
                         <Button BorderBrush="Cyan"
                             Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
-                            Content="OCR"
-                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" />
-                        <Button Command="{Binding DataContext.WordOcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
-                            Content="WORD"
-                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" />
+                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="70" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                        <Button Command="{Binding DataContext.WordOcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+                            <Image Width="16" Height="16" Source="{Binding Source='.docx', Converter={StaticResource FilePathToIconConverter}}" />
+                        </Button>
                         <Button BorderBrush="Cyan" Command="{Binding ReadPdfTag}" CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />

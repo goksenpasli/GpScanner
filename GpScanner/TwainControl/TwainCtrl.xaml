@@ -19,6 +19,9 @@
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
+    <UserControl.InputBindings>
+        <KeyBinding Key="F1" Command="{Binding OpenHelpDialog}" />
+    </UserControl.InputBindings>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -224,7 +227,10 @@
             <GroupBox.Header>
                 <UniformGrid Columns="2">
                     <TextBlock Text="{local:Loc SRC}" />
-                    <Extensions:ContentToggleButton HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}">
+                    <Extensions:ContentToggleButton HorizontalAlignment="Right"
+                        Background="{x:Null}"
+                        BorderBrush="{x:Null}"
+                        IsChecked="{Binding HelpIsOpened}">
                         <Image Width="16" Height="16">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -273,7 +279,6 @@
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-
                 </UniformGrid>
             </GroupBox.Header>
             <Grid>
@@ -284,7 +289,8 @@
                 </Grid.RowDefinitions>
                 <Expander Grid.Row="0"
                     Background="{StaticResource GroupBoxBackGround}"
-                    BorderBrush="Black" IsExpanded="True">
+                    BorderBrush="Black"
+                    IsExpanded="{Binding ScanSettingsExpanderIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                     <Expander.Header>
                         <Border BorderBrush="GreenYellow" BorderThickness="2">
                             <Grid HorizontalAlignment="{Binding HorizontalAlignment, Mode=OneWayToSource, RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}">
@@ -1249,7 +1255,9 @@
                                                                     </Image>
                                                                 </Viewbox>
                                                             </ToggleButton>
-                                                            <TextBlock Canvas.Left="0" Canvas.Bottom="0" Text="{Binding Index, Mode=OneWay}" />
+                                                            <TextBlock Canvas.Left="0" Canvas.Bottom="0"
+                                                                FontWeight="Bold"
+                                                                Text="{Binding Index, Mode=OneWay}" />
                                                         </Canvas>
                                                     </StackPanel>
                                                 </ControlTemplate>
