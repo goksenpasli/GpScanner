@@ -1369,9 +1369,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => Settings.Default.PdfLoadHistory.Count > 0);
+
+        AddActiveVisibleContentImage = new RelayCommand<object>(
+            parameter =>
+            {
+                ScrollViewer scrollviewer = ImgViewer?.FindVisualChildren<ScrollViewer>()?.First();
+                if (scrollviewer != null)
+                {
+                    System.Windows.Controls.Image image = scrollviewer.Content as System.Windows.Controls.Image;
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(image?.ToRenderTargetBitmap(scrollviewer.ViewportWidth, scrollviewer.ViewportHeight));
+                    bitmapFrame.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                    Scanner?.Resimler.Insert(SeçiliResim.Index, scannedImage);
+                }
+            },
+            parameter => SeçiliResim is not null);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public RelayCommand<object> AddActiveVisibleContentImage { get; }
 
     public ICommand AddAllFileToControlPanel { get; }
 

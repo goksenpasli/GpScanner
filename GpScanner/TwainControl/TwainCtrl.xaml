@@ -1533,6 +1533,16 @@
                 <GroupBox Panel.ZIndex="-1" Background="{StaticResource GroupBoxBackGround}">
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
+                            <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="245" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
                             <Button local:Policy.PolicyName="InsertClipBoardImage" BorderBrush="Cyan" Command="{Binding InsertClipBoardImage}">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
