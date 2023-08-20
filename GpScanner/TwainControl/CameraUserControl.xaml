@@ -19,8 +19,7 @@
     <Grid>
         <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"
             Background="{x:Null}"
-            BorderBrush="{x:Null}"
-            IsChecked="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}">
+            BorderBrush="{x:Null}">
             <Image Width="24" Height="24" Source="/TwainControl;component/Icons/delete.png" />
         </ToggleButton>
         <TabControl>

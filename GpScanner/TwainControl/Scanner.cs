@@ -51,6 +51,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private bool fileisPdfFile;
     private string fileName = "Tarama";
     private string fileOcrContent;
+    private string folderName;
     private int ftpLoadProgressValue;
     private double hue;
     private bool ınvertImage;
@@ -610,6 +611,19 @@ public class Scanner : InpcBase, IDataErrorInfo
         { "MMMM", 4 },
         { "yyyy", 4 }
     };
+
+    public string FolderName
+    {
+        get => folderName;
+        set
+        {
+            if (folderName != value)
+            {
+                folderName = value;
+                OnPropertyChanged(nameof(FolderName));
+            }
+        }
+    }
 
     public int FtpLoadProgressValue
     {

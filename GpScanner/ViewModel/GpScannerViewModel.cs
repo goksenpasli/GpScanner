@@ -60,7 +60,7 @@ public class GpScannerViewModel : InpcBase
     private string calendarDesc;
     private XmlLanguage calendarLang;
     private bool calendarPanelIsExpanded;
-    private int? checkedPdfCount = 0;
+    private int checkedPdfCount = 0;
     private ObservableCollection<ContributionData> contributionData;
     private int cycleIndex;
     private bool detectBarCode = true;
@@ -85,7 +85,7 @@ public class GpScannerViewModel : InpcBase
     private Brush progressBarForegroundBrush = Brushes.Green;
     private ObservableCollection<OcrData> scannedText = new();
     private string seçiliDil;
-    private DateTime? seçiliGün;
+    private DateTime seçiliGün;
     private ContributionData selectedContribution;
     private Scanner selectedDocument;
     private string selectedFtp;
@@ -166,7 +166,7 @@ public class GpScannerViewModel : InpcBase
             },
             parameter =>
             {
-                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
+                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)) ?? 0;
                 return CheckedPdfCount > 1;
             });
 
@@ -197,7 +197,7 @@ public class GpScannerViewModel : InpcBase
             },
             parameter =>
             {
-                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase));
+                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)) ?? 0;
                 return CheckedPdfCount > 0;
             });
 
@@ -665,9 +665,9 @@ public class GpScannerViewModel : InpcBase
 
         CancelOcr = new RelayCommand<object>(parameter => Ocr.Ocr.ocrcancellationToken?.Cancel());
 
-        DateBack = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(-1), parameter => SeçiliGün > DateTime.MinValue);
+        DateBack = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.AddDays(-1), parameter => SeçiliGün > DateTime.MinValue);
 
-        DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.Value.AddDays(1), parameter => SeçiliGün < DateTime.Today);
+        DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.AddDays(1), parameter => SeçiliGün < DateTime.Today);
 
         CycleSelectedDocuments = new RelayCommand<object>(
             async parameter =>
@@ -897,7 +897,7 @@ public class GpScannerViewModel : InpcBase
 
     public ICommand ChangeDataFolder { get; }
 
-    public int? CheckedPdfCount
+    public int CheckedPdfCount
     {
         get => checkedPdfCount;
 
@@ -1276,7 +1276,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public DateTime? SeçiliGün
+    public DateTime SeçiliGün
     {
         get => seçiliGün;
 
@@ -1548,7 +1548,7 @@ public class GpScannerViewModel : InpcBase
                 files.Sort(new StrCmpLogicalComparer());
                 foreach (string dosya in files)
                 {
-                    list.Add(new Scanner { FileName = dosya });
+                    list.Add(new Scanner { FileName = dosya, FolderName = Directory.GetParent(dosya).Name });
                 }
                 files = null;
                 return list;
@@ -1676,7 +1676,7 @@ public class GpScannerViewModel : InpcBase
                 Scanner scanner = x.Item as Scanner;
                 if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
                 {
-                    string seçiligün = SeçiliGün.Value.ToString(Twainsettings.Settings.Default.FolderDateFormat);
+                    string seçiligün = SeçiliGün.ToString(Twainsettings.Settings.Default.FolderDateFormat);
                     x.Accepted = result.ToString(Twainsettings.Settings.Default.FolderDateFormat).StartsWith(seçiligün);
                 }
                 else
@@ -1688,7 +1688,7 @@ public class GpScannerViewModel : InpcBase
 
         if (e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
         {
-            SeçiliGün = SelectedContribution.ContrubutionDate;
+            SeçiliGün = (DateTime)SelectedContribution.ContrubutionDate;
         }
 
         if (e.PropertyName is "Sıralama")

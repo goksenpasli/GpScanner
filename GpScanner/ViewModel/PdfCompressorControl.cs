@@ -33,7 +33,7 @@ public class PdfCompressorControl : Compressor
                     pdfDocument?.Dispose();
                     if (Application.Current?.MainWindow?.DataContext is GpScannerViewModel gpScannerViewModel)
                     {
-                        DateTime? date = gpScannerViewModel.SeçiliGün;
+                        DateTime date = gpScannerViewModel.SeçiliGün;
                         gpScannerViewModel.ReloadFileDatas();
                         gpScannerViewModel.SeçiliGün = date;
                     }

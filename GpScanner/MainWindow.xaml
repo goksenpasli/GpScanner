@@ -6,7 +6,6 @@
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
-    xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=PresentationFramework"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -22,6 +21,7 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
+        <ViewModel:FoldEffect x:Key="Effect" FoldAmount="{Binding Fold}" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
@@ -131,24 +131,11 @@
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=TwainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl, Mode=OneWay}" />
     </Window.TaskbarItemInfo>
-    <Grid>
+    <Grid d:Effect="{x:Null}" Effect="{StaticResource Effect}">
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.Style>
-            <Style TargetType="{x:Type Grid}">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding (componentModel:DesignerProperties.IsInDesignMode), RelativeSource={RelativeSource Mode=Self}}" Value="False">
-                        <Setter Property="Effect">
-                            <Setter.Value>
-                                <ViewModel:FoldEffect FoldAmount="{Binding Fold}" />
-                            </Setter.Value>
-                        </Setter>
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Grid.Style>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding MainWindowGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="3*" />
             <ColumnDefinition Width="3" />
@@ -264,7 +251,9 @@
                                     </StackPanel>
                                 </Extensions:SplitButton.InternalContent>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock VerticalAlignment="Center" d:Text="0" Text="{Binding CheckedPdfCount}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                        d:Text="0" FontWeight="Bold"
+                                        Text="{Binding CheckedPdfCount}" />
                                     <Image Width="16" Height="16" Source="/TwainControl;component/Icons/selectall.png" />
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                 </StackPanel>
@@ -323,10 +312,10 @@
                             </Grid>
                             <Extensions:ButtonedTextBox Grid.Column="1"
                                 VerticalContentAlignment="Center"
-                                BorderBrush="GreenYellow" BorderThickness="2"
-                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                                PasteButtonVisibility="Collapsed"
-                                Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                d:Text="AramaMetni" BorderBrush="GreenYellow"
+                                BorderThickness="2" CopyButtonVisibility="Collapsed"
+                                OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                Text="{Binding AramaMetni, Mode=TwoWay, Delay=350, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <ComboBox twainctrl:Policy.PolicyName="SelectedSize" ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
                                     <ComboBox.ItemTemplate>
@@ -392,7 +381,7 @@
                                                 <CheckBox Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                     Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                     HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                                                    d:Height="50" Background="Transparent"
+                                                    d:Height="100" Background="Transparent"
                                                     BorderBrush="Cyan" Drop="ContentControl_DropAsync"
                                                     IsChecked="{Binding Seçili}">
                                                     <CheckBox.Style>
@@ -419,18 +408,16 @@
                                                         </Border.RenderTransform>
                                                         <Grid>
                                                             <Grid.RowDefinitions>
+                                                                <RowDefinition Height="16" />
                                                                 <RowDefinition Height="19.2" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
-                                                            <Grid Grid.Row="0">
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition />
-                                                                    <ColumnDefinition Width="27.2" />
-                                                                    <ColumnDefinition Width="19.2" />
-                                                                    <ColumnDefinition Width="27.2" />
-                                                                    <ColumnDefinition Width="27.2" />
-                                                                </Grid.ColumnDefinitions>
-                                                                <Extensions:ContentToggleButton Margin="1" HorizontalContentAlignment="Stretch"
+                                                            <TextBlock>
+                                                                <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
+                                                                <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
+                                                            </TextBlock>
+                                                            <UniformGrid Grid.Row="1" Columns="5">
+                                                                <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch"
                                                                     d:Content="FileOcrContent"
                                                                     Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                                     CommandParameter="{Binding Mode=OneWay}"
@@ -445,10 +432,11 @@
                                                                                 <Trigger Property="IsChecked" Value="True">
                                                                                     <Setter Property="OverContent">
                                                                                         <Setter.Value>
-                                                                                            <Extensions:ResizablePanel Width="{Binding DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference Window}}"
-                                                                                                Height="{Binding DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference Window}}"
-                                                                                                MinWidth="{Binding DataContext.SelectedSize.Width, Mode=OneWay, Source={x:Reference Window}}"
-                                                                                                MinHeight="{Binding DataContext.SelectedSize.Height, Mode=OneWay, Source={x:Reference Window}}">
+                                                                                            <Extensions:ResizablePanel Width="{Binding Tag.Width, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
+                                                                                                Height="{Binding Tag.Height, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
+                                                                                                MinWidth="{Binding Tag.Width, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
+                                                                                                MinHeight="{Binding Tag.Height, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
+                                                                                                Tag="{Binding Path=DataContext.SelectedSize, Mode=OneWay, Source={x:Reference Window}}">
                                                                                                 <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}" />
                                                                                             </Extensions:ResizablePanel>
                                                                                         </Setter.Value>
@@ -459,10 +447,17 @@
                                                                     </Extensions:ContentToggleButton.Style>
                                                                     <Grid>
                                                                         <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
-                                                                        <TextBlock Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextTrimming="CharacterEllipsis" />
+                                                                        <Image Width="16" Height="16">
+                                                                            <Image.Source>
+                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                    <Binding Source="Shell32.dll" />
+                                                                                    <Binding Source="70" />
+                                                                                </MultiBinding>
+                                                                            </Image.Source>
+                                                                        </Image>
                                                                     </Grid>
                                                                 </Extensions:ContentToggleButton>
-                                                                <Extensions:ContentToggleButton Grid.Column="1" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
+                                                                <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">
                                                                             <Style.Triggers>
@@ -488,7 +483,7 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                 </Extensions:ContentToggleButton>
-                                                                <Button Grid.Column="2" Command="{Binding DataContext.UploadSharePoint, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                <Button Command="{Binding DataContext.UploadSharePoint, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
                                                                     <Image Width="16" Height="16">
                                                                         <Image.Source>
                                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -498,7 +493,7 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                 </Button>
-                                                                <Extensions:ContentToggleButton Grid.Column="3" IsEnabled="{Binding FileIsPdfFile, Mode=OneWay}">
+                                                                <Extensions:ContentToggleButton IsEnabled="{Binding FileIsPdfFile, Mode=OneWay}">
                                                                     <Extensions:ContentToggleButton.OverContent>
                                                                         <GroupBox>
                                                                             <GroupBox.Header>
@@ -532,7 +527,7 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                 </Extensions:ContentToggleButton>
-                                                                <Extensions:ContentToggleButton Grid.Column="4">
+                                                                <Extensions:ContentToggleButton>
                                                                     <Extensions:ContentToggleButton.OverContent>
                                                                         <GroupBox Width="300" Header="{twainctrl:Loc CALENDAR}">
                                                                             <StackPanel>
@@ -565,8 +560,8 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                 </Extensions:ContentToggleButton>
-                                                            </Grid>
-                                                            <ContentControl Grid.Row="1"
+                                                            </UniformGrid>
+                                                            <ContentControl Grid.Row="2"
                                                                 d:ContentTemplate="{StaticResource PdfViewerTemplateFull}"
                                                                 d:ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
                                                                 Content="{Binding FileName, IsAsync=True, Mode=OneWay}"

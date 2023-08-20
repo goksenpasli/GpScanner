@@ -20,6 +20,13 @@
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+            <local:GrowablePoissonDiskEffect x:Key="GrowablePoissonDiskEffect" DiskRadius="{Binding BlurAmount}" />
+            <local:InvertColorEffect x:Key="InvertColorEffect" />
+            <local:GrayScaleEffect x:Key="GrayScaleEffect" />
+            <local:BlackWhiteEffect x:Key="BlackWhiteEffect" Threshold="{Binding BwAmount}" />
+            <local:PixelateEffect x:Key="PixelateEffect" PixelCounts="{Binding PixelateSize}" />
+            <local:EmbossedEffect x:Key="EmbossedEffect" />
+            <local:SharpenEffect x:Key="SharpenEffect" Amount="{Binding SharpenAmount}" />
             <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -101,11 +108,7 @@
                     <Style TargetType="Grid">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding BlurColor}" Value="true">
-                                <Setter Property="Effect">
-                                    <Setter.Value>
-                                        <local:GrowablePoissonDiskEffect DiskRadius="{Binding BlurAmount}" />
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="Effect" Value="{StaticResource GrowablePoissonDiskEffect}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -115,11 +118,7 @@
                         <Style TargetType="Grid">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding InvertColor}" Value="true">
-                                    <Setter Property="Effect">
-                                        <Setter.Value>
-                                            <local:InvertColorEffect />
-                                        </Setter.Value>
-                                    </Setter>
+                                    <Setter Property="Effect" Value="{StaticResource InvertColorEffect}" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
@@ -129,11 +128,7 @@
                             <Style TargetType="Grid">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ApplyGrayscale}" Value="true">
-                                        <Setter Property="Effect">
-                                            <Setter.Value>
-                                                <local:GrayScaleEffect />
-                                            </Setter.Value>
-                                        </Setter>
+                                        <Setter Property="Effect" Value="{StaticResource GrayScaleEffect}" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -143,11 +138,7 @@
                                 <Style TargetType="Grid">
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding ApplyBw}" Value="true">
-                                            <Setter Property="Effect">
-                                                <Setter.Value>
-                                                    <local:BlackWhiteEffect Threshold="{Binding BwAmount}" />
-                                                </Setter.Value>
-                                            </Setter>
+                                            <Setter Property="Effect" Value="{StaticResource BlackWhiteEffect}" />
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -157,11 +148,7 @@
                                     <Style TargetType="Grid">
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding ApplyPixelate}" Value="true">
-                                                <Setter Property="Effect">
-                                                    <Setter.Value>
-                                                        <local:PixelateEffect PixelCounts="{Binding PixelateSize}" />
-                                                    </Setter.Value>
-                                                </Setter>
+                                                <Setter Property="Effect" Value="{StaticResource PixelateEffect}" />
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -171,11 +158,7 @@
                                         <Style TargetType="Grid">
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding ApplyEmboss}" Value="true">
-                                                    <Setter Property="Effect">
-                                                        <Setter.Value>
-                                                            <local:EmbossedEffect />
-                                                        </Setter.Value>
-                                                    </Setter>
+                                                    <Setter Property="Effect" Value="{StaticResource EmbossedEffect}" />
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -185,11 +168,7 @@
                                             <Style TargetType="Grid">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding ApplySharpen}" Value="true">
-                                                        <Setter Property="Effect">
-                                                            <Setter.Value>
-                                                                <local:SharpenEffect Amount="{Binding SharpenAmount}" />
-                                                            </Setter.Value>
-                                                        </Setter>
+                                                        <Setter Property="Effect" Value="{StaticResource SharpenEffect}" />
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
@@ -527,7 +506,7 @@
                                                 <Setter Property="Orientation" Value="Vertical" />
                                             </Style>
                                         </StackPanel.Resources>
-                                        <Slider BorderBrush="Red" Value="{Binding Source={x:Reference Color}, Path=Red}" />
+                                        <Slider BorderBrush="Red" Value="{Binding Red, Source={x:Reference Color}}" />
                                         <Slider BorderBrush="Green" Value="{Binding Green, Source={x:Reference Color}}" />
                                         <Slider BorderBrush="Blue" Value="{Binding Blue, Source={x:Reference Color}}" />
                                         <Slider Value="{Binding Brightness, Source={x:Reference Color}}">
