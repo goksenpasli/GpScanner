@@ -75,6 +75,7 @@ public class GpScannerViewModel : InpcBase
     private bool listBoxBorderAnimation;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
+    private double mirror;
     private DateTime notifyDate = DateTime.Today;
     private bool ocrısBusy;
     private string patchFileName;
@@ -83,6 +84,7 @@ public class GpScannerViewModel : InpcBase
     private bool pdfBatchRunning;
     private double pdfMergeProgressValue;
     private Brush progressBarForegroundBrush = Brushes.Green;
+    private double ripple;
     private ObservableCollection<OcrData> scannedText = new();
     private string seçiliDil;
     private DateTime seçiliGün;
@@ -111,7 +113,7 @@ public class GpScannerViewModel : InpcBase
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
 
-        GenerateFoldTimer();
+        GenerateAnimationTimer();
         Dosyalar = GetScannerFileData();
         ContributionData = GetContributionData();
         SeçiliDil = Settings.Default.DefaultLang;
@@ -1105,6 +1107,19 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
+    public double Mirror
+    {
+        get => mirror;
+        set
+        {
+            if (mirror != value)
+            {
+                mirror = value;
+                OnPropertyChanged(nameof(Mirror));
+            }
+        }
+    }
+
     public ICommand ModifyGridWidth { get; }
 
     public DateTime NotifyDate
@@ -1241,6 +1256,19 @@ public class GpScannerViewModel : InpcBase
     public ICommand RemoveSelectedFtp { get; }
 
     public ICommand ResetSettings { get; }
+
+    public double Ripple
+    {
+        get => ripple;
+        set
+        {
+            if (ripple != value)
+            {
+                ripple = value;
+                OnPropertyChanged(nameof(Ripple));
+            }
+        }
+    }
 
     public ICommand SavePatchProfile { get; }
 
@@ -1606,6 +1634,49 @@ public class GpScannerViewModel : InpcBase
         return document;
     }
 
+    private void AnimationOnTick(object sender, EventArgs e)
+    {
+        if (StillImageHelper.FirstLanuchScan)
+        {
+            StopAnimation();
+            return;
+        }
+
+        switch (Settings.Default.AnimationType)
+        {
+            case 0:
+                Fold -= 0.01;
+                if (Fold <= 0)
+                {
+                    StopAnimation();
+                }
+                break;
+            case 1:
+                Ripple++;
+                if (Ripple > 100)
+                {
+                    StopAnimation();
+                }
+                break;
+            case 2:
+                Mirror += 0.01;
+                if (Mirror > 1)
+                {
+                    StopAnimation();
+                }
+                break;
+        }
+
+        void StopAnimation()
+        {
+            Fold = 0;
+            Ripple = 0;
+            Mirror = 1;
+            timer.Stop();
+            timer.Tick -= AnimationOnTick;
+        }
+    }
+
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
@@ -1634,10 +1705,10 @@ public class GpScannerViewModel : InpcBase
         Settings.Default.Save();
     }
 
-    private void GenerateFoldTimer()
+    private void GenerateAnimationTimer()
     {
         timer = new DispatcherTimer(DispatcherPriority.Normal) { Interval = TimeSpan.FromMilliseconds(15) };
-        timer.Tick += OnTick;
+        timer.Tick += AnimationOnTick;
         timer.Start();
     }
 
@@ -1810,28 +1881,6 @@ public class GpScannerViewModel : InpcBase
     {
         Version os = Environment.OSVersion.Version;
         return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
-    }
-
-    private void OnTick(object sender, EventArgs e)
-    {
-        if (StillImageHelper.FirstLanuchScan)
-        {
-            TimerFold();
-            return;
-        }
-
-        Fold -= 0.01;
-        if (Fold <= 0)
-        {
-            TimerFold();
-        }
-
-        void TimerFold()
-        {
-            Fold = 0;
-            timer.Stop();
-            timer.Tick -= OnTick;
-        }
     }
 
     private void RegisterSimplePdfFileWatcher()

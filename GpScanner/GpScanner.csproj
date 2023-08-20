@@ -159,8 +159,10 @@
     <Compile Include="ViewModel\FileType.cs" />
     <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
+    <Compile Include="ViewModel\MirrorAngleEffect.cs" />
     <Compile Include="ViewModel\PdfCompressorControl.cs" />
     <Compile Include="ViewModel\ReminderData.cs" />
+    <Compile Include="ViewModel\RippleEffect.cs" />
     <Compile Include="ViewModel\ScannerData.cs" />
     <Compile Include="ViewModel\Shutdown.cs" />
     <Compile Include="ViewModel\StillImageHelper.cs" />
@@ -225,6 +227,8 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="Resources\RippleEffect.ps" />
+    <Resource Include="Resources\MirrorAngleEffect.ps" />
     <None Include="tessdata\placeholder.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

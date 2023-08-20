@@ -261,6 +261,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="175" />
+                                    <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                     Description="{twainctrl:Loc FILE}"
@@ -286,6 +287,14 @@
                                     IsEnabled="{Binding AnyDataExists}">
                                     <TextBlock Foreground="Blue" Text="{twainctrl:Loc PDFTRACK}" TextWrapping="Wrap" />
                                 </CheckBox>
+                                <ComboBox Grid.Column="3"
+                                    VerticalContentAlignment="Center"
+                                    SelectedValue="{Binding Path=AnimationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                    SelectedValuePath="Tag">
+                                    <ComboBoxItem Content="FOLD" Tag="0" />
+                                    <ComboBoxItem Content="RIPPLE" Tag="1" />
+                                    <ComboBoxItem Content="MIRROR" Tag="2" />
+                                </ComboBox>
                             </Grid>
                         </GroupBox>
                         <GroupBox Grid.Row="2">

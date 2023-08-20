@@ -21,7 +21,9 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
-        <ViewModel:FoldEffect x:Key="Effect" FoldAmount="{Binding Fold}" />
+        <ViewModel:FoldEffect x:Key="Fold" FoldAmount="{Binding Fold}" />
+        <ViewModel:RippleEffect x:Key="Ripple" Progress="{Binding Ripple}" />
+        <ViewModel:MirrorAngleEffect x:Key="Mirror" RelativeHeight="{Binding Mirror}" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
@@ -131,7 +133,22 @@
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=TwainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl, Mode=OneWay}" />
     </Window.TaskbarItemInfo>
-    <Grid d:Effect="{x:Null}" Effect="{StaticResource Effect}">
+    <Grid d:Effect="{x:Null}">
+        <Grid.Style>
+            <Style TargetType="Grid">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=AnimationType, Source={x:Static properties:Settings.Default}}" Value="0">
+                        <Setter Property="Effect" Value="{StaticResource Fold}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=AnimationType, Source={x:Static properties:Settings.Default}}" Value="1">
+                        <Setter Property="Effect" Value="{StaticResource Ripple}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=AnimationType, Source={x:Static properties:Settings.Default}}" Value="2">
+                        <Setter Property="Effect" Value="{StaticResource Mirror}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
