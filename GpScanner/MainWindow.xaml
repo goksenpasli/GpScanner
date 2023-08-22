@@ -433,47 +433,7 @@
                                                                 <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
                                                                 <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
                                                             </TextBlock>
-                                                            <UniformGrid Grid.Row="1" Columns="5">
-                                                                <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch"
-                                                                    d:Content="FileOcrContent"
-                                                                    Command="{Binding DataContext.ReadOcrDataFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}"
-                                                                    IsEnabled="{Binding FileIsPdfFile, Mode=OneWay}"
-                                                                    PopupAnimation="Scroll">
-                                                                    <Extensions:ContentToggleButton.Style>
-                                                                        <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">
-                                                                            <Style.Triggers>
-                                                                                <Trigger Property="IsChecked" Value="False">
-                                                                                    <Setter Property="OverContent" Value="{x:Null}" />
-                                                                                </Trigger>
-                                                                                <Trigger Property="IsChecked" Value="True">
-                                                                                    <Setter Property="OverContent">
-                                                                                        <Setter.Value>
-                                                                                            <Extensions:ResizablePanel Width="{Binding Tag.Width, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
-                                                                                                Height="{Binding Tag.Height, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
-                                                                                                MinWidth="{Binding Tag.Width, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
-                                                                                                MinHeight="{Binding Tag.Height, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}"
-                                                                                                Tag="{Binding Path=DataContext.SelectedSize, Mode=OneWay, Source={x:Reference Window}}">
-                                                                                                <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding Parent.DataContext.FileOcrContent, Mode=OneWay, RelativeSource={RelativeSource Mode=Self}}" />
-                                                                                            </Extensions:ResizablePanel>
-                                                                                        </Setter.Value>
-                                                                                    </Setter>
-                                                                                </Trigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </Extensions:ContentToggleButton.Style>
-                                                                    <Grid>
-                                                                        <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
-                                                                        <Image Width="16" Height="16">
-                                                                            <Image.Source>
-                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                    <Binding Source="Shell32.dll" />
-                                                                                    <Binding Source="70" />
-                                                                                </MultiBinding>
-                                                                            </Image.Source>
-                                                                        </Image>
-                                                                    </Grid>
-                                                                </Extensions:ContentToggleButton>
+                                                            <UniformGrid Grid.Row="1" Columns="4">
                                                                 <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">

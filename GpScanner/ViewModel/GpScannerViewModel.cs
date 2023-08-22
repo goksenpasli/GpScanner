@@ -690,17 +690,6 @@ public class GpScannerViewModel : InpcBase
             },
             parameter => MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);
 
-        ReadOcrDataFile = new RelayCommand<object>(
-            parameter =>
-            {
-                if (parameter is Scanner scanner)
-                {
-                    List<Data> data = DataYükle()?.Where(z => z.FileName == scanner.FileName).ToList();
-                    scanner.FileOcrContent = string.Join(" ", data?.Select(z => z.FileContent));
-                }
-            },
-            parameter => true);
-
         PrintImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
 
         PlayAudio = new RelayCommand<object>(parameter => TwainCtrl.PlayNotificationSound(parameter as string), parameter => true);
@@ -1246,8 +1235,6 @@ public class GpScannerViewModel : InpcBase
             }
         }
     }
-
-    public ICommand ReadOcrDataFile { get; }
 
     public ICommand RegisterSti { get; }
 
