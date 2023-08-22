@@ -429,4 +429,7 @@
   <data name="SCANDELAYHELP" xml:space="preserve">
     <value />
   </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value />
+  </data>
 </root>

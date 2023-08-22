@@ -601,4 +601,7 @@ TO FILE</value>
   <data name="SCANDELAYHELP" xml:space="preserve">
     <value>Shows how many seconds the scanner will wait before scanning!</value>
   </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>FILM SCANNER</value>
+  </data>
 </root>

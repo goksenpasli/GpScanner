@@ -605,8 +605,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SaveProfile = new RelayCommand<object>(
             parameter =>
             {
-                string profile =
-                    $"{Scanner.ProfileName}|{Settings.Default.Çözünürlük}|{Settings.Default.Adf}|{Settings.Default.Mode}|{Scanner.Duplex}|{Scanner.ShowUi}|false|{Settings.Default.ShowFile}|{Scanner.DetectEmptyPage}|{Scanner.FileName}|{Scanner.InvertImage}|{Scanner.ApplyMedian}|{Settings.Default.SeçiliTarayıcı}|{Settings.Default.AutoCropImage}";
+                string profile = $"{Scanner.ProfileName}|{Settings.Default.Çözünürlük}|{Settings.Default.Adf}|{Settings.Default.Mode}|{Scanner.Duplex}|{Scanner.ShowUi}|false|{Settings.Default.ShowFile}|{Scanner.DetectEmptyPage}|{Scanner.FileName}|{Scanner.InvertImage}|{Scanner.ApplyMedian}|{Settings.Default.SeçiliTarayıcı}|{Settings.Default.AutoCropImage}|{Scanner.UseFilmScanner}";
                 _ = Settings.Default.Profile.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
@@ -2832,8 +2831,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             ShowProgressIndicatorUi = Scanner.ShowProgress,
             UseDuplex = Scanner.Duplex,
             ShouldTransferAllPages = true,
+            UseFilmScanner = Scanner.UseFilmScanner,
             Resolution = new ResolutionSettings { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = IsBlackAndWhiteMode() ? ColourSetting.BlackAndWhite : ColourSetting.Colour },
-            Page = new PageSettings { Orientation = SelectedOrientation }
+            Page = new PageSettings { Orientation = SelectedOrientation },
+            Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true }
         };
         scansettings.Page.Size = SelectedPaper.PaperType switch
         {
@@ -3113,7 +3114,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         Scanner.ArayüzEtkin = false;
         _settings = DefaultScanSettings();
-        _settings.Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true };
     }
 
     private void ScanComplete(object sender, ScanningCompleteEventArgs e)
@@ -3155,6 +3155,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Scanner.ApplyMedian = bool.Parse(selectedprofile[11]);
             Settings.Default.SeçiliTarayıcı = selectedprofile[12];
             Settings.Default.AutoCropImage = bool.Parse(selectedprofile[13]);
+            Scanner.UseFilmScanner = bool.Parse(selectedprofile[14]);
             Settings.Default.DefaultProfile = Scanner.SelectedProfile;
             Settings.Default.Save();
         }

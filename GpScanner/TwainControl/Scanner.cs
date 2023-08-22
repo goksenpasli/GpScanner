@@ -94,6 +94,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private double threshold;
     private int toolBarBwThreshold = 160;
     private ObservableCollection<string> unsupportedFiles = new();
+    private bool useFilmScanner;
     private bool useMozJpegEncoding;
     private bool usePageSeperator;
     private string userName = Environment.UserName;
@@ -1223,6 +1224,19 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 unsupportedFiles = value;
                 OnPropertyChanged(nameof(UnsupportedFiles));
+            }
+        }
+    }
+
+    public bool UseFilmScanner
+    {
+        get => useFilmScanner;
+        set
+        {
+            if (useFilmScanner != value)
+            {
+                useFilmScanner = value;
+                OnPropertyChanged(nameof(UseFilmScanner));
             }
         }
     }

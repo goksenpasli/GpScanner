@@ -823,6 +823,7 @@
                                         <RowDefinition Height="15.2" />
                                         <RowDefinition Height="22.4" />
                                         <RowDefinition Height="16.8" />
+                                        <RowDefinition Height="15.2" />
                                     </Grid.RowDefinitions>
                                     <CheckBox VerticalContentAlignment="Center"
                                         BorderBrush="GreenYellow" BorderThickness="2"
@@ -868,12 +869,10 @@
                                             </CheckBox>
                                         </StackPanel>
                                     </CheckBox>
-                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <CheckBox BorderBrush="GreenYellow" BorderThickness="2"
-                                            Content="{local:Loc GUI}"
-                                            IsChecked="{Binding Scanner.ShowUi}" />
-                                        <CheckBox Content="{local:Loc REVERSE}" IsChecked="{Binding Scanner.InvertImage}" />
-                                    </StackPanel>
+                                    <CheckBox Grid.Column="1"
+                                        BorderBrush="GreenYellow" BorderThickness="2"
+                                        Content="{local:Loc GUI}"
+                                        IsChecked="{Binding Scanner.ShowUi}" />
                                     <CheckBox Grid.Row="1" Grid.Column="0"
                                         Content="{local:Loc SHOWFILE}"
                                         IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
@@ -900,7 +899,10 @@
                                     </CheckBox>
                                     <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
                                         <CheckBox Content="{local:Loc SEPERATOR}" IsChecked="{Binding Scanner.UsePageSeperator}" />
-                                        <ComboBox local:Policy.PolicyName="SelectedOrientation" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageOrientation}}" SelectedItem="{Binding SelectedOrientation}">
+                                        <ComboBox local:Policy.PolicyName="SelectedOrientation"
+                                            IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageOrientation}}"
+                                            SelectedItem="{Binding SelectedOrientation}">
                                             <ComboBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <TextBlock>
@@ -935,6 +937,11 @@
                                             </Extensions:ContentToggleButton>
                                         </StackPanel>
                                     </CheckBox>
+                                    <CheckBox Grid.Row="4" Content="{local:Loc REVERSE}" IsChecked="{Binding Scanner.InvertImage}" />
+                                    <CheckBox Grid.Row="4" Grid.Column="1"
+                                        Content="{local:Loc FILMSCANNER}"
+                                        IsChecked="{Binding Scanner.UseFilmScanner}" />
+
                                 </Grid>
                                 <Separator />
                                 <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"

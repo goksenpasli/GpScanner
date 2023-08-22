@@ -599,4 +599,7 @@ PDF!</value>
   <data name="SCANDELAYHELP" xml:space="preserve">
     <value>Δείχνει πόσα δευτερόλεπτα θα περιμένει ο σαρωτής πριν από τη σάρωση!</value>
   </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>FILM SCANNER</value>
+  </data>
 </root>

@@ -599,4 +599,7 @@ PDF-ФАЙЛ!</value>
   <data name="SCANDELAYHELP" xml:space="preserve">
     <value>Показує, скільки секунд сканер чекатиме перед скануванням!</value>
   </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>ПЛІВКОВИЙ СКАНЕР</value>
+  </data>
 </root>

@@ -396,6 +396,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string FILMSCANNER {
+            get {
+                return ResourceManager.GetString("FILMSCANNER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FOLDERFORMAT {
             get {
                 return ResourceManager.GetString("FOLDERFORMAT", resourceCulture);
