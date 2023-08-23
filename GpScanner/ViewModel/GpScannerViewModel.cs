@@ -96,6 +96,8 @@ public class GpScannerViewModel : InpcBase
     private bool sıralama;
     private TesseractViewModel tesseractViewModel;
     private TranslateViewModel translateViewModel;
+    private double zipProgress;
+    private bool zipProgressIndeterminate;
 
     public GpScannerViewModel()
     {
@@ -180,16 +182,25 @@ public class GpScannerViewModel : InpcBase
                 {
                     try
                     {
-                        await Task.Run(
+                        Task task = Task.Run(
                             () =>
                             {
                                 List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
-                                using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Create);
-                                foreach (string fPath in pdffilelist)
+                                using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
+                                for (int i = 0; i < pdffilelist.Count; i++)
                                 {
+                                    string fPath = pdffilelist[i];
                                     _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
+                                    ZipProgress = (i + 1) / (double)pdffilelist.Count;
                                 }
+                                ZipProgressIndeterminate = true;
                             });
+                        await task;
+                        if (task?.IsCompleted == true)
+                        {
+                            ZipProgress = 0;
+                            ZipProgressIndeterminate = false;
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -1441,6 +1452,32 @@ public class GpScannerViewModel : InpcBase
     public RelayCommand<object> UploadSharePoint { get; }
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
+
+    public double ZipProgress
+    {
+        get => zipProgress;
+        set
+        {
+            if (zipProgress != value)
+            {
+                zipProgress = value;
+                OnPropertyChanged(nameof(ZipProgress));
+            }
+        }
+    }
+
+    public bool ZipProgressIndeterminate
+    {
+        get => zipProgressIndeterminate;
+        set
+        {
+            if (zipProgressIndeterminate != value)
+            {
+                zipProgressIndeterminate = value;
+                OnPropertyChanged(nameof(ZipProgressIndeterminate));
+            }
+        }
+    }
 
     public static void BackupDataXmlFile()
     {

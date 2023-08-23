@@ -369,7 +369,16 @@
                                 </Button>
                             </StackPanel>
                         </Grid>
-                        <Separator Grid.Row="3" />
+                        <StackPanel Grid.Row="3">
+                            <ProgressBar Height="3"
+                                Background="{StaticResource BorderBackground}"
+                                BorderBrush="{StaticResource BorderBackground}"
+                                Foreground="{StaticResource GroupBoxBackGround}"
+                                IsIndeterminate="{Binding ZipProgressIndeterminate}"
+                                Maximum="1"
+                                Value="{Binding ZipProgress}" />
+                            <Separator />
+                        </StackPanel>
                         <ListBox x:Name="LbDoc"
                             Grid.Row="4"
                             HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
@@ -429,10 +438,13 @@
                                                                 <RowDefinition Height="19.2" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
-                                                            <TextBlock>
-                                                                <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
-                                                                <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
-                                                            </TextBlock>
+                                                            <Grid>
+                                                                <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
+                                                                <TextBlock>
+                                                                    <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
+                                                                    <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
+                                                                </TextBlock>
+                                                            </Grid>
                                                             <UniformGrid Grid.Row="1" Columns="4">
                                                                 <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
