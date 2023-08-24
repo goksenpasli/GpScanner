@@ -480,7 +480,7 @@
                                     </CheckBox>
                                     <StackPanel Orientation="Horizontal">
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <Canvas Width="32" Height="32">
+                                            <Canvas Width="32" Height="32" IsEnabled="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                                 <Image Width="32" Height="32">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

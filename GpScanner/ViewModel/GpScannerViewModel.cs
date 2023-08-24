@@ -78,6 +78,7 @@ public class GpScannerViewModel : InpcBase
     private double mirror;
     private DateTime notifyDate = DateTime.Today;
     private bool ocrısBusy;
+    private int? ocrPdfThumbnailPageNumber;
     private string patchFileName;
     private string patchProfileName = string.Empty;
     private string patchTag;
@@ -263,7 +264,9 @@ public class GpScannerViewModel : InpcBase
                                 using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Twainsettings.Settings.Default.ImgLoadResolution);
                                 ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
                                 ScannerData.Data.Add(new Data { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                                OcrPdfThumbnailPageNumber = i;
                             }
+                            OcrPdfThumbnailPageNumber = null;
                         }
                         else
                         {
@@ -1152,6 +1155,19 @@ public class GpScannerViewModel : InpcBase
     public ICommand OcrPage { get; }
 
     public ICommand OcrPdfThumbnailPage { get; }
+
+    public int? OcrPdfThumbnailPageNumber
+    {
+        get => ocrPdfThumbnailPageNumber;
+        set
+        {
+            if (ocrPdfThumbnailPageNumber != value)
+            {
+                ocrPdfThumbnailPageNumber = value;
+                OnPropertyChanged(nameof(OcrPdfThumbnailPageNumber));
+            }
+        }
+    }
 
     public ICommand OpenOriginalFile { get; }
 
