@@ -1387,6 +1387,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public event PropertyChangedEventHandler PropertyChanged;
 
+    public static FileVersionInfo Version => FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess()?.MainModule?.FileName);
+
     public RelayCommand<object> AddActiveVisibleContentImage { get; }
 
     public ICommand AddAllFileToControlPanel { get; }
@@ -3205,10 +3207,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private void StackPanel_GiveFeedback(object sender, System.Windows.GiveFeedbackEventArgs e) { StackPanelDragFeedBack(sender, e); }
     private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e) { Scanner.ArayüzEtkin = true; }
 
-    private void Twain_TransferImage(object sender, TransferImageEventArgs e)
+    private async void Twain_TransferImage(object sender, TransferImageEventArgs e)
     {
         if (e.Image != null)
         {
+            await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanBetweenDelay));
             using Bitmap bitmap = e.Image;
             if (Scanner.DetectEmptyPage && bitmap.IsEmptyPage(Settings.Default.EmptyThreshold))
             {

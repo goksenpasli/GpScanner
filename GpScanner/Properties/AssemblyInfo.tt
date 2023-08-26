@@ -13,7 +13,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Goksen")]
 [assembly: AssemblyProduct("GpScanner")]
-[assembly: AssemblyCopyright("Copyright © 2023")]
+[assembly: AssemblyCopyright("Copyright © <#= Year #>")]
 [assembly: AssemblyTrademark("Gok$en")]
 [assembly: AssemblyCulture("")]
 
@@ -47,4 +47,5 @@ using System.Windows;
 [assembly: AssemblyFileVersion("4.1.3.<#= RevisionNumber #>")]
 <#+
     private readonly int RevisionNumber = (int)(DateTime.UtcNow - new DateTime(1984, 3, 9)).TotalDays;
+    private static int Year = DateTime.Today.Year;
 #>

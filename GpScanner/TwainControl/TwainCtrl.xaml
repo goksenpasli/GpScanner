@@ -323,9 +323,28 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                                 <StackPanel x:Name="SpDelay" Grid.Column="1" Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="20" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                     <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="120"
                                         Minimum="0" SmallChange="1"
                                         Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="54" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="120"
+                                        Minimum="0" SmallChange="1"
+                                        Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SECOND}" />
                                 </StackPanel>
                                 <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Columns="4">
