@@ -2338,7 +2338,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".xps":
                             {
                                 FixedDocumentSequence docSeq = null;
-                                DocumentPage docPage = null;
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {
@@ -2351,7 +2350,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     await Dispatcher.InvokeAsync(
                                         () =>
                                         {
-                                            docPage = docSeq.DocumentPaginator.GetPage(i);
+                                            using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
                                             RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
                                             rtb.Render(docPage.Visual);
                                             BitmapFrame bitmapframe = BitmapFrame.Create(rtb);
@@ -2364,6 +2363,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                             bitmapframe = null;
                                         });
                                 }
+                                docSeq = null;
                                 break;
                             }
                         }
@@ -2456,8 +2456,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 for (int i = 0; i < images.Count; i++)
                 {
                     ScannedImage scannedimage = images[i];
-                    byte[] bytes = null;
-                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+                    byte[] bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality);
                     File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), bytes);
                     if (Settings.Default.RemoveProcessedImage)
                     {
@@ -2596,8 +2595,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 for (int i = 0; i < images.Count; i++)
                 {
                     ScannedImage scannedimage = images[i];
-                    byte[] bytes = null;
-                    _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality));
+                    byte[] bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality);
                     File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp"), bytes);
                     if (Settings.Default.RemoveProcessedImage)
                     {
