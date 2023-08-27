@@ -451,17 +451,6 @@ public class GpScannerViewModel : InpcBase
             },
             parameter => true);
 
-        UploadFtp = new RelayCommand<object>(
-            async parameter =>
-            {
-                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
-                {
-                    string[] ftpdata = Settings.Default.SelectedFtp.Split('|');
-                    await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner);
-                }
-            },
-            parameter => !string.IsNullOrWhiteSpace(Settings.Default.SelectedFtp));
-
         UploadSharePoint = new RelayCommand<object>(
             parameter =>
             {
@@ -1473,8 +1462,6 @@ public class GpScannerViewModel : InpcBase
 
     public ICommand UnRegisterSti { get; }
 
-    public ICommand UploadFtp { get; }
-
     public RelayCommand<object> UploadSharePoint { get; }
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
@@ -1538,22 +1525,6 @@ public class GpScannerViewModel : InpcBase
         {
             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
-        }
-    }
-
-    public static async Task FtpUploadAsync(string uri, string userName, string password, Scanner scanner)
-    {
-        try
-        {
-            using WebClient webClient = new();
-            webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
-            webClient.UploadProgressChanged += (sender, args) => scanner.FtpLoadProgressValue = args.ProgressPercentage;
-            string address = $"{uri}/{Directory.GetParent(scanner.FileName).Name}{Path.GetFileName(scanner.FileName)}";
-            _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, scanner.FileName);
-        }
-        catch (Exception ex)
-        {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

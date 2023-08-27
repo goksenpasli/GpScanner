@@ -2,50 +2,107 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:twaincontrol="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    d:DataContext="{d:DesignInstance Type=twaincontrol:Scanner}"
     d:DesignHeight="200" d:DesignWidth="400"
+    twaincontrol:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
-    <GroupBox Header="FTP">
+    <UserControl.Resources>
+        <Style TargetType="ComboBox">
+            <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
+        </Style>
+    </UserControl.Resources>
+    <GroupBox>
         <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <ProgressBar Height="24"
+            <ProgressBar Grid.ColumnSpan="2"
+                Height="24"
                 Background="{x:Null}"
                 Maximum="100"
                 Value="{Binding FtpLoadProgressValue}" />
-            <ListBox Grid.Row="1"
-                d:ItemsSource="{d:SampleData ItemCount=5}"
-                Background="{StaticResource BorderBackground}"
-                ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}"
-                SelectedItem="{Binding SelectedFtp, Source={x:Static properties:Settings.Default}}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
-                            FontStyle="Italic"
-                            Text="{Binding Mode=OneWay}">
-                            <Hyperlink BaselineAlignment="Center"
-                                Command="{Binding DataContext.UploadFtp, RelativeSource={RelativeSource AncestorType=Window}}"
-                                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                                IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                TextDecorations="None">
-                                <Image Width="16" Height="16" VerticalAlignment="Center">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="45" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </Hyperlink>
-                        </TextBlock>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+            <GroupBox Grid.Row="1" Header="FTP">
+                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                    Background="{StaticResource BorderBackground}"
+                    ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}"
+                    SelectedItem="{Binding SelectedFtp, Source={x:Static properties:Settings.Default}}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Margin="0,0,5,0" VerticalAlignment="Center" FontStyle="Italic">
+                                <Hyperlink BaselineAlignment="Center"
+                                    Command="{Binding UploadFtp, RelativeSource={RelativeSource AncestorType=local:FtpUserControl}}"
+                                    CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                                    IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                    TextDecorations="None">
+                                    <Image Width="16" Height="16" VerticalAlignment="Center">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="45" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Hyperlink>
+                                <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+            <GroupBox Grid.Row="1" Grid.Column="1" Header="{twaincontrol:Loc FILE}">
+                <UniformGrid Rows="2">
+                    <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                        ItemsSource="{Binding RemovableDrives, RelativeSource={RelativeSource AncestorType=local:FtpUserControl}}"
+                        SelectedItem="{Binding SelectedRemovableDrive, RelativeSource={RelativeSource AncestorType=local:FtpUserControl}}"
+                        SelectionMode="Single">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center">
+                                    <Image Width="16" Height="16" VerticalAlignment="Center">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="8" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Run BaselineAlignment="Center" Text="{Binding Name, Mode=OneWay}" />
+                                    <Run BaselineAlignment="Center" Text="{Binding VolumeLabel, Mode=OneWay}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Command="{Binding CopyToDrive, RelativeSource={RelativeSource AncestorType=local:FtpUserControl}}"
+                        CommandParameter="{Binding Mode=OneWay}">
+                        <Grid>
+                            <ProgressBar Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                Maximum="1"
+                                Value="{Binding CopyProgressValue, RelativeSource={RelativeSource AncestorType=local:FtpUserControl}}" />
+                            <Image Width="32" Height="32" VerticalAlignment="Center">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="6" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Grid>
+                    </Button>
+                </UniformGrid>
+            </GroupBox>
         </Grid>
     </GroupBox>
 </UserControl>

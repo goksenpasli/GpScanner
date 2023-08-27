@@ -184,7 +184,7 @@ public class Compressor : Control, INotifyPropertyChanged
         return images;
     }
 
-    public async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200)
+    public async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200, Action<double> progresscallback = null)
     {
         if (bitmapFrames?.Count == 0)
         {
@@ -223,8 +223,6 @@ public class Compressor : Control, INotifyPropertyChanged
                                 page.Orientation = PageOrientation.Landscape;
                                 gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
                             }
-
-                            CompressionProgress = (i + 1) / (double)bitmapFrames.Count;
                         }
                         else
                         {
@@ -245,8 +243,11 @@ public class Compressor : Control, INotifyPropertyChanged
                                 page.Orientation = PageOrientation.Landscape;
                                 gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
                             }
+                        }
 
-                            CompressionProgress = (i + 1) / (double)bitmapFrames.Count;
+                        if (progresscallback is not null)
+                        {
+                            progresscallback((i + 1) / (double)bitmapFrames.Count);
                         }
 
                         GC.Collect();
@@ -370,7 +371,7 @@ public class Compressor : Control, INotifyPropertyChanged
         PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(path);
         List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
         loadedpdfdoc?.Dispose();
-        return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
+        return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi, progress => CompressionProgress = progress);
     }
 
     private void Listbox_Drop(object sender, DragEventArgs e)
@@ -378,7 +379,7 @@ public class Compressor : Control, INotifyPropertyChanged
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
         if (droppedfiles?.Length > 0)
         {
-            foreach (string file in droppedfiles.Where(file => IsValidPdfFile(file)))
+            foreach (string file in droppedfiles.Where(IsValidPdfFile))
             {
                 BatchPdfList.Add(new BatchPdfData() { Filename = file });
             }

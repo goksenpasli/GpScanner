@@ -475,7 +475,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     break;
 
                                 case 3:
-                                    await SaveJpgImageAsync(seçiliresimler, fileName, Scanner);
+                                    await SaveJpgImageAsync(seçiliresimler, fileName);
                                     break;
 
                                 case 4:
@@ -487,7 +487,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     break;
 
                                 case 6:
-                                    await SaveWebpImageAsync(seçiliresimler, fileName, Scanner);
+                                    await SaveWebpImageAsync(seçiliresimler, fileName);
                                     break;
                             }
 
@@ -2329,8 +2329,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                             bitmapFrame.Freeze();
                                             ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
                                             Scanner?.Resimler.Add(img);
-                                            double progressvalue = (i + 1) / (double)pagecount;
-                                            Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
                                             image = null;
                                             bitmapFrame = null;
                                         }
@@ -2347,7 +2345,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         using XpsDocument xpsDoc = new(filename, FileAccess.Read);
                                         docSeq = xpsDoc.GetFixedDocumentSequence();
                                     });
-                                BitmapFrame bitmapframe = null;
                                 int pagecount = docSeq.DocumentPaginator.PageCount;
                                 for (int i = 0; i < pagecount; i++)
                                 {
@@ -2357,21 +2354,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                             docPage = docSeq.DocumentPaginator.GetPage(i);
                                             RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
                                             rtb.Render(docPage.Visual);
-                                            bitmapframe = BitmapFrame.Create(rtb);
+                                            BitmapFrame bitmapframe = BitmapFrame.Create(rtb);
                                             bitmapframe.Freeze();
-                                        });
-                                    ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
-                                    await Dispatcher.InvokeAsync(
-                                        () =>
-                                        {
+                                            ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
                                             Scanner?.Resimler.Add(img);
                                             double progressvalue = (i + 1) / (double)pagecount;
-                                            Scanner.PdfSaveProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                                            PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                                            img = null;
+                                            bitmapframe = null;
                                         });
-                                    img = null;
                                 }
-
-                                bitmapframe = null;
                                 break;
                             }
                         }
@@ -2455,7 +2447,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public void SaveJpgImage(BitmapFrame scannedImage, string filename) { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality))); }
 
-    public async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
+    public async Task SaveJpgImageAsync(List<ScannedImage> images, string filename)
     {
         await Task.Run(
             () =>
@@ -2467,16 +2459,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     byte[] bytes = null;
                     _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                     File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), bytes);
-                    scanner.PdfSaveProgressValue = i / (double)images.Count;
                     if (Settings.Default.RemoveProcessedImage)
                     {
                         scannedimage.Resim = null;
                     }
-
                     bytes = null;
                 }
-
-                scanner.PdfSaveProgressValue = 0;
                 GC.Collect();
             });
     }
@@ -2599,7 +2587,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public void SaveWebpImage(BitmapFrame scannedImage, string filename) { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality))); }
 
-    public async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, Scanner scanner)
+    public async Task SaveWebpImageAsync(List<ScannedImage> images, string filename)
     {
         await Task.Run(
             () =>
@@ -2611,16 +2599,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     byte[] bytes = null;
                     _ = Dispatcher.Invoke(() => bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality));
                     File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp"), bytes);
-                    scanner.PdfSaveProgressValue = i / (double)images.Count;
                     if (Settings.Default.RemoveProcessedImage)
                     {
                         scannedimage.Resim = null;
                     }
-
                     bytes = null;
                 }
-
-                scanner.PdfSaveProgressValue = 0;
                 GC.Collect();
             });
     }
