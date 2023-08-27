@@ -479,7 +479,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     break;
 
                                 case 4:
-                                    SaveTifImage(seçiliresimler, fileName);
+                                    SaveTifImageAsync(seçiliresimler, fileName);
                                     break;
 
                                 case 5:
@@ -1039,7 +1039,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         if (SayfaBaşlangıç <= SayfaBitiş)
                         {
                             string savefilename = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                            await SaveFileAsync(pdfviewer.PdfFilePath, savefilename, SayfaBaşlangıç, SayfaBitiş);
+                            await PdfPageRangeSaveFileAsync(pdfviewer.PdfFilePath, savefilename, SayfaBaşlangıç, SayfaBitiş);
                             AddFiles(new[] { savefilename }, DecodeHeight);
                             GC.Collect();
                         }
@@ -1231,7 +1231,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         string savefilename = saveFileDialog.FileName;
                         int start = SayfaBaşlangıç;
                         int end = SayfaBitiş;
-                        await SaveFileAsync(loadfilename, savefilename, start, end);
+                        await PdfPageRangeSaveFileAsync(loadfilename, savefilename, start, end);
                     }
                 }
             },
@@ -1306,7 +1306,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         string savefilename =
                             $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
-                        await SaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
+                        await PdfPageRangeSaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
                         files.Add(savefilename);
                     }
 
@@ -2538,9 +2538,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public void SaveTifImage(List<ScannedImage> images, string filename)
+    public async void SaveTifImageAsync(List<ScannedImage> images, string filename)
     {
-        Dispatcher.Invoke(
+        await Task.Run(
             () =>
             {
                 TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
@@ -2670,7 +2670,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
-    private static async Task SaveFileAsync(string loadfilename, string savefilename, int start, int end)
+    private static async Task PdfPageRangeSaveFileAsync(string loadfilename, string savefilename, int start, int end)
     {
         await Task.Run(
             () =>
