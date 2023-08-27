@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
@@ -17,6 +18,7 @@ using MessageBox = System.Windows.MessageBox;
 
 namespace DvdBurner
 {
+    [TemplatePart(Name = "Lb", Type = typeof(ListBox))]
     public class Burner : Control, INotifyPropertyChanged
     {
         private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
@@ -31,6 +33,7 @@ namespace DvdBurner
         private bool eject = true;
         private ObservableCollection<string> files = new();
         private bool ısCdWriterAvailable = true;
+        private ListBox lb;
         private Brush progressForegroundBrush;
         private bool progressIndeterminate;
         private double progressValue;
@@ -130,18 +133,7 @@ namespace DvdBurner
                     {
                         ActionTextForeground = Brushes.Black;
                         ActionText = string.Empty;
-                        foreach (string item in openFileDialog.FileNames)
-                        {
-                            if (!Files.Select(z => Path.GetFileName(z)).Contains(Path.GetFileName(item)))
-                            {
-                                Files.Add(item);
-                            }
-                            else
-                            {
-                                ActionTextForeground = Brushes.Red;
-                                ActionText = "Aynı İsimde Dosya Var.";
-                            }
-                        }
+                        AddFiles(openFileDialog.FileNames);
                         UpdateProgressFileSize();
                     }
                 },
@@ -427,7 +419,34 @@ namespace DvdBurner
             }
         }
 
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            lb = GetTemplateChild("Lb") as ListBox;
+            if (lb != null)
+            {
+                lb.Drop -= Listbox_Drop;
+                lb.Drop += Listbox_Drop;
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+
+        private void AddFiles(string[] files)
+        {
+            foreach (string item in files)
+            {
+                if (!Files.Select(Path.GetFileName).Contains(Path.GetFileName(item)))
+                {
+                    Files.Add(item);
+                }
+                else
+                {
+                    ActionTextForeground = Brushes.Red;
+                    ActionText = "Aynı İsimde Dosya Var.";
+                }
+            }
+        }
 
         private void Burner_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
@@ -520,6 +539,16 @@ namespace DvdBurner
         }
 
         private long GetTotalFileSizeMB(string[] files) { return files.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024; }
+
+        private void Listbox_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedfiles?.Length > 0)
+            {
+                AddFiles(droppedfiles);
+                UpdateProgressFileSize();
+            }
+        }
 
         private void UpdateProgressFileSize()
         {

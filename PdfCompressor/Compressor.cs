@@ -23,6 +23,7 @@ using Point = System.Drawing.Point;
 
 namespace PdfCompressor;
 
+[TemplatePart(Name = "ListBox", Type = typeof(ListBox))]
 public class Compressor : Control, INotifyPropertyChanged
 {
     public static readonly DependencyProperty BatchProcessIsEnabledProperty = DependencyProperty.Register("BatchProcessIsEnabled", typeof(bool), typeof(Compressor), new PropertyMetadata(true));
@@ -33,6 +34,7 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
     private ObservableCollection<BatchPdfData> batchPdfList = new();
     private double compressionProgress;
+    private ListBox listbox;
 
     static Compressor() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor))); }
 
@@ -276,6 +278,17 @@ public class Compressor : Control, INotifyPropertyChanged
         return false;
     }
 
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        listbox = GetTemplateChild("ListBox") as ListBox;
+        if (listbox != null)
+        {
+            listbox.Drop -= Listbox_Drop;
+            listbox.Drop += Listbox_Drop;
+        }
+    }
+
     protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
 
     private static void BwChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -358,5 +371,17 @@ public class Compressor : Control, INotifyPropertyChanged
         List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
         loadedpdfdoc?.Dispose();
         return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi);
+    }
+
+    private void Listbox_Drop(object sender, DragEventArgs e)
+    {
+        string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+        if (droppedfiles?.Length > 0)
+        {
+            foreach (string file in droppedfiles.Where(file => IsValidPdfFile(file)))
+            {
+                BatchPdfList.Add(new BatchPdfData() { Filename = file });
+            }
+        }
     }
 }

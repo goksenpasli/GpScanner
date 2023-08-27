@@ -674,7 +674,7 @@
                 </Image>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock FontStyle="Italic" Foreground="White"><Run Text="{Binding SelectedPaper.PaperType, ElementName=TwainCtrl}" /><Run Text=" " /><Run Text="{Binding Çözünürlük, Mode=OneWay, StringFormat=\{0\} DPI, Source={x:Static twainproperties:Settings.Default}}" /><Run Text=" " /><Run Text="{Binding SeçiliTarayıcı, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" /></TextBlock>
+                <TextBlock FontStyle="Italic" Foreground="White"><Run Text="{Binding SelectedPaper.PaperType, ElementName=TwainCtrl}" /><Run Text="{Binding Çözünürlük, Mode=OneWay, StringFormat=\{0\} DPI, Source={x:Static twainproperties:Settings.Default}}" /><Run Text=" " /><Run Text="{Binding SeçiliTarayıcı, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" /></TextBlock>
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock FontStyle="Italic" FontWeight="Bold" Foreground="White"><Run BaselineAlignment="Center" Text="{Binding JpegQuality, Mode=OneWay, StringFormat=%\{0\}, Source={x:Static twainproperties:Settings.Default}}" /><Run Text=" " /><InlineUIContainer>
@@ -686,7 +686,7 @@
                                 </MultiBinding>
                             </Image.Source>
                         </Image>
-                    </InlineUIContainer><Run Text=" " /><Run BaselineAlignment="Center" Text="{Binding ImgLoadResolution, Mode=OneWay, StringFormat=\{0\}, Source={x:Static twainproperties:Settings.Default}}" /></TextBlock>
+                    </InlineUIContainer><Run BaselineAlignment="Center" Text="{Binding ImgLoadResolution, Mode=OneWay, StringFormat=\{0\}, Source={x:Static twainproperties:Settings.Default}}" /></TextBlock>
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
@@ -700,7 +700,22 @@
                     </Image>
                     <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}" IsChecked="{Binding CalendarPanelIsExpanded, Mode=OneWay}">
                         <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox Width="420" Height="480" Header="{twainctrl:Loc CALENDAR}">
+                            <GroupBox Width="420" Height="480">
+                                <GroupBox.Header>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
+                                        <Button Command="{Binding ApplyCalendarData}">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="144" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
+                                    </StackPanel>
+                                </GroupBox.Header>
                                 <GroupBox.Resources>
                                     <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="48" />
                                 </GroupBox.Resources>
@@ -708,12 +723,12 @@
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel>
-                                                <TextBlock HorizontalAlignment="Center" FontWeight="Bold">
+                                                <CheckBox HorizontalAlignment="Center" FontWeight="Bold" IsChecked="{Binding Seen}">
                                                     <Hyperlink Command="{Binding DataContext.WebAdreseGit, Source={x:Reference TwainCtrl}}" CommandParameter="{Binding FileName, Mode=OneWay}">
                                                         <Run Text="{Binding Tarih}" />
                                                         <Run Text="{Binding Açıklama}" />
                                                     </Hyperlink>
-                                                </TextBlock>
+                                                </CheckBox>
                                                 <Image Width="384" Height="384">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">

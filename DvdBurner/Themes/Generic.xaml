@@ -127,6 +127,7 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <ListBox x:Name="Lb"
+                                AllowDrop="True"
                                 Background="{DynamicResource BorderBackground}"
                                 BorderBrush="{x:Null}"
                                 ItemsSource="{Binding Files, RelativeSource={RelativeSource TemplatedParent}}">

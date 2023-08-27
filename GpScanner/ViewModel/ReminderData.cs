@@ -11,6 +11,7 @@ namespace GpScanner.ViewModel
         private string açıklama;
         private string fileName;
         private int ıd;
+        private bool seen;
         private DateTime tarih;
 
         [XmlAttribute(AttributeName = "Açıklama")]
@@ -51,6 +52,20 @@ namespace GpScanner.ViewModel
                 {
                     ıd = value;
                     OnPropertyChanged(nameof(Id));
+                }
+            }
+        }
+
+        [XmlAttribute(AttributeName = "Seen")]
+        public bool Seen
+        {
+            get => seen;
+            set
+            {
+                if (seen != value)
+                {
+                    seen = value;
+                    OnPropertyChanged(nameof(Seen));
                 }
             }
         }

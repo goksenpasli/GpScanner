@@ -461,23 +461,31 @@
                                     </ComboBox>
                                 </UniformGrid>
                                 <Separator />
-                                <UniformGrid Columns="3">
-                                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                        <CheckBox.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PDFOPEN}" />
-                                            </StackPanel>
-                                        </CheckBox.Content>
-                                    </CheckBox>
-                                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                        <CheckBox.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32" Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc EYPOPEN}" />
-                                            </StackPanel>
-                                        </CheckBox.Content>
-                                    </CheckBox>
+                                <UniformGrid Columns="2">
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <CheckBox.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                    <TextBlock Width="110"
+                                                        VerticalAlignment="Center"
+                                                        Text="{twainctrl:Loc PDFOPEN}"
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <CheckBox.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="32" Height="32" Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
+                                                    <TextBlock Width="110"
+                                                        VerticalAlignment="Center"
+                                                        Text="{twainctrl:Loc EYPOPEN}"
+                                                        TextWrapping="Wrap" />
+                                                </StackPanel>
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                    </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <Canvas Width="32" Height="32" IsEnabled="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
@@ -495,6 +503,10 @@
                                                     Value="{Binding NotifyCalendarDateValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                             </Canvas>
                                         </CheckBox>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        </StackPanel>
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <CheckBox.Content>
                                                 <Canvas Width="32" Height="32">
@@ -513,7 +525,8 @@
                                                 </Canvas>
                                             </CheckBox.Content>
                                         </CheckBox>
-                                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                        <StackPanel Orientation="Horizontal">
                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         </StackPanel>
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding ElementName=CbMusic, Path=SelectedItem, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}">

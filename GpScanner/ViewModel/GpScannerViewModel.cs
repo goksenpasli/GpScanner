@@ -717,6 +717,14 @@ public class GpScannerViewModel : InpcBase
                 CalendarDesc = null;
             },
             parameter => parameter is Scanner scanner && File.Exists(scanner?.FileName) && !string.IsNullOrWhiteSpace(CalendarDesc));
+
+        ApplyCalendarData = new RelayCommand<object>(
+            parameter =>
+            {
+                DatabaseSave.Execute(null);
+                ScannerData.Reminder = ReminderYükle();
+            },
+            parameter => ScannerData?.Reminder?.Any() == true);
     }
 
     public static bool IsAdministrator
@@ -762,6 +770,8 @@ public class GpScannerViewModel : InpcBase
             }
         }
     }
+
+    public RelayCommand<object> ApplyCalendarData { get; }
 
     public string AramaMetni
     {
@@ -1949,7 +1959,7 @@ public class GpScannerViewModel : InpcBase
 
             if (File.Exists(XmlDataPath))
             {
-                return new ObservableCollection<ReminderData>(XmlDataPath.DeSerialize<ScannerData>().Reminder.Where(z => z.Tarih > DateTime.Today).OrderBy(z => z.Tarih));
+                return new ObservableCollection<ReminderData>(XmlDataPath.DeSerialize<ScannerData>().Reminder.Where(z => z.Tarih > DateTime.Today && !z.Seen).OrderBy(z => z.Tarih));
             }
 
             _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
