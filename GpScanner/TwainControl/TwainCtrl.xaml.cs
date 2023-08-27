@@ -1,11 +1,4 @@
-﻿using Extensions;
-using Extensions.Controls;
-using Ocr;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.Annotations;
-using PdfSharp.Pdf.IO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -32,6 +25,13 @@ using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Extensions;
+using Extensions.Controls;
+using Ocr;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.Annotations;
+using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -475,7 +475,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     break;
 
                                 case 3:
-                                    await SaveJpgImageAsync(seçiliresimler, fileName);
+                                    await SaveJpgImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
                                     break;
 
                                 case 4:
@@ -487,7 +487,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     break;
 
                                 case 6:
-                                    await SaveWebpImageAsync(seçiliresimler, fileName);
+                                    await SaveWebpImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
                                     break;
                             }
 
@@ -1399,12 +1399,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand AddPdfAttachmentFile { get; }
 
-    public double AllImageRotationAngle
-    {
+    public double AllImageRotationAngle {
         get => allImageRotationAngle;
 
-        set
-        {
+        set {
             if (allImageRotationAngle != value)
             {
                 allImageRotationAngle = value;
@@ -1413,12 +1411,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public PdfAnnotations Annotations
-    {
+    public PdfAnnotations Annotations {
         get => annotations;
 
-        set
-        {
+        set {
             if (annotations != value)
             {
                 annotations = value;
@@ -1433,12 +1429,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> AutoDeskewImage { get; }
 
-    public byte[] CameraQRCodeData
-    {
+    public byte[] CameraQRCodeData {
         get => cameraQRCodeData;
 
-        set
-        {
+        set {
             if (cameraQRCodeData != value)
             {
                 cameraQRCodeData = value;
@@ -1447,12 +1441,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool CanUndoImage
-    {
+    public bool CanUndoImage {
         get => canUndoImage;
 
-        set
-        {
+        set {
             if (canUndoImage != value)
             {
                 canUndoImage = value;
@@ -1488,12 +1480,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CopyThumbPdfBitmapFile { get; }
 
-    public CroppedBitmap CroppedOcrBitmap
-    {
+    public CroppedBitmap CroppedOcrBitmap {
         get => croppedOcrBitmap;
 
-        set
-        {
+        set {
             if (croppedOcrBitmap != value)
             {
                 croppedOcrBitmap = value;
@@ -1504,12 +1494,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CycleSelectedDocuments { get; }
 
-    public byte[] DataBaseQrData
-    {
+    public byte[] DataBaseQrData {
         get => dataBaseQrData;
 
-        set
-        {
+        set {
             if (dataBaseQrData != value)
             {
                 dataBaseQrData = value;
@@ -1518,12 +1506,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ObservableCollection<OcrData> DataBaseTextData
-    {
+    public ObservableCollection<OcrData> DataBaseTextData {
         get => dataBaseTextData;
 
-        set
-        {
+        set {
             if (dataBaseTextData != value)
             {
                 dataBaseTextData = value;
@@ -1532,12 +1518,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int DecodeHeight
-    {
+    public int DecodeHeight {
         get => decodeHeight;
 
-        set
-        {
+        set {
             if (decodeHeight != value)
             {
                 decodeHeight = value;
@@ -1546,12 +1530,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public GridLength DocumentGridLength
-    {
+    public GridLength DocumentGridLength {
         get => documentGridLength;
 
-        set
-        {
+        set {
             if (documentGridLength != value)
             {
                 documentGridLength = value;
@@ -1560,12 +1542,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool DocumentPreviewIsExpanded
-    {
+    public bool DocumentPreviewIsExpanded {
         get => documentPreviewIsExpanded;
 
-        set
-        {
+        set {
             if (documentPreviewIsExpanded != value)
             {
                 documentPreviewIsExpanded = value;
@@ -1574,12 +1554,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool DragMoveStarted
-    {
+    public bool DragMoveStarted {
         get => dragMoveStarted;
 
-        set
-        {
+        set {
             if (dragMoveStarted != value)
             {
                 dragMoveStarted = value;
@@ -1602,11 +1580,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand FastScanImage { get; }
 
-    public bool HelpIsOpened
-    {
+    public bool HelpIsOpened {
         get => helpIsOpened;
-        set
-        {
+        set {
             if (helpIsOpened != value)
             {
                 helpIsOpened = value;
@@ -1615,12 +1591,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public byte[] ImgData
-    {
+    public byte[] ImgData {
         get => ımgData;
 
-        set
-        {
+        set {
             if (ımgData != value)
             {
                 ımgData = value;
@@ -1661,12 +1635,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> OpenHelpDialog { get; }
 
-    public ObservableCollection<Paper> Papers
-    {
+    public ObservableCollection<Paper> Papers {
         get => papers;
 
-        set
-        {
+        set {
             if (papers != value)
             {
                 papers = value;
@@ -1677,12 +1649,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand PasteFileToPdfFile { get; }
 
-    public double PdfLoadProgressValue
-    {
+    public double PdfLoadProgressValue {
         get => pdfLoadProgressValue;
 
-        set
-        {
+        set {
             if (pdfLoadProgressValue != value)
             {
                 pdfLoadProgressValue = value;
@@ -1691,12 +1661,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int PdfMedianValue
-    {
+    public int PdfMedianValue {
         get => pdfMedianValue;
 
-        set
-        {
+        set {
             if (pdfMedianValue != value)
             {
                 pdfMedianValue = value;
@@ -1705,12 +1673,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ObservableCollection<PdfData> PdfPages
-    {
+    public ObservableCollection<PdfData> PdfPages {
         get => pdfPages;
 
-        set
-        {
+        set {
             if (pdfPages != value)
             {
                 pdfPages = value;
@@ -1719,12 +1685,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int PdfSplitCount
-    {
+    public int PdfSplitCount {
         get => pdfSplitCount;
 
-        set
-        {
+        set {
             if (pdfSplitCount != value)
             {
                 pdfSplitCount = value;
@@ -1735,12 +1699,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand PdfWaterMark { get; }
 
-    public SolidColorBrush PdfWatermarkColor
-    {
+    public SolidColorBrush PdfWatermarkColor {
         get => pdfWatermarkColor;
 
-        set
-        {
+        set {
             if (pdfWatermarkColor != value)
             {
                 pdfWatermarkColor = value;
@@ -1749,12 +1711,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public string PdfWatermarkFont
-    {
+    public string PdfWatermarkFont {
         get => pdfWatermarkFont;
 
-        set
-        {
+        set {
             if (pdfWatermarkFont != value)
             {
                 pdfWatermarkFont = value;
@@ -1763,12 +1723,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public double PdfWatermarkFontAngle
-    {
+    public double PdfWatermarkFontAngle {
         get => pdfWatermarkFontAngle;
 
-        set
-        {
+        set {
             if (pdfWatermarkFontAngle != value)
             {
                 pdfWatermarkFontAngle = value;
@@ -1777,12 +1735,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public double PdfWatermarkFontSize
-    {
+    public double PdfWatermarkFontSize {
         get => pdfWatermarkFontSize;
 
-        set
-        {
+        set {
             if (pdfWatermarkFontSize != value)
             {
                 pdfWatermarkFontSize = value;
@@ -1791,12 +1747,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public string PdfWaterMarkText
-    {
+    public string PdfWaterMarkText {
         get => pdfWaterMarkText;
 
-        set
-        {
+        set {
             if (pdfWaterMarkText != value)
             {
                 pdfWaterMarkText = value;
@@ -1825,12 +1779,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SaveFileList { get; }
 
-    public int SaveIndex
-    {
+    public int SaveIndex {
         get => saveIndex;
 
-        set
-        {
+        set {
             if (saveIndex != value)
             {
                 saveIndex = value;
@@ -1841,12 +1793,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SaveProfile { get; }
 
-    public int SayfaBaşlangıç
-    {
+    public int SayfaBaşlangıç {
         get => sayfaBaşlangıç;
 
-        set
-        {
+        set {
             if (sayfaBaşlangıç != value)
             {
                 sayfaBaşlangıç = value;
@@ -1855,12 +1805,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int SayfaBitiş
-    {
+    public int SayfaBitiş {
         get => sayfaBitiş;
 
-        set
-        {
+        set {
             if (sayfaBitiş != value)
             {
                 sayfaBitiş = value;
@@ -1871,12 +1819,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ScanImage { get; }
 
-    public Scanner Scanner
-    {
+    public Scanner Scanner {
         get => scanner;
 
-        set
-        {
+        set {
             if (scanner != value)
             {
                 scanner = value;
@@ -1891,12 +1837,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SeçiliListeTemizle { get; }
 
-    public ScannedImage SeçiliResim
-    {
+    public ScannedImage SeçiliResim {
         get => seçiliResim;
 
-        set
-        {
+        set {
             if (seçiliResim != value)
             {
                 seçiliResim = value;
@@ -1905,12 +1849,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int SeekIndex
-    {
+    public int SeekIndex {
         get => seekIndex;
 
-        set
-        {
+        set {
             if (seekIndex != value)
             {
                 seekIndex = value;
@@ -1919,12 +1861,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Tuple<string, int, double, bool, double> SelectedCompressionProfile
-    {
+    public Tuple<string, int, double, bool, double> SelectedCompressionProfile {
         get => selectedCompressionProfile;
 
-        set
-        {
+        set {
             if (selectedCompressionProfile != value)
             {
                 selectedCompressionProfile = value;
@@ -1933,12 +1873,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Orientation SelectedOrientation
-    {
+    public Orientation SelectedOrientation {
         get => selectedOrientation;
 
-        set
-        {
+        set {
             if (selectedOrientation != value)
             {
                 selectedOrientation = value;
@@ -1947,12 +1885,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Paper SelectedPaper
-    {
+    public Paper SelectedPaper {
         get => selectedPaper;
 
-        set
-        {
+        set {
             if (selectedPaper != value)
             {
                 selectedPaper = value;
@@ -1961,12 +1897,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public PageRotation SelectedRotation
-    {
+    public PageRotation SelectedRotation {
         get => selectedRotation;
 
-        set
-        {
+        set {
             if (selectedRotation != value)
             {
                 selectedRotation = value;
@@ -1975,12 +1909,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public TabItem SelectedTab
-    {
+    public TabItem SelectedTab {
         get => selectedTab;
 
-        set
-        {
+        set {
             if (selectedTab != value)
             {
                 selectedTab = value;
@@ -2003,12 +1935,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand TümününİşaretiniKaldır { get; }
 
-    public GridLength TwainGuiControlLength
-    {
+    public GridLength TwainGuiControlLength {
         get => twainGuiControlLength;
 
-        set
-        {
+        set {
             if (twainGuiControlLength != value)
             {
                 twainGuiControlLength = value;
@@ -2017,12 +1947,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ScannedImage UndoImage
-    {
+    public ScannedImage UndoImage {
         get => undoImage;
 
-        set
-        {
+        set {
             if (undoImage != value)
             {
                 undoImage = value;
@@ -2031,12 +1959,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int? UndoImageIndex
-    {
+    public int? UndoImageIndex {
         get => undoImageIndex;
 
-        set
-        {
+        set {
             if (undoImageIndex != value)
             {
                 undoImageIndex = value;
@@ -2304,16 +2230,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
 
                             case ".webp":
-                            {
-                                BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-                                BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
-                                bitmapFrame.Freeze();
-                                ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
-                                main = null;
-                                bitmapFrame = null;
-                                break;
-                            }
+                                {
+                                    BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
+                                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+                                    bitmapFrame.Freeze();
+                                    ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+                                    await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+                                    main = null;
+                                    bitmapFrame = null;
+                                    break;
+                                }
 
                             case ".tıf" or ".tiff" or ".tıff" or ".tif":
                                 await Dispatcher.InvokeAsync(
@@ -2323,7 +2249,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         int pagecount = decoder.Frames.Count;
                                         for (int i = 0; i < pagecount; i++)
                                         {
-                                            BitmapFrame image = decoder.Frames[i];
+                                            BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.Tiff).ToBitmapImage();
                                             image.Freeze();
                                             BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
                                             bitmapFrame.Freeze();
@@ -2332,40 +2258,41 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                             image = null;
                                             bitmapFrame = null;
                                         }
+                                        decoder = null;
                                     });
                                 break;
 
                             case ".xps":
-                            {
-                                FixedDocumentSequence docSeq = null;
-                                await Dispatcher.InvokeAsync(
-                                    () =>
-                                    {
-                                        using XpsDocument xpsDoc = new(filename, FileAccess.Read);
-                                        docSeq = xpsDoc.GetFixedDocumentSequence();
-                                    });
-                                int pagecount = docSeq.DocumentPaginator.PageCount;
-                                for (int i = 0; i < pagecount; i++)
                                 {
+                                    FixedDocumentSequence docSeq = null;
                                     await Dispatcher.InvokeAsync(
                                         () =>
                                         {
-                                            using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
-                                            RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
-                                            rtb.Render(docPage.Visual);
-                                            BitmapFrame bitmapframe = BitmapFrame.Create(rtb);
-                                            bitmapframe.Freeze();
-                                            ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
-                                            Scanner?.Resimler.Add(img);
-                                            double progressvalue = (i + 1) / (double)pagecount;
-                                            PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
-                                            img = null;
-                                            bitmapframe = null;
+                                            using XpsDocument xpsDoc = new(filename, FileAccess.Read);
+                                            docSeq = xpsDoc.GetFixedDocumentSequence();
                                         });
+                                    int pagecount = docSeq.DocumentPaginator.PageCount;
+                                    for (int i = 0; i < pagecount; i++)
+                                    {
+                                        await Dispatcher.InvokeAsync(
+                                            () =>
+                                            {
+                                                using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
+                                                RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                                                rtb.Render(docPage.Visual);
+                                                BitmapFrame bitmapframe = BitmapFrame.Create(rtb);
+                                                bitmapframe.Freeze();
+                                                ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
+                                                Scanner?.Resimler.Add(img);
+                                                double progressvalue = (i + 1) / (double)pagecount;
+                                                PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                                                img = null;
+                                                bitmapframe = null;
+                                            });
+                                    }
+                                    docSeq = null;
+                                    break;
                                 }
-                                docSeq = null;
-                                break;
-                            }
                         }
                     }
                 }
@@ -2447,23 +2374,33 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public void SaveJpgImage(BitmapFrame scannedImage, string filename) { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality))); }
 
-    public async Task SaveJpgImageAsync(List<ScannedImage> images, string filename)
+    public async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, int parallelDegree = 1)
     {
+        string directory = Path.GetDirectoryName(filename);
         await Task.Run(
             () =>
             {
-                string directory = Path.GetDirectoryName(filename);
-                for (int i = 0; i < images.Count; i++)
-                {
-                    ScannedImage scannedimage = images[i];
-                    byte[] bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality);
-                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg"), bytes);
-                    if (Settings.Default.RemoveProcessedImage)
+                ParallelOptions options = new() { MaxDegreeOfParallelism = parallelDegree };
+
+                _ = Parallel.For(
+                    0,
+                    images.Count,
+                    options,
+                    i =>
                     {
-                        scannedimage.Resim = null;
-                    }
-                    bytes = null;
-                }
+                        ScannedImage scannedimage = images[i];
+                        byte[] bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality);
+                        lock (_lockObject)
+                        {
+                            string uniqueFilename = directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg");
+                            File.WriteAllBytes(uniqueFilename, bytes);
+                        }
+                        if (Settings.Default.RemoveProcessedImage)
+                        {
+                            scannedimage.Resim = null;
+                        }
+                    });
+
                 GC.Collect();
             });
     }
@@ -2586,23 +2523,33 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public void SaveWebpImage(BitmapFrame scannedImage, string filename) { Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality))); }
 
-    public async Task SaveWebpImageAsync(List<ScannedImage> images, string filename)
+    public async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, int parallelDegree = 1)
     {
+        string directory = Path.GetDirectoryName(filename);
         await Task.Run(
             () =>
             {
-                string directory = Path.GetDirectoryName(filename);
-                for (int i = 0; i < images.Count; i++)
-                {
-                    ScannedImage scannedimage = images[i];
-                    byte[] bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality);
-                    File.WriteAllBytes(directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp"), bytes);
-                    if (Settings.Default.RemoveProcessedImage)
+                ParallelOptions options = new() { MaxDegreeOfParallelism = parallelDegree };
+
+                _ = Parallel.For(
+                    0,
+                    images.Count,
+                    options,
+                    i =>
                     {
-                        scannedimage.Resim = null;
-                    }
-                    bytes = null;
-                }
+                        ScannedImage scannedimage = images[i];
+                        byte[] bytes = scannedimage.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality);
+                        lock (_lockObject)
+                        {
+                            string uniqueFilename = directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp");
+                            File.WriteAllBytes(uniqueFilename, bytes);
+                        }
+                        if (Settings.Default.RemoveProcessedImage)
+                        {
+                            scannedimage.Resim = null;
+                        }
+                    });
+
                 GC.Collect();
             });
     }
@@ -3313,4 +3260,5 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     private ObservableCollection<Paper> papers = GetPapers();
+    private readonly object _lockObject = new();
 }

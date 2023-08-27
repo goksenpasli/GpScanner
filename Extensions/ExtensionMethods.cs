@@ -341,6 +341,28 @@ public static class ExtensionMethods
         return $@"{path}\{file}{seperator}{i}.{extension}";
     }
 
+    public static BitmapImage ToBitmapImage(this byte[] imageData)
+    {
+        if (imageData != null)
+        {
+            using MemoryStream memoryStream = new(imageData);
+            BitmapImage bmp = new();
+            memoryStream.Position = 0;
+            bmp.BeginInit();
+            bmp.CacheOption = BitmapCacheOption.OnLoad;
+            bmp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
+            bmp.StreamSource = memoryStream;
+            bmp.EndInit();
+            if (!bmp.IsFrozen && bmp.CanFreeze)
+            {
+                bmp.Freeze();
+            }
+            return bmp;
+        }
+
+        return null;
+    }
+
     public static BitmapImage ToBitmapImage(this Image bitmap, ImageFormat format, double decodeheight = 0)
     {
         if (bitmap != null)
@@ -443,8 +465,6 @@ public static class ExtensionMethods
             throw new ArgumentException(nameof(format), ex.Message);
         }
     }
-
-    private static byte GetGrayscaleValue(byte red, byte green, byte blue) { return (byte)Math.Round((0.299 * red) + (0.587 * green) + (0.114 * blue)); }
 
     [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
     public struct SHFILEINFO

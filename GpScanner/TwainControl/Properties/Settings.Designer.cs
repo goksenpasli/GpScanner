@@ -422,5 +422,17 @@ namespace TwainControl.Properties {
                 this["ScanBetweenDelay"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int WebPJpgFileProcessorCount {
+            get {
+                return ((int)(this["WebPJpgFileProcessorCount"]));
+            }
+            set {
+                this["WebPJpgFileProcessorCount"] = value;
+            }
+        }
     }
 }
