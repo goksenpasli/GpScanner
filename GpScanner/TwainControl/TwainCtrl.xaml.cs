@@ -2249,7 +2249,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         int pagecount = decoder.Frames.Count;
                                         for (int i = 0; i < pagecount; i++)
                                         {
-                                            BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.Tiff).ToBitmapImage();
+                                            BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
                                             image.Freeze();
                                             BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
                                             bitmapFrame.Freeze();
