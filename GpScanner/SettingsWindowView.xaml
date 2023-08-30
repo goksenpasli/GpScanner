@@ -858,6 +858,15 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
+                                    <Image Canvas.Left="14" Canvas.Bottom="0"
+                                        Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="3" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                     <Extensions:NumericUpDownControl Canvas.Top="7"
                                         Width="44"
                                         FontWeight="Bold"

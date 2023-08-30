@@ -285,7 +285,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="70.4" />
+                    <RowDefinition Height="73.6" />
                 </Grid.RowDefinitions>
                 <Expander Grid.Row="0"
                     Background="{StaticResource GroupBoxBackGround}"

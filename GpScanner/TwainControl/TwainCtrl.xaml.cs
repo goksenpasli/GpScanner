@@ -455,7 +455,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 SaveFileDialog saveFileDialog = new()
                 {
-                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif|Txt Dosyası (*.txt)|*.txt|Webp Dosyası (*.webp)|*.webp",
+                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif|Txt Dosyası (*.txt)|*.txt|Webp Dosyası (*.webp)|*.webp|Zip Dosyası (*.zip)|*.zip",
                     FileName = Scanner.SaveFileName
                 };
                 if (saveFileDialog.ShowDialog() == true)
@@ -480,7 +480,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     break;
 
                                 case 4:
-                                    SaveTifImageAsync(seçiliresimler, fileName);
+                                    await SaveTifImageAsync(seçiliresimler, fileName);
                                     break;
 
                                 case 5:
@@ -489,6 +489,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                                 case 6:
                                     await SaveWebpImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
+                                    break;
+
+                                case 7:
+                                    SaveZipImage(seçiliresimler, fileName);
                                     break;
                             }
 
@@ -2557,12 +2561,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public async void SaveTifImageAsync(List<ScannedImage> images, string filename)
+    public async Task SaveTifImageAsync(List<ScannedImage> images, string filename)
     {
         await Task.Run(
             () =>
             {
-                TiffBitmapEncoder tifccittencoder = new() { Compression = TiffCompressOption.Ccitt4 };
+                TiffBitmapEncoder tifccittencoder = new() { Compression = (ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale ? TiffCompressOption.Zip : TiffCompressOption.Ccitt4 };
                 for (int i = 0; i < images.Count; i++)
                 {
                     ScannedImage scannedimage = images[i];
@@ -3127,6 +3131,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         inputDocument.Pages[pageindex].Rotate += angle;
         inputDocument.Save(savepath);
+    }
+
+    private void SaveZipImage(List<ScannedImage> seçiliresimler, string fileName)
+    {
+        using ZipArchive archive = ZipFile.Open(fileName, ZipArchiveMode.Update);
+        for (int i = 0; i < seçiliresimler.Count; i++)
+        {
+            string fPath = Path.Combine(Path.GetTempPath(), $"{seçiliresimler[i].Index}.jpg");
+            File.WriteAllBytes(fPath, seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
+            _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
+            File.Delete(fPath);
+        }
     }
 
     private void ScanCommonSettings()
