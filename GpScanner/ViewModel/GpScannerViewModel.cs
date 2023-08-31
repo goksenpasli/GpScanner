@@ -564,8 +564,7 @@ public class GpScannerViewModel : InpcBase
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                         batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
                                         item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
-                                        scanner.PdfSaveProgressValue =
-                                            BatchTxtOcrs.Sum(z => z.ProgressValue) / Tasks.Count;
+                                        scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
                                     }
                                 }
                             },

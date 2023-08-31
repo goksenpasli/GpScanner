@@ -49,10 +49,15 @@ public static class Ocr
         using Pix pixImage = Pix.LoadFromFile(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page.GetIterator();
-        iterator.Begin();
-        ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
-        dosya = null;
-        return ocrdata;
+        if (iterator != null)
+        {
+            iterator.Begin();
+            ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
+            dosya = null;
+            return ocrdata;
+        }
+
+        return null;
     }
 
     public static async Task<ObservableCollection<OcrData>> OcrAsync(this byte[] dosya, string tesseractlanguage)
@@ -114,11 +119,16 @@ public static class Ocr
         using Pix pixImage = Pix.LoadFromMemory(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page.GetIterator();
-        iterator.Begin();
-        ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
-        dosya = null;
-        GC.Collect();
-        return ocrdata;
+        if (iterator != null)
+        {
+            iterator.Begin();
+            ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
+            dosya = null;
+            GC.Collect();
+            return ocrdata;
+        }
+
+        return null;
     }
 
     private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string tesseractlanguage, PageIteratorLevel pageIteratorLevel)
@@ -132,11 +142,16 @@ public static class Ocr
         using Pix pixImage = Pix.LoadFromMemory(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page.GetIterator();
-        iterator.Begin();
-        ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(pageIteratorLevel);
-        dosya = null;
-        GC.Collect();
-        return ocrdata;
+        if (iterator != null)
+        {
+            iterator.Begin();
+            ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(pageIteratorLevel);
+            dosya = null;
+            GC.Collect();
+            return ocrdata;
+        }
+
+        return null;
     }
 
     private static ObservableCollection<OcrData> IterateOcr(this ResultIterator iterator, PageIteratorLevel pageIteratorLevel)

@@ -654,7 +654,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         WebAdreseGit = new RelayCommand<object>(parameter => GotoPage(parameter as string), parameter => true);
 
         LoadImage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if (fileloadtask?.IsCompleted == false)
                 {
@@ -665,7 +665,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                        "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp|Webp Dosyası (*.webp)|*.webp",
+                        "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp|Webp Dosyası (*.webp)|*.webp|Zip Dosyası (*.zip)|*.zip",
                     Multiselect = true
                 };
 
@@ -677,7 +677,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (openFileDialog.ShowDialog() == true)
                 {
                     GC.Collect();
-                    AddFiles(openFileDialog.FileNames, DecodeHeight);
+                    await AddFiles(openFileDialog.FileNames, DecodeHeight);
                     GC.Collect();
                 }
             },
@@ -783,13 +783,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => Scanner?.Resimler?.Count(z => !string.IsNullOrWhiteSpace(z.FilePath)) > 0);
 
         LoadFileList = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt" };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     GC.Collect();
-                    AddFiles(File.ReadAllLines(openFileDialog.FileName), DecodeHeight);
+                    await AddFiles(File.ReadAllLines(openFileDialog.FileName), DecodeHeight);
                     GC.Collect();
                 }
             },
@@ -1034,7 +1034,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                     if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
-                        AddFiles(new[] { pdfviewer.PdfFilePath }, DecodeHeight);
+                        await AddFiles(new[] { pdfviewer.PdfFilePath }, DecodeHeight);
                         GC.Collect();
                         return;
                     }
@@ -1045,7 +1045,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             string savefilename = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                             await PdfPageRangeSaveFileAsync(pdfviewer.PdfFilePath, savefilename, SayfaBaşlangıç, SayfaBitiş);
-                            AddFiles(new[] { savefilename }, DecodeHeight);
+                            await AddFiles(new[] { savefilename }, DecodeHeight);
                             GC.Collect();
                         }
 
@@ -2258,7 +2258,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         e.Handled = true;
     }
 
-    public void AddFiles(string[] filenames, int decodeheight)
+    public Task AddFiles(string[] filenames, int decodeheight)
     {
         fileloadtask = Task.Run(
             async () =>
@@ -2285,7 +2285,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".eyp":
                                 List<string> files = EypFileExtract(filename);
                                 await Dispatcher.InvokeAsync(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
-                                AddFiles(files.ToArray(), DecodeHeight);
+                                await AddFiles(files.ToArray(), DecodeHeight);
                                 break;
 
                             case ".jpg":
@@ -2306,6 +2306,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     await AddImageFiles(filename);
                                 }
 
+                                break;
+
+                            case ".zip":
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        ArchiveVwr.ArchivePath = filename;
+                                        SelectedTab = TbCtrl?.Items[4] as TabItem;
+                                    });
                                 break;
 
                             case ".webp":
@@ -2384,10 +2393,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 catch (Exception ex)
                 {
+                    _ = MessageBox.Show(ex.Message);
                     filenames = null;
-                    throw new ArgumentException(nameof(filenames), ex);
                 }
             });
+        return Task.CompletedTask;
     }
 
     public void Dispose() { Dispose(true); }

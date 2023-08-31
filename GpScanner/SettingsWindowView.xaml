@@ -912,6 +912,7 @@
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Extensions:ButtonedTextBox Grid.Column="0"
+                                    VerticalContentAlignment="Center"
                                     CopyButtonVisibility="Collapsed" IsReadOnly="True"
                                     OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
                                     Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged}" />
