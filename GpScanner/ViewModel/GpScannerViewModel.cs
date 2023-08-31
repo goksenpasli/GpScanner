@@ -630,8 +630,7 @@ public class GpScannerViewModel : InpcBase
                                         string content = string.Join(" ", image.GetOcrData(Settings.Default.DefaultTtsLang).Select(z => z.Text));
                                         File.WriteAllText(txtfile, content);
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                        scanner.PdfSaveProgressValue =
-                                            BatchTxtOcrs.Sum(z => z.ProgressValue) / Tasks.Count;
+                                        scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
                                         batchTxtOcr.FilePath = Path.GetFileName(image);
                                     }
                                 }
@@ -1619,7 +1618,7 @@ public class GpScannerViewModel : InpcBase
         {
             if (imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
             {
-                await Task.Delay(1000);
+                await Task.Delay(2000);
                 ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(Settings.Default.DefaultTtsLang);
                 await Task.Run(
                     () =>

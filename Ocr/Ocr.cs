@@ -17,21 +17,7 @@ public static class Ocr
     static Ocr()
     {
         TesseractPath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\tessdata";
-        if (Directory.Exists(TesseractPath))
-        {
-            try
-            {
-                TesseractDataExists = Directory.EnumerateFiles(TesseractPath).Any(z => string.Equals(Path.GetExtension(z), ".traineddata", StringComparison.OrdinalIgnoreCase));
-            }
-            catch (UnauthorizedAccessException)
-            {
-                TesseractDataExists = false;
-            }
-        }
-        else
-        {
-            TesseractDataExists = false;
-        }
+        TesseractDataExists = Directory.Exists(TesseractPath) && Directory.EnumerateFiles(TesseractPath, "*.traineddata")?.Any() == true;
     }
 
     public static bool TesseractDataExists { get; }
@@ -40,12 +26,17 @@ public static class Ocr
 
     public static ObservableCollection<OcrData> GetOcrData(this string dosya, string tesseractlanguage)
     {
-        if (dosya is null)
+        if (!File.Exists(dosya))
         {
-            throw new ArgumentNullException(nameof(dosya));
+            return null;
         }
 
-        using TesseractEngine engine = new(TesseractPath, tesseractlanguage, EngineMode.LstmOnly);
+        if (string.IsNullOrWhiteSpace(tesseractlanguage))
+        {
+            throw new ArgumentNullException(nameof(tesseractlanguage));
+        }
+
+        using TesseractEngine engine = CreateTesseractEngine(tesseractlanguage);
         using Pix pixImage = Pix.LoadFromFile(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page.GetIterator();
@@ -62,6 +53,11 @@ public static class Ocr
 
     public static async Task<ObservableCollection<OcrData>> OcrAsync(this byte[] dosya, string tesseractlanguage)
     {
+        if (dosya is null)
+        {
+            throw new ArgumentNullException(nameof(dosya));
+        }
+
         if (string.IsNullOrWhiteSpace(tesseractlanguage))
         {
             throw new ArgumentNullException(nameof(tesseractlanguage));
@@ -78,6 +74,10 @@ public static class Ocr
 
     public static async Task<ObservableCollection<OcrData>> OcrAsync(this string dosya, string tesseractlanguage)
     {
+        if (!File.Exists(dosya))
+        {
+            return null;
+        }
         if (string.IsNullOrWhiteSpace(tesseractlanguage))
         {
             throw new ArgumentNullException(nameof(tesseractlanguage));
@@ -94,6 +94,11 @@ public static class Ocr
 
     public static async Task<ObservableCollection<OcrData>> WordFileOcrAsync(this byte[] dosya, string tesseractlanguage)
     {
+        if (dosya is null)
+        {
+            throw new ArgumentNullException(nameof(dosya));
+        }
+
         if (string.IsNullOrWhiteSpace(tesseractlanguage))
         {
             throw new ArgumentNullException(nameof(tesseractlanguage));
@@ -108,6 +113,8 @@ public static class Ocr
         return await Task.Run(() => dosya.GetOcrData(tesseractlanguage, PageIteratorLevel.Para), ocrcancellationToken.Token);
     }
 
+    private static TesseractEngine CreateTesseractEngine(string tesseractLanguage) { return new TesseractEngine(TesseractPath, tesseractLanguage, EngineMode.LstmOnly); }
+
     private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string tesseractlanguage)
     {
         if (dosya is null)
@@ -115,7 +122,12 @@ public static class Ocr
             throw new ArgumentNullException(nameof(dosya));
         }
 
-        using TesseractEngine engine = new(TesseractPath, tesseractlanguage, EngineMode.LstmOnly);
+        if (string.IsNullOrWhiteSpace(tesseractlanguage))
+        {
+            throw new ArgumentNullException(nameof(tesseractlanguage));
+        }
+
+        using TesseractEngine engine = CreateTesseractEngine(tesseractlanguage);
         using Pix pixImage = Pix.LoadFromMemory(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page.GetIterator();
@@ -138,7 +150,7 @@ public static class Ocr
             throw new ArgumentNullException(nameof(dosya));
         }
 
-        using TesseractEngine engine = new(TesseractPath, tesseractlanguage, EngineMode.LstmOnly);
+        using TesseractEngine engine = CreateTesseractEngine(tesseractlanguage);
         using Pix pixImage = Pix.LoadFromMemory(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page.GetIterator();

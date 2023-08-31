@@ -923,8 +923,18 @@
                     <Extensions:ContentToggleButton Background="{x:Null}"
                         BorderBrush="{x:Null}"
                         Content="{twainctrl:Loc BATCH}"
-                        Foreground="White"
                         IsChecked="{Binding BatchDialogOpen}">
+                        <Extensions:ContentToggleButton.Style>
+                            <Style TargetType="Extensions:ContentToggleButton">
+                                <Setter Property="Foreground" Value="White" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding RegisterBatchWatcher, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                        <Setter Property="Foreground" Value="GreenYellow" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Extensions:ContentToggleButton.Style>
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
                                 <StackPanel>
