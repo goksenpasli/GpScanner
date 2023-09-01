@@ -1616,9 +1616,9 @@ public class GpScannerViewModel : InpcBase
         FileSystemWatcher watcher = new(batchsavefolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
         watcher.Created += async (s, e) =>
         {
-            if (imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
+            await Task.Delay(2000);
+            if (File.Exists(e.FullPath) && imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
             {
-                await Task.Delay(2000);
                 ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(Settings.Default.DefaultTtsLang);
                 await Task.Run(
                     () =>

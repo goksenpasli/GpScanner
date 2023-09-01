@@ -1,4 +1,8 @@
-﻿using System;
+﻿using GpScanner.Properties;
+using GpScanner.ViewModel;
+using Ocr;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -6,12 +10,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using GpScanner.Properties;
-using GpScanner.ViewModel;
-using Ocr;
 using TwainControl;
 using static Extensions.ExtensionMethods;
-using System.Collections.Generic;
 
 namespace GpScanner;
 
@@ -160,7 +160,7 @@ public partial class MainWindow : Window
                 return;
             }
 
-            TwainCtrl.AddFiles(commandLineArgs, TwainCtrl.DecodeHeight);
+            _ = TwainCtrl.AddFiles(commandLineArgs, TwainCtrl.DecodeHeight);
             GC.Collect();
         }
 
@@ -295,7 +295,7 @@ public partial class MainWindow : Window
                 if (Settings.Default.PatchCodes.Count <= 0)
                 {
                     TwainCtrl.Scanner.UsePageSeperator = false;
-                    _ = MessageBox.Show(Translation.GetResStringValue("NOPATCHCODE"));
+                    _ = MessageBox.Show($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("SEPERATOR")}");
                     return;
                 }
 
