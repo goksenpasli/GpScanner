@@ -25,9 +25,11 @@ namespace TwainControl;
 /// </summary>
 public partial class ToolBox : UserControl, INotifyPropertyChanged
 {
+    private bool autoRotate;
     private double borderSize;
     private bool compressImage = true;
     private bool resizeRatioImage;
+    private PageRotation selectedRotation = PageRotation.NONE;
     private double toolBoxPdfMergeProgressValue;
 
     public ToolBox()
@@ -209,7 +211,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     double height = page.Height / Scanner.SliceCountHeight;
                                     BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
                                     double xratio = width / currentimage.PixelWidth;
-                                    BitmapSource bitmapsource = ResizeRatioImage ? currentimage.Resize(xratio) : CompressImage ? currentimage.Resize(width, height) : currentimage;
+                                    BitmapSource bitmapsource = ResizeRatioImage ? currentimage.Resize(xratio) : CompressImage ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height) : currentimage;
                                     using MemoryStream ms =
                                         new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                     using XImage xImage = XImage.FromStream(ms);
@@ -256,6 +258,19 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     public ICommand ApplyColorChange { get; }
 
     public RelayCommand<object> AutoCropImage { get; }
+
+    public bool AutoRotate
+    {
+        get => autoRotate;
+        set
+        {
+            if (autoRotate != value)
+            {
+                autoRotate = value;
+                OnPropertyChanged(nameof(AutoRotate));
+            }
+        }
+    }
 
     public ICommand BlackAndWhiteImage { get; }
 
@@ -309,6 +324,19 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 resizeRatioImage = value;
                 OnPropertyChanged(nameof(ResizeRatioImage));
+            }
+        }
+    }
+
+    public PageRotation SelectedRotation
+    {
+        get => selectedRotation;
+        set
+        {
+            if (selectedRotation != value)
+            {
+                selectedRotation = value;
+                OnPropertyChanged(nameof(SelectedRotation));
             }
         }
     }
