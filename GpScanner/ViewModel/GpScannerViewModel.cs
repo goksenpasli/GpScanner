@@ -47,7 +47,7 @@ public class GpScannerViewModel : InpcBase
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
     private static DispatcherTimer timer;
-    private readonly string[] imagefileextensions = { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
+    private readonly List<string> batchimagefileextensions = new() { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
     private readonly string[] supportedfilesextension = { ".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml" };
     private int allPdfPage;
     private bool anyDataExists;
@@ -67,6 +67,7 @@ public class GpScannerViewModel : InpcBase
     private bool detectPageSeperator;
     private bool documentPanelIsExpanded;
     private ObservableCollection<Scanner> dosyalar;
+    private ObservableCollection<string> fileSystemWatcherProcessedFileList;
     private double fold = 0.3;
     private string ftpPassword = string.Empty;
     private string ftpSite = string.Empty;
@@ -523,6 +524,11 @@ public class GpScannerViewModel : InpcBase
                 FolderBrowserDialog dialog = new() { Description = Translation.GetResStringValue("BATCHDESC") };
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
+                    if (dialog.SelectedPath == Twainsettings.Settings.Default.AutoFolder)
+                    {
+                        _ = MessageBox.Show(Translation.GetResStringValue("NO ACTION"), Application.Current.MainWindow.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        return;
+                    }
                     Settings.Default.BatchFolder = dialog.SelectedPath;
                     Settings.Default.Save();
                 }
@@ -538,7 +544,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
 
-                List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => batchimagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -606,7 +612,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
 
-                List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => imagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => batchimagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -993,6 +999,19 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ICommand ExploreFile { get; }
+
+    public ObservableCollection<string> FileSystemWatcherProcessedFileList
+    {
+        get => fileSystemWatcherProcessedFileList;
+        set
+        {
+            if (fileSystemWatcherProcessedFileList != value)
+            {
+                fileSystemWatcherProcessedFileList = value;
+                OnPropertyChanged(nameof(FileSystemWatcherProcessedFileList));
+            }
+        }
+    }
 
     public double Fold
     {
@@ -1613,22 +1632,29 @@ public class GpScannerViewModel : InpcBase
 
     public void RegisterBatchImageFileWatcher(Paper paper, string batchsavefolder)
     {
+        FileSystemWatcherProcessedFileList = new();
         FileSystemWatcher watcher = new(batchsavefolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
+        batchimagefileextensions.Add(".webp");
         watcher.Created += async (s, e) =>
         {
-            await Task.Delay(2000);
-            if (File.Exists(e.FullPath) && imagefileextensions.Contains(Path.GetExtension(e.Name.ToLower())))
+            string currentfilepath = e.FullPath;
+            string currentfilename = e.Name;
+            bool isFileLocked = IsFileLocked(currentfilepath);
+            while (isFileLocked)
             {
-                ObservableCollection<OcrData> scannedText = await e.FullPath.OcrAsync(Settings.Default.DefaultTtsLang);
-                await Task.Run(
-                    () =>
-                    {
-                        PdfBatchRunning = true;
-                        using PdfDocument pfdocument = e.FullPath.GeneratePdf(paper, scannedText);
-                        pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(e.Name, ".pdf")}");
-                        PdfBatchRunning = false;
-                        GC.Collect();
-                    });
+                await Task.Delay(100);
+                isFileLocked = IsFileLocked(currentfilepath);
+            }
+
+            if (File.Exists(currentfilepath) && batchimagefileextensions.Contains(Path.GetExtension(currentfilename.ToLower())))
+            {
+                await FileSystemWatcherOcrFile(paper, batchsavefolder, currentfilepath, currentfilename);
+                await Application.Current?.Dispatcher?.InvokeAsync(
+                () =>
+                {
+                    string item = $"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}";
+                    FileSystemWatcherProcessedFileList.Add(item);
+                });
             }
         };
     }
@@ -1722,6 +1748,30 @@ public class GpScannerViewModel : InpcBase
         }
 
         Settings.Default.Save();
+    }
+
+    private async Task FileSystemWatcherOcrFile(Paper paper, string batchsavefolder, string currentfilepath, string currentfilename)
+    {
+        ObservableCollection<OcrData> scannedText;
+        if (string.Equals(Path.GetExtension(currentfilepath), ".webp", StringComparison.OrdinalIgnoreCase))
+        {
+            byte[] webpfile = currentfilepath.WebpDecode(true, Twainsettings.Settings.Default.ImgLoadResolution).ToTiffJpegByteArray(Format.Jpg);
+            scannedText = await webpfile.OcrAsync(Settings.Default.DefaultTtsLang);
+            webpfile = null;
+        }
+        else
+        {
+            scannedText = await currentfilepath.OcrAsync(Settings.Default.DefaultTtsLang);
+        }
+        await Task.Run(
+            () =>
+            {
+                PdfBatchRunning = true;
+                using PdfDocument pfdocument = currentfilepath.GeneratePdf(paper, scannedText);
+                pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}");
+                PdfBatchRunning = false;
+                GC.Collect();
+            });
     }
 
     private void GenerateAnimationTimer()
@@ -1887,6 +1937,19 @@ public class GpScannerViewModel : InpcBase
         if (e.PropertyName is "LangFlowDirection")
         {
             Application.Current?.Windows?.Cast<Window>()?.ToList()?.ForEach(z => z.FlowDirection = LangFlowDirection);
+        }
+    }
+
+    private bool IsFileLocked(string filePath)
+    {
+        try
+        {
+            new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.None).Dispose();
+            return false;
+        }
+        catch (IOException)
+        {
+            return true;
         }
     }
 
