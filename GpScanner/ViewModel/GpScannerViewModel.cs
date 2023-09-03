@@ -569,7 +569,14 @@ public class GpScannerViewModel : InpcBase
 
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                         batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
-                                        item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+                                        if (Settings.Default.PdfBatchCompress)
+                                        {
+                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper).Save(pdffile);
+                                        }
+                                        else
+                                        {
+                                            item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+                                        }
                                         scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
                                     }
                                 }
@@ -1069,7 +1076,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<Size> GetPreviewSize => new() { new Size(175, 280), new Size(230, 370), new Size(280, 450), new Size(350, 563), new Size(425, 645) };
+    public ObservableCollection<Size> GetPreviewSize => new() { new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645) };
 
     public FlowDirection LangFlowDirection
     {
@@ -1767,8 +1774,12 @@ public class GpScannerViewModel : InpcBase
             () =>
             {
                 PdfBatchRunning = true;
-                using PdfDocument pfdocument = currentfilepath.GeneratePdf(paper, scannedText);
-                pfdocument.Save($"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}");
+                using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper) : currentfilepath.GeneratePdf(paper, scannedText))
+                {
+                    string pdfFileName = Path.ChangeExtension(currentfilename, ".pdf");
+                    string pdfFilePath = Path.Combine(batchsavefolder, pdfFileName);
+                    pdfdocument.Save(pdfFilePath);
+                }
                 PdfBatchRunning = false;
                 GC.Collect();
             });

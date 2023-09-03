@@ -373,5 +373,17 @@ namespace GpScanner.Properties {
                 this["AnimationType"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool PdfBatchCompress {
+            get {
+                return ((bool)(this["PdfBatchCompress"]));
+            }
+            set {
+                this["PdfBatchCompress"] = value;
+            }
+        }
     }
 }

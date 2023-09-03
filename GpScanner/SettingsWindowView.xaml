@@ -859,12 +859,18 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
                                 <Extensions:ButtonedTextBox Grid.Column="0"
                                     VerticalContentAlignment="Center"
                                     CopyButtonVisibility="Collapsed" IsReadOnly="True"
                                     PasteButtonVisibility="Collapsed"
                                     Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged}" />
-                                <Button Grid.Column="1" twainctrl:Policy.PolicyName="SetBatchFolder" Command="{Binding SetBatchFolder}">
+                                <Button Grid.RowSpan="2" Grid.Column="1"
+                                    twainctrl:Policy.PolicyName="SetBatchFolder"
+                                    Command="{Binding SetBatchFolder}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32" Height="32">
                                             <Image.Source>
@@ -877,7 +883,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SRC}" />
                                     </StackPanel>
                                 </Button>
-                                <UniformGrid Grid.Column="2" Columns="2">
+                                <UniformGrid Grid.RowSpan="2" Grid.Column="2" Columns="2">
                                     <Button twainctrl:Policy.PolicyName="StartPdfBatch" Command="{Binding StartPdfBatch}">
                                         <Button.Content>
                                             <StackPanel Orientation="Horizontal">
@@ -895,76 +901,97 @@
                                         </Button.Content>
                                     </Button>
                                 </UniformGrid>
-                                <StackPanel Grid.Column="3" Orientation="Horizontal">
-                                    <Canvas Width="44" Height="32">
-                                        <Image Canvas.Left="6" Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="12" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <Image Canvas.Left="14" Canvas.Bottom="0"
-                                            Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="3" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <Extensions:NumericUpDownControl Canvas.Top="7"
-                                            Width="44"
-                                            FontWeight="Bold"
-                                            Foreground="{Binding ProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
-                                            IsReadOnly="True"
-                                            Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                                            Minimum="1" Orientation="Horizontal"
-                                            SmallChange="1" TextBlock.TextAlignment="Center"
-                                            Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    </Canvas>
-                                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
-                                        <CheckBox.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                                <TextBlock VerticalAlignment="Center">
-                                                    <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
-                                                    <LineBreak />
-                                                    <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
-                                                </TextBlock>
-                                            </StackPanel>
-                                        </CheckBox.Content>
-                                    </CheckBox>
-                                    <ToggleButton IsChecked="{Binding Shutdown}">
-                                        <Canvas Width="32" Height="32">
-                                            <Image Width="32" Height="32">
+                                <GroupBox Grid.Row="1">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Canvas Width="44" Height="32">
+                                            <Image Canvas.Left="6" Width="32" Height="32">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
-                                                        <Binding Source="27" />
+                                                        <Binding Source="12" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <Image Canvas.Right="0" Canvas.Bottom="0"
-                                                Width="16" Height="16"
-                                                Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Image Canvas.Left="14" Canvas.Bottom="0"
+                                                Width="16" Height="16">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Comres.dll" />
-                                                        <Binding Source="8" />
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="3" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
+                                            <Extensions:NumericUpDownControl Canvas.Top="7"
+                                                Width="44"
+                                                FontWeight="Bold"
+                                                Foreground="{Binding ProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
+                                                IsReadOnly="True"
+                                                Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
+                                                Minimum="1" Orientation="Horizontal"
+                                                SmallChange="1" TextBlock.TextAlignment="Center"
+                                                Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                         </Canvas>
-                                        <ToggleButton.ToolTip>
-                                            <TextBlock VerticalAlignment="Center"
-                                                FontWeight="Bold" Foreground="Red"
-                                                Text="{twainctrl:Loc CLOSECOMP}"
-                                                TextTrimming="CharacterEllipsis" />
-                                        </ToggleButton.ToolTip>
-                                    </ToggleButton>
-                                </StackPanel>
+                                        <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding PdfBatchCompress, Source={x:Static properties:Settings.Default}}">
+                                            <CheckBox.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Zipfldr.dll" />
+                                                                <Binding Source="0" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <Run Text="PDF" />
+                                                        <LineBreak />
+                                                        <Run Text="{twainctrl:Loc COMPRESS}" />
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                        <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                                            <CheckBox.Content>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <Run BaselineAlignment="Center" Text="{twainctrl:Loc FILE}" />
+                                                        <LineBreak />
+                                                        <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </CheckBox.Content>
+                                        </CheckBox>
+                                        <ToggleButton IsChecked="{Binding Shutdown}">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="27" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Canvas.Right="0" Canvas.Bottom="0"
+                                                    Width="16" Height="16"
+                                                    Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Comres.dll" />
+                                                            <Binding Source="8" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Canvas>
+                                            <ToggleButton.ToolTip>
+                                                <TextBlock VerticalAlignment="Center"
+                                                    FontWeight="Bold" Foreground="Red"
+                                                    Text="{twainctrl:Loc CLOSECOMP}"
+                                                    TextTrimming="CharacterEllipsis" />
+                                            </ToggleButton.ToolTip>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                </GroupBox>
                             </Grid>
                             <GroupBox Grid.Row="1">
                                 <Grid>
@@ -985,7 +1012,7 @@
                                                 </TextBlock>
                                             </Extensions:ButtonedTextBox.ToolTip>
                                         </Extensions:ButtonedTextBox>
-                                        <UniformGrid Columns="2">
+                                        <UniformGrid Columns="3">
                                             <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder" Command="{Binding SetBatchWatchFolder}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32" Height="32">
@@ -999,6 +1026,25 @@
                                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SRC}" />
                                                 </StackPanel>
                                             </Button>
+                                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding PdfBatchCompress, Source={x:Static properties:Settings.Default}}">
+                                                <CheckBox.Content>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Image Width="32" Height="32">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Zipfldr.dll" />
+                                                                    <Binding Source="0" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Run Text="PDF" />
+                                                            <LineBreak />
+                                                            <Run Text="{twainctrl:Loc COMPRESS}" />
+                                                        </TextBlock>
+                                                    </StackPanel>
+                                                </CheckBox.Content>
+                                            </CheckBox>
                                             <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                                                 IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}"
                                                 IsEnabled="{Binding BatchFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
