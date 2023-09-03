@@ -42,6 +42,8 @@ using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner.ViewModel;
 
+public class BatchFiles : TessFiles;
+
 public class GpScannerViewModel : InpcBase
 {
     public Task Filesavetask;
@@ -56,6 +58,7 @@ public class GpScannerViewModel : InpcBase
     private ObservableCollection<string> barcodeList = new();
     private bool batchDialogOpen;
     private string batchFolder;
+    private ObservableCollection<BatchFiles> batchFolderProcessedFileList;
     private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
     private string calendarDesc;
     private XmlLanguage calendarLang;
@@ -510,13 +513,23 @@ public class GpScannerViewModel : InpcBase
         SetBatchFolder = new RelayCommand<object>(
             parameter =>
             {
-                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("FILE")}" };
+                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("FILE")}\n{string.Join(" ", batchimagefileextensions)}" };
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     BatchFolder = dialog.SelectedPath;
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+
+        BatchFolderTümünüİşaretle = new RelayCommand<object>(
+            parameter =>
+            {
+                foreach (TessFiles item in BatchFolderProcessedFileList)
+                {
+                    item.Checked = true;
+                }
+            },
+            parameter => BatchFolderProcessedFileList?.Count > 0);
 
         SetBatchWatchFolder = new RelayCommand<object>(
             parameter =>
@@ -543,7 +556,7 @@ public class GpScannerViewModel : InpcBase
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
-
+                BatchFolderProcessedFileList = new();
                 List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => batchimagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
@@ -558,7 +571,7 @@ public class GpScannerViewModel : InpcBase
                         BatchTxtOcr batchTxtOcr = new();
                         Paper paper = ToolBox.Paper;
                         Task task = Task.Run(
-                            () =>
+                            async () =>
                             {
                                 for (int i = 0; i < item.Count; i++)
                                 {
@@ -577,6 +590,12 @@ public class GpScannerViewModel : InpcBase
                                         {
                                             item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
                                         }
+                                        await Application.Current?.Dispatcher?.InvokeAsync(
+                                        () =>
+                                        {
+                                            string file = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
+                                            BatchFolderProcessedFileList.Add(new BatchFiles() { Name = file });
+                                        });
                                         scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
                                     }
                                 }
@@ -597,6 +616,17 @@ public class GpScannerViewModel : InpcBase
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+
+        BatchMergeSelectedFiles = new RelayCommand<object>(
+            async parameter =>
+            {
+                string[] files = BatchFolderProcessedFileList.Where(z => z.Checked).Select(z => z.Name).ToArray();
+                if (files.Length > 0)
+                {
+                    await files.SavePdfFilesAsync();
+                }
+            },
+            parameter => BatchFolderProcessedFileList?.Any(z => z.Checked) == true);
 
         CancelBatchOcr = new RelayCommand<object>(
             parameter =>
@@ -673,7 +703,7 @@ public class GpScannerViewModel : InpcBase
                 if (MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
                     MessageBoxResult.Yes)
                 {
-                    (parameter as Twainsettings.Settings)?.Reset();
+                    Twainsettings.Settings.Default.Reset();
                     Settings.Default.Reset();
                     _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), Application.Current?.MainWindow.Title);
                 }
@@ -851,6 +881,23 @@ public class GpScannerViewModel : InpcBase
             }
         }
     }
+
+    public ObservableCollection<BatchFiles> BatchFolderProcessedFileList
+    {
+        get => batchFolderProcessedFileList;
+        set
+        {
+            if (batchFolderProcessedFileList != value)
+            {
+                batchFolderProcessedFileList = value;
+                OnPropertyChanged(nameof(BatchFolderProcessedFileList));
+            }
+        }
+    }
+
+    public RelayCommand<object> BatchFolderTümünüİşaretle { get; }
+
+    public RelayCommand<object> BatchMergeSelectedFiles { get; }
 
     public ObservableCollection<BatchTxtOcr> BatchTxtOcrs
     {
