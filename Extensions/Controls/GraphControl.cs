@@ -224,7 +224,6 @@ public class GraphControl : FrameworkElement
         if (saveFileDialog.ShowDialog() == true)
         {
             File.WriteAllBytes(saveFileDialog.FileName, imgdata);
-            GC.Collect();
         }
     }
 }

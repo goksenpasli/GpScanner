@@ -64,7 +64,7 @@ public class Compressor : Control, INotifyPropertyChanged
                         pdfDocument.Save(saveFileDialog.FileName);
                         LoadedPdfPath = null;
                     }
-                    GC.Collect();
+                    
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));
@@ -78,7 +78,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     {
                         PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
                         pdfDocument.Save($"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf");
-                        GC.Collect();
+                        
                         file.Completed = true;
                     }
                 }
@@ -250,7 +250,7 @@ public class Compressor : Control, INotifyPropertyChanged
                             progresscallback((i + 1) / (double)bitmapFrames.Count);
                         }
 
-                        GC.Collect();
+                        
                     }
 
                     DefaultPdfCompression(document);

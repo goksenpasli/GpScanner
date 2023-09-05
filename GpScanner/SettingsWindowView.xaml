@@ -43,6 +43,9 @@
         <Style TargetType="{x:Type Hyperlink}">
             <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
+        <ItemsPanelTemplate x:Key="ListBoxWrapItemsPanel">
+            <Extensions:VirtualizingWrapPanel CanVerticallyScroll="False" ItemSize="100,100" SpacingMode="None" />
+        </ItemsPanelTemplate>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -1020,20 +1023,39 @@
                                         <ListBox x:Name="LbBatch"
                                             d:ItemsSource="{d:SampleData ItemCount=5}"
                                             Background="{StaticResource BorderBackground}"
-                                            ItemsSource="{Binding BatchFolderProcessedFileList, Mode=OneWay}">
+                                            ItemsPanel="{StaticResource ListBoxWrapItemsPanel}"
+                                            ItemsSource="{Binding BatchFolderProcessedFileList, Mode=OneWay}"
+                                            VirtualizingPanel.CacheLength="3" VirtualizingPanel.CacheLengthUnit="Item"
+                                            VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
+                                            VirtualizingPanel.VirtualizationMode="Standard">
                                             <ListBox.InputBindings>
                                                 <KeyBinding Key="A" Command="{Binding BatchFolderTümünüİşaretle}" Modifiers="Ctrl" />
+                                                <KeyBinding Key="D" Command="{Binding BatchFolderTümünüİşaretiniKaldır}" Modifiers="Ctrl" />
+                                                <KeyBinding Key="S" Command="{Binding BatchFolderTümünüKaydet}" Modifiers="Ctrl" />
+                                                <KeyBinding Key="Delete" Command="{Binding BatchFolderTümünüSil}" Modifiers="Shift" />
                                             </ListBox.InputBindings>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <CheckBox VerticalContentAlignment="Center"
-                                                        d:Content="Name"
-                                                        Content="{Binding Mode=OneWay, Path=Name, Converter={StaticResource FileNameExtractConverter}}"
-                                                        IsChecked="{Binding Checked}" />
+                                                    <CheckBox VerticalContentAlignment="Center" d:Content="Name" IsChecked="{Binding Checked}">
+                                                        <Image Width="64" Height="64"
+                                                            d:Height="64"
+                                                            d:Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}"
+                                                            d:Width="64">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                                                                    <Binding Mode="OneWay" Path="Name" />
+                                                                    <Binding Converter="{StaticResource StringToIntConverter}" Mode="OneWay" Source="1" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </CheckBox>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
-                                        <twainctrl:EypPdfViewer PdfFilePath="{Binding ElementName=LbBatch, Path=SelectedItem.Name, Mode=OneWay}" ToolBarVisibility="Collapsed" />
+                                        <twainctrl:EypPdfViewer DpiListVisibility="Collapsed"
+                                            PdfFilePath="{Binding ElementName=LbBatch, Path=SelectedItem.Name, Mode=OneWay}"
+                                            PdfTextContentVisibility="Collapsed" SearchTextContentVisibility="Collapsed"
+                                            TifNavigasyonButtonEtkin="Collapsed" />
                                     </UniformGrid>
                                 </Grid>
                             </GroupBox>
@@ -1109,18 +1131,31 @@
                                         <ListBox x:Name="Lb"
                                             d:ItemsSource="{d:SampleData ItemCount=5}"
                                             Background="{StaticResource BorderBackground}"
+                                            ItemsPanel="{StaticResource ListBoxWrapItemsPanel}"
                                             ItemsSource="{Binding FileSystemWatcherProcessedFileList, Mode=OneWay}">
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
-                                                    <TextBlock d:Text="FileName" Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                                                    <Image Width="64" Height="64"
+                                                        d:Height="64"
+                                                        d:Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}"
+                                                        d:Width="64">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                                                                <Binding Mode="OneWay" />
+                                                                <Binding Converter="{StaticResource StringToIntConverter}" Mode="OneWay" Source="1" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
                                         </ListBox>
-                                        <twainctrl:EypPdfViewer PdfFilePath="{Binding ElementName=Lb, Path=SelectedItem, Mode=OneWay}" ToolBarVisibility="Collapsed" />
+                                        <twainctrl:EypPdfViewer DpiListVisibility="Collapsed"
+                                            PdfFilePath="{Binding ElementName=Lb, Path=SelectedItem, Mode=OneWay}"
+                                            PdfTextContentVisibility="Collapsed" SearchTextContentVisibility="Collapsed"
+                                            TifNavigasyonButtonEtkin="Collapsed" />
                                     </UniformGrid>
                                 </Grid>
                             </GroupBox>
-
                         </TabItem>
                     </TabControl>
                 </TabItem>

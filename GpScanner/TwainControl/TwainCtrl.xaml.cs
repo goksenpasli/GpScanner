@@ -107,6 +107,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private ScannedImage seçiliResim;
     private int seekIndex = -1;
     private Tuple<string, int, double, bool, double> selectedCompressionProfile;
+    private PageFlip selectedFlip = PageFlip.NONE;
     private Orientation selectedOrientation = Orientation.Default;
     private Paper selectedPaper;
     private PageRotation selectedRotation = PageRotation.NONE;
@@ -139,7 +140,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ScanImage = new RelayCommand<object>(
             async parameter =>
             {
-                GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 ScanCommonSettings();
                 twain.SelectSource(Settings.Default.SeçiliTarayıcı);
@@ -157,7 +157,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
 
-                GC.Collect();
+
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 ScanCommonSettings();
                 Scanner.Resimler = new ObservableCollection<ScannedImage>();
@@ -203,7 +203,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     _ = Scanner.Resimler?.Remove(item);
                     ToolBox.ResetCropMargin();
-                    GC.Collect();
                 }
             },
             parameter => Scanner.ArayüzEtkin);
@@ -215,7 +214,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 CanUndoImage = false;
                 UndoImage = null;
                 UndoImageIndex = null;
-                GC.Collect();
             },
             parameter => CanUndoImage && UndoImage is not null);
 
@@ -575,7 +573,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Scanner.Resimler?.Clear();
                     UndoImage = null;
                     ToolBox.ResetCropMargin();
-                    GC.Collect();
                 }
             },
             parameter => Policy.CheckPolicy("ListeTemizle") && Scanner?.Resimler?.Count > 0 && Scanner.ArayüzEtkin);
@@ -590,7 +587,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 UndoImage = null;
                 ToolBox.ResetCropMargin();
-                GC.Collect();
             },
             parameter => Policy.CheckPolicy("SeçiliListeTemizle") && Scanner?.Resimler?.Any(z => z.Seçili) == true && Scanner.ArayüzEtkin);
 
@@ -676,9 +672,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    GC.Collect();
                     await AddFiles(openFileDialog.FileNames, DecodeHeight);
-                    GC.Collect();
                 }
             },
             parameter => true);
@@ -730,7 +724,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     SplitPdfPageCount(pdfviewer.PdfFilePath, savefolder, PdfSplitCount);
                     WebAdreseGit.Execute(savefolder);
-                    GC.Collect();
                 }
             },
             parameter => PdfSplitCount > 0);
@@ -744,7 +737,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Scanner?.Resimler?.Add(new ScannedImage { Seçili = true, Resim = CreateBitmapFromClipBoard(clipboardData) });
                     clipboardData = null;
                     Clipboard.Clear();
-                    GC.Collect();
                 }
             },
             parameter => true);
@@ -788,9 +780,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt" };
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    GC.Collect();
                     await AddFiles(File.ReadAllLines(openFileDialog.FileName), DecodeHeight);
-                    GC.Collect();
                 }
             },
             parameter => true);
@@ -898,8 +888,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         SeçiliListeTemizle.Execute(null);
                     }
-
-                    GC.Collect();
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -981,7 +969,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                     clipboardData = null;
                     Clipboard.Clear();
-                    GC.Collect();
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1035,7 +1022,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                     {
                         await AddFiles(new[] { pdfviewer.PdfFilePath }, DecodeHeight);
-                        GC.Collect();
+
                         return;
                     }
 
@@ -1046,7 +1033,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string savefilename = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                             await PdfPageRangeSaveFileAsync(pdfviewer.PdfFilePath, savefilename, SayfaBaşlangıç, SayfaBitiş);
                             await AddFiles(new[] { savefilename }, DecodeHeight);
-                            GC.Collect();
                         }
 
                         return;
@@ -1059,7 +1045,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
                     ms = null;
-                    GC.Collect();
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1178,6 +1163,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 List<ScannedImage> scannedImages = Scanner.Resimler.Reverse().ToList();
                 Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
+                Scanner.RefreshIndexNumbers(Scanner.Resimler);
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
@@ -1191,6 +1177,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     List<ScannedImage> scannedImages = Scanner.Resimler.ToList();
                     scannedImages.Reverse(start, end - start + 1);
                     Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
+                    Scanner.RefreshIndexNumbers(Scanner.Resimler);
                 }
             },
             parameter =>
@@ -1938,6 +1925,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public PageFlip SelectedFlip
+    {
+        get => selectedFlip;
+        set
+        {
+            if (selectedFlip != value)
+            {
+                selectedFlip = value;
+                OnPropertyChanged(nameof(SelectedFlip));
+            }
+        }
+    }
+
     public Orientation SelectedOrientation
     {
         get => selectedOrientation;
@@ -2496,8 +2496,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             scannedimage.Resim = null;
                         }
                     });
-
-                GC.Collect();
             });
     }
 
@@ -2645,8 +2643,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             scannedimage.Resim = null;
                         }
                     });
-
-                GC.Collect();
             });
     }
 
@@ -2759,7 +2755,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
         filedata = null;
         ms = null;
-        GC.Collect();
     }
 
     private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) { Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0; }
@@ -3279,7 +3274,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             BitmapFrame bitmapFrame = BitmapFrame.Create(evrak);
             bitmapFrame.Freeze();
             evrak = null;
-            Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation });
+            Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation, FlipAngle = (double)SelectedFlip });
         }
     }
 

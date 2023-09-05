@@ -246,7 +246,6 @@ public class GpScannerViewModel : InpcBase
 
                     bitmapframe = null;
                     imgdata = null;
-                    GC.Collect();
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is BitmapFrame bitmapFrame && bitmapFrame is not null);
@@ -283,7 +282,6 @@ public class GpScannerViewModel : InpcBase
                         filedata = null;
                         ocrdata = null;
                         OcrIsBusy = false;
-                        GC.Collect();
                     }
                 }
             },
@@ -310,7 +308,6 @@ public class GpScannerViewModel : InpcBase
                             document.Save(saveFileDialog.FileName);
                         }
                         ocrdata = null;
-                        GC.Collect();
                     }
                 }
             },
@@ -524,12 +521,32 @@ public class GpScannerViewModel : InpcBase
         BatchFolderTümünüİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                foreach (TessFiles item in BatchFolderProcessedFileList)
+                foreach (BatchFiles item in BatchFolderProcessedFileList)
                 {
                     item.Checked = true;
                 }
             },
             parameter => BatchFolderProcessedFileList?.Count > 0);
+
+        BatchFolderTümünüİşaretiniKaldır = new RelayCommand<object>(
+            parameter =>
+            {
+                foreach (BatchFiles item in BatchFolderProcessedFileList)
+                {
+                    item.Checked = false;
+                }
+            },
+            parameter => BatchFolderProcessedFileList?.Count > 0);
+
+        BatchFolderTümünüKaydet = new RelayCommand<object>(
+            parameter =>
+            {
+                BatchFolderTümünüİşaretle.Execute(null);
+                BatchMergeSelectedFiles.Execute(null);
+            },
+            parameter => BatchFolderProcessedFileList?.Count > 0);
+
+        BatchFolderTümünüSil = new RelayCommand<object>(parameter => BatchFolderProcessedFileList?.Clear(), parameter => BatchFolderProcessedFileList?.Count > 0);
 
         SetBatchWatchFolder = new RelayCommand<object>(
             parameter =>
@@ -895,7 +912,13 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
+    public RelayCommand<object> BatchFolderTümünüİşaretiniKaldır { get; }
+
     public RelayCommand<object> BatchFolderTümünüİşaretle { get; }
+
+    public RelayCommand<object> BatchFolderTümünüKaydet { get; }
+
+    public RelayCommand<object> BatchFolderTümünüSil { get; }
 
     public RelayCommand<object> BatchMergeSelectedFiles { get; }
 
@@ -1828,7 +1851,6 @@ public class GpScannerViewModel : InpcBase
                     pdfdocument.Save(pdfFilePath);
                 }
                 PdfBatchRunning = false;
-                GC.Collect();
             });
     }
 

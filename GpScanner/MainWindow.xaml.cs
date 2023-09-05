@@ -161,7 +161,6 @@ public partial class MainWindow : Window
             }
 
             _ = TwainCtrl.AddFiles(commandLineArgs, TwainCtrl.DecodeHeight);
-            GC.Collect();
         }
 
         if (StillImageHelper.FirstLanuchScan)

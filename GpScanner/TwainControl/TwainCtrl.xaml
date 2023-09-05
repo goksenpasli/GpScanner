@@ -32,7 +32,6 @@
             <PdfViewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
-            <Converter:EnumPageRotationToConvertedLanguageTextConverter x:Key="EnumPageRotationToConvertedLanguageTextConverter" />
             <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
             <Converter:EnumOrientationToTwainVersionConverter x:Key="EnumOrientationToTwainVersionConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
@@ -157,6 +156,11 @@
             <ObjectDataProvider x:Key="PageRotations" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="local:PageRotation" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ObjectDataProvider x:Key="PageFlips" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="local:PageFlip" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
             <CollectionViewSource x:Key="CompProfiles" Source="{Binding CompressionProfiles}">
@@ -486,27 +490,56 @@
                                         ToolTip="{local:Loc RES}"
                                         Value="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
-                                <ComboBox VerticalContentAlignment="Center"
-                                    local:Policy.PolicyName="SelectedRotation"
-                                    IsEnabled="{Binding Scanner.ArayüzEtkin}"
-                                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageRotations}}"
-                                    SelectedItem="{Binding SelectedRotation}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="238" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource EnumPageRotationToConvertedLanguageTextConverter}, Mode=OneWay}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
+                                <UniformGrid Columns="2">
+                                    <ComboBox VerticalContentAlignment="Center"
+                                        local:Policy.PolicyName="SelectedRotation"
+                                        SelectedValue="{Binding SelectedRotation}"
+                                        SelectedValuePath="Tag">
+                                        <ComboBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
+                                        <ComboBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
+                                        <ComboBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
+                                    </ComboBox>
+                                    <ComboBox VerticalContentAlignment="Center"
+                                        local:Policy.PolicyName="SelectedFlip"
+                                        SelectedValue="{Binding SelectedFlip}"
+                                        SelectedValuePath="Tag">
+                                        <ComboBoxItem Tag="{Binding Path=[0], Source={StaticResource PageFlips}}">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Imageres.dll" />
+                                                        <Binding Source="287" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Tag="{Binding Path=[1], Source={StaticResource PageFlips}}">
+                                            <Image Width="16" Height="16" RenderTransformOrigin="0.5,0.5">
+                                                <Image.RenderTransform>
+                                                    <TransformGroup>
+                                                        <RotateTransform Angle="-90" />
+                                                    </TransformGroup>
+                                                </Image.RenderTransform>
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="252" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Tag="{Binding Path=[2], Source={StaticResource PageFlips}}">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="252" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ComboBoxItem>
+                                    </ComboBox>
+                                </UniformGrid>
                             </UniformGrid>
                         </GroupBox.Header>
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

@@ -23,7 +23,6 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Converter:FontSizeConverter x:Key="FontSizeConverter" />
-            <Converter:EnumPageRotationToConvertedLanguageTextConverter x:Key="EnumPageRotationToConvertedLanguageTextConverter" />
             <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
             <ObjectDataProvider x:Key="PageRotations" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
                 <ObjectDataProvider.MethodParameters>
@@ -251,23 +250,11 @@
                                 IsEnabled="{Binding CompressImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <ComboBox VerticalContentAlignment="Center"
                                     IsEnabled="{Binding AutoRotate, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource PageRotations}}"
-                                    SelectedItem="{Binding SelectedRotation, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="238" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource EnumPageRotationToConvertedLanguageTextConverter}, Mode=OneWay}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
+                                    SelectedValue="{Binding SelectedRotation, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    SelectedValuePath="Tag">
+                                    <ComboBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
+                                    <ComboBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
+                                    <ComboBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
                                 </ComboBox>
                             </CheckBox>
                             <ToggleButton Grid.Column="1"

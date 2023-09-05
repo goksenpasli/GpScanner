@@ -22,7 +22,6 @@ public partial class DocumentViewerWindow : Window
         {
             pdfvwr.PdfFilePath = null;
             pdfvwr.Source = null;
-            GC.Collect();
         }
     }
 }

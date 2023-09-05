@@ -56,7 +56,7 @@ public class DocumentViewerModel : InpcBase
                     bitmapFrame = null;
                     scannedImage = null;
                     ms = null;
-                    GC.Collect();
+                    
                 }
             },
             parameter => true);

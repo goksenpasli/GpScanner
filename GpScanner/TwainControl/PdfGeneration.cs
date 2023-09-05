@@ -344,7 +344,6 @@ public static class PdfGeneration
             ms = null;
             data = null;
             bitmapframe = null;
-            GC.Collect();
             return document;
         }
         catch (Exception ex)
@@ -482,7 +481,7 @@ public static class PdfGeneration
                     scannedimage.Resim = null;
                 }
 
-                GC.Collect();
+                
             }
 
             if (Scanner.PasswordProtect)

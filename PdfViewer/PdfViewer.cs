@@ -761,7 +761,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         {
             string pdfFilePath = pdfViewer.PdfFilePath;
             pdfViewer.Source = await ConvertToImgAsync(pdfFilePath, pdfViewer.Sayfa, (int)e.NewValue);
-            GC.Collect();
+            
         }
     }
 
@@ -827,7 +827,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
             string pdfFilePath = pdfViewer.PdfFilePath;
             Source = await ConvertToImgAsync(pdfFilePath, sayfa, pdfViewer.Dpi);
-            GC.Collect();
+            
         }
 
         if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)

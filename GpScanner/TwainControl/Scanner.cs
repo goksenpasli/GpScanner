@@ -1360,7 +1360,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         _ => null
     };
 
-    public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    public static void RefreshIndexNumbers(ObservableCollection<ScannedImage> resimler)
     {
         for (int i = 0; i < resimler.Count; i++)
         {
@@ -1368,6 +1368,8 @@ public class Scanner : InpcBase, IDataErrorInfo
             item.Index = i + 1;
         }
     }
+
+    public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) { RefreshIndexNumbers(resimler); }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

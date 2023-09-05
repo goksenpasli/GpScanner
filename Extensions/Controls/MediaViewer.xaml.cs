@@ -168,7 +168,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 File.WriteAllBytes(dosya, data);
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 OsdText = "Görüntü Yakalandı";
-                GC.Collect();
             },
             parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
@@ -195,7 +194,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     }
 
                     ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
-                    GC.Collect();
+                    
                     return;
                 }
 
@@ -227,7 +226,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 MediaVolume = 1;
-                GC.Collect();
             },
             parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 

@@ -41,7 +41,6 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
                             return null;
                         }
                         bitmapImage.Freeze();
-                        GC.Collect();
                         return bitmapImage;
                     })
                     .ConfigureAwait(false)

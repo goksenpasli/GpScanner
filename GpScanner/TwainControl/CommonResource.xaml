@@ -1,9 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:TwainControl"
     xmlns:pdfsharpdrawing="clr-namespace:PdfSharp.Drawing;assembly=PdfSharp-wpf"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+    <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Style x:Key="TextBlockPdfLayout" TargetType="TextBlock">
         <Style.Triggers>
             <DataTrigger Binding="{Binding}" Value="Left">
@@ -358,4 +360,35 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <Image x:Key="NoRotate" Width="16" Height="16">
+        <Image.Source>
+            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                <Binding Source="Imageres.dll" />
+                <Binding Source="287" />
+            </MultiBinding>
+        </Image.Source>
+    </Image>
+    <Image x:Key="RightRotate" Width="16" Height="16">
+        <Image.Source>
+            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                <Binding Source="Shell32.dll" />
+                <Binding Source="264" />
+            </MultiBinding>
+        </Image.Source>
+    </Image>
+    <Image x:Key="LeftRotate"
+        Width="16" Height="16"
+        RenderTransformOrigin="0.5,0.5">
+        <Image.RenderTransform>
+            <TransformGroup>
+                <ScaleTransform ScaleX="-1" />
+            </TransformGroup>
+        </Image.RenderTransform>
+        <Image.Source>
+            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                <Binding Source="Shell32.dll" />
+                <Binding Source="264" />
+            </MultiBinding>
+        </Image.Source>
+    </Image>
 </ResourceDictionary>

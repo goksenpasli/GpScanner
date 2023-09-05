@@ -647,7 +647,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     {
                         gfx.DrawImage(DrawnImage, rect);
                         DrawnImage = null;
-                        GC.Collect();
+                        
                     }
 
                     if (DrawRoundedRect)

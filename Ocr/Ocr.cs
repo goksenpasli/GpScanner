@@ -136,7 +136,7 @@ public static class Ocr
             iterator.Begin();
             ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
             dosya = null;
-            GC.Collect();
+            
             return ocrdata;
         }
 
@@ -159,7 +159,7 @@ public static class Ocr
             iterator.Begin();
             ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(pageIteratorLevel);
             dosya = null;
-            GC.Collect();
+            
             return ocrdata;
         }
 

@@ -10,6 +10,7 @@ public class ScannedImage : InpcBase
 {
     private bool animate;
     private string filePath;
+    private double flipAngle;
     private int ındex;
     private BitmapFrame resim;
     private BitmapSource resimThumb;
@@ -42,6 +43,19 @@ public class ScannedImage : InpcBase
             {
                 filePath = value;
                 OnPropertyChanged(nameof(FilePath));
+            }
+        }
+    }
+
+    public double FlipAngle
+    {
+        get => flipAngle;
+        set
+        {
+            if (flipAngle != value)
+            {
+                flipAngle = value;
+                OnPropertyChanged(nameof(FlipAngle));
             }
         }
     }
@@ -132,6 +146,11 @@ public class ScannedImage : InpcBase
 
             Resim = await Resim.RotateImageAsync(RotationAngle);
             RotationAngle = 0;
+        }
+        if (e.PropertyName is "FlipAngle" && FlipAngle != 0)
+        {
+            Resim = await Resim.FlipImageAsync(FlipAngle);
+            FlipAngle = 0;
         }
     }
 }
