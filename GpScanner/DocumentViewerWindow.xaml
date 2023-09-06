@@ -25,7 +25,7 @@
             d:ItemsSource="{d:SampleData ItemCount=15}"
             ItemsSource="{Binding DirectoryAllPdfFiles}"
             SelectedIndex="{Binding Index}"
-            SelectedItem="{Binding PdfFilePath}">
+            SelectedItem="{Binding FilePath}">
             <ListBox.Resources>
                 <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
             </ListBox.Resources>
@@ -52,7 +52,7 @@
             Grid.Row="1" Grid.ColumnSpan="3"
             d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
             d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
-            Content="{Binding PdfFilePath, IsAsync=True, Mode=OneWay}"
+            Content="{Binding FilePath, IsAsync=True, Mode=OneWay}"
             ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
         <Button Grid.Column="2"
             Command="{Binding Forward}"

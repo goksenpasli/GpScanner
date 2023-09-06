@@ -708,7 +708,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <TextBlock Name="description" VerticalAlignment="Center" Text="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <ContentPresenter Name="contentPresenter" VerticalAlignment="Center" Content="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border Name="border"
                             Grid.Column="1"
                             Background="{TemplateBinding Panel.Background}"
@@ -778,7 +778,7 @@
                             <Setter TargetName="border" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="clearborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="copyborder" Property="UIElement.Opacity" Value="0.56" />
-                            <Setter TargetName="description" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="contentPresenter" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="openborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="pasteborder" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>

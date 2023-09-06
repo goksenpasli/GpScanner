@@ -33,18 +33,15 @@ namespace PdfViewer;
 [TemplatePart(Name = "UpDown", Type = typeof(NumericUpDownControl))]
 public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 {
-    public static readonly DependencyProperty AngleProperty =
-                                                                                                                                                                                                                                                DependencyProperty.Register(
-        "Angle",
-        typeof(double),
-        typeof(PdfViewer),
-        new PropertyMetadata(0.0));
+    public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty ContextMenuVisibilityProperty =
         DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty DpiProperty =
         DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(PdfViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
     public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
+    public static readonly DependencyProperty SayfaProperty =
+        DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
     public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
     public static readonly DependencyProperty SeekingLowerPdfDpiProperty =
         DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
@@ -72,7 +69,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private string pdfTextContent;
     private Visibility pdfTextContentVisibility;
     private Visibility printButtonVisibility = Visibility.Collapsed;
-    private int sayfa = 1;
     private ScrollViewer scrollvwr;
     private PdfMatch searchPdfMatch;
     private string searchTextContent;
@@ -87,7 +83,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public PdfViewer()
     {
-        PropertyChanged += PdfViewer_PropertyChangedAsync;
+        PropertyChanged += PdfViewer_PropertyChanged;
         SizeChanged += PdfViewer_SizeChanged;
         DosyaAç = new RelayCommand<object>(
             parameter =>
@@ -413,19 +409,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ICommand SaveImage { get; }
 
-    public int Sayfa
-    {
-        get => sayfa;
-
-        set
-        {
-            if (sayfa != value)
-            {
-                sayfa = value;
-                OnPropertyChanged(nameof(Sayfa));
-            }
-        }
-    }
+    public int Sayfa { get => (int)GetValue(SayfaProperty); set => SetValue(SayfaProperty, value); }
 
     public ScrollBarVisibility ScrollBarVisible { get => (ScrollBarVisibility)GetValue(ScrollBarVisibleProperty); set => SetValue(ScrollBarVisibleProperty, value); }
 
@@ -761,7 +745,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         {
             string pdfFilePath = pdfViewer.PdfFilePath;
             pdfViewer.Source = await ConvertToImgAsync(pdfFilePath, pdfViewer.Sayfa, (int)e.NewValue);
-            
         }
     }
 
@@ -798,6 +781,28 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             });
     }
 
+    private static async void SayfaChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is PdfViewer pdfViewer)
+        {
+            if (pdfViewer.Sayfa > pdfViewer.ToplamSayfa)
+            {
+                pdfViewer.Sayfa = pdfViewer.ToplamSayfa;
+            }
+
+            if (pdfViewer.Sayfa < 1)
+            {
+                pdfViewer.Sayfa = 1;
+            }
+
+            if (pdfViewer.SeekingLowerPdfDpi && pdfViewer.updown.FindVisualChildren<RepeatButton>().Any(z => z.IsMouseOver))
+            {
+                pdfViewer.Dpi = pdfViewer.Sayfa == 1 || pdfViewer.Sayfa == pdfViewer.ToplamSayfa ? pdfViewer.SeekingPdfDpi : DpiList.Min();
+            }
+            pdfViewer.Source = await ConvertToImgAsync(pdfViewer.PdfFilePath, pdfViewer.Sayfa, pdfViewer.Dpi);
+        }
+    }
+
     private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is PdfViewer pdfViewer && e.NewValue is not null)
@@ -806,30 +811,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private async void PdfViewer_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
+    private void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "Sayfa" && sender is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
-        {
-            if (Sayfa > ToplamSayfa)
-            {
-                Sayfa = ToplamSayfa;
-            }
-
-            if (Sayfa < 1)
-            {
-                Sayfa = 1;
-            }
-
-            if (SeekingLowerPdfDpi && updown.FindVisualChildren<RepeatButton>().Any(z => z.IsMouseOver))
-            {
-                Dpi = Sayfa == 1 || Sayfa == ToplamSayfa ? SeekingPdfDpi : DpiList.Min();
-            }
-
-            string pdfFilePath = pdfViewer.PdfFilePath;
-            Source = await ConvertToImgAsync(pdfFilePath, sayfa, pdfViewer.Dpi);
-            
-        }
-
         if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
         {
             Sayfa = SearchPdfMatch.Page + 1;

@@ -323,12 +323,12 @@ public class GpScannerViewModel : InpcBase
                     {
                         documentViewerWindow.Owner = Application.Current?.MainWindow;
                         documentViewerModel.Scanner = ToolBox.Scanner;
-                        documentViewerModel.PdfFilePath = filepath;
-                        string path = Path.GetDirectoryName(documentViewerModel.PdfFilePath);
-                        List<string> files = Directory.EnumerateFiles(path, "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower())).ToList();
+                        documentViewerModel.FilePath = filepath;
+                        string directory = Path.GetDirectoryName(documentViewerModel.FilePath);
+                        List<string> files = Directory.EnumerateFiles(directory, "*.*").Where(z => supportedfilesextension.Any(ext => ext == Path.GetExtension(z).ToLower())).ToList();
                         files.Sort(new StrCmpLogicalComparer());
                         documentViewerModel.DirectoryAllPdfFiles = files;
-                        documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.PdfFilePath);
+                        documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.FilePath);
                         documentViewerWindow.Show();
                         documentViewerWindow.Lb?.ScrollIntoView(filepath);
                     }

@@ -363,16 +363,21 @@
     <Image x:Key="NoRotate" Width="16" Height="16">
         <Image.Source>
             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                <Binding Source="Imageres.dll" />
-                <Binding Source="287" />
+                <Binding Source="Shell32.dll" />
+                <Binding Source="1" />
             </MultiBinding>
         </Image.Source>
     </Image>
-    <Image x:Key="RightRotate" Width="16" Height="16">
+    <Image x:Key="RightRotate"
+        Width="16" Height="16"
+        RenderTransformOrigin="0.5,0.5">
+        <Image.RenderTransform>
+            <ScaleTransform ScaleY="-1" />
+        </Image.RenderTransform>
         <Image.Source>
             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                <Binding Source="Shell32.dll" />
-                <Binding Source="264" />
+                <Binding Source="Comres.dll" />
+                <Binding Source="4" />
             </MultiBinding>
         </Image.Source>
     </Image>
@@ -380,14 +385,12 @@
         Width="16" Height="16"
         RenderTransformOrigin="0.5,0.5">
         <Image.RenderTransform>
-            <TransformGroup>
-                <ScaleTransform ScaleX="-1" />
-            </TransformGroup>
+            <ScaleTransform ScaleX="-1" ScaleY="-1" />
         </Image.RenderTransform>
         <Image.Source>
             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                <Binding Source="Shell32.dll" />
-                <Binding Source="264" />
+                <Binding Source="Comres.dll" />
+                <Binding Source="4" />
             </MultiBinding>
         </Image.Source>
     </Image>

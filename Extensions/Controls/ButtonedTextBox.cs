@@ -4,12 +4,15 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace Extensions;
 
+[DefaultProperty("Description")]
+[ContentProperty("Description")]
 public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
     private Visibility copyButtonVisibility = Visibility.Visible;
     private Visibility openButtonVisibility = Visibility.Visible;
     private Visibility pasteButtonVisibility = Visibility.Visible;
@@ -43,7 +46,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+    public object Description { get => GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
 
     public ICommand Open { get; } = new RoutedCommand();
 

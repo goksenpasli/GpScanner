@@ -507,8 +507,8 @@
                                             <Image Width="16" Height="16">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Imageres.dll" />
-                                                        <Binding Source="287" />
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="1" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
@@ -896,7 +896,7 @@
                                             <CheckBox IsChecked="{Binding Scanner.PaperBackScan}" IsEnabled="{Binding Scanner.Duplex}">
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
-                                                    <ListBox Width="96" Height="32"
+                                                    <ListBox Width="100" Height="32"
                                                         Background="{x:Null}"
                                                         BorderBrush="{x:Null}"
                                                         IsEnabled="{Binding Scanner.PaperBackScan}"

@@ -1,9 +1,5 @@
 ﻿using Extensions;
-using GpScanner.Properties;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Input;
@@ -16,22 +12,20 @@ namespace GpScanner.ViewModel;
 public class DocumentViewerModel : InpcBase
 {
     private IEnumerable<string> directoryAllPdfFiles;
-    private byte[] ımgData;
     private int ındex;
     private string ocrText;
     private string pdfFileContent;
-    private string pdfFilePath;
+    private string filePath;
     private Scanner scanner;
     private string title;
 
     public DocumentViewerModel()
     {
-        PropertyChanged += DocumentViewerModel_PropertyChangedAsync;
         Back = new RelayCommand<object>(
             parameter =>
             {
                 Index--;
-                PdfFilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
+                FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
             },
             parameter => Index > 0);
 
@@ -39,7 +33,7 @@ public class DocumentViewerModel : InpcBase
             parameter =>
             {
                 Index++;
-                PdfFilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
+                FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
             },
             parameter => Index < DirectoryAllPdfFiles?.Count() - 1);
 
@@ -51,12 +45,11 @@ public class DocumentViewerModel : InpcBase
                     MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                     bitmapFrame.Freeze();
-                    ScannedImage scannedImage = new() { Seçili = false, FilePath = PdfFilePath, Resim = bitmapFrame };
+                    ScannedImage scannedImage = new() { Seçili = false, FilePath = FilePath, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
                     bitmapFrame = null;
                     scannedImage = null;
                     ms = null;
-                    
                 }
             },
             parameter => true);
@@ -81,20 +74,6 @@ public class DocumentViewerModel : InpcBase
     }
 
     public ICommand Forward { get; }
-
-    public byte[] ImgData
-    {
-        get => ımgData;
-
-        set
-        {
-            if (ımgData != value)
-            {
-                ımgData = value;
-                OnPropertyChanged(nameof(ImgData));
-            }
-        }
-    }
 
     public int Index
     {
@@ -126,7 +105,7 @@ public class DocumentViewerModel : InpcBase
 
     public string PdfFileContent
     {
-        get => string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == PdfFilePath).Select(z => z.FileContent));
+        get => string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == FilePath).Select(z => z.FileContent));
 
         set
         {
@@ -138,16 +117,16 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string PdfFilePath
+    public string FilePath
     {
-        get => pdfFilePath;
+        get => filePath;
 
         set
         {
-            if (pdfFilePath != value)
+            if (filePath != value)
             {
-                pdfFilePath = value;
-                OnPropertyChanged(nameof(PdfFilePath));
+                filePath = value;
+                OnPropertyChanged(nameof(FilePath));
                 OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(PdfFileContent));
             }
@@ -170,7 +149,7 @@ public class DocumentViewerModel : InpcBase
 
     public string Title
     {
-        get => Path.GetFileName(PdfFilePath);
+        get => Path.GetFileName(FilePath);
 
         set
         {
@@ -179,17 +158,6 @@ public class DocumentViewerModel : InpcBase
                 title = value;
                 OnPropertyChanged(nameof(Title));
             }
-        }
-    }
-
-    private async void DocumentViewerModel_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
-    {
-        string defaultTtsLang = Settings.Default.DefaultTtsLang;
-        if (e.PropertyName is "ImgData" && ImgData is not null && !string.IsNullOrWhiteSpace(defaultTtsLang))
-        {
-            ObservableCollection<Ocr.OcrData> ocrtext = await Ocr.Ocr.OcrAsync(ImgData, defaultTtsLang);
-            OcrText = string.Join(" ", ocrtext?.Select(z => z.Text));
-            ImgData = null;
         }
     }
 }
