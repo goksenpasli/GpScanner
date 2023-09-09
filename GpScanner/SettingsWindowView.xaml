@@ -136,7 +136,9 @@
                                     <Style TargetType="Image">
                                         <Setter Property="Width" Value="60" />
                                     </Style>
-                                    <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
+                                    <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
                                 </ListBox.Resources>
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
@@ -262,14 +264,22 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="175" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="80" />
                                 </Grid.ColumnDefinitions>
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                    Description="{twainctrl:Loc FILE}"
                                     IsReadOnly="True" IsReadOnlyCaretVisible="True"
                                     PasteButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
-                                    Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                    Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Extensions:ButtonedTextBox>
                                 <Button Grid.Column="1" twainctrl:Policy.PolicyName="ChangeDataFolder" Command="{Binding ChangeDataFolder}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24" Height="24">
@@ -685,6 +695,7 @@
                             </Image>
                             <TextBlock VerticalAlignment="Center">
                                 <Run Text="PDF" />
+                                <LineBreak />
                                 <Run Text="{twainctrl:Loc COMPRESS}" />
                             </TextBlock>
                         </StackPanel>

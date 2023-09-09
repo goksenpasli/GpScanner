@@ -627,6 +627,7 @@ public class GpScannerViewModel : InpcBase
                 Filesavetask = Task.WhenAll(Tasks);
                 await Filesavetask;
                 scanner.PdfSaveProgressValue = 0;
+                BatchTxtOcrs?.Clear();
                 if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
@@ -705,6 +706,7 @@ public class GpScannerViewModel : InpcBase
                 Filesavetask = Task.WhenAll(Tasks);
                 await Filesavetask;
                 scanner.PdfSaveProgressValue = 0;
+                BatchTxtOcrs?.Clear();
                 if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
