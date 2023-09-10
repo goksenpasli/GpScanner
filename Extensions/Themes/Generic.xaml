@@ -847,7 +847,8 @@
                                 Margin="2" HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Data="{StaticResource ArrowGeometry}"
-                                Fill="#606060" Focusable="False" />
+                                Fill="#606060" Focusable="False"
+                                Visibility="{Binding ArrowVisibility, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />
                             <Popup Grid.ColumnSpan="2"
                                 local:ContentToggleButton.AlwaysOnTop="{Binding TopMost, RelativeSource={RelativeSource AncestorType={x:Type local:ContentToggleButton}}}"
                                 AllowsTransparency="True"

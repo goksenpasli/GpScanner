@@ -314,6 +314,7 @@
                         </Hyperlink>
                     </TextBlock>
                     <Extensions:ContentToggleButton HorizontalAlignment="Right"
+                        ArrowVisibility="Collapsed"
                         Background="{x:Null}"
                         BorderBrush="{x:Null}"
                         IsChecked="{Binding HelpIsOpened}">
@@ -484,13 +485,9 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
                                         </StackPanel>
                                         <Extensions:SplitButton.InternalContent>
-                                            <StackPanel Background="{StaticResource BorderBackground}">
-                                                <MenuItem BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                    BorderThickness="1"
-                                                    Header="{local:Loc SHOWFILE}"
-                                                    IsCheckable="True"
-                                                    IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
-                                            </StackPanel>
+                                            <Border Background="{StaticResource BorderBackground}" BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
+                                                <MenuItem Header="{local:Loc SHOWFILE}" IsCheckable="True" IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
+                                            </Border>
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
                                     <Button x:Name="AutoScanPathBtn" local:Policy.PolicyName="KayıtYoluBelirle" Command="{Binding KayıtYoluBelirle}">
@@ -583,6 +580,9 @@
                                         ItemsPanel="{StaticResource ListBoxItemsPanelHorizontal}"
                                         SelectedValue="{Binding SelectedRotation}"
                                         SelectedValuePath="Tag">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                        </ListBox.ItemContainerStyle>
                                         <ListBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
                                         <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
                                         <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
@@ -592,6 +592,9 @@
                                         ItemsPanel="{StaticResource ListBoxItemsPanelHorizontal}"
                                         SelectedValue="{Binding SelectedFlip}"
                                         SelectedValuePath="Tag">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                        </ListBox.ItemContainerStyle>
                                         <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageFlips}}">
                                             <Image Width="16" Height="16">
                                                 <Image.Source>
@@ -703,7 +706,7 @@
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="70" />
                                         </Grid.ColumnDefinitions>
-                                        <Extensions:ContentToggleButton BorderBrush="GreenYellow" BorderThickness="2">
+                                        <Extensions:ContentToggleButton ArrowVisibility="Collapsed" BorderBrush="GreenYellow" BorderThickness="2">
                                             <Extensions:ContentToggleButton.OverContent>
                                                 <StackPanel>
                                                     <ListBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
@@ -1043,13 +1046,28 @@
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Slider AutoToolTipPlacement="TopLeft" Maximum="400"
-                                Minimum="85" Orientation="Vertical"
-                                SmallChange="1"
-                                Style="{StaticResource Slider}"
-                                ToolTip="{local:Loc PREVIEWSIZE}"
-                                Value="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" />
-                            <Extensions:ContentToggleButton Grid.Column="1">
+                            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" PlacementMode="Right">
+                                <Image Width="24" Height="24">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="140" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Border Background="{StaticResource BorderBackground}" BorderBrush="Gray" BorderThickness="1">
+                                        <Slider Height="96"
+                                            AutoToolTipPlacement="TopLeft" Maximum="400"
+                                            Minimum="85" Orientation="Vertical"
+                                            SmallChange="1"
+                                            Style="{StaticResource Slider}"
+                                            ToolTip="{local:Loc PREVIEWSIZE}"
+                                            Value="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" />
+                                    </Border>
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
+                            <Extensions:ContentToggleButton Grid.Column="1" ArrowVisibility="Collapsed">
                                 <Extensions:ContentToggleButton.OverContent>
                                     <local:PdfSettings Width="500" />
                                 </Extensions:ContentToggleButton.OverContent>
@@ -1073,7 +1091,7 @@
                                     <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
                                         <Image Width="24" Height="24" Source="/TwainControl;component/Icons/undo.png" />
                                     </Button>
-                                    <Extensions:ContentToggleButton>
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed">
                                         <Extensions:ContentToggleButton.OverContent>
                                             <StackPanel Orientation="Horizontal">
                                                 <Button Command="{Binding ListeTemizle}">
@@ -1250,7 +1268,10 @@
                                                                     </Style>
                                                                 </Run.Style>
                                                             </Run><InlineUIContainer BaselineAlignment="Center">
-                                                                <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}" IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
+                                                                <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
+                                                                    Background="{x:Null}"
+                                                                    BorderBrush="{x:Null}"
+                                                                    IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style TargetType="{x:Type Extensions:ContentToggleButton}">
                                                                             <Style.Triggers>

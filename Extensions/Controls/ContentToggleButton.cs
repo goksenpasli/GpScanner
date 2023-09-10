@@ -8,6 +8,7 @@ namespace Extensions;
 public class ContentToggleButton : ToggleButton
 {
     public static readonly DependencyProperty AlwaysOnTopProperty = DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(true, OnTopChanged));
+    public static readonly DependencyProperty ArrowVisibilityProperty = DependencyProperty.Register("ArrowVisibility", typeof(Visibility), typeof(ContentToggleButton), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty ContentHorizontalOffsetProperty = DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
     public static readonly DependencyProperty ContentVerticalOffsetProperty = DependencyProperty.Register("ContentVerticalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
     public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ContentToggleButton), new PropertyMetadata(new CornerRadius(0d)));
@@ -18,6 +19,8 @@ public class ContentToggleButton : ToggleButton
     public static readonly DependencyProperty TopMostProperty = DependencyProperty.Register("TopMost", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(true));
 
     static ContentToggleButton() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ContentToggleButton), new FrameworkPropertyMetadata(typeof(ContentToggleButton))); }
+
+    public Visibility ArrowVisibility { get => (Visibility)GetValue(ArrowVisibilityProperty); set => SetValue(ArrowVisibilityProperty, value); }
 
     public double ContentHorizontalOffset { get => (double)GetValue(ContentHorizontalOffsetProperty); set => SetValue(ContentHorizontalOffsetProperty, value); }
 

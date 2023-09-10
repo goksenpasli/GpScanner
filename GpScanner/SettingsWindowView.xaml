@@ -130,6 +130,7 @@
                         <GroupBox>
                             <ListBox VerticalContentAlignment="Center"
                                 d:SelectedValue="TÜRKÇE" twainctrl:Policy.PolicyName="SeçiliDil"
+                                Background="{StaticResource BorderBackground}"
                                 SelectedValue="{Binding SeçiliDil}"
                                 SelectedValuePath="Tag" VirtualizingPanel.ScrollUnit="Pixel">
                                 <ListBox.Resources>
