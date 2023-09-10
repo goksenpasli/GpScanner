@@ -601,7 +601,7 @@ public class GpScannerViewModel : InpcBase
                                         batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
                                         if (Settings.Default.PdfBatchCompress)
                                         {
-                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, (int)Twainsettings.Settings.Default.Çözünürlük).Save(pdffile);
+                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution).Save(pdffile);
                                         }
                                         else
                                         {
