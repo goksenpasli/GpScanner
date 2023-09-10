@@ -878,7 +878,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     await Task.Run(
                         async () =>
                         {
-                            using PdfDocument pdfDocument = await seçiliresimler.GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                            using PdfDocument pdfDocument = await seçiliresimler.GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
                             pdfDocument.Save(temporarypdf);
                             processedfiles.MergePdf().Save(pdfFilePath);
                         });
@@ -952,7 +952,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             await Task.Run(
                                 () =>
                                 {
-                                    using (PdfDocument pdfDocument = bitmapFrame.GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, (int)Settings.Default.Çözünürlük))
+                                    using (PdfDocument pdfDocument = bitmapFrame.GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution))
                                     {
                                         pdfDocument.Save(temporaryPdf);
                                     }
@@ -1275,7 +1275,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                     ms = null;
-                    using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue).GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, (int)Settings.Default.Çözünürlük);
+                    using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue).GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution);
                     SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("PAGENUMBER")} {pdfViewer.Sayfa}.pdf" };
                     if (saveFileDialog.ShowDialog() == true)
                     {

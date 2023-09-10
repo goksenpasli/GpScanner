@@ -132,7 +132,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                 .Where(z => z.Seçili)
                                 .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
                                 .ToList();
-                            pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, (int)Settings.Default.Çözünürlük);
+                            pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
                         });
                     string savefolder = CreateSaveFolder("SPLIT");
                     string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");

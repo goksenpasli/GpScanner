@@ -1847,7 +1847,7 @@ public class GpScannerViewModel : InpcBase
             () =>
             {
                 PdfBatchRunning = true;
-                using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper) : currentfilepath.GeneratePdf(paper, scannedText))
+                using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution) : currentfilepath.GeneratePdf(paper, scannedText))
                 {
                     string pdfFileName = Path.ChangeExtension(currentfilename, ".pdf");
                     string pdfFilePath = Path.Combine(batchsavefolder, pdfFileName);
