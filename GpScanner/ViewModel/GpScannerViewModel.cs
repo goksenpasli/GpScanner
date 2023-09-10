@@ -601,7 +601,7 @@ public class GpScannerViewModel : InpcBase
                                         batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
                                         if (Settings.Default.PdfBatchCompress)
                                         {
-                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper).Save(pdffile);
+                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, (int)Twainsettings.Settings.Default.Çözünürlük).Save(pdffile);
                                         }
                                         else
                                         {
@@ -626,6 +626,7 @@ public class GpScannerViewModel : InpcBase
                 BatchDialogOpen = true;
                 Filesavetask = Task.WhenAll(Tasks);
                 await Filesavetask;
+                BatchFolderProcessedFileList = OrderBatchFiles(BatchFolderProcessedFileList);
                 scanner.PdfSaveProgressValue = 0;
                 BatchTxtOcrs?.Clear();
                 if (Filesavetask?.IsCompleted == true && Shutdown)
@@ -2046,6 +2047,8 @@ public class GpScannerViewModel : InpcBase
         Version os = Environment.OSVersion.Version;
         return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
     }
+
+    private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) { return new ObservableCollection<BatchFiles>(batchFolderProcessedFileList.OrderBy(z => z.Name)); }
 
     private void RegisterSimplePdfFileWatcher()
     {

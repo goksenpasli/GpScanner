@@ -1040,12 +1040,13 @@
                                             VirtualizingPanel.CacheLength="3" VirtualizingPanel.CacheLengthUnit="Item"
                                             VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
                                             VirtualizingPanel.VirtualizationMode="Standard">
-                                            <ListBox.InputBindings>
-                                                <KeyBinding Key="A" Command="{Binding BatchFolderTümünüİşaretle}" Modifiers="Ctrl" />
-                                                <KeyBinding Key="D" Command="{Binding BatchFolderTümünüİşaretiniKaldır}" Modifiers="Ctrl" />
-                                                <KeyBinding Key="S" Command="{Binding BatchFolderTümünüKaydet}" Modifiers="Ctrl" />
-                                                <KeyBinding Key="Delete" Command="{Binding BatchFolderTümünüSil}" Modifiers="Shift" />
-                                            </ListBox.InputBindings>
+                                            <ListBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Command="{Binding BatchFolderTümünüİşaretle}" Header="{twainctrl:Loc ALL}" />
+                                                    <MenuItem Command="{Binding BatchFolderTümünüİşaretiniKaldır}" Header="{twainctrl:Loc NONE}" />
+                                                    <MenuItem Command="{Binding BatchFolderTümünüSil}" Header="{twainctrl:Loc CLEARLIST}" />
+                                                </ContextMenu>
+                                            </ListBox.ContextMenu>
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <CheckBox VerticalContentAlignment="Center" d:Content="Name" IsChecked="{Binding Checked}">
