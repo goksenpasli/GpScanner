@@ -750,23 +750,26 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+        if (d is PdfViewer pdfViewer)
         {
-            try
+            pdfViewer.Source = null;
+            if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
             {
-                pdfViewer.Source = null;
-                using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
-                int dpi = pdfViewer.Dpi;
-                int page = pdfViewer.Sayfa - 1;
-                int width = (int)(pdfDoc.PageSizes[page].Width / 96 * dpi);
-                int height = (int)(pdfDoc.PageSizes[page].Height / 96 * dpi);
-                pdfViewer.ToplamSayfa = pdfDoc.PageCount;
-                pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                pdfViewer.Source = await RenderPdf(pdfDoc, dpi, page, width, height);
-            }
-            catch (Exception)
-            {
-                pdfViewer.Source = null;
+                try
+                {
+                    using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
+                    int dpi = pdfViewer.Dpi;
+                    int page = pdfViewer.Sayfa - 1;
+                    int width = (int)(pdfDoc.PageSizes[page].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page].Height / 96 * dpi);
+                    pdfViewer.ToplamSayfa = pdfDoc.PageCount;
+                    pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                    pdfViewer.Source = await RenderPdf(pdfDoc, dpi, page, width, height);
+                }
+                catch (Exception)
+                {
+                    pdfViewer.Source = null;
+                }
             }
         }
     }

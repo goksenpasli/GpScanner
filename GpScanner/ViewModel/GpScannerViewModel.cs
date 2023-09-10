@@ -93,6 +93,7 @@ public class GpScannerViewModel : InpcBase
     private ObservableCollection<OcrData> scannedText = new();
     private string seçiliDil;
     private DateTime seçiliGün;
+    private BatchFiles selectedBatchFile;
     private ContributionData selectedContribution;
     private Scanner selectedDocument;
     private string selectedFtp;
@@ -546,7 +547,13 @@ public class GpScannerViewModel : InpcBase
             },
             parameter => BatchFolderProcessedFileList?.Count > 0);
 
-        BatchFolderTümünüSil = new RelayCommand<object>(parameter => BatchFolderProcessedFileList?.Clear(), parameter => BatchFolderProcessedFileList?.Count > 0);
+        BatchFolderTümünüSil = new RelayCommand<object>(
+            parameter =>
+            {
+                SelectedBatchFile = null;
+                BatchFolderProcessedFileList?.Clear();
+            },
+            parameter => BatchFolderProcessedFileList?.Count > 0);
 
         SetBatchWatchFolder = new RelayCommand<object>(
             parameter =>
@@ -1428,6 +1435,19 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
+    public BatchFiles SelectedBatchFile
+    {
+        get => selectedBatchFile;
+        set
+        {
+            if (selectedBatchFile != value)
+            {
+                selectedBatchFile = value;
+                OnPropertyChanged(nameof(SelectedBatchFile));
+            }
+        }
+    }
+
     public ContributionData SelectedContribution
     {
         get => selectedContribution;
@@ -1847,7 +1867,9 @@ public class GpScannerViewModel : InpcBase
             () =>
             {
                 PdfBatchRunning = true;
-                using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution) : currentfilepath.GeneratePdf(paper, scannedText))
+                using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress
+                    ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution)
+                    : currentfilepath.GeneratePdf(paper, scannedText))
                 {
                     string pdfFileName = Path.ChangeExtension(currentfilename, ".pdf");
                     string pdfFilePath = Path.Combine(batchsavefolder, pdfFileName);

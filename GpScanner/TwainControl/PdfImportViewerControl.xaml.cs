@@ -607,6 +607,18 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         }
                     }
 
+                    if (DrawRoundedRect)
+                    {
+                        if (GraphObjectFillColor == XKnownColor.Transparent)
+                        {
+                            gfx.DrawRoundedRectangle(pen, rect, new Size(2, 2));
+                        }
+                        else
+                        {
+                            gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
+                        }
+                    }
+
                     if (DrawEllipse)
                     {
                         if (GraphObjectFillColor == XKnownColor.Transparent)
@@ -647,19 +659,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     {
                         gfx.DrawImage(DrawnImage, rect);
                         DrawnImage = null;
-                        
-                    }
-
-                    if (DrawRoundedRect)
-                    {
-                        if (GraphObjectFillColor == XKnownColor.Transparent)
-                        {
-                            gfx.DrawRoundedRectangle(pen, rect, new Size(2, 2));
-                        }
-                        else
-                        {
-                            gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
-                        }
                     }
 
                     if (DrawString && !string.IsNullOrWhiteSpace(Text))
