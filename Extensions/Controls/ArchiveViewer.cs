@@ -14,10 +14,12 @@ namespace Extensions
     public class ArchiveViewer : Control, INotifyPropertyChanged, IDisposable
     {
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
+        public static readonly DependencyProperty CalculateCrcProperty = DependencyProperty.Register("CalculateCrc", typeof(bool), typeof(ArchiveViewer), new PropertyMetadata(false));
         private ObservableCollection<ArchiveData> arşivİçerik;
         private ICollectionView cvs;
         private bool disposedValue;
         private string search = string.Empty;
+        private ArchiveData selectedFile;
         private string[] selectedFiles;
         private double toplamOran;
 
@@ -63,6 +65,18 @@ namespace Extensions
                     }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
+
+            FileCrcGenerate = new RelayCommand<object>(
+                parameter =>
+                {
+                    using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
+                    if (archive != null)
+                    {
+                        ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.DosyaAdı);
+                        SelectedFile.Crc = CalculateFileCRC(dosya.Open());
+                    }
+                },
+                parameter => !string.IsNullOrWhiteSpace(ArchivePath) && SelectedFile is not null && !CalculateCrc);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -87,6 +101,10 @@ namespace Extensions
 
         public RelayCommand<object> ArşivTekDosyaÇıkar { get; }
 
+        public bool CalculateCrc { get => (bool)GetValue(CalculateCrcProperty); set => SetValue(CalculateCrcProperty, value); }
+
+        public RelayCommand<object> FileCrcGenerate { get; }
+
         public string Search
         {
             get => search;
@@ -96,6 +114,19 @@ namespace Extensions
                 {
                     search = value;
                     OnPropertyChanged(nameof(Search));
+                }
+            }
+        }
+
+        public ArchiveData SelectedFile
+        {
+            get => selectedFile;
+            set
+            {
+                if (selectedFile != value)
+                {
+                    selectedFile = value;
+                    OnPropertyChanged(nameof(SelectedFile));
                 }
             }
         }
@@ -149,8 +180,9 @@ namespace Extensions
             archiveViewer.Arşivİçerik = new ObservableCollection<ArchiveData>();
             using (ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read))
             {
-                foreach (ArchiveData archiveData in from ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0)
-                    let archiveData = new ArchiveData()
+                foreach (ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0))
+                {
+                    ArchiveData archiveData = new()
                     {
                         SıkıştırılmışBoyut = item.CompressedLength,
                         DosyaAdı = item.Name,
@@ -158,10 +190,8 @@ namespace Extensions
                         Boyut = item.Length,
                         Oran = (float)item.CompressedLength / item.Length,
                         DüzenlenmeZamanı = item.LastWriteTime.Date,
-                        Crc = CalculateFileCRC(item.Open())
-                    }
-                    select archiveData)
-                {
+                        Crc = CalculateCrc ? CalculateFileCRC(item.Open()) : null
+                    };
                     archiveViewer.Arşivİçerik.Add(archiveData);
                 }
             }

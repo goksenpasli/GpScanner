@@ -557,8 +557,7 @@
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ListView x:Name="Lv"
-                            d:ItemsSource="{d:SampleData ItemCount=3}"
+                        <ListView d:ItemsSource="{d:SampleData ItemCount=3}"
                             local:GridViewSort.AutoSort="True" AlternationCount="2"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -566,7 +565,9 @@
                             Foreground="{TemplateBinding Foreground}"
                             IsSynchronizedWithCurrentItem="False"
                             ItemsSource="{Binding Arşivİçerik, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
-                            ScrollViewer.IsDeferredScrollingEnabled="False" SelectionMode="Single">
+                            ScrollViewer.IsDeferredScrollingEnabled="False"
+                            SelectedItem="{Binding SelectedFile, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
+                            SelectionMode="Single">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListViewItem}">
                                     <Setter Property="Template">
@@ -624,10 +625,6 @@
                                         local:GridViewSort.PropertyName="SıkıştırılmışBoyut"
                                         DisplayMemberBinding="{Binding SıkıştırılmışBoyut, Mode=OneWay}"
                                         Header="SIKIŞTIRILMIŞ&#x0a;BOYUT" />
-                                    <GridViewColumn Width="65"
-                                        local:GridViewSort.PropertyName="Crc"
-                                        DisplayMemberBinding="{Binding Crc, Mode=OneWay}"
-                                        Header="CRC32" />
                                     <GridViewColumn Width="70"
                                         local:GridViewSort.PropertyName="DosyaAdı"
                                         DisplayMemberBinding="{Binding DosyaAdı, Converter={StaticResource FilePathToFileDescriptionConverter}, Mode=OneWay}"
@@ -642,19 +639,34 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
+                                    <GridViewColumn Width="65" local:GridViewSort.PropertyName="Crc" Header="CRC32">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Hyperlink Command="{Binding FileCrcGenerate, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}">
+                                                        <Run>
+                                                            <Run.Style>
+                                                                <Style TargetType="Run">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding CalculateCrc, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" Value="true">
+                                                                            <Setter Property="Text" Value="{Binding Crc}" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding CalculateCrc, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" Value="false">
+                                                                            <Setter Property="Text" Value="{Binding Crc, TargetNullValue='HESAPLA'}" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Run.Style>
+                                                        </Run>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
                         </ListView>
                         <Grid Grid.Column="1">
-                            <Grid.Style>
-                                <Style TargetType="Grid">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=Lv, Path=Items.IsEmpty}" Value="true">
-                                            <Setter Property="Visibility" Value="Collapsed" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
                             <ProgressBar Width="20"
                                 d:Value="50"
                                 Foreground="{StaticResource ProgressBarPinkForeground}"
@@ -678,13 +690,13 @@
                                 </ItemsPanelTemplate>
                             </StatusBar.ItemsPanel>
                             <StatusBarItem Grid.Column="0">
-                                <TextBlock Text="{Binding ElementName=Lv, Path=SelectedItem.DosyaAdı}" />
+                                <TextBlock Text="{Binding Path=SelectedFile.DosyaAdı, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />
                             </StatusBarItem>
                             <StatusBarItem Grid.Column="1">
-                                <TextBlock Text="{Binding ElementName=Lv, Path=SelectedItem.DüzenlenmeZamanı}" />
+                                <TextBlock Text="{Binding Path=SelectedFile.DüzenlenmeZamanı, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />
                             </StatusBarItem>
                             <StatusBarItem Grid.Column="2" HorizontalAlignment="Right">
-                                <TextBlock Text="{Binding ElementName=Lv, Path=ItemsSource.Count, StringFormat=Toplam {0} Dosya}" />
+                                <TextBlock Text="{Binding Path=Arşivİçerik.Count, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}, StringFormat=Toplam {0} Dosya}" />
                             </StatusBarItem>
                         </StatusBar>
                     </Grid>
