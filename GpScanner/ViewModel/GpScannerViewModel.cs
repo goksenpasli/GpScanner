@@ -487,6 +487,12 @@ public class GpScannerViewModel : InpcBase
                 PatchProfileName = null;
                 Settings.Default.Save();
                 Settings.Default.Reload();
+                if (Settings.Default.PatchCodes.Count == 0)
+                {
+                    PatchFileName = null;
+                    PatchTag = null;
+                    DetectPageSeperator = false;
+                }
             },
             parameter => true);
 

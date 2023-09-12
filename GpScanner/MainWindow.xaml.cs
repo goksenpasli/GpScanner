@@ -243,7 +243,7 @@ public partial class MainWindow : Window
             {
                 ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
 
-                if (ViewModel.DetectPageSeperator && ViewModel.BarcodeContent is not null)
+                if (ViewModel.DetectPageSeperator && TwainCtrl?.Scanner?.BarcodeContent is not null)
                 {
                     TwainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(TwainCtrl.Scanner.BarcodeContent);
                 }

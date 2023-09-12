@@ -308,6 +308,7 @@
                                     <ComboBoxItem Content="FOLD" Tag="0" />
                                     <ComboBoxItem Content="RIPPLE" Tag="1" />
                                     <ComboBoxItem Content="MIRROR" Tag="2" />
+                                    <ComboBoxItem Content="NONE" Tag="3" />
                                 </ComboBox>
                                 <Button Grid.Column="4" Command="{Binding PlayAnimation}">
                                     <Image Width="16" Height="16">
@@ -344,11 +345,13 @@
                                         <UniformGrid Rows="3">
                                             <Extensions:ButtonedTextBox x:Name="Tb"
                                                 VerticalContentAlignment="Center"
+                                                d:Text="PatchFileName"
                                                 Description="{twainctrl:Loc TAG}"
                                                 IsEnabled="{Binding DetectPageSeperator}"
                                                 OpenButtonVisibility="Collapsed"
                                                 Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
                                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                                d:Text="PatchTag"
                                                 Description="{twainctrl:Loc FILENAME}"
                                                 IsEnabled="{Binding DetectPageSeperator}"
                                                 OpenButtonVisibility="Collapsed"
@@ -388,6 +391,7 @@
                                 <UniformGrid Grid.Column="2" Margin="1" Columns="2">
                                     <Image x:Name="Img"
                                         Width="80" Height="80"
+                                        d:Source="{Binding Source='Gok$en', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
                                         Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
                                     <UniformGrid Rows="2">
                                         <Button twainctrl:Policy.PolicyName="SaveQrImage" Command="{Binding SaveQrImage}" CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
