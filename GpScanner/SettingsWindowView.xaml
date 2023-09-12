@@ -146,7 +146,7 @@
                                         <UniformGrid Rows="2" />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
-                                <ListBoxItem Tag="TÜRKÇE" Visibility="{Binding Source='tr', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="TÜRKÇE">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Turkey.png" />
@@ -154,7 +154,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="ENGLISH" Visibility="{Binding Source='en', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="ENGLISH">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-United-States-of-America.png" />
@@ -162,7 +162,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="FRANÇAIS" Visibility="{Binding Source='fr', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="FRANÇAIS">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-France.png" />
@@ -170,7 +170,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="ITALIANO" Visibility="{Binding Source='it', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="ITALIANO">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Italy.png" />
@@ -178,7 +178,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="عربي" Visibility="{Binding Source='ar', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="عربي">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Saudi-Arabia.png" />
@@ -186,7 +186,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="РУССКИЙ" Visibility="{Binding Source='ru', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="РУССКИЙ">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Russia.png" />
@@ -194,7 +194,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="DEUTSCH" Visibility="{Binding Source='de', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="DEUTSCH">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Germany.png" />
@@ -202,7 +202,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="日本" Visibility="{Binding Source='ja', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="日本">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Japan.png" />
@@ -210,7 +210,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="DUTCH" Visibility="{Binding Source='nl', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="DUTCH">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Netherlands.png" />
@@ -218,7 +218,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="CZECH" Visibility="{Binding Source='cs', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="CZECH">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Czech.png" />
@@ -226,7 +226,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="ESPAÑOL" Visibility="{Binding Source='es', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="ESPAÑOL">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Spain.png" />
@@ -234,7 +234,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="中國人" Visibility="{Binding Source='zh', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="中國人">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-China.png" />
@@ -242,7 +242,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="УКРАЇНСЬКА" Visibility="{Binding Source='uk', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="УКРАЇНСЬКА">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Ukraina.png" />
@@ -250,7 +250,7 @@
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
-                                <ListBoxItem Tag="ΕΛΛΗΝΙΚΑ" Visibility="{Binding Source='el', Converter={StaticResource FolderExsistToVisibilityConverter}}">
+                                <ListBoxItem Tag="ΕΛΛΗΝΙΚΑ">
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Greece.png" />
@@ -267,6 +267,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="80" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                     IsReadOnly="True" IsReadOnlyCaretVisible="True"
@@ -308,6 +309,16 @@
                                     <ComboBoxItem Content="RIPPLE" Tag="1" />
                                     <ComboBoxItem Content="MIRROR" Tag="2" />
                                 </ComboBox>
+                                <Button Grid.Column="4" Command="{Binding PlayAnimation}">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="137" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
                             </Grid>
                         </GroupBox>
                         <GroupBox Grid.Row="2">

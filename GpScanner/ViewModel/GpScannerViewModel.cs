@@ -420,7 +420,7 @@ public class GpScannerViewModel : InpcBase
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
-            parameter => File.Exists("twux32.exe") && Policy.CheckPolicy("CheckUpdate"));
+            parameter => Policy.CheckPolicy("CheckUpdate"));
 
         SavePatchProfile = new RelayCommand<object>(
             parameter =>
@@ -764,6 +764,15 @@ public class GpScannerViewModel : InpcBase
         PrintImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource, 300, false), parameter => parameter is ImageSource);
 
         PlayAudio = new RelayCommand<object>(parameter => TwainCtrl.PlayNotificationSound(parameter as string), parameter => true);
+
+        PlayAnimation = new RelayCommand<object>(
+            parameter =>
+            {
+                Fold = 0.3;
+                Mirror = 0;
+                GenerateAnimationTimer();
+            },
+            parameter => true);
 
         AddToCalendar = new RelayCommand<object>(
             parameter =>
@@ -1347,6 +1356,8 @@ public class GpScannerViewModel : InpcBase
     }
 
     public RelayCommand<object> PdfZipBirleştir { get; }
+
+    public RelayCommand<object> PlayAnimation { get; }
 
     public RelayCommand<object> PlayAudio { get; }
 
