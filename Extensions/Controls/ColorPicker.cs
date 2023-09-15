@@ -223,5 +223,5 @@ public class RGB
     public byte R { get; set; }
 
     public Color Color() { return new Color { R = R, G = G, B = B, A = 255 }; }
-    public string Hex(byte Alpha) { return BitConverter.ToString(new[] { Alpha, R, G, B }).Replace("-", string.Empty); }
+    public string Hex(byte Alpha) { return BitConverter.ToString([Alpha, R, G, B]).Replace("-", string.Empty); }
 }

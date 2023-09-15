@@ -334,7 +334,10 @@
                                 OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=350, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                <ComboBox twainctrl:Policy.PolicyName="SelectedSize" ItemsSource="{Binding GetPreviewSize}" SelectedItem="{Binding SelectedSize}">
+                                <ComboBox VerticalContentAlignment="Center"
+                                    twainctrl:Policy.PolicyName="SelectedSize"
+                                    ItemsSource="{Binding GetPreviewSize}"
+                                    SelectedItem="{Binding SelectedSize}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <TextBlock><Run Text="{Binding Width}" /><Run Text="X" /><Run Text="{Binding Height}" /></TextBlock>

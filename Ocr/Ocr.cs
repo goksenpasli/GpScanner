@@ -136,7 +136,7 @@ public static class Ocr
             iterator.Begin();
             ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
             dosya = null;
-            
+
             return ocrdata;
         }
 
@@ -159,7 +159,7 @@ public static class Ocr
             iterator.Begin();
             ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(pageIteratorLevel);
             dosya = null;
-            
+
             return ocrdata;
         }
 
@@ -168,7 +168,7 @@ public static class Ocr
 
     private static ObservableCollection<OcrData> IterateOcr(this ResultIterator iterator, PageIteratorLevel pageIteratorLevel)
     {
-        ObservableCollection<OcrData> ocrdata = new();
+        ObservableCollection<OcrData> ocrdata = [];
         do
         {
             if (iterator?.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect) == true)

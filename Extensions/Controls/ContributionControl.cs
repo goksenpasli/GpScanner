@@ -28,16 +28,16 @@ namespace Extensions
         {
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                Contributions = new ObservableCollection<ContributionData>
-                {
-                    new ContributionData() { Count = 0, ContrubutionDate = DateTime.Today },
-                    new ContributionData() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(1) },
-                    new ContributionData() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(2) },
-                    new ContributionData() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(3) },
-                    new ContributionData() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(4) },
-                    new ContributionData() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(5) },
-                    new ContributionData() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(6) },
-                };
+                Contributions =
+                [
+                    new() { Count = 0, ContrubutionDate = DateTime.Today },
+                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(1) },
+                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(2) },
+                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(3) },
+                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(4) },
+                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(5) },
+                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(6) },
+                ];
             }
             PropertyChanged += ContributionControl_PropertyChanged;
         }

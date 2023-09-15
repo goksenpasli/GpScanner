@@ -70,7 +70,7 @@ public class QrCode : InpcBase
             Result result = reader.Decode(bitmapImage);
             imgbyte = null;
             bitmapImage = null;
-            
+
             return result?.Text;
         }
 

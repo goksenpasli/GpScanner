@@ -37,8 +37,6 @@ public class PdfCompressorControl : Compressor
                         gpScannerViewModel.ReloadFileDatas();
                         gpScannerViewModel.SeçiliGün = date;
                     }
-
-                    
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));

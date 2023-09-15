@@ -201,18 +201,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
-                PdfMatches = new ObservableCollection<PdfMatch>();
-                foreach (PdfMatch match in matches.Items)
-                {
-                    PdfMatches.Add(match);
-                }
+                PdfMatches = [.. matches.Items];
             },
             parameter => Source != null && !string.IsNullOrWhiteSpace(SearchTextContent));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public static int[] DpiList { get; } = { 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200 };
+    public static int[] DpiList { get; } = [12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200];
 
     public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
 
@@ -613,7 +609,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             byte[] buffer = new byte[4];
             using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
             _ = fs.Read(buffer, 0, buffer.Length);
-            byte[] pdfheader = { 0x25, 0x50, 0x44, 0x46 };
+            byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
             return buffer?.SequenceEqual(pdfheader) == true;
         }
 

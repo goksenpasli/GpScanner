@@ -26,7 +26,7 @@ public partial class App : Application
         {
             if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
             {
-                List<Process> processes = StillImageHelper.GetAllGPScannerProcess().ToList();
+                List<Process> processes = [.. StillImageHelper.GetAllGPScannerProcess()];
                 if (!processes.Any())
                 {
                     StillImageHelper.FirstLanuchScan = true;

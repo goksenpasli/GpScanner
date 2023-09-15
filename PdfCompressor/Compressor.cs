@@ -42,14 +42,14 @@ public class Compressor : Control, INotifyPropertyChanged
     {
         if (DesignerProperties.GetIsInDesignMode(this))
         {
-            BatchPdfList = new ObservableCollection<BatchPdfData>
-            {
-                new BatchPdfData() { Filename = "FileName", Completed = true },
-                new BatchPdfData() { Filename = "FileName", Completed = true },
-                new BatchPdfData() { Filename = "FileName" },
-                new BatchPdfData() { Filename = "FileName" },
-                new BatchPdfData() { Filename = "FileName" },
-            };
+            BatchPdfList =
+            [
+                new() { Filename = "FileName", Completed = true },
+                new() { Filename = "FileName", Completed = true },
+                new() { Filename = "FileName" },
+                new() { Filename = "FileName" },
+                new() { Filename = "FileName" },
+            ];
         }
 
         CompressFile = new RelayCommand<object>(
@@ -64,7 +64,6 @@ public class Compressor : Control, INotifyPropertyChanged
                         pdfDocument.Save(saveFileDialog.FileName);
                         LoadedPdfPath = null;
                     }
-                    
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));
@@ -78,7 +77,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     {
                         PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
                         pdfDocument.Save($"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf");
-                        
+
                         file.Completed = true;
                     }
                 }
@@ -168,7 +167,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public async Task<List<BitmapImage>> AddToListAsync(PdfiumViewer.PdfDocument pdfDoc, int dpi)
     {
-        List<BitmapImage> images = new();
+        List<BitmapImage> images = [];
         await Task.Run(
             () =>
             {
@@ -249,8 +248,6 @@ public class Compressor : Control, INotifyPropertyChanged
                         {
                             progresscallback((i + 1) / (double)bitmapFrames.Count);
                         }
-
-                        
                     }
 
                     DefaultPdfCompression(document);
@@ -272,7 +269,7 @@ public class Compressor : Control, INotifyPropertyChanged
             byte[] buffer = new byte[4];
             using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
             _ = fs.Read(buffer, 0, buffer.Length);
-            byte[] pdfheader = { 0x25, 0x50, 0x44, 0x46 };
+            byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
             return buffer?.SequenceEqual(pdfheader) == true;
         }
 

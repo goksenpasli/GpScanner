@@ -29,11 +29,13 @@ namespace Extensions
         protected override byte[] HashFinal()
         {
             hashValue = ~hashValue;
-            byte[] hashBuffer = new byte[4];
-            hashBuffer[0] = (byte)((hashValue >> 24) & 0xFF);
-            hashBuffer[1] = (byte)((hashValue >> 16) & 0xFF);
-            hashBuffer[2] = (byte)((hashValue >> 8) & 0xFF);
-            hashBuffer[3] = (byte)(hashValue & 0xFF);
+            byte[] hashBuffer =
+            [
+                (byte)((hashValue >> 24) & 0xFF),
+                (byte)((hashValue >> 16) & 0xFF),
+                (byte)((hashValue >> 8) & 0xFF),
+                (byte)(hashValue & 0xFF),
+            ];
             return hashBuffer;
         }
 

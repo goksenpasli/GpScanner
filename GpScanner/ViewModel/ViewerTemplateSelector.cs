@@ -28,8 +28,8 @@ public class ViewerTemplateSelector : DataTemplateSelector
     {
         if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && item is string dosya)
         {
-            string[] imgext = { ".jpg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff" };
-            string[] videoext = { ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" };
+            string[] imgext = [".jpg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff"];
+            string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
             string ext = Path.GetExtension(dosya).ToLower();
             if (ext != null)
             {

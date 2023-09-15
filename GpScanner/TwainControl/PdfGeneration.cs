@@ -480,8 +480,6 @@ public static class PdfGeneration
                 {
                     scannedimage.Resim = null;
                 }
-
-                
             }
 
             if (Scanner.PasswordProtect)
@@ -517,13 +515,13 @@ public static class PdfGeneration
     {
         return Scanner.Layout switch
         {
-            PdfPageLayout.Left => new double[] { 30, 30 },
-            PdfPageLayout.Middle => new[] { page.Width / 2, 30 },
-            PdfPageLayout.Right => new[] { page.Width - 30, 30 },
-            PdfPageLayout.LeftBottom => new[] { 30, page.Height - 30 },
-            PdfPageLayout.MiddleBottom => new[] { page.Width / 2, page.Height - 30 },
-            PdfPageLayout.RightBottom => new[] { page.Width - 30, page.Height - 30 },
-            _ => new double[] { 0, 0 }
+            PdfPageLayout.Left => [30, 30],
+            PdfPageLayout.Middle => [page.Width / 2, 30],
+            PdfPageLayout.Right => [page.Width - 30, 30],
+            PdfPageLayout.LeftBottom => [30, page.Height - 30],
+            PdfPageLayout.MiddleBottom => [page.Width / 2, page.Height - 30],
+            PdfPageLayout.RightBottom => [page.Width - 30, page.Height - 30],
+            _ => [0, 0]
         };
     }
 

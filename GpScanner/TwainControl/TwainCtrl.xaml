@@ -519,6 +519,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="17.6" />
                                 </Grid.ColumnDefinitions>
                                 <ComboBox x:Name="CbFolderFormat"
                                     local:Policy.PolicyName="FolderDateFormat"
@@ -632,6 +633,78 @@
                                         </ListBoxItem>
                                     </ListBox>
                                 </UniformGrid>
+                                <Extensions:ContentToggleButton Grid.Column="3" ArrowVisibility="Collapsed">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="245" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <GroupBox Grid.RowSpan="2" Grid.Column="2">
+                                            <Grid>
+                                                <Grid.Resources>
+                                                    <Style TargetType="Extensions:NumericUpDownControl">
+                                                        <Setter Property="SmallChange" Value="1" />
+                                                        <Setter Property="Minimum" Value="0" />
+                                                        <Setter Property="Orientation" Value="Horizontal" />
+                                                    </Style>
+                                                </Grid.Resources>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <Extensions:NumericUpDownControl Grid.Column="1"
+                                                    HorizontalAlignment="Center"
+                                                    Maximum="{Binding PageHeight}"
+                                                    Value="{Binding Top, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Extensions:NumericUpDownControl Grid.Row="1"
+                                                    Height="16"
+                                                    Maximum="{Binding PageWidth}"
+                                                    Value="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Extensions:NumericUpDownControl Grid.Row="2" Grid.Column="1"
+                                                    HorizontalAlignment="Center"
+                                                    Maximum="{Binding PageHeight}"
+                                                    Value="{Binding Bottom, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Extensions:NumericUpDownControl Grid.Row="1" Grid.Column="2"
+                                                    Height="16"
+                                                    Maximum="{Binding PageWidth}"
+                                                    Value="{Binding Right, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Button Grid.Row="1" Grid.Column="1"
+                                                    Width="210" Height="297"
+                                                    BorderBrush="Gray" BorderThickness="2"
+                                                    Command="{Binding ResetCrop}">
+                                                    <Button.Effect>
+                                                        <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                    </Button.Effect>
+                                                    <StackPanel>
+                                                        <TextBlock>
+                                                            <Run Text="{Binding PageWidth, Mode=OneWay}" />
+                                                            <Run Text="X" />
+                                                            <Run Text="{Binding PageHeight, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                        <Image Width="32" Height="32" VerticalAlignment="Bottom">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="131" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </StackPanel>
+                                                </Button>
+                                            </Grid>
+                                        </GroupBox>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                </Extensions:ContentToggleButton>
                             </Grid>
                         </GroupBox.Header>
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

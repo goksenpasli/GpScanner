@@ -41,7 +41,7 @@ public partial class MainWindow : Window
                 string pdfFilePath = pdfviewer.PdfFilePath;
                 int curpage = pdfviewer.Sayfa;
                 droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
-                string[] processedfiles = { temporarypdf, pdfFilePath };
+                string[] processedfiles = [temporarypdf, pdfFilePath];
                 if ((Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftShift)) || (Keyboard.IsKeyDown(Key.RightAlt) && Keyboard.IsKeyDown(Key.RightShift)))
                 {
                     await TwainCtrl.RemovePdfPageAsync(pdfFilePath, curpage, curpage);
@@ -59,7 +59,7 @@ public partial class MainWindow : Window
                     return;
                 }
 
-                string[] pdffiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? new[] { pdfFilePath, temporarypdf } : new[] { temporarypdf, pdfFilePath };
+                string[] pdffiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? [pdfFilePath, temporarypdf] : [temporarypdf, pdfFilePath];
                 pdffiles.MergePdf().Save(pdfFilePath);
                 TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
             }

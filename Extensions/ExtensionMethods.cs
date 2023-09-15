@@ -121,9 +121,9 @@ public static class ExtensionMethods
 
     public static ConcurrentBag<string> DirSearch(this string path, string pattern = "*.*")
     {
-        ConcurrentBag<string> filesNames = new();
+        ConcurrentBag<string> filesNames = [];
 
-        ConcurrentBag<string> pendingQueue = new() { path };
+        ConcurrentBag<string> pendingQueue = [path];
 
         _ = Parallel.ForEach(
             pendingQueue,
@@ -260,7 +260,7 @@ public static class ExtensionMethods
 
         Helpers.SHParseDisplayName(Path.Combine(folderPath, file), IntPtr.Zero, out IntPtr nativeFile, 0, out _);
 
-        IntPtr[] fileArray = nativeFile == IntPtr.Zero ? new IntPtr[0] : new[] { nativeFile };
+        IntPtr[] fileArray = nativeFile == IntPtr.Zero ? new IntPtr[0] : [nativeFile];
         _ = Helpers.SHOpenFolderAndSelectItems(nativeFolder, (uint)fileArray.Length, fileArray, 0);
 
         Marshal.FreeCoTaskMem(nativeFolder);

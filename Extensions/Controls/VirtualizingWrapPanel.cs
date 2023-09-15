@@ -150,7 +150,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
         get
         {
-            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, new[] { typeof(DependencyObject) }, null).Invoke(null, new object[] { this });
+            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, [typeof(DependencyObject)], null).Invoke(null, [this]);
             return _itemsOwner;
         }
     }

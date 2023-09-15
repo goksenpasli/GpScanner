@@ -323,7 +323,7 @@ public static class BitmapMethods
                     int minY = Math.Max(y - (threshold / 2), 0);
                     int maxY = Math.Min(y + (threshold / 2), height - 1);
 
-                    List<byte> values = new();
+                    List<byte> values = [];
                     for (int wy = minY; wy <= maxY; wy++)
                     {
                         for (int wx = minX; wx <= maxX; wx++)

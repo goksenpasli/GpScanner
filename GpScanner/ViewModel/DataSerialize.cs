@@ -34,7 +34,7 @@ internal static class DataSerialize
 
     internal static ObservableCollection<T> DeSerialize<T>(this IEnumerable<XElement> xElement) where T : class, new()
     {
-        ObservableCollection<T> list = new();
+        ObservableCollection<T> list = [];
         foreach (XElement element in xElement)
         {
             list.Add(element.DeSerialize<T>());

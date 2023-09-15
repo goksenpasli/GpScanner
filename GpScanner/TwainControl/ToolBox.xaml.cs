@@ -228,7 +228,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
                                     imageindex++;
                                     ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count;
-                                    
                                 });
                         }
                     }
@@ -394,12 +393,11 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         Scanner.Lightness = 1;
         Scanner.Watermark = string.Empty;
         Scanner.Chart = null;
-        
     }
 
     public List<CroppedBitmap> CropImageToList(ImageSource imageSource, int en, int boy)
     {
-        List<CroppedBitmap> croppedBitmaps = new();
+        List<CroppedBitmap> croppedBitmaps = [];
         BitmapSource image = (BitmapSource)imageSource;
 
         for (int j = 0; j < boy; j++)

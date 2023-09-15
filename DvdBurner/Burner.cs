@@ -47,7 +47,7 @@ namespace DvdBurner
         {
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                Files = new ObservableCollection<string> { "File", "File", "File" };
+                Files = ["File", "File", "File"];
             }
             PropertyChanged += Burner_PropertyChanged;
 
@@ -201,8 +201,10 @@ namespace DvdBurner
                     dynamic recorder = new MsftDiscRecorder2();
                     recorder.InitializeDiscRecorder(SelectedDrive);
                     IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
-                    List<string> supportedformats = new();
-                    supportedformats.AddRange(from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType));
+                    List<string> supportedformats =
+                    [
+                        .. from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType),
+                    ];
                     _ = MessageBox.Show(string.Join("\n", supportedformats), AppName);
                     recorder = null;
                 },
@@ -524,7 +526,7 @@ namespace DvdBurner
 
         private Dictionary<string, string> GetCdWriters(dynamic discMaster)
         {
-            Dictionary<string, string> listdrives = new();
+            Dictionary<string, string> listdrives = [];
             dynamic discRecorder;
             for (int i = 0; i < discMaster.Count; i++)
             {
@@ -552,7 +554,7 @@ namespace DvdBurner
 
         private void UpdateProgressFileSize()
         {
-            TotalFileSize = GetTotalFileSizeMB(Files.ToArray());
+            TotalFileSize = GetTotalFileSizeMB([.. Files]);
             ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
         }
     }

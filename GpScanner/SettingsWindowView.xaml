@@ -22,7 +22,6 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
-        <Converter:FolderExsistToVisibilityConverter x:Key="FolderExsistToVisibilityConverter" />
         <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter" MaxNumber="{Binding Source={x:Static System:Environment.ProcessorCount}}" MinNumber="1" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter" MaxNumber="100" MinNumber="5" />
         <Converter:NumberRangeToColorConverter x:Key="UpdateNumberRangeToColorConverter" MaxNumber="120" MinNumber="1" />
@@ -1189,6 +1188,6 @@
                 </TabItem>
             </TabControl>
         </GroupBox>
-        <local:TesseractView Grid.Column="1" Visibility="{Binding DataContext.Tessdatafolder, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FolderExsistToVisibilityConverter}}" />
+        <local:TesseractView Grid.Column="1" />
     </Grid>
 </Window>

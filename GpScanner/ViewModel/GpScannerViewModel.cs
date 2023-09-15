@@ -50,11 +50,10 @@ public class GpScannerViewModel : InpcBase
     public CancellationTokenSource ocrcancellationToken;
     private static DispatcherTimer timer;
     private readonly List<string> batchimagefileextensions = new() { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
-    private readonly string[] supportedfilesextension = { ".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml" };
+    private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"];
     private int allPdfPage;
     private bool anyDataExists;
     private string aramaMetni;
-    private string barcodeContent;
     private ObservableCollection<string> barcodeList = new();
     private bool batchDialogOpen;
     private string batchFolder;
@@ -586,13 +585,13 @@ public class GpScannerViewModel : InpcBase
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
                     return;
                 }
-                BatchFolderProcessedFileList = new();
+                BatchFolderProcessedFileList = [];
                 List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => batchimagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
-                BatchTxtOcrs = new ObservableCollection<BatchTxtOcr>();
-                List<Task> Tasks = new();
+                BatchTxtOcrs = [];
+                List<Task> Tasks = [];
                 ocrcancellationToken = new CancellationTokenSource();
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
@@ -685,8 +684,8 @@ public class GpScannerViewModel : InpcBase
                 int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
                 Scanner scanner = ToolBox.Scanner;
                 scanner.ProgressState = TaskbarItemProgressState.Normal;
-                BatchTxtOcrs = new ObservableCollection<BatchTxtOcr>();
-                List<Task> Tasks = new();
+                BatchTxtOcrs = [];
+                List<Task> Tasks = [];
                 ocrcancellationToken = new CancellationTokenSource();
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
@@ -865,20 +864,6 @@ public class GpScannerViewModel : InpcBase
         {
             string folder = $"{Environment.GetFolderPath(Environment.SpecialFolder.Windows)}\\Media";
             return Directory.Exists(folder) ? Directory.EnumerateFiles(folder, "*.wav", SearchOption.TopDirectoryOnly) : null;
-        }
-    }
-
-    public string BarcodeContent
-    {
-        get => barcodeContent;
-
-        set
-        {
-            if (barcodeContent != value)
-            {
-                barcodeContent = value;
-                OnPropertyChanged(nameof(BarcodeContent));
-            }
         }
     }
 
@@ -1670,41 +1655,6 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<ContributionData> GetContributionData()
-    {
-        try
-        {
-            ObservableCollection<ContributionData> contributiondata = new();
-            var files = Dosyalar?.Select(
-                scanner =>
-                {
-                    string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
-                    _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
-                    return new { Scanner = scanner, ParentDate = parsedDateTime };
-                });
-
-            DateTime first = files.Where(z => z.ParentDate > DateTime.MinValue).Min(z => z.ParentDate);
-            DateTime last = files.Max(z => z.ParentDate);
-            for (DateTime? date = first; date <= last; date = date.Value.AddDays(1))
-            {
-                if (!files.Select(z => z.ParentDate).Contains(date.Value))
-                {
-                    contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
-                }
-            }
-
-            foreach (IGrouping<DateTime, Scanner> file in files.GroupBy(item => item.ParentDate, item => item.Scanner))
-            {
-                contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
-            }
-            return new ObservableCollection<ContributionData>(contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate));
-        }
-        catch (Exception)
-        {
-        }
-        return null;
-    }
-
     public string GetPatchCodeResult(string barcode)
     {
         if (!string.IsNullOrWhiteSpace(barcode))
@@ -1717,39 +1667,11 @@ public class GpScannerViewModel : InpcBase
         return string.Empty;
     }
 
-    public ObservableCollection<Scanner> GetScannerFileData()
-    {
-        if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
-        {
-            ObservableCollection<Scanner> list = new();
-            try
-            {
-                List<string> files = Directory
-                    .EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories)
-                    .Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower()))
-                    .ToList();
-                files.Sort(new StrCmpLogicalComparer());
-                foreach (string dosya in files)
-                {
-                    list.Add(new Scanner { FileName = dosya, FolderName = Directory.GetParent(dosya).Name });
-                }
-                files = null;
-                return list;
-            }
-            catch (UnauthorizedAccessException)
-            {
-                return list;
-            }
-        }
-
-        return null;
-    }
-
     public bool NeedAppUpdate() { return Settings.Default.CheckAppUpdate && DateTime.Now > Settings.Default.LastCheckDate.AddDays(Settings.Default.UpdateInterval); }
 
     public void RegisterBatchImageFileWatcher(Paper paper, string batchsavefolder)
     {
-        FileSystemWatcherProcessedFileList = new();
+        FileSystemWatcherProcessedFileList = [];
         FileSystemWatcher watcher = new(batchsavefolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
         batchimagefileextensions.Add(".webp");
         watcher.Created += async (s, e) =>
@@ -1781,19 +1703,6 @@ public class GpScannerViewModel : InpcBase
         Dosyalar = GetScannerFileData();
         ContributionData = GetContributionData();
         SeçiliGün = DateTime.Today;
-    }
-
-    private static DocX WriteDocxFile(ObservableCollection<OcrData> ocrdata, string filename)
-    {
-        DocX document = DocX.Create(filename);
-        document.SetDefaultFont(new Xceed.Document.NET.Font("Times New Roman"), 12d);
-        foreach (OcrData item in ocrdata)
-        {
-            Xceed.Document.NET.Paragraph paragraph = document.InsertParagraph();
-            paragraph.Append(item.Text).FontSize(12).Alignment = Xceed.Document.NET.Alignment.both;
-            paragraph.IndentationFirstLine = (float)(1.25 / TwainCtrl.Inch * 72);
-        }
-        return document;
     }
 
     private void AnimationOnTick(object sender, EventArgs e)
@@ -1927,6 +1836,69 @@ public class GpScannerViewModel : InpcBase
             list.JumpItems.Add(scan);
             list.Apply();
         }
+    }
+
+    private ObservableCollection<ContributionData> GetContributionData()
+    {
+        try
+        {
+            ObservableCollection<ContributionData> contributiondata = [];
+            var files = Dosyalar?.Select(
+                scanner =>
+                {
+                    string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
+                    _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
+                    return new { Scanner = scanner, ParentDate = parsedDateTime };
+                });
+
+            DateTime first = files.Where(z => z.ParentDate > DateTime.MinValue).Min(z => z.ParentDate);
+            DateTime last = files.Max(z => z.ParentDate);
+            for (DateTime? date = first; date <= last; date = date.Value.AddDays(1))
+            {
+                if (!files.Select(z => z.ParentDate).Contains(date.Value))
+                {
+                    contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
+                }
+            }
+
+            foreach (IGrouping<DateTime, Scanner> file in files.GroupBy(item => item.ParentDate, item => item.Scanner))
+            {
+                contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
+            }
+            return new ObservableCollection<ContributionData>(contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate));
+        }
+        catch (Exception)
+        {
+        }
+        return null;
+    }
+
+    private ObservableCollection<Scanner> GetScannerFileData()
+    {
+        if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
+        {
+            ObservableCollection<Scanner> list = [];
+            try
+            {
+                List<string> files = Directory
+                    .EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories)
+                    .Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower()))
+                    .ToList();
+                files.Sort(new StrCmpLogicalComparer());
+                foreach (string dosya in files)
+                {
+                    list.Add(new Scanner { FileName = dosya, FolderName = Directory.GetParent(dosya).Name });
+                }
+                files = null;
+                return list;
+            }
+            catch (UnauthorizedAccessException)
+            {
+                return list;
+            }
+        }
+
+        return null;
     }
 
     private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -2126,5 +2098,18 @@ public class GpScannerViewModel : InpcBase
             _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
+    }
+
+    private DocX WriteDocxFile(ObservableCollection<OcrData> ocrdata, string filename)
+    {
+        DocX document = DocX.Create(filename);
+        document.SetDefaultFont(new Xceed.Document.NET.Font("Times New Roman"), 12d);
+        foreach (OcrData item in ocrdata)
+        {
+            Xceed.Document.NET.Paragraph paragraph = document.InsertParagraph();
+            paragraph.Append(item.Text).FontSize(12).Alignment = Xceed.Document.NET.Alignment.both;
+            paragraph.IndentationFirstLine = (float)(1.25 / TwainCtrl.Inch * 72);
+        }
+        return document;
     }
 }

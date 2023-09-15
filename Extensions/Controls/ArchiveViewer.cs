@@ -30,12 +30,12 @@ namespace Extensions
             PropertyChanged += ArchiveViewer_PropertyChanged;
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                Arşivİçerik = new ObservableCollection<ArchiveData>
-                {
-                    new ArchiveData() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
-                    new ArchiveData() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
-                    new ArchiveData() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
-                };
+                Arşivİçerik =
+                [
+                    new() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                    new() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                    new() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                ];
             }
             ArşivTekDosyaÇıkar = new RelayCommand<object>(
                 parameter =>
@@ -177,7 +177,7 @@ namespace Extensions
 
         public void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
         {
-            archiveViewer.Arşivİçerik = new ObservableCollection<ArchiveData>();
+            archiveViewer.Arşivİçerik = [];
             using (ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read))
             {
                 foreach (ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0))

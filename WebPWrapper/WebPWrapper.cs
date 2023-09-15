@@ -19,7 +19,6 @@
 /// string GetVersion() - Get the library version
 /// GetInfo(byte[] rawWebP, out int width, out int height, out bool has_alpha, out bool has_animation, out string format) - Get information of WEBP data
 /// float[] PictureDistortion(Bitmap source, Bitmap reference, int metric_type) - Get PSNR, SSIM or LSIM distortion metric between two pictures
-
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;

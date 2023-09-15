@@ -194,7 +194,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     }
 
                     ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
-                    
+
                     return;
                 }
 
@@ -594,7 +594,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     {
         try
         {
-            ObservableCollection<SrtContent> content = new();
+            ObservableCollection<SrtContent> content = [];
             const string pattern = "<[/]?[ib]>";
             foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {

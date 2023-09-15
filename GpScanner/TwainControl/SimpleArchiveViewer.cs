@@ -8,7 +8,7 @@ namespace TwainControl;
 
 public class SimpleArchiveViewer : ArchiveViewer
 {
-    private readonly string[] supportedFilesExtension = { ".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jfıf", ".jpe", ".png", ".gif", ".gıf", ".bmp", ".tıf", ".tiff", ".tıff", ".heic", ".tif", ".webp", ".xps" };
+    private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jfıf", ".jpe", ".png", ".gif", ".gıf", ".bmp", ".tıf", ".tiff", ".tıff", ".heic", ".tif", ".webp", ".xps"];
 
     public SimpleArchiveViewer()
     {
@@ -26,7 +26,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                     if (DataContext is TwainCtrl twainCtrl)
                     {
                         string extractedfile = ExtractToFile(parameter as string);
-                        twainCtrl.AddFiles(new string[] { extractedfile }, twainCtrl.DecodeHeight);
+                        twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
                     }
                 }
                 catch (Exception ex)

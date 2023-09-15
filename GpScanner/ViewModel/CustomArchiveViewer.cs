@@ -10,7 +10,7 @@ namespace GpScanner.ViewModel;
 
 public class CustomArchiveViewer : ArchiveViewer
 {
-    public static readonly string[] supportedFilesExtension = { ".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jfıf", ".jpe", ".png", ".gif", ".gıf", ".bmp", ".tıf", ".tiff", ".tıff", ".heic", ".tif", ".webp", ".xps" };
+    public static readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jfıf", ".jpe", ".png", ".gif", ".gıf", ".bmp", ".tıf", ".tiff", ".tıff", ".heic", ".tif", ".webp", ".xps"];
 
     public CustomArchiveViewer()
     {
@@ -33,7 +33,7 @@ public class CustomArchiveViewer : ArchiveViewer
                         if (Tag is TwainCtrl twainCtrl)
                         {
                             string extractedfile = ExtractToFile(filename);
-                            twainCtrl.AddFiles(new string[] { extractedfile }, twainCtrl.DecodeHeight);
+                            twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
                         }
                     }
                 }
@@ -58,7 +58,7 @@ public class CustomArchiveViewer : ArchiveViewer
         }
         if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedimage && scannedimage.FilePath is not null)
         {
-            SelectedFiles = new string[] { scannedimage.FilePath };
+            SelectedFiles = [scannedimage.FilePath];
             ArşivDosyaEkle.Execute(null);
             ReadArchiveContent(ArchivePath, this);
         }
