@@ -188,6 +188,7 @@
     <Compile Include="ToolBox.xaml.cs">
       <DependentUpon>ToolBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewerTemplateSelector.cs" />
     <Compile Include="WpfLocalizationWithMultipleResourceManagers.cs" />
     <Compile Include="XmlViewerControl.xaml.cs">
       <DependentUpon>XmlViewerControl.xaml</DependentUpon>

@@ -1519,8 +1519,7 @@
                                                                     Foreground="Red" PreviewMouseMove="Run_EypPreviewMouseMove"
                                                                     Text="B" />
                                                             </TextBlock>
-                                                            <ContentPresenter d:ContentTemplate="{StaticResource XmlViewerTemplate}"
-                                                                d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
+                                                            <ContentPresenter d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
                                                                 d:Height="315" d:Width="315"
                                                                 Content="{Binding IsAsync=True, Mode=OneWay}"
                                                                 ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />

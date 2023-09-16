@@ -1,11 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:TwainControl"
     xmlns:pdfsharpdrawing="clr-namespace:PdfSharp.Drawing;assembly=PdfSharp-wpf"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+    <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
     <Style x:Key="TextBlockPdfLayout" TargetType="TextBlock">
         <Style.Triggers>
             <DataTrigger Binding="{Binding}" Value="Left">
@@ -394,4 +396,98 @@
             </MultiBinding>
         </Image.Source>
     </Image>
+    <DataTemplate x:Key="EmptyTemplate">
+        <TextBlock Width="210" TextWrapping="Wrap">
+            <Hyperlink BaselineAlignment="Center"
+                Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                CommandParameter="{Binding Mode=OneWay}"
+                TextDecorations="None">
+                <Image Width="32" Height="32" Source="/TwainControl;component/Icons/delete.png" />
+            </Hyperlink>
+            <Image Width="32" Height="32" Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+            <Hyperlink BaselineAlignment="Center" Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Mode=OneWay}">
+                <Run Text="{Binding Mode=OneWay}" />
+            </Hyperlink>
+        </TextBlock>
+    </DataTemplate>
+    <DataTemplate x:Key="EypImgViewerTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink BaselineAlignment="Center"
+                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    CommandParameter="{Binding Mode=OneWay}"
+                    TextDecorations="None">
+                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                </Hyperlink>
+            </TextBlock>
+            <local:SimpleImageViewer Grid.Row="1"
+                Width="210" Height="297"
+                DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=StackPanel}}"
+                ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
+                PrintButtonVisibility="Collapsed"
+                Tag="{Binding RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="EypSimplePdfTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink BaselineAlignment="Center"
+                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    CommandParameter="{Binding Mode=OneWay}"
+                    TextDecorations="None">
+                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                </Hyperlink>
+            </TextBlock>
+            <local:SimplePdfViewer Grid.Row="1"
+                Width="210" Height="297"
+                AutoFitContent="True" Dpi="36"
+                DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden"
+                SliderZoomAngleVisibility="Collapsed" SnapTick="True"
+                Tag="{Binding RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
+                ToolBarVisibility="Collapsed" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="XmlViewerTemplate">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Center">
+                <Hyperlink BaselineAlignment="Center"
+                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    CommandParameter="{Binding Mode=OneWay}"
+                    TextDecorations="None">
+                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                </Hyperlink>
+            </TextBlock>
+            <local:SimpleXmlViewer Grid.Row="1"
+                Width="210" Height="297"
+                local:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
+        </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="VideoViewerTemplateMini">
+        <Controls:MediaViewer Width="315" Height="315"
+            AutoPlay="False" ContextMenuVisibility="Visible"
+            ControlVisible="Collapsed"
+            MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+    </DataTemplate>
+    <local:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
+        Empty="{StaticResource EmptyTemplate}"
+        Img="{StaticResource EypImgViewerTemplate}"
+        Pdf="{StaticResource EypSimplePdfTemplate}"
+        Vid="{StaticResource VideoViewerTemplateMini}"
+        Xml="{StaticResource XmlViewerTemplate}" />
 </ResourceDictionary>

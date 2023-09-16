@@ -170,7 +170,6 @@
     <Compile Include="ViewModel\TessFiles.cs" />
     <Compile Include="ViewModel\ThumbnailTranslateViewModel.cs" />
     <Compile Include="ViewModel\TranslateViewModel.cs" />
-    <Compile Include="ViewModel\ViewerTemplateSelector.cs" />
     <Compile Include="ViewModel\WindowExtensions.cs" />
     <Page Include="DocumentViewerWindow.xaml">
       <SubType>Designer</SubType>
