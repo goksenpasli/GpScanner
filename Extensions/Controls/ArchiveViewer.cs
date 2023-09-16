@@ -47,7 +47,7 @@ namespace Extensions
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(ArchivePath, ex);
+                        throw new ArgumentException(ex.Message);
                     }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
@@ -61,7 +61,7 @@ namespace Extensions
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(ArchivePath, ex);
+                        throw new ArgumentException(ex.Message);
                     }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));

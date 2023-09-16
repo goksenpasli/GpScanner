@@ -150,7 +150,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException("saveimage", ex);
+                        throw new ArgumentException(ex.Message);
                     }
                 }
             },

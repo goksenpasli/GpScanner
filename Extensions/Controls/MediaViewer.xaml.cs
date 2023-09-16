@@ -631,7 +631,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(nameof(filepath), ex);
+            throw new ArgumentException(ex.Message);
         }
     }
 
@@ -733,7 +733,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(nameof(viewer.Player.Source), ex);
+                throw new ArgumentException(ex.Message);
             }
         }
     }

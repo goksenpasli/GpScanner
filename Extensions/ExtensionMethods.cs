@@ -472,7 +472,7 @@ public static class ExtensionMethods
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(nameof(format), ex.Message);
+            throw new ArgumentException(ex.Message);
         }
     }
 

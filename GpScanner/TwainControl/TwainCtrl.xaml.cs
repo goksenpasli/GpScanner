@@ -2564,7 +2564,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(nameof(xmldatapath), ex);
+            throw new ArgumentException(ex.Message);
         }
     }
 

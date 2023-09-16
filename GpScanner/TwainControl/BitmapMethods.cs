@@ -429,7 +429,7 @@ public static class BitmapMethods
         catch (Exception ex)
         {
             Source = null;
-            throw new ArgumentException(nameof(Source), ex);
+            throw new ArgumentException(ex.Message);
         }
     }
 

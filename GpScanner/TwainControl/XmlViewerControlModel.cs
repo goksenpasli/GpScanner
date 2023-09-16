@@ -26,7 +26,7 @@ public class XmlViewerControlModel
             }
             catch (XmlException ex)
             {
-                throw new ArgumentException(nameof(path), ex);
+                throw new ArgumentException(ex.Message);
             }
         }
     }
