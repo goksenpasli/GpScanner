@@ -117,7 +117,7 @@
                     <ColumnDefinition />
                     <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
-                <Border Padding="1" BorderBrush="GreenYellow" BorderThickness="2">
+                <Border Padding="1">
                     <HeaderedContentControl>
                         <HeaderedContentControl.Header>
                             <TextBlock>
@@ -143,9 +143,7 @@
                         Style="{DynamicResource Slider}"
                         Value="{Binding Path=WebpQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
-                <Border Grid.Row="1"
-                    Padding="1"
-                    BorderBrush="GreenYellow" BorderThickness="2">
+                <Border Grid.Row="1" Padding="1">
                     <HeaderedContentControl>
                         <HeaderedContentControl.Header>
                             <TextBlock>

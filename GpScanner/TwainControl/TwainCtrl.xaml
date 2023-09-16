@@ -379,7 +379,7 @@
                     BorderBrush="Black"
                     IsExpanded="{Binding ScanSettingsExpanderIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                     <Expander.Header>
-                        <Border BorderBrush="GreenYellow" BorderThickness="2">
+                        <Border>
                             <Grid HorizontalAlignment="{Binding HorizontalAlignment, Mode=OneWayToSource, RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}">
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
@@ -566,7 +566,6 @@
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Margin="0,0,2,0" VerticalAlignment="Center" Text="{Binding Çözünürlük, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
                                     <Slider Grid.Column="1"
-                                        BorderBrush="GreenYellow" BorderThickness="2"
                                         IsSnapToTickEnabled="True" Maximum="4800"
                                         Minimum="72" SmallChange="1"
                                         Style="{StaticResource Slider}"
@@ -641,66 +640,7 @@
                                         </Image.Source>
                                     </Image>
                                     <Extensions:ContentToggleButton.OverContent>
-                                        <GroupBox Grid.RowSpan="2" Grid.Column="2">
-                                            <Grid>
-                                                <Grid.Resources>
-                                                    <Style TargetType="Extensions:NumericUpDownControl">
-                                                        <Setter Property="SmallChange" Value="1" />
-                                                        <Setter Property="Minimum" Value="0" />
-                                                        <Setter Property="Orientation" Value="Horizontal" />
-                                                    </Style>
-                                                </Grid.Resources>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                    <ColumnDefinition />
-                                                </Grid.ColumnDefinitions>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                    <RowDefinition />
-                                                </Grid.RowDefinitions>
-                                                <Extensions:NumericUpDownControl Grid.Column="1"
-                                                    HorizontalAlignment="Center"
-                                                    Maximum="{Binding PageHeight}"
-                                                    Value="{Binding Top, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                                <Extensions:NumericUpDownControl Grid.Row="1"
-                                                    Height="16"
-                                                    Maximum="{Binding PageWidth}"
-                                                    Value="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                                <Extensions:NumericUpDownControl Grid.Row="2" Grid.Column="1"
-                                                    HorizontalAlignment="Center"
-                                                    Maximum="{Binding PageHeight}"
-                                                    Value="{Binding Bottom, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                                <Extensions:NumericUpDownControl Grid.Row="1" Grid.Column="2"
-                                                    Height="16"
-                                                    Maximum="{Binding PageWidth}"
-                                                    Value="{Binding Right, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                                <Button Grid.Row="1" Grid.Column="1"
-                                                    Width="210" Height="297"
-                                                    BorderBrush="Gray" BorderThickness="2"
-                                                    Command="{Binding ResetCrop}">
-                                                    <Button.Effect>
-                                                        <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
-                                                    </Button.Effect>
-                                                    <StackPanel>
-                                                        <TextBlock>
-                                                            <Run Text="{Binding PageWidth, Mode=OneWay}" />
-                                                            <Run Text="X" />
-                                                            <Run Text="{Binding PageHeight, Mode=OneWay}" />
-                                                        </TextBlock>
-                                                        <Image Width="32" Height="32" VerticalAlignment="Bottom">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="131" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </StackPanel>
-                                                </Button>
-                                            </Grid>
-                                        </GroupBox>
+                                        <local:PageCropControl />
                                     </Extensions:ContentToggleButton.OverContent>
                                     <Extensions:ContentToggleButton.Style>
                                         <Style TargetType="Extensions:ContentToggleButton">
@@ -730,7 +670,7 @@
                                     </Style>
                                 </StackPanel.Resources>
                                 <StackPanel Orientation="Horizontal">
-                                    <ToggleButton BorderBrush="GreenYellow" BorderThickness="2" IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ToggleButton IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ToggleButton.Style>
                                             <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
                                                 <Style.Triggers>
@@ -766,10 +706,7 @@
                                             </Style>
                                         </ToggleButton.Style>
                                     </ToggleButton>
-                                    <ListBox local:Policy.PolicyName="Mode"
-                                        Background="{x:Null}"
-                                        BorderBrush="GreenYellow" BorderThickness="2"
-                                        SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListBox local:Policy.PolicyName="Mode" Background="{x:Null}" SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ListBox.ItemContainerStyle>
                                             <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
                                         </ListBox.ItemContainerStyle>
@@ -793,7 +730,7 @@
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="70" />
                                         </Grid.ColumnDefinitions>
-                                        <Extensions:ContentToggleButton ArrowVisibility="Collapsed" BorderBrush="GreenYellow" BorderThickness="2">
+                                        <Extensions:ContentToggleButton ArrowVisibility="Collapsed">
                                             <Extensions:ContentToggleButton.OverContent>
                                                 <StackPanel>
                                                     <ListBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
@@ -1000,7 +937,6 @@
                                     </Grid.RowDefinitions>
                                     <CheckBox Grid.ColumnSpan="2"
                                         VerticalContentAlignment="Center"
-                                        BorderBrush="GreenYellow" BorderThickness="2"
                                         Content="{local:Loc TWOSIDE}"
                                         IsChecked="{Binding Scanner.Duplex}"
                                         IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
@@ -1034,10 +970,7 @@
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
 
-                                    <CheckBox Grid.Row="1"
-                                        BorderBrush="GreenYellow" BorderThickness="2"
-                                        Content="{local:Loc GUI}"
-                                        IsChecked="{Binding Scanner.ShowUi}" />
+                                    <CheckBox Grid.Row="1" Content="{local:Loc GUI}" IsChecked="{Binding Scanner.ShowUi}" />
                                     <CheckBox Grid.Row="1" Grid.Column="1"
                                         Content="{local:Loc FILMSCANNER}"
                                         IsChecked="{Binding Scanner.UseFilmScanner}" />
@@ -1095,7 +1028,6 @@
                                 </Grid>
                                 <Separator />
                                 <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"
-                                    BorderBrush="GreenYellow" BorderThickness="2"
                                     Description="{Binding Scanner.SaveFileName}"
                                     GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
                                     OpenButtonVisibility="Collapsed"
@@ -1578,8 +1510,7 @@
                 </GroupBox>
                 <UniformGrid Grid.Row="2" Columns="2" Rows="2">
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        local:Policy.PolicyName="LoadImage" BorderBrush="GreenYellow"
-                        BorderThickness="2"
+                        local:Policy.PolicyName="LoadImage"
                         Command="{Binding LoadImage}">
                         <Grid>
                             <ProgressBar Background="{x:Null}"
@@ -1623,8 +1554,7 @@
                         </Grid>
                     </Button>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        local:Policy.PolicyName="SeçiliDirektPdfKaydet" BorderBrush="GreenYellow"
-                        BorderThickness="2"
+                        local:Policy.PolicyName="SeçiliDirektPdfKaydet"
                         Command="{Binding SeçiliDirektPdfKaydet}">
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"
