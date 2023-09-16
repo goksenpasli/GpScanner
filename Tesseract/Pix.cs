@@ -141,7 +141,15 @@ namespace Tesseract
         /// Used to lookup image formats by extension.
         /// </summary>
         private static readonly Dictionary<string, ImageFormat> imageFomatLookup = new Dictionary<string, ImageFormat>
-        { { ".jpg", ImageFormat.JfifJpeg }, { ".jpeg", ImageFormat.JfifJpeg }, { ".gif", ImageFormat.Gif }, { ".tif", ImageFormat.Tiff }, { ".tiff", ImageFormat.Tiff }, { ".png", ImageFormat.Png }, { ".bmp", ImageFormat.Bmp } };
+        {
+            { ".jpg", ImageFormat.JfifJpeg },
+            { ".jpeg", ImageFormat.JfifJpeg },
+            { ".gif", ImageFormat.Gif },
+            { ".tif", ImageFormat.Tiff },
+            { ".tiff", ImageFormat.Tiff },
+            { ".png", ImageFormat.Png },
+            { ".bmp", ImageFormat.Bmp }
+        };
         #endregion Constants
 
         #region Create\Load methods
@@ -163,7 +171,9 @@ namespace Tesseract
             }
 
             IntPtr handle = LeptonicaApi.Native.pixCreate(width, height, depth);
-            return handle == IntPtr.Zero ? throw new InvalidOperationException("Failed to create pix, this normally occurs because the requested image size is too large, please check Standard Error Output.") : Create(handle);
+            return handle == IntPtr.Zero
+                ? throw new InvalidOperationException("Failed to create pix, this normally occurs because the requested image size is too large, please check Standard Error Output.")
+                : Create(handle);
         }
 
         public static Pix Create(IntPtr handle) { return handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle); }
@@ -661,7 +671,9 @@ namespace Tesseract
             IntPtr resultHandle;
 
             double rotations = 2 * angleInRadians / Math.PI;
-            resultHandle = Math.Abs(rotations - Math.Floor(rotations)) < VerySmallAngle ? LeptonicaApi.Native.pixRotateOrth(Handle, (int)rotations) : LeptonicaApi.Native.pixRotate(Handle, angleInRadians, method, fillColor, width.Value, height.Value);
+            resultHandle = Math.Abs(rotations - Math.Floor(rotations)) < VerySmallAngle
+                ? LeptonicaApi.Native.pixRotateOrth(Handle, (int)rotations)
+                : LeptonicaApi.Native.pixRotate(Handle, angleInRadians, method, fillColor, width.Value, height.Value);
 
             return resultHandle == IntPtr.Zero ? throw new LeptonicaException("Failed to rotate image around its centre.") : new Pix(resultHandle);
         }

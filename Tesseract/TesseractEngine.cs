@@ -53,7 +53,13 @@ namespace Tesseract
         /// An optional tesseract configuration file that is encoded using UTF8 without BOM with Unix end of line
         /// characters you can use an advanced text editor such as Notepad++ to accomplish this.
         /// </param>
-        public TesseractEngine(string datapath, string language, string configFile) : this(datapath, language, EngineMode.Default, configFile != null ? new[] { configFile } : new string[0], new Dictionary<string, object>(), false)
+        public TesseractEngine(string datapath, string language, string configFile) : this(
+            datapath,
+            language,
+            EngineMode.Default,
+            configFile != null ? new[] { configFile } : new string[0],
+            new Dictionary<string, object>(),
+            false)
         {
         }
         /// <summary>
@@ -120,7 +126,13 @@ namespace Tesseract
         /// An optional tesseract configuration file that is encoded using UTF8 without BOM with Unix end of line
         /// characters you can use an advanced text editor such as Notepad++ to accomplish this.
         /// </param>
-        public TesseractEngine(string datapath, string language, EngineMode engineMode, string configFile) : this(datapath, language, engineMode, configFile != null ? new[] { configFile } : new string[0], new Dictionary<string, object>(), false)
+        public TesseractEngine(string datapath, string language, EngineMode engineMode, string configFile) : this(
+            datapath,
+            language,
+            engineMode,
+            configFile != null ? new[] { configFile } : new string[0],
+            new Dictionary<string, object>(),
+            false)
         {
         }
         /// <summary>
@@ -144,7 +156,13 @@ namespace Tesseract
         /// An optional sequence of tesseract configuration files to load, encoded using UTF8 without BOM with Unix end
         /// of line characters you can use an advanced text editor such as Notepad++ to accomplish this.
         /// </param>
-        public TesseractEngine(string datapath, string language, EngineMode engineMode, IEnumerable<string> configFiles) : this(datapath, language, engineMode, configFiles, new Dictionary<string, object>(), false)
+        public TesseractEngine(string datapath, string language, EngineMode engineMode, IEnumerable<string> configFiles) : this(
+            datapath,
+            language,
+            engineMode,
+            configFiles,
+            new Dictionary<string, object>(),
+            false)
         {
         }
 

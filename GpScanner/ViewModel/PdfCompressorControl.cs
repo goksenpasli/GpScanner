@@ -28,7 +28,9 @@ public class PdfCompressorControl : Compressor
                         images = null;
                     }
 
-                    string savefilename = Settings.Default.DirectlyOverwriteCompressedPdf ? LoadedPdfPath : $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath)}{Translation.GetResStringValue("COMPRESS")}.pdf";
+                    string savefilename = Settings.Default.DirectlyOverwriteCompressedPdf
+                        ? LoadedPdfPath
+                        : $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath)}{Translation.GetResStringValue("COMPRESS")}.pdf";
                     pdfDocument?.Save(savefilename);
                     pdfDocument?.Dispose();
                     if (Application.Current?.MainWindow?.DataContext is GpScannerViewModel gpScannerViewModel)

@@ -12,10 +12,10 @@ namespace GpScanner.ViewModel;
 public class DocumentViewerModel : InpcBase
 {
     private IEnumerable<string> directoryAllPdfFiles;
+    private string filePath;
     private int ındex;
     private string ocrText;
     private string pdfFileContent;
-    private string filePath;
     private Scanner scanner;
     private string title;
 
@@ -73,6 +73,22 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
+    public string FilePath
+    {
+        get => filePath;
+
+        set
+        {
+            if (filePath != value)
+            {
+                filePath = value;
+                OnPropertyChanged(nameof(FilePath));
+                OnPropertyChanged(nameof(Title));
+                OnPropertyChanged(nameof(PdfFileContent));
+            }
+        }
+    }
+
     public ICommand Forward { get; }
 
     public int Index
@@ -112,22 +128,6 @@ public class DocumentViewerModel : InpcBase
             if (pdfFileContent != value)
             {
                 pdfFileContent = value;
-                OnPropertyChanged(nameof(PdfFileContent));
-            }
-        }
-    }
-
-    public string FilePath
-    {
-        get => filePath;
-
-        set
-        {
-            if (filePath != value)
-            {
-                filePath = value;
-                OnPropertyChanged(nameof(FilePath));
-                OnPropertyChanged(nameof(Title));
                 OnPropertyChanged(nameof(PdfFileContent));
             }
         }

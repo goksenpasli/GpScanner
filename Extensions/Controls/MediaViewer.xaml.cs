@@ -35,7 +35,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("ApplySharpen", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty AutoLoadSameNameSubtitleFileProperty =
         DependencyProperty.Register("AutoLoadSameNameSubtitleFile", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-    public static readonly DependencyProperty AutoPlayProperty = DependencyProperty.Register("AutoPlay", typeof(bool), typeof(MediaViewer), new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, AutoplayChanged));
+    public static readonly DependencyProperty AutoPlayProperty = DependencyProperty.Register(
+        "AutoPlay",
+        typeof(bool),
+        typeof(MediaViewer),
+        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, AutoplayChanged));
     public static readonly DependencyProperty AutoTranslateProperty =
         DependencyProperty.Register("AutoTranslate", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty BlurAmountProperty =
@@ -57,7 +61,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("InvertColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty MediaDataFilePathProperty =
         DependencyProperty.Register("MediaDataFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, MediaDataFilePathChanged));
-    public static readonly DependencyProperty MediaPositionProperty = DependencyProperty.Register("MediaPosition", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero, MediaPositionChanged));
+    public static readonly DependencyProperty MediaPositionProperty = DependencyProperty.Register(
+        "MediaPosition",
+        typeof(TimeSpan),
+        typeof(MediaViewer),
+        new PropertyMetadata(TimeSpan.Zero, MediaPositionChanged));
     public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(1d, MediaVolumeChanged));
     public static readonly DependencyProperty OpenButtonVisibilityProperty =
         DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
@@ -77,10 +85,18 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public static readonly DependencyProperty SliderControlVisibleProperty =
         DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register("SubTitleColor", typeof(Brush), typeof(MediaViewer), new PropertyMetadata(Brushes.White));
-    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register("SubtitleFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, SubtitleFilePathChanged));
+    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register(
+        "SubtitleFilePath",
+        typeof(string),
+        typeof(MediaViewer),
+        new PropertyMetadata(null, SubtitleFilePathChanged));
     public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty =
         DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
-    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register("SubTitleMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
+    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register(
+        "SubTitleMargin",
+        typeof(Thickness),
+        typeof(MediaViewer),
+        new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
     public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty SubTitleSizeProperty =
         DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
@@ -205,7 +221,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     Player.Position = new TimeSpan(i * timemultiplier);
                     await Task.Delay(MillisecondsDelay);
 
-                    imgdata = ThumbApplyEffects ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg) : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                    imgdata = ThumbApplyEffects
+                        ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
+                        : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
 
                     Grid imagegrid = GenerateImageGrid();
                     Image image = GenerateImage(imgdata, ThumbMargin);

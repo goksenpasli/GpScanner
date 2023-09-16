@@ -95,7 +95,11 @@ public class ColorPicker : Control
     public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register("MiddleStopColor", typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Gray));
     public static readonly DependencyProperty PredefinedColorVisibilityProperty =
         DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
-    public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register("SliderVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register(
+        "SliderVisibility",
+        typeof(Visibility),
+        typeof(ColorPicker),
+        new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty SpectrumGridBackgroundProperty =
         DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
     public RGB Selected = new();
@@ -177,7 +181,9 @@ public class ColorPicker : Control
             Point pos = e.GetPosition(_rgbgrid);
             double x = pos.X;
             _ = pos.Y;
-            RGB c = x < _rgbgrid.ActualWidth / 2 ? HSV.RGBFromHSV(currH, 1f, x / (_rgbgrid.ActualWidth / 2)) : HSV.RGBFromHSV(currH, ((_rgbgrid.ActualWidth / 2) - (x - (_rgbgrid.ActualWidth / 2))) / _rgbgrid.ActualWidth, 1f);
+            RGB c = x < _rgbgrid.ActualWidth / 2
+                ? HSV.RGBFromHSV(currH, 1f, x / (_rgbgrid.ActualWidth / 2))
+                : HSV.RGBFromHSV(currH, ((_rgbgrid.ActualWidth / 2) - (x - (_rgbgrid.ActualWidth / 2))) / _rgbgrid.ActualWidth, 1f);
 
             HexCode = $"#{c?.Hex(Alpha)}";
             Selected = c;

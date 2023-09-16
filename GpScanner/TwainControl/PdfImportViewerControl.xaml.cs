@@ -24,10 +24,30 @@ namespace TwainControl;
 /// </summary>
 public partial class PdfImportViewerControl : UserControl, INotifyPropertyChanged
 {
-    private readonly Ellipse ellipseselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
-    private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
-    private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
-    private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
+    private readonly Ellipse ellipseselectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+    private readonly Line linebox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+    private readonly Rectangle rectangleselectionbox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
+    private readonly Line reverselinebox = new()
+    {
+        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
+        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
+        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+    };
     private string annotationText = string.Empty;
     private bool drawAnnotation;
     private bool drawEllipse;

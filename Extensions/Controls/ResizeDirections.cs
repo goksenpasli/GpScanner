@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Extensions
+﻿namespace Extensions
 {
     public enum ResizeDirections
     {

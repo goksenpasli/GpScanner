@@ -435,7 +435,7 @@
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SECOND}" />
                                 </StackPanel>
                                 <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Columns="4">
-                                    <Extensions:ContentToggleButton StaysOpen="True" TopMost="False">
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" StaysOpen="True" TopMost="False">
                                         <Extensions:ContentToggleButton.OverContent>
                                             <Extensions:ResizablePanel Width="680" Height="480"
                                                 MinWidth="480" MinHeight="360">
@@ -564,15 +564,13 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Margin="0,0,2,0" VerticalAlignment="Center" Text="DPI" />
+                                    <TextBlock Margin="0,0,2,0" VerticalAlignment="Center" Text="{Binding Çözünürlük, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
                                     <Slider Grid.Column="1"
-                                        AutoToolTipPlacement="TopLeft" BorderBrush="GreenYellow"
-                                        BorderThickness="2" IsSnapToTickEnabled="True"
-                                        Maximum="4800" Minimum="72"
-                                        SmallChange="1"
+                                        BorderBrush="GreenYellow" BorderThickness="2"
+                                        IsSnapToTickEnabled="True" Maximum="4800"
+                                        Minimum="72" SmallChange="1"
                                         Style="{StaticResource Slider}"
                                         Ticks="72,96,120,150,200,300,450,600,1200,2400,4800"
-                                        ToolTip="{local:Loc RES}"
                                         Value="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 </Grid>
                                 <UniformGrid Grid.Column="2" Columns="2">
@@ -704,6 +702,22 @@
                                             </Grid>
                                         </GroupBox>
                                     </Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ContentToggleButton.Style>
+                                        <Style TargetType="Extensions:ContentToggleButton">
+                                            <Setter Property="Background" Value="GreenYellow" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding Top, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0" />
+                                                        <Condition Binding="{Binding Left, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0" />
+                                                        <Condition Binding="{Binding Bottom, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0" />
+                                                        <Condition Binding="{Binding Right, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Extensions:ContentToggleButton.Style>
                                 </Extensions:ContentToggleButton>
                             </Grid>
                         </GroupBox.Header>

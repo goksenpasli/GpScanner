@@ -253,7 +253,13 @@ public partial class MainWindow : Window
             {
                 ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
                 ViewModel.ScannerData?.Data?.Add(
-                new Data { Id = DataSerialize.RandomNumber(), FileName = TwainCtrl?.Scanner?.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)), QrData = TwainCtrl?.Scanner?.BarcodeContent });
+                new Data
+                {
+                    Id = DataSerialize.RandomNumber(),
+                    FileName = TwainCtrl?.Scanner?.PdfFilePath,
+                    FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)),
+                    QrData = TwainCtrl?.Scanner?.BarcodeContent
+                });
                 ViewModel.DatabaseSave.Execute(null);
                 ViewModel.ScannedText = null;
             }

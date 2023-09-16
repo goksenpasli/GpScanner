@@ -352,7 +352,13 @@ public static class PdfGeneration
         }
     }
 
-    public static Task<PdfDocument> GeneratePdfAsync(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
+    public static Task<PdfDocument> GeneratePdfAsync(
+        this List<ScannedImage> bitmapFrames,
+        Format format,
+        Paper paper,
+        int jpegquality = 80,
+        List<ObservableCollection<OcrData>> ScannedText = null,
+        int dpi = 120)
     {
         if (bitmapFrames?.Count == 0)
         {

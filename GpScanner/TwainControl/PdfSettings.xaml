@@ -76,11 +76,26 @@
                 </GroupBox>
                 <GroupBox>
                     <StackPanel>
-                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed"
-                            Description="{local:Loc USERNAME}"
-                            OpenButtonVisibility="Collapsed"
-                            Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="UserCpl.dll" />
+                                        <Binding Source="0" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Extensions:ButtonedTextBox>
+                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="2" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Extensions:ButtonedTextBox>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CWIDTH}" />
                             <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
@@ -103,29 +118,45 @@
                     <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
                 <Border Padding="1" BorderBrush="GreenYellow" BorderThickness="2">
-                    <HeaderedContentControl Header="{local:Loc JPEGQUALITY}">
-                        <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
-                            Minimum="10" SmallChange="1"
+                    <HeaderedContentControl>
+                        <HeaderedContentControl.Header>
+                            <TextBlock>
+                                <Run Text="{local:Loc JPEGQUALITY}" />
+                                <Run Text="{Binding Path=JpegQuality, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}%{0}}" />
+                            </TextBlock>
+                        </HeaderedContentControl.Header>
+                        <Slider Maximum="95" Minimum="10"
+                            SmallChange="1"
                             Style="{DynamicResource Slider}"
                             Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                     </HeaderedContentControl>
                 </Border>
-                <HeaderedContentControl Grid.Column="2" Header="WEBP">
-                    <Slider AutoToolTipPlacement="TopLeft" Maximum="95"
-                        Minimum="10" SmallChange="1"
+                <HeaderedContentControl Grid.Column="2">
+                    <HeaderedContentControl.Header>
+                        <TextBlock>
+                            <Run Text="WEBP" />
+                            <Run Text="{Binding Path=WebpQuality, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}%{0}}" />
+                        </TextBlock>
+                    </HeaderedContentControl.Header>
+                    <Slider Maximum="95" Minimum="10"
+                        SmallChange="1"
                         Style="{DynamicResource Slider}"
                         Value="{Binding Path=WebpQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
                 <Border Grid.Row="1"
                     Padding="1"
                     BorderBrush="GreenYellow" BorderThickness="2">
-                    <HeaderedContentControl Header="{local:Loc RES}">
-                        <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                            Maximum="1200" Minimum="72"
-                            SmallChange="1"
+                    <HeaderedContentControl>
+                        <HeaderedContentControl.Header>
+                            <TextBlock>
+                                <Run Text="{local:Loc RES}" />
+                                <Run Text="{Binding Path=ImgLoadResolution, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
+                            </TextBlock>
+                        </HeaderedContentControl.Header>
+                        <Slider IsSnapToTickEnabled="True" Maximum="1200"
+                            Minimum="72" SmallChange="1"
                             Style="{StaticResource Slider}"
                             Ticks="72,96,120,150,200,300,450,600,1200"
-                            ToolTip="{local:Loc RES}"
                             Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                     </HeaderedContentControl>
                 </Border>
@@ -134,13 +165,12 @@
                         <TextBlock>
                             <Run Text="{local:Loc BW}" />
                             <Run Text="{local:Loc SETTİNGS}" />
+                            <Run Text="{Binding Path=BwThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0}}" />
                         </TextBlock>
                     </HeaderedContentControl.Header>
-                    <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                        Maximum="255" Minimum="1"
-                        SmallChange="1"
+                    <Slider IsSnapToTickEnabled="True" Maximum="255"
+                        Minimum="1" SmallChange="1"
                         Style="{DynamicResource Slider}"
-                        ToolTip="{local:Loc BW}"
                         Value="{Binding Path=BwThreshold, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
                 <Canvas Grid.RowSpan="2" Grid.Column="3"
@@ -162,7 +192,7 @@
                             </MultiBinding>
                         </Image.Source>
                     </Image>
-                    <Extensions:NumericUpDownControl Canvas.Top="7"
+                    <Extensions:NumericUpDownControl Canvas.Top="4"
                         Width="44"
                         FontWeight="Bold" IsReadOnly="True"
                         Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"

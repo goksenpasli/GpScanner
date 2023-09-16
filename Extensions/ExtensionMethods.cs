@@ -149,7 +149,8 @@ public static class ExtensionMethods
     public static extern IntPtr ExtractIcon(this IntPtr hInst, string lpszExeFileName, int nIconIndex);
 
     public static IEnumerable<string> FilterFiles(this string path, params string[] exts) { return exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly)); }
-    public static string GetDisplayName(string path) { return Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero ? shfi.szDisplayName : null; }
+    public static string GetDisplayName(string path)
+    { return Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero ? shfi.szDisplayName : null; }
 
     public static string GetFileType(this string filename, SHFILEINFO shinfo)
     {
@@ -396,7 +397,16 @@ public static class ExtensionMethods
             return null;
         }
 
-        BitmapSource bitmapSource = BitmapSource.Create(bitmapData.Width, bitmapData.Height, bitmap.HorizontalResolution, bitmap.VerticalResolution, PixelFormats.Bgr24, null, bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+        BitmapSource bitmapSource = BitmapSource.Create(
+            bitmapData.Width,
+            bitmapData.Height,
+            bitmap.HorizontalResolution,
+            bitmap.VerticalResolution,
+            PixelFormats.Bgr24,
+            null,
+            bitmapData.Scan0,
+            bitmapData.Stride * bitmapData.Height,
+            bitmapData.Stride);
         bitmapSource.Freeze();
         bitmap.UnlockBits(bitmapData);
         return bitmapSource;

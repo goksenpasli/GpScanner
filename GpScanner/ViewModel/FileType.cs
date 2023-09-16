@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GpScanner.ViewModel
+﻿namespace GpScanner.ViewModel
 {
     public enum FileType
     {

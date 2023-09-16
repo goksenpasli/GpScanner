@@ -33,7 +33,7 @@ public class CustomArchiveViewer : ArchiveViewer
                         if (Tag is TwainCtrl twainCtrl)
                         {
                             string extractedfile = ExtractToFile(filename);
-                            twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
+                            _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
                         }
                     }
                 }

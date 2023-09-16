@@ -203,7 +203,9 @@ namespace DvdBurner
                     IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
                     List<string> supportedformats =
                     [
-                        .. from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType),
+                        .. from object supportedMediaType in (object[])recorder.SupportedProfiles
+                        where values.Contains((int)supportedMediaType)
+                        select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType),
                     ];
                     _ = MessageBox.Show(string.Join("\n", supportedformats), AppName);
                     recorder = null;

@@ -8,7 +8,11 @@ namespace GpScanner.ViewModel;
 public class MirrorAngleEffect : ShaderEffect
 {
     public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(MirrorAngleEffect), 0);
-    public static readonly DependencyProperty RelativeHeightProperty = DependencyProperty.Register("RelativeHeight", typeof(double), typeof(MirrorAngleEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(0)));
+    public static readonly DependencyProperty RelativeHeightProperty = DependencyProperty.Register(
+        "RelativeHeight",
+        typeof(double),
+        typeof(MirrorAngleEffect),
+        new UIPropertyMetadata(0D, PixelShaderConstantCallback(0)));
 
     public MirrorAngleEffect()
     {

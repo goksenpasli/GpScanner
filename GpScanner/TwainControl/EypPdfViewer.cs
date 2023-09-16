@@ -97,7 +97,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         }
     }
 
-    static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is EypPdfViewer eypPdfViewer && e.NewValue is not null)
         {

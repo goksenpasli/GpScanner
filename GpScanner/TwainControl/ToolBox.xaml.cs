@@ -3,7 +3,6 @@ using Ocr;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Imaging;
@@ -76,7 +75,14 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
         SetWatermark = new RelayCommand<object>(
             parameter => Scanner.CroppedImage =
-                Scanner.CroppedImage.ÜstüneResimÇiz(new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), Scanner.WatermarkColor, Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont),
+                Scanner.CroppedImage
+                    .ÜstüneResimÇiz(
+                        new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2),
+                        Scanner.WatermarkColor,
+                        Scanner.WatermarkTextSize,
+                        Scanner.Watermark,
+                        Scanner.WatermarkAngle,
+                        Scanner.WatermarkFont),
             parameter => Scanner?.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
         WebAdreseGit =
@@ -130,7 +136,9 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                         {
                             listcroppedimages = Scanner.Resimler
                                 .Where(z => z.Seçili)
-                                .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
+                                .SelectMany(
+                                    scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight)
+                                            .Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
                                 .ToList();
                             pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
                         });
@@ -211,7 +219,9 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     double height = page.Height / Scanner.SliceCountHeight;
                                     BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
                                     double xratio = width / currentimage.PixelWidth;
-                                    BitmapSource bitmapsource = ResizeRatioImage ? currentimage.Resize(xratio) : CompressImage ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height) : currentimage;
+                                    BitmapSource bitmapsource = ResizeRatioImage
+                                        ? currentimage.Resize(xratio)
+                                        : CompressImage ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height) : currentimage;
                                     using MemoryStream ms =
                                         new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                     using XImage xImage = XImage.FromStream(ms);

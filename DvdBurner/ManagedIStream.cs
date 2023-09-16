@@ -27,7 +27,8 @@ namespace DvdBurner
         {
         }
         public void SetSize(long libNewSize) { throw new NotImplementedException(); }
-        public void Stat(out System.Runtime.InteropServices.ComTypes.STATSTG pstatstg, int grfStatFlag) { pstatstg = new System.Runtime.InteropServices.ComTypes.STATSTG { type = 2, cbSize = source.Length, grfMode = 0 }; }
+        public void Stat(out System.Runtime.InteropServices.ComTypes.STATSTG pstatstg, int grfStatFlag)
+        { pstatstg = new System.Runtime.InteropServices.ComTypes.STATSTG { type = 2, cbSize = source.Length, grfMode = 0 }; }
         public void UnlockRegion(long libOffset, long cb, int dwLockType) { throw new NotImplementedException(); }
         public void Write(byte[] pv, int cb, IntPtr pcbWritten) { throw new NotImplementedException(); }
     }

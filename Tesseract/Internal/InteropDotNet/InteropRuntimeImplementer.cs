@@ -51,7 +51,9 @@ namespace Tesseract.Internal.InteropDotNet
                 methods[i] = new MethodItem
                 {
                     Info = methodInfoArray[i],
-                    DllImportAttribute = GetRuntimeDllImportAttribute(methodInfoArray[i]) ?? throw new Exception($"Method '{methodInfoArray[i].Name}' of interface '{interfaceType.Name}' should be marked with the RuntimeDllImport attribute")
+                    DllImportAttribute =
+                        GetRuntimeDllImportAttribute(methodInfoArray[i]) ??
+                            throw new Exception($"Method '{methodInfoArray[i].Name}' of interface '{interfaceType.Name}' should be marked with the RuntimeDllImport attribute")
                 };
             }
 
@@ -165,7 +167,8 @@ namespace Tesseract.Internal.InteropDotNet
 
             RuntimeDllImportAttribute importAttribute = method.DllImportAttribute;
             ConstructorInfo attributeCtor =
-                typeof(UnmanagedFunctionPointerAttribute).GetConstructor(new[] { typeof(CallingConvention) }) ?? throw new Exception("There is no the target constructor of the UnmanagedFunctionPointerAttribute");
+                typeof(UnmanagedFunctionPointerAttribute).GetConstructor(new[] { typeof(CallingConvention) }) ??
+                throw new Exception("There is no the target constructor of the UnmanagedFunctionPointerAttribute");
             CustomAttributeBuilder attributeBuilder = new CustomAttributeBuilder(
                 attributeCtor,
                 new object[] { importAttribute.CallingConvention },
@@ -208,7 +211,12 @@ namespace Tesseract.Internal.InteropDotNet
             foreach (MethodItem method in methods)
             {
                 LightParameterInfo[] infoArray = GetParameterInfoArray(method.Info);
-                MethodBuilder methodBuilder = DefineMethod(typeBuilder, method.Name, MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Final | MethodAttributes.Virtual, method.ReturnType, infoArray);
+                MethodBuilder methodBuilder = DefineMethod(
+                    typeBuilder,
+                    method.Name,
+                    MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Final | MethodAttributes.Virtual,
+                    method.ReturnType,
+                    infoArray);
 
                 ILGenerator ilGen = methodBuilder.GetILGenerator();
 

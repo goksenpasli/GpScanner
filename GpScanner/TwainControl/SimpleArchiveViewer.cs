@@ -26,7 +26,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                     if (DataContext is TwainCtrl twainCtrl)
                     {
                         string extractedfile = ExtractToFile(parameter as string);
-                        twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
+                        _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
                     }
                 }
                 catch (Exception ex)

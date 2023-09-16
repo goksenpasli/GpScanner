@@ -101,7 +101,17 @@ namespace Tesseract.Interop
         IntPtr BaseApiGetWordStrBoxTextInternal(HandleRef handle, int pageNum);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIInit4")]
-        int BaseApiInit(HandleRef handle, string datapath, string language, int mode, string[] configs, int configs_size, string[] vars_vec, string[] vars_values, UIntPtr vars_vec_size, bool set_only_non_debug_params);
+        int BaseApiInit(
+            HandleRef handle,
+            string datapath,
+            string language,
+            int mode,
+            string[] configs,
+            int configs_size,
+            string[] vars_vec,
+            string[] vars_values,
+            UIntPtr vars_vec_size,
+            bool set_only_non_debug_params);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIPrintVariablesToFile")]
         int BaseApiPrintVariablesToFile(HandleRef handle, string filename);
@@ -197,7 +207,16 @@ namespace Tesseract.Interop
         bool ResultIteratorSymbolIsSuperscript(HandleRef handle);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorWordFontAttributes")]
-        IntPtr ResultIteratorWordFontAttributes(HandleRef handle, out bool isBold, out bool isItalic, out bool isUnderlined, out bool isMonospace, out bool isSerif, out bool isSmallCaps, out int pointSize, out int fontId);
+        IntPtr ResultIteratorWordFontAttributes(
+            HandleRef handle,
+            out bool isBold,
+            out bool isItalic,
+            out bool isUnderlined,
+            out bool isMonospace,
+            out bool isSerif,
+            out bool isSmallCaps,
+            out int pointSize,
+            out int fontId);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorWordIsFromDictionary")]
         bool ResultIteratorWordIsFromDictionary(HandleRef handle);
@@ -481,7 +500,14 @@ namespace Tesseract.Interop
             return versionHandle != IntPtr.Zero ? MarshalHelper.PtrToString(versionHandle, Encoding.UTF8) : null;
         }
 
-        public static int BaseApiInit(HandleRef handle, string datapath, string language, int mode, IEnumerable<string> configFiles, IDictionary<string, object> initialValues, bool setOnlyNonDebugParams)
+        public static int BaseApiInit(
+            HandleRef handle,
+            string datapath,
+            string language,
+            int mode,
+            IEnumerable<string> configFiles,
+            IDictionary<string, object> initialValues,
+            bool setOnlyNonDebugParams)
         {
             Guard.Require(nameof(handle), handle.Handle != IntPtr.Zero, "Handle for BaseApi, created through BaseApiCreate is required.");
             Guard.RequireNotNullOrEmpty(nameof(language), language);
@@ -499,7 +525,9 @@ namespace Tesseract.Interop
 
                 Guard.Require(nameof(initialValues), pair.Value != null, "Variable '{0}': The type '{1}' is not supported.", pair.Key, pair.Value.GetType());
                 varNames[i] = pair.Key;
-                varValues[i] = TessConvert.TryToString(pair.Value, out string varValue) ? varValue : throw new ArgumentException($"Variable '{pair.Key}': The type '{pair.Value.GetType()}' is not supported.", nameof(initialValues));
+                varValues[i] = TessConvert.TryToString(pair.Value, out string varValue)
+                    ? varValue
+                    : throw new ArgumentException($"Variable '{pair.Key}': The type '{pair.Value.GetType()}' is not supported.", nameof(initialValues));
                 i++;
             }
 
