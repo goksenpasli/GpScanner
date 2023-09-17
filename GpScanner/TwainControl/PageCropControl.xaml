@@ -40,11 +40,10 @@
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
             <Grid IsEnabled="{Binding Path=CropScan, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                 <Grid.Resources>
-                    <Style BasedOn="{StaticResource Slider}" TargetType="Slider">
+                    <Style TargetType="Slider">
                         <Setter Property="SmallChange" Value="1" />
                         <Setter Property="LargeChange" Value="10" />
                         <Setter Property="Minimum" Value="0" />
-                        <Setter Property="BorderThickness" Value="2" />
                     </Style>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
@@ -59,25 +58,31 @@
                 </Grid.RowDefinitions>
                 <Slider x:Name="TopCrop"
                     Grid.Column="1"
-                    BorderBrush="Green"
+                    BorderBrush="Green" BorderThickness="2"
                     Maximum="{Binding ElementName=BottomCrop, Path=Value}"
+                    Style="{DynamicResource Slider}"
                     Value="{Binding Top, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                 <Slider x:Name="LeftCrop"
                     Grid.Row="1"
-                    BorderBrush="Red" IsDirectionReversed="True"
+                    BorderBrush="Red" BorderThickness="2"
+                    IsDirectionReversed="True"
                     Maximum="{Binding ElementName=RightCrop, Path=Value}"
                     Orientation="Vertical"
+                    Style="{DynamicResource Slider}"
                     Value="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                 <Slider x:Name="BottomCrop"
                     Grid.Row="2" Grid.Column="1"
-                    BorderBrush="Orange" IsDirectionReversed="True"
+                    BorderBrush="Orange" BorderThickness="2"
+                    IsDirectionReversed="True"
                     Maximum="{Binding PageHeight}"
+                    Style="{DynamicResource Slider}"
                     Value="{Binding Bottom, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                 <Slider x:Name="RightCrop"
                     Grid.Row="1" Grid.Column="2"
-                    BorderBrush="Cyan"
+                    BorderBrush="Cyan" BorderThickness="2"
                     Maximum="{Binding PageWidth}"
                     Orientation="Vertical"
+                    Style="{DynamicResource Slider}"
                     Value="{Binding Right, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                 <Canvas Grid.Row="1" Grid.Column="1"
                     Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
