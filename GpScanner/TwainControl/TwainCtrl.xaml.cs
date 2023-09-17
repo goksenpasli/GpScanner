@@ -2727,6 +2727,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Settings.Default.BackMode = Settings.Default.Mode;
         }
 
+        if (e.PropertyName is "Çözünürlük")
+        {
+            SetCropPageResolution();
+        }
+
         Settings.Default.Save();
     }
 
@@ -3335,6 +3340,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             ? new AreaSettings(Units.Pixels, Settings.Default.Top, Settings.Default.Left, Settings.Default.Bottom, Settings.Default.Right)
             : null;
     }
+
+    private void SetCropPageResolution()
+    {
+        PageHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
+        PageWidth = (int)(SelectedPaper.Width / Inch * Settings.Default.Çözünürlük);
+    }
+
     private void StackPanel_Drop(object sender, DragEventArgs e) { DropFile(sender, e); }
 
     private void StackPanel_EypDrop(object sender, DragEventArgs e)
@@ -3416,8 +3428,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             ToolBox.Paper = SelectedPaper;
             DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
-            PageHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
-            PageWidth = (int)(SelectedPaper.Width / Inch * Settings.Default.Çözünürlük);
+            SetCropPageResolution();
         }
 
         if (e.PropertyName is "SeekIndex" && SeekIndex >= 0 && SeekIndex < Scanner.Resimler.Count)

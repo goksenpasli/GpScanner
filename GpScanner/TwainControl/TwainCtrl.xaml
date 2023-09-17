@@ -561,10 +561,12 @@
                                 </ComboBox>
                                 <Grid Grid.Column="1" VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="60" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Margin="0,0,2,0" VerticalAlignment="Center" Text="{Binding Çözünürlük, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Text="{Binding Çözünürlük, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
                                     <Slider Grid.Column="1"
                                         IsSnapToTickEnabled="True" Maximum="4800"
                                         Minimum="72" SmallChange="1"

@@ -61,6 +61,7 @@
                     Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}">
                     <Button Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                        d:Height="249.6" d:Width="156.8"
                         BorderBrush="Gray" BorderThickness="2"
                         Command="{Binding ResetCrop}">
                         <StackPanel>
@@ -80,18 +81,22 @@
                         </StackPanel>
                     </Button>
                     <Line Canvas.Left="{Binding Left, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                        d:Canvas.Left="20" d:Y2="249.64"
                         Stroke="Red" X1="0"
                         X2="0" Y1="0"
                         Y2="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}" />
                     <Line Canvas.Left="{Binding Right, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                        d:Canvas.Left="133" d:Y2="249.64"
                         Stroke="Cyan" X1="0"
                         X2="0" Y1="0"
                         Y2="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}" />
                     <Line Canvas.Top="{Binding Top, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                        d:Canvas.Top="20" d:X2="156.8"
                         Stroke="Green" X1="0"
                         X2="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Y1="0" Y2="0" />
                     <Line Canvas.Top="{Binding Bottom, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                        d:Canvas.Top="230" d:X2="156.8"
                         Stroke="Orange" X1="0"
                         X2="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Y1="0" Y2="0" />
