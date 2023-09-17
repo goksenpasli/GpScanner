@@ -28,38 +28,23 @@ public enum FitImageOrientation
 [TemplatePart(Name = "panoramaBrush", Type = typeof(DiffuseMaterial))]
 public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 {
-    public static readonly DependencyProperty AngleProperty =
-                                                                                                                                                    DependencyProperty.Register(
-        "Angle",
-        typeof(double),
-        typeof(ImageViewer),
-        new PropertyMetadata(0.0));
+    public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register("DecodeHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(300, DecodeHeightChangedAsync));
     public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
-    public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register(
-        "ImageFilePath",
-        typeof(string),
-        typeof(ImageViewer),
-        new PropertyMetadata(null, ImageFilePathChangedAsync));
+    public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register("ImageFilePath", typeof(string), typeof(ImageViewer), new PropertyMetadata(null, ImageFilePathChangedAsync));
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         "Orientation",
         typeof(FitImageOrientation),
         typeof(ImageViewer),
         new PropertyMetadata(FitImageOrientation.None, OrientationChanged));
-    public static readonly DependencyProperty OriginalPixelHeightProperty =
-        DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
-    public static readonly DependencyProperty OriginalPixelWidthProperty =
-        DependencyProperty.Register("OriginalPixelWidth", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
+    public static readonly DependencyProperty OriginalPixelHeightProperty = DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
+    public static readonly DependencyProperty OriginalPixelWidthProperty = DependencyProperty.Register("OriginalPixelWidth", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
     public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(ImageViewer), new PropertyMetadata(PanoramaModeChanged));
-    public static readonly DependencyProperty RotateXProperty =
-        DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
-    public static readonly DependencyProperty RotateYProperty =
-        DependencyProperty.Register("RotateY", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
-    public static readonly DependencyProperty SnapTickProperty =
-        DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty RotateXProperty = DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
+    public static readonly DependencyProperty RotateYProperty = DependencyProperty.Register("RotateY", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
+    public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(ImageViewer), new PropertyMetadata(null, SourceChanged));
-    public static readonly DependencyProperty ToolBarVisibilityProperty =
-        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0), ZoomValidateCallBack);
     private bool _isOnDrag;
     private DiffuseMaterial _panoramaBrush;
@@ -85,12 +70,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         DosyaAç = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Resim Dosyaları (*.jpg;*.jpeg;*.tif;*.tiff;*.png)|*.jpg;*.jpeg;*.tif;*.tiff;*.png" };
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    ImageFilePath = openFileDialog.FileName;
-                    PanoramaMode = false;
-                }
+            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Resim Dosyaları (*.jpg;*.jpeg;*.tif;*.tiff;*.png)|*.jpg;*.jpeg;*.tif;*.tiff;*.png" };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                ImageFilePath = openFileDialog.FileName;
+                PanoramaMode = false;
+            }
             });
 
         ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Decoder != null && Sayfa > 1 && Sayfa <= Decoder.Frames.Count);
@@ -100,83 +85,83 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         Resize = new RelayCommand<object>(
             parameter =>
             {
-                if (Source is not null)
+            if (Source is not null)
+            {
+                switch (Orientation)
                 {
-                    switch (Orientation)
-                    {
-                        case FitImageOrientation.Width:
-                            Zoom = ActualHeight / Source.Height;
-                            return;
+                    case FitImageOrientation.Width:
+                        Zoom = ActualHeight / Source.Height;
+                        return;
 
-                        case FitImageOrientation.Height:
-                            Zoom = ActualWidth / Source.Width;
-                            return;
+                    case FitImageOrientation.Height:
+                        Zoom = ActualWidth / Source.Width;
+                        return;
 
-                        case FitImageOrientation.None:
-                            Zoom = 1;
-                            break;
-                    }
+                    case FitImageOrientation.None:
+                        Zoom = 1;
+                        break;
                 }
+            }
             },
             parameter => Source is not null);
 
         Yazdır = new RelayCommand<object>(
             parameter =>
             {
-                PrintDialog pd = new();
-                DrawingVisual dv = new();
-                if (Decoder == null)
-                {
-                    if (pd.ShowDialog() == true)
-                    {
-                        using (DrawingContext dc = dv.RenderOpen())
-                        {
-                            BitmapSource imagesource = Source.Width > Source.Height
-                                ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
-                            imagesource.Freeze();
-                            dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                        }
-
-                        pd.PrintVisual(dv, string.Empty);
-                    }
-
-                    return;
-                }
-
-                pd.PageRangeSelection = PageRangeSelection.AllPages;
-                pd.UserPageRangeEnabled = true;
-                pd.MaxPage = (uint)Decoder.Frames.Count;
-                pd.MinPage = 1;
+            PrintDialog pd = new();
+            DrawingVisual dv = new();
+            if (Decoder == null)
+            {
                 if (pd.ShowDialog() == true)
                 {
-                    int başlangıç;
-                    int bitiş;
-                    if (pd.PageRangeSelection == PageRangeSelection.AllPages)
+                    using (DrawingContext dc = dv.RenderOpen())
                     {
-                        başlangıç = 0;
-                        bitiş = Decoder.Frames.Count - 1;
-                    }
-                    else
-                    {
-                        başlangıç = pd.PageRange.PageFrom - 1;
-                        bitiş = pd.PageRange.PageTo - 1;
+                        BitmapSource imagesource = Source.Width > Source.Height
+                            ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
+                            : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
+                        imagesource.Freeze();
+                        dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                     }
 
-                    for (int i = başlangıç; i <= bitiş; i++)
-                    {
-                        using (DrawingContext dc = dv.RenderOpen())
-                        {
-                            BitmapSource imagesource = Source.Width > Source.Height
-                                ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                : Decoder.Frames[i]?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
-                            imagesource.Freeze();
-                            dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                        }
-
-                        pd.PrintVisual(dv, string.Empty);
-                    }
+                    pd.PrintVisual(dv, string.Empty);
                 }
+
+                return;
+            }
+
+            pd.PageRangeSelection = PageRangeSelection.AllPages;
+            pd.UserPageRangeEnabled = true;
+            pd.MaxPage = (uint)Decoder.Frames.Count;
+            pd.MinPage = 1;
+            if (pd.ShowDialog() == true)
+            {
+                int başlangıç;
+                int bitiş;
+                if (pd.PageRangeSelection == PageRangeSelection.AllPages)
+                {
+                    başlangıç = 0;
+                    bitiş = Decoder.Frames.Count - 1;
+                }
+                else
+                {
+                    başlangıç = pd.PageRange.PageFrom - 1;
+                    bitiş = pd.PageRange.PageTo - 1;
+                }
+
+                for (int i = başlangıç; i <= bitiş; i++)
+                {
+                    using (DrawingContext dc = dv.RenderOpen())
+                    {
+                        BitmapSource imagesource = Source.Width > Source.Height
+                            ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
+                            : Decoder.Frames[i]?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
+                        imagesource.Freeze();
+                        dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
+                    }
+
+                    pd.PrintVisual(dv, string.Empty);
+                }
+            }
             },
             parameter => Source is not null);
 
@@ -358,19 +343,19 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         return await Task.Run(
             () =>
             {
-                BitmapImage image = new();
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.None;
-                image.DecodePixelHeight = decodepixelheight;
-                image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
-                image.UriSource = new Uri(imagePath);
-                image.EndInit();
-                if (!image.IsFrozen && image.CanFreeze)
-                {
-                    image.Freeze();
-                }
+            BitmapImage image = new();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.None;
+            image.DecodePixelHeight = decodepixelheight;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.DelayCreation;
+            image.UriSource = new Uri(imagePath);
+            image.EndInit();
+            if (!image.IsFrozen && image.CanFreeze)
+            {
+                image.Freeze();
+            }
 
-                return image;
+            return image;
             });
     }
 
@@ -419,7 +404,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private static async void DecodeHeightChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -452,11 +437,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         return await Task.Run(
             () =>
             {
-                BitmapDecoder bitmapframe = BitmapDecoder.Create(
-                    new Uri(filepath),
-                    BitmapCreateOptions.DelayCreation | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.IgnoreColorProfile,
-                    BitmapCacheOption.None);
-                return new[] { bitmapframe.Frames[0].PixelHeight, bitmapframe.Frames[0].PixelWidth };
+            BitmapDecoder bitmapframe = BitmapDecoder.Create(new Uri(filepath), BitmapCreateOptions.DelayCreation | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.None);
+            return new[] { bitmapframe.Frames[0].PixelHeight, bitmapframe.Frames[0].PixelWidth };
             });
     }
 
@@ -491,9 +473,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     imageViewer.Pages = Enumerable.Range(1, imageViewer.Decoder.Frames.Count);
                     if (imageViewer.TemplatedParent is ContentPresenter contentpresenter)
                     {
-                        imageViewer.Zoom = imageViewer.Orientation != FitImageOrientation.Width
-                            ? contentpresenter.ActualHeight / imageViewer.Source.Height
-                            : contentpresenter.ActualWidth / imageViewer.Source.Width;
+                        imageViewer.Zoom = imageViewer.Orientation != FitImageOrientation.Width ? contentpresenter.ActualHeight / imageViewer.Source.Height : contentpresenter.ActualWidth / imageViewer.Source.Width;
                     }
 
                     return;
@@ -566,7 +546,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         _startRotateY = RotateY;
     }
 
-    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) { _isOnDrag = false; }
+    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => _isOnDrag = false;
 
     private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
     {
@@ -578,5 +558,5 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) { Fov -= e.Delta / 100d; }
+    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) => Fov -= e.Delta / 100d;
 }

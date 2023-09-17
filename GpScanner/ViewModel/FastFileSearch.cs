@@ -30,7 +30,7 @@ public static class FastFileSearch
     /// directories.
     /// </summary>
     /// <param name="maxDepth">Maximum folder depth to recurse. Set -1 to disable max depth.</param>
-    public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1) { return ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0); }
+    public static IEnumerable<string> EnumerateFilepaths(string path, int maxDepth = -1) => ScanRecursiveFilepath(Path.GetFullPath(path), maxDepth, 0);
 
     [DllImport("kernel32.dll", SetLastError = true)]
     private static extern bool FindClose(IntPtr hFindFile);
@@ -41,8 +41,9 @@ public static class FastFileSearch
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
     private static extern bool FindNextFile(IntPtr hFindFile, out Win32FindData lpFindFileData);
 
-    private static long GetFilesize(Win32FindData findData) { return findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue); }
-    private static bool IsValidFile(Win32FindData findData) { return !findData.cFileName.Equals(".") && !findData.cFileName.Equals(".."); }
+    private static long GetFilesize(Win32FindData findData) => findData.nFileSizeLow + ((long)findData.nFileSizeHigh * uint.MaxValue);
+
+    private static bool IsValidFile(Win32FindData findData) => !findData.cFileName.Equals(".") && !findData.cFileName.Equals("..");
 
     private static IEnumerable<FileResult> ScanRecursive(string path, int maxDepth, int depth, DirectoryStats parent)
     {

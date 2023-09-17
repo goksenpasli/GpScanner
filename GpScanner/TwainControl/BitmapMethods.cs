@@ -41,23 +41,23 @@ public static class BitmapMethods
             pixelData.Length / bytesPerPixel,
             i =>
             {
-                int offset = i * bytesPerPixel;
+            int offset = i * bytesPerPixel;
 
-                byte r = pixelData[offset + 2];
-                byte g = pixelData[offset + 1];
-                byte b = pixelData[offset];
+            byte r = pixelData[offset + 2];
+            byte g = pixelData[offset + 1];
+            byte b = pixelData[offset];
 
-                RgbToHsv(r, g, b, out double h, out double s, out double v);
+            RgbToHsv(r, g, b, out double h, out double s, out double v);
 
-                h = (h + hue) % 1.0;
-                s *= saturation;
-                v *= lightness;
+            h = (h + hue) % 1.0;
+            s *= saturation;
+            v *= lightness;
 
-                HsvToRgb(h, s, v, out byte newR, out byte newG, out byte newB);
+            HsvToRgb(h, s, v, out byte newR, out byte newG, out byte newB);
 
-                pixelData[offset + 2] = newR;
-                pixelData[offset + 1] = newG;
-                pixelData[offset] = newB;
+            pixelData[offset + 2] = newR;
+            pixelData[offset + 1] = newG;
+            pixelData[offset] = newB;
             });
 
         WriteableBitmap modifiedBitmap = new(width, height, source.DpiX, source.DpiY, source.Format, source.Palette);
@@ -86,33 +86,33 @@ public static class BitmapMethods
             bitmapSource.PixelHeight,
             y =>
             {
-                for (int x = 0; x < bitmapSource.PixelWidth; x++)
+            for (int x = 0; x < bitmapSource.PixelWidth; x++)
+            {
+                int offset = (y * stride) + (x * bytesPerPixel);
+                Color pixelColor = Color.FromArgb(bytesPerPixel == 4 ? pixelData[offset + 3] : (byte)255, pixelData[offset + 2], pixelData[offset + 1], pixelData[offset]);
+                if (pixelColor != color)
                 {
-                    int offset = (y * stride) + (x * bytesPerPixel);
-                    Color pixelColor = Color.FromArgb(bytesPerPixel == 4 ? pixelData[offset + 3] : (byte)255, pixelData[offset + 2], pixelData[offset + 1], pixelData[offset]);
-                    if (pixelColor != color)
+                    if (x > maxX)
                     {
-                        if (x > maxX)
-                        {
-                            maxX = x;
-                        }
+                        maxX = x;
+                    }
 
-                        if (x < minX)
-                        {
-                            minX = x;
-                        }
+                    if (x < minX)
+                    {
+                        minX = x;
+                    }
 
-                        if (y > maxY)
-                        {
-                            maxY = y;
-                        }
+                    if (y > maxY)
+                    {
+                        maxY = y;
+                    }
 
-                        if (y < minY)
-                        {
-                            minY = y;
-                        }
+                    if (y < minY)
+                    {
+                        minY = y;
                     }
                 }
+            }
             });
         maxX += 2;
         CroppedBitmap croppedimage = new(bitmapSource, new Int32Rect(minX, minY, maxX - minX - 1, maxY - minY - 1));
@@ -240,9 +240,9 @@ public static class BitmapMethods
         return await Task.Run(
             () =>
             {
-                BitmapFrame frame = BitmapFrame.Create(transformedBitmap);
-                frame.Freeze();
-                return frame;
+            BitmapFrame frame = BitmapFrame.Create(transformedBitmap);
+            frame.Freeze();
+            return frame;
             });
     }
 
@@ -284,12 +284,12 @@ public static class BitmapMethods
             height,
             y =>
             {
-                int offset = y * stride;
+            int offset = y * stride;
 
-                for (int x = 0; x < width * bytesPerPixel; x++)
-                {
-                    pixelData[offset + x] = (byte)(255 - pixelData[offset + x]);
-                }
+            for (int x = 0; x < width * bytesPerPixel; x++)
+            {
+                pixelData[offset + x] = (byte)(255 - pixelData[offset + x]);
+            }
             });
 
         WriteableBitmap invertedBitmap = new(width, height, bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette);
@@ -316,35 +316,35 @@ public static class BitmapMethods
             height,
             y =>
             {
-                for (int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
+            {
+                int minX = Math.Max(x - (threshold / 2), 0);
+                int maxX = Math.Min(x + (threshold / 2), width - 1);
+                int minY = Math.Max(y - (threshold / 2), 0);
+                int maxY = Math.Min(y + (threshold / 2), height - 1);
+
+                List<byte> values = [];
+                for (int wy = minY; wy <= maxY; wy++)
                 {
-                    int minX = Math.Max(x - (threshold / 2), 0);
-                    int maxX = Math.Min(x + (threshold / 2), width - 1);
-                    int minY = Math.Max(y - (threshold / 2), 0);
-                    int maxY = Math.Min(y + (threshold / 2), height - 1);
-
-                    List<byte> values = [];
-                    for (int wy = minY; wy <= maxY; wy++)
+                    for (int wx = minX; wx <= maxX; wx++)
                     {
-                        for (int wx = minX; wx <= maxX; wx++)
-                        {
-                            int pixelIndex = (wy * stride) + (wx * bytesPerPixel);
-                            byte pixelValue = inputPixels[pixelIndex];
-                            values.Add(pixelValue);
-                        }
-                    }
-
-                    values.Sort();
-                    byte medianValue = values[values.Count / 2];
-                    int outputIndex = (y * stride) + (x * bytesPerPixel);
-                    outputPixels[outputIndex] = medianValue;
-                    outputPixels[outputIndex + 1] = medianValue;
-                    outputPixels[outputIndex + 2] = medianValue;
-                    if (bytesPerPixel == 4)
-                    {
-                        outputPixels[outputIndex + 3] = 255;
+                        int pixelIndex = (wy * stride) + (wx * bytesPerPixel);
+                        byte pixelValue = inputPixels[pixelIndex];
+                        values.Add(pixelValue);
                     }
                 }
+
+                values.Sort();
+                byte medianValue = values[values.Count / 2];
+                int outputIndex = (y * stride) + (x * bytesPerPixel);
+                outputPixels[outputIndex] = medianValue;
+                outputPixels[outputIndex + 1] = medianValue;
+                outputPixels[outputIndex + 2] = medianValue;
+                if (bytesPerPixel == 4)
+                {
+                    outputPixels[outputIndex + 3] = 255;
+                }
+            }
             });
 
         outputBitmap.WritePixels(new Int32Rect(0, 0, width, height), outputPixels, stride, 0);
@@ -374,23 +374,23 @@ public static class BitmapMethods
             height,
             y =>
             {
-                int rowOffset = y * stride;
+            int rowOffset = y * stride;
 
-                for (int x = 0; x < width; x++)
+            for (int x = 0; x < width; x++)
+            {
+                int offset = rowOffset + (x * pixelSize);
+
+                byte b = targetPixels[offset];
+                byte g = targetPixels[offset + 1];
+                byte r = targetPixels[offset + 2];
+
+                if (Math.Abs(toReplace.R - r) <= threshold && Math.Abs(toReplace.G - g) <= threshold && Math.Abs(toReplace.B - b) <= threshold)
                 {
-                    int offset = rowOffset + (x * pixelSize);
-
-                    byte b = targetPixels[offset];
-                    byte g = targetPixels[offset + 1];
-                    byte r = targetPixels[offset + 2];
-
-                    if (Math.Abs(toReplace.R - r) <= threshold && Math.Abs(toReplace.G - g) <= threshold && Math.Abs(toReplace.B - b) <= threshold)
-                    {
-                        targetPixels[offset] = replacement.B;
-                        targetPixels[offset + 1] = replacement.G;
-                        targetPixels[offset + 2] = replacement.R;
-                    }
+                    targetPixels[offset] = replacement.B;
+                    targetPixels[offset + 1] = replacement.G;
+                    targetPixels[offset + 2] = replacement.R;
                 }
+            }
             });
 
         WriteableBitmap target = new(width, height, source.DpiX, source.DpiY, source.Format, null);
@@ -409,21 +409,21 @@ public static class BitmapMethods
             return await Task.Run(
                 () =>
                 {
-                    DrawingVisual dv = new();
-                    using (DrawingContext dc = dv.RenderOpen())
-                    {
-                        dc.PushTransform(new RotateTransform(angle, bitmapSource.PixelWidth / 2, bitmapSource.PixelHeight / 2));
-                        dc.DrawImage(Source, new Rect(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight));
-                        dc.Pop();
-                    }
+                DrawingVisual dv = new();
+                using (DrawingContext dc = dv.RenderOpen())
+                {
+                    dc.PushTransform(new RotateTransform(angle, bitmapSource.PixelWidth / 2, bitmapSource.PixelHeight / 2));
+                    dc.DrawImage(Source, new Rect(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight));
+                    dc.Pop();
+                }
 
-                    RenderTargetBitmap rtb = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, 96, 96, PixelFormats.Default);
-                    rtb.Render(dv);
-                    rtb.Freeze();
-                    bitmapSource = null;
-                    Source = null;
-                    dv = null;
-                    return rtb;
+                RenderTargetBitmap rtb = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, 96, 96, PixelFormats.Default);
+                rtb.Render(dv);
+                rtb.Freeze();
+                bitmapSource = null;
+                Source = null;
+                dv = null;
+                return rtb;
                 });
         }
         catch (Exception ex)
@@ -446,9 +446,9 @@ public static class BitmapMethods
         return await Task.Run(
             () =>
             {
-                BitmapFrame frame = BitmapFrame.Create(transformedBitmap);
-                frame.Freeze();
-                return frame;
+            BitmapFrame frame = BitmapFrame.Create(transformedBitmap);
+            frame.Freeze();
+            return frame;
             });
     }
 
@@ -498,9 +498,7 @@ public static class BitmapMethods
             using WebP webp = new();
             using MemoryStream ms = new(resim);
             using Bitmap bmp = Image.FromStream(ms) as Bitmap;
-            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb
-                ? webp.EncodeLossy(bmp, kalite)
-                : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
+            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb ? webp.EncodeLossy(bmp, kalite) : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
         }
         catch (Exception)
         {

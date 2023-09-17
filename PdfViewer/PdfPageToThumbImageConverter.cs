@@ -35,17 +35,17 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
                 return Task.Run(
                     async () =>
                     {
-                        BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
-                        if (bitmapImage == null)
-                        {
-                            return null;
-                        }
-                        bitmapImage.Freeze();
-                        return bitmapImage;
+                    BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
+                    if (bitmapImage == null)
+                    {
+                        return null;
+                    }
+                    bitmapImage.Freeze();
+                    return bitmapImage;
                     })
-                    .ConfigureAwait(false)
-                    .GetAwaiter()
-                    .GetResult();
+                           .ConfigureAwait(false)
+                           .GetAwaiter()
+                           .GetResult();
             }
             catch (Exception)
             {
@@ -55,5 +55,5 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
         return null;
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) { throw new NotImplementedException(); }
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

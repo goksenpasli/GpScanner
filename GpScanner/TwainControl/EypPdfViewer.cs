@@ -22,33 +22,33 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         DosyaAç = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Doküman (*.pdf;*.eyp)|*.pdf;*.eyp" };
-                openFileDialog.Multiselect = false;
-                if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Doküman (*.pdf;*.eyp)|*.pdf;*.eyp" };
+            openFileDialog.Multiselect = false;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
                 {
-                    if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
+                    string eypfile = ExtractEypFilesToPdf(openFileDialog.FileName);
+                    if (PdfReader.TestPdfFile(eypfile) == 0)
                     {
-                        string eypfile = ExtractEypFilesToPdf(openFileDialog.FileName);
-                        if (PdfReader.TestPdfFile(eypfile) == 0)
-                        {
-                            return;
-                        }
-
-                        PdfFilePath = eypfile;
+                        return;
                     }
 
-                    if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
-                    {
-                        if (PdfReader.TestPdfFile(openFileDialog.FileName) == 0)
-                        {
-                            return;
-                        }
-
-                        PdfFilePath = openFileDialog.FileName;
-                    }
-
-                    AddToHistoryList(PdfFilePath);
+                    PdfFilePath = eypfile;
                 }
+
+                if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
+                {
+                    if (PdfReader.TestPdfFile(openFileDialog.FileName) == 0)
+                    {
+                        return;
+                    }
+
+                    PdfFilePath = openFileDialog.FileName;
+                }
+
+                AddToHistoryList(PdfFilePath);
+            }
             });
     }
 

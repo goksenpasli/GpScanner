@@ -131,30 +131,30 @@ public static class StillImageHelper
             _ = Task.Run(
                 () =>
                 {
-                    try
+                try
+                {
+                    using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
+                    while (_serverRunning)
                     {
-                        using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
-                        while (_serverRunning)
+                        pipeServer.WaitForConnection();
+                        StreamString streamString = new(pipeServer);
+                        string msg = streamString.ReadString();
+                        if (msg == MSG_KILL_PIPE_SERVER)
                         {
-                            pipeServer.WaitForConnection();
-                            StreamString streamString = new(pipeServer);
-                            string msg = streamString.ReadString();
-                            if (msg == MSG_KILL_PIPE_SERVER)
-                            {
-                                break;
-                            }
-
-                            msgCallback(msg);
-                            pipeServer.Disconnect();
+                            break;
                         }
+
+                        msgCallback(msg);
+                        pipeServer.Disconnect();
                     }
-                    catch (Exception)
-                    {
-                    }
-                    finally
-                    {
-                        _serverRunning = false;
-                    }
+                }
+                catch (Exception)
+                {
+                }
+                finally
+                {
+                    _serverRunning = false;
+                }
                 });
         }
     }
@@ -185,7 +185,7 @@ public static class StillImageHelper
         }
     }
 
-    private static string GetPipeName(Process process) { return string.Format(PIPE_NAME_FORMAT, process.Id); }
+    private static string GetPipeName(Process process) => string.Format(PIPE_NAME_FORMAT, process.Id);
 
     private class StreamString(Stream ioStream)
     {

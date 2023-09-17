@@ -14,12 +14,7 @@ namespace Extensions;
 
 public class GraphControl : FrameworkElement
 {
-    public static readonly DependencyProperty ContextMenuVisibilityProperty =
-                                                                            DependencyProperty.Register(
-        "ContextMenuVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(GraphControl), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty DotColorProperty = DependencyProperty.Register(
         "DotColor",
         typeof(Brush),
@@ -31,11 +26,7 @@ public class GraphControl : FrameworkElement
         typeof(GraphControl),
         new FrameworkPropertyMetadata(12.0d, FrameworkPropertyMetadataOptions.AffectsRender));
     public static readonly DependencyProperty GraphContentVisibilityProperty =
-        DependencyProperty.Register(
-        "GraphContentVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+        DependencyProperty.Register("GraphContentVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
     public static readonly DependencyProperty IsContextMenuEnabledProperty =
         DependencyProperty.Register("IsContextMenuEnabled", typeof(bool), typeof(GraphControl), new PropertyMetadata(true));
     public static readonly DependencyProperty LineColorProperty = DependencyProperty.Register(
@@ -46,11 +37,7 @@ public class GraphControl : FrameworkElement
     public static readonly DependencyProperty LineDotVisibilityProperty =
         DependencyProperty.Register("LineDotVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
     public static readonly DependencyProperty LineGraphVisibilityProperty =
-        DependencyProperty.Register(
-        "LineGraphVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+        DependencyProperty.Register("LineGraphVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
     public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register(
         "LineThickness",
         typeof(double),
@@ -240,15 +227,13 @@ public class GraphControl : FrameworkElement
         }
     }
 
-    private FormattedText GenerateFormattedText(Chart item, Pen pen)
-    { return new FormattedText(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor) { MaxTextWidth = pen.Thickness }; }
-    private FormattedText GenerateFormattedValueText(Chart item, Pen pen)
+    private FormattedText GenerateFormattedText(Chart item, Pen pen) => new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor)
     {
-        return new FormattedText(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor)
-        {
-            MaxTextWidth = pen.Thickness
-        };
-    }
+        MaxTextWidth = pen.Thickness
+    };
+
+    private FormattedText GenerateFormattedValueText(Chart item, Pen pen)
+    { return new FormattedText(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor) { MaxTextWidth = pen.Thickness }; }
 
     private RenderTargetBitmap RenderVisual(FrameworkElement frameworkElement)
     {

@@ -100,7 +100,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private async void ListBox_DropAsync(object sender, DragEventArgs e) { await TwainCtrl.ListBoxDropFileAsync(e); }
+    private async void ListBox_DropAsync(object sender, DragEventArgs e) => await TwainCtrl.ListBoxDropFileAsync(e);
 
     private void MW_ContentRendered(object sender, EventArgs e)
     {
@@ -180,19 +180,19 @@ public partial class MainWindow : Window
         StillImageHelper.StartServer(
             msg =>
             {
-                if (msg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCulture))
+            if (msg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCulture))
+            {
+                switch (Settings.Default.ButtonScanMode)
                 {
-                    switch (Settings.Default.ButtonScanMode)
-                    {
-                        case 0 when TwainCtrl.ScanImage.CanExecute(null):
-                            Dispatcher.Invoke(() => TwainCtrl.ScanImage.Execute(null));
-                            break;
+                    case 0 when TwainCtrl.ScanImage.CanExecute(null):
+                        Dispatcher.Invoke(() => TwainCtrl.ScanImage.Execute(null));
+                        break;
 
-                        case 1 when TwainCtrl.FastScanImage.CanExecute(null):
-                            Dispatcher.Invoke(() => TwainCtrl.FastScanImage.Execute(null));
-                            break;
-                    }
+                    case 1 when TwainCtrl.FastScanImage.CanExecute(null):
+                        Dispatcher.Invoke(() => TwainCtrl.FastScanImage.Execute(null));
+                        break;
                 }
+            }
             });
     }
 
@@ -212,7 +212,7 @@ public partial class MainWindow : Window
         }
     }
 
-    private void Run_PreviewMouseMove(object sender, MouseEventArgs e) { TwainCtrl.DropPreviewFile(sender, e); }
+    private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => TwainCtrl.DropPreviewFile(sender, e);
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -227,8 +227,9 @@ public partial class MainWindow : Window
         }
     }
 
-    private void StackPanel_Drop(object sender, DragEventArgs e) { TwainCtrl.DropFile(sender, e); }
-    private void StackPanel_GiveFeedback(object sender, GiveFeedbackEventArgs e) { TwainCtrl.StackPanelDragFeedBack(sender, e); }
+    private void StackPanel_Drop(object sender, DragEventArgs e) => TwainCtrl.DropFile(sender, e);
+
+    private void StackPanel_GiveFeedback(object sender, GiveFeedbackEventArgs e) => TwainCtrl.StackPanelDragFeedBack(sender, e);
 
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {

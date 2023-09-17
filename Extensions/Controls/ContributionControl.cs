@@ -11,27 +11,15 @@ namespace Extensions
 {
     public class ContributionControl : Control, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty ContributionColorProperty = DependencyProperty.Register(
-            "ContributionColor",
-            typeof(Color),
-            typeof(ContributionControl),
-            new PropertyMetadata(Colors.Green));
-        public static readonly DependencyProperty ContributionColumnCountProperty = DependencyProperty.Register(
-            "ContributionColumnCount",
-            typeof(int),
-            typeof(ContributionControl),
-            new PropertyMetadata(7));
+        public static readonly DependencyProperty ContributionColorProperty = DependencyProperty.Register("ContributionColor", typeof(Color), typeof(ContributionControl), new PropertyMetadata(Colors.Green));
+        public static readonly DependencyProperty ContributionColumnCountProperty = DependencyProperty.Register("ContributionColumnCount", typeof(int), typeof(ContributionControl), new PropertyMetadata(7));
         public static readonly DependencyProperty ContributionRowCountProperty = DependencyProperty.Register("ContributionRowCount", typeof(int), typeof(ContributionControl), new PropertyMetadata(53));
         public static readonly DependencyProperty ContributionsProperty = DependencyProperty.Register(
             "Contributions",
             typeof(ObservableCollection<ContributionData>),
             typeof(ContributionControl),
             new PropertyMetadata(null, Changed));
-        public static readonly DependencyProperty SelectedContributionProperty = DependencyProperty.Register(
-            "SelectedContribution",
-            typeof(ContributionData),
-            typeof(ContributionControl),
-            new PropertyMetadata(null));
+        public static readonly DependencyProperty SelectedContributionProperty = DependencyProperty.Register("SelectedContribution", typeof(ContributionData), typeof(ContributionControl), new PropertyMetadata(null));
         private IEnumerable<string> days;
         private int maxContribution;
         private IEnumerable<string> months;
@@ -140,7 +128,7 @@ namespace Extensions
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

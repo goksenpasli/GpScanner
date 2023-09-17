@@ -10,8 +10,9 @@ public class XmlViewerControlModel
 {
     public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached("XmlContent", typeof(string), typeof(XmlViewerControlModel), new PropertyMetadata(null, Changed));
 
-    public static string GetXmlContent(DependencyObject obj) { return (string)obj.GetValue(XmlContentProperty); }
-    public static void SetXmlContent(DependencyObject obj, string value) { obj.SetValue(XmlContentProperty, value); }
+    public static string GetXmlContent(DependencyObject obj) => (string)obj.GetValue(XmlContentProperty);
+
+    public static void SetXmlContent(DependencyObject obj, string value) => obj.SetValue(XmlContentProperty, value);
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

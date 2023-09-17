@@ -7,42 +7,14 @@ namespace Extensions;
 
 public class ContentToggleButton : ToggleButton
 {
-    public static readonly DependencyProperty AlwaysOnTopProperty = DependencyProperty.RegisterAttached(
-        "AlwaysOnTop",
-        typeof(bool),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(true, OnTopChanged));
-    public static readonly DependencyProperty ArrowVisibilityProperty = DependencyProperty.Register(
-        "ArrowVisibility",
-        typeof(Visibility),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(Visibility.Visible));
-    public static readonly DependencyProperty ContentHorizontalOffsetProperty = DependencyProperty.Register(
-        "ContentHorizontalOffset",
-        typeof(double),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(0d));
-    public static readonly DependencyProperty ContentVerticalOffsetProperty = DependencyProperty.Register(
-        "ContentVerticalOffset",
-        typeof(double),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(0d));
-    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register(
-        "CornerRadius",
-        typeof(CornerRadius),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(new CornerRadius(0d)));
+    public static readonly DependencyProperty AlwaysOnTopProperty = DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(true, OnTopChanged));
+    public static readonly DependencyProperty ArrowVisibilityProperty = DependencyProperty.Register("ArrowVisibility", typeof(Visibility), typeof(ContentToggleButton), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ContentHorizontalOffsetProperty = DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
+    public static readonly DependencyProperty ContentVerticalOffsetProperty = DependencyProperty.Register("ContentVerticalOffset", typeof(double), typeof(ContentToggleButton), new PropertyMetadata(0d));
+    public static readonly DependencyProperty CornerRadiusProperty = DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(ContentToggleButton), new PropertyMetadata(new CornerRadius(0d)));
     public static readonly DependencyProperty OverContentProperty = DependencyProperty.Register("OverContent", typeof(object), typeof(ContentToggleButton), new PropertyMetadata(null));
-    public static readonly DependencyProperty PlacementModeProperty = DependencyProperty.Register(
-        "PlacementMode",
-        typeof(PlacementMode),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(PlacementMode.Bottom));
-    public static readonly DependencyProperty PopupAnimationProperty = DependencyProperty.Register(
-        "PopupAnimation",
-        typeof(PopupAnimation),
-        typeof(ContentToggleButton),
-        new PropertyMetadata(PopupAnimation.Slide));
+    public static readonly DependencyProperty PlacementModeProperty = DependencyProperty.Register("PlacementMode", typeof(PlacementMode), typeof(ContentToggleButton), new PropertyMetadata(PlacementMode.Bottom));
+    public static readonly DependencyProperty PopupAnimationProperty = DependencyProperty.Register("PopupAnimation", typeof(PopupAnimation), typeof(ContentToggleButton), new PropertyMetadata(PopupAnimation.Slide));
     public static readonly DependencyProperty StaysOpenProperty = DependencyProperty.Register("StaysOpen", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(false));
     public static readonly DependencyProperty TopMostProperty = DependencyProperty.Register("TopMost", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(true));
 
@@ -66,24 +38,25 @@ public class ContentToggleButton : ToggleButton
 
     public bool TopMost { get => (bool)GetValue(TopMostProperty); set => SetValue(TopMostProperty, value); }
 
-    public static bool GetAlwaysOnTop(DependencyObject obj) { return (bool)obj.GetValue(AlwaysOnTopProperty); }
-    public static void SetAlwaysOnTop(DependencyObject obj, bool value) { obj.SetValue(AlwaysOnTopProperty, value); }
+    public static bool GetAlwaysOnTop(DependencyObject obj) => (bool)obj.GetValue(AlwaysOnTopProperty);
 
-    public override string ToString() { return Content?.ToString(); }
+    public static void SetAlwaysOnTop(DependencyObject obj, bool value) => obj.SetValue(AlwaysOnTopProperty, value);
+
+    public override string ToString() => Content?.ToString();
 
     private static void OnTopChanged(DependencyObject d, DependencyPropertyChangedEventArgs f)
     {
         if (d is Popup popup)
         {
             popup.Opened += (s, e) =>
-            {
-                IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
+                            {
+                            IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
 
-                if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
-                {
-                    _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
-                }
-            };
+                            if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
+                            {
+                                _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
+                            }
+                            };
         }
     }
 }

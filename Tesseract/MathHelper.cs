@@ -20,12 +20,13 @@ namespace Tesseract
         /// </summary>
         /// <param name="angleInDegrees"></param>
         /// <returns></returns>
-        public static float ToRadians(float angleInDegrees) { return (float)ToRadians((double)angleInDegrees); }
+        public static float ToRadians(float angleInDegrees) => (float)ToRadians((double)angleInDegrees);
+
         /// <summary>
         /// Convert a degrees to radians.
         /// </summary>
         /// <param name="angleInDegrees"></param>
         /// <returns></returns>
-        public static double ToRadians(double angleInDegrees) { return angleInDegrees * Math.PI / 180.0; }
+        public static double ToRadians(double angleInDegrees) => angleInDegrees * Math.PI / 180.0;
     }
 }

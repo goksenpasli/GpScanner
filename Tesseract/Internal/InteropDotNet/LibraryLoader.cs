@@ -158,7 +158,7 @@ namespace Tesseract.Internal.InteropDotNet
             return InternalLoadLibrary(baseDirectory, platformName, fileName);
         }
 
-        private string FixUpLibraryName(string fileName) { return logic.FixUpLibraryName(fileName); }
+        private string FixUpLibraryName(string fileName) => logic.FixUpLibraryName(fileName);
 
         private IntPtr InternalLoadLibrary(string baseDirectory, string platformName, string fileName)
         {

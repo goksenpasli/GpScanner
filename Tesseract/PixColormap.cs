@@ -74,10 +74,13 @@ namespace Tesseract
             return handle == IntPtr.Zero ? throw new InvalidOperationException("Failed to create colormap.") : new PixColormap(handle);
         }
 
-        public bool AddBlackOrWhite(int color, out int index) { return LeptonicaApi.Native.pixcmapAddBlackOrWhite(Handle, color, out index) == 0; }
-        public bool AddColor(PixColor color) { return LeptonicaApi.Native.pixcmapAddColor(Handle, color.Red, color.Green, color.Blue) == 0; }
-        public bool AddNearestColor(PixColor color, out int index) { return LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
-        public bool AddNewColor(PixColor color, out int index) { return LeptonicaApi.Native.pixcmapAddNewColor(Handle, color.Red, color.Green, color.Blue, out index) == 0; }
+        public bool AddBlackOrWhite(int color, out int index) => LeptonicaApi.Native.pixcmapAddBlackOrWhite(Handle, color, out index) == 0;
+
+        public bool AddColor(PixColor color) => LeptonicaApi.Native.pixcmapAddColor(Handle, color.Red, color.Green, color.Blue) == 0;
+
+        public bool AddNearestColor(PixColor color, out int index) => LeptonicaApi.Native.pixcmapAddNearestColor(Handle, color.Red, color.Green, color.Blue, out index) == 0;
+
+        public bool AddNewColor(PixColor color, out int index) => LeptonicaApi.Native.pixcmapAddNewColor(Handle, color.Red, color.Green, color.Blue, out index) == 0;
 
         public void Clear()
         {
@@ -100,6 +103,6 @@ namespace Tesseract
                 ? usable == 1
                 : throw new InvalidOperationException("Failed to detect if color was usable or not.");
         }
-        public bool SetBlackOrWhite(bool setBlack, bool setWhite) { return LeptonicaApi.Native.pixcmapSetBlackAndWhite(Handle, setBlack ? 1 : 0, setWhite ? 1 : 0) == 0; }
+        public bool SetBlackOrWhite(bool setBlack, bool setWhite) => LeptonicaApi.Native.pixcmapSetBlackAndWhite(Handle, setBlack ? 1 : 0, setWhite ? 1 : 0) == 0;
     }
 }

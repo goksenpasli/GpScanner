@@ -50,7 +50,7 @@ namespace TwainWpf.TwainNative
             return new TwainCapability(capabilities, containerType, value);
         }
 
-        public void Dispose() { Dispose(true); }
+        public void Dispose() => Dispose(true);
 
         public void ReadBackValue()
         {

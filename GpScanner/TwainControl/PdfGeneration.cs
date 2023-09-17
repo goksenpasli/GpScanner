@@ -352,13 +352,7 @@ public static class PdfGeneration
         }
     }
 
-    public static Task<PdfDocument> GeneratePdfAsync(
-        this List<ScannedImage> bitmapFrames,
-        Format format,
-        Paper paper,
-        int jpegquality = 80,
-        List<ObservableCollection<OcrData>> ScannedText = null,
-        int dpi = 120)
+    public static Task<PdfDocument> GeneratePdfAsync(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
     {
         if (bitmapFrames?.Count == 0)
         {
@@ -515,8 +509,10 @@ public static class PdfGeneration
         return pdfdocument;
     }
 
-    public static PageSize GetPaperSize(this Paper paper) { return paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize; }
-    public static string GetPdfScanPath() { return GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf"); }
+    public static PageSize GetPaperSize(this Paper paper) => paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
+
+    public static string GetPdfScanPath() => GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
+
     public static double[] GetPdfTextLayout(PdfPage page)
     {
         return Scanner.Layout switch
@@ -585,7 +581,7 @@ public static class PdfGeneration
         }
     }
 
-    private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) { return new XRect(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust); }
+    private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) => new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
 
     private static void ApplyPdfSecurity(this PdfDocument document)
     {

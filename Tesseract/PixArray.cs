@@ -228,7 +228,7 @@ namespace Tesseract
         /// enumerator has been disposed of you must clone it using <see cref="Pix.Clone()"/>.
         /// </remarks>
         /// <returns>A <see cref="IEnumerator{Pix}"/> that iterates the the array of <see cref="Pix"/>.</returns>
-        public IEnumerator<Pix> GetEnumerator() { return new PixArrayEnumerator(this); }
+        public IEnumerator<Pix> GetEnumerator() => new PixArrayEnumerator(this);
 
         /// <summary>
         /// Gets the <see cref="Pix"/> located at <paramref name="index"/> using the specified <paramref
@@ -269,7 +269,7 @@ namespace Tesseract
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() { return new PixArrayEnumerator(this); }
+        IEnumerator IEnumerable.GetEnumerator() => new PixArrayEnumerator(this);
 
         protected override void Dispose(bool disposing)
         {

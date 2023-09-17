@@ -34,16 +34,12 @@ namespace WebPWrapper
         private const int WEBP_MAX_DIMENSION = 16383;
 
         public static bool WebpDllExists { get; } = Environment.Is64BitProcess ? File.Exists("libwebp_x64.dll") : File.Exists("libwebp_x86.dll");
-
         #region | Destruction |
 
         /// <summary>
         /// Free memory
         /// </summary>
-        public void Dispose()
-        {
-            GC.SuppressFinalize(this);
-        }
+        public void Dispose() => GC.SuppressFinalize(this);
         #endregion | Destruction |
 
         #region | Public Decode Functions |

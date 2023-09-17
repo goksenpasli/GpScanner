@@ -13,6 +13,6 @@ public partial class DrawControl
         {
         }
 
-        protected override bool ReleaseHandle() { return handle.DestroyIcon(); }
+        protected override bool ReleaseHandle() => handle.DestroyIcon();
     }
 }

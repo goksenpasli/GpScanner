@@ -62,10 +62,7 @@ namespace TwainWpf
         {
         };
 
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion INotifyPropertyChanged Members
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+    #endregion INotifyPropertyChanged Members
     }
 }

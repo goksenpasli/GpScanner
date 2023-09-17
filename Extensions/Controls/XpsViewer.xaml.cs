@@ -11,11 +11,7 @@ namespace Extensions.Controls;
 
 public partial class XpsViewer : UserControl, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register(
-        "XpsDataFilePath",
-        typeof(string),
-        typeof(XpsViewer),
-        new PropertyMetadata(null, XpsDataFilePathChanged));
+    public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register("XpsDataFilePath", typeof(string), typeof(XpsViewer), new PropertyMetadata(null, XpsDataFilePathChanged));
     private IDocumentPaginatorSource document;
 
     public XpsViewer()
@@ -42,7 +38,7 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 
     public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

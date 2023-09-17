@@ -40,41 +40,41 @@ namespace Extensions
             ArşivTekDosyaÇıkar = new RelayCommand<object>(
                 parameter =>
                 {
-                    try
-                    {
-                        string extractedfile = ExtractToFile(parameter as string);
-                        _ = Process.Start(extractedfile);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ArgumentException(ex.Message);
-                    }
+                try
+                {
+                    string extractedfile = ExtractToFile(parameter as string);
+                    _ = Process.Start(extractedfile);
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(ex.Message);
+                }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
 
             ArşivDosyaEkle = new RelayCommand<object>(
                 parameter =>
                 {
-                    try
-                    {
-                        AddFilesToZip(ArchivePath, SelectedFiles);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ArgumentException(ex.Message);
-                    }
+                try
+                {
+                    AddFilesToZip(ArchivePath, SelectedFiles);
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(ex.Message);
+                }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
 
             FileCrcGenerate = new RelayCommand<object>(
                 parameter =>
                 {
-                    using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
-                    if (archive != null)
-                    {
-                        ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.DosyaAdı);
-                        SelectedFile.Crc = CalculateFileCRC(dosya.Open());
-                    }
+                using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
+                if (archive != null)
+                {
+                    ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.DosyaAdı);
+                    SelectedFile.Crc = CalculateFileCRC(dosya.Open());
+                }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath) && SelectedFile is not null && !CalculateCrc);
         }
@@ -210,7 +210,7 @@ namespace Extensions
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -242,10 +242,10 @@ namespace Extensions
             {
                 cvs.Filter = !string.IsNullOrWhiteSpace(Search)
                     ? (x =>
-                    {
-                        ArchiveData archiveData = x as ArchiveData;
-                        return archiveData?.DosyaAdı?.Contains(Search, StringComparison.CurrentCultureIgnoreCase) == true;
-                    })
+                       {
+                       ArchiveData archiveData = x as ArchiveData;
+                       return archiveData?.DosyaAdı?.Contains(Search, StringComparison.CurrentCultureIgnoreCase) == true;
+                       })
                     : null;
             }
         }

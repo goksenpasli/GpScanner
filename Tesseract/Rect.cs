@@ -5,12 +5,8 @@ namespace Tesseract
     public readonly struct Rect : IEquatable<Rect>
     {
         public static readonly Rect Empty = new Rect();
-
         #region ToString
-        public override string ToString()
-        {
-            return $"[Rect X={X1}, Y={Y1}, Width={Width}, Height={Height}]";
-        }
+        public override string ToString() => $"[Rect X={X1}, Y={Y1}, Width={Width}, Height={Height}]";
         #endregion ToString
 
         #region Constructors + Factory Methods
@@ -22,10 +18,7 @@ namespace Tesseract
             Height = height;
         }
 
-        public static Rect FromCoords(int x1, int y1, int x2, int y2)
-        {
-            return new Rect(x1, y1, x2 - x1, y2 - y1);
-        }
+        public static Rect FromCoords(int x1, int y1, int x2, int y2) => new Rect(x1, y1, x2 - x1, y2 - y1);
         #endregion Constructors + Factory Methods
 
         #region Properties
@@ -53,9 +46,9 @@ namespace Tesseract
             return lhs.Equals(rhs);
         }
 
-        public override bool Equals(object obj) { return obj is Rect && Equals((Rect)obj); }
+        public override bool Equals(object obj) => obj is Rect && Equals((Rect)obj);
 
-        public bool Equals(Rect other) { return X1 == other.X1 && Y1 == other.Y1 && Width == other.Width && Height == other.Height; }
+        public bool Equals(Rect other) => X1 == other.X1 && Y1 == other.Y1 && Width == other.Width && Height == other.Height;
 
         public override int GetHashCode()
         {

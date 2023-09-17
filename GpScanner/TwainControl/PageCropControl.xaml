@@ -7,7 +7,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="297" d:DesignWidth="210"
+    d:DesignHeight="400" d:DesignWidth="300"
+    local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -15,13 +16,35 @@
         <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     </UserControl.Resources>
     <GroupBox>
+        <GroupBox.Header>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                    Content="{local:Loc TRIMIMAGE}"
+                    IsChecked="{Binding Path=CropScan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                    Content="TWAIN"
+                    IsChecked="{Binding Path=UseTwainCrop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                    IsEnabled="{Binding Path=CropScan, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                <Button Command="{Binding ResetCrop}">
+                    <Image Width="16" Height="16" VerticalAlignment="Bottom">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="131" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Button>
+            </StackPanel>
+        </GroupBox.Header>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid>
+            <Grid IsEnabled="{Binding Path=CropScan, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                 <Grid.Resources>
-                    <Style TargetType="Extensions:NumericUpDownControl">
+                    <Style BasedOn="{StaticResource Slider}" TargetType="Slider">
                         <Setter Property="SmallChange" Value="1" />
+                        <Setter Property="LargeChange" Value="10" />
                         <Setter Property="Minimum" Value="0" />
-                        <Setter Property="Orientation" Value="Horizontal" />
+                        <Setter Property="BorderThickness" Value="2" />
                     </Style>
                 </Grid.Resources>
                 <Grid.ColumnDefinitions>
@@ -34,69 +57,59 @@
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Extensions:NumericUpDownControl Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    Background="Green"
-                    Maximum="{Binding PageHeight}"
+                <Slider x:Name="TopCrop"
+                    Grid.Column="1"
+                    BorderBrush="Green"
+                    Maximum="{Binding ElementName=BottomCrop, Path=Value}"
                     Value="{Binding Top, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                <Extensions:NumericUpDownControl Grid.Row="1"
-                    Height="24"
-                    Background="Red"
-                    Maximum="{Binding PageWidth}"
+                <Slider x:Name="LeftCrop"
+                    Grid.Row="1"
+                    BorderBrush="Red" IsDirectionReversed="True"
+                    Maximum="{Binding ElementName=RightCrop, Path=Value}"
                     Orientation="Vertical"
                     Value="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                <Extensions:NumericUpDownControl Grid.Row="2" Grid.Column="1"
-                    HorizontalAlignment="Center"
-                    Background="Orange"
+                <Slider x:Name="BottomCrop"
+                    Grid.Row="2" Grid.Column="1"
+                    BorderBrush="Orange" IsDirectionReversed="True"
                     Maximum="{Binding PageHeight}"
                     Value="{Binding Bottom, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                <Extensions:NumericUpDownControl Grid.Row="1" Grid.Column="2"
-                    Height="24"
-                    Background="Cyan"
+                <Slider x:Name="RightCrop"
+                    Grid.Row="1" Grid.Column="2"
+                    BorderBrush="Cyan"
                     Maximum="{Binding PageWidth}"
                     Orientation="Vertical"
                     Value="{Binding Right, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                 <Canvas Grid.Row="1" Grid.Column="1"
                     Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
-                    Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}">
-                    <Button Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                    Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                    Margin="3">
+                    <Border Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
-                        d:Height="249.6" d:Width="156.8"
-                        BorderBrush="Gray" BorderThickness="2"
-                        Command="{Binding ResetCrop}">
-                        <StackPanel>
-                            <TextBlock>
-                                <Run d:Text="PageWidth" Text="{Binding PageWidth, Mode=OneWay}" />
-                                <Run Text="X" />
-                                <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
-                            </TextBlock>
-                            <Image Width="32" Height="32" VerticalAlignment="Bottom">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="131" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </StackPanel>
-                    </Button>
-                    <Line Canvas.Left="{Binding Left, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
-                        d:Canvas.Left="20" d:Y2="249.64"
+                        d:Height="314" d:Width="242"
+                        BorderBrush="Gray" BorderThickness="1">
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <Run d:Text="PageWidth" Text="{Binding PageWidth, Mode=OneWay}" />
+                            <Run Text="X" />
+                            <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
+                        </TextBlock>
+                    </Border>
+                    <Line Canvas.Left="{Binding Value, ElementName=LeftCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
+                        d:Canvas.Left="20" d:Y2="314"
                         Stroke="Red" X1="0"
                         X2="0" Y1="0"
                         Y2="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}" />
-                    <Line Canvas.Left="{Binding Right, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
-                        d:Canvas.Left="133" d:Y2="249.64"
+                    <Line Canvas.Left="{Binding Value, ElementName=RightCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
+                        d:Canvas.Left="220" d:Y2="314"
                         Stroke="Cyan" X1="0"
                         X2="0" Y1="0"
                         Y2="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}" />
-                    <Line Canvas.Top="{Binding Top, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
-                        d:Canvas.Top="20" d:X2="156.8"
+                    <Line Canvas.Top="{Binding Value, ElementName=TopCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
+                        d:Canvas.Top="20" d:X2="242"
                         Stroke="Green" X1="0"
                         X2="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Y1="0" Y2="0" />
-                    <Line Canvas.Top="{Binding Bottom, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
-                        d:Canvas.Top="230" d:X2="156.8"
+                    <Line Canvas.Top="{Binding Value, ElementName=BottomCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
+                        d:Canvas.Top="300" d:X2="242"
                         Stroke="Orange" X1="0"
                         X2="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Y1="0" Y2="0" />

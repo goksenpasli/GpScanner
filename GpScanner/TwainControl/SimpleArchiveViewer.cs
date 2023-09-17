@@ -15,24 +15,24 @@ public class SimpleArchiveViewer : ArchiveViewer
         ArşivTekDosyaÇıkar = new RelayCommand<object>(
             parameter =>
             {
-                try
+            try
+            {
+                if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename)))
                 {
-                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename)))
-                    {
-                        string extractedfile = ExtractToFile(parameter as string);
-                        _ = Process.Start(extractedfile);
-                        return;
-                    }
-                    if (DataContext is TwainCtrl twainCtrl)
-                    {
-                        string extractedfile = ExtractToFile(parameter as string);
-                        _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
-                    }
+                    string extractedfile = ExtractToFile(parameter as string);
+                    _ = Process.Start(extractedfile);
+                    return;
                 }
-                catch (Exception ex)
+                if (DataContext is TwainCtrl twainCtrl)
                 {
-                    throw new ArgumentException(ex.Message);
+                    string extractedfile = ExtractToFile(parameter as string);
+                    _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
                 }
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex.Message);
+            }
             },
             parameter => !string.IsNullOrWhiteSpace(ArchivePath));
     }

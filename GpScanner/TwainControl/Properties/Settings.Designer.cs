@@ -482,5 +482,29 @@ namespace TwainControl.Properties {
                 this["Right"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseTwainCrop {
+            get {
+                return ((bool)(this["UseTwainCrop"]));
+            }
+            set {
+                this["UseTwainCrop"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool CropScan {
+            get {
+                return ((bool)(this["CropScan"]));
+            }
+            set {
+                this["CropScan"] = value;
+            }
+        }
     }
 }

@@ -82,116 +82,116 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         LoadDrawImage = new RelayCommand<object>(
             parameter =>
             {
-                try
+            try
+            {
+                OpenFileDialog openFileDialog = new()
                 {
-                    OpenFileDialog openFileDialog = new()
-                    {
-                        Filter = "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
-                        Multiselect = false
-                    };
-                    if (openFileDialog.ShowDialog() == true)
-                    {
-                        DrawnImage = XImage.FromFile(openFileDialog.FileName);
-                    }
-                }
-                catch (Exception ex)
+                    Filter = "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
+                    Multiselect = false
+                };
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    _ = MessageBox.Show(ex.Message);
+                    DrawnImage = XImage.FromFile(openFileDialog.FileName);
                 }
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
             },
             parameter => true);
 
         LoadInkDrawImage = new RelayCommand<object>(
             parameter =>
             {
-                try
-                {
-                    RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Default);
-                    renderTargetBitmap.Render(Ink);
-                    renderTargetBitmap.Freeze();
-                    DrawnImage = XImage.FromBitmapSource(renderTargetBitmap);
-                    DrawImage = true;
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message);
-                }
+            try
+            {
+                RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Default);
+                renderTargetBitmap.Render(Ink);
+                renderTargetBitmap.Freeze();
+                DrawnImage = XImage.FromBitmapSource(renderTargetBitmap);
+                DrawImage = true;
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
             },
             parameter => Ink?.Strokes?.Any() == true);
 
         ClearInkDrawImage = new RelayCommand<object>(
             parameter =>
             {
-                try
-                {
-                    Ink?.Strokes?.Clear();
-                    DrawImage = false;
-                    DrawnImage = null;
-                }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message);
-                }
+            try
+            {
+                Ink?.Strokes?.Clear();
+                DrawImage = false;
+                DrawnImage = null;
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
             },
             parameter => Ink?.Strokes?.Any() == true);
 
         ReadAnnotation = new RelayCommand<object>(
             parameter =>
             {
-                try
+            try
+            {
+                if (File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
                 {
-                    if (File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
-                    {
-                        using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
-                        PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
-                        twainCtrl.Annotations = page?.Annotations;
-                    }
+                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
+                    PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
+                    twainCtrl.Annotations = page?.Annotations;
                 }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
             },
             parameter => true);
 
         RemoveAnnotation = new RelayCommand<object>(
             parameter =>
             {
-                try
+            try
+            {
+                if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
                 {
-                    if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
-                    {
-                        using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                        PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
-                        PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
-                        page?.Annotations?.Remove(annotation);
-                        twainCtrl?.Annotations?.Remove(selectedannotation);
-                        reader.Save(PdfViewer.PdfFilePath);
-                    }
+                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                    PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
+                    PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
+                    page?.Annotations?.Remove(annotation);
+                    twainCtrl?.Annotations?.Remove(selectedannotation);
+                    reader.Save(PdfViewer.PdfFilePath);
                 }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show(ex.Message);
+            }
             },
             parameter => true);
 
         OpenPdfHistoryFile = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is string filepath)
+            if (parameter is string filepath)
+            {
+                if (File.Exists(filepath))
                 {
-                    if (File.Exists(filepath))
-                    {
-                        PdfViewer.PdfFilePath = filepath;
-                    }
-                    else
-                    {
-                        Settings.Default.PdfLoadHistory.Remove(filepath);
-                        Settings.Default.Save();
-                        Settings.Default.Reload();
-                    }
+                    PdfViewer.PdfFilePath = filepath;
                 }
+                else
+                {
+                    Settings.Default.PdfLoadHistory.Remove(filepath);
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
+                }
+            }
             },
             parameter => true);
     }
@@ -504,7 +504,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private void PdfImportViewerControl_MouseDown(object sender, MouseButtonEventArgs e)
     {
@@ -785,5 +785,5 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) { Cursor = Cursors.Arrow; }
+    private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) => Cursor = Cursors.Arrow;
 }

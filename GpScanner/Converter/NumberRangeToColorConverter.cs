@@ -16,11 +16,7 @@ namespace GpScanner.Converter
             new PropertyMetadata(new Color[] { System.Windows.Media.Colors.Lime, System.Windows.Media.Colors.Yellow, System.Windows.Media.Colors.Red }));
         public static readonly DependencyProperty MaxNumberProperty = DependencyProperty.Register("MaxNumber", typeof(int), typeof(NumberRangeToColorConverter), new PropertyMetadata(100));
         public static readonly DependencyProperty MinNumberProperty = DependencyProperty.Register("MinNumber", typeof(int), typeof(NumberRangeToColorConverter), new PropertyMetadata(0));
-        public static readonly DependencyProperty ReverseColorsProperty = DependencyProperty.Register(
-            "ReverseColors",
-            typeof(bool),
-            typeof(NumberRangeToColorConverter),
-            new PropertyMetadata(false, ColorReverseCallBack));
+        public static readonly DependencyProperty ReverseColorsProperty = DependencyProperty.Register("ReverseColors", typeof(bool), typeof(NumberRangeToColorConverter), new PropertyMetadata(false, ColorReverseCallBack));
 
         public Color[] Colors { get => (Color[])GetValue(ColorsProperty); set => SetValue(ColorsProperty, value); }
 
@@ -46,7 +42,7 @@ namespace GpScanner.Converter
             return new SolidColorBrush(System.Windows.Media.Colors.Black);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) { throw new NotImplementedException(); }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 
         private static void ColorReverseCallBack(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

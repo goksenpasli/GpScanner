@@ -96,7 +96,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
@@ -106,7 +106,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    private void CopyCommand(object sender, ExecutedRoutedEventArgs e) { Clipboard.SetText(Text); }
+    private void CopyCommand(object sender, ExecutedRoutedEventArgs e) => Clipboard.SetText(Text);
 
     private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
     {
@@ -128,6 +128,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    private void PasteCommand(object sender, ExecutedRoutedEventArgs e) { Text = Clipboard.GetText(); }
-    private void ResetCommand(object sender, ExecutedRoutedEventArgs e) { Text = string.Empty; }
+    private void PasteCommand(object sender, ExecutedRoutedEventArgs e) => Text = Clipboard.GetText();
+
+    private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
 }

@@ -167,8 +167,7 @@ namespace Tesseract.Internal.InteropDotNet
 
             RuntimeDllImportAttribute importAttribute = method.DllImportAttribute;
             ConstructorInfo attributeCtor =
-                typeof(UnmanagedFunctionPointerAttribute).GetConstructor(new[] { typeof(CallingConvention) }) ??
-                throw new Exception("There is no the target constructor of the UnmanagedFunctionPointerAttribute");
+                typeof(UnmanagedFunctionPointerAttribute).GetConstructor(new[] { typeof(CallingConvention) }) ?? throw new Exception("There is no the target constructor of the UnmanagedFunctionPointerAttribute");
             CustomAttributeBuilder attributeBuilder = new CustomAttributeBuilder(
                 attributeCtor,
                 new object[] { importAttribute.CallingConvention },
@@ -377,11 +376,11 @@ namespace Tesseract.Internal.InteropDotNet
         #endregion Method helpers
 
         #region Name helpers
-        private static string GetAssemblyName(Type interfaceType) { return $"InteropRuntimeImplementer.{GetSubstantialName(interfaceType)}Instance"; }
+        private static string GetAssemblyName(Type interfaceType) => $"InteropRuntimeImplementer.{GetSubstantialName(interfaceType)}Instance";
 
-        private static string GetDelegateName(string assemblyName, MethodInfo methodInfo) { return $"{assemblyName}.{methodInfo.Name}Delegate"; }
+        private static string GetDelegateName(string assemblyName, MethodInfo methodInfo) => $"{assemblyName}.{methodInfo.Name}Delegate";
 
-        private static string GetImplementationTypeName(string assemblyName, Type interfaceType) { return $"{assemblyName}.{GetSubstantialName(interfaceType)}Implementation"; }
+        private static string GetImplementationTypeName(string assemblyName, Type interfaceType) => $"{assemblyName}.{GetSubstantialName(interfaceType)}Implementation";
 
         private static string GetSubstantialName(Type interfaceType)
         {

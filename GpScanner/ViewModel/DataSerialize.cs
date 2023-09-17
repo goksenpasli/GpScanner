@@ -43,7 +43,7 @@ internal static class DataSerialize
         return list;
     }
 
-    internal static int RandomNumber() { return new Random(Guid.NewGuid().GetHashCode()).Next(1, int.MaxValue); }
+    internal static int RandomNumber() => new Random(Guid.NewGuid().GetHashCode()).Next(1, int.MaxValue);
 
     internal static void Serialize<T>(this T dataToSerialize) where T : class
     {

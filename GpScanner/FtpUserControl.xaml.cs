@@ -29,37 +29,37 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
         CopyToDrive = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
+            if (parameter is Scanner scanner && File.Exists(scanner.FileName))
+            {
+                string path = $"{SelectedRemovableDrive.RootDirectory.Name}{Path.GetFileName(scanner.FileName)}";
+                if (!File.Exists(path))
                 {
-                    string path = $"{SelectedRemovableDrive.RootDirectory.Name}{Path.GetFileName(scanner.FileName)}";
-                    if (!File.Exists(path))
-                    {
-                        await CopyFileAsync(scanner.FileName, path, false, progress => CopyProgressValue = progress);
-                        return;
-                    }
-
-                    if (MessageBox.Show(
-                            $"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("UPDATE")}",
-                            Application.Current?.MainWindow?.Title,
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Exclamation,
-                            MessageBoxResult.No) ==
-                        MessageBoxResult.Yes)
-                    {
-                        await CopyFileAsync(scanner.FileName, path, true, progress => CopyProgressValue = progress);
-                    }
+                    await CopyFileAsync(scanner.FileName, path, false, progress => CopyProgressValue = progress);
+                    return;
                 }
+
+                if (MessageBox.Show(
+                        $"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("UPDATE")}",
+                        Application.Current?.MainWindow?.Title,
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.No) ==
+                    MessageBoxResult.Yes)
+                {
+                    await CopyFileAsync(scanner.FileName, path, true, progress => CopyProgressValue = progress);
+                }
+            }
             },
             parameter => SelectedRemovableDrive?.IsReady == true);
 
         UploadFtp = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
-                {
-                    string[] ftpdata = Settings.Default.SelectedFtp.Split('|');
-                    await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner.FileName, progress => scanner.FtpLoadProgressValue = progress);
-                }
+            if (parameter is Scanner scanner && File.Exists(scanner.FileName))
+            {
+                string[] ftpdata = Settings.Default.SelectedFtp.Split('|');
+                await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner.FileName, progress => scanner.FtpLoadProgressValue = progress);
+            }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.SelectedFtp));
     }
@@ -98,7 +98,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> UploadFtp { get; }
 
-    protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private async Task CopyFileAsync(string sourceFilePath, string destinationFilePath, bool overwrite, Action<double> progressCallback)
     {

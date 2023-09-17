@@ -145,7 +145,7 @@ namespace TwainWpf
             }
         }
 
-        protected void EndingScan() { MessageHook.UseFilter = false; }
+        protected void EndingScan() => MessageHook.UseFilter = false;
 
         protected IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {

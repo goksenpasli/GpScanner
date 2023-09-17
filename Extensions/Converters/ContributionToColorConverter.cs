@@ -37,5 +37,5 @@ public sealed class ContributionToColorConverter : IMultiValueConverter
         return new SolidColorBrush(Colors.Transparent);
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) { throw new NotImplementedException(); }
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

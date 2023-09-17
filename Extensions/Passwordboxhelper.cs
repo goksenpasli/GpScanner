@@ -17,8 +17,9 @@ public class PasswordBoxHelper
     private static readonly DependencyProperty SettingPasswordProperty =
         DependencyProperty.RegisterAttached("SettingPassword", typeof(bool), typeof(PasswordBoxHelper), new PropertyMetadata(false));
 
-    public static string GetPassword(DependencyObject obj) { return (string)obj.GetValue(PasswordProperty); }
-    public static void SetPassword(DependencyObject obj, string value) { obj.SetValue(PasswordProperty, value); }
+    public static string GetPassword(DependencyObject obj) => (string)obj.GetValue(PasswordProperty);
+
+    public static void SetPassword(DependencyObject obj, string value) => obj.SetValue(PasswordProperty, value);
 
     private static void HandleBoundPasswordChanged(DependencyObject dp, DependencyPropertyChangedEventArgs e)
     {

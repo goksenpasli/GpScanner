@@ -17,5 +17,5 @@ public sealed class EnumOrientationToTwainVersionConverter : IValueConverter
             }
             : (object)string.Empty;
     }
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) { throw new NotImplementedException(); }
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

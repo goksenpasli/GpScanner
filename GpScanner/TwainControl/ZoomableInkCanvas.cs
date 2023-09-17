@@ -26,7 +26,7 @@ public class ZoomableInkCanvas : InkCanvas, INotifyPropertyChanged
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private void ApplyZoom()
     {

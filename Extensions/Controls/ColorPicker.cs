@@ -95,11 +95,7 @@ public class ColorPicker : Control
     public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register("MiddleStopColor", typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Gray));
     public static readonly DependencyProperty PredefinedColorVisibilityProperty =
         DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
-    public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register(
-        "SliderVisibility",
-        typeof(Visibility),
-        typeof(ColorPicker),
-        new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register("SliderVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty SpectrumGridBackgroundProperty =
         DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
     public RGB Selected = new();
@@ -228,6 +224,7 @@ public class RGB
 
     public byte R { get; set; }
 
-    public Color Color() { return new Color { R = R, G = G, B = B, A = 255 }; }
-    public string Hex(byte Alpha) { return BitConverter.ToString([Alpha, R, G, B]).Replace("-", string.Empty); }
+    public Color Color() => new() { R = R, G = G, B = B, A = 255 };
+
+    public string Hex(byte Alpha) => BitConverter.ToString([Alpha, R, G, B]).Replace("-", string.Empty);
 }

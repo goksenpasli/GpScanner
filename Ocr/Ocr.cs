@@ -113,7 +113,7 @@ public static class Ocr
         return await Task.Run(() => dosya.GetOcrData(tesseractlanguage, PageIteratorLevel.Para), ocrcancellationToken.Token);
     }
 
-    private static TesseractEngine CreateTesseractEngine(string tesseractLanguage) { return new TesseractEngine(TesseractPath, tesseractLanguage, EngineMode.LstmOnly); }
+    private static TesseractEngine CreateTesseractEngine(string tesseractLanguage) => new(TesseractPath, tesseractLanguage, EngineMode.LstmOnly);
 
     private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string tesseractlanguage)
     {

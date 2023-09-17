@@ -63,160 +63,158 @@ namespace DvdBurner
             BurnDvd = new RelayCommand<object>(
                 parameter =>
                 {
-                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(WarnText);
+                    return;
+                }
+
+                dynamic recorder = null;
+                dynamic Stream;
+                Burntask = Task.Run(
+                    () =>
                     {
-                        _ = MessageBox.Show(WarnText);
-                        return;
-                    }
+                    try
+                    {
+                        recorder = new MsftDiscRecorder2();
+                        recorder.InitializeDiscRecorder(SelectedDrive);
 
-                    dynamic recorder = null;
-                    dynamic Stream;
-                    Burntask = Task.Run(
-                        () =>
+                        dynamic FSI;
+                        dynamic dataWriter;
+
+                        FSI = new MsftFileSystemImage();
+                        _ = FSI.Root;
+
+                        dataWriter = new MsftDiscFormat2Data();
+                        dataWriter.Recorder = recorder;
+                        dataWriter.ClientName = AppName;
+                        FSI.VolumeName = CdLabel;
+                        FSI.ChooseImageDefaults(recorder);
+                        dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
+                        IFsiDirectoryItem rootDirectory = FSI.Root;
+                        foreach (string file in Files.Where(file => File.Exists(file)))
                         {
-                            try
-                            {
-                                recorder = new MsftDiscRecorder2();
-                                recorder.InitializeDiscRecorder(SelectedDrive);
+                            string fileName = Path.GetFileName(file);
+                            rootDirectory?.AddFile(fileName, ManagedIStream.Create(new FileStream(file, FileMode.Open, FileAccess.Read)));
+                        }
 
-                                dynamic FSI;
-                                dynamic dataWriter;
-
-                                FSI = new MsftFileSystemImage();
-                                _ = FSI.Root;
-
-                                dataWriter = new MsftDiscFormat2Data();
-                                dataWriter.Recorder = recorder;
-                                dataWriter.ClientName = AppName;
-                                FSI.VolumeName = CdLabel;
-                                FSI.ChooseImageDefaults(recorder);
-                                dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
-                                IFsiDirectoryItem rootDirectory = FSI.Root;
-                                foreach (string file in Files.Where(file => File.Exists(file)))
-                                {
-                                    string fileName = Path.GetFileName(file);
-                                    rootDirectory?.AddFile(fileName, ManagedIStream.Create(new FileStream(file, FileMode.Open, FileAccess.Read)));
-                                }
-
-                                dynamic result = FSI.CreateResultImage();
-                                Stream = result?.ImageStream;
-                                dataWriter.ForceOverwrite = true;
-                                dataWriter.Write(Stream);
-                            }
-                            catch (Exception ex)
-                            {
-                                ActionText = ex.Message.Trim();
-                                ActionTextForeground = Brushes.Red;
-                            }
-                            finally
-                            {
-                                if (Eject)
-                                {
-                                    recorder?.EjectMedia();
-                                }
-                            }
-                        });
+                        dynamic result = FSI.CreateResultImage();
+                        Stream = result?.ImageStream;
+                        dataWriter.ForceOverwrite = true;
+                        dataWriter.Write(Stream);
+                    }
+                    catch (Exception ex)
+                    {
+                        ActionText = ex.Message.Trim();
+                        ActionTextForeground = Brushes.Red;
+                    }
+                    finally
+                    {
+                        if (Eject)
+                        {
+                            recorder?.EjectMedia();
+                        }
+                    }
+                    });
                 },
                 parameter => !string.IsNullOrWhiteSpace(CdLabel) && Files?.Any() == true && SelectedDrive != null);
 
             SelectBurnDir = new RelayCommand<object>(
                 parameter =>
                 {
-                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
-                    {
-                        _ = MessageBox.Show(WarnText);
-                        return;
-                    }
+                if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(WarnText);
+                    return;
+                }
 
-                    OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Tüm Dosyalar (*.*)|*.*", };
-                    if (openFileDialog.ShowDialog() == true)
-                    {
-                        ActionTextForeground = Brushes.Black;
-                        ActionText = string.Empty;
-                        AddFiles(openFileDialog.FileNames);
-                        UpdateProgressFileSize();
-                    }
+                OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Tüm Dosyalar (*.*)|*.*", };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    ActionTextForeground = Brushes.Black;
+                    ActionText = string.Empty;
+                    AddFiles(openFileDialog.FileNames);
+                    UpdateProgressFileSize();
+                }
                 },
                 parameter => true);
 
             RemoveFile = new RelayCommand<object>(
                 parameter =>
                 {
-                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
-                    {
-                        _ = MessageBox.Show(WarnText);
-                        return;
-                    }
-                    if (parameter is string file && Files.Remove(file))
-                    {
-                        UpdateProgressFileSize();
-                    }
+                if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(WarnText);
+                    return;
+                }
+                if (parameter is string file && Files.Remove(file))
+                {
+                    UpdateProgressFileSize();
+                }
                 },
                 parameter => true);
 
             EraseDvd = new RelayCommand<object>(
                 parameter =>
                 {
-                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
-                    {
-                        _ = MessageBox.Show(WarnText);
-                        return;
-                    }
+                if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(WarnText);
+                    return;
+                }
 
-                    Erasetask = Task.Run(
-                        () =>
+                Erasetask = Task.Run(
+                    () =>
+                    {
+                    MsftDiscRecorder2 recorder = null;
+                    try
+                    {
+                        MsftDiscFormat2Erase discFormatErase = null;
+                        if (g_DiscMaster.Count > 0)
                         {
-                            MsftDiscRecorder2 recorder = null;
-                            try
-                            {
-                                MsftDiscFormat2Erase discFormatErase = null;
-                                if (g_DiscMaster.Count > 0)
-                                {
-                                    ActionText = "Medya Siliniyor.";
-                                    recorder = new MsftDiscRecorder2();
-                                    recorder.InitializeDiscRecorder(SelectedDrive);
-                                    discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
-                                    discFormatErase.EraseMedia();
-                                }
-                            }
-                            catch (Exception ex)
-                            {
-                                ActionText = ex.Message.Trim();
-                                ActionTextForeground = Brushes.Red;
-                            }
-                            finally
-                            {
-                                if (Eject)
-                                {
-                                    recorder?.EjectMedia();
-                                }
-                            }
-                        });
+                            ActionText = "Medya Siliniyor.";
+                            recorder = new MsftDiscRecorder2();
+                            recorder.InitializeDiscRecorder(SelectedDrive);
+                            discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
+                            discFormatErase.EraseMedia();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ActionText = ex.Message.Trim();
+                        ActionTextForeground = Brushes.Red;
+                    }
+                    finally
+                    {
+                        if (Eject)
+                        {
+                            recorder?.EjectMedia();
+                        }
+                    }
+                    });
                 },
                 parameter => SelectedDrive != null);
 
             GetSupportedDiscFormats = new RelayCommand<object>(
                 parameter =>
                 {
-                    dynamic recorder = new MsftDiscRecorder2();
-                    recorder.InitializeDiscRecorder(SelectedDrive);
-                    IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
-                    List<string> supportedformats =
+                dynamic recorder = new MsftDiscRecorder2();
+                recorder.InitializeDiscRecorder(SelectedDrive);
+                IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
+                List<string> supportedformats =
                     [
-                        .. from object supportedMediaType in (object[])recorder.SupportedProfiles
-                        where values.Contains((int)supportedMediaType)
-                        select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType),
+                        .. from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType),
                     ];
-                    _ = MessageBox.Show(string.Join("\n", supportedformats), AppName);
-                    recorder = null;
+                _ = MessageBox.Show(string.Join("\n", supportedformats), AppName);
+                recorder = null;
                 },
                 parameter => SelectedDrive != null);
 
             RemoveAllFile = new RelayCommand<object>(
                 parameter =>
                 {
-                    Files.Clear();
-                    UpdateProgressFileSize();
+                Files.Clear();
+                UpdateProgressFileSize();
                 },
                 parameter => Files?.Any() == true);
         }
@@ -434,7 +432,7 @@ namespace DvdBurner
             }
         }
 
-        protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private void AddFiles(string[] files)
         {
@@ -542,7 +540,7 @@ namespace DvdBurner
             return listdrives;
         }
 
-        private long GetTotalFileSizeMB(string[] files) { return files.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024; }
+        private long GetTotalFileSizeMB(string[] files) => files.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024;
 
         private void Listbox_Drop(object sender, DragEventArgs e)
         {

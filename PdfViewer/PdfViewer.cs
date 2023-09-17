@@ -38,19 +38,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty DpiProperty =
         DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
-        "Orientation",
-        typeof(FitImageOrientation),
-        typeof(PdfViewer),
-        new PropertyMetadata(FitImageOrientation.Width, Changed));
+    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(PdfViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
     public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
     public static readonly DependencyProperty SayfaProperty =
         DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
-    public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register(
-        "ScrollBarVisible",
-        typeof(ScrollBarVisibility),
-        typeof(PdfViewer),
-        new PropertyMetadata(ScrollBarVisibility.Auto));
+    public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
     public static readonly DependencyProperty SeekingLowerPdfDpiProperty =
         DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty SeekingPdfDpiProperty =
@@ -96,120 +88,120 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DosyaAç = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-                if (openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
-                {
-                    PdfFilePath = openFileDialog.FileName;
-                }
+            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
+            if (openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
+            {
+                PdfFilePath = openFileDialog.FileName;
+            }
             });
 
         Yazdır = new RelayCommand<object>(
             parameter =>
             {
-                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PrintPdf(pdfDocument);
+            using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+            PrintPdf(pdfDocument);
             },
             parameter => PdfFilePath is not null);
 
         ViewerBack = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-                {
-                    Sayfa = 1;
-                    return;
-                }
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+            {
+                Sayfa = 1;
+                return;
+            }
 
-                Sayfa--;
+            Sayfa--;
             },
             parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
 
         ViewerNext = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-                {
-                    Sayfa = ToplamSayfa;
-                    return;
-                }
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+            {
+                Sayfa = ToplamSayfa;
+                return;
+            }
 
-                Sayfa++;
+            Sayfa++;
             },
             parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
 
         SaveImage = new RelayCommand<object>(
             parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası(*.jpg)|*.jpg", FileName = "Resim" };
+            SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası(*.jpg)|*.jpg", FileName = "Resim" };
 
-                if (saveFileDialog.ShowDialog() == true)
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                try
                 {
-                    try
-                    {
-                        File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(Format.Jpg));
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ArgumentException(ex.Message);
-                    }
+                    File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(Format.Jpg));
                 }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(ex.Message);
+                }
+            }
             },
             parameter => Source is not null);
 
         Resize = new RelayCommand<object>(
             delegate
             {
-                if (Source is not null)
+            if (Source is not null)
+            {
+                Zoom = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                if (Zoom == 0)
                 {
-                    Zoom = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
-                    if (Zoom == 0)
-                    {
-                        Zoom = 1;
-                    }
+                    Zoom = 1;
                 }
+            }
             },
             parameter => Source != null);
 
         ReadPdfText = new RelayCommand<object>(
             delegate
             {
-                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
+            using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+            PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
             },
             parameter => Source != null);
 
         ReadPdfBookmarks = new RelayCommand<object>(
             delegate
             {
-                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PdfBookmarks = pdfDocument.Bookmarks;
+            using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+            PdfBookmarks = pdfDocument.Bookmarks;
             },
             parameter => Source != null);
 
         GoPdfBookMarkPage = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is int pagenumber)
-                {
-                    Sayfa = pagenumber + 1;
-                }
+            if (parameter is int pagenumber)
+            {
+                Sayfa = pagenumber + 1;
+            }
             });
 
         ScrollToCurrentPage = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is ListBox listBox)
-                {
-                    listBox.ScrollIntoView(Sayfa);
-                }
+            if (parameter is ListBox listBox)
+            {
+                listBox.ScrollIntoView(Sayfa);
+            }
             });
 
         SearchPdfText = new RelayCommand<object>(
             delegate
             {
-                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
-                PdfMatches = [.. matches.Items];
+            using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+            PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
+            PdfMatches = [.. matches.Items];
             },
             parameter => Source != null && !string.IsNullOrWhiteSpace(SearchTextContent));
     }
@@ -549,25 +541,25 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 : await Task.Run(
                     () =>
                     {
-                        if (!IsValidPdfFile(pdffilepath))
-                        {
-                            return null;
-                        }
-                        using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                        if (pdfDoc != null)
-                        {
-                            int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                            int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                            using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
-                            BitmapSource bitmapImage = bitmap.ToBitmapSource();
-                            if (bitmapImage != null)
-                            {
-                                bitmapImage.Freeze();
-                                return bitmapImage;
-                            }
-                        }
-
+                    if (!IsValidPdfFile(pdffilepath))
+                    {
                         return null;
+                    }
+                    using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
+                    if (pdfDoc != null)
+                    {
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                        using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                        BitmapSource bitmapImage = bitmap.ToBitmapSource();
+                        if (bitmapImage != null)
+                        {
+                            bitmapImage.Freeze();
+                            return bitmapImage;
+                        }
+                    }
+
+                    return null;
                     });
         }
         catch (Exception)
@@ -585,23 +577,23 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 : await Task.Run(
                     () =>
                     {
-                        using MemoryStream ms = new(pdffilestream);
-                        using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                        if (pdfDoc != null)
+                    using MemoryStream ms = new(pdffilestream);
+                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                    if (pdfDoc != null)
+                    {
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                        System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                        if (image != null)
                         {
-                            int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                            int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                            System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                            if (image != null)
-                            {
-                                MemoryStream stream = new();
-                                image.Save(stream, ImageFormat.Jpeg);
-                                pdffilestream = null;
-                                return stream;
-                            }
+                            MemoryStream stream = new();
+                            image.Save(stream, ImageFormat.Jpeg);
+                            pdffilestream = null;
+                            return stream;
                         }
+                    }
 
-                        return null;
+                    return null;
                     });
         }
         catch (Exception)
@@ -633,9 +625,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 : await Task.Run(
                     () =>
                     {
-                        using MemoryStream ms = new(stream);
-                        using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                        return (pdfDoc?.PageCount) ?? 0;
+                    using MemoryStream ms = new(stream);
+                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                    return (pdfDoc?.PageCount) ?? 0;
                     });
         }
         catch (Exception)
@@ -733,7 +725,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -783,8 +775,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         return Task.Run(
             () =>
             {
-                using System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false);
-                return image.ToBitmapImage(ImageFormat.Jpeg);
+            using System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false);
+            return image.ToBitmapImage(ImageFormat.Jpeg);
             });
     }
 

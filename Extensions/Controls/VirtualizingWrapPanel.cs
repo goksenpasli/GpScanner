@@ -54,7 +54,7 @@ public readonly struct ItemRange
 
     public int StartIndex { get; }
 
-    public bool Contains(int itemIndex) { return itemIndex >= StartIndex && itemIndex <= EndIndex; }
+    public bool Contains(int itemIndex) => itemIndex >= StartIndex && itemIndex <= EndIndex;
 }
 
 public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
@@ -150,8 +150,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
         get
         {
-            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, [typeof(DependencyObject)], null)
-                .Invoke(null, [this]);
+            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, [typeof(DependencyObject)], null).Invoke(null, [this]);
             return _itemsOwner;
         }
     }
@@ -169,10 +168,13 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
     protected VirtualizationMode VirtualizationMode => GetVirtualizationMode(ItemsControl);
 
-    public void LineDown() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineDownScrollAmount()); }
-    public void LineLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineLeftScrollAmount()); }
-    public void LineRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineRightScrollAmount()); }
-    public void LineUp() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineUpScrollAmount()); }
+    public void LineDown() => ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineDownScrollAmount());
+
+    public void LineLeft() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineLeftScrollAmount());
+
+    public void LineRight() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ScrollLineDelta : GetLineRightScrollAmount());
+
+    public void LineUp() => ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ScrollLineDelta : GetLineUpScrollAmount());
 
     public virtual Rect MakeVisible(Visual visual, Rect rectangle)
     {
@@ -221,8 +223,9 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
         }
     }
 
-    public void MouseWheelLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelLeftScrollAmount()); }
-    public void MouseWheelRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelRightScrollAmount()); }
+    public void MouseWheelLeft() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -MouseWheelDelta : GetMouseWheelLeftScrollAmount());
+
+    public void MouseWheelRight() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? MouseWheelDelta : GetMouseWheelRightScrollAmount());
 
     public void MouseWheelUp()
     {
@@ -236,10 +239,13 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
         }
     }
 
-    public void PageDown() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageDownScrollAmount()); }
-    public void PageLeft() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageLeftScrollAmount()); }
-    public void PageRight() { ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageRightScrollAmount()); }
-    public void PageUp() { ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageUpScrollAmount()); }
+    public void PageDown() => ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageDownScrollAmount());
+
+    public void PageLeft() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageLeftScrollAmount());
+
+    public void PageRight() => ScrollHorizontal(ScrollUnit == ScrollUnit.Pixel ? ViewportHeight : GetPageRightScrollAmount());
+
+    public void PageUp() => ScrollVertical(ScrollUnit == ScrollUnit.Pixel ? -ViewportHeight : GetPageUpScrollAmount());
 
     public void SetHorizontalOffset(double offset)
     {
@@ -278,7 +284,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// </summary>
     protected abstract Size CalculateExtent(Size availableSize);
 
-    protected virtual GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex) { return new GeneratorPosition(childIndex, 0); }
+    protected virtual GeneratorPosition GetGeneratorPositionFromChildIndex(int childIndex) => new(childIndex, 0);
 
     protected int GetItemIndexFromChildIndex(int childIndex)
     {
@@ -410,10 +416,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
                     if (child is IHierarchicalVirtualizationAndScrollInfo groupItem)
                     {
-                        groupItem.Constraints = new HierarchicalVirtualizationConstraints(
-                            new VirtualizationCacheLength(0),
-                            VirtualizationCacheLengthUnit.Item,
-                            new Rect(0, 0, ViewportWidth, ViewportHeight));
+                        groupItem.Constraints = new HierarchicalVirtualizationConstraints(new VirtualizationCacheLength(0), VirtualizationCacheLengthUnit.Item, new Rect(0, 0, ViewportWidth, ViewportHeight));
                         child.Measure(new Size(ViewportWidth, ViewportHeight));
                     }
                 }
@@ -421,8 +424,9 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
         }
     }
 
-    protected void ScrollHorizontal(double amount) { SetHorizontalOffset(HorizontalOffset + amount); }
-    protected void ScrollVertical(double amount) { SetVerticalOffset(VerticalOffset + amount); }
+    protected void ScrollHorizontal(double amount) => SetHorizontalOffset(HorizontalOffset + amount);
+
+    protected void ScrollVertical(double amount) => SetVerticalOffset(VerticalOffset + amount);
 
     /// <summary>
     /// Calculates the item range that is visible in the viewport or cached.
@@ -659,24 +663,41 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
         }
     }
 
-    protected Rect CreateRect(double x, double y, double width, double height) { return Orientation == Orientation.Vertical ? new Rect(x, y, width, height) : new Rect(y, x, width, height); }
-    protected Size CreateSize(double width, double height) { return Orientation == Orientation.Vertical ? new Size(width, height) : new Size(height, width); }
-    protected double GetHeight(Size size) { return Orientation == Orientation.Vertical ? size.Height : size.Width; }
-    protected override double GetLineDownScrollAmount() { return childSize.Height; }
-    protected override double GetLineLeftScrollAmount() { return -childSize.Width; }
-    protected override double GetLineRightScrollAmount() { return childSize.Width; }
-    protected override double GetLineUpScrollAmount() { return -childSize.Height; }
-    protected override double GetMouseWheelDownScrollAmount() { return Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height); }
-    protected override double GetMouseWheelLeftScrollAmount() { return -Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width); }
-    protected override double GetMouseWheelRightScrollAmount() { return Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width); }
-    protected override double GetMouseWheelUpScrollAmount() { return -Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height); }
-    protected override double GetPageDownScrollAmount() { return Viewport.Height; }
-    protected override double GetPageLeftScrollAmount() { return -Viewport.Width; }
-    protected override double GetPageRightScrollAmount() { return Viewport.Width; }
-    protected override double GetPageUpScrollAmount() { return -Viewport.Height; }
-    protected double GetWidth(Size size) { return Orientation == Orientation.Vertical ? size.Width : size.Height; }
-    protected double GetX(Point point) { return Orientation == Orientation.Vertical ? point.X : point.Y; }
-    protected double GetY(Point point) { return Orientation == Orientation.Vertical ? point.Y : point.X; }
+    protected Rect CreateRect(double x, double y, double width, double height) => Orientation == Orientation.Vertical ? new Rect(x, y, width, height) : new Rect(y, x, width, height);
+
+    protected Size CreateSize(double width, double height) => Orientation == Orientation.Vertical ? new Size(width, height) : new Size(height, width);
+
+    protected double GetHeight(Size size) => Orientation == Orientation.Vertical ? size.Height : size.Width;
+
+    protected override double GetLineDownScrollAmount() => childSize.Height;
+
+    protected override double GetLineLeftScrollAmount() => -childSize.Width;
+
+    protected override double GetLineRightScrollAmount() => childSize.Width;
+
+    protected override double GetLineUpScrollAmount() => -childSize.Height;
+
+    protected override double GetMouseWheelDownScrollAmount() => Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height);
+
+    protected override double GetMouseWheelLeftScrollAmount() => -Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width);
+
+    protected override double GetMouseWheelRightScrollAmount() => Math.Min(childSize.Width * MouseWheelDeltaItem, Viewport.Width);
+
+    protected override double GetMouseWheelUpScrollAmount() => -Math.Min(childSize.Height * MouseWheelDeltaItem, Viewport.Height);
+
+    protected override double GetPageDownScrollAmount() => Viewport.Height;
+
+    protected override double GetPageLeftScrollAmount() => -Viewport.Width;
+
+    protected override double GetPageRightScrollAmount() => Viewport.Width;
+
+    protected override double GetPageUpScrollAmount() => -Viewport.Height;
+
+    protected double GetWidth(Size size) => Orientation == Orientation.Vertical ? size.Width : size.Height;
+
+    protected double GetX(Point point) => Orientation == Orientation.Vertical ? point.X : point.Y;
+
+    protected double GetY(Point point) => Orientation == Orientation.Vertical ? point.Y : point.X;
 
     protected override Size MeasureOverride(Size availableSize)
     {

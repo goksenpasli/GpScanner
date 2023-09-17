@@ -16,7 +16,7 @@ namespace Extensions
 
         public override int HashSize => 32;
 
-        public override void Initialize() { hashValue = 0xFFFFFFFF; }
+        public override void Initialize() => hashValue = 0xFFFFFFFF;
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {

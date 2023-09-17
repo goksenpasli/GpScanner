@@ -956,7 +956,6 @@
                                             </ComboBox>
                                         </StackPanel>
                                     </CheckBox>
-
                                     <ComboBox Grid.Column="2"
                                         local:Policy.PolicyName="SelectedOrientation"
                                         IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
@@ -971,7 +970,6 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-
                                     <CheckBox Grid.Row="1" Content="{local:Loc GUI}" IsChecked="{Binding Scanner.ShowUi}" />
                                     <CheckBox Grid.Row="1" Grid.Column="1"
                                         Content="{local:Loc FILMSCANNER}"

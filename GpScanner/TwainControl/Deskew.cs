@@ -63,7 +63,7 @@ public abstract class Deskew()
         return skewAngleDeg > 0 ? 90 - skewAngleDeg : -(90 + skewAngleDeg);
     }
 
-    private static BitmapSource ConvertToGrayscale(BitmapSource image) { return new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0); }
+    private static BitmapSource ConvertToGrayscale(BitmapSource image) => new FormatConvertedBitmap(image, PixelFormats.Gray8, null, 0);
 
     public class ImageMoments(double mu20, double mu02, double mu11)
     {

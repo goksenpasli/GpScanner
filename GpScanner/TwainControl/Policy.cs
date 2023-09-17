@@ -44,14 +44,14 @@ public class Policy : DependencyObject
             CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
     }
     public static bool CheckPolicy(string policyname)
-    {
-        return CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-            CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
-    }
-    public static bool GetPolicyEnabled(DependencyObject obj) { return (bool)obj.GetValue(PolicyEnabledProperty); }
-    public static string GetPolicyName(DependencyObject obj) { return (string)obj.GetValue(PolicyNameProperty); }
-    public static void SetPolicyEnabled(DependencyObject obj, bool value) { obj.SetValue(PolicyEnabledProperty, value); }
-    public static void SetPolicyName(DependencyObject obj, string value) { obj.SetValue(PolicyNameProperty, value); }
+    { return CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")); }
+    public static bool GetPolicyEnabled(DependencyObject obj) => (bool)obj.GetValue(PolicyEnabledProperty);
+
+    public static string GetPolicyName(DependencyObject obj) => (string)obj.GetValue(PolicyNameProperty);
+
+    public static void SetPolicyEnabled(DependencyObject obj, bool value) => obj.SetValue(PolicyEnabledProperty, value);
+
+    public static void SetPolicyName(DependencyObject obj, string value) => obj.SetValue(PolicyNameProperty, value);
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

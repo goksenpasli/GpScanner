@@ -63,7 +63,7 @@ public static class ExtensionMethods
         return bitmap.Clone(rect, format);
     }
 
-    public static bool Contains(this string source, string toCheck, StringComparison comp) { return source?.IndexOf(toCheck, comp) >= 0; }
+    public static bool Contains(this string source, string toCheck, StringComparison comp) => source?.IndexOf(toCheck, comp) >= 0;
 
     public static Bitmap ConvertBlackAndWhite(this Bitmap bitmap, int bWthreshold = 160, bool grayscale = false)
     {
@@ -81,23 +81,23 @@ public static class ExtensionMethods
             heightInPixels,
             y =>
             {
-                byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
-                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+            byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+            for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+            {
+                byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
+                if (grayscale)
                 {
-                    byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
-                    if (grayscale)
-                    {
-                        currentLine[x] = gray;
-                        currentLine[x + 1] = gray;
-                        currentLine[x + 2] = gray;
-                    }
-                    else
-                    {
-                        currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
-                        currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
-                        currentLine[x + 2] = (byte)(gray < bWthreshold ? 0 : 255);
-                    }
+                    currentLine[x] = gray;
+                    currentLine[x + 1] = gray;
+                    currentLine[x + 2] = gray;
                 }
+                else
+                {
+                    currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
+                    currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
+                    currentLine[x + 2] = (byte)(gray < bWthreshold ? 0 : 255);
+                }
+            }
             });
         bitmap.UnlockBits(bitmapData);
         bitmapData = null;
@@ -129,17 +129,17 @@ public static class ExtensionMethods
             pendingQueue,
             currentPath =>
             {
-                try
-                {
-                    List<string> files = Directory.EnumerateFiles(currentPath, pattern).ToList();
-                    _ = Parallel.ForEach(files, fileName => filesNames.Add(fileName));
+            try
+            {
+                List<string> files = Directory.EnumerateFiles(currentPath, pattern).ToList();
+                _ = Parallel.ForEach(files, fileName => filesNames.Add(fileName));
 
-                    List<string> directories = Directory.EnumerateDirectories(currentPath).ToList();
-                    _ = Parallel.ForEach(directories, directory => pendingQueue.Add(directory));
-                }
-                catch (UnauthorizedAccessException)
-                {
-                }
+                List<string> directories = Directory.EnumerateDirectories(currentPath).ToList();
+                _ = Parallel.ForEach(directories, directory => pendingQueue.Add(directory));
+            }
+            catch (UnauthorizedAccessException)
+            {
+            }
             });
 
         return filesNames;
@@ -148,7 +148,8 @@ public static class ExtensionMethods
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr ExtractIcon(this IntPtr hInst, string lpszExeFileName, int nIconIndex);
 
-    public static IEnumerable<string> FilterFiles(this string path, params string[] exts) { return exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly)); }
+    public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
+
     public static string GetDisplayName(string path)
     { return Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero ? shfi.szDisplayName : null; }
 
@@ -271,7 +272,7 @@ public static class ExtensionMethods
         }
     }
 
-    public static Brush RandomColor() { return new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256))); }
+    public static Brush RandomColor() => new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
     {
@@ -319,10 +320,10 @@ public static class ExtensionMethods
         return await Task.Run(
             () =>
             {
-                ScaleTransform newTransform = new(oran, oran, centerx, centery);
-                TransformedBitmap tb = new(bfPhoto, newTransform);
-                tb.Freeze();
-                return tb;
+            ScaleTransform newTransform = new(oran, oran, centerx, centery);
+            TransformedBitmap tb = new(bfPhoto, newTransform);
+            tb.Freeze();
+            return tb;
             });
     }
 

@@ -61,11 +61,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("InvertColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty MediaDataFilePathProperty =
         DependencyProperty.Register("MediaDataFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, MediaDataFilePathChanged));
-    public static readonly DependencyProperty MediaPositionProperty = DependencyProperty.Register(
-        "MediaPosition",
-        typeof(TimeSpan),
-        typeof(MediaViewer),
-        new PropertyMetadata(TimeSpan.Zero, MediaPositionChanged));
+    public static readonly DependencyProperty MediaPositionProperty = DependencyProperty.Register("MediaPosition", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero, MediaPositionChanged));
     public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(1d, MediaVolumeChanged));
     public static readonly DependencyProperty OpenButtonVisibilityProperty =
         DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
@@ -85,18 +81,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public static readonly DependencyProperty SliderControlVisibleProperty =
         DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register("SubTitleColor", typeof(Brush), typeof(MediaViewer), new PropertyMetadata(Brushes.White));
-    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register(
-        "SubtitleFilePath",
-        typeof(string),
-        typeof(MediaViewer),
-        new PropertyMetadata(null, SubtitleFilePathChanged));
+    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register("SubtitleFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, SubtitleFilePathChanged));
     public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty =
         DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
-    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register(
-        "SubTitleMargin",
-        typeof(Thickness),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
+    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register("SubTitleMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
     public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty SubTitleSizeProperty =
         DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
@@ -145,157 +133,157 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         GoToFrame = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is TimeSpan timeSpan)
-                {
-                    MediaPosition = timeSpan;
-                }
+            if (parameter is TimeSpan timeSpan)
+            {
+                MediaPosition = timeSpan;
+            }
             },
             parameter => GetMediaState(Player) == MediaState.Play);
 
         LoadSubtitle = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    SubtitleFilePath = openFileDialog.FileName;
-                    ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
-                }
+            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                SubtitleFilePath = openFileDialog.FileName;
+                ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
+            }
             },
             parameter => true);
 
         OpenFile = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = VideoFileExtensions };
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    MediaDataFilePath = openFileDialog.FileName;
-                }
+            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = VideoFileExtensions };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                MediaDataFilePath = openFileDialog.FileName;
+            }
             },
             parameter => true);
 
         CaptureImage = new RelayCommand<object>(
             parameter =>
             {
-                string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-                string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
-                File.WriteAllBytes(dosya, data);
-                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
-                OsdText = "Görüntü Yakalandı";
+            string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+            string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
+            File.WriteAllBytes(dosya, data);
+            ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
+            OsdText = "Görüntü Yakalandı";
             },
             parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
         CaptureThumbnail = new RelayCommand<object>(
             async parameter =>
             {
-                string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                MediaVolume = 0;
-                long timemultiplier = EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount);
-                byte[] imgdata;
+            string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+            MediaVolume = 0;
+            long timemultiplier = EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount);
+            byte[] imgdata;
 
-                Player.Play();
+            Player.Play();
 
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-                {
-                    string singlefile = null;
-                    for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
-                    {
-                        Player.Position = new TimeSpan(i * timemultiplier);
-                        await Task.Delay(MillisecondsDelay);
-                        imgdata = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-                        singlefile = picturesfolder.SetUniqueFile("Resim", "jpg");
-                        File.WriteAllBytes(singlefile, imgdata);
-                    }
-
-                    ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
-
-                    return;
-                }
-
-                UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
-                double oran = 1d / ThumbWidthCount;
+            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+            {
+                string singlefile = null;
                 for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
                 {
                     Player.Position = new TimeSpan(i * timemultiplier);
                     await Task.Delay(MillisecondsDelay);
-
-                    imgdata = ThumbApplyEffects
-                        ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
-                        : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-
-                    Grid imagegrid = GenerateImageGrid();
-                    Image image = GenerateImage(imgdata, ThumbMargin);
-                    image.SetValue(Grid.RowProperty, 0);
-                    _ = imagegrid.Children.Add(image);
-
-                    if (ThumbShowTime)
-                    {
-                        TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
-                        textBlock.SetValue(Grid.RowProperty, 1);
-                        _ = imagegrid.Children.Add(textBlock);
-                    }
-
-                    _ = uniformgrid.Children.Add(imagegrid);
+                    imgdata = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                    singlefile = picturesfolder.SetUniqueFile("Resim", "jpg");
+                    File.WriteAllBytes(singlefile, imgdata);
                 }
 
-                string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
-                File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
-                MediaVolume = 1;
+                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
+
+                return;
+            }
+
+            UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
+            double oran = 1d / ThumbWidthCount;
+            for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
+            {
+                Player.Position = new TimeSpan(i * timemultiplier);
+                await Task.Delay(MillisecondsDelay);
+
+                imgdata = ThumbApplyEffects
+                    ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
+                    : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+
+                Grid imagegrid = GenerateImageGrid();
+                Image image = GenerateImage(imgdata, ThumbMargin);
+                image.SetValue(Grid.RowProperty, 0);
+                _ = imagegrid.Children.Add(image);
+
+                if (ThumbShowTime)
+                {
+                    TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
+                    textBlock.SetValue(Grid.RowProperty, 1);
+                    _ = imagegrid.Children.Add(textBlock);
+                }
+
+                _ = uniformgrid.Children.Add(imagegrid);
+            }
+
+            string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
+            File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+            ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
+            MediaVolume = 1;
             },
             parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
         AddToPlaylist = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = VideoFileExtensions };
-                if (openFileDialog.ShowDialog() == true)
+            OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = VideoFileExtensions };
+            if (openFileDialog.ShowDialog() == true)
+            {
+                foreach (string item in openFileDialog.FileNames)
                 {
-                    foreach (string item in openFileDialog.FileNames)
+                    if (!PlayList.Contains(item))
                     {
-                        if (!PlayList.Contains(item))
-                        {
-                            PlayList.Add(item);
-                        }
+                        PlayList.Add(item);
                     }
                 }
+            }
             },
             parameter => true);
 
         SetSubtitleMargin = new RelayCommand<object>(
             parameter =>
             {
-                Thickness defaultsubtitlethickness = new(SubTitleMargin.Left, SubTitleMargin.Top, SubTitleMargin.Right, SubTitleMargin.Bottom);
-                if (parameter is object content)
+            Thickness defaultsubtitlethickness = new(SubTitleMargin.Left, SubTitleMargin.Top, SubTitleMargin.Right, SubTitleMargin.Bottom);
+            if (parameter is object content)
+            {
+                switch (content)
                 {
-                    switch (content)
-                    {
-                        case "6":
-                            defaultsubtitlethickness.Bottom -= 10;
-                            break;
+                    case "6":
+                        defaultsubtitlethickness.Bottom -= 10;
+                        break;
 
-                        case "5":
-                            defaultsubtitlethickness.Bottom += 10;
-                            break;
+                    case "5":
+                        defaultsubtitlethickness.Bottom += 10;
+                        break;
 
-                        case "4":
-                            defaultsubtitlethickness.Left += 10;
-                            break;
+                    case "4":
+                        defaultsubtitlethickness.Left += 10;
+                        break;
 
-                        case "3":
-                            defaultsubtitlethickness.Left -= 10;
-                            break;
+                    case "3":
+                        defaultsubtitlethickness.Left -= 10;
+                        break;
 
-                        case "=":
-                            defaultsubtitlethickness.Left = 0;
-                            defaultsubtitlethickness.Bottom = 0;
-                            break;
-                    }
-
-                    SubTitleMargin = defaultsubtitlethickness;
+                    case "=":
+                        defaultsubtitlethickness.Left = 0;
+                        defaultsubtitlethickness.Bottom = 0;
+                        break;
                 }
+
+                SubTitleMargin = defaultsubtitlethickness;
+            }
             },
             parameter => true);
     }
@@ -643,7 +631,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return new Point3D(x, y, z);
     }
 
-    protected virtual void OnPropertyChanged(string propertyName) { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)); }
+    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -683,7 +671,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return File.Exists(autosrtfile) ? autosrtfile : null;
     }
 
-    private static Vector3D GetNormal(double t, double y) { return (Vector3D)GetPosition(t, y); }
+    private static Vector3D GetNormal(double t, double y) => (Vector3D)GetPosition(t, y);
 
     private static Point GetTextureCoordinate(double t, double y)
     {
@@ -843,8 +831,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void FlipHor_Click(object sender, RoutedEventArgs e) { FlipX = FlipX == 1 ? -1 : 1; }
-    private void FlipVer_Click(object sender, RoutedEventArgs e) { FlipY = FlipY == 1 ? -1 : 1; }
+    private void FlipHor_Click(object sender, RoutedEventArgs e) => FlipX = FlipX == 1 ? -1 : 1;
+
+    private void FlipVer_Click(object sender, RoutedEventArgs e) => FlipY = FlipY == 1 ? -1 : 1;
 
     private void Forward_Click(object sender, RoutedEventArgs e)
     {
@@ -870,7 +859,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return image;
     }
 
-    private TextBlock GenerateWhiteTextBlock(string text) { return new TextBlock { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center }; }
+    private TextBlock GenerateWhiteTextBlock(string text) => new() { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center };
 
     private MediaState GetMediaState(MediaElement myMedia)
     {
@@ -899,10 +888,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         if (e.PropertyName is "SearchSubtitle")
         {
             MediaViewerSubtitleControl.cvs.Filter += (s, x) =>
-            {
-                SrtContent srtContent = x.Item as SrtContent;
-                x.Accepted = srtContent.Text.Contains(SearchSubtitle);
-            };
+                                                     {
+                                                     SrtContent srtContent = x.Item as SrtContent;
+                                                     x.Accepted = srtContent.Text.Contains(SearchSubtitle);
+                                                     };
         }
     }
 
@@ -977,8 +966,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         timer.Stop();
     }
 
-    private void Slider_HeightValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) { PixelateSize = new Size(PixelateSize.Width, e.NewValue); }
-    private void Slider_WidthValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) { PixelateSize = new Size(e.NewValue, PixelateSize.Height); }
+    private void Slider_HeightValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) => PixelateSize = new Size(PixelateSize.Width, e.NewValue);
+
+    private void Slider_WidthValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) => PixelateSize = new Size(e.NewValue, PixelateSize.Height);
 
     private void SlowBackward_Click(object sender, RoutedEventArgs e)
     {
@@ -1017,7 +1007,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         _startRotateY = RotateY;
     }
 
-    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) { _isOnDrag = false; }
+    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => _isOnDrag = false;
 
     private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
     {
@@ -1029,5 +1019,5 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) { Fov -= e.Delta / 100d; }
+    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) => Fov -= e.Delta / 100d;
 }

@@ -10,11 +10,7 @@ namespace Extensions;
 /// </summary>
 public class GrowablePoissonDiskEffect : ShaderEffect
 {
-    public static readonly DependencyProperty DiskRadiusProperty = DependencyProperty.Register(
-        "DiskRadius",
-        typeof(double),
-        typeof(GrowablePoissonDiskEffect),
-        new UIPropertyMetadata(5D, PixelShaderConstantCallback(0)));
+    public static readonly DependencyProperty DiskRadiusProperty = DependencyProperty.Register("DiskRadius", typeof(double), typeof(GrowablePoissonDiskEffect), new UIPropertyMetadata(5D, PixelShaderConstantCallback(0)));
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty("Input", typeof(GrowablePoissonDiskEffect), 0);
     public static readonly DependencyProperty InputSizeProperty = DependencyProperty.Register(
