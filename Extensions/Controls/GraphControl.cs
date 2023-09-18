@@ -232,8 +232,7 @@ public class GraphControl : FrameworkElement
         MaxTextWidth = pen.Thickness
     };
 
-    private FormattedText GenerateFormattedValueText(Chart item, Pen pen)
-    { return new FormattedText(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor) { MaxTextWidth = pen.Thickness }; }
+    private FormattedText GenerateFormattedValueText(Chart item, Pen pen) => new(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor) { MaxTextWidth = pen.Thickness };
 
     private RenderTargetBitmap RenderVisual(FrameworkElement frameworkElement)
     {

@@ -17,15 +17,9 @@
         #endregion ToString
 
         #region Equals and GetHashCode implementation
-        public static bool operator !=(Scew lhs, Scew rhs)
-        {
-            return !(lhs == rhs);
-        }
+        public static bool operator !=(Scew lhs, Scew rhs) => !(lhs == rhs);
 
-        public static bool operator ==(Scew lhs, Scew rhs)
-        {
-            return lhs.Equals(rhs);
-        }
+        public static bool operator ==(Scew lhs, Scew rhs) => lhs.Equals(rhs);
 
         public override bool Equals(object obj) => obj is Scew && Equals((Scew)obj);
 

@@ -36,15 +36,9 @@ namespace Tesseract
         #endregion Properties
 
         #region Equals and GetHashCode implementation
-        public static bool operator !=(Rect lhs, Rect rhs)
-        {
-            return !(lhs == rhs);
-        }
+        public static bool operator !=(Rect lhs, Rect rhs) => !(lhs == rhs);
 
-        public static bool operator ==(Rect lhs, Rect rhs)
-        {
-            return lhs.Equals(rhs);
-        }
+        public static bool operator ==(Rect lhs, Rect rhs) => lhs.Equals(rhs);
 
         public override bool Equals(object obj) => obj is Rect && Equals((Rect)obj);
 

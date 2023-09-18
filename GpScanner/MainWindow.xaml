@@ -310,7 +310,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button twainctrl:Policy.PolicyName="DateBack"
+                                <RepeatButton twainctrl:Policy.PolicyName="DateBack"
                                     Command="{Binding DateBack}"
                                     Content="ç" FontFamily="Wingdings"
                                     FontSize="16" />
@@ -318,7 +318,7 @@
                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                     Language="{Binding CalendarLang}"
                                     SelectedDate="{Binding SeçiliGün}" />
-                                <Button Grid.Column="2"
+                                <RepeatButton Grid.Column="2"
                                     twainctrl:Policy.PolicyName="DateForward"
                                     Command="{Binding DateForward}"
                                     Content="è" FontFamily="Wingdings"

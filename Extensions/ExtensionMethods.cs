@@ -150,8 +150,7 @@ public static class ExtensionMethods
 
     public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
 
-    public static string GetDisplayName(string path)
-    { return Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero ? shfi.szDisplayName : null; }
+    public static string GetDisplayName(string path) => Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero ? shfi.szDisplayName : null;
 
     public static string GetFileType(this string filename, SHFILEINFO shinfo)
     {

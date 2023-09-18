@@ -514,7 +514,7 @@
                         <GroupBox.Header>
                             <Grid Margin="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="17.6" />
@@ -559,7 +559,7 @@
                                 </ComboBox>
                                 <Grid Grid.Column="1" VerticalAlignment="Center">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="60" />
+                                        <ColumnDefinition Width="50" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -933,7 +933,6 @@
                                         <RowDefinition Height="22.4" />
                                         <RowDefinition Height="15.2" />
                                         <RowDefinition Height="15.2" />
-                                        <RowDefinition Height="16.8" />
                                     </Grid.RowDefinitions>
                                     <CheckBox Grid.ColumnSpan="2"
                                         VerticalContentAlignment="Center"
@@ -972,9 +971,10 @@
                                     <CheckBox Grid.Row="1" Grid.Column="1"
                                         Content="{local:Loc FILMSCANNER}"
                                         IsChecked="{Binding Scanner.UseFilmScanner}" />
-                                    <CheckBox Grid.Row="1" Grid.Column="2"
-                                        Content="{local:Loc REVERSE}"
-                                        IsChecked="{Binding Scanner.InvertImage}" />
+                                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                                        <CheckBox Content="{local:Loc REVERSE}" IsChecked="{Binding Scanner.InvertImage}" />
+                                        <CheckBox Content="{local:Loc SEPERATOR}" IsChecked="{Binding Scanner.UsePageSeperator}" />
+                                    </StackPanel>
                                     <CheckBox Grid.Row="2" Content="{local:Loc SHOWPROGRESS}" IsChecked="{Binding Scanner.ShowProgress}" />
                                     <CheckBox Grid.Row="2" Grid.Column="1"
                                         IsChecked="{Binding Scanner.DetectEmptyPage}"
@@ -996,10 +996,7 @@
                                             </Extensions:NumericUpDownControl>
                                         </StackPanel>
                                     </CheckBox>
-                                    <CheckBox Grid.Row="2" Grid.Column="2"
-                                        Content="{local:Loc SEPERATOR}"
-                                        IsChecked="{Binding Scanner.UsePageSeperator}" />
-                                    <CheckBox Grid.Row="3" IsChecked="{Binding Scanner.ApplyMedian}">
+                                    <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding Scanner.ApplyMedian}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
                                             <Extensions:NumericUpDownControl Background="{StaticResource Despeckle}"
@@ -1008,19 +1005,6 @@
                                                 Maximum="10" Minimum="0"
                                                 Orientation="Horizontal" SmallChange="1"
                                                 Value="{Binding MedianValue, Source={x:Static properties:Settings.Default}}" />
-                                        </StackPanel>
-                                    </CheckBox>
-                                    <CheckBox Grid.Row="3" Grid.Column="1" IsChecked="{Binding AutoCropImage, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                        <StackPanel IsEnabled="{Binding AutoCropImage, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc TRIMIMAGE}" />
-                                            <Extensions:ContentToggleButton Background="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                                                <Extensions:ContentToggleButton.OverContent>
-                                                    <Extensions:ColorPicker Width="350" Height="250"
-                                                        HexCode="{Binding AutoCropColor, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                                                        PredefinedColorVisibility="Visible" />
-                                                </Extensions:ContentToggleButton.OverContent>
-                                                <TextBlock d:Text="Black" Text="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                                            </Extensions:ContentToggleButton>
                                         </StackPanel>
                                     </CheckBox>
                                 </Grid>
