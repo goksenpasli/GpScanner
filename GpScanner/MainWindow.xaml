@@ -596,8 +596,7 @@
                                 <ColumnDefinition Width="35.2" />
                             </Grid.ColumnDefinitions>
                             <Button HorizontalContentAlignment="Stretch"
-                                twainctrl:Policy.PolicyName="OcrPage" BorderBrush="GreenYellow"
-                                BorderThickness="2"
+                                twainctrl:Policy.PolicyName="OcrPage"
                                 Command="{Binding OcrPage, Mode=OneWay}"
                                 CommandParameter="{Binding SeçiliResim.Resim, ElementName=TwainCtrl}">
                                 <Button.Style>

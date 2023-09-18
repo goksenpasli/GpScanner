@@ -377,6 +377,7 @@
                 <Expander Grid.Row="0"
                     Background="{StaticResource GroupBoxBackGround}"
                     BorderBrush="Black"
+                    IsEnabled="{Binding Scanner.ArayüzEtkin}"
                     IsExpanded="{Binding ScanSettingsExpanderIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                     <Expander.Header>
                         <Border>
@@ -389,10 +390,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
-                                    IsEnabled="{Binding Scanner.ArayüzEtkin}"
-                                    ItemsSource="{Binding Scanner.Tarayıcılar}"
-                                    SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox local:Policy.PolicyName="SeçiliTarayıcı" ItemsSource="{Binding Scanner.Tarayıcılar}" SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -454,7 +452,7 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc CAMERA}" />
                                         </StackPanel>
                                     </Extensions:ContentToggleButton>
-                                    <Button local:Policy.PolicyName="ScanImage" Command="{Binding ScanImage}" IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                                    <Button local:Policy.PolicyName="ScanImage" Command="{Binding ScanImage}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="32" Height="32">
                                                 <Image.Source>
@@ -467,7 +465,7 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
                                         </StackPanel>
                                     </Button>
-                                    <Extensions:SplitButton local:Policy.PolicyName="FastScanImage" Command="{Binding FastScanImage}" IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                                    <Extensions:SplitButton local:Policy.PolicyName="FastScanImage" Command="{Binding FastScanImage}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="32" Height="32">
                                                 <Image Width="32" Height="32">
@@ -512,7 +510,7 @@
                             </Grid>
                         </Border>
                     </Expander.Header>
-                    <GroupBox IsEnabled="{Binding Scanner.ArayüzEtkin}">
+                    <GroupBox>
                         <GroupBox.Header>
                             <Grid Margin="1">
                                 <Grid.ColumnDefinitions>

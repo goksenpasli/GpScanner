@@ -21,10 +21,6 @@
                 <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                     Content="{local:Loc TRIMIMAGE}"
                     IsChecked="{Binding Path=CropScan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                    Content="TWAIN"
-                    IsChecked="{Binding Path=UseTwainCrop, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                    IsEnabled="{Binding Path=CropScan, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                 <Button Command="{Binding ResetCrop}">
                     <Image Width="16" Height="16" VerticalAlignment="Bottom">
                         <Image.Source>

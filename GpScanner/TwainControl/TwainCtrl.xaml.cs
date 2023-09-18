@@ -2739,10 +2739,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             "Executive" => PageType.UsExecutive,
             _ => scansettings.Page.Size
         };
-        if (Settings.Default.CropScan && Settings.Default.UseTwainCrop)
-        {
-            scansettings.Area = SetCropArea();
-        }
         return scansettings;
     }
 
@@ -2940,16 +2936,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     private bool IsBlackAndWhiteMode() => Settings.Default.BackMode == (int)ColourSetting.BlackAndWhite && Settings.Default.Mode == (int)ColourSetting.BlackAndWhite;
-
-    private bool IsCropAreaValid()
-    {
-        return Settings.Default.Top < Settings.Default.Bottom &&
-            Settings.Default.Left < Settings.Default.Right &&
-            Settings.Default.Top <= PageHeight &&
-            Settings.Default.Bottom <= PageHeight &&
-            Settings.Default.Left <= PageWidth &&
-            Settings.Default.Right <= PageWidth;
-    }
 
     private void LbEypContent_Drop(object sender, DragEventArgs e)
     {
@@ -3308,8 +3294,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private AreaSettings SetCropArea() => IsCropAreaValid() ? new AreaSettings(Units.Pixels, Settings.Default.Top, Settings.Default.Left, Settings.Default.Bottom, Settings.Default.Right) : null;
-
     private void SetCropPageResolution()
     {
         PageHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
@@ -3364,7 +3348,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue);
             }
 
-            if (Settings.Default.CropScan && !Settings.Default.UseTwainCrop)
+            if (Settings.Default.CropScan)
             {
                 int height = Settings.Default.Bottom - Settings.Default.Top;
                 int width = Settings.Default.Right - Settings.Default.Left;
