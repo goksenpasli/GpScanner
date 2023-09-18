@@ -782,7 +782,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void SayfaChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer)
+        if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0)
         {
             if (pdfViewer.Sayfa > pdfViewer.ToplamSayfa)
             {
