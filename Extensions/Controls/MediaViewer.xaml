@@ -398,14 +398,16 @@
                     </TextBlock>
                     <StackPanel Grid.Column="4" Orientation="Horizontal">
                         <local:ContentToggleButton Height="24"
-                            Content="(" FontFamily="Webdings"
-                            FontSize="18" Foreground="Blue">
+                            ArrowVisibility="Collapsed" Content="("
+                            FontFamily="Webdings" FontSize="18"
+                            Foreground="Blue">
                             <local:ContentToggleButton.OverContent>
-                                <Controls:MediaViewerSubtitleControl x:Name="MediaViewerSubtitleControl" Width="480" Height="480" />
+                                <Controls:MediaViewerSubtitleControl x:Name="MediaViewerSubtitleControl" Width="480" />
                             </local:ContentToggleButton.OverContent>
                         </local:ContentToggleButton>
-                        <local:ContentToggleButton Content="" FontFamily="Webdings"
-                            FontSize="20" Foreground="Blue">
+                        <local:ContentToggleButton ArrowVisibility="Collapsed" Content=""
+                            FontFamily="Webdings" FontSize="20"
+                            Foreground="Blue">
                             <local:ContentToggleButton.OverContent>
                                 <StackPanel>
                                     <StackPanel Background="{StaticResource GroupBoxBackGround}">
@@ -432,9 +434,9 @@
                                 </StackPanel>
                             </local:ContentToggleButton.OverContent>
                         </local:ContentToggleButton>
-                        <local:ContentToggleButton Content="µ" FontFamily="Webdings"
-                            FontSize="20" Foreground="Blue"
-                            PlacementMode="Top">
+                        <local:ContentToggleButton ArrowVisibility="Collapsed" Content="µ"
+                            FontFamily="Webdings" FontSize="20"
+                            Foreground="Blue" PlacementMode="Top">
                             <local:ContentToggleButton.OverContent>
                                 <UniformGrid Margin="1" Background="{StaticResource GroupBoxBackGround}" Columns="7">
                                     <Button VerticalContentAlignment="Center"
@@ -468,9 +470,9 @@
                                 </UniformGrid>
                             </local:ContentToggleButton.OverContent>
                         </local:ContentToggleButton>
-                        <local:ContentToggleButton Content="·" FontFamily="Webdings"
-                            FontSize="20" Foreground="Blue"
-                            PlacementMode="Top">
+                        <local:ContentToggleButton ArrowVisibility="Collapsed" Content="·"
+                            FontFamily="Webdings" FontSize="20"
+                            Foreground="Blue" PlacementMode="Top">
                             <local:ContentToggleButton.OverContent>
                                 <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">
                                     <UniformGrid Columns="2" Rows="2">

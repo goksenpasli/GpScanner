@@ -1206,6 +1206,9 @@
                                         <Hyperlink BaselineAlignment="Center" Command="{Binding ReverseDataHorizontal}" TextDecorations="None">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="D" />
                                         </Hyperlink>
+                                        <Hyperlink BaselineAlignment="Center" Command="{Binding ShuffleData}" TextDecorations="None">
+                                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/dice.png" />
+                                        </Hyperlink>
                                     </TextBlock>
                                 </StackPanel>
                             </TabItem.Header>
@@ -1250,7 +1253,7 @@
                                                                     <Style TargetType="{x:Type Run}">
                                                                         <Setter Property="Foreground" Value="Red" />
                                                                         <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType={x:Type local:TwainCtrl}}}" Value="true">
+                                                                            <DataTrigger Binding="{Binding DataContext.DragMoveStarted, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" Value="true">
                                                                                 <DataTrigger.EnterActions>
                                                                                     <BeginStoryboard x:Name="Sb">
                                                                                         <Storyboard RepeatBehavior="Forever" Timeline.DesiredFrameRate="12">
@@ -1259,7 +1262,7 @@
                                                                                     </BeginStoryboard>
                                                                                 </DataTrigger.EnterActions>
                                                                             </DataTrigger>
-                                                                            <DataTrigger Binding="{Binding DragMoveStarted, RelativeSource={RelativeSource AncestorType={x:Type local:TwainCtrl}}}" Value="false">
+                                                                            <DataTrigger Binding="{Binding DataContext.DragMoveStarted, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" Value="false">
                                                                                 <DataTrigger.EnterActions>
                                                                                     <StopStoryboard BeginStoryboardName="Sb" />
                                                                                     <RemoveStoryboard BeginStoryboardName="Sb" />

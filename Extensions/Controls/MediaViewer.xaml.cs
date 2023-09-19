@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
+using Extensions.Properties;
 
 namespace Extensions.Controls;
 
@@ -62,7 +63,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public static readonly DependencyProperty MediaDataFilePathProperty =
         DependencyProperty.Register("MediaDataFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, MediaDataFilePathChanged));
     public static readonly DependencyProperty MediaPositionProperty = DependencyProperty.Register("MediaPosition", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero, MediaPositionChanged));
-    public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(1d, MediaVolumeChanged));
+    public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register("MediaVolume", typeof(double), typeof(MediaViewer), new PropertyMetadata(Settings.Default.MediaVolume, MediaVolumeChanged));
     public static readonly DependencyProperty OpenButtonVisibilityProperty =
         DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty OsdDisplayTimeProperty =
@@ -745,6 +746,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             viewer.Player.Volume = (double)e.NewValue;
             viewer.OsdText = $"Ses: {(int)(viewer.Player.Volume * 100)}";
+            Settings.Default.MediaVolume = (double)e.NewValue;
+            Settings.Default.Save();
         }
     }
 

@@ -424,7 +424,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             TümününİşaretiniKaldır.Execute(null);
             foreach (ScannedImage item in
-                             Scanner.Resimler.Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
+                                 Scanner.Resimler.Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
             {
                 item.Seçili = true;
             }
@@ -455,7 +455,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         KayıtYoluBelirle = new RelayCommand<object>(
             parameter =>
             {
-            FolderBrowserDialog dialog = new() { Description = Translation.GetResStringValue("AUTOFOLDER"), SelectedPath = Settings.Default.AutoFolder };
+            FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("FASTSCAN")}\n{Translation.GetResStringValue("AUTOFOLDER")}", SelectedPath = Settings.Default.AutoFolder };
             string oldpath = Settings.Default.AutoFolder;
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -946,8 +946,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string[] clipboardFiles = (string[])clipboardData.GetData(System.Windows.DataFormats.FileDrop);
                     List<string> clipboardPdfFiles = clipboardFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
                     List<string> clipboardImageFiles = clipboardFiles
-                                .Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLower()))
-                                .ToList();
+                                    .Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLower()))
+                                    .ToList();
                     if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
                     {
                         await Task.Run(
@@ -1215,6 +1215,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
+        ShuffleData = new RelayCommand<object>(
+            parameter =>
+            {
+            Random random = new();
+            Scanner.Resimler = Shuffle(Scanner.Resimler, random);
+            Scanner.RefreshIndexNumbers(Scanner.Resimler);
+            },
+            parameter => Scanner?.Resimler?.Count > 1);
+
         ReverseDataHorizontal = new RelayCommand<object>(
             parameter =>
             {
@@ -1353,7 +1362,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 foreach (PdfData currentpage in currentpages)
                 {
                     string savefilename =
-                                $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
+                                    $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
                     await PdfPageRangeSaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
                     files.Add(savefilename);
                 }
@@ -2093,6 +2102,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public ICommand ShowDateFolderHelp { get; }
+
+    public RelayCommand<object> ShuffleData { get; }
 
     public ICommand SplitPdf { get; }
 
@@ -3298,6 +3309,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         PageHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
         PageWidth = (int)(SelectedPaper.Width / Inch * Settings.Default.Çözünürlük);
+    }
+
+    private ObservableCollection<T> Shuffle<T>(ObservableCollection<T> collection, Random random)
+    {
+        for (int i = collection.Count - 1; i > 0; i--)
+        {
+            int j = random.Next(0, i + 1);
+            T temp = collection[i];
+            collection[i] = collection[j];
+            collection[j] = temp;
+        }
+        return collection;
     }
 
     private void StackPanel_Drop(object sender, DragEventArgs e) => DropFile(sender, e);

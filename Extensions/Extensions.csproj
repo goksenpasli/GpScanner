@@ -90,6 +90,11 @@
     <Compile Include="Converters\FilePathToFileNameConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ScrollDragDrop.cs" />
     <Compile Include="PasswordBoxHelper.cs" />
     <Compile Include="Shader\BlackWhiteEffect.cs" />
@@ -179,6 +184,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Shader\GrowablePoissonDiskEffect.ps" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
