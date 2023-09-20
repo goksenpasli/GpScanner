@@ -529,6 +529,17 @@ public class GpScannerViewModel : InpcBase
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
+        SetBatchSaveFolder = new RelayCommand<object>(
+            parameter =>
+            {
+            FolderBrowserDialog dialog = new();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Settings.Default.BatchSaveFolder = dialog.SelectedPath;
+            }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+
         BatchFolderTümünüİşaretle = new RelayCommand<object>(
             parameter =>
             {
@@ -1523,7 +1534,7 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ICommand SetBatchFolder { get; }
-
+    public RelayCommand<object> SetBatchSaveFolder { get; }
     public ICommand SetBatchWatchFolder { get; }
 
     public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
@@ -1686,10 +1697,10 @@ public class GpScannerViewModel : InpcBase
 
     public bool NeedAppUpdate() => Settings.Default.CheckAppUpdate && DateTime.Now > Settings.Default.LastCheckDate.AddDays(Settings.Default.UpdateInterval);
 
-    public void RegisterBatchImageFileWatcher(Paper paper, string batchsavefolder)
+    public void RegisterBatchImageFileWatcher(Paper paper, string batchfolder, string batchsavefolder)
     {
         FileSystemWatcherProcessedFileList = [];
-        FileSystemWatcher watcher = new(batchsavefolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
+        FileSystemWatcher watcher = new(batchfolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
         batchimagefileextensions.Add(".webp");
         watcher.Created += async (s, e) =>
                            {
@@ -1769,10 +1780,11 @@ public class GpScannerViewModel : InpcBase
     {
         if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
         {
-            if (!Directory.Exists(Settings.Default.BatchFolder))
+            if (!Directory.Exists(Settings.Default.BatchFolder) || !Directory.Exists(Settings.Default.BatchSaveFolder))
             {
                 Settings.Default.RegisterBatchWatcher = false;
                 Settings.Default.BatchFolder = null;
+                Settings.Default.BatchSaveFolder = null;
             }
             else
             {
@@ -1785,9 +1797,12 @@ public class GpScannerViewModel : InpcBase
             _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), Application.Current?.MainWindow.Title);
         }
 
-        if (e.PropertyName is "BatchFolder" && Settings.Default.BatchFolder?.Length == 0)
+        if (e.PropertyName is "BatchFolder" or "BatchSaveFolder")
         {
-            Settings.Default.RegisterBatchWatcher = false;
+            if (Settings.Default.BatchFolder?.Length == 0 || Settings.Default.BatchSaveFolder?.Length==0)
+            {
+                Settings.Default.RegisterBatchWatcher = false;
+            }
         }
 
         Settings.Default.Save();

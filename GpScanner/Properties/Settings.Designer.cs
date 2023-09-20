@@ -383,5 +383,17 @@ namespace GpScanner.Properties {
                 this["FtpSites"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BatchSaveFolder {
+            get {
+                return ((string)(this["BatchSaveFolder"]));
+            }
+            set {
+                this["BatchSaveFolder"] = value;
+            }
+        }
     }
 }

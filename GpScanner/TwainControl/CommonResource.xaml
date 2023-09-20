@@ -430,7 +430,7 @@
                 ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                 OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
                 PrintButtonVisibility="Collapsed"
-                Tag="{Binding RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" />
+                Tag="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}" />
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="EypSimplePdfTemplate">
@@ -454,7 +454,7 @@
                 PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                 PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden"
                 SliderZoomAngleVisibility="Collapsed" SnapTick="True"
-                Tag="{Binding RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
+                Tag="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
                 ToolBarVisibility="Collapsed" />
         </Grid>
     </DataTemplate>

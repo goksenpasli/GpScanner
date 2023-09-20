@@ -1105,8 +1105,6 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <StackPanel>
-                                        <TextBlock Foreground="Red" Text="{twainctrl:Loc BATCHDESC}" TextWrapping="Wrap" />
-                                        <Separator />
                                         <UniformGrid Columns="2">
                                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                                 CopyButtonVisibility="Collapsed" IsReadOnly="True"
@@ -1145,14 +1143,50 @@
                                                         </StackPanel>
                                                     </CheckBox.Content>
                                                 </CheckBox>
-                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                    IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}"
-                                                    IsEnabled="{Binding BatchFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
+                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}">
                                                     <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
+                                                    <CheckBox.Style>
+                                                        <Style TargetType="CheckBox">
+                                                            <Setter Property="IsEnabled" Value="False" />
+                                                            <Style.Triggers>
+                                                                <MultiDataTrigger>
+                                                                    <MultiDataTrigger.Conditions>
+                                                                        <Condition Binding="{Binding BatchFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}" Value="true" />
+                                                                        <Condition Binding="{Binding BatchSaveFolder, Source={x:Static properties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}" Value="true" />
+                                                                    </MultiDataTrigger.Conditions>
+                                                                    <Setter Property="IsEnabled" Value="True" />
+                                                                </MultiDataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </CheckBox.Style>
                                                 </CheckBox>
                                             </UniformGrid>
                                         </UniformGrid>
                                         <Separator />
+                                        <TextBlock Foreground="Red" Text="{twainctrl:Loc BATCHDESC}" TextWrapping="Wrap" />
+                                        <Separator />
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition Width="Auto" />
+                                            </Grid.ColumnDefinitions>
+                                            <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                                CopyButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                                Text="{Binding BatchSaveFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                            <Button Grid.Column="1" Command="{Binding SetBatchSaveFolder}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="3" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPDF}" />
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
                                     </StackPanel>
                                     <UniformGrid Grid.Row="1" Columns="2">
                                         <ListBox x:Name="Lb"
