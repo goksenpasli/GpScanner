@@ -1439,8 +1439,7 @@
                                                             <ContentPresenter d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
                                                                 d:Height="315" d:Width="315"
                                                                 Content="{Binding IsAsync=True, Mode=OneWay}"
-                                                                ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
-                                                                DataContext="{Binding Mode=OneWay}" />
+                                                                ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
                                                         </StackPanel>
                                                     </ControlTemplate>
                                                 </Setter.Value>

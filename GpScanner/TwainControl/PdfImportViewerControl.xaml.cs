@@ -750,12 +750,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     cnv.Children?.Clear();
                     width = Math.Abs(mousemovecoord.X - mousedowncoord.X);
                     height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
-                    double captureX, captureY;
-                    captureX = mousedowncoord.X < mousemovecoord.X ? mousedowncoord.X : mousemovecoord.X;
-                    captureY = mousedowncoord.Y < mousemovecoord.Y ? mousedowncoord.Y : mousemovecoord.Y;
-                    BitmapFrame bitmapFrame = BitmapFrame.Create((BitmapSource)img.Source);
-                    bitmapFrame.Freeze();
-                    ImgData = BitmapMethods.CaptureScreen(captureX, captureY, width, height, scrollviewer, bitmapFrame);
+                    double coordx = x1 + scrollviewer.HorizontalOffset;
+                    double coordy = y1 + scrollviewer.VerticalOffset;
+                    ImgData = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;

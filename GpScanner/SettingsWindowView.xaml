@@ -1171,7 +1171,8 @@
                                                 <ColumnDefinition Width="Auto" />
                                             </Grid.ColumnDefinitions>
                                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                                CopyButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                                CopyButtonVisibility="Collapsed" IsReadOnly="True"
+                                                PasteButtonVisibility="Collapsed"
                                                 Text="{Binding BatchSaveFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                             <Button Grid.Column="1" Command="{Binding SetBatchSaveFolder}">
                                                 <StackPanel Orientation="Horizontal">

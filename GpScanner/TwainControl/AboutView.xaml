@@ -4,8 +4,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
+    Width="500" Height="290"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="290" d:DesignWidth="400" 
+    d:DesignHeight="290" d:DesignWidth="500"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -23,58 +24,63 @@
                 <TextBlock HorizontalAlignment="Right" Text="{Binding Version.FileVersion}" />
             </UniformGrid>
         </GroupBox.Header>
-        <StackPanel Margin="2,0,0,0">
-            <TextBlock FontSize="20" TextWrapping="Wrap">
-                <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli?tab=repositories">
-                    <Run Text="{local:Loc OTHERAPPS}" />
-                </Hyperlink>
-            </TextBlock>
-            <Separator />
-            <TextBlock FontWeight="Bold" Text="{local:Loc APPDESC}" TextWrapping="Wrap" />
-            <TextBlock Margin="0,25,0,0"
-                Background="Red"
-                Text="{local:Loc THIRDPARTY}"
-                TextWrapping="Wrap" />
-            <TextBlock>
-                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/charlesw/tesseract">
-                    TESSERACT
-                </Hyperlink>
-            </TextBlock>
-            <TextBlock>
-                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="http://www.pdfsharp.net">
-                    PDFSHARP
-                </Hyperlink>
-            </TextBlock>
-            <TextBlock>
-                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/micjahn/ZXing.Net">
-                    ZXing.Net
-                </Hyperlink>
-            </TextBlock>
-            <TextBlock>
-                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/GMZ">
-                    TWAINWPF
-                </Hyperlink>
-            </TextBlock>
-            <TextBlock>
-                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/MozJpeg-wrapper">
-                    MozJpeg
-                </Hyperlink>
-            </TextBlock>
-            <TextBlock>
-                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://bitbucket.org/jvandezande/wpfcap/src/master/">
-                    WPFCap
-                </Hyperlink>
-            </TextBlock>
-            <TextBlock>
-                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/pvginkel/PdfiumViewer">
-                    PdfiumViewer
-                </Hyperlink>
-            </TextBlock>
-            <TextBlock>
-                <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/WebP-wrapper">
-                    WebP-Wrapper
-                </Hyperlink>
-            </TextBlock>
-        </StackPanel>
+        <UniformGrid Columns="2">
+            <StackPanel>
+                <TextBlock FontSize="20" TextWrapping="Wrap">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli?tab=repositories">
+                        <Run Text="{local:Loc OTHERAPPS}" />
+                    </Hyperlink>
+                </TextBlock>
+                <Separator />
+                <TextBlock FontWeight="Bold" Text="{local:Loc APPDESC}" TextWrapping="Wrap" />
+                <TextBlock Margin="0,25,0,0"
+                    Background="Red"
+                    Text="{local:Loc THIRDPARTY}"
+                    TextWrapping="Wrap" />
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/charlesw/tesseract">
+                        TESSERACT
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="http://www.pdfsharp.net">
+                        PDFSHARP
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/micjahn/ZXing.Net">
+                        ZXing.Net
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/GMZ">
+                        TWAINWPF
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/MozJpeg-wrapper">
+                        MozJpeg
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://bitbucket.org/jvandezande/wpfcap/src/master/">
+                        WPFCap
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/pvginkel/PdfiumViewer">
+                        PdfiumViewer
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/WebP-wrapper">
+                        WebP-Wrapper
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            <TextBox HorizontalScrollBarVisibility="Auto" IsReadOnly="True"
+                Text="{local:Loc LICENSE}"
+                VerticalScrollBarVisibility="Auto" />
+        </UniformGrid>
     </GroupBox>
 </UserControl>
