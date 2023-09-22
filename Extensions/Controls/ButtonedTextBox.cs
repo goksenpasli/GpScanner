@@ -116,7 +116,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message);
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title);
         }
     }
 

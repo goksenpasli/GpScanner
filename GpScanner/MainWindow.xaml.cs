@@ -65,7 +65,7 @@ public partial class MainWindow : Window
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
@@ -222,7 +222,7 @@ public partial class MainWindow : Window
             {
                 TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
                 TwainCtrl.Scanner.ApplyDataBaseOcr = false;
-                _ = MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("TESSLANGSELECT")}");
+                _ = MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("TESSLANGSELECT")}", Title);
             }
         }
     }
@@ -301,7 +301,7 @@ public partial class MainWindow : Window
                 if (Settings.Default.PatchCodes.Count <= 0)
                 {
                     TwainCtrl.Scanner.UsePageSeperator = false;
-                    _ = MessageBox.Show($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("SEPERATOR")}");
+                    _ = MessageBox.Show($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("SEPERATOR")}", Title);
                     return;
                 }
 
@@ -314,7 +314,7 @@ public partial class MainWindow : Window
     {
         if (TwainCtrl.Filesavetask?.IsCompleted == false || (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
         {
-            _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+            _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), Title);
             e.Cancel = true;
         }
 

@@ -67,6 +67,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public static DispatcherTimer CameraQrCodeTimer;
     public static Task Filesavetask;
     private readonly object _lockObject = new();
+    private readonly string AppName = Application.Current?.MainWindow?.Title;
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
     private readonly string[] imagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
@@ -181,7 +182,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             if (Filesavetask?.IsCompleted == false)
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
                 return;
             }
 
@@ -207,7 +208,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             if (Filesavetask?.IsCompleted == false)
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
                 return;
             }
 
@@ -221,7 +222,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 return;
             }
 
-            if (MessageBox.Show(Translation.GetResStringValue("REMOVESELECTED"), Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (MessageBox.Show(Translation.GetResStringValue("REMOVESELECTED"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 RemoveSelectedImage(item);
             }
@@ -276,7 +277,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (MessageBox.Show(
                         Application.Current.MainWindow,
                         $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}",
-                        Application.Current.MainWindow.Title,
+                        AppName,
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question,
                         MessageBoxResult.No) ==
@@ -327,7 +328,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
 
@@ -465,7 +466,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             if (!string.IsNullOrWhiteSpace(oldpath) && oldpath != Settings.Default.AutoFolder)
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("AUTOFOLDERCHANGE"), Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                _ = MessageBox.Show(Translation.GetResStringValue("AUTOFOLDERCHANGE"), AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
             }
             },
             parameter => true);
@@ -475,7 +476,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             if (Filesavetask?.IsCompleted == false)
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
                 return;
             }
 
@@ -592,18 +593,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             if (Filesavetask?.IsCompleted == false)
             {
-                _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TASKSRUNNING"));
+                _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TASKSRUNNING"), AppName);
                 return;
             }
 
-            if (MessageBox.Show(
-                Application.Current.MainWindow,
-                Translation.GetResStringValue("LISTREMOVEWARN"),
-                Application.Current.MainWindow.Title,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No) ==
-                MessageBoxResult.Yes)
+            if (MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("LISTREMOVEWARN"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 Scanner.Resimler?.Clear();
                 UndoImage = null;
@@ -634,7 +628,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 _ = sb.Append(item.Key).Append(' ').AppendLine(DateTime.Today.ToString(item.Key, TranslationSource.Instance.CurrentCulture));
             }
             _ = sb.AppendLine().AppendLine(Translation.GetResStringValue("FOLDERFORMAT"));
-            _ = MessageBox.Show(sb.ToString(), Application.Current?.MainWindow?.Title);
+            _ = MessageBox.Show(sb.ToString(), AppName);
             },
             parameter => true);
 
@@ -689,7 +683,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             if (fileloadtask?.IsCompleted == false)
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"));
+                _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
                 return;
             }
 
@@ -905,7 +899,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if (parameter is PdfViewer.PdfViewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
                 seçiliresimler.Any() &&
-                MessageBox.Show($"{Translation.GetResStringValue("SAVESELECTED")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                MessageBox.Show($"{Translation.GetResStringValue("SAVESELECTED")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 string pdfFilePath = pdfviewer.PdfFilePath;
                 string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
@@ -1039,7 +1033,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                  .AppendLine()
                                  .Append($"{reader.FileSize / 1048576d:##.##}")
                                  .AppendLine(" MB");
-                _ = MessageBox.Show(stringBuilder.ToString(), Application.Current?.MainWindow?.Title);
+                _ = MessageBox.Show(stringBuilder.ToString(), AppName);
             }
             },
             parameter => parameter is string filepath && File.Exists(filepath));
@@ -1123,13 +1117,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             if (parameter is PdfViewer.PdfViewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
-                MessageBox.Show(
-                $"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}",
-                Application.Current.MainWindow.Title,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No) ==
-                MessageBoxResult.Yes)
+                MessageBox.Show($"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 string oldpdfpath = pdfviewer.PdfFilePath;
                 int start = SayfaBaşlangıç - 1;
@@ -1146,12 +1134,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             if (parameter is PdfViewer.PdfViewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
-                MessageBox.Show(
-                $"{Translation.GetResStringValue("SAVEPDF")} {Translation.GetResStringValue("REVERSE")}",
-                Application.Current.MainWindow.Title,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No) ==
+                MessageBox.Show($"{Translation.GetResStringValue("SAVEPDF")} {Translation.GetResStringValue("REVERSE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
                 MessageBoxResult.Yes)
             {
                 string oldpdfpath = pdfviewer.PdfFilePath;
@@ -1167,7 +1150,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             if (parameter is PdfViewer.PdfViewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
-                MessageBox.Show($"{Translation.GetResStringValue("ADDDOC")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                MessageBox.Show($"{Translation.GetResStringValue("ADDDOC")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 OpenFileDialog openFileDialog = new() { Filter = "Tüm Dosyalar (*.*)|*.*", Multiselect = true };
                 if (openFileDialog.ShowDialog() == true)
@@ -1253,7 +1236,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 string path = pdfviewer.PdfFilePath;
                 if (MessageBox.Show(
                         $"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}",
-                        Application.Current.MainWindow.Title,
+                        AppName,
                         MessageBoxButton.YesNo,
                         MessageBoxImage.Question,
                         MessageBoxResult.No) ==
@@ -1367,8 +1350,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     files.Add(savefilename);
                 }
 
-                if (currentpages.Count > 1 &&
-                    MessageBox.Show($"{Translation.GetResStringValue("MERGEPDF")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (currentpages.Count > 1 && MessageBox.Show($"{Translation.GetResStringValue("MERGEPDF")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     using PdfDocument mergedPdf = files.ToArray().MergePdf();
                     mergedPdf.Save($"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {Translation.GetResStringValue("MERGE")}.pdf");
@@ -1422,7 +1404,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ClearPdfHistory = new RelayCommand<object>(
             parameter =>
             {
-            if (MessageBox.Show($"{Translation.GetResStringValue("CLEARLIST")}", Application.Current.MainWindow.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"{Translation.GetResStringValue("CLEARLIST")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
             {
                 Settings.Default.PdfLoadHistory.Clear();
                 Settings.Default.Save();
@@ -2445,7 +2427,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message, AppName);
                 filenames = null;
             }
             });
@@ -2491,7 +2473,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (fileloadtask?.IsCompleted == false)
         {
-            _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"));
+            _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
             return;
         }
 

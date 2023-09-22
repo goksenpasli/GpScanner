@@ -49,6 +49,7 @@ public class GpScannerViewModel : InpcBase
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
     private static DispatcherTimer timer;
+    private readonly string AppName = Application.Current?.MainWindow?.Title;
     private readonly List<string> batchimagefileextensions = new() { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"];
     private int allPdfPage;
@@ -169,7 +170,7 @@ public class GpScannerViewModel : InpcBase
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             },
@@ -209,7 +210,7 @@ public class GpScannerViewModel : InpcBase
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             },
@@ -532,7 +533,7 @@ public class GpScannerViewModel : InpcBase
         SetBatchSaveFolder = new RelayCommand<object>(
             parameter =>
             {
-            FolderBrowserDialog dialog = new();
+            FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("SAVEPDF")}"};
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 Settings.Default.BatchSaveFolder = dialog.SelectedPath;
@@ -584,7 +585,7 @@ public class GpScannerViewModel : InpcBase
             {
                 if (dialog.SelectedPath == Twainsettings.Settings.Default.AutoFolder)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("NO ACTION"), Application.Current.MainWindow.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    _ = MessageBox.Show(Translation.GetResStringValue("NO ACTION"), AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                     return;
                 }
                 Settings.Default.BatchFolder = dialog.SelectedPath;
@@ -598,7 +599,7 @@ public class GpScannerViewModel : InpcBase
             {
             if (Filesavetask?.IsCompleted == false)
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
                 return;
             }
             BatchFolderProcessedFileList = [];
@@ -680,12 +681,7 @@ public class GpScannerViewModel : InpcBase
         CancelBatchOcr = new RelayCommand<object>(
             parameter =>
             {
-            if (MessageBox.Show(
-                $"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}",
-                Application.Current.MainWindow.Title,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No) ==
+            if (MessageBox.Show($"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
                 MessageBoxResult.Yes)
             {
                 ocrcancellationToken?.Cancel();
@@ -699,7 +695,7 @@ public class GpScannerViewModel : InpcBase
             {
             if (Filesavetask?.IsCompleted == false)
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"));
+                _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
                 return;
             }
 
@@ -755,17 +751,12 @@ public class GpScannerViewModel : InpcBase
         ResetSettings = new RelayCommand<object>(
             parameter =>
             {
-            if (MessageBox.Show(
-                $"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}",
-                Application.Current.MainWindow.Title,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No) ==
+            if (MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
                 MessageBoxResult.Yes)
             {
                 Twainsettings.Settings.Default.Reset();
                 Settings.Default.Reset();
-                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), Application.Current?.MainWindow.Title);
+                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), AppName);
             }
             });
 
@@ -1534,7 +1525,9 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ICommand SetBatchFolder { get; }
+
     public RelayCommand<object> SetBatchSaveFolder { get; }
+
     public ICommand SetBatchWatchFolder { get; }
 
     public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
@@ -1788,18 +1781,18 @@ public class GpScannerViewModel : InpcBase
             }
             else
             {
-                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), Application.Current?.MainWindow.Title);
+                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), AppName);
             }
         }
 
         if (e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
         {
-            _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), Application.Current?.MainWindow.Title);
+            _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), AppName);
         }
 
         if (e.PropertyName is "BatchFolder" or "BatchSaveFolder")
         {
-            if (Settings.Default.BatchFolder?.Length == 0 || Settings.Default.BatchSaveFolder?.Length==0)
+            if (Settings.Default.BatchFolder?.Length == 0 || Settings.Default.BatchSaveFolder?.Length == 0)
             {
                 Settings.Default.RegisterBatchWatcher = false;
             }
@@ -2127,7 +2120,7 @@ public class GpScannerViewModel : InpcBase
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
     }

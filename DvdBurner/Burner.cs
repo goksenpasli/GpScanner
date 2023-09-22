@@ -65,7 +65,7 @@ namespace DvdBurner
                 {
                 if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(WarnText);
+                    _ = MessageBox.Show(WarnText, AppName);
                     return;
                 }
 
@@ -124,7 +124,7 @@ namespace DvdBurner
                 {
                 if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(WarnText);
+                    _ = MessageBox.Show(WarnText, AppName);
                     return;
                 }
 
@@ -144,7 +144,7 @@ namespace DvdBurner
                 {
                 if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(WarnText);
+                    _ = MessageBox.Show(WarnText, AppName);
                     return;
                 }
                 if (parameter is string file && Files.Remove(file))
@@ -159,7 +159,7 @@ namespace DvdBurner
                 {
                 if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(WarnText);
+                    _ = MessageBox.Show(WarnText, AppName);
                     return;
                 }
 

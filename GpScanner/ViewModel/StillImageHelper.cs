@@ -29,6 +29,7 @@ public static class StillImageHelper
     private const string REGKEY_STI_EVENT_SCANBUTTON =
         @"SYSTEM\CurrentControlSet\Control\StillImage\Events\ScanButton\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
     private const int TIMEOUT = 1000;
+    private static readonly string AppName = Application.Current?.MainWindow?.Title;
     private static bool _serverRunning;
 
     public static bool FirstLanuchScan { get; set; }
@@ -97,7 +98,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -113,7 +114,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         return false;
@@ -181,7 +182,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 

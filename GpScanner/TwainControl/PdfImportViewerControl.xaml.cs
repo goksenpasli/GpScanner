@@ -24,6 +24,7 @@ namespace TwainControl;
 /// </summary>
 public partial class PdfImportViewerControl : UserControl, INotifyPropertyChanged
 {
+    private readonly string AppName = Application.Current?.MainWindow?.Title;
     private readonly Ellipse ellipseselectionbox = new()
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
@@ -96,7 +97,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message, AppName);
             }
             },
             parameter => true);
@@ -114,7 +115,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message, AppName);
             }
             },
             parameter => Ink?.Strokes?.Any() == true);
@@ -130,7 +131,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message, AppName);
             }
             },
             parameter => Ink?.Strokes?.Any() == true);
@@ -149,7 +150,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message, AppName);
             }
             },
             parameter => true);
@@ -171,7 +172,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message, AppName);
             }
             },
             parameter => true);

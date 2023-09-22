@@ -20,6 +20,7 @@ namespace GpScanner.ViewModel;
 public class TesseractViewModel : InpcBase, IDataErrorInfo
 
 {
+    private readonly string AppName = Application.Current?.MainWindow?.Title;
     private List<TessFiles> checkedFiles;
     private bool ısFolderWritable;
     private bool showAllLanguages;
@@ -46,7 +47,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
             },
@@ -58,8 +59,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             if (parameter is TessFiles tessFile)
             {
                 string filepath = $"{Tessdatafolder}\\{tessFile.Name}.traineddata";
-                if (File.Exists(filepath) &&
-                    MessageBox.Show(Translation.GetResStringValue("DELETE"), Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (File.Exists(filepath) && MessageBox.Show(Translation.GetResStringValue("DELETE"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     try
                     {
@@ -68,7 +68,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                        _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
@@ -109,7 +109,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                     if (File.Exists(datafile))
                     {
                         File.Delete(datafile);
@@ -121,7 +121,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     string file = Path.Combine(tessdatafolder, ocrData.OcrName);
                     if (File.Exists(file) && new FileInfo(file).Length == 0)
                     {
-                        _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", Application.Current?.MainWindow.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                        _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                         File.Delete(file);
                         TesseractFiles = GetTesseractFiles(Tessdatafolder);
                     }
