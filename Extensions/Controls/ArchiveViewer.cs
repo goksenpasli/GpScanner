@@ -72,8 +72,9 @@ namespace Extensions
                 using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
                 if (archive != null)
                 {
-                    ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.DosyaAdı);
-                    SelectedFile.Crc = CalculateFileCRC(dosya.Open());
+                    ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.TamYol);
+                    using Stream stream = dosya.Open();
+                    SelectedFile.Crc = CalculateFileCRC(stream);
                 }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath) && SelectedFile is not null && !CalculateCrc);
@@ -189,14 +190,15 @@ namespace Extensions
                         TamYol = item.FullName,
                         Boyut = item.Length,
                         Oran = (float)item.CompressedLength / item.Length,
-                        DüzenlenmeZamanı = item.LastWriteTime.Date,
-                        Crc = CalculateCrc ? CalculateFileCRC(item.Open()) : null
+                        DüzenlenmeZamanı = item.LastWriteTime.Date
                     };
+                    using Stream stream = item.Open();
+                    archiveData.Crc = CalculateCrc ? CalculateFileCRC(stream) : null;
                     archiveViewer.Arşivİçerik.Add(archiveData);
                 }
             }
-            cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
             archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
+            cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
         }
 
         protected virtual void Dispose(bool disposing)

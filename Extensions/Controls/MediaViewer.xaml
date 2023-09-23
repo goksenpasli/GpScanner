@@ -183,13 +183,13 @@
                                                 <MediaElement.Effect>
                                                     <local:ColorEffect x:Name="Color" />
                                                 </MediaElement.Effect>
-                                                <MediaElement.RenderTransform>
+                                                <MediaElement.LayoutTransform>
                                                     <TransformGroup>
                                                         <ScaleTransform ScaleX="{Binding FlipX}" />
                                                         <ScaleTransform ScaleY="{Binding FlipY}" />
                                                         <RotateTransform Angle="{Binding Angle}" />
                                                     </TransformGroup>
-                                                </MediaElement.RenderTransform>
+                                                </MediaElement.LayoutTransform>
                                             </MediaElement>
                                             <Viewport3D x:Name="PanoramaViewPort"
                                                 Cursor="ScrollAll" MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown"
