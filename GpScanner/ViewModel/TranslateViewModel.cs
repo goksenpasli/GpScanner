@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using GpScanner.Properties;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -13,23 +14,22 @@ public class TranslateViewModel : InpcBase
 {
     private static SpeechSynthesizer speechSynthesizer;
     private string çeviri;
-    private string çevrilenDil = "en";
+    private string çevrilenDil = Settings.Default?.DestinationTranslateLanguage;
     private string metin;
     private bool metinBoxIsreadOnly;
-    private string mevcutDil = "auto";
+    private string mevcutDil = Settings.Default?.CurrentTranslateLanguage;
     private string okumaDili;
     private ObservableCollection<string> taramaGeçmiş = new();
 
     static TranslateViewModel()
     {
         speechSynthesizer = new SpeechSynthesizer();
-        TtsDilleri = speechSynthesizer.GetInstalledVoices().Select(z => z.VoiceInfo.Name).ToList();
+        TtsDilleri = speechSynthesizer.GetInstalledVoices()?.Select(z => z.VoiceInfo.Name)?.ToList();
     }
 
     public TranslateViewModel()
     {
         PropertyChanged += TranslateViewModel_PropertyChanged;
-
         Sıfırla = new RelayCommand<object>(
             parameter =>
             {
@@ -197,6 +197,12 @@ public class TranslateViewModel : InpcBase
         if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
         {
             speechSynthesizer ??= new SpeechSynthesizer();
+        }
+        if (e.PropertyName is "MevcutDil" or "ÇevrilenDil")
+        {
+            Settings.Default.CurrentTranslateLanguage = MevcutDil;
+            Settings.Default.DestinationTranslateLanguage = ÇevrilenDil;
+            Settings.Default.Save();
         }
     }
 }

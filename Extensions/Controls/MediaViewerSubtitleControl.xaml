@@ -90,11 +90,32 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <TextBlock Grid.Row="1"
-                    Margin="0,1,0,0"
-                    Background="{DynamicResource BorderBackground}"
-                    Text="{Binding SubTitle}"
-                    TextWrapping="Wrap" />
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Background="{DynamicResource BorderBackground}" Text="{Binding SubTitle}" TextWrapping="Wrap" />
+                    <GroupBox Grid.Row="1">
+                        <UniformGrid Columns="2">
+                            <ComboBox VerticalContentAlignment="Center"
+                                DisplayMemberPath="Key"
+                                ItemsSource="{DynamicResource Diller}"
+                                SelectedValue="{Binding SaveTranslateLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValuePath="Value" />
+                            <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="{Binding SaveTranslatedSubtitle}">
+                                <Grid>
+                                    <ProgressBar Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        Maximum="{Binding ElementName=LbSubtitle, Path=Items.Count, Mode=OneWay}"
+                                        Minimum="1"
+                                        Value="{Binding TranslateSaveProgress}" />
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="ALTYAZI KAYDET" />
+                                </Grid>
+                            </Button>
+                        </UniformGrid>
+                    </GroupBox>
+                </Grid>
             </Grid>
         </UniformGrid>
     </GroupBox>

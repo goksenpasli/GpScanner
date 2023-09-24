@@ -395,5 +395,29 @@ namespace GpScanner.Properties {
                 this["BatchSaveFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("auto")]
+        public string CurrentTranslateLanguage {
+            get {
+                return ((string)(this["CurrentTranslateLanguage"]));
+            }
+            set {
+                this["CurrentTranslateLanguage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("en")]
+        public string DestinationTranslateLanguage {
+            get {
+                return ((string)(this["DestinationTranslateLanguage"]));
+            }
+            set {
+                this["DestinationTranslateLanguage"] = value;
+            }
+        }
     }
 }

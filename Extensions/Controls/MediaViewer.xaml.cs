@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Extensions.Properties;
+using Microsoft.Win32;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -16,7 +17,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
-using Extensions.Properties;
 
 namespace Extensions.Controls;
 
@@ -120,7 +120,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     private double _startRotateX;
     private double _startRotateY;
     private ObservableCollection<SrtContent> parsedSubtitle;
+    private string saveTranslateLanguage;
     private string searchSubtitle;
+    private int translateSaveProgress;
 
     public MediaViewer()
     {
@@ -252,6 +254,38 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             }
             },
             parameter => true);
+
+        SaveTranslatedSubtitle = new RelayCommand<object>(
+            async parameter =>
+            {
+            ObservableCollection<SrtContent> translatedsubtitle = [];
+            TranslateSaveProgress = 0;
+            foreach (SrtContent item in ParsedSubtitle)
+            {
+                SrtContent srtcontent = new() { Text = await TranslateViewModel.DileÇevirAsync(item.Text, "auto", SaveTranslateLanguage), StartTime = item.StartTime, EndTime = item.EndTime, Segment = item.Segment };
+                translatedsubtitle.Add(srtcontent);
+                TranslateSaveProgress++;
+            }
+            SaveFileDialog saveFileDialog = new() { Filter = "Srt Dosyası (*.srt)|*.srt", FileName = $"{SaveTranslateLanguage}.srt" };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                StringBuilder sb = new();
+                foreach (SrtContent item in translatedsubtitle)
+                {
+                    _ = sb.Append(item.Segment)
+                          .Append('\n')
+                          .Append(item.StartTime.ToString().Replace('.', ','))
+                          .Append(" --> ")
+                          .Append(item.EndTime.ToString().Replace('.', ','))
+                          .Append("\r\n")
+                          .Append(item.Text)
+                          .Append("\r\n\r\n");
+                }
+                using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
+                streamWriter.WriteLine(sb.ToString().Trim());
+            }
+            },
+            parameter => ParsedSubtitle?.Count > 0 && !string.IsNullOrWhiteSpace(SaveTranslateLanguage) && SaveTranslateLanguage != "auto");
 
         SetSubtitleMargin = new RelayCommand<object>(
             parameter =>
@@ -460,6 +494,21 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Browsable(false)]
     public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
 
+    public RelayCommand<object> SaveTranslatedSubtitle { get; }
+
+    public string SaveTranslateLanguage
+    {
+        get => saveTranslateLanguage;
+        set
+        {
+            if (saveTranslateLanguage != value)
+            {
+                saveTranslateLanguage = value;
+                OnPropertyChanged(nameof(SaveTranslateLanguage));
+            }
+        }
+    }
+
     public string SearchSubtitle
     {
         get => searchSubtitle;
@@ -549,6 +598,19 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public string TooltipOriginalSubtitle { get => (string)GetValue(TooltipOriginalSubtitleProperty); set => SetValue(TooltipOriginalSubtitleProperty, value); }
+
+    public int TranslateSaveProgress
+    {
+        get => translateSaveProgress;
+        set
+        {
+            if (translateSaveProgress != value)
+            {
+                translateSaveProgress = value;
+                OnPropertyChanged(nameof(TranslateSaveProgress));
+            }
+        }
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -806,14 +868,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 {
                     viewer.SubTitle = srtcontent.Text;
                 }
+                continue;
             }
-
-            if (position > srtcontent.EndTime)
-            {
-                srtcontent.BackgroundColor = null;
-                viewer.TooltipOriginalSubtitle = string.Empty;
-                viewer.SubTitle = string.Empty;
-            }
+            srtcontent.BackgroundColor = null;
         }
     }
 
