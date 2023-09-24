@@ -272,20 +272,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         AutoDeskewImage = new RelayCommand<object>(
             async parameter =>
             {
-            if (parameter is ScannedImage item)
+            if (parameter is ScannedImage item &&
+                MessageBox.Show(
+                Application.Current.MainWindow,
+                $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}",
+                AppName,
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.No) ==
+                MessageBoxResult.Yes)
             {
-                if (MessageBox.Show(
-                        Application.Current.MainWindow,
-                        $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}",
-                        AppName,
-                        MessageBoxButton.YesNo,
-                        MessageBoxImage.Question,
-                        MessageBoxResult.No) ==
-                    MessageBoxResult.Yes)
-                {
-                    double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
-                    item.Resim = BitmapFrame.Create(await ((BitmapSource)item.Resim).RotateImageAsync(deskewAngle));
-                }
+                double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
+                item.Resim = BitmapFrame.Create(await ((BitmapSource)item.Resim).RotateImageAsync(deskewAngle));
             }
             },
             parameter => Scanner.ArayüzEtkin);
@@ -425,7 +423,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
             TümününİşaretiniKaldır.Execute(null);
             foreach (ScannedImage item in
-                                 Scanner.Resimler.Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
+                                     Scanner.Resimler.Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
             {
                 item.Seçili = true;
             }
@@ -717,7 +715,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Content = pdfImportViewerControl,
                     WindowState = WindowState.Maximized,
                     ShowInTaskbar = false,
-                    Title = Application.Current?.MainWindow?.Title,
+                    Title = AppName,
                     WindowStartupLocation = WindowStartupLocation.CenterOwner,
                     DataContext = this
                 };
@@ -939,9 +937,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     string[] clipboardFiles = (string[])clipboardData.GetData(System.Windows.DataFormats.FileDrop);
                     List<string> clipboardPdfFiles = clipboardFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
-                    List<string> clipboardImageFiles = clipboardFiles
-                                    .Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLower()))
-                                    .ToList();
+                    List<string> clipboardImageFiles = clipboardFiles.Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLower())).ToList();
                     if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
                     {
                         await Task.Run(
@@ -1017,7 +1013,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 StringBuilder stringBuilder = new();
                 _ = stringBuilder.AppendLine(filepath)
                                  .AppendLine("PDF ")
-                                 .Append($"{reader.Version / 10d:#.#}")
+                                 .AppendFormat("{0:#.#}", reader.Version / 10d)
                                  .AppendLine(reader.Info.Title)
                                  .Append(Translation.GetResStringValue("PAGENUMBER"))
                                  .Append(": ")
@@ -1031,7 +1027,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                  .AppendLine()
                                  .Append(reader.Info.ModificationDate)
                                  .AppendLine()
-                                 .Append($"{reader.FileSize / 1048576d:##.##}")
+                                 .AppendFormat("{0:##.##}", reader.FileSize / 1048576d)
                                  .AppendLine(" MB");
                 _ = MessageBox.Show(stringBuilder.ToString(), AppName);
             }
@@ -1345,7 +1341,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 foreach (PdfData currentpage in currentpages)
                 {
                     string savefilename =
-                                    $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
+                                        $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
                     await PdfPageRangeSaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
                     files.Add(savefilename);
                 }

@@ -5,6 +5,7 @@
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
+    xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -21,9 +22,9 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
-        <ViewModel:FoldEffect x:Key="Fold" FoldAmount="{Binding Fold}" />
-        <ViewModel:RippleEffect x:Key="Ripple" Progress="{Binding Ripple}" />
-        <ViewModel:MirrorAngleEffect x:Key="Mirror" RelativeHeight="{Binding Mirror}" />
+        <ViewModel:FoldEffect x:Key="Fold" PresentationOptions:Freeze="true" FoldAmount="{Binding Fold}" />
+        <ViewModel:RippleEffect x:Key="Ripple" PresentationOptions:Freeze="true" Progress="{Binding Ripple}" />
+        <ViewModel:MirrorAngleEffect x:Key="Mirror" PresentationOptions:Freeze="true" RelativeHeight="{Binding Mirror}" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
@@ -825,17 +826,17 @@
                                                                 <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                                                             </InlineUIContainer>
                                                         </Hyperlink></TextBlock>
-                                                    <Image Width="72" Height="72"
+                                                    <PdfViewer:PdfShadowedImage Width="72" Height="72"
                                                         d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                         d:Source="/GpScanner;component/scanner.ico"
                                                         d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                        <Image.Source>
+                                                        <PdfViewer:PdfShadowedImage.Source>
                                                             <PriorityBinding>
                                                                 <Binding IsAsync="True" Mode="OneWay" Path="ResimThumb" />
                                                                 <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
                                                             </PriorityBinding>
-                                                        </Image.Source>
-                                                    </Image>
+                                                        </PdfViewer:PdfShadowedImage.Source>
+                                                    </PdfViewer:PdfShadowedImage>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>

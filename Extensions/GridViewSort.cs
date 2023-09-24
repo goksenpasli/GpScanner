@@ -40,25 +40,18 @@ public class GridViewSort
     #endregion Column header click event handler
 
     #region SortGlyphAdorner nested class
-    private class SortGlyphAdorner : Adorner
+    private sealed class SortGlyphAdorner(GridViewColumnHeader columnHeader, ListSortDirection direction, ImageSource sortGlyph) : Adorner(columnHeader)
     {
-        public SortGlyphAdorner(GridViewColumnHeader columnHeader, ListSortDirection direction, ImageSource sortGlyph) : base(columnHeader)
-        {
-            _columnHeader = columnHeader;
-            _direction = direction;
-            _sortGlyph = sortGlyph;
-        }
-
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
 
-            if (_sortGlyph != null)
+            if (sortGlyph != null)
             {
-                double x = _columnHeader.ActualWidth - 13;
-                double y = (_columnHeader.ActualHeight / 2) - 5;
+                double x = columnHeader.ActualWidth - 13;
+                double y = (columnHeader.ActualHeight / 2) - 5;
                 Rect rect = new(x, y, 10, 10);
-                drawingContext.DrawImage(_sortGlyph, rect);
+                drawingContext.DrawImage(sortGlyph, rect);
                 return;
             }
 
@@ -67,13 +60,13 @@ public class GridViewSort
 
         private Geometry GetDefaultGlyph()
         {
-            double x1 = (_columnHeader.ActualWidth / 2) - 5;
+            double x1 = (columnHeader.ActualWidth / 2) - 5;
             double x2 = x1 + 10;
             double x3 = x1 + 5;
             int y1 = 0;
             int y2 = y1 + 5;
 
-            if (_direction == ListSortDirection.Ascending)
+            if (direction == ListSortDirection.Ascending)
             {
                 int tmp = y1;
                 y1 = y2;
@@ -88,12 +81,6 @@ public class GridViewSort
 
             return new PathGeometry(pathFigureCollection);
         }
-
-        private readonly GridViewColumnHeader _columnHeader;
-
-        private readonly ListSortDirection _direction;
-
-        private readonly ImageSource _sortGlyph;
     }
     #endregion SortGlyphAdorner nested class
 
@@ -131,21 +118,18 @@ public class GridViewSort
             false,
             (o, e) =>
             {
-            if (o is ListView listView)
+            if (o is ListView listView && GetCommand(listView) == null)
             {
-                if (GetCommand(listView) == null)
+                bool oldValue = (bool)e.OldValue;
+                bool newValue = (bool)e.NewValue;
+                if (oldValue && !newValue)
                 {
-                    bool oldValue = (bool)e.OldValue;
-                    bool newValue = (bool)e.NewValue;
-                    if (oldValue && !newValue)
-                    {
-                        listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                    }
+                    listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
+                }
 
-                    if (!oldValue && newValue)
-                    {
-                        listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                    }
+                if (!oldValue && newValue)
+                {
+                    listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
                 }
             }
             }));
@@ -159,19 +143,16 @@ public class GridViewSort
             null,
             (o, e) =>
             {
-            if (o is ItemsControl listView)
+            if (o is ItemsControl listView && !GetAutoSort(listView))
             {
-                if (!GetAutoSort(listView))
+                if (e.OldValue != null && e.NewValue == null)
                 {
-                    if (e.OldValue != null && e.NewValue == null)
-                    {
-                        listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                    }
+                    listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
+                }
 
-                    if (e.OldValue == null && e.NewValue != null)
-                    {
-                        listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                    }
+                if (e.OldValue == null && e.NewValue != null)
+                {
+                    listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
                 }
             }
             }));

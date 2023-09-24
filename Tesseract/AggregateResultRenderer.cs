@@ -109,13 +109,10 @@ namespace Tesseract
         {
             try
             {
-                if (disposing)
+                if (disposing && _currentDocumentHandle != null)
                 {
-                    if (_currentDocumentHandle != null)
-                    {
-                        _currentDocumentHandle.Dispose();
-                        _currentDocumentHandle = null;
-                    }
+                    _currentDocumentHandle.Dispose();
+                    _currentDocumentHandle = null;
                 }
             }
             finally
