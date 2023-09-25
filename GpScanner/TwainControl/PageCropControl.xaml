@@ -19,9 +19,22 @@
         <GroupBox.Header>
             <StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                        Content="{local:Loc TRIMIMAGE}"
-                        IsChecked="{Binding Path=CropScan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding Path=CropScan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="201" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock>
+                                <Run Text="{local:Loc SCAN}" />
+                                <Run Text="{local:Loc TRIMIMAGE}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </CheckBox>
                     <Button Command="{Binding ResetCrop}">
                         <Image Width="16" Height="16" VerticalAlignment="Bottom">
                             <Image.Source>
@@ -33,9 +46,20 @@
                         </Image>
                     </Button>
                 </StackPanel>
-                <CheckBox IsChecked="{Binding AutoCropImage, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding AutoCropImage, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel IsEnabled="{Binding AutoCropImage, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc TRIMIMAGE}" />
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="201" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{local:Loc SCAN}" />
+                            <Run Text="{local:Loc TRIMIMAGE}" />
+                        </TextBlock>
                         <Extensions:ContentToggleButton Background="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ColorPicker Width="350" Height="250"
@@ -46,10 +70,44 @@
                         </Extensions:ContentToggleButton>
                     </StackPanel>
                 </CheckBox>
+                <UniformGrid Columns="2">
+                    <Button Command="{Binding PrepareCropCurrentImage}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="32" Height="32" VerticalAlignment="Center">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="139" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock>
+                                <Run Text="{local:Loc TRIMIMAGE}" />
+                                <LineBreak />
+                                <Run Text="{local:Loc RES}" />
+                                <LineBreak />
+                                <Run Text="{local:Loc UPDATE}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding ApplyCropCurrentImage}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="32" Height="32" VerticalAlignment="Center">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="245" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc APPLY}" />
+                        </StackPanel>
+                    </Button>
+                </UniformGrid>
             </StackPanel>
         </GroupBox.Header>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-            <Grid IsEnabled="{Binding Path=CropScan, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+            <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />

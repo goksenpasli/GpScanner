@@ -732,97 +732,99 @@
                                         </Grid.ColumnDefinitions>
                                         <Extensions:ContentToggleButton ArrowVisibility="Collapsed">
                                             <Extensions:ContentToggleButton.OverContent>
-                                                <StackPanel>
-                                                    <ListBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
-                                                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource CompProfiles}}"
-                                                        SelectedItem="{Binding SelectedCompressionProfile}">
-                                                        <ListBox.ItemContainerStyle>
-                                                            <Style TargetType="{x:Type ListBoxItem}">
-                                                                <Style.Triggers>
-                                                                    <Trigger Property="IsSelected" Value="True">
-                                                                        <Setter Property="Foreground" Value="Blue" />
-                                                                    </Trigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </ListBox.ItemContainerStyle>
-                                                        <ListBox.ItemsPanel>
-                                                            <ItemsPanelTemplate>
-                                                                <UniformGrid Columns="2" />
-                                                            </ItemsPanelTemplate>
-                                                        </ListBox.ItemsPanel>
-                                                        <ListBox.GroupStyle>
-                                                            <GroupStyle>
-                                                                <GroupStyle.Panel>
-                                                                    <ItemsPanelTemplate>
-                                                                        <UniformGrid Background="{StaticResource GroupBoxBackGround}" Columns="2" />
-                                                                    </ItemsPanelTemplate>
-                                                                </GroupStyle.Panel>
-                                                                <GroupStyle.HeaderTemplate>
-                                                                    <DataTemplate>
-                                                                        <TextBlock HorizontalAlignment="Center"
-                                                                            FontStyle="Italic" FontWeight="Bold"
-                                                                            Foreground="Black"
-                                                                            Text="{Binding Name}" />
-                                                                    </DataTemplate>
-                                                                </GroupStyle.HeaderTemplate>
-                                                            </GroupStyle>
-                                                        </ListBox.GroupStyle>
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <Border BorderBrush="Black" BorderThickness="2">
-                                                                    <Grid>
-                                                                        <StackPanel>
-                                                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                                                <Run Text="{Binding Item1, Mode=OneTime}" />
-                                                                                <LineBreak />
-                                                                                <Run Text="{Binding Item3, Mode=OneTime, StringFormat=\{0\} Dpi}" />
-                                                                            </TextBlock>
-                                                                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                                                Content="MOZJPEG" FontWeight="Bold"
-                                                                                IsChecked="{Binding Item4, Mode=OneTime}"
-                                                                                IsHitTestVisible="False" />
-                                                                        </StackPanel>
-                                                                    </Grid>
-                                                                </Border>
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
-                                                    <GroupBox>
-                                                        <UniformGrid Columns="2">
-                                                            <StackPanel>
-                                                                <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                                                <Button local:Policy.PolicyName="SaveProfile" Command="{Binding SaveProfile}">
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/save.png" />
-                                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
-                                                                    </StackPanel>
-                                                                </Button>
-                                                            </StackPanel>
-                                                            <StackPanel>
-                                                                <CheckBox HorizontalContentAlignment="Stretch"
-                                                                    Content="{local:Loc LOAD}"
-                                                                    IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                                                                    IsEnabled="{Binding Scanner.SelectedProfile, Converter={StaticResource NullableToBooleanConverter}}" />
-                                                                <ComboBox ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding Scanner.SelectedProfile}">
-                                                                    <ComboBox.ItemTemplate>
+                                                <GroupBox>
+                                                    <StackPanel>
+                                                        <ListBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
+                                                            ItemsSource="{Binding Mode=OneWay, Source={StaticResource CompProfiles}}"
+                                                            SelectedItem="{Binding SelectedCompressionProfile}">
+                                                            <ListBox.ItemContainerStyle>
+                                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                                    <Style.Triggers>
+                                                                        <Trigger Property="IsSelected" Value="True">
+                                                                            <Setter Property="Foreground" Value="Blue" />
+                                                                        </Trigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </ListBox.ItemContainerStyle>
+                                                            <ListBox.ItemsPanel>
+                                                                <ItemsPanelTemplate>
+                                                                    <UniformGrid Columns="2" />
+                                                                </ItemsPanelTemplate>
+                                                            </ListBox.ItemsPanel>
+                                                            <ListBox.GroupStyle>
+                                                                <GroupStyle>
+                                                                    <GroupStyle.Panel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <UniformGrid Background="{StaticResource GroupBoxBackGround}" Columns="2" />
+                                                                        </ItemsPanelTemplate>
+                                                                    </GroupStyle.Panel>
+                                                                    <GroupStyle.HeaderTemplate>
                                                                         <DataTemplate>
-                                                                            <UniformGrid Columns="2">
-                                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
-                                                                                <Button local:Policy.PolicyName="RemoveProfile" Background="Transparent"
-                                                                                    BorderBrush="Transparent"
-                                                                                    Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
-                                                                                    CommandParameter="{Binding Mode=OneWay}"
-                                                                                    FontWeight="Bold" Foreground="Red">
-                                                                                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
-                                                                                </Button>
-                                                                            </UniformGrid>
+                                                                            <TextBlock HorizontalAlignment="Center"
+                                                                                FontStyle="Italic" FontWeight="Bold"
+                                                                                Foreground="Black"
+                                                                                Text="{Binding Name}" />
                                                                         </DataTemplate>
-                                                                    </ComboBox.ItemTemplate>
-                                                                </ComboBox>
-                                                            </StackPanel>
-                                                        </UniformGrid>
-                                                    </GroupBox>
-                                                </StackPanel>
+                                                                    </GroupStyle.HeaderTemplate>
+                                                                </GroupStyle>
+                                                            </ListBox.GroupStyle>
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border BorderBrush="Black" BorderThickness="2">
+                                                                        <Grid>
+                                                                            <StackPanel>
+                                                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                                                    <Run Text="{Binding Item1, Mode=OneTime}" />
+                                                                                    <LineBreak />
+                                                                                    <Run Text="{Binding Item3, Mode=OneTime, StringFormat=\{0\} Dpi}" />
+                                                                                </TextBlock>
+                                                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                                                    Content="MOZJPEG" FontWeight="Bold"
+                                                                                    IsChecked="{Binding Item4, Mode=OneTime}"
+                                                                                    IsHitTestVisible="False" />
+                                                                            </StackPanel>
+                                                                        </Grid>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                        <GroupBox>
+                                                            <UniformGrid Columns="2">
+                                                                <StackPanel>
+                                                                    <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                                    <Button local:Policy.PolicyName="SaveProfile" Command="{Binding SaveProfile}">
+                                                                        <StackPanel Orientation="Horizontal">
+                                                                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/save.png" />
+                                                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
+                                                                        </StackPanel>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                                <StackPanel>
+                                                                    <CheckBox HorizontalContentAlignment="Stretch"
+                                                                        Content="{local:Loc LOAD}"
+                                                                        IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                                                        IsEnabled="{Binding Scanner.SelectedProfile, Converter={StaticResource NullableToBooleanConverter}}" />
+                                                                    <ComboBox ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding Scanner.SelectedProfile}">
+                                                                        <ComboBox.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <UniformGrid Columns="2">
+                                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
+                                                                                    <Button local:Policy.PolicyName="RemoveProfile" Background="Transparent"
+                                                                                        BorderBrush="Transparent"
+                                                                                        Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
+                                                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                                                        FontWeight="Bold" Foreground="Red">
+                                                                                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                                                    </Button>
+                                                                                </UniformGrid>
+                                                                            </DataTemplate>
+                                                                        </ComboBox.ItemTemplate>
+                                                                    </ComboBox>
+                                                                </StackPanel>
+                                                            </UniformGrid>
+                                                        </GroupBox>
+                                                    </StackPanel>
+                                                </GroupBox>
                                             </Extensions:ContentToggleButton.OverContent>
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Width="16" Height="16">

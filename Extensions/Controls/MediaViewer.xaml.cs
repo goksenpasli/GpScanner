@@ -136,189 +136,189 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         GoToFrame = new RelayCommand<object>(
             parameter =>
             {
-            if (parameter is TimeSpan timeSpan)
-            {
-                MediaPosition = timeSpan;
-            }
+                if (parameter is TimeSpan timeSpan)
+                {
+                    MediaPosition = timeSpan;
+                }
             },
             parameter => GetMediaState(Player) == MediaState.Play);
 
         LoadSubtitle = new RelayCommand<object>(
             parameter =>
             {
-            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                SubtitleFilePath = openFileDialog.FileName;
-                ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
-            }
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    SubtitleFilePath = openFileDialog.FileName;
+                    ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
+                }
             },
             parameter => true);
 
         OpenFile = new RelayCommand<object>(
             parameter =>
             {
-            OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = VideoFileExtensions };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                MediaDataFilePath = openFileDialog.FileName;
-            }
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = VideoFileExtensions };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    MediaDataFilePath = openFileDialog.FileName;
+                }
             },
             parameter => true);
 
         CaptureImage = new RelayCommand<object>(
             parameter =>
             {
-            string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-            string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
-            File.WriteAllBytes(dosya, data);
-            ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
-            OsdText = "Görüntü Yakalandı";
+                string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
+                File.WriteAllBytes(dosya, data);
+                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
+                OsdText = "Görüntü Yakalandı";
             },
             parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
         CaptureThumbnail = new RelayCommand<object>(
             async parameter =>
             {
-            string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            MediaVolume = 0;
-            long timemultiplier = EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount);
-            byte[] imgdata;
+                string picturesfolder = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                MediaVolume = 0;
+                long timemultiplier = EndTimeSpan.Ticks / (ThumbWidthCount * ThumbHeightCount);
+                byte[] imgdata;
 
-            Player.Play();
+                Player.Play();
 
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                string singlefile = null;
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    string singlefile = null;
+                    for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
+                    {
+                        Player.Position = new TimeSpan(i * timemultiplier);
+                        await Task.Delay(MillisecondsDelay);
+                        imgdata = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                        singlefile = picturesfolder.SetUniqueFile("Resim", "jpg");
+                        File.WriteAllBytes(singlefile, imgdata);
+                    }
+
+                    ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
+
+                    return;
+                }
+
+                UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
+                double oran = 1d / ThumbWidthCount;
                 for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
                 {
                     Player.Position = new TimeSpan(i * timemultiplier);
                     await Task.Delay(MillisecondsDelay);
-                    imgdata = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-                    singlefile = picturesfolder.SetUniqueFile("Resim", "jpg");
-                    File.WriteAllBytes(singlefile, imgdata);
+
+                    imgdata = ThumbApplyEffects
+                        ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
+                        : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+
+                    Grid imagegrid = GenerateImageGrid();
+                    Image image = GenerateImage(imgdata, ThumbMargin);
+                    image.SetValue(Grid.RowProperty, 0);
+                    _ = imagegrid.Children.Add(image);
+
+                    if (ThumbShowTime)
+                    {
+                        TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
+                        textBlock.SetValue(Grid.RowProperty, 1);
+                        _ = imagegrid.Children.Add(textBlock);
+                    }
+
+                    _ = uniformgrid.Children.Add(imagegrid);
                 }
 
-                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
-
-                return;
-            }
-
-            UniformGrid uniformgrid = new() { Rows = ThumbHeightCount, Columns = ThumbWidthCount };
-            double oran = 1d / ThumbWidthCount;
-            for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
-            {
-                Player.Position = new TimeSpan(i * timemultiplier);
-                await Task.Delay(MillisecondsDelay);
-
-                imgdata = ThumbApplyEffects
-                    ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
-                    : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-
-                Grid imagegrid = GenerateImageGrid();
-                Image image = GenerateImage(imgdata, ThumbMargin);
-                image.SetValue(Grid.RowProperty, 0);
-                _ = imagegrid.Children.Add(image);
-
-                if (ThumbShowTime)
-                {
-                    TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
-                    textBlock.SetValue(Grid.RowProperty, 1);
-                    _ = imagegrid.Children.Add(textBlock);
-                }
-
-                _ = uniformgrid.Children.Add(imagegrid);
-            }
-
-            string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
-            File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-            ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
-            MediaVolume = 1;
+                string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
+                File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
+                MediaVolume = 1;
             },
             parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
         AddToPlaylist = new RelayCommand<object>(
             parameter =>
             {
-            OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = VideoFileExtensions };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                foreach (string item in openFileDialog.FileNames)
+                OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = VideoFileExtensions };
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    if (!PlayList.Contains(item))
+                    foreach (string item in openFileDialog.FileNames)
                     {
-                        PlayList.Add(item);
+                        if (!PlayList.Contains(item))
+                        {
+                            PlayList.Add(item);
+                        }
                     }
                 }
-            }
             },
             parameter => true);
 
         SaveTranslatedSubtitle = new RelayCommand<object>(
             async parameter =>
             {
-            ObservableCollection<SrtContent> translatedsubtitle = [];
-            TranslateSaveProgress = 0;
-            foreach (SrtContent item in ParsedSubtitle)
-            {
-                SrtContent srtcontent = new() { Text = await TranslateViewModel.DileÇevirAsync(item.Text, "auto", SaveTranslateLanguage), StartTime = item.StartTime, EndTime = item.EndTime, Segment = item.Segment };
-                translatedsubtitle.Add(srtcontent);
-                TranslateSaveProgress++;
-            }
-            SaveFileDialog saveFileDialog = new() { Filter = "Srt Dosyası (*.srt)|*.srt", FileName = $"{SaveTranslateLanguage}.srt" };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                StringBuilder sb = new();
-                foreach (SrtContent item in translatedsubtitle)
+                ObservableCollection<SrtContent> translatedsubtitle = [];
+                TranslateSaveProgress = 0;
+                foreach (SrtContent item in ParsedSubtitle)
                 {
-                    _ = sb.Append(item.Segment)
-                          .Append('\n')
-                          .Append(item.StartTime.ToString().Replace('.', ','))
-                          .Append(" --> ")
-                          .Append(item.EndTime.ToString().Replace('.', ','))
-                          .Append("\r\n")
-                          .Append(item.Text)
-                          .Append("\r\n\r\n");
+                    SrtContent srtcontent = new() { Text = await TranslateViewModel.DileÇevirAsync(item.Text, "auto", SaveTranslateLanguage), StartTime = item.StartTime, EndTime = item.EndTime, Segment = item.Segment };
+                    translatedsubtitle.Add(srtcontent);
+                    TranslateSaveProgress++;
                 }
-                using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
-                streamWriter.WriteLine(sb.ToString().Trim());
-            }
+                SaveFileDialog saveFileDialog = new() { Filter = "Srt Dosyası (*.srt)|*.srt", FileName = $"{SaveTranslateLanguage}.srt" };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    StringBuilder sb = new();
+                    foreach (SrtContent item in translatedsubtitle)
+                    {
+                        _ = sb.Append(item.Segment)
+                              .Append('\n')
+                              .Append(item.StartTime.ToString().Replace('.', ','))
+                              .Append(" --> ")
+                              .Append(item.EndTime.ToString().Replace('.', ','))
+                              .Append("\r\n")
+                              .Append(item.Text)
+                              .Append("\r\n\r\n");
+                    }
+                    using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
+                    streamWriter.WriteLine(sb.ToString().Trim());
+                }
             },
             parameter => ParsedSubtitle?.Count > 0 && !string.IsNullOrWhiteSpace(SaveTranslateLanguage) && SaveTranslateLanguage != "auto");
 
         SetSubtitleMargin = new RelayCommand<object>(
             parameter =>
             {
-            Thickness defaultsubtitlethickness = new(SubTitleMargin.Left, SubTitleMargin.Top, SubTitleMargin.Right, SubTitleMargin.Bottom);
-            if (parameter is object content)
-            {
-                switch (content)
+                Thickness defaultsubtitlethickness = new(SubTitleMargin.Left, SubTitleMargin.Top, SubTitleMargin.Right, SubTitleMargin.Bottom);
+                if (parameter is object content)
                 {
-                    case "6":
-                        defaultsubtitlethickness.Bottom -= 10;
-                        break;
+                    switch (content)
+                    {
+                        case "6":
+                            defaultsubtitlethickness.Bottom -= 10;
+                            break;
 
-                    case "5":
-                        defaultsubtitlethickness.Bottom += 10;
-                        break;
+                        case "5":
+                            defaultsubtitlethickness.Bottom += 10;
+                            break;
 
-                    case "4":
-                        defaultsubtitlethickness.Left += 10;
-                        break;
+                        case "4":
+                            defaultsubtitlethickness.Left += 10;
+                            break;
 
-                    case "3":
-                        defaultsubtitlethickness.Left -= 10;
-                        break;
+                        case "3":
+                            defaultsubtitlethickness.Left -= 10;
+                            break;
 
-                    case "=":
-                        defaultsubtitlethickness.Left = 0;
-                        defaultsubtitlethickness.Bottom = 0;
-                        break;
+                        case "=":
+                            defaultsubtitlethickness.Left = 0;
+                            defaultsubtitlethickness.Bottom = 0;
+                            break;
+                    }
+
+                    SubTitleMargin = defaultsubtitlethickness;
                 }
-
-                SubTitleMargin = defaultsubtitlethickness;
-            }
             },
             parameter => true);
     }
@@ -949,8 +949,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             MediaViewerSubtitleControl.cvs.Filter += (s, x) =>
                                                      {
-                                                     SrtContent srtContent = x.Item as SrtContent;
-                                                     x.Accepted = srtContent.Text.Contains(SearchSubtitle);
+                                                         SrtContent srtContent = x.Item as SrtContent;
+                                                         x.Accepted = srtContent.Text.Contains(SearchSubtitle);
                                                      };
         }
     }

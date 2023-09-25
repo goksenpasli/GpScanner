@@ -180,19 +180,19 @@ public partial class MainWindow : Window
         StillImageHelper.StartServer(
             msg =>
             {
-            if (msg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCulture))
-            {
-                switch (Settings.Default.ButtonScanMode)
+                if (msg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCulture))
                 {
-                    case 0 when TwainCtrl.ScanImage.CanExecute(null):
-                        Dispatcher.Invoke(() => TwainCtrl.ScanImage.Execute(null));
-                        break;
+                    switch (Settings.Default.ButtonScanMode)
+                    {
+                        case 0 when TwainCtrl.ScanImage.CanExecute(null):
+                            Dispatcher.Invoke(() => TwainCtrl.ScanImage.Execute(null));
+                            break;
 
-                    case 1 when TwainCtrl.FastScanImage.CanExecute(null):
-                        Dispatcher.Invoke(() => TwainCtrl.FastScanImage.Execute(null));
-                        break;
+                        case 1 when TwainCtrl.FastScanImage.CanExecute(null):
+                            Dispatcher.Invoke(() => TwainCtrl.FastScanImage.Execute(null));
+                            break;
+                    }
                 }
-            }
             });
     }
 

@@ -40,42 +40,42 @@ namespace Extensions
             ArşivTekDosyaÇıkar = new RelayCommand<object>(
                 parameter =>
                 {
-                try
-                {
-                    string extractedfile = ExtractToFile(parameter as string);
-                    _ = Process.Start(extractedfile);
-                }
-                catch (Exception ex)
-                {
-                    throw new ArgumentException(ex.Message);
-                }
+                    try
+                    {
+                        string extractedfile = ExtractToFile(parameter as string);
+                        _ = Process.Start(extractedfile);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException(ex.Message);
+                    }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
 
             ArşivDosyaEkle = new RelayCommand<object>(
                 parameter =>
                 {
-                try
-                {
-                    AddFilesToZip(ArchivePath, SelectedFiles);
-                }
-                catch (Exception ex)
-                {
-                    throw new ArgumentException(ex.Message);
-                }
+                    try
+                    {
+                        AddFilesToZip(ArchivePath, SelectedFiles);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException(ex.Message);
+                    }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
 
             FileCrcGenerate = new RelayCommand<object>(
                 parameter =>
                 {
-                using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
-                if (archive != null)
-                {
-                    ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.TamYol);
-                    using Stream stream = dosya.Open();
-                    SelectedFile.Crc = CalculateFileCRC(stream);
-                }
+                    using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
+                    if (archive != null)
+                    {
+                        ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.TamYol);
+                        using Stream stream = dosya.Open();
+                        SelectedFile.Crc = CalculateFileCRC(stream);
+                    }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath) && SelectedFile is not null && !CalculateCrc);
         }
@@ -245,8 +245,8 @@ namespace Extensions
                 cvs.Filter = !string.IsNullOrWhiteSpace(Search)
                     ? (x =>
                        {
-                       ArchiveData archiveData = x as ArchiveData;
-                       return archiveData?.DosyaAdı?.Contains(Search, StringComparison.CurrentCultureIgnoreCase) == true;
+                           ArchiveData archiveData = x as ArchiveData;
+                           return archiveData?.DosyaAdı?.Contains(Search, StringComparison.CurrentCultureIgnoreCase) == true;
                        })
                     : null;
             }

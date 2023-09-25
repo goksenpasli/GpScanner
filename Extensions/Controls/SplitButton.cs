@@ -48,12 +48,12 @@ public class SplitButton : ButtonBase
         {
             popup.Opened += (s, e) =>
                             {
-                            IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
+                                IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
 
-                            if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
-                            {
-                                _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
-                            }
+                                if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
+                                {
+                                    _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
+                                }
                             };
         }
     }

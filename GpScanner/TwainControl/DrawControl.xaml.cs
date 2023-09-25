@@ -48,17 +48,17 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         SaveEditedImage = new RelayCommand<object>(
             parameter =>
             {
-            if (parameter is BitmapFrame &&
-                MessageBox.Show(
-                $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}",
-                Application.Current.MainWindow.Title,
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question,
-                MessageBoxResult.No) ==
-                MessageBoxResult.Yes)
-            {
-                EditingImage = SaveInkCanvasToImage();
-            }
+                if (parameter is BitmapFrame &&
+                    MessageBox.Show(
+                    $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}",
+                    Application.Current.MainWindow.Title,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.No) ==
+                    MessageBoxResult.Yes)
+                {
+                    EditingImage = SaveInkCanvasToImage();
+                }
             },
             parameter => parameter is BitmapFrame && TemporaryImage is not null);
 

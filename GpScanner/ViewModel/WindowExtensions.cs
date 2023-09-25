@@ -25,8 +25,8 @@ public static class WindowExtensions
         OpenSettings = new RelayCommand<object>(
             parameter =>
             {
-            SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
-            _ = settingswindow.ShowDialog();
+                SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
+                _ = settingswindow.ShowDialog();
             },
             parameter => Policy.CheckPolicy("OpenSettings"));
     }

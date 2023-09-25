@@ -673,7 +673,10 @@
                 </Image>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock FontStyle="Italic" Foreground="White"><Run Text="{Binding SelectedPaper.PaperType, ElementName=TwainCtrl}" /><Run Text="{Binding Çözünürlük, Mode=OneWay, StringFormat=\{0\} DPI, Source={x:Static twainproperties:Settings.Default}}" /><Run Text=" " /><Run Text="{Binding SeçiliTarayıcı, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" /></TextBlock>
+                <TextBlock FontStyle="Italic" Foreground="White"><Run Text="{Binding SelectedPaper.PaperType, ElementName=TwainCtrl}" />
+                    <Run Text="{Binding Çözünürlük, Mode=OneWay, StringFormat=\{0\} DPI, Source={x:Static twainproperties:Settings.Default}}" />
+                    <Run Text="{Binding SeçiliTarayıcı, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" />
+                </TextBlock>
             </StatusBarItem>
             <StatusBarItem>
                 <TextBlock FontStyle="Italic" FontWeight="Bold" Foreground="White"><Run BaselineAlignment="Center" Text="{Binding JpegQuality, Mode=OneWay, StringFormat=%\{0\}, Source={x:Static twainproperties:Settings.Default}}" /><Run Text=" " /><InlineUIContainer>

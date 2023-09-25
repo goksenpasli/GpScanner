@@ -132,30 +132,30 @@ public static class StillImageHelper
             _ = Task.Run(
                 () =>
                 {
-                try
-                {
-                    using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
-                    while (_serverRunning)
+                    try
                     {
-                        pipeServer.WaitForConnection();
-                        StreamString streamString = new(pipeServer);
-                        string msg = streamString.ReadString();
-                        if (msg == MSG_KILL_PIPE_SERVER)
+                        using NamedPipeServerStream pipeServer = new(GetPipeName(Process.GetCurrentProcess()), PipeDirection.In);
+                        while (_serverRunning)
                         {
-                            break;
-                        }
+                            pipeServer.WaitForConnection();
+                            StreamString streamString = new(pipeServer);
+                            string msg = streamString.ReadString();
+                            if (msg == MSG_KILL_PIPE_SERVER)
+                            {
+                                break;
+                            }
 
-                        msgCallback(msg);
-                        pipeServer.Disconnect();
+                            msgCallback(msg);
+                            pipeServer.Disconnect();
+                        }
                     }
-                }
-                catch (Exception)
-                {
-                }
-                finally
-                {
-                    _serverRunning = false;
-                }
+                    catch (Exception)
+                    {
+                    }
+                    finally
+                    {
+                        _serverRunning = false;
+                    }
                 });
         }
     }

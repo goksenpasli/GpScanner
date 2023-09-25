@@ -32,19 +32,19 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         KameradanResimYükle = new RelayCommand<object>(
             parameter =>
             {
-            using MemoryStream ms = new();
-            EncodeBitmapImage(ms);
-            ResimData = ms.ToArray();
+                using MemoryStream ms = new();
+                EncodeBitmapImage(ms);
+                ResimData = ms.ToArray();
             },
             parameter => SeçiliKamera is not null);
 
         VideodanResimYükle = new RelayCommand<object>(
             parameter =>
             {
-            if (parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
-            {
-                ResimData = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-            }
+                if (parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
+                {
+                    ResimData = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                }
             },
             parameter => parameter is MediaViewer mediaViewer && !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
 
@@ -55,12 +55,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         Kaydet = new RelayCommand<object>(
             parameter =>
             {
-            SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                using FileStream ms = new(saveFileDialog.FileName, FileMode.Create, FileAccess.Write);
-                EncodeBitmapImage(ms);
-            }
+                SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    using FileStream ms = new(saveFileDialog.FileName, FileMode.Create, FileAccess.Write);
+                    EncodeBitmapImage(ms);
+                }
             },
             parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
 

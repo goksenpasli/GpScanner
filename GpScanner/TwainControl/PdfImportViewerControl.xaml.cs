@@ -83,116 +83,116 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         LoadDrawImage = new RelayCommand<object>(
             parameter =>
             {
-            try
-            {
-                OpenFileDialog openFileDialog = new()
+                try
                 {
-                    Filter = "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
-                    Multiselect = false
-                };
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    DrawnImage = XImage.FromFile(openFileDialog.FileName);
+                    OpenFileDialog openFileDialog = new()
+                    {
+                        Filter = "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
+                        Multiselect = false
+                    };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        DrawnImage = XImage.FromFile(openFileDialog.FileName);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message, AppName);
-            }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message, AppName);
+                }
             },
             parameter => true);
 
         LoadInkDrawImage = new RelayCommand<object>(
             parameter =>
             {
-            try
-            {
-                RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Default);
-                renderTargetBitmap.Render(Ink);
-                renderTargetBitmap.Freeze();
-                DrawnImage = XImage.FromBitmapSource(renderTargetBitmap);
-                DrawImage = true;
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message, AppName);
-            }
+                try
+                {
+                    RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Default);
+                    renderTargetBitmap.Render(Ink);
+                    renderTargetBitmap.Freeze();
+                    DrawnImage = XImage.FromBitmapSource(renderTargetBitmap);
+                    DrawImage = true;
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message, AppName);
+                }
             },
             parameter => Ink?.Strokes?.Any() == true);
 
         ClearInkDrawImage = new RelayCommand<object>(
             parameter =>
             {
-            try
-            {
-                Ink?.Strokes?.Clear();
-                DrawImage = false;
-                DrawnImage = null;
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message, AppName);
-            }
+                try
+                {
+                    Ink?.Strokes?.Clear();
+                    DrawImage = false;
+                    DrawnImage = null;
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message, AppName);
+                }
             },
             parameter => Ink?.Strokes?.Any() == true);
 
         ReadAnnotation = new RelayCommand<object>(
             parameter =>
             {
-            try
-            {
-                if (File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
+                try
                 {
-                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
-                    PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
-                    twainCtrl.Annotations = page?.Annotations;
+                    if (File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
+                    {
+                        using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
+                        PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
+                        twainCtrl.Annotations = page?.Annotations;
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message, AppName);
-            }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message, AppName);
+                }
             },
             parameter => true);
 
         RemoveAnnotation = new RelayCommand<object>(
             parameter =>
             {
-            try
-            {
-                if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
+                try
                 {
-                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                    PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
-                    PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
-                    page?.Annotations?.Remove(annotation);
-                    twainCtrl?.Annotations?.Remove(selectedannotation);
-                    reader.Save(PdfViewer.PdfFilePath);
+                    if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
+                    {
+                        using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                        PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
+                        PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
+                        page?.Annotations?.Remove(annotation);
+                        twainCtrl?.Annotations?.Remove(selectedannotation);
+                        reader.Save(PdfViewer.PdfFilePath);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                _ = MessageBox.Show(ex.Message, AppName);
-            }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message, AppName);
+                }
             },
             parameter => true);
 
         OpenPdfHistoryFile = new RelayCommand<object>(
             parameter =>
             {
-            if (parameter is string filepath)
-            {
-                if (File.Exists(filepath))
+                if (parameter is string filepath)
                 {
-                    PdfViewer.PdfFilePath = filepath;
+                    if (File.Exists(filepath))
+                    {
+                        PdfViewer.PdfFilePath = filepath;
+                    }
+                    else
+                    {
+                        Settings.Default.PdfLoadHistory.Remove(filepath);
+                        Settings.Default.Save();
+                        Settings.Default.Reload();
+                    }
                 }
-                else
-                {
-                    Settings.Default.PdfLoadHistory.Remove(filepath);
-                    Settings.Default.Save();
-                    Settings.Default.Reload();
-                }
-            }
             },
             parameter => true);
     }

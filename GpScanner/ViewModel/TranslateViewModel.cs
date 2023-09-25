@@ -33,44 +33,44 @@ public class TranslateViewModel : InpcBase
         Sıfırla = new RelayCommand<object>(
             parameter =>
             {
-            Metin = string.Empty;
-            Çeviri = string.Empty;
+                Metin = string.Empty;
+                Çeviri = string.Empty;
             },
             parameter => true);
 
         Değiştir = new RelayCommand<object>(
             parameter =>
             {
-            string current = MevcutDil;
-            string translated = ÇevrilenDil;
-            ÇevrilenDil = current;
-            MevcutDil = translated;
+                string current = MevcutDil;
+                string translated = ÇevrilenDil;
+                ÇevrilenDil = current;
+                MevcutDil = translated;
             },
             parameter => ÇevrilenDil != MevcutDil);
 
         Oku = new RelayCommand<object>(
             parameter =>
             {
-            if (parameter is string metin)
-            {
-                speechSynthesizer?.SelectVoice(OkumaDili);
-                if (speechSynthesizer.State == SynthesizerState.Speaking)
+                if (parameter is string metin)
                 {
-                    speechSynthesizer.Pause();
-                    return;
-                }
+                    speechSynthesizer?.SelectVoice(OkumaDili);
+                    if (speechSynthesizer.State == SynthesizerState.Speaking)
+                    {
+                        speechSynthesizer.Pause();
+                        return;
+                    }
 
-                if (speechSynthesizer.State == SynthesizerState.Paused)
-                {
-                    speechSynthesizer.Resume();
-                    return;
-                }
+                    if (speechSynthesizer.State == SynthesizerState.Paused)
+                    {
+                        speechSynthesizer.Resume();
+                        return;
+                    }
 
-                if (speechSynthesizer.State == SynthesizerState.Ready)
-                {
-                    _ = speechSynthesizer.SpeakAsync(metin);
+                    if (speechSynthesizer.State == SynthesizerState.Ready)
+                    {
+                        _ = speechSynthesizer.SpeakAsync(metin);
+                    }
                 }
-            }
             },
             parameter => !string.IsNullOrEmpty(OkumaDili));
     }

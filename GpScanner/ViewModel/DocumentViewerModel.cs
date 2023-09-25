@@ -24,33 +24,33 @@ public class DocumentViewerModel : InpcBase
         Back = new RelayCommand<object>(
             parameter =>
             {
-            Index--;
-            FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
+                Index--;
+                FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
             },
             parameter => Index > 0);
 
         Forward = new RelayCommand<object>(
             parameter =>
             {
-            Index++;
-            FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
+                Index++;
+                FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
             },
             parameter => Index < DirectoryAllPdfFiles?.Count() - 1);
 
         AddFileToControlPanel = new RelayCommand<object>(
             async parameter =>
             {
-            if (parameter is ImageSource imageSource)
-            {
-                MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
-                bitmapFrame.Freeze();
-                ScannedImage scannedImage = new() { Seçili = false, FilePath = FilePath, Resim = bitmapFrame };
-                Scanner?.Resimler.Add(scannedImage);
-                bitmapFrame = null;
-                scannedImage = null;
-                ms = null;
-            }
+                if (parameter is ImageSource imageSource)
+                {
+                    MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                    bitmapFrame.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = false, FilePath = FilePath, Resim = bitmapFrame };
+                    Scanner?.Resimler.Add(scannedImage);
+                    bitmapFrame = null;
+                    scannedImage = null;
+                    ms = null;
+                }
             },
             parameter => true);
     }

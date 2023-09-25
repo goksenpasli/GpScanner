@@ -55,63 +55,63 @@ public class Compressor : Control, INotifyPropertyChanged
         CompressFile = new RelayCommand<object>(
             async parameter =>
             {
-            if (IsValidPdfFile(LoadedPdfPath))
-            {
-                PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(LoadedPdfPath);
-                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf" };
-                if (saveFileDialog.ShowDialog() == true)
+                if (IsValidPdfFile(LoadedPdfPath))
                 {
-                    pdfDocument.Save(saveFileDialog.FileName);
-                    LoadedPdfPath = null;
+                    PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(LoadedPdfPath);
+                    SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf" };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        pdfDocument.Save(saveFileDialog.FileName);
+                        LoadedPdfPath = null;
+                    }
                 }
-            }
             },
             parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));
 
         BatchCompressFile = new RelayCommand<object>(
             async parameter =>
             {
-            foreach (BatchPdfData file in BatchPdfList)
-            {
-                if (IsValidPdfFile(file.Filename))
+                foreach (BatchPdfData file in BatchPdfList)
                 {
-                    PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
-                    pdfDocument.Save($"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf");
+                    if (IsValidPdfFile(file.Filename))
+                    {
+                        PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
+                        pdfDocument.Save($"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf");
 
-                    file.Completed = true;
+                        file.Completed = true;
+                    }
                 }
-            }
             },
             parameter => BatchPdfList?.Count > 0);
 
         OpenBatchPdfFolder = new RelayCommand<object>(
             parameter =>
             {
-            OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-            if (openFileDialog.ShowDialog() == true)
-            {
-                foreach (string item in openFileDialog.FileNames)
+                OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    if (IsValidPdfFile(item))
+                    foreach (string item in openFileDialog.FileNames)
                     {
-                        BatchPdfList.Add(new BatchPdfData() { Filename = item });
-                    }
-                    else
-                    {
-                        _ = MessageBox.Show($"Error {Path.GetFileName(item)}", Application.Current?.MainWindow?.Title);
+                        if (IsValidPdfFile(item))
+                        {
+                            BatchPdfList.Add(new BatchPdfData() { Filename = item });
+                        }
+                        else
+                        {
+                            _ = MessageBox.Show($"Error {Path.GetFileName(item)}", Application.Current?.MainWindow?.Title);
+                        }
                     }
                 }
-            }
             },
             parameter => true);
 
         RemovePdfFile = new RelayCommand<object>(
             parameter =>
             {
-            if (parameter is BatchPdfData batchPdfData)
-            {
-                _ = BatchPdfList?.Remove(batchPdfData);
-            }
+                if (parameter is BatchPdfData batchPdfData)
+                {
+                    _ = BatchPdfList?.Remove(batchPdfData);
+                }
             },
             parameter => true);
     }
@@ -171,14 +171,14 @@ public class Compressor : Control, INotifyPropertyChanged
         await Task.Run(
             () =>
             {
-            for (int i = 0; i < pdfDoc.PageCount; i++)
-            {
-                int width = (int)(pdfDoc.PageSizes[i].Width / 96 * dpi);
-                int height = (int)(pdfDoc.PageSizes[i].Height / 96 * dpi);
-                using System.Drawing.Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
-                images.Add(image.ToBitmapImage(ImageFormat.Jpeg));
-                CompressionProgress = (i + 1) / (double)pdfDoc.PageCount;
-            }
+                for (int i = 0; i < pdfDoc.PageCount; i++)
+                {
+                    int width = (int)(pdfDoc.PageSizes[i].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[i].Height / 96 * dpi);
+                    using System.Drawing.Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
+                    images.Add(image.ToBitmapImage(ImageFormat.Jpeg));
+                    CompressionProgress = (i + 1) / (double)pdfDoc.PageCount;
+                }
             });
         return images;
     }
@@ -196,61 +196,61 @@ public class Compressor : Control, INotifyPropertyChanged
             await Task.Run(
                 () =>
                 {
-                for (int i = 0; i < bitmapFrames.Count; i++)
-                {
-                    BitmapImage pdfimage = bitmapFrames[i];
-                    PdfPage page = document.AddPage();
-                    double ratio = pdfimage.PixelWidth / (double)pdfimage.PixelHeight;
-                    bool portrait = pdfimage.PixelWidth < pdfimage.PixelHeight;
-                    if (UseMozJpegEncoding)
+                    for (int i = 0; i < bitmapFrames.Count; i++)
                     {
-                        using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                        using MozJpeg.MozJpeg mozJpeg = new();
-                        BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
-                        byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
-                        using MemoryStream ms = new(data);
-                        using XImage xImage = XImage.FromStream(ms);
-                        resizedimage = null;
-                        data = null;
-
-                        if (portrait)
+                        BitmapImage pdfimage = bitmapFrames[i];
+                        PdfPage page = document.AddPage();
+                        double ratio = pdfimage.PixelWidth / (double)pdfimage.PixelHeight;
+                        bool portrait = pdfimage.PixelWidth < pdfimage.PixelHeight;
+                        if (UseMozJpegEncoding)
                         {
-                            gfx.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
+                            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                            using MozJpeg.MozJpeg mozJpeg = new();
+                            BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
+                            byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                            using MemoryStream ms = new(data);
+                            using XImage xImage = XImage.FromStream(ms);
+                            resizedimage = null;
+                            data = null;
+
+                            if (portrait)
+                            {
+                                gfx.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
+                            }
+                            else
+                            {
+                                page.Orientation = PageOrientation.Landscape;
+                                gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
+                            }
                         }
                         else
                         {
-                            page.Orientation = PageOrientation.Landscape;
-                            gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
-                        }
-                    }
-                    else
-                    {
-                        using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                        BitmapSource resizedimage = bw
-                            ? BitmapSourceToBitmap(pdfimage).ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Tiff).Resize(page.Height * ratio, page.Height, 0, dpi, dpi)
-                            : pdfimage.Resize(page.Height * ratio, page.Height, 0, dpi, dpi);
-                        using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
-                        using XImage xImage = XImage.FromStream(ms);
-                        resizedimage = null;
+                            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                            BitmapSource resizedimage = bw
+                                ? BitmapSourceToBitmap(pdfimage).ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Tiff).Resize(page.Height * ratio, page.Height, 0, dpi, dpi)
+                                : pdfimage.Resize(page.Height * ratio, page.Height, 0, dpi, dpi);
+                            using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
+                            using XImage xImage = XImage.FromStream(ms);
+                            resizedimage = null;
 
-                        if (portrait)
+                            if (portrait)
+                            {
+                                gfx.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
+                            }
+                            else
+                            {
+                                page.Orientation = PageOrientation.Landscape;
+                                gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
+                            }
+                        }
+
+                        if (progresscallback is not null)
                         {
-                            gfx.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
-                        }
-                        else
-                        {
-                            page.Orientation = PageOrientation.Landscape;
-                            gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
+                            progresscallback((i + 1) / (double)bitmapFrames.Count);
                         }
                     }
 
-                    if (progresscallback is not null)
-                    {
-                        progresscallback((i + 1) / (double)bitmapFrames.Count);
-                    }
-                }
-
-                DefaultPdfCompression(document);
+                    DefaultPdfCompression(document);
                 });
         }
         catch (Exception ex)

@@ -64,6 +64,6 @@ namespace Tesseract
         public static bool operator ==(PixColor lhs, PixColor rhs) => lhs.Equals(rhs);
 
         public static bool operator !=(PixColor lhs, PixColor rhs) => !(lhs == rhs);
-        #endregion Equals and GetHashCode implementation
+    #endregion Equals and GetHashCode implementation
     }
 }

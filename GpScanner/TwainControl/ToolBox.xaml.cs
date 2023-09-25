@@ -41,8 +41,8 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         DeskewImage = new RelayCommand<object>(
             async parameter =>
             {
-            double deskewAngle = Deskew.GetDeskewAngle((BitmapSource)Scanner.CroppedImage);
-            Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(deskewAngle);
+                double deskewAngle = Deskew.GetDeskewAngle((BitmapSource)Scanner.CroppedImage);
+                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(deskewAngle);
             },
             parameter => Scanner?.CroppedImage is not null);
 
@@ -51,21 +51,21 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         AutoCropImage = new RelayCommand<object>(
             parameter =>
             {
-            Color color = (Color)ColorConverter.ConvertFromString(Scanner.AutoCropColor);
-            Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).AutoCropImage(color);
+                Color color = (Color)ColorConverter.ConvertFromString(Scanner.AutoCropColor);
+                Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).AutoCropImage(color);
             },
             parameter => Scanner?.CroppedImage is not null);
 
         BlackAndWhiteImage = new RelayCommand<object>(
             parameter =>
             {
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
-            {
-                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
-                return;
-            }
+                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                {
+                    Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
+                    return;
+                }
 
-            Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
+                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
             },
             parameter => Scanner?.CroppedImage is not null);
 
@@ -91,169 +91,169 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         SplitImage = new RelayCommand<object>(
             async parameter =>
             {
-            string savefolder = CreateSaveFolder("SPLIT");
-            List<CroppedBitmap> croppedBitmaps = CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet);
-            await Task.Run(
-                () =>
-                {
-                for (int i = 0; i < croppedBitmaps.Count; i++)
-                {
-                    CroppedBitmap croppedBitmap = croppedBitmaps[i];
-                    Dispatcher.Invoke(
-                        () =>
+                string savefolder = CreateSaveFolder("SPLIT");
+                List<CroppedBitmap> croppedBitmaps = CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet);
+                await Task.Run(
+                    () =>
+                    {
+                        for (int i = 0; i < croppedBitmaps.Count; i++)
                         {
-                        File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
-                        ToolBoxPdfMergeProgressValue = (i + 1) / (double)croppedBitmaps.Count;
-                        });
-                }
-                });
-            WebAdreseGit.Execute(savefolder);
-            ToolBoxPdfMergeProgressValue = 0;
+                            CroppedBitmap croppedBitmap = croppedBitmaps[i];
+                            Dispatcher.Invoke(
+                                () =>
+                                {
+                                    File.WriteAllBytes(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "jpg"), croppedBitmap.ToTiffJpegByteArray(Format.Jpg));
+                                    ToolBoxPdfMergeProgressValue = (i + 1) / (double)croppedBitmaps.Count;
+                                });
+                        }
+                    });
+                WebAdreseGit.Execute(savefolder);
+                ToolBoxPdfMergeProgressValue = 0;
             },
             parameter => Scanner?.AutoSave == true && Scanner?.CroppedImage is not null && (Scanner?.EnAdet > 1 || Scanner?.BoyAdet > 1));
 
         TransferImage = new RelayCommand<object>(
             parameter =>
             {
-            BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage);
-            bitmapFrame.Freeze();
-            ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-            Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
-            scannedImage = null;
+                BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage);
+                bitmapFrame.Freeze();
+                ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
+                scannedImage = null;
             },
             parameter => Scanner?.CroppedImage is not null);
 
         SplitAllImage = new RelayCommand<object>(
             async parameter =>
             {
-            if (DataContext is TwainCtrl twainControl)
-            {
-                List<ScannedImage> listcroppedimages;
-                PdfDocument pdfdocument = null;
-                bool splitpdfbypage = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
-                await Task.Run(
-                    async () =>
+                if (DataContext is TwainCtrl twainControl)
+                {
+                    List<ScannedImage> listcroppedimages;
+                    PdfDocument pdfdocument = null;
+                    bool splitpdfbypage = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+                    await Task.Run(
+                        async () =>
+                        {
+                            listcroppedimages = Scanner.Resimler
+                                                       .Where(z => z.Seçili)
+                                                       .SelectMany(
+                                                           scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight)
+                                                                           .Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
+                                                       .ToList();
+                            pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
+                        });
+                    string savefolder = CreateSaveFolder("SPLIT");
+                    string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
+                    pdfdocument.Save(path);
+                    if (splitpdfbypage)
                     {
-                    listcroppedimages = Scanner.Resimler
-                                               .Where(z => z.Seçili)
-                                               .SelectMany(
-                                                   scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight)
-                                                                   .Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
-                                               .ToList();
-                    pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
-                    });
-                string savefolder = CreateSaveFolder("SPLIT");
-                string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
-                pdfdocument.Save(path);
-                if (splitpdfbypage)
-                {
-                    twainControl.SplitPdfPageCount(path, savefolder, 1);
-                }
+                        twainControl.SplitPdfPageCount(path, savefolder, 1);
+                    }
 
-                WebAdreseGit.Execute(savefolder);
-                listcroppedimages = null;
-                pdfdocument = null;
-                if (Settings.Default.RemoveProcessedImage)
-                {
-                    twainControl.SeçiliListeTemizle.Execute(null);
+                    WebAdreseGit.Execute(savefolder);
+                    listcroppedimages = null;
+                    pdfdocument = null;
+                    if (Settings.Default.RemoveProcessedImage)
+                    {
+                        twainControl.SeçiliListeTemizle.Execute(null);
+                    }
                 }
-            }
             },
             parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
         MergeHorizontal = new RelayCommand<object>(
             async parameter =>
             {
-            if (DataContext is TwainCtrl twainControl)
-            {
-                List<ScannedImage> listcroppedimages;
-                Orientation orientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? Orientation.Vertical : Orientation.Horizontal;
-                string savefolder = CreateSaveFolder("MERGE");
-                string path = savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "jpg");
-                await Task.Run(
-                    () =>
-                    {
-                    listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
-                    File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
-                    });
-                WebAdreseGit.Execute(savefolder);
-                listcroppedimages = null;
-                if (Settings.Default.RemoveProcessedImage)
+                if (DataContext is TwainCtrl twainControl)
                 {
-                    twainControl.SeçiliListeTemizle.Execute(null);
+                    List<ScannedImage> listcroppedimages;
+                    Orientation orientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? Orientation.Vertical : Orientation.Horizontal;
+                    string savefolder = CreateSaveFolder("MERGE");
+                    string path = savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "jpg");
+                    await Task.Run(
+                        () =>
+                        {
+                            listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                            File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
+                        });
+                    WebAdreseGit.Execute(savefolder);
+                    listcroppedimages = null;
+                    if (Settings.Default.RemoveProcessedImage)
+                    {
+                        twainControl.SeçiliListeTemizle.Execute(null);
+                    }
                 }
-            }
             },
             parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
 
         MergeAllImage = new RelayCommand<object>(
             async parameter =>
             {
-            PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
-            string savefolder = CreateSaveFolder("MERGE");
-            List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
-            PdfDocument pdfdocument = new();
-            XRect box;
-            PdfPage page = null;
-            int imageindex = 0;
-            for (int i = 0; i < seçiliresimler.Count / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
-            {
-                page = pdfdocument.AddPage();
-                page.Size = Paper.GetPaperSize() == PageSize.Undefined ? PageSize.A4 : Paper.GetPaperSize();
-                page.Orientation = pageOrientation;
-                for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
+                PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
+                string savefolder = CreateSaveFolder("MERGE");
+                List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                PdfDocument pdfdocument = new();
+                XRect box;
+                PdfPage page = null;
+                int imageindex = 0;
+                for (int i = 0; i < seçiliresimler.Count / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
-                    for (int widthindex = 0; widthindex < Scanner.SliceCountWidth; widthindex++)
+                    page = pdfdocument.AddPage();
+                    page.Size = Paper.GetPaperSize() == PageSize.Undefined ? PageSize.A4 : Paper.GetPaperSize();
+                    page.Orientation = pageOrientation;
+                    for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {
-                        if (imageindex >= seçiliresimler.Count)
+                        for (int widthindex = 0; widthindex < Scanner.SliceCountWidth; widthindex++)
                         {
-                            break;
-                        }
-
-                        await Task.Run(
-                            () =>
+                            if (imageindex >= seçiliresimler.Count)
                             {
-                            double x = widthindex * page.Width / Scanner.SliceCountWidth;
-                            double y = heighindex * page.Height / Scanner.SliceCountHeight;
-                            double width = page.Width / Scanner.SliceCountWidth;
-                            double height = page.Height / Scanner.SliceCountHeight;
-                            BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
-                            double xratio = width / currentimage.PixelWidth;
-                            BitmapSource bitmapsource = ResizeRatioImage
-                                ? currentimage.Resize(xratio)
-                                : CompressImage ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height) : currentimage;
-                            using MemoryStream ms =
+                                break;
+                            }
+
+                            await Task.Run(
+                                () =>
+                                {
+                                    double x = widthindex * page.Width / Scanner.SliceCountWidth;
+                                    double y = heighindex * page.Height / Scanner.SliceCountHeight;
+                                    double width = page.Width / Scanner.SliceCountWidth;
+                                    double height = page.Height / Scanner.SliceCountHeight;
+                                    BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
+                                    double xratio = width / currentimage.PixelWidth;
+                                    BitmapSource bitmapsource = ResizeRatioImage
+                                        ? currentimage.Resize(xratio)
+                                        : CompressImage ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height) : currentimage;
+                                    using MemoryStream ms =
                                         new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
-                            using XImage xImage = XImage.FromStream(ms);
-                            using XGraphics gfx = XGraphics.FromPdfPage(page);
-                            box = new XRect(x + BorderSize, y + BorderSize, width + (BorderSize * -2), height + (BorderSize * -2));
-                            if (ResizeRatioImage)
-                            {
-                                gfx.DrawImage(xImage, new Point(x, y));
-                            }
-                            else
-                            {
-                                gfx.DrawImage(xImage, box);
-                            }
+                                    using XImage xImage = XImage.FromStream(ms);
+                                    using XGraphics gfx = XGraphics.FromPdfPage(page);
+                                    box = new XRect(x + BorderSize, y + BorderSize, width + (BorderSize * -2), height + (BorderSize * -2));
+                                    if (ResizeRatioImage)
+                                    {
+                                        gfx.DrawImage(xImage, new Point(x, y));
+                                    }
+                                    else
+                                    {
+                                        gfx.DrawImage(xImage, box);
+                                    }
 
-                            imageindex++;
-                            ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count;
-                            });
+                                    imageindex++;
+                                    ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count;
+                                });
+                        }
                     }
                 }
-            }
 
-            pdfdocument.ApplyDefaultPdfCompression();
-            pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "pdf"));
-            WebAdreseGit.Execute(savefolder);
-            pdfdocument = null;
-            page = null;
-            if (Settings.Default.RemoveProcessedImage)
-            {
-                (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
-            }
+                pdfdocument.ApplyDefaultPdfCompression();
+                pdfdocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "pdf"));
+                WebAdreseGit.Execute(savefolder);
+                pdfdocument = null;
+                page = null;
+                if (Settings.Default.RemoveProcessedImage)
+                {
+                    (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
+                }
 
-            ToolBoxPdfMergeProgressValue = 0;
+                ToolBoxPdfMergeProgressValue = 0;
             },
             parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
     }

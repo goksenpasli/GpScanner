@@ -118,20 +118,20 @@ public class GridViewSort
             false,
             (o, e) =>
             {
-            if (o is ListView listView && GetCommand(listView) == null)
-            {
-                bool oldValue = (bool)e.OldValue;
-                bool newValue = (bool)e.NewValue;
-                if (oldValue && !newValue)
+                if (o is ListView listView && GetCommand(listView) == null)
                 {
-                    listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                }
+                    bool oldValue = (bool)e.OldValue;
+                    bool newValue = (bool)e.NewValue;
+                    if (oldValue && !newValue)
+                    {
+                        listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
+                    }
 
-                if (!oldValue && newValue)
-                {
-                    listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
+                    if (!oldValue && newValue)
+                    {
+                        listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
+                    }
                 }
-            }
             }));
 
     public static readonly DependencyProperty CommandProperty =
@@ -143,18 +143,18 @@ public class GridViewSort
             null,
             (o, e) =>
             {
-            if (o is ItemsControl listView && !GetAutoSort(listView))
-            {
-                if (e.OldValue != null && e.NewValue == null)
+                if (o is ItemsControl listView && !GetAutoSort(listView))
                 {
-                    listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
-                }
+                    if (e.OldValue != null && e.NewValue == null)
+                    {
+                        listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
+                    }
 
-                if (e.OldValue == null && e.NewValue != null)
-                {
-                    listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
+                    if (e.OldValue == null && e.NewValue != null)
+                    {
+                        listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
+                    }
                 }
-            }
             }));
 
     public static readonly DependencyProperty PropertyNameProperty =
