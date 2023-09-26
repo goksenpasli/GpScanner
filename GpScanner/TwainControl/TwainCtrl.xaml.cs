@@ -1430,11 +1430,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => SeçiliResim is not null && PageWidth == SeçiliResim.Resim.PixelWidth && PageHeight == SeçiliResim.Resim.PixelHeight);
 
+        ApplyCropAllImages = new RelayCommand<object>(
+            parameter =>
+            {
+                foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                {
+                    BitmapFrame bitmapframe = BitmapFrame.Create(GenerateCroppedImage(item.Resim, Settings.Default.Top, Settings.Default.Left, Settings.Default.Bottom, Settings.Default.Right));
+                    bitmapframe.Freeze();
+                    item.Resim = bitmapframe;
+                }
+                if (PrepareCropCurrentImage.CanExecute(null))
+                {
+                    PrepareCropCurrentImage.Execute(null);
+                }
+            },
+            parameter => Scanner?.Resimler?.Count(z => z.Seçili) > 1);
+
         PrepareCropCurrentImage = new RelayCommand<object>(
             parameter =>
             {
                 PageWidth = SeçiliResim.Resim.PixelWidth;
                 PageHeight = SeçiliResim.Resim.PixelHeight;
+                ResetCrop.Execute(null);
             },
             parameter => SeçiliResim is not null);
 
@@ -1493,6 +1510,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public RelayCommand<object> ApplyCropAllImages { get; }
 
     public RelayCommand<object> ApplyCropCurrentImage { get; }
 
