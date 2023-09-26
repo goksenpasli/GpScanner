@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="470" d:DesignWidth="300"
+    d:DesignHeight="475" d:DesignWidth="300"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -115,7 +115,7 @@
                                 </TextBlock>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding ApplyCropAllImages}">
+                        <Button Command="{Binding ApplyCropAllImages}" ToolTipService.ShowOnDisabled="True">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32" Height="32" VerticalAlignment="Center">
                                     <Image.Source>
@@ -132,9 +132,57 @@
                                     <Run Text="{local:Loc APPLY}" />
                                 </TextBlock>
                             </StackPanel>
+                            <Button.ToolTip>
+                                <StackPanel Orientation="Horizontal">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding SeçiliResimlerEnBoyEşit}" Value="true">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding SeçiliResimlerEnBoyEşit}" Value="false">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
+                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Foreground="Red">
+                                        <Run Text="{local:Loc STOP}" />
+                                        <Run Text="{local:Loc GRAPH}" />
+                                    </TextBlock>
+                                    <Image Width="32" Height="32" VerticalAlignment="Center">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock FontSize="20" Foreground="Red" Text="≠" />
+                                    <Image Width="24" Height="24" VerticalAlignment="Center">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock FontSize="20" Foreground="Red" Text="≠" />
+                                    <Image Width="28" Height="28" VerticalAlignment="Center">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </StackPanel>
+                            </Button.ToolTip>
                         </Button>
                     </UniformGrid>
                 </UniformGrid>
+                <Separator />
+
             </StackPanel>
         </GroupBox.Header>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">

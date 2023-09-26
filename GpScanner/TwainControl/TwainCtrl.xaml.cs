@@ -134,6 +134,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int sayfaBitiş = 1;
     private Scanner scanner;
     private ScannedImage seçiliResim;
+    private bool seçiliResimlerEnBoyEşit;
     private int seekIndex = -1;
     private Tuple<string, int, double, bool, double> selectedCompressionProfile;
     private PageFlip selectedFlip = PageFlip.NONE;
@@ -422,8 +423,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 TümününİşaretiniKaldır.Execute(null);
-                foreach (ScannedImage item in
-                                             Scanner.Resimler.Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
+                foreach (ScannedImage item in Scanner.Resimler.Where(item => item.Resim.PixelHeight < item.Resim.PixelWidth))
                 {
                     item.Seçili = true;
                 }
@@ -1444,7 +1444,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     PrepareCropCurrentImage.Execute(null);
                 }
             },
-            parameter => Scanner?.Resimler?.Count(z => z.Seçili) > 1);
+            parameter =>
+            {
+                SeçiliResimlerEnBoyEşit = Scanner?.Resimler?.Where(z => z.Seçili)?.Distinct(new ImageWidthHeightComparer())?.Count() == 1;
+                return Scanner.Resimler.Count(z => z.Seçili) > 1 && SeçiliResimlerEnBoyEşit;
+            });
 
         PrepareCropCurrentImage = new RelayCommand<object>(
             parameter =>
@@ -2019,6 +2023,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 seçiliResim = value;
                 OnPropertyChanged(nameof(SeçiliResim));
+            }
+        }
+    }
+
+    public bool SeçiliResimlerEnBoyEşit
+    {
+        get => seçiliResimlerEnBoyEşit;
+        set
+        {
+            if (seçiliResimlerEnBoyEşit != value)
+            {
+                seçiliResimlerEnBoyEşit = value;
+                OnPropertyChanged(nameof(SeçiliResimlerEnBoyEşit));
             }
         }
     }

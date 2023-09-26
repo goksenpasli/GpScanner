@@ -103,6 +103,7 @@
       <DependentUpon>DrawControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="EypPdfViewer.cs" />
+    <Compile Include="ImageWidthHeightComparer.cs" />
     <Compile Include="PageCropControl.xaml.cs">
       <DependentUpon>PageCropControl.xaml</DependentUpon>
     </Compile>
