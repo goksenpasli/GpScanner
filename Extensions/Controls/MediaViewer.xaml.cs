@@ -122,6 +122,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     private ObservableCollection<SrtContent> parsedSubtitle;
     private string saveTranslateLanguage;
     private string searchSubtitle;
+    private int selectedEncodingCodePage = 65001;
     private int translateSaveProgress;
 
     public MediaViewer()
@@ -523,6 +524,19 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
+    public int SelectedEncodingCodePage
+    {
+        get => selectedEncodingCodePage;
+        set
+        {
+            if (selectedEncodingCodePage != value)
+            {
+                selectedEncodingCodePage = value;
+                OnPropertyChanged(nameof(SelectedEncodingCodePage));
+            }
+        }
+    }
+
     public RelayCommand<object> SetSubtitleMargin { get; }
 
     [Description("Video Effects")]
@@ -543,6 +557,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Category("Subtitle")]
     public Brush SubTitleColor { get => (Brush)GetValue(SubTitleColorProperty); set => SetValue(SubTitleColorProperty, value); }
 
+    public EncodingInfo[] SubtitleEncodings { get; } = Encoding.GetEncodings();
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public string SubtitleFilePath { get => (string)GetValue(SubtitleFilePathProperty); set => SetValue(SubtitleFilePathProperty, value); }
@@ -665,7 +680,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             ObservableCollection<SrtContent> content = [];
             const string pattern = "<[/]?[ib]>";
-            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding(SelectedEncodingCodePage)).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 content.Add(
@@ -952,6 +967,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                                                          SrtContent srtContent = x.Item as SrtContent;
                                                          x.Accepted = srtContent.Text.Contains(SearchSubtitle);
                                                      };
+        }
+
+        if (e.PropertyName is "SelectedEncodingCodePage" && ParsedSubtitle is not null)
+        {
+            ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
         }
     }
 

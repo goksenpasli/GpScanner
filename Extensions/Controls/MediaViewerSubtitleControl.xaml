@@ -52,6 +52,16 @@
                     <Button Command="{Binding LoadSubtitle}" Content="ALTYAZI YÜKLE" />
                     <ToggleButton VerticalContentAlignment="Center" Content="ALTYAZI GÖRÜNÜR" IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
                 </UniformGrid>
+                <ComboBox ItemsSource="{Binding SubtitleEncodings}" SelectedValue="{Binding SelectedEncodingCodePage}" SelectedValuePath="CodePage">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding CodePage, Mode=OneWay}" />
+                                <Run Text="{Binding DisplayName, Mode=OneWay}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <Slider Maximum="128" Minimum="1"
                     Style="{DynamicResource Slider}"
                     Value="{Binding SubTitleSize}" />

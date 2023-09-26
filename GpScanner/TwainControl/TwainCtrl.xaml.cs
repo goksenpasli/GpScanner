@@ -1413,10 +1413,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ResetCrop = new RelayCommand<object>(
             parameter =>
             {
-                Settings.Default.Right = 0;
                 Settings.Default.Left = 0;
-                Settings.Default.Bottom = 0;
                 Settings.Default.Top = 0;
+                Settings.Default.Bottom = PageHeight;
+                Settings.Default.Right = PageWidth;
                 Settings.Default.Save();
             },
             parameter => true);
@@ -3323,6 +3323,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         PageHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
         PageWidth = (int)(SelectedPaper.Width / Inch * Settings.Default.Çözünürlük);
+        Settings.Default.Bottom = PageHeight;
+        Settings.Default.Right = PageWidth;
     }
 
     private ObservableCollection<T> Shuffle<T>(ObservableCollection<T> collection, Random random)

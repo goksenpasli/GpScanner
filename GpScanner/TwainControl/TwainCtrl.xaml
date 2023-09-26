@@ -642,22 +642,6 @@
                                     <Extensions:ContentToggleButton.OverContent>
                                         <local:PageCropControl />
                                     </Extensions:ContentToggleButton.OverContent>
-                                    <Extensions:ContentToggleButton.Style>
-                                        <Style TargetType="Extensions:ContentToggleButton">
-                                            <Setter Property="Background" Value="GreenYellow" />
-                                            <Style.Triggers>
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding Top, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0" />
-                                                        <Condition Binding="{Binding Left, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0" />
-                                                        <Condition Binding="{Binding Bottom, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0" />
-                                                        <Condition Binding="{Binding Right, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0" />
-                                                    </MultiDataTrigger.Conditions>
-                                                    <Setter Property="Background" Value="{StaticResource BorderBackground}" />
-                                                </MultiDataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Extensions:ContentToggleButton.Style>
                                 </Extensions:ContentToggleButton>
                             </Grid>
                         </GroupBox.Header>
