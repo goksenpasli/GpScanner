@@ -14,6 +14,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
     public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
     private Visibility copyButtonVisibility = Visibility.Visible;
+    private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
     private Visibility openButtonVisibility = Visibility.Visible;
     private Visibility pasteButtonVisibility = Visibility.Visible;
     private Visibility resetButtonVisibility = Visibility.Visible;
@@ -47,6 +48,19 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     }
 
     public object Description { get => GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+
+    public Visibility FontSizeButtonVisibility
+    {
+        get => fontSizeButtonVisibility;
+        set
+        {
+            if (fontSizeButtonVisibility != value)
+            {
+                fontSizeButtonVisibility = value;
+                OnPropertyChanged(nameof(FontSizeButtonVisibility));
+            }
+        }
+    }
 
     public ICommand Open { get; } = new RoutedCommand();
 

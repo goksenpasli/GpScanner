@@ -1447,7 +1447,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SeçiliResimlerEnBoyEşit = Scanner?.Resimler?.Where(z => z.Seçili)?.Distinct(new ImageWidthHeightComparer())?.Count() == 1;
-                return Scanner.Resimler.Count(z => z.Seçili) > 1 && SeçiliResimlerEnBoyEşit;
+                return Scanner.Resimler.Count(z => z.Seçili) > 1 && SeçiliResimlerEnBoyEşit && PageWidth == SeçiliResim.Resim.PixelWidth && PageHeight == SeçiliResim.Resim.PixelHeight;
             });
 
         PrepareCropCurrentImage = new RelayCommand<object>(

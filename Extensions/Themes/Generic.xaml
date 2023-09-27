@@ -719,6 +719,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <ContentPresenter Name="contentPresenter" VerticalAlignment="Center" Content="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border Name="border"
@@ -738,7 +739,7 @@
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
                             Visibility="{Binding CopyButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                                 <Hyperlink Command="{Binding Copy, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
                                     <Run FontFamily="Wingdings 2" FontWeight="Bold" Text="1" />
                                 </Hyperlink>
@@ -764,7 +765,7 @@
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
                             Visibility="{Binding ResetButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                                 <Hyperlink Command="{Binding Reset, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
                                     <Run FontWeight="Bold" Text="X" />
                                 </Hyperlink>
@@ -777,13 +778,22 @@
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
                             Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                                 <Hyperlink Command="{Binding Open, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
                                     <Run FontFamily="Wingdings" FontSize="14"
                                         FontWeight="Bold" Text="8" />
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
+                        <local:NumericUpDownControl x:Name="fontsize"
+                            Grid.Column="6"
+                            Background="{TemplateBinding Panel.Background}"
+                            BorderBrush="{TemplateBinding Border.BorderBrush}"
+                            IsReadOnly="True" LargeChange="1"
+                            Minimum="1" NumericUpdownTextBoxVisibility="Collapsed"
+                            SmallChange="1" SnapsToDevicePixels="True"
+                            Visibility="{Binding FontSizeButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                            Value="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="UIElement.IsEnabled" Value="False">
@@ -793,6 +803,7 @@
                             <Setter TargetName="contentPresenter" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="openborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="pasteborder" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="fontsize" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#7EB4EA" />
@@ -800,6 +811,7 @@
                             <Setter TargetName="copyborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="openborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#7EB4EA" />
+                            <Setter TargetName="fontsize" Property="Border.BorderBrush" Value="#7EB4EA" />
                         </Trigger>
                         <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#569DE5" />
@@ -807,6 +819,7 @@
                             <Setter TargetName="copyborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="openborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#569DE5" />
+                            <Setter TargetName="fontsize" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

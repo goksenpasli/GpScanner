@@ -13,6 +13,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <Converter:DivideConverter x:Key="DivideConverter" />
+        <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     </UserControl.Resources>
     <GroupBox>
@@ -115,7 +116,7 @@
                                 </TextBlock>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding ApplyCropAllImages}" ToolTipService.ShowOnDisabled="True">
+                        <Button Command="{Binding ApplyCropAllImages}" ToolTipService.IsEnabled="{Binding SeçiliResimlerEnBoyEşit, Converter={StaticResource ReverseBooleanConverter}}" ToolTipService.ShowOnDisabled="True">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32" Height="32" VerticalAlignment="Center">
                                     <Image.Source>
@@ -181,8 +182,6 @@
                         </Button>
                     </UniformGrid>
                 </UniformGrid>
-                <Separator />
-
             </StackPanel>
         </GroupBox.Header>
         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
