@@ -65,6 +65,17 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                     return;
                 }
 
+                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                {
+                    foreach (ScannedImage image in Scanner?.Resimler?.Where(z => z.Seçili)?.ToList())
+                    {
+                        BitmapFrame bitmapframe = BitmapFrame.Create(image.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        bitmapframe.Freeze();
+                        image.Resim = bitmapframe;
+                    }
+                    return;
+                }
+
                 Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
             },
             parameter => Scanner?.CroppedImage is not null);

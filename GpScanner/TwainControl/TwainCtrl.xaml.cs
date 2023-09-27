@@ -1428,7 +1428,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 bitmapframe.Freeze();
                 SeçiliResim.Resim = bitmapframe;
             },
-            parameter => SeçiliResim is not null && PageWidth == SeçiliResim.Resim.PixelWidth && PageHeight == SeçiliResim.Resim.PixelHeight);
+            parameter => SeçiliResim is not null &&
+                PageWidth == SeçiliResim.Resim.PixelWidth &&
+                PageHeight == SeçiliResim.Resim.PixelHeight &&
+                Settings.Default.Left != Settings.Default.Right &&
+                Settings.Default.Top != Settings.Default.Bottom);
 
         ApplyCropAllImages = new RelayCommand<object>(
             parameter =>
@@ -1447,7 +1451,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SeçiliResimlerEnBoyEşit = Scanner?.Resimler?.Where(z => z.Seçili)?.Distinct(new ImageWidthHeightComparer())?.Count() == 1;
-                return Scanner.Resimler.Count(z => z.Seçili) > 1 && SeçiliResimlerEnBoyEşit && PageWidth == SeçiliResim.Resim.PixelWidth && PageHeight == SeçiliResim.Resim.PixelHeight;
+                return Scanner.Resimler.Count(z => z.Seçili) > 1 &&
+                    SeçiliResimlerEnBoyEşit &&
+                    PageWidth == SeçiliResim.Resim.PixelWidth &&
+                    PageHeight == SeçiliResim.Resim.PixelHeight &&
+                    Settings.Default.Left != Settings.Default.Right &&
+                    Settings.Default.Top != Settings.Default.Bottom &&
+                    Settings.Default.Left != Settings.Default.Right &&
+                    Settings.Default.Top != Settings.Default.Bottom;
             });
 
         PrepareCropCurrentImage = new RelayCommand<object>(
