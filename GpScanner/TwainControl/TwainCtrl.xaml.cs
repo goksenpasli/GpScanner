@@ -299,18 +299,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (bw)
                     {
                         item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        continue;
                     }
 
                     if (grayscale)
                     {
                         item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
+                        continue;
                     }
-                    else
-                    {
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
-                        bitmapFrame.Freeze();
-                        item.Resim = bitmapFrame;
-                    }
+
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
+                    bitmapFrame.Freeze();
+                    item.Resim = bitmapFrame;
                 }
             },
             parameter => Scanner.Resimler.Count(z => z.Seçili) > 0);
