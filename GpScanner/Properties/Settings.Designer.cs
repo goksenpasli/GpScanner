@@ -419,5 +419,29 @@ namespace GpScanner.Properties {
                 this["DestinationTranslateLanguage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowMagnifier {
+            get {
+                return ((bool)(this["ShowMagnifier"]));
+            }
+            set {
+                this["ShowMagnifier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public double MagnifyValue {
+            get {
+                return ((double)(this["MagnifyValue"]));
+            }
+            set {
+                this["MagnifyValue"] = value;
+            }
+        }
     }
 }

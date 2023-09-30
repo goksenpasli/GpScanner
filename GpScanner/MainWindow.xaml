@@ -487,7 +487,10 @@
                                                                         <GroupBox>
                                                                             <GroupBox.Header>
                                                                                 <StackPanel Orientation="Horizontal">
-                                                                                    <TextBlock VerticalAlignment="Center"><Run Text="PDF" /><Run Text=" " /><Run Text="{twainctrl:Loc COMPRESS}" /></TextBlock>
+                                                                                    <TextBlock VerticalAlignment="Center">
+                                                                                        <Run Text="PDF" />
+                                                                                        <Run Text="{twainctrl:Loc COMPRESS}" />
+                                                                                    </TextBlock>
                                                                                     <StackPanel Orientation="Horizontal" Visibility="{Binding DirectlyOverwriteCompressedPdf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                                                                                         <Image Width="24" Height="24" VerticalAlignment="Center">
                                                                                             <Image.Source>

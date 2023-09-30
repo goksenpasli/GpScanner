@@ -126,7 +126,7 @@
                         <RowDefinition />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <ScrollViewer HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}" VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
+                    <ScrollViewer x:Name="ScrlVwr" HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}" VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
                         <Image RenderTransformOrigin="0.5,0.5" ScrollViewer.CanContentScroll="True"
                             Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
                             Stretch="None">
@@ -197,6 +197,7 @@
                             </TextBlock>
                         </StackPanel>
                     </ContentControl>
+                    <Extensions:Magnifier ContentPanel="{Binding ElementName=ScrlVwr}" IsActive="{Binding ShowMagnifier, Mode=OneWay, Source={x:Static properties:Settings.Default}}" ZoomFactor="{Binding MagnifyValue, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                 </Grid>
                 <ControlTemplate.Triggers>
                     <Trigger Property="IsEnabled" Value="False">
