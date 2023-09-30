@@ -441,7 +441,7 @@
                         <local:ContentToggleButton ArrowVisibility="Collapsed" Content="µ"
                             FontFamily="Webdings" FontSize="20"
                             Foreground="Blue" PlacementMode="Top"
-                            StaysOpen="True">
+                            StaysOpen="True" TopMost="False">
                             <local:ContentToggleButton.OverContent>
                                 <GroupBox>
                                     <UniformGrid Margin="1" Background="{StaticResource GroupBoxBackGround}" Columns="7">
@@ -480,7 +480,7 @@
                         <local:ContentToggleButton ArrowVisibility="Collapsed" Content="·"
                             FontFamily="Webdings" FontSize="20"
                             Foreground="Blue" PlacementMode="Top"
-                            StaysOpen="True">
+                            StaysOpen="True" TopMost="False">
                             <local:ContentToggleButton.OverContent>
                                 <GroupBox>
                                     <StackPanel Background="{StaticResource GroupBoxBackGround}" Orientation="Horizontal">

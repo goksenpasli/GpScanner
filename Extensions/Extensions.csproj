@@ -72,6 +72,7 @@
     <Compile Include="Controls\Helpers.cs" />
     <Compile Include="Controls\Chart.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
+    <Compile Include="Controls\Magnifier.cs" />
     <Compile Include="Controls\MediaViewerSubtitleControl.xaml.cs">
       <DependentUpon>MediaViewerSubtitleControl.xaml</DependentUpon>
     </Compile>

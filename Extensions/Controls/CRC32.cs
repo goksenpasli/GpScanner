@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System;
+using System.Security.Cryptography;
 
 namespace Extensions
 {
@@ -20,23 +21,25 @@ namespace Extensions
 
         protected override void HashCore(byte[] array, int ibStart, int cbSize)
         {
-            for (int i = ibStart; i < cbSize; i++)
+            uint crc = hashValue;
+            int end = ibStart + cbSize;
+
+            for (int i = ibStart; i < end; i += 4)
             {
-                hashValue = (hashValue >> 8) ^ table[array[i] ^ (hashValue & 0xFF)];
+                uint chunk = array[i] | ((uint)array[i + 1] << 8) | ((uint)array[i + 2] << 16) | ((uint)array[i + 3] << 24);
+
+                crc ^= chunk;
+
+                crc = table[(byte)crc] ^ table[(byte)(crc >> 8)] ^ table[(byte)(crc >> 16)] ^ table[(byte)(crc >> 24)] ^ (crc >> 8);
             }
+
+            hashValue = crc;
         }
 
         protected override byte[] HashFinal()
         {
             hashValue = ~hashValue;
-            byte[] hashBuffer =
-            [
-                (byte)((hashValue >> 24) & 0xFF),
-                (byte)((hashValue >> 16) & 0xFF),
-                (byte)((hashValue >> 8) & 0xFF),
-                (byte)(hashValue & 0xFF),
-            ];
-            return hashBuffer;
+            return BitConverter.GetBytes(hashValue);
         }
 
         private static uint[] InitializeTable(uint polynomial)
@@ -46,16 +49,9 @@ namespace Extensions
             for (uint i = 0; i < 256; i++)
             {
                 uint crc = i;
-                for (uint j = 8; j > 0; j--)
+                for (int j = 0; j < 8; j++)
                 {
-                    if ((crc & 1) == 1)
-                    {
-                        crc = (crc >> 1) ^ polynomial;
-                    }
-                    else
-                    {
-                        crc >>= 1;
-                    }
+                    crc = (crc & 1) == 1 ? (crc >> 1) ^ polynomial : crc >> 1;
                 }
                 table[i] = crc;
             }

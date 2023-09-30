@@ -348,11 +348,11 @@ public static class ExtensionMethods
     {
         if (imageData != null)
         {
-            using MemoryStream memoryStream = new(imageData);
+            MemoryStream memoryStream = new(imageData);
             BitmapImage bmp = new();
             memoryStream.Position = 0;
             bmp.BeginInit();
-            bmp.CacheOption = BitmapCacheOption.OnLoad;
+            bmp.CacheOption = BitmapCacheOption.None;
             bmp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;
             bmp.StreamSource = memoryStream;
             bmp.EndInit();

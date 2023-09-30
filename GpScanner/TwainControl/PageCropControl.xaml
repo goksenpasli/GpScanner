@@ -252,10 +252,11 @@
                             <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
                         </TextBlock>
                     </Border>
-                    <Image Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                    <Image x:Name="Img" Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         d:Height="295" d:Width="242"
                         Source="{Binding SeçiliResim.ResimThumb}" />
+                    <Extensions:Magnifier ContentPanel="{Binding ElementName=Img}"/>
                     <Line Canvas.Left="{Binding Value, ElementName=LeftCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
                         d:Canvas.Left="20" d:Y2="295"
                         Stroke="Red" StrokeDashArray="2 2"
