@@ -232,10 +232,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Slider.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ToolBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

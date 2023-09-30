@@ -25,7 +25,6 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/TwainControl;component/Slider.xaml" />
                 <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -1605,7 +1604,7 @@
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc DOCUMENT}" />
                     </StackPanel>
                 </TabItem.Header>
-                <GroupBox Panel.ZIndex="-1" Background="{StaticResource GroupBoxBackGround}">
+                <GroupBox Background="{StaticResource GroupBoxBackGround}">
                     <GroupBox.Header>
                         <StackPanel Orientation="Horizontal">
                             <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
@@ -1637,50 +1636,18 @@
                             <TextBlock VerticalAlignment="Center" Text="{Binding SeekIndex, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
                         </StackPanel>
                     </GroupBox.Header>
-                    <Grid>
-                        <DockPanel IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
-                            <Slider Margin="20,0,20,0"
-                                DockPanel.Dock="Top" IsSnapToTickEnabled="True"
-                                Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                                Style="{StaticResource SliderStyle}"
-                                TickPlacement="BottomRight"
-                                Value="{Binding Scanner.CropLeft}" />
-                            <Slider Margin="25,0,20,0"
-                                DockPanel.Dock="Bottom" IsDirectionReversed="True"
-                                IsSnapToTickEnabled="True"
-                                Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                                Style="{StaticResource SliderStyle}"
-                                TickPlacement="TopLeft"
-                                Value="{Binding Scanner.CropRight}" />
-                            <Slider Margin="0,-5,0,20"
-                                DockPanel.Dock="Left" IsDirectionReversed="True"
-                                IsSnapToTickEnabled="True"
-                                Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                                Orientation="Vertical"
-                                Style="{StaticResource SliderStyle}"
-                                TickPlacement="BottomRight"
-                                Value="{Binding Scanner.CropTop}" />
-                            <Slider Margin="0,0,0,20"
-                                DockPanel.Dock="Right" IsSnapToTickEnabled="True"
-                                Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                                Orientation="Vertical"
-                                Style="{StaticResource SliderStyle}"
-                                TickPlacement="TopLeft"
-                                Value="{Binding Scanner.CropBottom}" />
-                            <Grid Panel.ZIndex="-1">
-                                <Extensions:ImageViewer x:Name="ImgViewer"
-                                    d:Source="/GpScanner;component/splash.png" d:Zoom="1"
-                                    Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
-                                    PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMoveAsync"
-                                    PreviewMouseWheel="ImgViewer_PreviewMouseWheel" PrintButtonVisibility="Visible"
-                                    SnapTick="True"
-                                    Source="{Binding SeçiliResim.Resim, Mode=OneWay}" />
-                                <Canvas x:Name="cnv" />
-                            </Grid>
-                        </DockPanel>
-                        <Expander HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                            ExpandDirection="Up"
+                    <Grid IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
+                        <Extensions:ImageViewer x:Name="ImgViewer"
+                            d:Source="/GpScanner;component/splash.png" d:Zoom="1"
+                            Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
+                            PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMoveAsync"
+                            PreviewMouseWheel="ImgViewer_PreviewMouseWheel" PrintButtonVisibility="Visible"
+                            SnapTick="True"
+                            Source="{Binding SeçiliResim.Resim, Mode=OneWay}" />
+                        <Canvas x:Name="cnv" />
+                        <Expander HorizontalAlignment="Left" VerticalAlignment="Top"
+                            ExpandDirection="Right"
                             IsExpanded="{Binding Scanner.CropDialogExpanded}">
                             <Grid>
                                 <local:ToolBox />
