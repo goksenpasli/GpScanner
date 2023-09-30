@@ -41,33 +41,29 @@
                 BorderThickness="1" CornerRadius="1">
                 <StackPanel>
                     <DockPanel>
-                        <Extensions:NumericUpDownControl HorizontalAlignment="Center"
+                        <DockPanel.Resources>
+                            <Style BasedOn="{StaticResource Slider}" TargetType="Slider">
+                                <Setter Property="AutoToolTipPlacement" Value="TopLeft" />
+                                <Setter Property="IsEnabled" Value="{Binding ElementName=BtnPreview, Path=IsEnabled}" />
+                                <Setter Property="Minimum" Value="0" />
+                                <Setter Property="SmallChange" Value="1" />
+                            </Style>
+                        </DockPanel.Resources>
+                        <Slider Margin="20.8,0,20.8,0"
                             DockPanel.Dock="Top"
-                            IsEnabled="{Binding ElementName=BtnPreview, Path=IsEnabled}"
-                            IsReadOnly="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                            Minimum="0" SmallChange="1"
                             Value="{Binding Scanner.CropTop}" />
-                        <Extensions:NumericUpDownControl HorizontalAlignment="Center"
+                        <Slider Margin="20.8,0,20.8,0"
                             DockPanel.Dock="Bottom"
-                            IsEnabled="{Binding ElementName=BtnPreview, Path=IsEnabled}"
-                            IsReadOnly="True"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                            Minimum="0" SmallChange="1"
                             Value="{Binding Scanner.CropBottom}" />
-                        <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                            DockPanel.Dock="Left"
-                            IsEnabled="{Binding ElementName=BtnPreview, Path=IsEnabled}"
-                            IsReadOnly="True"
+                        <Slider DockPanel.Dock="Left"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                            Minimum="0" SmallChange="1"
+                            Orientation="Vertical"
                             Value="{Binding Scanner.CropLeft}" />
-                        <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                            DockPanel.Dock="Right"
-                            IsEnabled="{Binding ElementName=BtnPreview, Path=IsEnabled}"
-                            IsReadOnly="True"
+                        <Slider DockPanel.Dock="Right"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                            Minimum="0" SmallChange="1"
+                            Orientation="Vertical"
                             Value="{Binding Scanner.CropRight}" />
                         <Border Background="{StaticResource BorderBackground}" BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
                             <Grid Width="200" Height="200">
@@ -124,6 +120,7 @@
                             </Grid>
                         </Border>
                     </DockPanel>
+                    <Separator />
                     <UniformGrid Columns="2">
                         <StackPanel>
                             <UniformGrid Columns="2" IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}">

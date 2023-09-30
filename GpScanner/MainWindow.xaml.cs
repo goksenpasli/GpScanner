@@ -293,7 +293,6 @@ public partial class MainWindow : Window
             if (e.PropertyName is "CameraQRCodeData" && TwainCtrl?.CameraQRCodeData is not null)
             {
                 ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
-                TwainCtrl.CameraQRCodeData = null;
             }
 
             if (e.PropertyName is "UsePageSeperator" && TwainCtrl?.Scanner?.UsePageSeperator == true)

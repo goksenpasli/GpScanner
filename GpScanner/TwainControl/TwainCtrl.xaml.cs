@@ -2689,9 +2689,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     QrCode.QrCode qrcode = new();
                     CameraQrCodeTimer.Tick += (s, f2) =>
                                               {
-                                                  using MemoryStream ms = new();
-                                                  cameraUserControl.EncodeBitmapImage(ms);
-                                                  CameraQRCodeData = ms.ToArray();
+                                                  CameraQRCodeData = cameraUserControl.CameraEncodeBitmapImage().ToArray();
                                                   Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(CameraQRCodeData);
                                                   OnPropertyChanged(nameof(CameraQRCodeData));
                                               };
@@ -2706,8 +2704,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private bool CheckWithCurrentOsVersion(string version)
     {
-        string osversion =
-            $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}.{Environment.OSVersion.Version.Build}";
+        string osversion = $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}.{Environment.OSVersion.Version.Build}";
         Version current = new(osversion);
         Version compare = new(version);
         return current >= compare;

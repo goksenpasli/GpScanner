@@ -29,14 +29,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
         Unloaded += CameraUserControl_Unloaded;
-        KameradanResimYükle = new RelayCommand<object>(
-            parameter =>
-            {
-                using MemoryStream ms = new();
-                EncodeBitmapImage(ms);
-                ResimData = ms.ToArray();
-            },
-            parameter => SeçiliKamera is not null);
+        KameradanResimYükle = new RelayCommand<object>(parameter => ResimData = CameraEncodeBitmapImage().ToArray(), parameter => SeçiliKamera is not null);
 
         VideodanResimYükle = new RelayCommand<object>(
             parameter =>
@@ -58,8 +51,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    using FileStream ms = new(saveFileDialog.FileName, FileMode.Create, FileAccess.Write);
-                    EncodeBitmapImage(ms);
+                    File.WriteAllBytes(saveFileDialog.FileName, CameraEncodeBitmapImage().ToArray());
                 }
             },
             parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
@@ -163,12 +155,14 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> VideodanResimYükle { get; }
 
-    public void EncodeBitmapImage(Stream ms)
+    public MemoryStream CameraEncodeBitmapImage()
     {
+        using MemoryStream stream = new();
         JpegBitmapEncoder encoder = new();
         encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
         encoder.QualityLevel = 90;
-        encoder.Save(ms);
+        encoder.Save(stream);
+        return stream;
     }
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
