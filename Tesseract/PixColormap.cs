@@ -25,7 +25,9 @@ namespace Tesseract
 
         public PixColor this[int index]
         {
-            get => LeptonicaApi.Native.pixcmapGetColor32(Handle, index, out int color) == 0 ? PixColor.FromRgb((uint)color) : throw new InvalidOperationException("Failed to retrieve color.");
+            get => LeptonicaApi.Native.pixcmapGetColor32(Handle, index, out int color) == 0
+                ? PixColor.FromRgb((uint)color)
+                : throw new InvalidOperationException("Failed to retrieve color.");
 
             set
             {

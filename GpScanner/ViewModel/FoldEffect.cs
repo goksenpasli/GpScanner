@@ -7,7 +7,11 @@ namespace GpScanner.ViewModel;
 
 public class FoldEffect : ShaderEffect
 {
-    public static readonly DependencyProperty FoldAmountProperty = DependencyProperty.Register("FoldAmount", typeof(double), typeof(FoldEffect), new UIPropertyMetadata(0.0D, PixelShaderConstantCallback(0)));
+    public static readonly DependencyProperty FoldAmountProperty = DependencyProperty.Register(
+        "FoldAmount",
+        typeof(double),
+        typeof(FoldEffect),
+        new UIPropertyMetadata(0.0D, PixelShaderConstantCallback(0)));
     public static readonly DependencyProperty InputProperty =
         RegisterPixelShaderSamplerProperty("Input", typeof(FoldEffect), 0);
 

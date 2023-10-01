@@ -151,8 +151,13 @@ public static class BitmapMethods
         try
         {
             double widthmultiply = bitmapFrame.PixelWidth / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-            double heightmultiply = bitmapFrame.PixelHeight / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
-            Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
+            double heightmultiply = bitmapFrame.PixelHeight /
+                (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+            Int32Rect ınt32Rect = new(
+                (int)(coordx * widthmultiply),
+                (int)(coordy * heightmultiply),
+                (int)(selectionwidth * widthmultiply),
+                (int)(selectionheight * heightmultiply));
             CroppedBitmap cb = new(bitmapFrame, ınt32Rect);
             bitmapFrame = null;
             return cb.ToTiffJpegByteArray(Format.Png);
@@ -460,7 +465,14 @@ public static class BitmapMethods
         }
     }
 
-    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
+    public static RenderTargetBitmap ÜstüneResimÇiz(
+        this ImageSource Source,
+        Point konum,
+        Brush brushes,
+        double emSize = 64,
+        string metin = null,
+        double angle = 315,
+        string font = "Arial")
     {
         FlowDirection flowDirection = CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR") ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         FormattedText formattedText =
@@ -498,7 +510,9 @@ public static class BitmapMethods
             using WebP webp = new();
             using MemoryStream ms = new(resim);
             using Bitmap bmp = Image.FromStream(ms) as Bitmap;
-            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb ? webp.EncodeLossy(bmp, kalite) : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
+            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb
+                ? webp.EncodeLossy(bmp, kalite)
+                : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
         }
         catch (Exception)
         {

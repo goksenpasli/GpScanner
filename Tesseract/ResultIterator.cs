@@ -64,7 +64,16 @@ namespace Tesseract
 
             IntPtr nameHandle =
                 TessApi.Native
-                       .ResultIteratorWordFontAttributes(handle, out bool isBold, out bool isItalic, out bool isUnderlined, out bool isMonospace, out bool isSerif, out bool isSmallCaps, out int pointSize, out int fontId);
+                       .ResultIteratorWordFontAttributes(
+                           handle,
+                           out bool isBold,
+                           out bool isItalic,
+                           out bool isUnderlined,
+                           out bool isMonospace,
+                           out bool isSerif,
+                           out bool isSmallCaps,
+                           out int pointSize,
+                           out int fontId);
 
             if (nameHandle == IntPtr.Zero)
             {

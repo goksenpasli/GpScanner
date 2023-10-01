@@ -3,7 +3,16 @@ using System.IO;
 
 namespace GpScanner.ViewModel;
 
-public sealed class FileResult(string path, long filesize, FileAttributes attributes, DateTime creationTime, DateTime lastWriteTime, DateTime lastAccessTime, FileType type, int depth, DirectoryStats stats = null)
+public sealed class FileResult(
+    string path,
+    long filesize,
+    FileAttributes attributes,
+    DateTime creationTime,
+    DateTime lastWriteTime,
+    DateTime lastAccessTime,
+    FileType type,
+    int depth,
+    DirectoryStats stats = null)
 {
     public FileAttributes Attributes { get; } = attributes;
 

@@ -70,7 +70,9 @@ namespace Tesseract
       	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 #endif
 
-        public static uint GetDataTwoByte(uint* data, int index) => IntPtr.Size == 8 ? *(ushort*)((ulong)((ushort*)data + index) ^ 2) : *(ushort*)((uint)((ushort*)data + index) ^ 2);
+        public static uint GetDataTwoByte(uint* data, int index) => IntPtr.Size == 8
+            ? *(ushort*)((ulong)((ushort*)data + index) ^ 2)
+            : *(ushort*)((uint)((ushort*)data + index) ^ 2);
 
 /// <summary>
 #if Net45

@@ -46,7 +46,9 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             },
             parameter => Scanner?.CroppedImage is not null);
 
-        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(), parameter => Scanner?.CroppedImage is not null);
+        InvertImage = new RelayCommand<object>(
+            parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(),
+            parameter => Scanner?.CroppedImage is not null);
 
         AutoCropImage = new RelayCommand<object>(
             parameter =>
@@ -61,7 +63,9 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
+                    Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap()
+                                                                                   .ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true)
+                                                                                   .ToBitmapImage(ImageFormat.Jpeg);
                     return;
                 }
 
@@ -69,14 +73,17 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 {
                     foreach (ScannedImage image in Scanner?.Resimler?.Where(z => z.Seçili)?.ToList())
                     {
-                        BitmapFrame bitmapframe = BitmapFrame.Create(image.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        BitmapFrame bitmapframe = BitmapFrame.Create(
+                            image.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
                         bitmapframe.Freeze();
                         image.Resim = bitmapframe;
                     }
                     return;
                 }
 
-                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
+                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap()
+                                                                               .ConvertBlackAndWhite(Scanner.ToolBarBwThreshold)
+                                                                               .ToBitmapImage(ImageFormat.Jpeg);
             },
             parameter => Scanner?.CroppedImage is not null);
 
@@ -232,9 +239,10 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     double xratio = width / currentimage.PixelWidth;
                                     BitmapSource bitmapsource = ResizeRatioImage
                                         ? currentimage.Resize(xratio)
-                                        : CompressImage ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height) : currentimage;
-                                    using MemoryStream ms =
-                                        new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+                                        : CompressImage
+                                                ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height)
+                                                : currentimage;
+                                    using MemoryStream ms = new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                     using XImage xImage = XImage.FromStream(ms);
                                     using XGraphics gfx = XGraphics.FromPdfPage(page);
                                     box = new XRect(x + BorderSize, y + BorderSize, width + (BorderSize * -2), height + (BorderSize * -2));

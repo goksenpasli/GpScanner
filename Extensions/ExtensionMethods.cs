@@ -148,9 +148,16 @@ public static class ExtensionMethods
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr ExtractIcon(this IntPtr hInst, string lpszExeFileName, int nIconIndex);
 
-    public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
+    public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.SelectMany(
+        ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
 
-    public static string GetDisplayName(string path) => Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero
+    public static string GetDisplayName(string path) => Helpers.SHGetFileInfo(
+                path,
+                FILE_ATTRIBUTE_NORMAL,
+                out SHFILEINFO shfi,
+                (uint)Marshal.SizeOf(typeof(SHFILEINFO)),
+                SHGFI_DISPLAYNAME) !=
+            IntPtr.Zero
         ? shfi.szDisplayName
         : null;
 
@@ -273,7 +280,8 @@ public static class ExtensionMethods
         }
     }
 
-    public static Brush RandomColor() => new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
+    public static Brush RandomColor() => new SolidColorBrush(
+        System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
     {

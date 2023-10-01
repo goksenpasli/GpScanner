@@ -804,7 +804,9 @@ namespace WebPWrapper
                 }
 
                 IntPtr ptrResult = pinnedResult.AddrOfPinnedObject();
-                return UnsafeNativeMethods.WebPPictureDistortion(ref wpicSource, ref wpicReference, metric_type, ptrResult) != 1 ? throw new Exception("Can´t measure.") : result;
+                return UnsafeNativeMethods.WebPPictureDistortion(ref wpicSource, ref wpicReference, metric_type, ptrResult) != 1
+                    ? throw new Exception("Can´t measure.")
+                    : result;
             }
             catch (Exception ex)
             {
@@ -1694,10 +1696,18 @@ namespace WebPWrapper
         private static extern int WebPGetDecoderVersion_x86();
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetFeaturesInternal")]
-        private static extern VP8StatusCode WebPGetFeaturesInternal_x64([InAttribute] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
+        private static extern VP8StatusCode WebPGetFeaturesInternal_x64(
+            [InAttribute] IntPtr rawWebP,
+            UIntPtr data_size,
+            ref WebPBitstreamFeatures features,
+            int WEBP_DECODER_ABI_VERSION);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetFeaturesInternal")]
-        private static extern VP8StatusCode WebPGetFeaturesInternal_x86([InAttribute] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
+        private static extern VP8StatusCode WebPGetFeaturesInternal_x86(
+            [InAttribute] IntPtr rawWebP,
+            UIntPtr data_size,
+            ref WebPBitstreamFeatures features,
+            int WEBP_DECODER_ABI_VERSION);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetInfo")]
         private static extern int WebPGetInfo_x64([InAttribute] IntPtr data, UIntPtr data_size, out int width, out int height);

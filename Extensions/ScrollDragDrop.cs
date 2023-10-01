@@ -11,7 +11,11 @@ namespace Extensions;
 public static class ScrollDragDrop
 {
     public static readonly DependencyProperty ScrollOnDragDropProperty =
-                        DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(ScrollDragDrop), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
+                        DependencyProperty.RegisterAttached(
+        "ScrollOnDragDrop",
+        typeof(bool),
+        typeof(ScrollDragDrop),
+        new PropertyMetadata(false, HandleScrollOnDragDropChanged));
 
     public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
     {
@@ -63,7 +67,9 @@ public static class ScrollDragDrop
         return null;
     }
 
-    public static bool GetScrollOnDragDrop(DependencyObject element) => element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
+    public static bool GetScrollOnDragDrop(DependencyObject element) => element == null
+        ? throw new ArgumentNullException(nameof(element))
+        : (bool)element.GetValue(ScrollOnDragDropProperty);
 
     public static void SetScrollOnDragDrop(DependencyObject element, bool value)
     {

@@ -23,7 +23,11 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         typeof(BitmapFrame),
         typeof(DrawControl),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-    public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register("TemporaryImage", typeof(ImageSource), typeof(DrawControl), new PropertyMetadata(null));
+    public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register(
+        "TemporaryImage",
+        typeof(ImageSource),
+        typeof(DrawControl),
+        new PropertyMetadata(null));
     private bool drawControlContextMenu;
     private Cursor drawCursor;
     private Ellipse ellipse = new();

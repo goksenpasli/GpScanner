@@ -37,7 +37,13 @@ public class LocExtension(string stringName) : MarkupExtension
             baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
         }
 
-        Binding binding = new() { Mode = BindingMode.OneWay, Path = new PropertyPath($"[{baseName}.{StringName}]"), Source = TranslationSource.Instance, FallbackValue = StringName };
+        Binding binding = new()
+        {
+            Mode = BindingMode.OneWay,
+            Path = new PropertyPath($"[{baseName}.{StringName}]"),
+            Source = TranslationSource.Instance,
+            FallbackValue = StringName
+        };
 
         return binding.ProvideValue(serviceProvider);
     }
@@ -62,8 +68,11 @@ public class LocExtension(string stringName) : MarkupExtension
 
 public class Translation : DependencyObject
 {
-    public static readonly DependencyProperty DesignCultureProperty =
-                            DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
+    public static readonly DependencyProperty DesignCultureProperty = DependencyProperty.RegisterAttached(
+        "DesignCulture",
+        typeof(string),
+        typeof(Translation),
+        new PropertyMetadata("en-EN", CultureChanged));
     public static readonly DependencyProperty ResourceManagerProperty =
         DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 

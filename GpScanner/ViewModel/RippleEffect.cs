@@ -8,7 +8,11 @@ namespace GpScanner.ViewModel;
 public class RippleEffect : ShaderEffect
 {
     public static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Input", typeof(RippleEffect), 0);
-    public static readonly DependencyProperty ProgressProperty = DependencyProperty.Register("Progress", typeof(double), typeof(RippleEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(0)));
+    public static readonly DependencyProperty ProgressProperty = DependencyProperty.Register(
+        "Progress",
+        typeof(double),
+        typeof(RippleEffect),
+        new UIPropertyMetadata(0D, PixelShaderConstantCallback(0)));
     public static readonly DependencyProperty Texture2Property = RegisterPixelShaderSamplerProperty("Texture2", typeof(RippleEffect), 1);
 
     public RippleEffect()

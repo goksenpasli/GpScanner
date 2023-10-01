@@ -12,7 +12,11 @@ namespace Extensions;
 [ContentProperty("Description")]
 public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
+        "Description",
+        typeof(object),
+        typeof(ButtonedTextBox),
+        new PropertyMetadata(null));
     private Visibility copyButtonVisibility = Visibility.Visible;
     private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
     private Visibility openButtonVisibility = Visibility.Visible;

@@ -15,7 +15,11 @@ namespace TwainControl;
 /// </summary>
 public class EypPdfViewer : PdfViewer.PdfViewer
 {
-    public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register("EypFilePath", typeof(string), typeof(EypPdfViewer), new PropertyMetadata(null, Changed));
+    public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register(
+        "EypFilePath",
+        typeof(string),
+        typeof(EypPdfViewer),
+        new PropertyMetadata(null, Changed));
 
     public EypPdfViewer()
     {

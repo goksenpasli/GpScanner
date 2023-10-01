@@ -27,7 +27,12 @@ public static class Helpers
     public static extern int SHOpenFolderAndSelectItems(IntPtr pidlFolder, uint cidl, [In][MarshalAs(UnmanagedType.LPArray)] IntPtr[] apidl, uint dwFlags);
 
     [DllImport("shell32.dll", SetLastError = true)]
-    public static extern void SHParseDisplayName([MarshalAs(UnmanagedType.LPWStr)] string name, IntPtr bindingContext, [Out] out IntPtr pidl, uint sfgaoIn, [Out] out uint psfgaoOut);
+    public static extern void SHParseDisplayName(
+        [MarshalAs(UnmanagedType.LPWStr)] string name,
+        IntPtr bindingContext,
+        [Out] out IntPtr pidl,
+        uint sfgaoIn,
+        [Out] out uint psfgaoOut);
 
     [StructLayout(LayoutKind.Sequential)]
     public struct RECT

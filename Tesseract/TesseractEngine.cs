@@ -82,7 +82,13 @@ namespace Tesseract
         /// An optional sequence of tesseract configuration files to load, encoded using UTF8 without BOM with Unix end
         /// of line characters you can use an advanced text editor such as Notepad++ to accomplish this.
         /// </param>
-        public TesseractEngine(string datapath, string language, IEnumerable<string> configFiles) : this(datapath, language, EngineMode.Default, configFiles, new Dictionary<string, object>(), false)
+        public TesseractEngine(string datapath, string language, IEnumerable<string> configFiles) : this(
+            datapath,
+            language,
+            EngineMode.Default,
+            configFiles,
+            new Dictionary<string, object>(),
+            false)
         {
         }
         /// <summary>
@@ -101,7 +107,13 @@ namespace Tesseract
         /// </param>
         /// <param name="language">The language to load, for example 'eng' for English.</param>
         /// <param name="engineMode">The <see cref="EngineMode"/> value to use when initialising the tesseract engine.</param>
-        public TesseractEngine(string datapath, string language, EngineMode engineMode) : this(datapath, language, engineMode, new string[0], new Dictionary<string, object>(), false)
+        public TesseractEngine(string datapath, string language, EngineMode engineMode) : this(
+            datapath,
+            language,
+            engineMode,
+            new string[0],
+            new Dictionary<string, object>(),
+            false)
         {
         }
         /// <summary>
@@ -156,7 +168,13 @@ namespace Tesseract
         /// An optional sequence of tesseract configuration files to load, encoded using UTF8 without BOM with Unix end
         /// of line characters you can use an advanced text editor such as Notepad++ to accomplish this.
         /// </param>
-        public TesseractEngine(string datapath, string language, EngineMode engineMode, IEnumerable<string> configFiles) : this(datapath, language, engineMode, configFiles, new Dictionary<string, object>(), false)
+        public TesseractEngine(string datapath, string language, EngineMode engineMode, IEnumerable<string> configFiles) : this(
+            datapath,
+            language,
+            engineMode,
+            configFiles,
+            new Dictionary<string, object>(),
+            false)
         {
         }
 
@@ -181,7 +199,13 @@ namespace Tesseract
         /// An optional sequence of tesseract configuration files to load, encoded using UTF8 without BOM with Unix end
         /// of line characters you can use an advanced text editor such as Notepad++ to accomplish this.
         /// </param>
-        public TesseractEngine(string datapath, string language, EngineMode engineMode, IEnumerable<string> configFiles, IDictionary<string, object> initialOptions, bool setOnlyNonDebugVariables)
+        public TesseractEngine(
+            string datapath,
+            string language,
+            EngineMode engineMode,
+            IEnumerable<string> configFiles,
+            IDictionary<string, object> initialOptions,
+            bool setOnlyNonDebugVariables)
         {
             Guard.RequireNotNullOrEmpty(nameof(language), language);
 
@@ -280,7 +304,13 @@ namespace Tesseract
             }
         }
 
-        private void Initialise(string datapath, string language, EngineMode engineMode, IEnumerable<string> configFiles, IDictionary<string, object> initialValues, bool setOnlyNonDebugVariables)
+        private void Initialise(
+            string datapath,
+            string language,
+            EngineMode engineMode,
+            IEnumerable<string> configFiles,
+            IDictionary<string, object> initialValues,
+            bool setOnlyNonDebugVariables)
         {
             Guard.RequireNotNullOrEmpty(nameof(language), language);
 
@@ -294,7 +324,15 @@ namespace Tesseract
                 }
             }
 
-            if (TessApi.BaseApiInit(Handle, datapath, language, (int)engineMode, configFiles ?? new List<string>(), initialValues ?? new Dictionary<string, object>(), setOnlyNonDebugVariables) != 0)
+            if (TessApi.BaseApiInit(
+                    Handle,
+                    datapath,
+                    language,
+                    (int)engineMode,
+                    configFiles ?? new List<string>(),
+                    initialValues ?? new Dictionary<string, object>(),
+                    setOnlyNonDebugVariables) !=
+                0)
             {
                 Handle = new HandleRef(this, IntPtr.Zero);
                 GC.SuppressFinalize(this);

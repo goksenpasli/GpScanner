@@ -143,7 +143,10 @@ namespace Tesseract
         {
             Guard.RequireNotNull("title", title);
             VerifyNotDisposed();
-            Guard.Verify(_currentDocumentHandle == null, "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.", title);
+            Guard.Verify(
+                _currentDocumentHandle == null,
+                "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.",
+                title);
 
             IntPtr titlePtr = Marshal.StringToHGlobalAnsi(title);
             if (TessApi.Native.ResultRendererBeginDocument(Handle, titlePtr) == 0)
@@ -269,7 +272,10 @@ namespace Tesseract
         /// <param name="fontDirectory">The directory containing the pdf font data, normally same as your tessdata directory.</param>
         /// <param name="textonly">skip images if set</param>
         /// <returns></returns>
-        public static IResultRenderer CreatePdfRenderer(string outputFilename, string fontDirectory, bool textonly) => new PdfResultRenderer(outputFilename, fontDirectory, textonly);
+        public static IResultRenderer CreatePdfRenderer(string outputFilename, string fontDirectory, bool textonly) => new PdfResultRenderer(
+            outputFilename,
+            fontDirectory,
+            textonly);
 
         /// <summary>
         /// Creates renderers for specified output formats.

@@ -39,6 +39,8 @@ namespace TwainWpf.Wpf
 
         public IntPtr WindowHandle => _interopHelper.Handle;
 
-        public IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) => FilterMessageCallback == null ? IntPtr.Zero : FilterMessageCallback(hwnd, msg, wParam, lParam, ref handled);
+        public IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled) => FilterMessageCallback == null
+            ? IntPtr.Zero
+            : FilterMessageCallback(hwnd, msg, wParam, lParam, ref handled);
     }
 }

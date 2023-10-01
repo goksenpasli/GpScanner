@@ -591,6 +591,9 @@
                                 </GroupBox>
                             </local:ContentToggleButton.OverContent>
                         </local:ContentToggleButton>
+                        <ToggleButton IsChecked="{Binding ShowOsdInfo}">
+                            <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
+                        </ToggleButton>
                         <ToggleButton Content="360°" IsChecked="{Binding PanoramaMode}" />
                         <local:NumericUpDownControl IsReadOnly="True" Minimum="0.1" Value="{Binding SpeedRatio, ElementName=Player}" />
                     </StackPanel>

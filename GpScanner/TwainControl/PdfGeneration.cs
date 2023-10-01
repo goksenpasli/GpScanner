@@ -151,7 +151,11 @@ public static class PdfGeneration
 
                 if (Scanner.PdfPageNumberDraw)
                 {
-                    gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                    gfx.DrawText(
+                        new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
+                        (i + 1).ToString(),
+                        GetPdfTextLayout(page)[0],
+                        GetPdfTextLayout(page)[1]);
                 }
 
                 if (Scanner.PdfPageTextDraw)
@@ -242,7 +246,13 @@ public static class PdfGeneration
         return document;
     }
 
-    public static PdfDocument GeneratePdf(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, int dpi = 120)
+    public static PdfDocument GeneratePdf(
+        this BitmapSource bitmapframe,
+        ObservableCollection<OcrData> ScannedText,
+        Format format,
+        Paper paper,
+        int jpegquality = 80,
+        int dpi = 120)
     {
         if (bitmapframe is null)
         {
@@ -352,7 +362,13 @@ public static class PdfGeneration
         }
     }
 
-    public static Task<PdfDocument> GeneratePdfAsync(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
+    public static Task<PdfDocument> GeneratePdfAsync(
+        this List<ScannedImage> bitmapFrames,
+        Format format,
+        Paper paper,
+        int jpegquality = 80,
+        List<ObservableCollection<OcrData>> ScannedText = null,
+        int dpi = 120)
     {
         if (bitmapFrames?.Count == 0)
         {
@@ -423,7 +439,11 @@ public static class PdfGeneration
 
                     if (Scanner.PdfPageNumberDraw)
                     {
-                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                        gfx.DrawText(
+                            new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
+                            (i + 1).ToString(),
+                            GetPdfTextLayout(page)[0],
+                            GetPdfTextLayout(page)[1]);
                     }
 
                     if (Scanner.PdfPageTextDraw)
@@ -466,7 +486,11 @@ public static class PdfGeneration
 
                     if (Scanner.PdfPageNumberDraw)
                     {
-                        gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), (i + 1).ToString(), GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+                        gfx.DrawText(
+                            new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
+                            (i + 1).ToString(),
+                            GetPdfTextLayout(page)[0],
+                            GetPdfTextLayout(page)[1]);
                     }
 
                     if (Scanner.PdfPageTextDraw)
@@ -500,7 +524,14 @@ public static class PdfGeneration
         return Task.FromResult(document);
     }
 
-    public static PdfDocument GenerateWatermarkedPdf(this PdfDocument pdfdocument, int sayfa, double rotation, SolidColorBrush textcolor, double textsize, string text, string font)
+    public static PdfDocument GenerateWatermarkedPdf(
+        this PdfDocument pdfdocument,
+        int sayfa,
+        double rotation,
+        SolidColorBrush textcolor,
+        double textsize,
+        string text,
+        string font)
     {
         PdfPage page = pdfdocument.Pages[sayfa];
         XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);

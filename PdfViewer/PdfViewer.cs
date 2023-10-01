@@ -38,18 +38,34 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty DpiProperty =
         DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
-    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(PdfViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
-    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
+    public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
+        "Orientation",
+        typeof(FitImageOrientation),
+        typeof(PdfViewer),
+        new PropertyMetadata(FitImageOrientation.Width, Changed));
+    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register(
+        "PdfFilePath",
+        typeof(string),
+        typeof(PdfViewer),
+        new PropertyMetadata(null, PdfFilePathChanged));
     public static readonly DependencyProperty SayfaProperty =
         DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
-    public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
+    public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register(
+        "ScrollBarVisible",
+        typeof(ScrollBarVisibility),
+        typeof(PdfViewer),
+        new PropertyMetadata(ScrollBarVisibility.Auto));
     public static readonly DependencyProperty SeekingLowerPdfDpiProperty =
         DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty SeekingPdfDpiProperty =
         DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
-    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
+    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
+        "Source",
+        typeof(ImageSource),
+        typeof(PdfViewer),
+        new PropertyMetadata(null, SourceChanged));
     public static readonly DependencyProperty ThumbsVisibleProperty =
         DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty ToolBarVisibilityProperty =
@@ -749,7 +765,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         if (d is PdfViewer pdfViewer)
         {
             pdfViewer.Source = null;
-            if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+            if (e.NewValue is not null &&
+                File.Exists(e.NewValue as string) &&
+                string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {

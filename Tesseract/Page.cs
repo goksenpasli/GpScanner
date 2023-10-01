@@ -78,7 +78,9 @@ namespace Tesseract
         /// <returns></returns>
         public PageIterator AnalyseLayout()
         {
-            Guard.Verify(PageSegmentMode != PageSegMode.OsdOnly, "Cannot analyse image layout when using OSD only page segmentation, please use DetectBestOrientation instead.");
+            Guard.Verify(
+                PageSegmentMode != PageSegMode.OsdOnly,
+                "Cannot analyse image layout when using OSD only page segmentation, please use DetectBestOrientation instead.");
 
             IntPtr resultIteratorHandle = TessApi.Native.BaseAPIAnalyseLayout(Engine.Handle);
             return new PageIterator(this, resultIteratorHandle);
@@ -106,7 +108,9 @@ namespace Tesseract
 
             orientation = orientationDegrees > 315 || orientationDegrees <= 45
                 ? Orientation.PageUp
-                : orientationDegrees > 45 && orientationDegrees <= 135 ? Orientation.PageRight : orientationDegrees > 135 && orientationDegrees <= 225 ? Orientation.PageDown : Orientation.PageLeft;
+                : orientationDegrees > 45 && orientationDegrees <= 135
+                    ? Orientation.PageRight
+                    : orientationDegrees > 135 && orientationDegrees <= 225 ? Orientation.PageDown : Orientation.PageLeft;
 
             confidence = orientationConfidence;
         }
@@ -138,7 +142,9 @@ namespace Tesseract
         ///         <param name="scriptConfidence">The confidence level in the script</param>
         public void DetectBestOrientationAndScript(out int orientation, out float confidence, out string scriptName, out float scriptConfidence)
         {
-            if (TessApi.Native.TessBaseAPIDetectOrientationScript(Engine.Handle, out int orient_deg, out float orient_conf, out IntPtr script_nameHandle, out float script_conf) != 0)
+            if (TessApi.Native
+                       .TessBaseAPIDetectOrientationScript(Engine.Handle, out int orient_deg, out float orient_conf, out IntPtr script_nameHandle, out float script_conf) !=
+                0)
             {
                 orientation = orient_deg;
                 confidence = orient_conf;

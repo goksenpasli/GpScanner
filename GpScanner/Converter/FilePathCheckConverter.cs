@@ -9,7 +9,9 @@ namespace GpScanner.Converter;
 
 public sealed class FilePathCheckConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string filename && File.Exists(filename)
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) &&
+            value is string filename &&
+            File.Exists(filename)
         ? filename
         : null;
 

@@ -13,8 +13,16 @@ namespace Extensions
 {
     public class ArchiveViewer : Control, INotifyPropertyChanged, IDisposable
     {
-        public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
-        public static readonly DependencyProperty CalculateCrcProperty = DependencyProperty.Register("CalculateCrc", typeof(bool), typeof(ArchiveViewer), new PropertyMetadata(false));
+        public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register(
+            "ArchivePath",
+            typeof(string),
+            typeof(ArchiveViewer),
+            new PropertyMetadata(null, Changed));
+        public static readonly DependencyProperty CalculateCrcProperty = DependencyProperty.Register(
+            "CalculateCrc",
+            typeof(bool),
+            typeof(ArchiveViewer),
+            new PropertyMetadata(false));
         private ObservableCollection<ArchiveData> arşivİçerik;
         private ICollectionView cvs;
         private bool disposedValue;
