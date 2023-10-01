@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="505" d:DesignWidth="300"
+    d:DesignHeight="525" d:DesignWidth="300"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -165,11 +165,21 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
+                                    <TextBlock VerticalAlignment="Center"
+                                        Foreground="Red"
+                                        Text="{Binding DistinctImages}"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </Button.ToolTip>
                         </Button>
                     </UniformGrid>
                 </UniformGrid>
+                <Separator />
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Run d:Text="PageWidth" Text="{Binding PageWidth, Mode=OneWay}" />
+                    <Run Text="X" />
+                    <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
+                </TextBlock>
             </StackPanel>
         </GroupBox.Header>
         <Grid>
@@ -241,11 +251,6 @@
                                     </Style.Triggers>
                                 </Style>
                             </Border.Style>
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                                <Run d:Text="PageWidth" Text="{Binding PageWidth, Mode=OneWay}" />
-                                <Run Text="X" />
-                                <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
-                            </TextBlock>
                         </Border>
                         <Image x:Name="Img"
                             Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"

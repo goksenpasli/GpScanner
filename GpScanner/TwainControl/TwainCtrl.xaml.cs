@@ -88,6 +88,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private ObservableCollection<OcrData> dataBaseTextData;
     private int decodeHeight;
     private bool disposedValue;
+    private string distinctImages;
     private GridLength documentGridLength = new(5, GridUnitType.Star);
     private bool documentPreviewIsExpanded = true;
     private bool dragMoveStarted;
@@ -1546,13 +1547,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                SeçiliResimlerEnBoyEşit = Scanner?.Resimler?.Where(z => z.Seçili)?.Distinct(new ImageWidthHeightComparer())?.Count() == 1;
-                return SeçiliResim is not null && Scanner.Resimler.Count(z => z.Seçili) > 1 &&
+                List<ScannedImage> distinct = Scanner?.Resimler?.Where(z => z.Seçili)?.Distinct(new ImageWidthHeightComparer()).ToList();
+                DistinctImages = $"{string.Join(",", distinct?.Select(z => z.Index))} {Translation.GetResStringValue("DOCUMENT")}";
+                SeçiliResimlerEnBoyEşit = distinct?.Count() == 1;
+                return SeçiliResim is not null &&
+                    Scanner.Resimler.Count(z => z.Seçili) > 1 &&
                     SeçiliResimlerEnBoyEşit &&
                     PageWidth == SeçiliResim.Resim.PixelWidth &&
                     PageHeight == SeçiliResim.Resim.PixelHeight &&
-                    Settings.Default.Left != Settings.Default.Right &&
-                    Settings.Default.Top != Settings.Default.Bottom &&
                     Settings.Default.Left != Settings.Default.Right &&
                     Settings.Default.Top != Settings.Default.Bottom;
             });
@@ -1741,6 +1743,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 decodeHeight = value;
                 OnPropertyChanged(nameof(DecodeHeight));
+            }
+        }
+    }
+
+    public string DistinctImages
+    {
+        get => distinctImages;
+
+        set
+        {
+            if (distinctImages != value)
+            {
+                distinctImages = value;
+                OnPropertyChanged(nameof(DistinctImages));
             }
         }
     }
