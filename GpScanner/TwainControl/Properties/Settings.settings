@@ -27,7 +27,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="EmptyThreshold" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">25</Value>
     </Setting>
     <Setting Name="UseSelectedProfile" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>

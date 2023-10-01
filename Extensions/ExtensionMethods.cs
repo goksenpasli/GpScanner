@@ -69,39 +69,39 @@ public static class ExtensionMethods
     {
         unsafe
         {
-    BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-    if (bitmapData != null)
-    {
-        int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-        int heightInPixels = bitmapData.Height;
-        int widthInBytes = bitmapData.Width * bytesPerPixel;
-        byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
-        _ = Parallel.For(
-            0,
-            heightInPixels,
-            y =>
+            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            if (bitmapData != null)
             {
-                byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
-                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
-                {
-                    byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
-                    if (grayscale)
+                int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                int heightInPixels = bitmapData.Height;
+                int widthInBytes = bitmapData.Width * bytesPerPixel;
+                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+                _ = Parallel.For(
+                    0,
+                    heightInPixels,
+                    y =>
                     {
-                        currentLine[x] = gray;
-                        currentLine[x + 1] = gray;
-                        currentLine[x + 2] = gray;
-                    }
-                    else
-                    {
-                        currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
-                        currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
-                        currentLine[x + 2] = (byte)(gray < bWthreshold ? 0 : 255);
-                    }
-                }
-            });
-        bitmap.UnlockBits(bitmapData);
-        bitmapData = null;
-    }
+                        byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                        for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+                        {
+                            byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
+                            if (grayscale)
+                            {
+                                currentLine[x] = gray;
+                                currentLine[x + 1] = gray;
+                                currentLine[x + 2] = gray;
+                            }
+                            else
+                            {
+                                currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
+                                currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
+                                currentLine[x + 2] = (byte)(gray < bWthreshold ? 0 : 255);
+                            }
+                        }
+                    });
+                bitmap.UnlockBits(bitmapData);
+                bitmapData = null;
+            }
         }
 
         return bitmap;
@@ -225,30 +225,30 @@ public static class ExtensionMethods
             int stride = bmData.Stride;
             unsafe
             {
-    int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-    byte* p = (byte*)(void*)bmData.Scan0;
-    int nOffset = stride - (bitmap.Width * 3);
-    int widthInBytes = bmData.Width * bytesPerPixel;
-    for (int y = 0; y < bmData.Height; ++y)
-    {
-        for (int x = 0; x < widthInBytes; x += bytesPerPixel)
-        {
-            count++;
-            byte blue = p[0];
-            byte green = p[1];
-            byte red = p[2];
+                int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+                byte* p = (byte*)(void*)bmData.Scan0;
+                int nOffset = stride - (bitmap.Width * 3);
+                int widthInBytes = bmData.Width * bytesPerPixel;
+                for (int y = 0; y < bmData.Height; ++y)
+                {
+                    for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+                    {
+                        count++;
+                        byte blue = p[0];
+                        byte green = p[1];
+                        byte red = p[2];
 
-            int pixelValue = red + green + blue;
-            total += pixelValue;
-            double avg = total / count;
-            totalVariance += Math.Pow(pixelValue - avg, 2);
-            stdDev = Math.Sqrt(totalVariance / count);
+                        int pixelValue = red + green + blue;
+                        total += pixelValue;
+                        double avg = total / count;
+                        totalVariance += Math.Pow(pixelValue - avg, 2);
+                        stdDev = Math.Sqrt(totalVariance / count);
 
-            p += 3;
-        }
+                        p += 3;
+                    }
 
-        p += nOffset;
-    }
+                    p += nOffset;
+                }
             }
 
             bitmap.UnlockBits(bmData);
