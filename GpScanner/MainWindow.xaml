@@ -877,41 +877,54 @@
                                     HorizontalContentAlignment="Stretch"
                                     d:ItemsSource="{d:SampleData ItemCount=5}"
                                     Background="{StaticResource BorderBackground}"
-                                    ItemsSource="{Binding BarcodeList}">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="{x:Type ListBoxItem}">
-                                            <Setter Property="Padding" Value="0" />
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
+                                    ItemsSource="{Binding BarcodeList}"
+                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
-                                            <Grid Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}">
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="20" />
-                                                    <ColumnDefinition Width="84.8" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-                                                <TextBlock VerticalAlignment="Center"><Hyperlink Command="{Binding DataContext.TesseractViewModel.TesseractDataFilesDownloadLink, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
-                                                        <Run FontFamily="Wingdings" FontSize="16"
-                                                            FontWeight="Bold" Text="8" />
-                                                    </Hyperlink></TextBlock>
-                                                <Image Grid.Column="1"
-                                                    Width="80" Height="80"
-                                                    Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}"
-                                                    Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
-                                                    <Image.ContextMenu>
-                                                        <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                                                            <MenuItem Command="{Binding Tag.SaveQrImage}" CommandParameter="{Binding Source}" Header="{twainctrl:Loc SAVESELECTED}" />
-                                                        </ContextMenu>
-                                                    </Image.ContextMenu>
-                                                </Image>
-                                                <Extensions:ButtonedTextBox Grid.Column="2"
-                                                    Height="80"
-                                                    IsReadOnly="True" OpenButtonVisibility="Collapsed"
-                                                    ResetButtonVisibility="Collapsed"
-                                                    Text="{Binding Mode=OneWay}"
-                                                    TextWrapping="Wrap" />
-                                            </Grid>
+                                            <Extensions:ButtonedTextBox Height="80"
+                                                IsReadOnly="True" PasteButtonVisibility="Collapsed"
+                                                ResetButtonVisibility="Collapsed"
+                                                Text="{Binding Mode=OneWay}"
+                                                TextWrapping="Wrap">
+                                                <Extensions:ButtonedTextBox.Description>
+                                                    <Image Width="80" Height="80"
+                                                        Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}"
+                                                        Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
+                                                        <Image.ContextMenu>
+                                                            <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                                                <ContextMenu.Template>
+                                                                    <ControlTemplate>
+                                                                        <GroupBox>
+                                                                            <StackPanel>
+                                                                                <Button Command="{Binding Tag.SaveQrImage}" CommandParameter="{Binding Source}">
+                                                                                    <Image Width="32" Height="32">
+                                                                                        <Image.Source>
+                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                <Binding Source="Shell32.dll" />
+                                                                                                <Binding Source="6" />
+                                                                                            </MultiBinding>
+                                                                                        </Image.Source>
+                                                                                    </Image>
+                                                                                </Button>
+                                                                                <Button Command="{Binding Tag.PrintImage}" CommandParameter="{Binding Source}">
+                                                                                    <Image Width="32" Height="32">
+                                                                                        <Image.Source>
+                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                <Binding Source="Shell32.dll" />
+                                                                                                <Binding Source="16" />
+                                                                                            </MultiBinding>
+                                                                                        </Image.Source>
+                                                                                    </Image>
+                                                                                </Button>
+                                                                            </StackPanel>
+                                                                        </GroupBox>
+                                                                    </ControlTemplate>
+                                                                </ContextMenu.Template>
+                                                            </ContextMenu>
+                                                        </Image.ContextMenu>
+                                                    </Image>
+                                                </Extensions:ButtonedTextBox.Description>
+                                            </Extensions:ButtonedTextBox>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
