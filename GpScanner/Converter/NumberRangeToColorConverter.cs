@@ -14,16 +14,8 @@ namespace GpScanner.Converter
             typeof(Color[]),
             typeof(NumberRangeToColorConverter),
             new PropertyMetadata(new Color[] { System.Windows.Media.Colors.Lime, System.Windows.Media.Colors.Yellow, System.Windows.Media.Colors.Red }));
-        public static readonly DependencyProperty MaxNumberProperty = DependencyProperty.Register(
-            "MaxNumber",
-            typeof(int),
-            typeof(NumberRangeToColorConverter),
-            new PropertyMetadata(100));
-        public static readonly DependencyProperty MinNumberProperty = DependencyProperty.Register(
-            "MinNumber",
-            typeof(int),
-            typeof(NumberRangeToColorConverter),
-            new PropertyMetadata(0));
+        public static readonly DependencyProperty MaxNumberProperty = DependencyProperty.Register("MaxNumber", typeof(int), typeof(NumberRangeToColorConverter), new PropertyMetadata(100));
+        public static readonly DependencyProperty MinNumberProperty = DependencyProperty.Register("MinNumber", typeof(int), typeof(NumberRangeToColorConverter), new PropertyMetadata(0));
         public static readonly DependencyProperty ReverseColorsProperty = DependencyProperty.Register(
             "ReverseColors",
             typeof(bool),

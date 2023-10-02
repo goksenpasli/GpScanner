@@ -605,4 +605,16 @@ PDFをマージ</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>フィルムスキャナー</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Width Height Equalを無視します。例外が発生する可能性があります！</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>図書館</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>PDF保存フォルダを選択してください！</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>画像フォルダを選択！</value>
+  </data>
 </root>

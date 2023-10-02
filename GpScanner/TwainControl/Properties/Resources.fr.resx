@@ -607,4 +607,16 @@ VOIR</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>SCANNER DE FILMS</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignorer la largeur et la hauteur égales. Une exception peut se produire !</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>BIBLIOTHEQUE</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Sélectionnez Dossier d'enregistrement PDF !</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Sélectionnez le dossier des images !</value>
+  </data>
 </root>

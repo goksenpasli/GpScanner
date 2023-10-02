@@ -607,4 +607,16 @@ VEDERE</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>SCANNER PER PELLICOLE</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignora Larghezza Altezza Uguale. Potrebbe verificarsi un'eccezione!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>LIBRERIA</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Seleziona la cartella di salvataggio PDF!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Seleziona la cartella Immagini!</value>
+  </data>
 </root>

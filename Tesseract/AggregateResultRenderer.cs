@@ -72,10 +72,7 @@ namespace Tesseract
         {
             Guard.RequireNotNull("title", title);
             VerifyNotDisposed();
-            Guard.Verify(
-                _currentDocumentHandle == null,
-                "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.",
-                title);
+            Guard.Verify(_currentDocumentHandle == null, "Cannot begin document \"{0}\" as another document is currently being processed which must be dispose off first.", title);
 
             PageNumber = -1;
 

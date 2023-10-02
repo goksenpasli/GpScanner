@@ -11,21 +11,9 @@ namespace Extensions
 {
     public class ContributionControl : Control, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty ContributionColorProperty = DependencyProperty.Register(
-            "ContributionColor",
-            typeof(Color),
-            typeof(ContributionControl),
-            new PropertyMetadata(Colors.Green));
-        public static readonly DependencyProperty ContributionColumnCountProperty = DependencyProperty.Register(
-            "ContributionColumnCount",
-            typeof(int),
-            typeof(ContributionControl),
-            new PropertyMetadata(7));
-        public static readonly DependencyProperty ContributionRowCountProperty = DependencyProperty.Register(
-            "ContributionRowCount",
-            typeof(int),
-            typeof(ContributionControl),
-            new PropertyMetadata(53));
+        public static readonly DependencyProperty ContributionColorProperty = DependencyProperty.Register("ContributionColor", typeof(Color), typeof(ContributionControl), new PropertyMetadata(Colors.Green));
+        public static readonly DependencyProperty ContributionColumnCountProperty = DependencyProperty.Register("ContributionColumnCount", typeof(int), typeof(ContributionControl), new PropertyMetadata(7));
+        public static readonly DependencyProperty ContributionRowCountProperty = DependencyProperty.Register("ContributionRowCount", typeof(int), typeof(ContributionControl), new PropertyMetadata(53));
         public static readonly DependencyProperty ContributionsProperty = DependencyProperty.Register(
             "Contributions",
             typeof(ObservableCollection<ContributionData>),
@@ -70,11 +58,7 @@ namespace Extensions
 
         public int ContributionRowCount { get => (int)GetValue(ContributionRowCountProperty); set => SetValue(ContributionRowCountProperty, value); }
 
-        public ObservableCollection<ContributionData> Contributions
-        {
-            get => (ObservableCollection<ContributionData>)GetValue(ContributionsProperty);
-            set => SetValue(ContributionsProperty, value);
-        }
+        public ObservableCollection<ContributionData> Contributions { get => (ObservableCollection<ContributionData>)GetValue(ContributionsProperty); set => SetValue(ContributionsProperty, value); }
 
         [Browsable(false)]
         public IEnumerable<string> Days

@@ -152,13 +152,7 @@ namespace TwainWpf
                 {
                     UserInterface userInterface = new UserInterface();
 
-                    TwainResult result = Twain32Native.DsUserInterface(
-                        _applicationId,
-                        SourceId,
-                        DataGroup.Control,
-                        DataArgumentType.UserInterface,
-                        Message.DisableDS,
-                        userInterface);
+                    TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.DisableDS, userInterface);
 
                     if (result != TwainResult.Failure)
                     {
@@ -509,10 +503,7 @@ namespace TwainWpf
             {
             }
 
-            ImageLayout imageLayout = new ImageLayout
-            {
-                Frame = new Frame { Left = new Fix32(area.Left), Top = new Fix32(area.Top), Right = new Fix32(area.Right), Bottom = new Fix32(area.Bottom) }
-            };
+            ImageLayout imageLayout = new ImageLayout { Frame = new Frame { Left = new Fix32(area.Left), Top = new Fix32(area.Top), Right = new Fix32(area.Right), Bottom = new Fix32(area.Bottom) } };
 
             TwainResult result = Twain32Native.DsImageLayout(_applicationId, SourceId, DataGroup.Image, DataArgumentType.ImageLayout, Message.Set, imageLayout);
 

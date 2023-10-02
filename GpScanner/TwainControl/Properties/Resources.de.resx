@@ -603,4 +603,16 @@ ENTFERNEN</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>FILM-SCANNER</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignorieren Breite Höhe Gleich. Ausnahme kann auftreten!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>BIBLIOTHEK</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Wählen Sie Pdf Ordner speichern!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Bilderordner auswählen</value>
+  </data>
 </root>

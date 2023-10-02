@@ -600,4 +600,16 @@ PDF-ФАЙЛЫ</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>ПЛЕНОЧНЫЙ СКАНЕР</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Игнорировать ширину Высота равна. Может произойти исключение!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>БИБЛИОТЕКА</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Выберите папку для сохранения PDF!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Выберите папку с изображениями</value>
+  </data>
 </root>

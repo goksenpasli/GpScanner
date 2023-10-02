@@ -432,6 +432,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string GRAPHFOLDER {
+            get {
+                return ResourceManager.GetString("GRAPHFOLDER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string GRAY {
             get {
                 return ResourceManager.GetString("GRAY", resourceCulture);
@@ -477,9 +486,27 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string IGNOREWIDTHHEIGHTEQUAL {
+            get {
+                return ResourceManager.GetString("IGNOREWIDTHHEIGHTEQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string KNOWNPROBLEMS {
             get {
                 return ResourceManager.GetString("KNOWNPROBLEMS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LIBRARY {
+            get {
+                return ResourceManager.GetString("LIBRARY", resourceCulture);
             }
         }
         
@@ -629,6 +656,15 @@ namespace TwainControl.Properties {
         public static string PASSWORD {
             get {
                 return ResourceManager.GetString("PASSWORD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PDFFOLDER {
+            get {
+                return ResourceManager.GetString("PDFFOLDER", resourceCulture);
             }
         }
         

@@ -994,7 +994,8 @@
                                     </CheckBox>
                                 </Grid>
                                 <Separator />
-                                <Extensions:ButtonedTextBox d:Description="SaveFileName" d:Text="FileName"
+                                <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                    d:Description="SaveFileName" d:Text="FileName"
                                     Description="{Binding Scanner.SaveFileName}"
                                     GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
                                     OpenButtonVisibility="Collapsed"

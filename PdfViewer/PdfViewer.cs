@@ -43,11 +43,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         typeof(FitImageOrientation),
         typeof(PdfViewer),
         new PropertyMetadata(FitImageOrientation.Width, Changed));
-    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register(
-        "PdfFilePath",
-        typeof(string),
-        typeof(PdfViewer),
-        new PropertyMetadata(null, PdfFilePathChanged));
+    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
     public static readonly DependencyProperty SayfaProperty =
         DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
     public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register(
@@ -61,11 +57,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
-    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-        "Source",
-        typeof(ImageSource),
-        typeof(PdfViewer),
-        new PropertyMetadata(null, SourceChanged));
+    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
     public static readonly DependencyProperty ThumbsVisibleProperty =
         DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty ToolBarVisibilityProperty =
@@ -553,30 +545,30 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         try
         {
             return !File.Exists(pdffilepath)
-                ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
-                : await Task.Run(
-                    () =>
+                   ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
+                   : await Task.Run(
+                () =>
+                {
+                    if (!IsValidPdfFile(pdffilepath))
                     {
-                        if (!IsValidPdfFile(pdffilepath))
-                        {
-                            return null;
-                        }
-                        using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                        if (pdfDoc != null)
-                        {
-                            int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                            int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                            using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
-                            BitmapSource bitmapImage = bitmap.ToBitmapSource();
-                            if (bitmapImage != null)
-                            {
-                                bitmapImage.Freeze();
-                                return bitmapImage;
-                            }
-                        }
-
                         return null;
-                    });
+                    }
+                    using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
+                    if (pdfDoc != null)
+                    {
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                        using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                        BitmapSource bitmapImage = bitmap.ToBitmapSource();
+                        if (bitmapImage != null)
+                        {
+                            bitmapImage.Freeze();
+                            return bitmapImage;
+                        }
+                    }
+
+                    return null;
+                });
         }
         catch (Exception)
         {
@@ -589,28 +581,28 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         try
         {
             return pdffilestream?.Length == 0
-                ? throw new ArgumentNullException(nameof(pdffilestream), "file can not be null or length zero")
-                : await Task.Run(
-                    () =>
+                   ? throw new ArgumentNullException(nameof(pdffilestream), "file can not be null or length zero")
+                   : await Task.Run(
+                () =>
+                {
+                    using MemoryStream ms = new(pdffilestream);
+                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                    if (pdfDoc != null)
                     {
-                        using MemoryStream ms = new(pdffilestream);
-                        using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                        if (pdfDoc != null)
+                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                        System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                        if (image != null)
                         {
-                            int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                            int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                            System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                            if (image != null)
-                            {
-                                MemoryStream stream = new();
-                                image.Save(stream, ImageFormat.Jpeg);
-                                pdffilestream = null;
-                                return stream;
-                            }
+                            MemoryStream stream = new();
+                            image.Save(stream, ImageFormat.Jpeg);
+                            pdffilestream = null;
+                            return stream;
                         }
+                    }
 
-                        return null;
-                    });
+                    return null;
+                });
         }
         catch (Exception)
         {
@@ -637,14 +629,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         try
         {
             return stream?.Length == 0
-                ? throw new ArgumentNullException(nameof(stream), "file can not be null or length zero")
-                : await Task.Run(
-                    () =>
-                    {
-                        using MemoryStream ms = new(stream);
-                        using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                        return (pdfDoc?.PageCount) ?? 0;
-                    });
+                   ? throw new ArgumentNullException(nameof(stream), "file can not be null or length zero")
+                   : await Task.Run(
+                () =>
+                {
+                    using MemoryStream ms = new(stream);
+                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                    return (pdfDoc?.PageCount) ?? 0;
+                });
         }
         catch (Exception)
         {
@@ -664,8 +656,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 if (resize)
                 {
                     bs = Source.Width > Source.Height
-                        ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
-                        : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
+                         ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
+                         : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
                     bs.Freeze();
                     dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                 }
@@ -765,9 +757,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         if (d is PdfViewer pdfViewer)
         {
             pdfViewer.Source = null;
-            if (e.NewValue is not null &&
-                File.Exists(e.NewValue as string) &&
-                string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+            if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
             {
                 try
                 {

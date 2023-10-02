@@ -8,11 +8,7 @@ namespace TwainControl;
 
 public class Policy : DependencyObject
 {
-    public static readonly DependencyProperty PolicyEnabledProperty = DependencyProperty.RegisterAttached(
-        "PolicyEnabled",
-        typeof(bool),
-        typeof(Policy),
-        new PropertyMetadata(false, Changed));
+    public static readonly DependencyProperty PolicyEnabledProperty = DependencyProperty.RegisterAttached("PolicyEnabled", typeof(bool), typeof(Policy), new PropertyMetadata(false, Changed));
     public static readonly DependencyProperty PolicyNameProperty =
         DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty));
 
@@ -41,13 +37,11 @@ public class Policy : DependencyObject
         return true;
     }
 
-    public static bool CheckPolicy(DependencyObject dependencyObject) => CheckKeyPolicy(
-            GetPolicyName(dependencyObject),
-            Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-        CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
+    public static bool CheckPolicy(DependencyObject dependencyObject) => CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
+    CheckKeyPolicy(GetPolicyName(dependencyObject), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
 
     public static bool CheckPolicy(string policyname) => CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-        CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
+    CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
 
     public static bool GetPolicyEnabled(DependencyObject obj) => (bool)obj.GetValue(PolicyEnabledProperty);
 

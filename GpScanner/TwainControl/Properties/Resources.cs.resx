@@ -602,4 +602,16 @@ SOUBORY PDF</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>FILMOVÝ SKENER</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignorovat stejnou výšku šířky. Může se vyskytnout výjimka!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>Knihovna</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Vyberte složku Uložit PDF!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Vyberte složku obrázků</value>
+  </data>
 </root>

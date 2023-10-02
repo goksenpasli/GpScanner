@@ -52,8 +52,8 @@ namespace Tesseract.Internal.InteropDotNet
                 {
                     Info = methodInfoArray[i],
                     DllImportAttribute =
-                        GetRuntimeDllImportAttribute(methodInfoArray[i]) ??
-                            throw new Exception($"Method '{methodInfoArray[i].Name}' of interface '{interfaceType.Name}' should be marked with the RuntimeDllImport attribute")
+                    GetRuntimeDllImportAttribute(methodInfoArray[i]) ??
+                        throw new Exception($"Method '{methodInfoArray[i].Name}' of interface '{interfaceType.Name}' should be marked with the RuntimeDllImport attribute")
                 };
             }
 
@@ -163,10 +163,7 @@ namespace Tesseract.Internal.InteropDotNet
             const MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual;
 
             string delegateName = GetDelegateName(assemblyName, method.Info);
-            TypeBuilder delegateBuilder = moduleBuilder.DefineType(
-                delegateName,
-                TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed,
-                typeof(MulticastDelegate));
+            TypeBuilder delegateBuilder = moduleBuilder.DefineType(delegateName, TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed, typeof(MulticastDelegate));
 
             RuntimeDllImportAttribute importAttribute = method.DllImportAttribute;
             ConstructorInfo attributeCtor =
@@ -257,9 +254,7 @@ namespace Tesseract.Internal.InteropDotNet
         private static RuntimeDllImportAttribute GetRuntimeDllImportAttribute(MethodInfo methodInfo)
         {
             object[] attributes = methodInfo.GetCustomAttributes(typeof(RuntimeDllImportAttribute), true);
-            return attributes.Length == 0
-                ? throw new Exception($"RuntimeDllImportAttribute for method '{methodInfo.Name}' not found")
-                : (RuntimeDllImportAttribute)attributes[0];
+            return attributes.Length == 0 ? throw new Exception($"RuntimeDllImportAttribute for method '{methodInfo.Name}' not found") : (RuntimeDllImportAttribute)attributes[0];
         }
 
         private static void LdArg(ILGenerator ilGen, int index)

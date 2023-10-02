@@ -602,4 +602,16 @@ PDF!</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>FILM SCANNER</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Αγνοήστε το ύψος πλάτους ίσο. Ενδέχεται να προκύψει εξαίρεση!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>ΒΙΒΛΙΟΘΗΚΗ</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Επιλέξτε Pdf Αποθήκευση φακέλου!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Επιλέξτε Φάκελο Εικόνων!</value>
+  </data>
 </root>

@@ -8,23 +8,11 @@ namespace Extensions
 {
     public class Magnifier : Canvas
     {
-        public static readonly DependencyProperty ContentPanelProperty = DependencyProperty.Register(
-            nameof(ContentPanel),
-            typeof(UIElement),
-            typeof(Magnifier),
-            new PropertyMetadata(default(UIElement)));
+        public static readonly DependencyProperty ContentPanelProperty = DependencyProperty.Register(nameof(ContentPanel), typeof(UIElement), typeof(Magnifier), new PropertyMetadata(default(UIElement)));
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(nameof(IsActive), typeof(bool), typeof(Magnifier), new PropertyMetadata(true));
         public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(nameof(Radius), typeof(double), typeof(Magnifier), new PropertyMetadata(50d));
-        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(
-            nameof(Stroke),
-            typeof(SolidColorBrush),
-            typeof(Magnifier),
-            new PropertyMetadata(Brushes.Cyan));
-        public static readonly DependencyProperty ZoomFactorProperty = DependencyProperty.Register(
-            nameof(ZoomFactor),
-            typeof(double),
-            typeof(Magnifier),
-            new PropertyMetadata(3d));
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(Magnifier), new PropertyMetadata(Brushes.Cyan));
+        public static readonly DependencyProperty ZoomFactorProperty = DependencyProperty.Register(nameof(ZoomFactor), typeof(double), typeof(Magnifier), new PropertyMetadata(3d));
 
         public UIElement ContentPanel { get => (UIElement)GetValue(ContentPanelProperty); set => SetValue(ContentPanelProperty, value); }
 

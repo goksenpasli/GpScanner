@@ -602,4 +602,16 @@ PDF-ФАЙЛ!</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>ПЛІВКОВИЙ СКАНЕР</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ігнорувати ширину Висота дорівнює. Може статися виняток!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>БІБЛІОТЕКА</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Виберіть папку збереження PDF!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Виберіть папку зображень!</value>
+  </data>
 </root>

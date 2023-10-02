@@ -69,39 +69,39 @@ public static class ExtensionMethods
     {
         unsafe
         {
-            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-            if (bitmapData != null)
+    BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+    if (bitmapData != null)
+    {
+        int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+        int heightInPixels = bitmapData.Height;
+        int widthInBytes = bitmapData.Width * bytesPerPixel;
+        byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+        _ = Parallel.For(
+            0,
+            heightInPixels,
+            y =>
             {
-                int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-                int heightInPixels = bitmapData.Height;
-                int widthInBytes = bitmapData.Width * bytesPerPixel;
-                byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
-                _ = Parallel.For(
-                    0,
-                    heightInPixels,
-                    y =>
+                byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+                for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+                {
+                    byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
+                    if (grayscale)
                     {
-                        byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
-                        for (int x = 0; x < widthInBytes; x += bytesPerPixel)
-                        {
-                            byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
-                            if (grayscale)
-                            {
-                                currentLine[x] = gray;
-                                currentLine[x + 1] = gray;
-                                currentLine[x + 2] = gray;
-                            }
-                            else
-                            {
-                                currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
-                                currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
-                                currentLine[x + 2] = (byte)(gray < bWthreshold ? 0 : 255);
-                            }
-                        }
-                    });
-                bitmap.UnlockBits(bitmapData);
-                bitmapData = null;
-            }
+                        currentLine[x] = gray;
+                        currentLine[x + 1] = gray;
+                        currentLine[x + 2] = gray;
+                    }
+                    else
+                    {
+                        currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
+                        currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
+                        currentLine[x + 2] = (byte)(gray < bWthreshold ? 0 : 255);
+                    }
+                }
+            });
+        bitmap.UnlockBits(bitmapData);
+        bitmapData = null;
+    }
         }
 
         return bitmap;
@@ -148,18 +148,11 @@ public static class ExtensionMethods
     [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
     public static extern IntPtr ExtractIcon(this IntPtr hInst, string lpszExeFileName, int nIconIndex);
 
-    public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.SelectMany(
-        ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
+    public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
 
-    public static string GetDisplayName(string path) => Helpers.SHGetFileInfo(
-                path,
-                FILE_ATTRIBUTE_NORMAL,
-                out SHFILEINFO shfi,
-                (uint)Marshal.SizeOf(typeof(SHFILEINFO)),
-                SHGFI_DISPLAYNAME) !=
-            IntPtr.Zero
-        ? shfi.szDisplayName
-        : null;
+    public static string GetDisplayName(string path) => Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero
+                                                        ? shfi.szDisplayName
+                                                        : null;
 
     public static string GetFileType(this string filename, SHFILEINFO shinfo)
     {
@@ -225,30 +218,30 @@ public static class ExtensionMethods
             int stride = bmData.Stride;
             unsafe
             {
-                int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-                byte* p = (byte*)(void*)bmData.Scan0;
-                int nOffset = stride - (bitmap.Width * 3);
-                int widthInBytes = bmData.Width * bytesPerPixel;
-                for (int y = 0; y < bmData.Height; ++y)
-                {
-                    for (int x = 0; x < widthInBytes; x += bytesPerPixel)
-                    {
-                        count++;
-                        byte blue = p[0];
-                        byte green = p[1];
-                        byte red = p[2];
+    int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+    byte* p = (byte*)(void*)bmData.Scan0;
+    int nOffset = stride - (bitmap.Width * 3);
+    int widthInBytes = bmData.Width * bytesPerPixel;
+    for (int y = 0; y < bmData.Height; ++y)
+    {
+        for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+        {
+            count++;
+            byte blue = p[0];
+            byte green = p[1];
+            byte red = p[2];
 
-                        int pixelValue = red + green + blue;
-                        total += pixelValue;
-                        double avg = total / count;
-                        totalVariance += Math.Pow(pixelValue - avg, 2);
-                        stdDev = Math.Sqrt(totalVariance / count);
+            int pixelValue = red + green + blue;
+            total += pixelValue;
+            double avg = total / count;
+            totalVariance += Math.Pow(pixelValue - avg, 2);
+            stdDev = Math.Sqrt(totalVariance / count);
 
-                        p += 3;
-                    }
+            p += 3;
+        }
 
-                    p += nOffset;
-                }
+        p += nOffset;
+    }
             }
 
             bitmap.UnlockBits(bmData);
@@ -280,8 +273,7 @@ public static class ExtensionMethods
         }
     }
 
-    public static Brush RandomColor() => new SolidColorBrush(
-        System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
+    public static Brush RandomColor() => new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
     {

@@ -604,4 +604,16 @@ TO FILE</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>FILM SCANNER</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignore Width Height Equal. Exception May Occur</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>LIBRARY</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Select Pdf Save Folder</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Select Images Folder</value>
+  </data>
 </root>

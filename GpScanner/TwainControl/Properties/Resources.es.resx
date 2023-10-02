@@ -599,4 +599,16 @@ AL ARCHIVO</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>ESCÁNER DE PELÍCULA</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignorar altura de ancho igual. ¡Puede ocurrir una excepción!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>BIBLIOTECA</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>¡Seleccione PDF Guardar carpeta!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>¡Seleccione la carpeta de imágenes!</value>
+  </data>
 </root>

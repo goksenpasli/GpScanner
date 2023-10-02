@@ -607,4 +607,16 @@
   <data name="FILMSCANNER" xml:space="preserve">
     <value>ماسح الفيلم</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>تجاهل ارتفاع العرض المتساوي. قد يحدث استثناء!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>المكتبة</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>حدد ملف PDF حفظ المجلد!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>حدد مجلد الصور!</value>
+  </data>
 </root>

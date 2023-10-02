@@ -216,11 +216,9 @@ public partial class MainWindow : Window
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if ((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) ||
-            (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
+        if ((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) || (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
         {
-            if (DataContext is GpScannerViewModel ViewModel &&
-                ViewModel?.TesseractViewModel?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
+            if (DataContext is GpScannerViewModel ViewModel && ViewModel?.TesseractViewModel?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
             {
                 TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
                 TwainCtrl.Scanner.ApplyDataBaseOcr = false;
@@ -302,9 +300,7 @@ public partial class MainWindow : Window
                 if (Settings.Default.PatchCodes.Count <= 0)
                 {
                     TwainCtrl.Scanner.UsePageSeperator = false;
-                    _ = MessageBox.Show(
-                        $"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("SEPERATOR")}",
-                        Title);
+                    _ = MessageBox.Show($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("SEPERATOR")}", Title);
                     return;
                 }
 

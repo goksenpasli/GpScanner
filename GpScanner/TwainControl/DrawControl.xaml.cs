@@ -23,11 +23,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         typeof(BitmapFrame),
         typeof(DrawControl),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
-    public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register(
-        "TemporaryImage",
-        typeof(ImageSource),
-        typeof(DrawControl),
-        new PropertyMetadata(null));
+    public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register("TemporaryImage", typeof(ImageSource), typeof(DrawControl), new PropertyMetadata(null));
     private bool drawControlContextMenu;
     private Cursor drawCursor;
     private Ellipse ellipse = new();
@@ -53,13 +49,13 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 if (parameter is BitmapFrame &&
-                    MessageBox.Show(
+                MessageBox.Show(
                     $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}",
                     Application.Current.MainWindow.Title,
                     MessageBoxButton.YesNo,
                     MessageBoxImage.Question,
                     MessageBoxResult.No) ==
-                    MessageBoxResult.Yes)
+                MessageBoxResult.Yes)
                 {
                     EditingImage = SaveInkCanvasToImage();
                 }

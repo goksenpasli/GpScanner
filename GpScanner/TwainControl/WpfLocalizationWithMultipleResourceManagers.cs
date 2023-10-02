@@ -37,13 +37,7 @@ public class LocExtension(string stringName) : MarkupExtension
             baseName = GetResourceManager(frameworkElement.TemplatedParent)?.BaseName ?? string.Empty;
         }
 
-        Binding binding = new()
-        {
-            Mode = BindingMode.OneWay,
-            Path = new PropertyPath($"[{baseName}.{StringName}]"),
-            Source = TranslationSource.Instance,
-            FallbackValue = StringName
-        };
+        Binding binding = new() { Mode = BindingMode.OneWay, Path = new PropertyPath($"[{baseName}.{StringName}]"), Source = TranslationSource.Instance, FallbackValue = StringName };
 
         return binding.ProvideValue(serviceProvider);
     }
@@ -68,11 +62,7 @@ public class LocExtension(string stringName) : MarkupExtension
 
 public class Translation : DependencyObject
 {
-    public static readonly DependencyProperty DesignCultureProperty = DependencyProperty.RegisterAttached(
-        "DesignCulture",
-        typeof(string),
-        typeof(Translation),
-        new PropertyMetadata("en-EN", CultureChanged));
+    public static readonly DependencyProperty DesignCultureProperty = DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
     public static readonly DependencyProperty ResourceManagerProperty =
         DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 
@@ -83,8 +73,8 @@ public class Translation : DependencyObject
     public static string GetResStringValue(string resdata)
     {
         return string.IsNullOrEmpty(resdata)
-            ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata))
-            : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
+               ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata))
+               : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
     }
     public static void SetDesignCulture(DependencyObject obj, string value) => obj.SetValue(DesignCultureProperty, value);
 

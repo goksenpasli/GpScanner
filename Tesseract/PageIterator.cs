@@ -75,13 +75,7 @@ namespace Tesseract
                 return new ElementProperties(Orientation.PageUp, TextLineOrder.TopToBottom, WritingDirection.LeftToRight, 0f);
             }
 
-            TessApi.Native
-                   .PageIteratorOrientation(
-                       handle,
-                       out Orientation orientation,
-                       out WritingDirection writing_direction,
-                       out TextLineOrder textLineOrder,
-                       out float deskew_angle);
+            TessApi.Native.PageIteratorOrientation(handle, out Orientation orientation, out WritingDirection writing_direction, out TextLineOrder textLineOrder, out float deskew_angle);
 
             return new ElementProperties(orientation, textLineOrder, writing_direction, deskew_angle);
         }

@@ -413,8 +413,8 @@ namespace WebPWrapper
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
 
                 int size = bmp.PixelFormat == PixelFormat.Format24bppRgb
-                    ? UnsafeNativeMethods.WebPEncodeLosslessBGR(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, out unmanagedData)
-                    : UnsafeNativeMethods.WebPEncodeLosslessBGRA(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, out unmanagedData);
+                           ? UnsafeNativeMethods.WebPEncodeLosslessBGR(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, out unmanagedData)
+                           : UnsafeNativeMethods.WebPEncodeLosslessBGRA(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, out unmanagedData);
 
                 byte[] rawWebP = new byte[size];
                 Marshal.Copy(unmanagedData, rawWebP, 0, size);
@@ -515,8 +515,8 @@ namespace WebPWrapper
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
 
                 size = bmp.PixelFormat == PixelFormat.Format24bppRgb
-                    ? UnsafeNativeMethods.WebPEncodeBGR(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, quality, out unmanagedData)
-                    : UnsafeNativeMethods.WebPEncodeBGRA(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, quality, out unmanagedData);
+                       ? UnsafeNativeMethods.WebPEncodeBGR(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, quality, out unmanagedData)
+                       : UnsafeNativeMethods.WebPEncodeBGRA(bmpData.Scan0, bmp.Width, bmp.Height, bmpData.Stride, quality, out unmanagedData);
                 if (size == 0)
                 {
                     throw new Exception("Can´t encode WebP");
@@ -804,9 +804,7 @@ namespace WebPWrapper
                 }
 
                 IntPtr ptrResult = pinnedResult.AddrOfPinnedObject();
-                return UnsafeNativeMethods.WebPPictureDistortion(ref wpicSource, ref wpicReference, metric_type, ptrResult) != 1
-                    ? throw new Exception("Can´t measure.")
-                    : result;
+                return UnsafeNativeMethods.WebPPictureDistortion(ref wpicSource, ref wpicReference, metric_type, ptrResult) != 1 ? throw new Exception("Can´t measure.") : result;
             }
             catch (Exception ex)
             {
@@ -1696,18 +1694,10 @@ namespace WebPWrapper
         private static extern int WebPGetDecoderVersion_x86();
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetFeaturesInternal")]
-        private static extern VP8StatusCode WebPGetFeaturesInternal_x64(
-            [InAttribute] IntPtr rawWebP,
-            UIntPtr data_size,
-            ref WebPBitstreamFeatures features,
-            int WEBP_DECODER_ABI_VERSION);
+        private static extern VP8StatusCode WebPGetFeaturesInternal_x64([InAttribute] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetFeaturesInternal")]
-        private static extern VP8StatusCode WebPGetFeaturesInternal_x86(
-            [InAttribute] IntPtr rawWebP,
-            UIntPtr data_size,
-            ref WebPBitstreamFeatures features,
-            int WEBP_DECODER_ABI_VERSION);
+        private static extern VP8StatusCode WebPGetFeaturesInternal_x86([InAttribute] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetInfo")]
         private static extern int WebPGetInfo_x64([InAttribute] IntPtr data, UIntPtr data_size, out int width, out int height);

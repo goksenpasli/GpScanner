@@ -51,16 +51,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
     public static readonly DependencyProperty ContextMenuVisibilityProperty =
         DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
-    public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register(
-        "ControlVisible",
-        typeof(Visibility),
-        typeof(MediaViewer),
-        new PropertyMetadata(Visibility.Visible));
-    public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register(
-        "EndTimeSpan",
-        typeof(TimeSpan),
-        typeof(MediaViewer),
-        new PropertyMetadata(TimeSpan.Zero));
+    public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register("ControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register("EndTimeSpan", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero));
     public static readonly DependencyProperty FlipXProperty =
         DependencyProperty.Register("FlipX", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
     public static readonly DependencyProperty FlipYProperty =
@@ -84,23 +76,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty OsdDisplayTimeProperty =
         DependencyProperty.Register("OsdDisplayTime", typeof(int), typeof(MediaViewer), new PropertyMetadata(3));
-    public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register(
-        "OsdText",
-        typeof(string),
-        typeof(MediaViewer),
-        new PropertyMetadata(null, OsdTextChanged));
+    public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register("OsdText", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, OsdTextChanged));
     public static readonly DependencyProperty OsdTextVisibilityProperty =
         DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
-    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register(
-        "PanoramaMode",
-        typeof(bool),
-        typeof(MediaViewer),
-        new PropertyMetadata(PanoramaModeChanged));
-    public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register(
-        "PixelateSize",
-        typeof(Size),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Size(60, 40)));
+    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(MediaViewer), new PropertyMetadata(PanoramaModeChanged));
+    public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register("PixelateSize", typeof(Size), typeof(MediaViewer), new PropertyMetadata(new Size(60, 40)));
     public static readonly DependencyProperty RotateXProperty =
         DependencyProperty.Register("RotateX", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty RotateYProperty =
@@ -109,28 +89,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("SharpenAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
     public static readonly DependencyProperty SliderControlVisibleProperty =
         DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
-    public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register(
-        "SubTitleColor",
-        typeof(Brush),
-        typeof(MediaViewer),
-        new PropertyMetadata(Brushes.White));
-    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register(
-        "SubtitleFilePath",
-        typeof(string),
-        typeof(MediaViewer),
-        new PropertyMetadata(null, SubtitleFilePathChanged));
+    public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register("SubTitleColor", typeof(Brush), typeof(MediaViewer), new PropertyMetadata(Brushes.White));
+    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register("SubtitleFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, SubtitleFilePathChanged));
     public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty =
         DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
-    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register(
-        "SubTitleMargin",
-        typeof(Thickness),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
-    public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register(
-        "SubTitle",
-        typeof(string),
-        typeof(MediaViewer),
-        new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register("SubTitleMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
+    public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty SubTitleSizeProperty =
         DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
     public static readonly DependencyProperty SubtitleTooltipEnabledProperty =
@@ -143,11 +107,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("ThumbApplyEffects", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty ThumbHeightCountProperty =
         DependencyProperty.Register("ThumbHeightCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
-    public static readonly DependencyProperty ThumbMarginProperty = DependencyProperty.Register(
-        "ThumbMargin",
-        typeof(Thickness),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Thickness(5)));
+    public static readonly DependencyProperty ThumbMarginProperty = DependencyProperty.Register("ThumbMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(5)));
     public static readonly DependencyProperty ThumbShowTimeProperty =
         DependencyProperty.Register("ThumbShowTime", typeof(bool), typeof(MediaViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty ThumbWidthCountProperty =
@@ -156,11 +116,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty TooltipOriginalSubtitleProperty =
         DependencyProperty.Register("TooltipOriginalSubtitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(null));
-    public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register(
-        "VideoStretch",
-        typeof(Stretch),
-        typeof(MediaViewer),
-        new PropertyMetadata(Stretch.Uniform));
+    public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
     private const int MillisecondsDelay = 500;
     private const string VideoFileExtensions =
         "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv";
@@ -267,8 +223,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     await Task.Delay(MillisecondsDelay);
 
                     imgdata = ThumbApplyEffects
-                        ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
-                        : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                              ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
+                              : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
 
                     Grid imagegrid = GenerateImageGrid();
                     Image image = GenerateImage(imgdata, ThumbMargin);
@@ -333,13 +289,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     foreach (SrtContent item in translatedsubtitle)
                     {
                         _ = sb.Append(item.Segment)
-                              .Append('\n')
-                              .Append(item.StartTime.ToString().Replace('.', ','))
-                              .Append(" --> ")
-                              .Append(item.EndTime.ToString().Replace('.', ','))
-                              .Append("\r\n")
-                              .Append(item.Text)
-                              .Append("\r\n\r\n");
+                            .Append('\n')
+                            .Append(item.StartTime.ToString().Replace('.', ','))
+                            .Append(" --> ")
+                            .Append(item.EndTime.ToString().Replace('.', ','))
+                            .Append("\r\n")
+                            .Append(item.Text)
+                            .Append("\r\n\r\n");
                     }
                     using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
                     streamWriter.WriteLine(sb.ToString().Trim());
@@ -636,11 +592,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public HorizontalAlignment SubTitleHorizontalAlignment
-    {
-        get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
-        set => SetValue(SubTitleHorizontalAlignmentProperty, value);
-    }
+    public HorizontalAlignment SubTitleHorizontalAlignment { get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty); set => SetValue(SubTitleHorizontalAlignmentProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -656,11 +608,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public VerticalAlignment SubTitleVerticalAlignment
-    {
-        get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
-        set => SetValue(SubTitleVerticalAlignmentProperty, value);
-    }
+    public VerticalAlignment SubTitleVerticalAlignment { get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty); set => SetValue(SubTitleVerticalAlignmentProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -760,8 +708,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             ObservableCollection<SrtContent> content = [];
             const string pattern = "<[/]?[ib]>";
-            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding(SelectedEncodingCodePage))
-                                           .Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding(SelectedEncodingCodePage)).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                 content.Add(
@@ -873,11 +820,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
                     {
                         viewer.EndTimeSpan = mediaelement.NaturalDuration.TimeSpan;
-                        timer = new DispatcherTimer(
-                            TimeSpan.FromSeconds(1),
-                            DispatcherPriority.Normal,
-                            (s, _) => viewer.MediaPosition = mediaelement.Position,
-                            Dispatcher.CurrentDispatcher);
+                        timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
                         timer.Start();
                         viewer.SetOsdInfo();
                     }
@@ -959,11 +902,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 if (viewer.AutoTranslate)
                 {
                     viewer.TooltipOriginalSubtitle = srtcontent.Text;
-                    viewer.SubTitle = TranslateViewModel
-                        .DileÇevirAsync(srtcontent.Text, viewer.MevcutDil, viewer.ÇevrilenDil)
-                        .ConfigureAwait(false)
-                        .GetAwaiter()
-                        .GetResult();
+                    viewer.SubTitle = TranslateViewModel.DileÇevirAsync(srtcontent.Text, viewer.MevcutDil, viewer.ÇevrilenDil).ConfigureAwait(false).GetAwaiter().GetResult();
                 }
                 else
                 {

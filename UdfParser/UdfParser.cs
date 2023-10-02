@@ -22,11 +22,7 @@ public static class UdfParser
         PrintDialog pd = new();
         PageFormat pageformat = content.Properties.PageFormat;
         flowdocumentscrollviewer.Document = flowdocument;
-        flowdocumentscrollviewer.Document.PagePadding = new Thickness(
-            pageformat.LeftMargin * 4 / 3,
-            pageformat.TopMargin * 4 / 3,
-            pageformat.RightMargin * 4 / 3,
-            pageformat.BottomMargin * 4 / 3);
+        flowdocumentscrollviewer.Document.PagePadding = new Thickness(pageformat.LeftMargin * 4 / 3, pageformat.TopMargin * 4 / 3, pageformat.RightMargin * 4 / 3, pageformat.BottomMargin * 4 / 3);
         flowdocumentscrollviewer.Document.ColumnWidth = pd.PrintableAreaWidth;
         return flowdocumentscrollviewer.Document;
     }
@@ -45,8 +41,7 @@ public static class UdfParser
             System.Windows.Controls.Image v = new()
             {
                 Source = bi,
-                Margin =
-                    new Thickness(bgimage.BgImageLeftMargin * 4 / 3, bgimage.BgImageUpMargin * 4 / 3, bgimage.BgImageRigtMargin * 4 / 3, bgimage.BgImageBottomMargin * 4 / 3)
+                Margin = new Thickness(bgimage.BgImageLeftMargin * 4 / 3, bgimage.BgImageUpMargin * 4 / 3, bgimage.BgImageRigtMargin * 4 / 3, bgimage.BgImageBottomMargin * 4 / 3)
             };
             flowdocument.Blocks.Add(new BlockUIContainer(v));
         }
@@ -55,30 +50,30 @@ public static class UdfParser
     private static Run[,] Getcellcontent(Table table, Template content, int genişlik, int yükseklik)
     {
         System.Collections.Generic.List<Content> cellparagrafcontent = table.Row
-                                                                            .SelectMany(z => z.Cell)
-                                                                            .SelectMany(z => z.Paragraph)
-                                                                            .Select(
-                                                                                z => new Content
-                                                                                {
-                                                                                    Background = z.Content.FirstOrDefault().Background,
-                                                                                    Alignment = z.Alignment,
-                                                                                    Bold = z.Content.FirstOrDefault().Bold,
-                                                                                    Bulleted = z.Bulleted,
-                                                                                    Description = z.Content.FirstOrDefault().Description,
-                                                                                    Family = z.Content.FirstOrDefault().Family,
-                                                                                    Foreground = z.Content.FirstOrDefault().Foreground,
-                                                                                    Italic = z.Content.FirstOrDefault().Italic,
-                                                                                    LeftIndent = z.LeftIndent,
-                                                                                    StartOffset = z.Content.FirstOrDefault().StartOffset,
-                                                                                    Strikethrough = z.Content.FirstOrDefault().Strikethrough,
-                                                                                    Length = z.Content.FirstOrDefault().Length,
-                                                                                    RightIndent = z.Content.FirstOrDefault().RightIndent,
-                                                                                    Size = z.Content.FirstOrDefault().Size,
-                                                                                    Superscript = z.Content.FirstOrDefault().Superscript,
-                                                                                    Underline = z.Content.FirstOrDefault().Underline,
-                                                                                    Subscript = z.Content.FirstOrDefault().Subscript
-                                                                                })
-                                                                            .ToList();
+                                                                       .SelectMany(z => z.Cell)
+                                                                       .SelectMany(z => z.Paragraph)
+                                                                       .Select(
+                                                                           z => new Content
+                                                                           {
+                                                                               Background = z.Content.FirstOrDefault().Background,
+                                                                               Alignment = z.Alignment,
+                                                                               Bold = z.Content.FirstOrDefault().Bold,
+                                                                               Bulleted = z.Bulleted,
+                                                                               Description = z.Content.FirstOrDefault().Description,
+                                                                               Family = z.Content.FirstOrDefault().Family,
+                                                                               Foreground = z.Content.FirstOrDefault().Foreground,
+                                                                               Italic = z.Content.FirstOrDefault().Italic,
+                                                                               LeftIndent = z.LeftIndent,
+                                                                               StartOffset = z.Content.FirstOrDefault().StartOffset,
+                                                                               Strikethrough = z.Content.FirstOrDefault().Strikethrough,
+                                                                               Length = z.Content.FirstOrDefault().Length,
+                                                                               RightIndent = z.Content.FirstOrDefault().RightIndent,
+                                                                               Size = z.Content.FirstOrDefault().Size,
+                                                                               Superscript = z.Content.FirstOrDefault().Superscript,
+                                                                               Underline = z.Content.FirstOrDefault().Underline,
+                                                                               Subscript = z.Content.FirstOrDefault().Subscript
+                                                                           })
+                                                                       .ToList();
 
         Run[,] array = new Run[genişlik, yükseklik];
         int j = 0;
@@ -209,27 +204,27 @@ public static class UdfParser
     private static void Textcreate(Template content, FlowDocument flowdocument)
     {
         System.Collections.Generic.List<Content> documentcontent = content.Elements.Paragraph
-                                                                                   .ConvertAll(
-                                                                                       z => new Content
-                                                                                       {
-                                                                                           Background = z.Content.FirstOrDefault().Background,
-                                                                                           Alignment = z.Alignment,
-                                                                                           Bold = z.Content.FirstOrDefault().Bold,
-                                                                                           Bulleted = z.Bulleted,
-                                                                                           Description = z.Content.FirstOrDefault().Description,
-                                                                                           Family = z.Content.FirstOrDefault().Family,
-                                                                                           Foreground = z.Content.FirstOrDefault().Foreground,
-                                                                                           Italic = z.Content.FirstOrDefault().Italic,
-                                                                                           LeftIndent = z.LeftIndent,
-                                                                                           StartOffset = z.Content.FirstOrDefault().StartOffset,
-                                                                                           Strikethrough = z.Content.FirstOrDefault().Strikethrough,
-                                                                                           Length = z.Content.FirstOrDefault().Length,
-                                                                                           RightIndent = z.Content.FirstOrDefault().RightIndent,
-                                                                                           Size = z.Content.FirstOrDefault().Size,
-                                                                                           Superscript = z.Content.FirstOrDefault().Superscript,
-                                                                                           Underline = z.Content.FirstOrDefault().Underline,
-                                                                                           Subscript = z.Content.FirstOrDefault().Subscript
-                                                                                       })
+                                                                   .ConvertAll(
+                                                                       z => new Content
+                                                                       {
+                                                                           Background = z.Content.FirstOrDefault().Background,
+                                                                           Alignment = z.Alignment,
+                                                                           Bold = z.Content.FirstOrDefault().Bold,
+                                                                           Bulleted = z.Bulleted,
+                                                                           Description = z.Content.FirstOrDefault().Description,
+                                                                           Family = z.Content.FirstOrDefault().Family,
+                                                                           Foreground = z.Content.FirstOrDefault().Foreground,
+                                                                           Italic = z.Content.FirstOrDefault().Italic,
+                                                                           LeftIndent = z.LeftIndent,
+                                                                           StartOffset = z.Content.FirstOrDefault().StartOffset,
+                                                                           Strikethrough = z.Content.FirstOrDefault().Strikethrough,
+                                                                           Length = z.Content.FirstOrDefault().Length,
+                                                                           RightIndent = z.Content.FirstOrDefault().RightIndent,
+                                                                           Size = z.Content.FirstOrDefault().Size,
+                                                                           Superscript = z.Content.FirstOrDefault().Superscript,
+                                                                           Underline = z.Content.FirstOrDefault().Underline,
+                                                                           Subscript = z.Content.FirstOrDefault().Subscript
+                                                                       })
 ;
         foreach (Content element in documentcontent)
         {

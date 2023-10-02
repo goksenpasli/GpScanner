@@ -24,11 +24,7 @@ namespace Tesseract
 
         public static PixColor FromRgb(uint value) => new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF));
 
-        public static PixColor FromRgba(uint value) => new PixColor(
-            (byte)((value >> 24) & 0xFF),
-            (byte)((value >> 16) & 0xFF),
-            (byte)((value >> 8) & 0xFF),
-            (byte)(value & 0xFF));
+        public static PixColor FromRgba(uint value) => new PixColor((byte)((value >> 24) & 0xFF), (byte)((value >> 16) & 0xFF), (byte)((value >> 8) & 0xFF), (byte)(value & 0xFF));
 
         public uint ToRGBA() => (uint)((Red << 24) | (Green << 16) | (Blue << 8) | Alpha);
 

@@ -101,8 +101,8 @@ namespace Tesseract
 
             /// <inheritdoc/>
             object IEnumerator.Current => index == 0 || index == items.Length + 1
-                ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")
-                : (object)Current;
+                                          ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")
+                                          : (object)Current;
 
             /// <inheritdoc/>
             public bool MoveNext()
@@ -194,11 +194,7 @@ namespace Tesseract
         public bool Add(Pix pix, PixArrayAccessType copyflag = PixArrayAccessType.Clone)
         {
             Guard.RequireNotNull("pix", pix);
-            Guard.Require(
-                nameof(copyflag),
-                copyflag == PixArrayAccessType.Clone || copyflag == PixArrayAccessType.Copy,
-                "Copy flag must be either copy or clone but was {0}.",
-                copyflag);
+            Guard.Require(nameof(copyflag), copyflag == PixArrayAccessType.Clone || copyflag == PixArrayAccessType.Copy, "Copy flag must be either copy or clone but was {0}.", copyflag);
 
             int result = LeptonicaApi.Native.pixaAddPix(_handle, pix.Handle, copyflag);
             if (result == 0)
@@ -245,11 +241,7 @@ namespace Tesseract
         /// <returns>The retrieved <see cref="Pix"/>.</returns>
         public Pix GetPix(int index, PixArrayAccessType accessType = PixArrayAccessType.Clone)
         {
-            Guard.Require(
-                nameof(accessType),
-                accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy,
-                "Access type must be either copy or clone but was {0}.",
-                accessType);
+            Guard.Require(nameof(accessType), accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy, "Access type must be either copy or clone but was {0}.", accessType);
             Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
             VerifyNotDisposed();

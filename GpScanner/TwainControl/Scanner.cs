@@ -981,16 +981,16 @@ public class Scanner : InpcBase, IDataErrorInfo
         get
         {
             saveFileName = new[] { "[", "]" }.Any(FileName.Contains)
-                ? FileName.Replace("[DATE]", DateTime.Now.Day.ToString())
-                          .Replace("[MONTH]", DateTime.Now.Month.ToString())
-                          .Replace("[YEAR]", DateTime.Now.Year.ToString())
-                          .Replace("[HOUR]", DateTime.Now.Hour.ToString())
-                          .Replace("[MINUTE]", DateTime.Now.Minute.ToString())
-                          .Replace("[SECOND]", DateTime.Now.Second.ToString())
-                          .Replace("[GUID]", Guid.NewGuid().ToString())
-                          .Replace("[USERNAME]", Environment.UserName)
-                          .Replace("[RESOLUTION]", Settings.Default.Çözünürlük.ToString())
-                : FileName;
+                           ? FileName.Replace("[DATE]", DateTime.Now.Day.ToString())
+                             .Replace("[MONTH]", DateTime.Now.Month.ToString())
+                             .Replace("[YEAR]", DateTime.Now.Year.ToString())
+                             .Replace("[HOUR]", DateTime.Now.Hour.ToString())
+                             .Replace("[MINUTE]", DateTime.Now.Minute.ToString())
+                             .Replace("[SECOND]", DateTime.Now.Second.ToString())
+                             .Replace("[GUID]", Guid.NewGuid().ToString())
+                             .Replace("[USERNAME]", Environment.UserName)
+                             .Replace("[RESOLUTION]", Settings.Default.Çözünürlük.ToString())
+                           : FileName;
             return saveFileName;
         }
 

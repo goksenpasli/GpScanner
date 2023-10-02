@@ -360,17 +360,7 @@ namespace MozJpeg
                 bmp = new Bitmap(width, height, PixelFormat.Format24bppRgb);
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
 
-                if (UnsafeNativeMethods.TjDecompress(
-                        _decompressHandle,
-                        rawJpegPtr,
-                        (ulong)rawJpeg.Length,
-                        bmpData.Scan0,
-                        width,
-                        bmpData.Stride,
-                        height,
-                        (int)TJPixelFormats.TJPF_BGR,
-                        (int)flags) ==
-                    -1)
+                if (UnsafeNativeMethods.TjDecompress(_decompressHandle, rawJpegPtr, (ulong)rawJpeg.Length, bmpData.Scan0, width, bmpData.Stride, height, (int)TJPixelFormats.TJPF_BGR, (int)flags) == -1)
                 {
                     throw new Exception("Can`t decode JPEG. Bad o unknow format.");
                 }
@@ -404,14 +394,7 @@ namespace MozJpeg
         /// <param name="pathFileName">Full path and filename of JPEG file</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>Bitmap with image</returns>
-        public void GetInfo(
-            byte[] rawJpeg,
-            out int width,
-            out int height,
-            out float horizontalResolution,
-            out float verticalResolution,
-            out TJSubsamplingOptions subsampl,
-            out TJColorSpaces colorspace)
+        public void GetInfo(byte[] rawJpeg, out int width, out int height, out float horizontalResolution, out float verticalResolution, out TJSubsamplingOptions subsampl, out TJColorSpaces colorspace)
         {
             horizontalResolution = 0;
             verticalResolution = 0;
@@ -515,19 +498,7 @@ namespace MozJpeg
                 bmpData = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, bmp.PixelFormat);
 
                 ulong bufSize = 0;
-                if (UnsafeNativeMethods.TjCompress2(
-                        _compressorHandle,
-                        bmpData.Scan0,
-                        bmp.Width,
-                        bmpData.Stride,
-                        bmp.Height,
-                        (int)tjPixelFormat,
-                        ref buf,
-                        ref bufSize,
-                        (int)subSamp,
-                        quality,
-                        (int)flags) ==
-                    -1)
+                if (UnsafeNativeMethods.TjCompress2(_compressorHandle, bmpData.Scan0, bmp.Width, bmpData.Stride, bmp.Height, (int)tjPixelFormat, ref buf, ref bufSize, (int)subSamp, quality, (int)flags) == -1)
                 {
                     throw new Exception("Can`t encode JPEG.");
                 }
@@ -789,18 +760,7 @@ namespace MozJpeg
         /// <param name="jpegQual">The image quality of the generated JPEG image (1 = worst, 100 = best)</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        public static int TjCompress2(
-            IntPtr handle,
-            IntPtr srcBuf,
-            int width,
-            int stride,
-            int height,
-            int pixelFormat,
-            ref IntPtr jpegBuf,
-            ref ulong jpegSize,
-            int jpegSubsamp,
-            int jpegQual,
-            int flags)
+        public static int TjCompress2(IntPtr handle, IntPtr srcBuf, int width, int stride, int height, int pixelFormat, ref IntPtr jpegBuf, ref ulong jpegSize, int jpegSubsamp, int jpegQual, int flags)
         {
             switch (IntPtr.Size)
             {
@@ -884,14 +844,7 @@ namespace MozJpeg
         /// colorspace of the JPEG image(see <see cref="TJColorSpaces"/> "JPEG colorspaces".)
         /// </param>
         /// <returns>0 if successful, or -1 if an error occurred (see <see cref="tjGetErrorStr"/>)</returns>
-        public static int TjDecompressHeader(
-            IntPtr handle,
-            IntPtr jpegBuf,
-            ulong jpegSize,
-            out int width,
-            out int height,
-            out TJSubsamplingOptions jpegSubsamp,
-            out TJColorSpaces jpegColorspace)
+        public static int TjDecompressHeader(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out TJSubsamplingOptions jpegSubsamp, out TJColorSpaces jpegColorspace)
         {
             switch (IntPtr.Size)
             {
@@ -1077,32 +1030,30 @@ namespace MozJpeg
         }
 
         [DllImport("turbojpeg_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjCompress2")]
-        private static extern int tjCompress2_x64(
-            IntPtr handle,
-            IntPtr srcBuf,
-            int width,
-            int pitch,
-            int height,
-            int pixelFormat,
-            ref IntPtr jpegBuf,
-            ref ulong jpegSize,
-            int jpegSubsamp,
-            int jpegQual,
-            int flags);
+        private static extern int tjCompress2_x64(IntPtr handle,
+                                                  IntPtr srcBuf,
+                                                  int width,
+                                                  int pitch,
+                                                  int height,
+                                                  int pixelFormat,
+                                                  ref IntPtr jpegBuf,
+                                                  ref ulong jpegSize,
+                                                  int jpegSubsamp,
+                                                  int jpegQual,
+                                                  int flags);
 
         [DllImport("turbojpeg_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjCompress2")]
-        private static extern int tjCompress2_x86(
-            IntPtr handle,
-            IntPtr srcBuf,
-            int width,
-            int pitch,
-            int height,
-            int pixelFormat,
-            ref IntPtr jpegBuf,
-            ref ulong jpegSize,
-            int jpegSubsamp,
-            int jpegQual,
-            int flags);
+        private static extern int tjCompress2_x86(IntPtr handle,
+                                                  IntPtr srcBuf,
+                                                  int width,
+                                                  int pitch,
+                                                  int height,
+                                                  int pixelFormat,
+                                                  ref IntPtr jpegBuf,
+                                                  ref ulong jpegSize,
+                                                  int jpegSubsamp,
+                                                  int jpegQual,
+                                                  int flags);
 
         [DllImport("turbojpeg_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompress2")]
         private static extern int tjDecompress2_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
@@ -1111,46 +1062,16 @@ namespace MozJpeg
         private static extern int tjDecompress2_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, IntPtr dstBuf, int width, int pitch, int height, int pixelFormat, int flags);
 
         [DllImport("turbojpeg_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
-        private static extern int tjDecompressHeader3_x64(
-            IntPtr handle,
-            IntPtr jpegBuf,
-            ulong jpegSize,
-            out int width,
-            out int height,
-            out TJSubsamplingOptions jpegSubsamp,
-            out TJColorSpaces jpegColorspace);
+        private static extern int tjDecompressHeader3_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, out int width, out int height, out TJSubsamplingOptions jpegSubsamp, out TJColorSpaces jpegColorspace);
 
         [DllImport("turbojpeg_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressHeader3")]
-        private static extern int tjDecompressHeader3_x86(
-            IntPtr handle,
-            IntPtr jpegBuf,
-            uint jpegSize,
-            out int width,
-            out int height,
-            out TJSubsamplingOptions jpegSubsamp,
-            out TJColorSpaces jpegColorspace);
+        private static extern int tjDecompressHeader3_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, out int width, out int height, out TJSubsamplingOptions jpegSubsamp, out TJColorSpaces jpegColorspace);
 
         [DllImport("turbojpeg_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressToYUVPlanes")]
-        private static extern int tjDecompressToYUVPlanes_x64(
-            IntPtr handle,
-            IntPtr jpegBuf,
-            ulong jpegSize,
-            IntPtr[] dstPlanes,
-            int width,
-            int[] strides,
-            int height,
-            int flags);
+        private static extern int tjDecompressToYUVPlanes_x64(IntPtr handle, IntPtr jpegBuf, ulong jpegSize, IntPtr[] dstPlanes, int width, int[] strides, int height, int flags);
 
         [DllImport("turbojpeg_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDecompressToYUVPlanes")]
-        private static extern int tjDecompressToYUVPlanes_x86(
-            IntPtr handle,
-            IntPtr jpegBuf,
-            uint jpegSize,
-            IntPtr[] dstPlanes,
-            int width,
-            int[] strides,
-            int height,
-            int flags);
+        private static extern int tjDecompressToYUVPlanes_x86(IntPtr handle, IntPtr jpegBuf, uint jpegSize, IntPtr[] dstPlanes, int width, int[] strides, int height, int flags);
 
         [DllImport("turbojpeg_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "tjDestroy")]
         private static extern int tjDestroy_x64(IntPtr handle);

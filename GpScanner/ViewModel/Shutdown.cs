@@ -43,11 +43,7 @@ internal static class Shutdown
     internal static extern bool LookupPrivilegeValue(string host, string name, ref long pluid);
 
     [DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
-    internal static extern bool OpenProcessToken(
-        IntPtr h,
-        int acc,
-        ref IntPtr
-            phtok);
+    internal static extern bool OpenProcessToken(IntPtr h, int acc, ref IntPtr phtok);
 
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     internal struct TokPriv1Luid

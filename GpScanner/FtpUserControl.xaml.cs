@@ -39,12 +39,12 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
                     }
 
                     if (MessageBox.Show(
-                            $"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("UPDATE")}",
-                            Application.Current?.MainWindow?.Title,
-                            MessageBoxButton.YesNo,
-                            MessageBoxImage.Exclamation,
-                            MessageBoxResult.No) ==
-                        MessageBoxResult.Yes)
+                        $"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("UPDATE")}",
+                        Application.Current?.MainWindow?.Title,
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Exclamation,
+                        MessageBoxResult.No) ==
+                    MessageBoxResult.Yes)
                     {
                         await CopyFileAsync(scanner.FileName, path, true, progress => CopyProgressValue = progress);
                     }

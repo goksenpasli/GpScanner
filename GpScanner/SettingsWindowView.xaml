@@ -803,8 +803,8 @@
                     <GroupBox>
                         <StackPanel>
                             <Extensions:ButtonedTextBox Description="URL" ResetButtonVisibility="Collapsed" Text="{Binding SharePointUrl, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                            <Extensions:ButtonedTextBox Description="LIBRARY" OpenButtonVisibility="Collapsed"
-                                ResetButtonVisibility="Collapsed"
+                            <Extensions:ButtonedTextBox Description="{twainctrl:Loc LIBRARY}"
+                                OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                                 Text="{Binding SharePointLibraryName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                             <Separator />
                             <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}" OpenButtonVisibility="Collapsed" Text="{Binding SharePointUserName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />

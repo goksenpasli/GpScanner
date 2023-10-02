@@ -390,7 +390,7 @@
                     </StackPanel>
                     <TextBlock Grid.Column="3"
                         Margin="1,0,1,0" VerticalAlignment="Center"
-                        Foreground="Black"
+                        Foreground="Blue"
                         Visibility="{Binding TimeDisplayVisibility}">
                         <Run Text="{Binding MediaPosition, Converter={StaticResource TimeSpanToStringConverter}, Mode=OneWay}" />
                         <Run Text="" />
@@ -592,10 +592,13 @@
                             </local:ContentToggleButton.OverContent>
                         </local:ContentToggleButton>
                         <ToggleButton IsChecked="{Binding ShowOsdInfo}">
-                            <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
+                            <TextBlock FontFamily="Wingdings 2" FontSize="16"
+                                Foreground="Blue" Text="-" />
                         </ToggleButton>
-                        <ToggleButton Content="360°" IsChecked="{Binding PanoramaMode}" />
-                        <local:NumericUpDownControl IsReadOnly="True" Minimum="0.1" Value="{Binding SpeedRatio, ElementName=Player}" />
+                        <ToggleButton Content="360°" Foreground="Blue" IsChecked="{Binding PanoramaMode}" />
+                        <local:NumericUpDownControl Foreground="Blue" IsReadOnly="True"
+                            Minimum="0.1"
+                            Value="{Binding SpeedRatio, ElementName=Player}" />
                     </StackPanel>
                 </Grid>
             </ScrollViewer>

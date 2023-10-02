@@ -635,4 +635,16 @@
    See the License for the specific language governing permissions and
    limitations under the License.</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value />
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value />
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value />
+  </data>
 </root>

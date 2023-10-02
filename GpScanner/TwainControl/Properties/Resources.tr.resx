@@ -610,4 +610,16 @@ BELGE EKLE</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>FİLM TARAYICI</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Genişlik Yükseklik Eşitliğini Yoksay. Uygulamada Hata Oluşabilir</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>KÜTÜPHANE</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>PDF Kaydedilecek Klasörü Seçin</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Görüntüler Klasörünü seçin</value>
+  </data>
 </root>

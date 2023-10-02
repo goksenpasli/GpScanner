@@ -926,7 +926,8 @@
                     <Viewbox>
                         <Path x:Name="Up"
                             Width="9.5" MinHeight="8.5"
-                            Data="M0,0L5,5 10,0z" Fill="Black"
+                            Data="M0,0L5,5 10,0z"
+                            Fill="{TemplateBinding Foreground}"
                             RenderTransformOrigin="0.5,0.5" Stretch="Fill"
                             StrokeLineJoin="Round">
                             <Path.RenderTransform>
@@ -956,7 +957,8 @@
                     <Viewbox>
                         <Path x:Name="Down"
                             Width="9.5" MinHeight="8.5"
-                            Data="M0,0L5,5 10,0z" Fill="Black"
+                            Data="M0,0L5,5 10,0z"
+                            Fill="{TemplateBinding Foreground}"
                             RenderTransformOrigin="0.5,0.5" Stretch="Fill"
                             StrokeLineJoin="Round">
                             <Path.RenderTransform>
@@ -998,7 +1000,8 @@
                     <Viewbox>
                         <Path x:Name="Up"
                             Width="9.5" Height="7"
-                            Data="M0,0L5,5 10,0z" Fill="Black"
+                            Data="M0,0L5,5 10,0z"
+                            Fill="{TemplateBinding Foreground}"
                             RenderTransformOrigin="0.5,0.5" Stretch="Fill"
                             StrokeLineJoin="Round">
                             <Path.RenderTransform>
@@ -1030,7 +1033,8 @@
                     <Viewbox>
                         <Path x:Name="Down"
                             Width="9.5" Height="7"
-                            Data="M0,0L5,5 10,0z" Fill="Black"
+                            Data="M0,0L5,5 10,0z"
+                            Fill="{TemplateBinding Foreground}"
                             RenderTransformOrigin="0.5,0.5" Stretch="Fill"
                             StrokeLineJoin="Round" />
                     </Viewbox>

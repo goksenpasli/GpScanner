@@ -98,10 +98,20 @@
                                 </TextBlock>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding ApplyCropAllImages}" ToolTipService.IsEnabled="{Binding SeçiliResimlerEnBoyEşit, Converter={StaticResource ReverseBooleanConverter}}" ToolTipService.ShowOnDisabled="True">
+                        <Button Command="{Binding ApplyCropAllImages}" ToolTipService.IsEnabled="{Binding SelectedImageWidthHeightIsEqual, Converter={StaticResource ReverseBooleanConverter}}" ToolTipService.ShowOnDisabled="True">
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32" VerticalAlignment="Center">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="245" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Image Canvas.Left="4" Canvas.Top="4"
+                                        Width="24" Height="24"
+                                        VerticalAlignment="Center">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -126,10 +136,10 @@
                                     <StackPanel.Style>
                                         <Style TargetType="StackPanel">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding SeçiliResimlerEnBoyEşit}" Value="true">
+                                                <DataTrigger Binding="{Binding SelectedImageWidthHeightIsEqual}" Value="true">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </DataTrigger>
-                                                <DataTrigger Binding="{Binding SeçiliResimlerEnBoyEşit}" Value="false">
+                                                <DataTrigger Binding="{Binding SelectedImageWidthHeightIsEqual}" Value="false">
                                                     <Setter Property="Visibility" Value="Visible" />
                                                 </DataTrigger>
                                             </Style.Triggers>
@@ -285,22 +295,62 @@
                     </Canvas>
                 </Grid>
             </ScrollViewer>
-            <Button Grid.Row="1" Command="{Binding ResetCrop}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="32" Height="32" VerticalAlignment="Bottom">
-                        <Image.Source>
-                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                <Binding Source="Shell32.dll" />
-                                <Binding Source="131" />
-                            </MultiBinding>
-                        </Image.Source>
-                    </Image>
-                    <TextBlock VerticalAlignment="Center">
-                        <Run Text="{local:Loc THRESHOLD}" />
-                        <Run Text="{local:Loc RESET}" />
-                    </TextBlock>
-                </StackPanel>
-            </Button>
+            <UniformGrid Grid.Row="1" Columns="2">
+                <Button Command="{Binding ResetCrop}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="32" Height="32" VerticalAlignment="Bottom">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="131" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{local:Loc THRESHOLD}" />
+                            <Run Text="{local:Loc RESET}" />
+                        </TextBlock>
+                    </StackPanel>
+                </Button>
+                <ToggleButton IsChecked="{Binding IgnoreImageWidthHeight}">
+                    <ToggleButton.ToolTip>
+                        <TextBlock FontWeight="Bold" Foreground="Red" Text="{local:Loc IGNOREWIDTHHEIGHTEQUAL}" />
+                    </ToggleButton.ToolTip>
+                    <StackPanel Orientation="Horizontal">
+                        <Canvas Width="32" Height="32">
+                            <Image Width="32" Height="32" VerticalAlignment="Center">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="245" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <Image Canvas.Left="4" Canvas.Top="4"
+                                Width="24" Height="24"
+                                VerticalAlignment="Center">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="245" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <Image Canvas.Left="8" Canvas.Top="8"
+                                Width="16" Height="16"
+                                VerticalAlignment="Bottom">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="131" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Canvas>
+                        <TextBlock VerticalAlignment="Center" Text="{local:Loc RESET}" />
+                    </StackPanel>
+                </ToggleButton>
+            </UniformGrid>
         </Grid>
     </GroupBox>
 </UserControl>

@@ -59,9 +59,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                 if (parameter is TessFiles tessFile)
                 {
                     string filepath = $"{Tessdatafolder}\\{tessFile.Name}.traineddata";
-                    if (File.Exists(filepath) &&
-                        MessageBox.Show(Translation.GetResStringValue("DELETE"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
-                        MessageBoxResult.Yes)
+                    if (File.Exists(filepath) && MessageBox.Show(Translation.GetResStringValue("DELETE"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
                         try
                         {
@@ -87,14 +85,9 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     try
                     {
                         using HttpClient client = new();
-                        _ = client.DefaultRequestHeaders
-                                  .TryAddWithoutValidation(
-                                      "User-Agent",
-                                      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537");
+                        _ = client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537");
 
-                        HttpResponseMessage response = await client.GetAsync(
-                            $"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}",
-                            HttpCompletionOption.ResponseHeadersRead);
+                        HttpResponseMessage response = await client.GetAsync($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}", HttpCompletionOption.ResponseHeadersRead);
                         _ = response.EnsureSuccessStatusCode();
 
                         using Stream contentStream = await response.Content.ReadAsStreamAsync();
@@ -107,8 +100,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         while ((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
                         {
                             await fileStream.WriteAsync(buffer, 0, bytesRead);
-                            ocrData.ProgressValue =
-                                fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
+                            ocrData.ProgressValue = fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
                         }
 
                         ocrData.IsEnabled = true;
@@ -128,11 +120,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         string file = Path.Combine(tessdatafolder, ocrData.OcrName);
                         if (File.Exists(file) && new FileInfo(file).Length == 0)
                         {
-                            _ = MessageBox.Show(
-                                $"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}",
-                                AppName,
-                                MessageBoxButton.OK,
-                                MessageBoxImage.Error);
+                            _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                             File.Delete(file);
                             TesseractFiles = GetTesseractFiles(Tessdatafolder);
                         }
@@ -240,19 +228,14 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
             ObservableCollection<TessFiles> tesseractfiles = new(
                 Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
-                         .Select(
-                             filePath =>
-                             {
-                                 string tessFileName = Path.GetFileNameWithoutExtension(filePath);
-                                 TessFiles tessfiles = new()
-                                 {
-                                     Name = tessFileName,
-                                     Checked = defaultTtsLang.Contains(tessFileName),
-                                     FileSize = new FileInfo(filePath).Length / 1_048_576d
-                                 };
-                                 tessfiles.PropertyChanged += Tess_PropertyChanged;
-                                 return tessfiles;
-                             }));
+                .Select(
+                    filePath =>
+                    {
+                        string tessFileName = Path.GetFileNameWithoutExtension(filePath);
+                        TessFiles tessfiles = new() { Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName), FileSize = new FileInfo(filePath).Length / 1_048_576d };
+                        tessfiles.PropertyChanged += Tess_PropertyChanged;
+                        return tessfiles;
+                    }));
             CheckedFiles = tesseractfiles?.Where(item => item.Checked).ToList();
             return tesseractfiles;
         }

@@ -44,9 +44,7 @@ namespace TwainWpf
 
             TwainResult result = Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, Message.OpenDSM, ref windowHandle);
 
-            DataSource = result == TwainResult.Success
-                ? DataSource.GetDefault(ApplicationId, MessageHook)
-                : throw new TwainException($"Error initialising DSM: {result}", result);
+            DataSource = result == TwainResult.Success ? DataSource.GetDefault(ApplicationId, MessageHook) : throw new TwainException($"Error initialising DSM: {result}", result);
         }
 
         ~DataSourceManager() { Dispose(false); }
@@ -159,16 +157,7 @@ namespace TwainWpf
 
             int pos = User32Native.GetMessagePos();
 
-            WindowsMessage message = new WindowsMessage
-            {
-                hwnd = hwnd,
-                message = msg,
-                wParam = wParam,
-                lParam = lParam,
-                time = User32Native.GetMessageTime(),
-                x = (short)pos,
-                y = (short)(pos >> 16)
-            };
+            WindowsMessage message = new WindowsMessage { hwnd = hwnd, message = msg, wParam = wParam, lParam = lParam, time = User32Native.GetMessageTime(), x = (short)pos, y = (short)(pos >> 16) };
 
             Marshal.StructureToPtr(message, _eventMessage.EventPtr, false);
             _eventMessage.Message = 0;
@@ -242,13 +231,7 @@ namespace TwainWpf
                         break;
                     }
 
-                    result = Twain32Native.DsPendingTransfer(
-                        ApplicationId,
-                        DataSource.SourceId,
-                        DataGroup.Control,
-                        DataArgumentType.PendingXfers,
-                        Message.EndXfer,
-                        pendingTransfer);
+                    result = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.EndXfer, pendingTransfer);
 
                     if (result != TwainResult.Success)
                     {

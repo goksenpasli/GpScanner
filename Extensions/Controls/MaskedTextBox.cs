@@ -23,33 +23,17 @@ public class MaskedTextBox : TextBox
         typeof(bool),
         typeof(MaskedTextBox),
         new UIPropertyMetadata(false, OnIncludePromptPropertyChanged));
-    public static readonly DependencyProperty MaskProperty = DependencyProperty.Register(
-        "Mask",
-        typeof(string),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata("<>", OnMaskPropertyChanged));
-    public static readonly DependencyProperty PromptCharProperty = DependencyProperty.Register(
-        "PromptChar",
-        typeof(char),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata('_', OnPromptCharChanged));
+    public static readonly DependencyProperty MaskProperty = DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBox), new UIPropertyMetadata("<>", OnMaskPropertyChanged));
+    public static readonly DependencyProperty PromptCharProperty = DependencyProperty.Register("PromptChar", typeof(char), typeof(MaskedTextBox), new UIPropertyMetadata('_', OnPromptCharChanged));
     public static readonly DependencyProperty SelectAllOnGotFocusProperty =
         DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(MaskedTextBox), new PropertyMetadata(false));
-    public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent(
-        "ValueChanged",
-        RoutingStrategy.Bubble,
-        typeof(RoutedPropertyChangedEventHandler<object>),
-        typeof(MaskedTextBox));
+    public static readonly RoutedEvent ValueChangedEvent = EventManager.RegisterRoutedEvent("ValueChanged", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<object>), typeof(MaskedTextBox));
     public static readonly DependencyProperty ValueProperty = DependencyProperty.Register(
         "Value",
         typeof(object),
         typeof(MaskedTextBox),
         new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
-    public static readonly DependencyProperty ValueTypeProperty = DependencyProperty.Register(
-        "ValueType",
-        typeof(Type),
-        typeof(MaskedTextBox),
-        new UIPropertyMetadata(typeof(string), OnValueTypeChanged));
+    public static readonly DependencyProperty ValueTypeProperty = DependencyProperty.Register("ValueType", typeof(Type), typeof(MaskedTextBox), new UIPropertyMetadata(typeof(string), OnValueTypeChanged));
     private bool _convertExceptionOccurred;
     private bool _isInitialized;
     /// <summary>

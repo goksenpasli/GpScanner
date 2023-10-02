@@ -172,9 +172,8 @@ namespace Tesseract
 
             IntPtr handle = LeptonicaApi.Native.pixCreate(width, height, depth);
             return handle == IntPtr.Zero
-                ? throw new InvalidOperationException(
-                    "Failed to create pix, this normally occurs because the requested image size is too large, please check Standard Error Output.")
-                : Create(handle);
+                   ? throw new InvalidOperationException("Failed to create pix, this normally occurs because the requested image size is too large, please check Standard Error Output.")
+                   : Create(handle);
         }
 
         public static Pix Create(IntPtr handle) => handle == IntPtr.Zero ? throw new ArgumentException("Pix handle must not be zero (null).", nameof(handle)) : new Pix(handle);
@@ -283,8 +282,7 @@ namespace Tesseract
         #region Equals
         public override bool Equals(object obj) => obj != null && GetType() == obj.GetType() && Equals((Pix)obj);
 
-        public bool Equals(Pix other) => other != null &&
-            (LeptonicaApi.Native.pixEqual(Handle, other.Handle, out int same) != 0 ? throw new TesseractException("Failed to compare pix") : same != 0);
+        public bool Equals(Pix other) => other != null && (LeptonicaApi.Native.pixEqual(Handle, other.Handle, out int same) != 0 ? throw new TesseractException("Failed to compare pix") : same != 0);
         #endregion Equals
 
         #region Image manipulation
@@ -347,8 +345,7 @@ namespace Tesseract
             Guard.Require(nameof(whsize), whsize < maxWhSize, "The window half-width (whsize) must be less than {0} for this image.", maxWhSize);
             Guard.Require(nameof(factor), factor >= 0, "Factor must be greater than zero (0).");
 
-            int result = LeptonicaApi.Native
-                                     .pixSauvolaBinarize(Handle, whsize, factor, addborder ? 1 : 0, out IntPtr ppixm, out IntPtr ppixsd, out IntPtr ppixth, out IntPtr ppixd);
+            int result = LeptonicaApi.Native.pixSauvolaBinarize(Handle, whsize, factor, addborder ? 1 : 0, out IntPtr ppixm, out IntPtr ppixsd, out IntPtr ppixth, out IntPtr ppixd);
 
             if (ppixm != IntPtr.Zero)
             {
@@ -494,8 +491,7 @@ namespace Tesseract
         /// <returns>Returns deskewed image if confidence was high enough, otherwise returns clone of original pix.</returns>
         public Pix Deskew(ScewSweep sweep, int redSearch, int thresh, out Scew scew)
         {
-            IntPtr resultPixHandle = LeptonicaApi.Native
-                                                 .pixDeskewGeneral(Handle, sweep.Reduction, sweep.Range, sweep.Delta, redSearch, thresh, out float pAngle, out float pConf);
+            IntPtr resultPixHandle = LeptonicaApi.Native.pixDeskewGeneral(Handle, sweep.Reduction, sweep.Range, sweep.Delta, redSearch, thresh, out float pAngle, out float pConf);
             if (resultPixHandle == IntPtr.Zero)
             {
                 throw new TesseractException("Failed to deskew image.");
@@ -652,12 +648,7 @@ namespace Tesseract
         /// <param name="width">The original width; use 0 to avoid embedding</param>
         /// <param name="height">The original height; use 0 to avoid embedding</param>
         /// <returns>The image rotated around it's centre.</returns>
-        public Pix Rotate(
-            float angleInRadians,
-            RotationMethod method = RotationMethod.AreaMap,
-            RotationFill fillColor = RotationFill.White,
-            int? width = null,
-            int? height = null)
+        public Pix Rotate(float angleInRadians, RotationMethod method = RotationMethod.AreaMap, RotationFill fillColor = RotationFill.White, int? width = null, int? height = null)
         {
             if (width == null)
             {
@@ -678,8 +669,8 @@ namespace Tesseract
 
             double rotations = 2 * angleInRadians / Math.PI;
             resultHandle = Math.Abs(rotations - Math.Floor(rotations)) < VerySmallAngle
-                ? LeptonicaApi.Native.pixRotateOrth(Handle, (int)rotations)
-                : LeptonicaApi.Native.pixRotate(Handle, angleInRadians, method, fillColor, width.Value, height.Value);
+                           ? LeptonicaApi.Native.pixRotateOrth(Handle, (int)rotations)
+                           : LeptonicaApi.Native.pixRotate(Handle, angleInRadians, method, fillColor, width.Value, height.Value);
 
             return resultHandle == IntPtr.Zero ? throw new LeptonicaException("Failed to rotate image around its centre.") : new Pix(resultHandle);
         }

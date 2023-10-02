@@ -151,13 +151,8 @@ public static class BitmapMethods
         try
         {
             double widthmultiply = bitmapFrame.PixelWidth / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-            double heightmultiply = bitmapFrame.PixelHeight /
-                (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
-            Int32Rect ınt32Rect = new(
-                (int)(coordx * widthmultiply),
-                (int)(coordy * heightmultiply),
-                (int)(selectionwidth * widthmultiply),
-                (int)(selectionheight * heightmultiply));
+            double heightmultiply = bitmapFrame.PixelHeight / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+            Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
             CroppedBitmap cb = new(bitmapFrame, ınt32Rect);
             bitmapFrame = null;
             return cb.ToTiffJpegByteArray(Format.Png);
@@ -465,14 +460,7 @@ public static class BitmapMethods
         }
     }
 
-    public static RenderTargetBitmap ÜstüneResimÇiz(
-        this ImageSource Source,
-        Point konum,
-        Brush brushes,
-        double emSize = 64,
-        string metin = null,
-        double angle = 315,
-        string font = "Arial")
+    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
     {
         FlowDirection flowDirection = CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR") ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         FormattedText formattedText =
@@ -497,8 +485,8 @@ public static class BitmapMethods
         WebPDecoderOptions options = new() { use_threads = 1, bypass_filtering = 0, no_fancy_upsampling = 1 };
         using Bitmap bmp = webp?.Load(webpresimyolu, options);
         BitmapImage bitmapimage = bmp.PixelFormat == PixelFormat.Format32bppArgb
-            ? fullresolution ? bmp.ToBitmapImage(ImageFormat.Png) : bmp.ToBitmapImage(ImageFormat.Png, decodeheight)
-            : fullresolution ? bmp.ToBitmapImage(ImageFormat.Jpeg) : bmp.ToBitmapImage(ImageFormat.Jpeg, decodeheight);
+                                  ? fullresolution ? bmp.ToBitmapImage(ImageFormat.Png) : bmp.ToBitmapImage(ImageFormat.Png, decodeheight)
+                                  : fullresolution ? bmp.ToBitmapImage(ImageFormat.Jpeg) : bmp.ToBitmapImage(ImageFormat.Jpeg, decodeheight);
         bitmapimage.Freeze();
         return bitmapimage;
     }
@@ -510,9 +498,7 @@ public static class BitmapMethods
             using WebP webp = new();
             using MemoryStream ms = new(resim);
             using Bitmap bmp = Image.FromStream(ms) as Bitmap;
-            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb
-                ? webp.EncodeLossy(bmp, kalite)
-                : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
+            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb ? webp.EncodeLossy(bmp, kalite) : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
         }
         catch (Exception)
         {

@@ -46,9 +46,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             },
             parameter => Scanner?.CroppedImage is not null);
 
-        InvertImage = new RelayCommand<object>(
-            parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(),
-            parameter => Scanner?.CroppedImage is not null);
+        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(), parameter => Scanner?.CroppedImage is not null);
 
         AutoCropImage = new RelayCommand<object>(
             parameter =>
@@ -63,9 +61,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
                 {
-                    Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap()
-                                                                                   .ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true)
-                                                                                   .ToBitmapImage(ImageFormat.Jpeg);
+                    Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
                     return;
                 }
 
@@ -73,17 +69,14 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 {
                     foreach (ScannedImage image in Scanner?.Resimler?.Where(z => z.Seçili)?.ToList())
                     {
-                        BitmapFrame bitmapframe = BitmapFrame.Create(
-                            image.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        BitmapFrame bitmapframe = BitmapFrame.Create(image.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
                         bitmapframe.Freeze();
                         image.Resim = bitmapframe;
                     }
                     return;
                 }
 
-                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap()
-                                                                               .ConvertBlackAndWhite(Scanner.ToolBarBwThreshold)
-                                                                               .ToBitmapImage(ImageFormat.Jpeg);
+                Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
             },
             parameter => Scanner?.CroppedImage is not null);
 
@@ -93,14 +86,14 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
         SetWatermark = new RelayCommand<object>(
             parameter => Scanner.CroppedImage =
-                Scanner.CroppedImage
-                       .ÜstüneResimÇiz(
-                           new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2),
-                           Scanner.WatermarkColor,
-                           Scanner.WatermarkTextSize,
-                           Scanner.Watermark,
-                           Scanner.WatermarkAngle,
-                           Scanner.WatermarkFont),
+            Scanner.CroppedImage
+            .ÜstüneResimÇiz(
+                new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2),
+                Scanner.WatermarkColor,
+                Scanner.WatermarkTextSize,
+                Scanner.Watermark,
+                Scanner.WatermarkAngle,
+                Scanner.WatermarkFont),
             parameter => Scanner?.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
         WebAdreseGit =
@@ -153,11 +146,11 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                         async () =>
                         {
                             listcroppedimages = Scanner.Resimler
-                                                       .Where(z => z.Seçili)
-                                                       .SelectMany(
-                                                           scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight)
-                                                                           .Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
-                                                       .ToList();
+                                                .Where(z => z.Seçili)
+                                                .SelectMany(
+                                                    scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight)
+                                                                    .Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
+                                                .ToList();
                             pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
                         });
                     string savefolder = CreateSaveFolder("SPLIT");
@@ -238,10 +231,8 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                                     BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
                                     double xratio = width / currentimage.PixelWidth;
                                     BitmapSource bitmapsource = ResizeRatioImage
-                                        ? currentimage.Resize(xratio)
-                                        : CompressImage
-                                                ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height)
-                                                : currentimage;
+                                                                ? currentimage.Resize(xratio)
+                                                                : CompressImage ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height) : currentimage;
                                     using MemoryStream ms = new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
                                     using XImage xImage = XImage.FromStream(ms);
                                     using XGraphics gfx = XGraphics.FromPdfPage(page);

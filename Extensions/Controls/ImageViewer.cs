@@ -29,56 +29,23 @@ public enum FitImageOrientation
 public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 {
     public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
-    public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register(
-        "DecodeHeight",
-        typeof(int),
-        typeof(ImageViewer),
-        new PropertyMetadata(300, DecodeHeightChangedAsync));
+    public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register("DecodeHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(300, DecodeHeightChangedAsync));
     public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
-    public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register(
-        "ImageFilePath",
-        typeof(string),
-        typeof(ImageViewer),
-        new PropertyMetadata(null, ImageFilePathChangedAsync));
+    public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register("ImageFilePath", typeof(string), typeof(ImageViewer), new PropertyMetadata(null, ImageFilePathChangedAsync));
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register(
         "Orientation",
         typeof(FitImageOrientation),
         typeof(ImageViewer),
         new PropertyMetadata(FitImageOrientation.None, OrientationChanged));
-    public static readonly DependencyProperty OriginalPixelHeightProperty = DependencyProperty.Register(
-        "OriginalPixelHeight",
-        typeof(int),
-        typeof(ImageViewer),
-        new PropertyMetadata(0));
-    public static readonly DependencyProperty OriginalPixelWidthProperty = DependencyProperty.Register(
-        "OriginalPixelWidth",
-        typeof(int),
-        typeof(ImageViewer),
-        new PropertyMetadata(0));
-    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register(
-        "PanoramaMode",
-        typeof(bool),
-        typeof(ImageViewer),
-        new PropertyMetadata(PanoramaModeChanged));
+    public static readonly DependencyProperty OriginalPixelHeightProperty = DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
+    public static readonly DependencyProperty OriginalPixelWidthProperty = DependencyProperty.Register("OriginalPixelWidth", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
+    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(ImageViewer), new PropertyMetadata(PanoramaModeChanged));
     public static readonly DependencyProperty RotateXProperty = DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty RotateYProperty = DependencyProperty.Register("RotateY", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
-    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register(
-        "Source",
-        typeof(ImageSource),
-        typeof(ImageViewer),
-        new PropertyMetadata(null, SourceChanged));
-    public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register(
-        "ToolBarVisibility",
-        typeof(Visibility),
-        typeof(ImageViewer),
-        new PropertyMetadata(Visibility.Visible));
-    public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register(
-        "Zoom",
-        typeof(double),
-        typeof(ImageViewer),
-        new PropertyMetadata(1.0),
-        ZoomValidateCallBack);
+    public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(ImageViewer), new PropertyMetadata(null, SourceChanged));
+    public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0), ZoomValidateCallBack);
     private bool _isOnDrag;
     private DiffuseMaterial _panoramaBrush;
     private Point _startPoint;
@@ -150,8 +117,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                         using (DrawingContext dc = dv.RenderOpen())
                         {
                             BitmapSource imagesource = Source.Width > Source.Height
-                                ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
+                                                       ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
+                                                       : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
                             imagesource.Freeze();
                             dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                         }
@@ -186,8 +153,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                         using (DrawingContext dc = dv.RenderOpen())
                         {
                             BitmapSource imagesource = Source.Width > Source.Height
-                                ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                : Decoder.Frames[i]?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
+                                                       ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
+                                                       : Decoder.Frames[i]?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
                             imagesource.Freeze();
                             dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                         }
@@ -510,8 +477,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     if (imageViewer.TemplatedParent is ContentPresenter contentpresenter)
                     {
                         imageViewer.Zoom = imageViewer.Orientation != FitImageOrientation.Width
-                            ? contentpresenter.ActualHeight / imageViewer.Source.Height
-                            : contentpresenter.ActualWidth / imageViewer.Source.Width;
+                                           ? contentpresenter.ActualHeight / imageViewer.Source.Height
+                                           : contentpresenter.ActualWidth / imageViewer.Source.Width;
                     }
 
                     return;

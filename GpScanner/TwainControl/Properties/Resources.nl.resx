@@ -601,4 +601,16 @@ PDF 'S SAMENVOEGEN</value>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>FILM-SCANNER</value>
   </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Negeer Breedte Hoogte Gelijk. Er kan een uitzondering optreden!</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>BIBLIOTHEEK</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Selecteer Pdf-map opslaan!</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Selecteer afbeeldingenmap!</value>
+  </data>
 </root>
