@@ -614,4 +614,7 @@ PDF!</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Επιλέξτε Φάκελο Εικόνων!</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Αναπαραγωγή ήχου όταν ολοκληρωθεί η σάρωση!</value>
+  </data>
 </root>

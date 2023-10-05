@@ -136,6 +136,9 @@
                                     <Style TargetType="Image">
                                         <Setter Property="Width" Value="60" />
                                     </Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center" />
+                                    </Style>
                                     <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
                                     </Style>
@@ -149,7 +152,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Turkey.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="TÜRKÇE" />
+                                            <TextBlock Text="TÜRKÇE" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -157,7 +160,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-United-States-of-America.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="ENGLISH" />
+                                            <TextBlock Text="ENGLISH" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -165,7 +168,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-France.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="FRANÇAIS" />
+                                            <TextBlock Text="FRANÇAIS" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -173,7 +176,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Italy.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="ITALIANO" />
+                                            <TextBlock Text="ITALIANO" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -181,7 +184,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Saudi-Arabia.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="عربي" />
+                                            <TextBlock Text="عربي" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -189,7 +192,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Russia.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="РУССКИЙ" />
+                                            <TextBlock Text="РУССКИЙ" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -197,7 +200,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Germany.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="DEUTSCH" />
+                                            <TextBlock Text="DEUTSCH" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -205,7 +208,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Japan.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="日本" />
+                                            <TextBlock Text="日本" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -213,7 +216,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Netherlands.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="DUTCH" />
+                                            <TextBlock Text="DUTCH" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -221,7 +224,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Czech.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="CZECH" />
+                                            <TextBlock Text="CZECH" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -229,7 +232,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Spain.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="ESPAÑOL" />
+                                            <TextBlock Text="ESPAÑOL" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -237,7 +240,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-China.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="中國人" />
+                                            <TextBlock Text="中國人" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -245,7 +248,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Ukraina.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="УКРАЇНСЬКА" />
+                                            <TextBlock Text="УКРАЇНСЬКА" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -253,7 +256,7 @@
                                     <ListBoxItem.Content>
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Greece.png" />
-                                            <TextBlock HorizontalAlignment="Center" Text="ΕΛΛΗΝΙΚΑ" />
+                                            <TextBlock Text="ΕΛΛΗΝΙΚΑ" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>
@@ -585,6 +588,9 @@
                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         </StackPanel>
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <CheckBox.ToolTip>
+                                                <TextBlock FontWeight="Bold" Foreground="Red" Text="{twainctrl:Loc PLAYSOUND}" />
+                                            </CheckBox.ToolTip>
                                             <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PlayNotificationAudio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}">
                                                 <Canvas Width="32" Height="32">
                                                     <Image Width="32" Height="32">

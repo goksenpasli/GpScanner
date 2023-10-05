@@ -314,7 +314,19 @@
                 </Button>
                 <ToggleButton IsChecked="{Binding IgnoreImageWidthHeight}">
                     <ToggleButton.ToolTip>
-                        <TextBlock FontWeight="Bold" Foreground="Red" Text="{local:Loc IGNOREWIDTHHEIGHTEQUAL}" />
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="32" Height="32">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="77" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center"
+                                FontWeight="Bold" Foreground="Red"
+                                Text="{local:Loc IGNOREWIDTHHEIGHTEQUAL}" />
+                        </StackPanel>
                     </ToggleButton.ToolTip>
                     <StackPanel Orientation="Horizontal">
                         <Canvas Width="32" Height="32">

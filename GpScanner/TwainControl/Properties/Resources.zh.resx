@@ -617,4 +617,7 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>选择图像文件夹！</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>扫描完成后播放声音！</value>
+  </data>
 </root>

@@ -615,4 +615,7 @@ ENTFERNEN</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Bilderordner auswählen</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Ton abspielen, wenn der Scan abgeschlossen ist!</value>
+  </data>
 </root>

@@ -614,4 +614,7 @@ PDF-ФАЙЛ!</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Виберіть папку зображень!</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Відтворення звуку після завершення сканування!</value>
+  </data>
 </root>

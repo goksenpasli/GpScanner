@@ -619,4 +619,7 @@
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>حدد مجلد الصور!</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>تشغيل الصوت عند اكتمال المسح الضوئي!</value>
+  </data>
 </root>

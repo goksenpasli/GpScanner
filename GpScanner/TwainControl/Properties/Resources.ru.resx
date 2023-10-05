@@ -612,4 +612,7 @@ PDF-ФАЙЛЫ</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Выберите папку с изображениями</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Воспроизведение звука после завершения сканирования!</value>
+  </data>
 </root>

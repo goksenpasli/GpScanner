@@ -619,4 +619,7 @@ VEDERE</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Seleziona la cartella Immagini!</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Riproduci suono al termine della scansione!</value>
+  </data>
 </root>

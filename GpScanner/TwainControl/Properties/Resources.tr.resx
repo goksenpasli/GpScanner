@@ -622,4 +622,7 @@ BELGE EKLE</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Görüntüler Klasörünü seçin</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Tarama Tamamlandığında Ses Çal</value>
+  </data>
 </root>

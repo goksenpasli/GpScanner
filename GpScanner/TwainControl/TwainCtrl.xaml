@@ -190,6 +190,10 @@
                         <Setter Property="Background" Value="{StaticResource BorderBackground}" />
                         <Setter Property="BorderBrush" Value="{StaticResource GroupBoxBackGround}" />
                     </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background" Value="#1F26A0DA" />
+                        <Setter Property="BorderBrush" Value="#A826A0DA" />
+                    </Trigger>
                 </Style.Triggers>
             </Style>
             <Style TargetType="{x:Type GroupBox}">
@@ -520,6 +524,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ComboBox x:Name="CbFolderFormat"
                                     local:Policy.PolicyName="FolderDateFormat"
+                                    ItemContainerStyle="{StaticResource ScanTypeLbItem}"
                                     ItemsSource="{Binding Source={StaticResource FolderDates}}"
                                     SelectedValue="{Binding FolderDateFormat, Source={x:Static properties:Settings.Default}}"
                                     SelectedValuePath="Key">
@@ -840,6 +845,7 @@
                                         <ComboBox Grid.Column="1"
                                             VerticalContentAlignment="Center"
                                             local:Policy.PolicyName="SelectedPaper"
+                                            ItemContainerStyle="{StaticResource ScanTypeLbItem}"
                                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource PaperProfiles}}"
                                             SelectedItem="{Binding SelectedPaper}"
                                             SelectedValue="{Binding SelectedPaper.PaperType}"

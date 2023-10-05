@@ -614,4 +614,7 @@ SOUBORY PDF</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Vyberte složku obrázků</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Přehrát zvuk po dokončení skenování!</value>
+  </data>
 </root>

@@ -613,4 +613,7 @@ PDF 'S SAMENVOEGEN</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Selecteer afbeeldingenmap!</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Geluid afspelen wanneer de scan is voltooid!</value>
+  </data>
 </root>

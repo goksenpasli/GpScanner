@@ -689,6 +689,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string PLAYSOUND {
+            get {
+                return ResourceManager.GetString("PLAYSOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PREVIEWFILE {
             get {
                 return ResourceManager.GetString("PREVIEWFILE", resourceCulture);

@@ -617,4 +617,7 @@ PDFをマージ</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>画像フォルダを選択！</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>スキャンが完了したらサウンドを再生！</value>
+  </data>
 </root>

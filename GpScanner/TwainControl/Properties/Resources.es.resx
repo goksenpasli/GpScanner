@@ -611,4 +611,7 @@ AL ARCHIVO</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>¡Seleccione la carpeta de imágenes!</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>¡Reproducir sonido cuando se complete el escaneo!</value>
+  </data>
 </root>

@@ -619,4 +619,7 @@ VOIR</value>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Sélectionnez le dossier des images !</value>
   </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Lecture du son lorsque la numérisation est terminée !</value>
+  </data>
 </root>

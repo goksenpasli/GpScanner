@@ -237,7 +237,7 @@ PATH</value>
     <value>ENCRYPT</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>THE SETTINGS MADE HERE AFFECT ALL PDF RECORDINGS. 
+    <value>THE SETTINGS MADE HERE AFFECT ALL PDF SETTINGS. 
 ALSO PDF PROTECTION CAN BE BROKEN BY 3rd PARTY APPLICATIONS.</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
@@ -578,10 +578,10 @@ TO FILE</value>
     <value>It is recommended to choose the appropriate format for the folder index of your old browser application. Here, Filtering Will Be Made According to the Selected Format.</value>
   </data>
   <data name="CHEIGHT" xml:space="preserve">
-    <value>CUSTOM HEIGHT!</value>
+    <value>CUSTOM HEIGHT</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
-    <value>CUSTOM WIDTH!</value>
+    <value>CUSTOM WIDTH</value>
   </data>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Any Cyan Colored Control Works Differently With One or More Of The Alt Shift Ctrl Keys</value>
@@ -615,5 +615,8 @@ TO FILE</value>
   </data>
   <data name="GRAPHFOLDER" xml:space="preserve">
     <value>Select Images Folder</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Play Sound When Scan Completed</value>
   </data>
 </root>

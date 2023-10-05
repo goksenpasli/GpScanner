@@ -52,19 +52,19 @@
                         <Slider Margin="20.8,0,20.8,0"
                             DockPanel.Dock="Top"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                            Value="{Binding Scanner.CropTop}" />
+                            Value="{Binding Scanner.CropTop, Delay=100}" />
                         <Slider Margin="20.8,0,20.8,0"
                             DockPanel.Dock="Bottom"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                            Value="{Binding Scanner.CropBottom}" />
+                            Value="{Binding Scanner.CropBottom, Delay=100}" />
                         <Slider DockPanel.Dock="Left"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Orientation="Vertical"
-                            Value="{Binding Scanner.CropLeft}" />
+                            Value="{Binding Scanner.CropLeft, Delay=100}" />
                         <Slider DockPanel.Dock="Right"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                             Orientation="Vertical"
-                            Value="{Binding Scanner.CropRight}" />
+                            Value="{Binding Scanner.CropRight, Delay=100}" />
                         <Border Background="{StaticResource BorderBackground}" BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
                             <Grid Width="200" Height="200">
                                 <ProgressBar Background="{x:Null}" Maximum="1" Value="{Binding ToolBoxPdfMergeProgressValue, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
@@ -142,7 +142,7 @@
                                     IsSnapToTickEnabled="True" Maximum="255"
                                     Minimum="1" SmallChange="1"
                                     ToolTip="{local:Loc BW}"
-                                    Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}">
+                                    Value="{Binding Scanner.ToolBarBwThreshold, Delay=100, UpdateSourceTrigger=PropertyChanged}">
                                     <Slider.Background>
                                         <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
                                             <GradientStop Offset="0" Color="White" />
