@@ -17,6 +17,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
     private Visibility openButtonVisibility = Visibility.Visible;
     private Visibility pasteButtonVisibility = Visibility.Visible;
+    private Visibility remainingLengthVisibility = Visibility.Collapsed;
+    private int remainingTextLength;
     private Visibility resetButtonVisibility = Visibility.Visible;
 
     static ButtonedTextBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox))); }
@@ -94,6 +96,33 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
+    public Visibility RemainingLengthVisibility
+    {
+        get => remainingLengthVisibility;
+        set
+        {
+            if (remainingLengthVisibility != value)
+            {
+                remainingLengthVisibility = value;
+                OnPropertyChanged(nameof(RemainingLengthVisibility));
+            }
+        }
+    }
+
+    public int RemainingTextLength
+    {
+        get => remainingTextLength;
+
+        set
+        {
+            if (remainingTextLength != value)
+            {
+                remainingTextLength = value;
+                OnPropertyChanged(nameof(RemainingTextLength));
+            }
+        }
+    }
+
     public ICommand Reset { get; } = new RoutedCommand();
 
     public Visibility ResetButtonVisibility
@@ -111,6 +140,15 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     }
 
     protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    protected override void OnTextChanged(TextChangedEventArgs e)
+    {
+        if (RemainingLengthVisibility == Visibility.Visible && MaxLength > 0)
+        {
+            RemainingTextLength = MaxLength - Text.Length;
+        }
+        base.OnTextChanged(e);
+    }
 
     private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {

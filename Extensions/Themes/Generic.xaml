@@ -720,6 +720,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <ContentPresenter Name="contentPresenter" VerticalAlignment="Center" Content="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border Name="border"
@@ -732,8 +733,18 @@
                                 Focusable="False" HorizontalScrollBarVisibility="Hidden"
                                 VerticalScrollBarVisibility="Hidden" />
                         </Border>
-                        <Border Name="copyborder"
+                        <Border Name="remaintext"
                             Grid.Column="2"
+                            Background="{TemplateBinding Panel.Background}"
+                            BorderBrush="{TemplateBinding Border.BorderBrush}"
+                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
+                            Visibility="{Binding RemainingLengthVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                FontSize="12"
+                                Text="{Binding RemainingTextLength, RelativeSource={RelativeSource TemplatedParent}}" />
+                        </Border>
+                        <Border Name="copyborder"
+                            Grid.Column="3"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -746,7 +757,7 @@
                             </TextBlock>
                         </Border>
                         <Border Name="pasteborder"
-                            Grid.Column="3"
+                            Grid.Column="4"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -759,7 +770,7 @@
                             </TextBlock>
                         </Border>
                         <Border Name="clearborder"
-                            Grid.Column="4"
+                            Grid.Column="5"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -772,7 +783,7 @@
                             </TextBlock>
                         </Border>
                         <Border Name="openborder"
-                            Grid.Column="5"
+                            Grid.Column="6"
                             Width="16"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
@@ -786,7 +797,7 @@
                             </TextBlock>
                         </Border>
                         <local:NumericUpDownControl x:Name="fontsize"
-                            Grid.Column="6"
+                            Grid.Column="7"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             IsReadOnly="True" LargeChange="1"
@@ -804,6 +815,7 @@
                             <Setter TargetName="openborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="pasteborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="fontsize" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="remaintext" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#7EB4EA" />
@@ -812,6 +824,7 @@
                             <Setter TargetName="openborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="fontsize" Property="Border.BorderBrush" Value="#7EB4EA" />
+                            <Setter TargetName="remaintext" Property="Border.BorderBrush" Value="#7EB4EA" />
                         </Trigger>
                         <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#569DE5" />
@@ -820,6 +833,7 @@
                             <Setter TargetName="openborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="fontsize" Property="Border.BorderBrush" Value="#569DE5" />
+                            <Setter TargetName="remaintext" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
