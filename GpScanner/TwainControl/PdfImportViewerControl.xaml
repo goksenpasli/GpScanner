@@ -40,30 +40,68 @@
         <WrapPanel Orientation="Horizontal">
             <Menu Background="{x:Null}">
                 <MenuItem>
-                    <MenuItem.ItemsSource>
-                        <CompositeCollection>
-                            <MenuItem Command="{Binding ClearPdfHistory, Mode=OneWay}" Header="{local:Loc CLEARLIST}">
-                                <MenuItem.Icon>
-                                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator />
-                            <CollectionContainer Collection="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                            <Separator />
-                            <MenuItem Command="{Binding ClosePdfFile, Mode=OneWay}" CommandParameter="{Binding Source={x:Reference PdfViewer}}" Header="{local:Loc CLOSEFILE}">
-                                <MenuItem.Icon>
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="27" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                        </CompositeCollection>
-                    </MenuItem.ItemsSource>
+                    <MenuItem Name="Clear" Command="{Binding ClearPdfHistory, Mode=OneWay}" Header="{local:Loc CLEARLIST}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding ClosePdfFile, Mode=OneWay}" CommandParameter="{Binding Source={x:Reference PdfViewer}}" Header="{local:Loc CLOSEFILE}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="27" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="{local:Loc DOCUMENT}" IsEnabled="{Binding ElementName=Clear, Path=IsEnabled}" ItemsSource="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="1" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                    <Run BaselineAlignment="Center" FontFamily="Webdings"
+                                        FontSize="18" Foreground="Red"
+                                        Text="N">
+                                        <Run.ToolTip>
+                                            <Image Width="128" Height="128">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                                                        <Binding Mode="OneWay" />
+                                                        <Binding Mode="OneWay">
+                                                            <Binding.Source>
+                                                                <System:Int32>1</System:Int32>
+                                                            </Binding.Source>
+                                                        </Binding>
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Run.ToolTip>
+                                    </Run>
+                                </TextBlock>
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value="{Binding OpenPdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
+                                <Setter Property="Icon" Value="{StaticResource PdfImage}" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
                     <MenuItem.Header>
                         <Image Width="20" Height="20">
                             <Image.Source>
@@ -74,13 +112,6 @@
                             </Image.Source>
                         </Image>
                     </MenuItem.Header>
-                    <MenuItem.ItemContainerStyle>
-                        <Style TargetType="MenuItem">
-                            <Setter Property="Command" Value="{Binding OpenPdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
-                            <Setter Property="Icon" Value="{StaticResource PdfImage}" />
-                        </Style>
-                    </MenuItem.ItemContainerStyle>
                 </MenuItem>
             </Menu>
             <StackPanel Orientation="Horizontal">

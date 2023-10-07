@@ -5,7 +5,7 @@
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
-    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:GpScanner" xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
@@ -25,7 +25,6 @@
             <Converter:FilePathCheckConverter x:Key="FilePathCheckConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
             <Converter:LanguageStringConverter x:Key="LanguageStringConverter" />
-            <Converter:StringToIntConverter x:Key="StringToIntConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
@@ -463,7 +462,11 @@
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
-                            <Binding Converter="{StaticResource StringToIntConverter}" Mode="OneWay" Source="1" />
+                            <Binding Mode="OneWay">
+                                <Binding.Source>
+                                    <System:Int32>1</System:Int32>
+                                </Binding.Source>
+                            </Binding>
                         </MultiBinding>
                     </Image.Source>
                 </Image>

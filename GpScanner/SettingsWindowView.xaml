@@ -1105,7 +1105,11 @@
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                                     <Binding Mode="OneWay" Path="Name" />
-                                                                    <Binding Converter="{StaticResource StringToIntConverter}" Mode="OneWay" Source="1" />
+                                                                    <Binding Mode="OneWay">
+                                                                        <Binding.Source>
+                                                                            <System:Int32>1</System:Int32>
+                                                                        </Binding.Source>
+                                                                    </Binding>
                                                                 </MultiBinding>
                                                             </Image.Source>
                                                         </Image>
@@ -1238,7 +1242,11 @@
                                                         <Image.Source>
                                                             <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                                 <Binding Mode="OneWay" />
-                                                                <Binding Converter="{StaticResource StringToIntConverter}" Mode="OneWay" Source="1" />
+                                                                <Binding Mode="OneWay">
+                                                                    <Binding.Source>
+                                                                        <System:Int32>1</System:Int32>
+                                                                    </Binding.Source>
+                                                                </Binding>
                                                             </MultiBinding>
                                                         </Image.Source>
                                                     </Image>

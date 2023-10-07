@@ -763,7 +763,11 @@
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                             <Binding Mode="OneWay" Path="FileName" />
-                                                            <Binding Converter="{StaticResource StringToIntConverter}" Mode="OneWay" Source="1" />
+                                                            <Binding Mode="OneWay">
+                                                                <Binding.Source>
+                                                                    <sys:Int32>1</sys:Int32>
+                                                                </Binding.Source>
+                                                            </Binding>
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
