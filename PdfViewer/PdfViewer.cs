@@ -159,16 +159,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         Resize = new RelayCommand<object>(
             delegate
             {
-                if (Source is not null)
+                Zoom = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                if (Zoom == 0)
                 {
-                    Zoom = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
-                    if (Zoom == 0)
-                    {
-                        Zoom = 1;
-                    }
+                    Zoom = 1;
                 }
             },
-            parameter => Source != null);
+            parameter => Source is not null);
 
         ReadPdfText = new RelayCommand<object>(
             delegate
@@ -176,7 +173,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
             },
-            parameter => Source != null);
+            parameter => Source is not null);
 
         ReadPdfBookmarks = new RelayCommand<object>(
             delegate
@@ -184,7 +181,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfBookmarks = pdfDocument.Bookmarks;
             },
-            parameter => Source != null);
+            parameter => Source is not null);
 
         GoPdfBookMarkPage = new RelayCommand<object>(
             parameter =>
@@ -211,7 +208,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
                 PdfMatches = [.. matches.Items];
             },
-            parameter => Source != null && !string.IsNullOrWhiteSpace(SearchTextContent));
+            parameter => Source is not null && !string.IsNullOrWhiteSpace(SearchTextContent));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -737,7 +734,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && pdfViewer.Source is not null && !DesignerProperties.GetIsInDesignMode(pdfViewer))
+        if (d is PdfViewer pdfViewer && pdfViewer.Source is not null && pdfViewer.Resize.CanExecute(null) && !DesignerProperties.GetIsInDesignMode(pdfViewer))
         {
             pdfViewer.Resize.Execute(null);
         }
@@ -812,7 +809,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void SourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && e.NewValue is not null)
+        if (d is PdfViewer pdfViewer && e.NewValue is not null && pdfViewer.Resize.CanExecute(null))
         {
             pdfViewer.Resize.Execute(null);
         }
@@ -828,7 +825,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void PdfViewer_SizeChanged(object sender, SizeChangedEventArgs e)
     {
-        if (AutoFitContent)
+        if (AutoFitContent && Resize.CanExecute(null))
         {
             Resize.Execute(null);
         }

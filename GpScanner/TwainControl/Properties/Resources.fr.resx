@@ -622,4 +622,10 @@ VOIR</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>Lecture du son lorsque la numérisation est terminée !</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Si coché, plusieurs documents peuvent être OCRen même temps !</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Fermer le dossier</value>
+  </data>
 </root>

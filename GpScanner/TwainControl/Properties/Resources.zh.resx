@@ -620,4 +620,10 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>扫描完成后播放声音！</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>如果选中，可以同时对多个文档进行OCR ！</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>关闭文件</value>
+  </data>
 </root>

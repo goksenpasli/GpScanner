@@ -615,4 +615,10 @@ PDF-ФАЙЛЫ</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>Воспроизведение звука после завершения сканирования!</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Если отмечено, несколько документов могут быть распознаны одновременно!</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Закрыть файл</value>
+  </data>
 </root>

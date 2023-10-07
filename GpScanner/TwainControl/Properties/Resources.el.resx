@@ -617,4 +617,10 @@ PDF!</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>Αναπαραγωγή ήχου όταν ολοκληρωθεί η σάρωση!</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Εάν ελεγχθεί, το Πολλαπλό έγγραφο μπορεί να είναι OCR'ed ταυτόχρονα!</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Κλείσιμο αρχείου</value>
+  </data>
 </root>

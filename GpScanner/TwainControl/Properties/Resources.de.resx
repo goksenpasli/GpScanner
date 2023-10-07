@@ -618,4 +618,10 @@ ENTFERNEN</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>Ton abspielen, wenn der Scan abgeschlossen ist!</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Wenn aktiviert, können mehrere Dokumente gleichzeitig mit OCRbearbeitet werden!</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Datei s&amp;chließen</value>
+  </data>
 </root>

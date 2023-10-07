@@ -650,4 +650,10 @@
   <data name="PLAYSOUND" xml:space="preserve">
     <value />
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -622,4 +622,10 @@
   <data name="PLAYSOUND" xml:space="preserve">
     <value>تشغيل الصوت عند اكتمال المسح الضوئي!</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>إذا تم التحقق، يمكن إجراء التعرف الضوئي على الحروف لمستندات متعددة في نفس الوقت!</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>أغلق الملف!</value>
+  </data>
 </root>

@@ -620,4 +620,10 @@ PDFをマージ</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>スキャンが完了したらサウンドを再生！</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>チェックされている場合、複数のドキュメントを同時にOCRすることができます！</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>ファイルを閉じる</value>
+  </data>
 </root>

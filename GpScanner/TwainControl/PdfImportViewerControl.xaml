@@ -21,10 +21,15 @@
             <Converter:XKnownColorToBrushConverter x:Key="XKnownColorToBrushConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
             <Style TargetType="ComboBox">
                 <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
             </Style>
+            <Image x:Key="PdfImage"
+                Width="16" Height="16"
+                x:Shared="false"
+                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -44,6 +49,19 @@
                             </MenuItem>
                             <Separator />
                             <CollectionContainer Collection="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                            <Separator />
+                            <MenuItem Command="{Binding ClosePdfFile, Mode=OneWay}" CommandParameter="{Binding Source={x:Reference PdfViewer}}" Header="{local:Loc CLOSEFILE}">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="27" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </CompositeCollection>
                     </MenuItem.ItemsSource>
                     <MenuItem.Header>
@@ -60,6 +78,7 @@
                         <Style TargetType="MenuItem">
                             <Setter Property="Command" Value="{Binding OpenPdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
                             <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
+                            <Setter Property="Icon" Value="{StaticResource PdfImage}" />
                         </Style>
                     </MenuItem.ItemContainerStyle>
                 </MenuItem>

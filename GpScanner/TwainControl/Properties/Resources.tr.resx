@@ -625,4 +625,10 @@ BELGE EKLE</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>Tarama Tamamlandığında Ses Çal</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>İşaretlenirse Birden Fazla Belge Aynı Anda OCR Edilebilir</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>DOSYAYI KAPAT</value>
+  </data>
 </root>

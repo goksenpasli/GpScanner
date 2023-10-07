@@ -225,6 +225,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string CLOSEFILE {
+            get {
+                return ResourceManager.GetString("CLOSEFILE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string COLOR {
             get {
                 return ResourceManager.GetString("COLOR", resourceCulture);
@@ -971,6 +980,15 @@ namespace TwainControl.Properties {
         public static string TEXTSIZE {
             get {
                 return ResourceManager.GetString("TEXTSIZE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string THUMBMULTIPLEOCR {
+            get {
+                return ResourceManager.GetString("THUMBMULTIPLEOCR", resourceCulture);
             }
         }
         

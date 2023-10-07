@@ -622,4 +622,10 @@ VEDERE</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>Riproduci suono al termine della scansione!</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Se selezionato, è possibile eseguire l'OCR di più documenti contemporaneamente!</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Chiudi file</value>
+  </data>
 </root>

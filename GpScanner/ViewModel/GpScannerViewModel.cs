@@ -290,7 +290,7 @@ public class GpScannerViewModel : InpcBase
                     }
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && (Settings.Default.ThumbMultipleOcrEnabled || !OcrIsBusy));
 
         WordOcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>

@@ -614,4 +614,10 @@ AL ARCHIVO</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>¡Reproducir sonido cuando se complete el escaneo!</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>¡Si se comprueba, varios documentos pueden ser OCR'ed al mismo tiempo!</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Cerrar el archivo</value>
+  </data>
 </root>

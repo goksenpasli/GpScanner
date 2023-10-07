@@ -619,4 +619,10 @@ TO FILE</value>
   <data name="PLAYSOUND" xml:space="preserve">
     <value>Play Sound When Scan Completed</value>
   </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>If Checked Multiple Document Can Be OCR'ed Same Time</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Close File</value>
+  </data>
 </root>

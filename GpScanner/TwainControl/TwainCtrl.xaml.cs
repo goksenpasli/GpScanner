@@ -1047,7 +1047,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftCtrl) && TbCtrl?.Items[1] is TabItem selectedtab)
                     {
-                    ((PdfImportViewerControl)selectedtab.Content).PdfViewer.PdfFilePath = pdfviewer.PdfFilePath;
+                        ((PdfImportViewerControl)selectedtab.Content).PdfViewer.PdfFilePath = pdfviewer.PdfFilePath;
                         SelectedTab = selectedtab;
                         return;
                     }
@@ -1181,7 +1181,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ClosePdfFile = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is PdfViewer.PdfViewer pdfviewer &&
+                File.Exists(pdfviewer.PdfFilePath) &&
+                MessageBox.Show($"{Translation.GetResStringValue("CLOSEFILE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.Source = null;
@@ -2425,14 +2427,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
 
                             case ".jpg":
-                                       case ".jpeg":
-                                       case ".jfif":
-                                       case ".jfıf":
-                                       case ".jpe":
-                                       case ".png":
-                                       case ".gif":
-                                       case ".gıf":
-                                       case ".bmp":
+                            case ".jpeg":
+                            case ".jfif":
+                            case ".jfıf":
+                            case ".jpe":
+                            case ".png":
+                            case ".gif":
+                            case ".gıf":
+                            case ".bmp":
                                 await AddImageFiles(filename);
                                 break;
 

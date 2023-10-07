@@ -297,6 +297,31 @@
                                     </Image.Source>
                                 </Image>
                             </Button>
+                            <ToggleButton IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="70" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <ToggleButton.ToolTip>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="77" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center"
+                                            FontWeight="Bold" Foreground="Red"
+                                            Text="{twainctrl:Loc THUMBMULTIPLEOCR}" />
+                                    </StackPanel>
+                                </ToggleButton.ToolTip>
+                            </ToggleButton>
                         </StackPanel>
                         <Separator Grid.Row="1" />
                         <Grid Grid.Row="2" Background="{StaticResource BorderBackground}">
