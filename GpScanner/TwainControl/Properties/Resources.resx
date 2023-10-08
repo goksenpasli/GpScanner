@@ -656,4 +656,7 @@
   <data name="CLOSEFILE" xml:space="preserve">
     <value />
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value />
+  </data>
 </root>

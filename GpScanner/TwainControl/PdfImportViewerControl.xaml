@@ -72,25 +72,19 @@
                         <MenuItem.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock>
+                                    <Image Width="128" Height="128" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                                        <Image.Tag>
+                                            <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                                                <Binding Mode="OneWay" />
+                                                <Binding Mode="OneWay">
+                                                    <Binding.Source>
+                                                        <System:Int32>1</System:Int32>
+                                                    </Binding.Source>
+                                                </Binding>
+                                            </MultiBinding>
+                                        </Image.Tag>
+                                    </Image>
                                     <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                    <Run BaselineAlignment="Center" FontFamily="Webdings"
-                                        FontSize="18" Foreground="Red"
-                                        Text="N">
-                                        <Run.ToolTip>
-                                            <Image Width="128" Height="128">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
-                                                        <Binding Mode="OneWay" />
-                                                        <Binding Mode="OneWay">
-                                                            <Binding.Source>
-                                                                <System:Int32>1</System:Int32>
-                                                            </Binding.Source>
-                                                        </Binding>
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Run.ToolTip>
-                                    </Run>
                                 </TextBlock>
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
@@ -164,9 +158,9 @@
                     <GroupBox>
                         <StackPanel>
                             <ListBox ItemsSource="{Binding PdfPages}"
-                                ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Extended"
-                                VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                                SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
+                                VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.ScrollUnit="Pixel"
+                                VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Selected}">
@@ -178,13 +172,14 @@
                                                     </TextBlock>
                                                     <Pdfviewer:ShadowedImage Width="96" Height="96"
                                                         HorizontalAlignment="Center"
-                                                        ShowShadow="True">
-                                                        <Pdfviewer:ShadowedImage.Source>
+                                                        ShowShadow="True"
+                                                        Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                                                        <Pdfviewer:ShadowedImage.Tag>
                                                             <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                                 <Binding ElementName="PdfViewer" Path="PdfFilePath" />
                                                                 <Binding Mode="OneWay" Path="PageNumber" />
                                                             </MultiBinding>
-                                                        </Pdfviewer:ShadowedImage.Source>
+                                                        </Pdfviewer:ShadowedImage.Tag>
                                                     </Pdfviewer:ShadowedImage>
                                                 </StackPanel>
                                             </CheckBox.Content>

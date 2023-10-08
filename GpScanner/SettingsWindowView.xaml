@@ -1101,8 +1101,9 @@
                                                         <Image Width="64" Height="64"
                                                             d:Height="64"
                                                             d:Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}"
-                                                            d:Width="64">
-                                                            <Image.Source>
+                                                            d:Width="64"
+                                                            Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                                                            <Image.Tag>
                                                                 <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                                     <Binding Mode="OneWay" Path="Name" />
                                                                     <Binding Mode="OneWay">
@@ -1111,7 +1112,7 @@
                                                                         </Binding.Source>
                                                                     </Binding>
                                                                 </MultiBinding>
-                                                            </Image.Source>
+                                                            </Image.Tag>
                                                         </Image>
                                                     </CheckBox>
                                                 </DataTemplate>
@@ -1238,8 +1239,9 @@
                                                     <Image Width="64" Height="64"
                                                         d:Height="64"
                                                         d:Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}"
-                                                        d:Width="64">
-                                                        <Image.Source>
+                                                        d:Width="64"
+                                                        Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                                                        <Image.Tag>
                                                             <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                                 <Binding Mode="OneWay" />
                                                                 <Binding Mode="OneWay">
@@ -1248,7 +1250,7 @@
                                                                     </Binding.Source>
                                                                 </Binding>
                                                             </MultiBinding>
-                                                        </Image.Source>
+                                                        </Image.Tag>
                                                     </Image>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>

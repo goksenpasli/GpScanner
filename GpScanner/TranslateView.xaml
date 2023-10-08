@@ -88,7 +88,7 @@
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap" TitleCaseMenuVisibility="Visible" />
         <ToggleButton Grid.Row="2" Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
@@ -136,7 +136,7 @@
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
             Text="{Binding Çeviri, Mode=OneWay}"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap" TitleCaseMenuVisibility="Visible" />
         <ToggleButton Grid.Row="3" Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"

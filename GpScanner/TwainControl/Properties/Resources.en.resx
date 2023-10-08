@@ -625,4 +625,7 @@ TO FILE</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Close File</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>INVERT COLOR</value>
+  </data>
 </root>

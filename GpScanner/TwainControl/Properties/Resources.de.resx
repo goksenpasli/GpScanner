@@ -624,4 +624,7 @@ ENTFERNEN</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Datei s&amp;chließen</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>FARBE UMKEHREN!</value>
+  </data>
 </root>

@@ -626,4 +626,7 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>关闭文件</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>反转颜色</value>
+  </data>
 </root>

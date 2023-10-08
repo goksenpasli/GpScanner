@@ -621,4 +621,7 @@ PDF-ФАЙЛЫ</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Закрыть файл</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>Инвертировать цвет логотипа</value>
+  </data>
 </root>

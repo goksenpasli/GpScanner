@@ -620,4 +620,7 @@ AL ARCHIVO</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Cerrar el archivo</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>Invertir color de texto</value>
+  </data>
 </root>

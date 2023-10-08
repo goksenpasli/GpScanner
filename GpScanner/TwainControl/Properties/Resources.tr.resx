@@ -631,4 +631,7 @@ BELGE EKLE</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>DOSYAYI KAPAT</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>TERS RENKLİ</value>
+  </data>
 </root>

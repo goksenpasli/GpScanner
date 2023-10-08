@@ -623,4 +623,7 @@ PDF-ФАЙЛ!</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Закрити файл</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>Інвертувати кольори</value>
+  </data>
 </root>

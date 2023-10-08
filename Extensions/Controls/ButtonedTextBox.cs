@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,6 +21,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     private Visibility remainingLengthVisibility = Visibility.Collapsed;
     private int remainingTextLength;
     private Visibility resetButtonVisibility = Visibility.Visible;
+    private Visibility titleCaseMenuVisibility = Visibility.Collapsed;
 
     static ButtonedTextBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox))); }
 
@@ -28,6 +30,9 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(TitleCase, TitleCaseCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(LowerCase, LowerCaseCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute));
     }
 
@@ -63,6 +68,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
             }
         }
     }
+
+    public ICommand LowerCase { get; } = new RoutedCommand();
 
     public ICommand Open { get; } = new RoutedCommand();
 
@@ -139,6 +146,23 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
+    public ICommand TitleCase { get; } = new RoutedCommand();
+
+    public Visibility TitleCaseMenuVisibility
+    {
+        get => titleCaseMenuVisibility;
+        set
+        {
+            if (titleCaseMenuVisibility != value)
+            {
+                titleCaseMenuVisibility = value;
+                OnPropertyChanged(nameof(TitleCaseMenuVisibility));
+            }
+        }
+    }
+
+    public ICommand UpperCase { get; } = new RoutedCommand();
+
     protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     protected override void OnTextChanged(TextChangedEventArgs e)
@@ -159,6 +183,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     }
 
     private void CopyCommand(object sender, ExecutedRoutedEventArgs e) => Clipboard.SetText(Text);
+
+    private void LowerCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.ToLower();
 
     private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
     {
@@ -183,4 +209,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     private void PasteCommand(object sender, ExecutedRoutedEventArgs e) => Text = Clipboard.GetText();
 
     private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
+
+    private void TitleCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = CultureInfo.CurrentUICulture.TextInfo.ToTitleCase(Text.ToLower());
+
+    private void UpperCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.ToUpper();
 }

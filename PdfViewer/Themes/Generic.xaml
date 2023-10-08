@@ -136,7 +136,6 @@
                                                 <ListBox VerticalContentAlignment="Center"
                                                     ItemTemplate="{StaticResource PdfThumbItemTemplate}"
                                                     ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    ScrollViewer.IsDeferredScrollingEnabled="True"
                                                     SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                                     VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
                                                     VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">

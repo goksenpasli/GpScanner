@@ -153,7 +153,6 @@
                                         VerticalContentAlignment="Center"
                                         ItemTemplate="{StaticResource PdfThumbItemTemplate}"
                                         ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                        ScrollViewer.IsDeferredScrollingEnabled="True"
                                         SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                         VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
                                         VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
@@ -458,8 +457,8 @@
                 </Style.Triggers>
             </Style>
             <DataTemplate x:Key="ContributionImageTemplate">
-                <Image Width="64" Height="64">
-                    <Image.Source>
+                <Image Width="64" Height="64" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                    <Image.Tag>
                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
                             <Binding Mode="OneWay">
@@ -468,7 +467,7 @@
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
-                    </Image.Source>
+                    </Image.Tag>
                 </Image>
             </DataTemplate>
             <DataTemplate x:Key="ContributionTextTemplate">

@@ -623,4 +623,7 @@ PDF!</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Κλείσιμο αρχείου</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>Αντιστροφή χρώματος κειμένου</value>
+  </data>
 </root>

@@ -553,7 +553,7 @@
                                                                                     Description="{twainctrl:Loc TEXT}"
                                                                                     OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                                                                                     Text="{Binding DataContext.CalendarDesc, Source={x:Reference Window}, UpdateSourceTrigger=PropertyChanged}"
-                                                                                    TextWrapping="Wrap" />
+                                                                                    TextWrapping="Wrap" TitleCaseMenuVisibility="Visible" />
                                                                                 <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding DataContext.NotifyDate, Source={x:Reference Window}, UpdateSourceTrigger=PropertyChanged}" />
                                                                                 <Button Command="{Binding DataContext.AddToCalendar, Source={x:Reference Window}}" CommandParameter="{Binding Mode=OneWay}">
                                                                                     <Image Width="32" Height="32">
@@ -759,8 +759,8 @@
                                                         <Run Text="{Binding Açıklama}" />
                                                     </Hyperlink>
                                                 </CheckBox>
-                                                <Image Width="384" Height="384">
-                                                    <Image.Source>
+                                                <Image Width="384" Height="384" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                                                    <Image.Tag>
                                                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                             <Binding Mode="OneWay" Path="FileName" />
                                                             <Binding Mode="OneWay">
@@ -769,7 +769,7 @@
                                                                 </Binding.Source>
                                                             </Binding>
                                                         </MultiBinding>
-                                                    </Image.Source>
+                                                    </Image.Tag>
                                                 </Image>
                                             </StackPanel>
                                         </DataTemplate>

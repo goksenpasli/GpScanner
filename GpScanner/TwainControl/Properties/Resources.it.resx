@@ -628,4 +628,7 @@ VEDERE</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Chiudi file</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>INVERTI COLORE</value>
+  </data>
 </root>

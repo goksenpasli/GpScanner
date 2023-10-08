@@ -628,4 +628,7 @@
   <data name="CLOSEFILE" xml:space="preserve">
     <value>أغلق الملف!</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>عكس اللون!</value>
+  </data>
 </root>

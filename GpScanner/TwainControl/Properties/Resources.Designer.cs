@@ -504,6 +504,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string INVERTCOLOR {
+            get {
+                return ResourceManager.GetString("INVERTCOLOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string KNOWNPROBLEMS {
             get {
                 return ResourceManager.GetString("KNOWNPROBLEMS", resourceCulture);

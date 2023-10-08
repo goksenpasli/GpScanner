@@ -721,24 +721,23 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
+                        <Grid.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{Binding Background, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderBrush" Value="{Binding BorderBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Setter Property="BorderThickness" Value="1" />
+                                <Setter Property="SnapsToDevicePixels" Value="True" />
+                            </Style>
+                        </Grid.Resources>
                         <ContentPresenter Name="contentPresenter" VerticalAlignment="Center" Content="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
-                        <Border Name="border"
-                            Grid.Column="1"
-                            Background="{TemplateBinding Panel.Background}"
-                            BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            BorderThickness="{TemplateBinding Border.BorderThickness}"
-                            SnapsToDevicePixels="True">
+                        <Border Name="border" Grid.Column="1">
                             <ScrollViewer Name="PART_ContentHost"
                                 Focusable="False" HorizontalScrollBarVisibility="Hidden"
                                 VerticalScrollBarVisibility="Hidden" />
                         </Border>
-                        <Border Name="remaintext"
-                            Grid.Column="2"
-                            Background="{TemplateBinding Panel.Background}"
-                            BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
-                            Visibility="{Binding RemainingLengthVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                        <Border Name="remaintext" Grid.Column="2" Visibility="{Binding RemainingLengthVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                 FontSize="12"
                                 Text="{Binding RemainingTextLength, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -746,9 +745,6 @@
                         <Border Name="copyborder"
                             Grid.Column="3"
                             Width="16"
-                            Background="{TemplateBinding Panel.Background}"
-                            BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
                             Visibility="{Binding CopyButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                                 <Hyperlink Command="{Binding Copy, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
@@ -759,9 +755,6 @@
                         <Border Name="pasteborder"
                             Grid.Column="4"
                             Width="16"
-                            Background="{TemplateBinding Panel.Background}"
-                            BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
                             Visibility="{Binding PasteButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                                 <Hyperlink Command="{Binding Paste, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
@@ -772,9 +765,6 @@
                         <Border Name="clearborder"
                             Grid.Column="5"
                             Width="16"
-                            Background="{TemplateBinding Panel.Background}"
-                            BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
                             Visibility="{Binding ResetButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                                 <Hyperlink Command="{Binding Reset, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
@@ -785,9 +775,6 @@
                         <Border Name="openborder"
                             Grid.Column="6"
                             Width="16"
-                            Background="{TemplateBinding Panel.Background}"
-                            BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            BorderThickness="0,1,1,1" SnapsToDevicePixels="True"
                             Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
                                 <Hyperlink Command="{Binding Open, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
@@ -805,6 +792,27 @@
                             SmallChange="1" SnapsToDevicePixels="True"
                             Visibility="{Binding FontSizeButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                             Value="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Border Name="title" Grid.Column="8" Visibility="{Binding TitleCaseMenuVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Menu VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                Background="{x:Null}"
+                                BorderBrush="{x:Null}">
+                                <MenuItem>
+                                    <MenuItem Command="{Binding UpperCase, RelativeSource={RelativeSource TemplatedParent}}" Header="AAA BBB" />
+                                    <MenuItem Command="{Binding TitleCase, RelativeSource={RelativeSource TemplatedParent}}" Header="Aaa Bbb" />
+                                    <MenuItem Command="{Binding LowerCase, RelativeSource={RelativeSource TemplatedParent}}" Header="aaa bbb" />
+                                    <MenuItem.Header>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Header>
+                                </MenuItem>
+                            </Menu>
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="UIElement.IsEnabled" Value="False">
@@ -816,6 +824,7 @@
                             <Setter TargetName="pasteborder" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="fontsize" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="remaintext" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="title" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#7EB4EA" />
@@ -825,6 +834,7 @@
                             <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="fontsize" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="remaintext" Property="Border.BorderBrush" Value="#7EB4EA" />
+                            <Setter TargetName="title" Property="Border.BorderBrush" Value="#7EB4EA" />
                         </Trigger>
                         <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#569DE5" />
@@ -834,6 +844,7 @@
                             <Setter TargetName="pasteborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="fontsize" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="remaintext" Property="Border.BorderBrush" Value="#569DE5" />
+                            <Setter TargetName="title" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

@@ -623,4 +623,7 @@ SOUBORY PDF</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Zavřít soubor</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>Invertovat barvu textu</value>
+  </data>
 </root>

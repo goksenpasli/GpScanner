@@ -626,4 +626,7 @@ PDFをマージ</value>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>ファイルを閉じる</value>
   </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>色を反転</value>
+  </data>
 </root>

@@ -963,7 +963,7 @@
                                         Content="{local:Loc FILMSCANNER}"
                                         IsChecked="{Binding Scanner.UseFilmScanner}" />
                                     <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
-                                        <CheckBox Content="{local:Loc REVERSE}" IsChecked="{Binding Scanner.InvertImage}" />
+                                        <CheckBox Content="{local:Loc INVERTCOLOR}" IsChecked="{Binding Scanner.InvertImage}" />
                                         <CheckBox Content="{local:Loc SEPERATOR}" IsChecked="{Binding Scanner.UsePageSeperator}" />
                                     </StackPanel>
                                     <CheckBox Grid.Row="2" Content="{local:Loc SHOWPROGRESS}" IsChecked="{Binding Scanner.ShowProgress}" />

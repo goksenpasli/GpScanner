@@ -4,19 +4,18 @@
         <StackPanel HorizontalAlignment="Center">
             <TextBlock HorizontalAlignment="Center" Text="{Binding Mode=OneWay}" />
             <local:ShadowedImage HorizontalAlignment="Center" ShowShadow="True">
+                <local:ShadowedImage.Tag>
+                    <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                        <Binding Path="PdfFilePath" RelativeSource="{RelativeSource AncestorType={x:Type local:PdfViewer}}" />
+                        <Binding Mode="OneWay" />
+                    </MultiBinding>
+                </local:ShadowedImage.Tag>
                 <local:ShadowedImage.Style>
                     <Style TargetType="{x:Type local:ShadowedImage}">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" Value="true">
                                 <Setter Property="Height" Value="96" />
-                                <Setter Property="Source">
-                                    <Setter.Value>
-                                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
-                                            <Binding Path="PdfFilePath" RelativeSource="{RelativeSource AncestorType={x:Type local:PdfViewer}}" />
-                                            <Binding Mode="OneWay" />
-                                        </MultiBinding>
-                                    </Setter.Value>
-                                </Setter>
+                                <Setter Property="Source" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}" />
                                 <Setter Property="Width" Value="96" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding ThumbsVisible, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" Value="false">
