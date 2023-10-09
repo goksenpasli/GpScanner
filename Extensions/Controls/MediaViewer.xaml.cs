@@ -127,7 +127,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     private Point _startPoint;
     private double _startRotateX;
     private double _startRotateY;
-    private ObservableCollection<SrtContent> parsedSubtitle;
+    private ObservableCollection<SubtitleContent> parsedSubtitle;
     private string saveTranslateLanguage;
     private string searchSubtitle;
     private int selectedEncodingCodePage = 65001;
@@ -156,11 +156,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         LoadSubtitle = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Altyazı Dosyaları (*.srt;*.vtt)|*.srt;*.vtt" };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     SubtitleFilePath = openFileDialog.FileName;
-                    ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
                 }
             },
             parameter => true);
@@ -268,11 +267,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         SaveTranslatedSubtitle = new RelayCommand<object>(
             async parameter =>
             {
-                ObservableCollection<SrtContent> translatedsubtitle = [];
+                ObservableCollection<SubtitleContent> translatedsubtitle = [];
                 TranslateSaveProgress = 0;
-                foreach (SrtContent item in ParsedSubtitle)
+                foreach (SubtitleContent item in ParsedSubtitle)
                 {
-                    SrtContent srtcontent = new()
+                    SubtitleContent srtcontent = new()
                     {
                         Text = await TranslateViewModel.DileÇevirAsync(item.Text, "auto", SaveTranslateLanguage),
                         StartTime = item.StartTime,
@@ -282,20 +281,23 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     translatedsubtitle.Add(srtcontent);
                     TranslateSaveProgress++;
                 }
-                SaveFileDialog saveFileDialog = new() { Filter = "Srt Dosyası (*.srt)|*.srt", FileName = $"{SaveTranslateLanguage}.srt" };
+                SaveFileDialog saveFileDialog = new() { AddExtension = true, Filter = "Srt Dosyası (*.srt)|*.srt|Vtt Dosyası (*.vtt)|*.vtt", FileName = SaveTranslateLanguage };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     StringBuilder sb = new();
-                    foreach (SrtContent item in translatedsubtitle)
+                    foreach (SubtitleContent item in translatedsubtitle)
                     {
-                        _ = sb.Append(item.Segment)
-                            .Append('\n')
-                            .Append(item.StartTime.ToString().Replace('.', ','))
-                            .Append(" --> ")
-                            .Append(item.EndTime.ToString().Replace('.', ','))
-                            .Append("\r\n")
-                            .Append(item.Text)
-                            .Append("\r\n\r\n");
+                        _ = saveFileDialog.FilterIndex == 1
+                            ? sb.Append(item.Segment)
+                              .Append('\n')
+                              .Append(item.StartTime.ToString().Replace('.', ','))
+                              .Append(" --> ")
+                              .Append(item.EndTime.ToString().Replace('.', ','))
+                              .Append("\r\n")
+                              .Append(item.Text)
+                              .Append("\r\n\r\n")
+                            : sb.Append(item.StartTime.ToString()).Append(" --> ").Append(item.EndTime.ToString()).Append("\r\n").Append(item.Text).Append("\r\n\r\n");
+
                     }
                     using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
                     streamWriter.WriteLine(sb.ToString().Trim());
@@ -478,7 +480,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     [Browsable(false)]
-    public ObservableCollection<SrtContent> ParsedSubtitle
+    public ObservableCollection<SubtitleContent> ParsedSubtitle
     {
         get => parsedSubtitle;
 
@@ -702,26 +704,61 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return mesh;
     }
 
-    public ObservableCollection<SrtContent> ParseSrtFile(string filepath)
+    public ObservableCollection<SubtitleContent> ParseSrtFile(string filepath)
     {
         try
         {
-            ObservableCollection<SrtContent> content = [];
+            ObservableCollection<SubtitleContent> content = [];
             const string pattern = "<[/]?[ib]>";
             foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding(SelectedEncodingCodePage)).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] times = lines[1].Split(new string[] { " --> " }, StringSplitOptions.RemoveEmptyEntries);
                 content.Add(
-                    new SrtContent
+                    new SubtitleContent
                     {
-                        StartTime = TimeSpan.Parse(lines[1].Substring(0, lines[1].LastIndexOf("-->")).Trim()),
-                        EndTime = TimeSpan.Parse(lines[1].Substring(lines[1].LastIndexOf("-->") + 3).Trim()),
+                        StartTime = TimeSpan.Parse(times[0]),
+                        EndTime = TimeSpan.Parse(times[1]),
                         Text = Regex.Replace(string.Concat(lines.Skip(2).Take(lines.Length - 2)), pattern, string.Empty),
                         Segment = lines[0]
                     });
             }
 
             return content;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException(ex.Message);
+        }
+    }
+
+    public ObservableCollection<SubtitleContent> ParseVttFile(string filePath)
+    {
+        try
+        {
+            ObservableCollection<SubtitleContent> subtitles = [];
+            Regex timestampRegex = new(@"^(\d{2}:\d{2}:\d{2}.\d{3,})\s*-->\s*(\d{2}:\d{2}:\d{2}.\d{3,})");
+            SubtitleContent currentSubtitle = null;
+
+            foreach (string line in File.ReadAllLines(filePath, Encoding.GetEncoding(SelectedEncodingCodePage)))
+            {
+                if (timestampRegex.IsMatch(line))
+                {
+                    Match match = timestampRegex.Match(line);
+                    currentSubtitle = new SubtitleContent { StartTime = TimeSpan.Parse(match.Groups[1].Value), EndTime = TimeSpan.Parse(match.Groups[2].Value), };
+                }
+                else if (!string.IsNullOrWhiteSpace(line) && currentSubtitle != null)
+                {
+                    currentSubtitle.Text += $"{line.Trim()} ";
+                }
+                else if (string.IsNullOrWhiteSpace(line) && currentSubtitle != null)
+                {
+                    currentSubtitle.Text = currentSubtitle.Text.Trim();
+                    subtitles.Add(currentSubtitle);
+                    currentSubtitle = null;
+                }
+            }
+            return subtitles;
         }
         catch (Exception ex)
         {
@@ -893,7 +930,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void RenderSubtitle(MediaViewer viewer, TimeSpan position)
     {
-        foreach (SrtContent srtcontent in viewer.ParsedSubtitle)
+        foreach (SubtitleContent srtcontent in viewer.ParsedSubtitle)
         {
             if (position > srtcontent.StartTime && position < srtcontent.EndTime)
             {
@@ -916,9 +953,17 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void SubtitleFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue is string file)
         {
-            viewer.ParsedSubtitle = viewer.ParseSrtFile((string)e.NewValue);
+            if (string.Equals(Path.GetExtension(file), ".srt", StringComparison.OrdinalIgnoreCase))
+            {
+                viewer.ParsedSubtitle = viewer.ParseSrtFile(file);
+                return;
+            }
+            if (string.Equals(Path.GetExtension(file), ".vtt", StringComparison.OrdinalIgnoreCase))
+            {
+                viewer.ParsedSubtitle = viewer.ParseVttFile(file);
+            }
         }
     }
 
@@ -989,14 +1034,21 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             MediaViewerSubtitleControl.cvs.Filter += (s, x) =>
                                                      {
-                                                         SrtContent srtContent = x.Item as SrtContent;
+                                                         SubtitleContent srtContent = x.Item as SubtitleContent;
                                                          x.Accepted = srtContent.Text.Contains(SearchSubtitle);
                                                      };
         }
 
         if (e.PropertyName is "SelectedEncodingCodePage" && ParsedSubtitle is not null)
         {
-            ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
+            if (string.Equals(Path.GetExtension(SubtitleFilePath), ".srt", StringComparison.OrdinalIgnoreCase))
+            {
+                ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
+            }
+            if (string.Equals(Path.GetExtension(SubtitleFilePath), ".vtt", StringComparison.OrdinalIgnoreCase))
+            {
+                ParsedSubtitle = ParseVttFile(SubtitleFilePath);
+            }
         }
 
         if (e.PropertyName is "ShowOsdInfo")

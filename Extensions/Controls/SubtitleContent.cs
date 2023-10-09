@@ -3,10 +3,11 @@ using System.Windows.Media;
 
 namespace Extensions.Controls;
 
-public class SrtContent : InpcBase
+public class SubtitleContent : InpcBase
 {
     private SolidColorBrush backgroundColor;
     private TimeSpan endTime;
+    private string segment;
     private TimeSpan startTime;
     private string text;
 
@@ -38,7 +39,18 @@ public class SrtContent : InpcBase
         }
     }
 
-    public string Segment { get; set; }
+    public string Segment
+    {
+        get => segment;
+        set
+        {
+            if (segment != value)
+            {
+                segment = value;
+                OnPropertyChanged(nameof(Segment));
+            }
+        }
+    }
 
     public TimeSpan StartTime
     {

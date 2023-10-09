@@ -79,7 +79,7 @@
     <Compile Include="Controls\PageRangeDocumentPaginator.cs" />
     <Compile Include="Controls\ResizablePanel.cs" />
     <Compile Include="Controls\ResizeDirections.cs" />
-    <Compile Include="Controls\SrtContent.cs" />
+    <Compile Include="Controls\SubtitleContent.cs" />
     <Compile Include="Controls\TranslateView.xaml.cs">
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>
