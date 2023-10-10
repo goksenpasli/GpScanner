@@ -955,15 +955,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     {
         if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue is string file)
         {
-            if (string.Equals(Path.GetExtension(file), ".srt", StringComparison.OrdinalIgnoreCase))
-            {
-                viewer.ParsedSubtitle = viewer.ParseSrtFile(file);
-                return;
-            }
-            if (string.Equals(Path.GetExtension(file), ".vtt", StringComparison.OrdinalIgnoreCase))
-            {
-                viewer.ParsedSubtitle = viewer.ParseVttFile(file);
-            }
+            viewer.ParsedSubtitle = viewer.GetParserSubtitleContent(file);
         }
     }
 
@@ -1020,6 +1012,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return index < PlayList.Count - 1 ? PlayList[index + 1] : null;
     }
 
+    private ObservableCollection<SubtitleContent> GetParserSubtitleContent(string file)
+    {
+        return string.Equals(Path.GetExtension(file), ".srt", StringComparison.OrdinalIgnoreCase)
+               ? ParseSrtFile(file)
+               : string.Equals(Path.GetExtension(file), ".vtt", StringComparison.OrdinalIgnoreCase) ? ParseVttFile(file) : null;
+    }
+
     private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
     {
         if (PlayList.Any() && AutoSkipNextVideo)
@@ -1041,14 +1040,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
         if (e.PropertyName is "SelectedEncodingCodePage" && ParsedSubtitle is not null)
         {
-            if (string.Equals(Path.GetExtension(SubtitleFilePath), ".srt", StringComparison.OrdinalIgnoreCase))
-            {
-                ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
-            }
-            if (string.Equals(Path.GetExtension(SubtitleFilePath), ".vtt", StringComparison.OrdinalIgnoreCase))
-            {
-                ParsedSubtitle = ParseVttFile(SubtitleFilePath);
-            }
+            ParsedSubtitle = GetParserSubtitleContent(SubtitleFilePath);
         }
 
         if (e.PropertyName is "ShowOsdInfo")

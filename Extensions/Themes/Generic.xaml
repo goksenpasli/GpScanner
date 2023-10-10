@@ -1153,4 +1153,30 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="local:FadedToolTipControl">
+        <Setter Property="Background" Value="Red" />
+        <Setter Property="BorderBrush" Value="White" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:FadedToolTipControl">
+                    <Popup x:Name="PART_Popup"
+                        AllowsTransparency="True"
+                        Placement="{TemplateBinding Position}"
+                        PlacementTarget="{TemplateBinding PopupParent}">
+                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                                <ContentPresenter Content="{Binding TooltipContent, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"
+                                    Content="X" Foreground="Red"
+                                    IsChecked="{Binding Show, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Visibility="{Binding ShowCloseButton, RelativeSource={RelativeSource TemplatedParent}}" />
+                            </Grid>
+                        </Border>
+                    </Popup>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>
