@@ -3186,9 +3186,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             return;
         }
 
-        scannedImage
-            .GeneratePdf(ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution)
-        .Save(filename);
+        scannedImage.GeneratePdf(ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
     }
 
     private async Task SavePdfImageAsync(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false, int dpi = 120)
@@ -3217,13 +3215,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
         if (blackwhite)
         {
-            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi))
-                .Save(filename);
+            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
             return;
         }
 
-        (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi))
-            .Save(filename);
+        (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
     }
 
     private void SaveTifImage(BitmapFrame scannedImage, string filename)

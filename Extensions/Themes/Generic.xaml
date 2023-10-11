@@ -1162,9 +1162,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:FadedToolTipControl">
                     <Popup x:Name="PART_Popup"
-                        AllowsTransparency="True"
+                        local:FadedToolTipControl.AlwaysOnTop="False" AllowsTransparency="True"
                         Placement="{TemplateBinding Position}"
-                        PlacementTarget="{TemplateBinding PopupParent}">
+                        PlacementTarget="{TemplateBinding PopupParent}"
+                        PopupAnimation="{TemplateBinding PopupAnimation}">
                         <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                             <Grid>
                                 <ContentPresenter Content="{Binding TooltipContent, RelativeSource={RelativeSource TemplatedParent}}" />

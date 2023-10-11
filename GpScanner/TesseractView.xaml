@@ -19,21 +19,22 @@
     </UserControl.Resources>
     <GroupBox>
         <GroupBox.Header>
-            <UniformGrid Columns="2">
-                <CheckBox Content="{twainctrl:Loc ALL}" IsChecked="{Binding ShowAllLanguages}" />
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Tessdatafolder}" TextDecorations="None">
-                        <Image Width="16" Height="16">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="4" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </Hyperlink>
-                </TextBlock>
-            </UniformGrid>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Hyperlink BaselineAlignment="Center"
+                    Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                    CommandParameter="{Binding Tessdatafolder}"
+                    TextDecorations="None">
+                    <Image Width="16" Height="16">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="4" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Hyperlink>
+                <Run BaselineAlignment="Center" Text="TESSERACT" />
+            </TextBlock>
         </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>
@@ -57,8 +58,7 @@
                             twainctrl:Policy.PolicyName="TesseractDownload"
                             Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType=UserControl}}"
                             CommandParameter="{Binding Mode=OneWay}"
-                            IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Visibility="{Binding IsVisible}">
+                            IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Button.Content>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -77,7 +77,7 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="{Binding OcrName}" />
+                                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="{Binding OcrLangName}" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -131,7 +131,8 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-            <Extension:FadedToolTipControl Background="{StaticResource BorderBackground}"
+            <Extension:FadedToolTipControl d:IsHidden="True"
+                Background="{StaticResource BorderBackground}"
                 BorderBrush="{StaticResource GroupBoxBackGround}"
                 PopupParent="{Binding ElementName=LbTessFiles}"
                 Show="{Binding HasItems, Converter={StaticResource ReverseBooleanConverter}, ElementName=LbTessFiles}"

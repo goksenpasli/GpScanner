@@ -1,8 +1,10 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 using System.Windows.Markup;
 
 namespace Extensions
@@ -11,9 +13,20 @@ namespace Extensions
     [ContentProperty("TooltipContent")]
     public class FadedToolTipControl : Control
     {
+        public static readonly DependencyProperty AlwaysOnTopProperty =
+            DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(FadedToolTipControl), new PropertyMetadata(true, OnTopChanged));
+        public static readonly DependencyProperty PopupAnimationProperty = DependencyProperty.Register(
+            "PopupAnimation",
+            typeof(PopupAnimation),
+            typeof(FadedToolTipControl),
+            new PropertyMetadata(PopupAnimation.Fade));
         public static readonly DependencyProperty PopupParentProperty = DependencyProperty.Register("PopupParent", typeof(FrameworkElement), typeof(FadedToolTipControl));
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(PlacementMode), typeof(FadedToolTipControl), new PropertyMetadata(PlacementMode.Center));
-        public static readonly DependencyProperty ShowCloseButtonProperty = DependencyProperty.Register("ShowCloseButton", typeof(Visibility), typeof(FadedToolTipControl), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty ShowCloseButtonProperty = DependencyProperty.Register(
+            "ShowCloseButton",
+            typeof(Visibility),
+            typeof(FadedToolTipControl),
+            new PropertyMetadata(Visibility.Collapsed));
         public static readonly DependencyProperty ShowProperty = DependencyProperty.Register("Show", typeof(bool), typeof(FadedToolTipControl), new PropertyMetadata(false, ShowChanged));
         public static readonly DependencyProperty TimeToCloseProperty = DependencyProperty.Register("TimeToClose", typeof(int), typeof(FadedToolTipControl), new PropertyMetadata(3000));
         public static readonly DependencyProperty TimeToShowProperty = DependencyProperty.Register("TimeToShow", typeof(int), typeof(FadedToolTipControl), new PropertyMetadata(1000));
@@ -21,6 +34,8 @@ namespace Extensions
         private Popup popup;
 
         static FadedToolTipControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FadedToolTipControl), new FrameworkPropertyMetadata(typeof(FadedToolTipControl))); }
+
+        public PopupAnimation PopupAnimation { get => (PopupAnimation)GetValue(PopupAnimationProperty); set => SetValue(PopupAnimationProperty, value); }
 
         public FrameworkElement PopupParent { get => (FrameworkElement)GetValue(PopupParentProperty); set => SetValue(PopupParentProperty, value); }
 
@@ -36,6 +51,10 @@ namespace Extensions
 
         public UIElement TooltipContent { get => (UIElement)GetValue(TooltipContentProperty); set => SetValue(TooltipContentProperty, value); }
 
+        public static bool GetAlwaysOnTop(DependencyObject obj) => (bool)obj.GetValue(AlwaysOnTopProperty);
+
+        public static void SetAlwaysOnTop(DependencyObject obj, bool value) => obj.SetValue(AlwaysOnTopProperty, value);
+
         public override async void OnApplyTemplate()
         {
             base.OnApplyTemplate();
@@ -48,6 +67,22 @@ namespace Extensions
                     return;
                 }
                 CloseTooltip();
+            }
+        }
+
+        private static void OnTopChanged(DependencyObject d, DependencyPropertyChangedEventArgs f)
+        {
+            if (d is Popup popup)
+            {
+                popup.Opened += (s, e) =>
+                                {
+                                    IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
+
+                                    if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
+                                    {
+                                        _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
+                                    }
+                                };
             }
         }
 
