@@ -213,9 +213,10 @@ public static class BitmapMethods
     {
         RenderTargetBitmap renderTargetBitmap = new((int)element.ActualWidth, (int)element.ActualHeight, 96, 96, PixelFormats.Default);
         renderTargetBitmap.Render(element);
-        _ = renderTargetBitmap.BitmapSourceToBitmap().GetHbitmap();
         PngBitmapEncoder encoder = new();
-        encoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+        BitmapFrame item = BitmapFrame.Create(renderTargetBitmap);
+        item.Freeze();
+        encoder.Frames.Add(item);
         using MemoryStream ms = new();
         encoder.Save(ms);
         using Bitmap bmp = new(ms);
