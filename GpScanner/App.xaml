@@ -353,7 +353,7 @@
                         AllowDrop="True" AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
-                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}, Delay=150}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
                         SnapTick="True"
                         Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}"

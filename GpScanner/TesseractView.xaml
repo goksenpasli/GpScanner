@@ -106,23 +106,18 @@
                                 <ControlTemplate>
                                     <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
                                         <CheckBox.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock>
-                                                    <Run d:Text="Name" Text="{Binding Path=Name, Mode=OneWay}" />
-                                                    <LineBreak />
-                                                    <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\}MB}" />
-                                                </TextBlock>
-                                                <TextBlock VerticalAlignment="Center">
-                                                    <Hyperlink BaselineAlignment="Center"
-                                                        Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                        CommandParameter="{Binding Mode=OneWay}"
-                                                        FontFamily="Segoe UI Black" TextDecorations="None">
-                                                        <InlineUIContainer>
-                                                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
-                                                        </InlineUIContainer>
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                            </StackPanel>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Run d:Text="DisplayName" BaselineAlignment="Center" Text="{Binding Path=DisplayName, Mode=OneWay}" />
+                                                <Run d:Text="FileSize" BaselineAlignment="Center" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\}MB}" />
+                                                <Hyperlink BaselineAlignment="Center"
+                                                    Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                    FontFamily="Segoe UI Black" TextDecorations="None">
+                                                    <InlineUIContainer>
+                                                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                    </InlineUIContainer>
+                                                </Hyperlink>
+                                            </TextBlock>
                                         </CheckBox.Content>
                                     </CheckBox>
                                 </ControlTemplate>

@@ -216,7 +216,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     filePath =>
                     {
                         string tessFileName = Path.GetFileNameWithoutExtension(filePath);
-                        TessFiles tessfiles = new() { Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName), FileSize = new FileInfo(filePath).Length / 1_048_576d };
+                        string displayName = TesseractDownloadData()?.FirstOrDefault(z => z.OcrName == Path.GetFileName(filePath))?.OcrLangName;
+                        TessFiles tessfiles = new() { DisplayName = displayName, Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName), FileSize = new FileInfo(filePath).Length / 1_048_576d };
                         tessfiles.PropertyChanged += Tess_PropertyChanged;
                         return tessfiles;
                     }));

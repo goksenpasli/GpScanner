@@ -1309,7 +1309,8 @@
                                                                         d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
                                                                         <PdfViewer:PdfShadowedImage.Source>
                                                                             <PriorityBinding>
-                                                                                <Binding IsAsync="True" Mode="OneWay" Path="ResimThumb" />
+                                                                                <Binding Delay="150" IsAsync="True"
+                                                                                    Mode="OneWay" Path="ResimThumb" />
                                                                                 <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
                                                                             </PriorityBinding>
                                                                         </PdfViewer:PdfShadowedImage.Source>
