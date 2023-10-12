@@ -229,6 +229,23 @@ public partial class MainWindow : Window
 
     private void StackPanel_Drop(object sender, DragEventArgs e) => TwainCtrl.DropFile(sender, e);
 
+    private void StackPanel_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+    {
+        if (e.Effects == DragDropEffects.Move)
+        {
+            if (TwainCtrl.DragCursor != null)
+            {
+                e.UseDefaultCursors = false;
+                _ = Mouse.SetCursor(TwainCtrl.DragCursor);
+            }
+        }
+        else
+        {
+            e.UseDefaultCursors = true;
+        }
+        e.Handled = true;
+    }
+
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         if (DataContext is GpScannerViewModel ViewModel)

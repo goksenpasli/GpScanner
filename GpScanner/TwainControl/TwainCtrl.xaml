@@ -1228,7 +1228,7 @@
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate>
-                                                    <StackPanel Background="{TemplateBinding Background}" Drop="StackPanel_Drop" >
+                                                    <StackPanel Background="{TemplateBinding Background}" Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
                                                         <TextBlock HorizontalAlignment="Center">
                                                             <InlineUIContainer>
                                                                 <Extensions:NumericUpDownControl Height="20"

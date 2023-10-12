@@ -38,6 +38,7 @@ using TwainWpf.TwainNative;
 using TwainWpf.Wpf;
 using UdfParser;
 using static Extensions.ExtensionMethods;
+using static TwainControl.DrawControl;
 using Application = System.Windows.Application;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
@@ -1502,6 +1503,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public event PropertyChangedEventHandler PropertyChanged;
 
+    public static System.Windows.Input.Cursor DragCursor { get; private set; }
+
     public RelayCommand<object> AddActiveVisibleContentImage { get; }
 
     public ICommand AddAllFileToControlPanel { get; }
@@ -2554,6 +2557,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
         {
             DragMoveStarted = true;
+            StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
+            using Icon icon = Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+            DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
             _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
             DragMoveStarted = false;
         }
@@ -3431,6 +3437,23 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Scanner.UnsupportedFiles.RemoveAt(remIdx);
             }
         }
+    }
+
+    private void StackPanel_GiveFeedback(object sender, System.Windows.GiveFeedbackEventArgs e)
+    {
+        if (e.Effects == DragDropEffects.Move)
+        {
+            if (DragCursor != null)
+            {
+                e.UseDefaultCursors = false;
+                _ = Mouse.SetCursor(DragCursor);
+            }
+        }
+        else
+        {
+            e.UseDefaultCursors = true;
+        }
+        e.Handled = true;
     }
 
     private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e) => Scanner.ArayüzEtkin = true;
