@@ -229,8 +229,6 @@ public partial class MainWindow : Window
 
     private void StackPanel_Drop(object sender, DragEventArgs e) => TwainCtrl.DropFile(sender, e);
 
-    private void StackPanel_GiveFeedback(object sender, GiveFeedbackEventArgs e) => TwainCtrl.StackPanelDragFeedBack(sender, e);
-
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         if (DataContext is GpScannerViewModel ViewModel)

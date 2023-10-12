@@ -1502,8 +1502,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public static System.Windows.Input.Cursor DragCursor { get; set; }
-
     public RelayCommand<object> AddActiveVisibleContentImage { get; }
 
     public ICommand AddAllFileToControlPanel { get; }
@@ -2380,23 +2378,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static void StackPanelDragFeedBack(object sender, System.Windows.GiveFeedbackEventArgs e)
-    {
-        if (e.Effects == DragDropEffects.Move)
-        {
-            if (DragCursor != null)
-            {
-                e.UseDefaultCursors = false;
-                _ = Mouse.SetCursor(DragCursor);
-            }
-        }
-        else
-        {
-            e.UseDefaultCursors = true;
-        }
-        e.Handled = true;
-    }
-
     public Task AddFiles(string[] filenames, int decodeheight)
     {
         fileloadtask = Task.Run(
@@ -2573,7 +2554,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
         {
             DragMoveStarted = true;
-            DragCursor = BitmapMethods.CreateCursor((sender as Run).TemplatedParent as ListBoxItem);
             _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
             DragMoveStarted = false;
         }
@@ -3452,8 +3432,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
-
-    private void StackPanel_GiveFeedback(object sender, System.Windows.GiveFeedbackEventArgs e) => StackPanelDragFeedBack(sender, e);
 
     private void Twain_ScanningComplete(object sender, ScanningCompleteEventArgs e) => Scanner.ArayüzEtkin = true;
 
