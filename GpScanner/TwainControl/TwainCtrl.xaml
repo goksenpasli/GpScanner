@@ -1201,6 +1201,17 @@
                                         <Hyperlink BaselineAlignment="Center" Command="{Binding ShuffleData}" TextDecorations="None">
                                             <Image Width="16" Height="16" Source="/TwainControl;component/Icons/dice.png" />
                                         </Hyperlink>
+                                        <LineBreak />
+                                        <Run BaselineAlignment="Top" FontSize="13" Text="1" /><Hyperlink BaselineAlignment="Center" Command="{Binding FirstLastGroup}" TextDecorations="None">
+                                            <Run BaselineAlignment="Center" FontFamily="Wingdings 3"
+                                                FontSize="18" Text="F" />
+                                        </Hyperlink>
+                                        <Extensions:NumericUpDownControl VerticalAlignment="Center"
+                                            IsReadOnly="True"
+                                            Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
+                                            Minimum="2" Orientation="Horizontal"
+                                            SmallChange="1"
+                                            Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </TextBlock>
                                 </StackPanel>
                             </TabItem.Header>
@@ -1309,8 +1320,7 @@
                                                                         d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
                                                                         <PdfViewer:PdfShadowedImage.Source>
                                                                             <PriorityBinding>
-                                                                                <Binding Delay="150" IsAsync="True"
-                                                                                    Mode="OneWay" Path="ResimThumb" />
+                                                                                <Binding IsAsync="True" Mode="OneWay" Path="ResimThumb" />
                                                                                 <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
                                                                             </PriorityBinding>
                                                                         </PdfViewer:PdfShadowedImage.Source>

@@ -94,6 +94,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private bool documentPreviewIsExpanded = true;
     private bool dragMoveStarted;
     private Task fileloadtask;
+    private int groupSplitCount = 2;
     private double height;
     private bool helpIsOpened;
     private bool ıgnoreImageWidthHeight;
@@ -1204,6 +1205,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
+        FirstLastGroup = new RelayCommand<object>(
+            parameter =>
+            {
+                List<ScannedImage> scannedImages = [.. Scanner.Resimler];
+                Scanner.Resimler = new ObservableCollection<ScannedImage>(GroupByFirstLastList(scannedImages, GroupSplitCount));
+                Scanner.RefreshIndexNumbers(Scanner.Resimler);
+            },
+            parameter => Scanner?.Resimler?.Count > 1);
+
         ShuffleData = new RelayCommand<object>(
             parameter =>
             {
@@ -1735,6 +1745,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand EypPdfSeçiliDosyaSil { get; }
 
     public ICommand FastScanImage { get; }
+
+    public RelayCommand<object> FirstLastGroup { get; }
+
+    public int GroupSplitCount
+    {
+        get => groupSplitCount;
+        set
+        {
+            if (groupSplitCount != value)
+            {
+                groupSplitCount = value;
+                OnPropertyChanged(nameof(GroupSplitCount));
+            }
+        }
+    }
 
     public bool HelpIsOpened
     {
@@ -2921,6 +2946,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         DocumentGridLength = new GridLength(0, GridUnitType.Star);
     }
 
+    private List<ScannedImage> GroupByFirstLastList(List<ScannedImage> scannedImages, int splitCount = 2)
+    {
+        int splitIndex = scannedImages.Count / splitCount;
+        List<List<ScannedImage>> splitLists = [];
+        for (int i = 0; i < splitCount; i++)
+        {
+            splitLists.Add(scannedImages.Skip(i * splitIndex).Take(splitIndex).ToList());
+        }
+        return MixLists(splitIndex, [.. splitLists]);
+    }
+
     private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.OriginalSource is System.Windows.Controls.Image img && img.Parent is ScrollViewer scrollviewer)
@@ -3066,6 +3102,23 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Settings.Default.PreviewWidth = 400;
             }
         }
+    }
+
+    private List<ScannedImage> MixLists(int splitIndex, List<ScannedImage>[] lists)
+    {
+        int maxLength = lists.Max(list => list.Count);
+        List<ScannedImage> mixedList = [];
+        for (int i = 0; i < maxLength; i++)
+        {
+            foreach (List<ScannedImage> list in lists)
+            {
+                if (i < list.Count)
+                {
+                    mixedList.Add(list[i]);
+                }
+            }
+        }
+        return mixedList;
     }
 
     private async Task PdfPageRangeSaveFileAsync(string loadfilename, string savefilename, int start, int end)
