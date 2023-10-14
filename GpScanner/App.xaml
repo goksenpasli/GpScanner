@@ -471,9 +471,7 @@
                 </Image>
             </DataTemplate>
             <DataTemplate x:Key="ContributionTextTemplate">
-                <TextBlock Width="64" Height="64"
-                    Text="{Binding Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
-                    TextWrapping="Wrap" />
+                <TextBlock Text="{Binding Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextWrapping="Wrap" />
             </DataTemplate>
             <ControlTemplate x:Key="CustomContributionTemplate" TargetType="{x:Type Extensions:ContributionControl}">
                 <ControlTemplate.Resources>
@@ -579,18 +577,27 @@
                                                         <Style.Triggers>
                                                             <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
                                                                 <Setter Property="ItemTemplate" Value="{StaticResource ContributionImageTemplate}" />
+                                                                <Setter Property="ItemsPanel">
+                                                                    <Setter.Value>
+                                                                        <ItemsPanelTemplate>
+                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="60,60" SpacingMode="None" />
+                                                                        </ItemsPanelTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
                                                             </DataTrigger>
                                                             <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="false">
                                                                 <Setter Property="ItemTemplate" Value="{StaticResource ContributionTextTemplate}" />
+                                                                <Setter Property="ItemsPanel">
+                                                                    <Setter.Value>
+                                                                        <ItemsPanelTemplate>
+                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="250,18" SpacingMode="None" />
+                                                                        </ItemsPanelTemplate>
+                                                                    </Setter.Value>
+                                                                </Setter>
                                                             </DataTrigger>
                                                         </Style.Triggers>
                                                     </Style>
                                                 </ListBox.Style>
-                                                <ListBox.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="60,60" SpacingMode="None" />
-                                                    </ItemsPanelTemplate>
-                                                </ListBox.ItemsPanel>
                                             </ListBox>
                                         </TextBlock>
                                     </Rectangle.ToolTip>

@@ -51,25 +51,21 @@ public class TranslateViewModel : InpcBase
         Oku = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is string metin)
+                if (parameter is not string metin)
                 {
-                    speechSynthesizer?.SelectVoice(OkumaDili);
-                    if (speechSynthesizer.State == SynthesizerState.Speaking)
-                    {
+                    return;
+                }
+                switch (speechSynthesizer.State)
+                {
+                    case SynthesizerState.Speaking:
                         speechSynthesizer.Pause();
                         return;
-                    }
-
-                    if (speechSynthesizer.State == SynthesizerState.Paused)
-                    {
+                    case SynthesizerState.Paused:
                         speechSynthesizer.Resume();
                         return;
-                    }
-
-                    if (speechSynthesizer.State == SynthesizerState.Ready)
-                    {
+                    case SynthesizerState.Ready:
                         _ = speechSynthesizer.SpeakAsync(metin);
-                    }
+                        break;
                 }
             },
             parameter => !string.IsNullOrEmpty(OkumaDili));
@@ -197,6 +193,7 @@ public class TranslateViewModel : InpcBase
         if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
         {
             speechSynthesizer ??= new SpeechSynthesizer();
+            speechSynthesizer.SelectVoice(OkumaDili);
         }
         if (e.PropertyName is "MevcutDil" or "ÇevrilenDil")
         {
