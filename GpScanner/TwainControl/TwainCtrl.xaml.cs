@@ -174,6 +174,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ScanImage = new RelayCommand<object>(
             async parameter =>
             {
+                GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 ScanCommonSettings();
                 twain.SelectSource(Settings.Default.SeçiliTarayıcı);
@@ -190,7 +191,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
-
+                GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 ScanCommonSettings();
                 Scanner.Resimler = [];
@@ -230,12 +231,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (MessageBox.Show(Translation.GetResStringValue("REMOVESELECTED"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     RemoveSelectedImage(item);
-                }
-
-                void RemoveSelectedImage(ScannedImage item)
-                {
-                    _ = Scanner.Resimler?.Remove(item);
-                    ToolBox.ResetCropMargin();
                 }
             },
             parameter => Scanner.ArayüzEtkin);
@@ -609,6 +604,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Scanner.Resimler?.Clear();
                     UndoImage = null;
                     ToolBox.ResetCropMargin();
+                    GC.Collect();
                 }
             },
             parameter => Policy.CheckPolicy("ListeTemizle") && Scanner?.Resimler?.Count > 0 && Scanner.ArayüzEtkin);
@@ -623,6 +619,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 UndoImage = null;
                 ToolBox.ResetCropMargin();
+                GC.Collect();
             },
             parameter => Policy.CheckPolicy("SeçiliListeTemizle") && Scanner?.Resimler?.Any(z => z.Seçili) == true && Scanner.ArayüzEtkin);
 
@@ -708,6 +705,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    GC.Collect();
                     await AddFiles(openFileDialog.FileNames, DecodeHeight);
                 }
             },
@@ -3133,6 +3131,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     outputDocument.Save(savefilename);
                 }
             });
+    }
+
+    private  void RemoveSelectedImage(ScannedImage item)
+    {
+        _ = Scanner.Resimler?.Remove(item);
+        ToolBox.ResetCropMargin();
+        GC.Collect();
     }
 
     private async Task ReverseFileAsync(string loadfilename, string savefilename)
