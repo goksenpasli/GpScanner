@@ -23,6 +23,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     private readonly string AppName = Application.Current?.MainWindow?.Title;
     private List<TessFiles> checkedFiles;
     private bool ısFolderWritable;
+    private bool showHelpDesc;
     private string tessdatafolder;
     private ObservableCollection<TessFiles> tesseractFiles;
 
@@ -33,6 +34,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         TesseractFiles = GetTesseractFiles(Tessdatafolder);
         IsFolderWritable = FolderWritable(Tessdatafolder);
         OcrDatas = TesseractDownloadData();
+        ShowHelpDesc = TesseractFiles?.Count == 0;
 
         TesseractDataFilesDownloadLink = new RelayCommand<object>(
             parameter =>
@@ -163,6 +165,19 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     }
 
     public ObservableCollection<TesseractOcrData> OcrDatas { get; set; }
+
+    public bool ShowHelpDesc
+    {
+        get => showHelpDesc;
+        set
+        {
+            if (showHelpDesc != value)
+            {
+                showHelpDesc = value;
+                OnPropertyChanged(nameof(ShowHelpDesc));
+            }
+        }
+    }
 
     public string Tessdatafolder
     {

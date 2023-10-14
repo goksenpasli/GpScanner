@@ -963,7 +963,7 @@
                 </RepeatButton.Content>
             </RepeatButton>
             <TextBox Grid.Row="0" Grid.Column="1"
-                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="1"

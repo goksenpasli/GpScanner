@@ -156,6 +156,7 @@
                                             </Extensions:ContentToggleButton.OverContent>
                                         </Extensions:ContentToggleButton>
                                         <Extensions:NumericUpDownControl x:Name="UpDown"
+                                            Width="48"
                                             LargeChange="1"
                                             Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                             Minimum="1" Orientation="Horizontal"

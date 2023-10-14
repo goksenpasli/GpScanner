@@ -47,7 +47,7 @@
                                         <ColumnDefinition Width="16" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <ProgressBar Grid.ColumnSpan="2"
+                                    <ProgressBar Grid.Column="1"
                                         Background="{x:Null}"
                                         Maximum="100" Minimum="0"
                                         Value="{Binding ProgressValue}" />
@@ -59,7 +59,7 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="{Binding OcrLangName}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding OcrLangName}" />
                                 </Grid>
                             </Button.Content>
                         </Button>
@@ -91,6 +91,7 @@
                     </TextBlock>
                 </GroupBox.Header>
                 <ListBox x:Name="LbTessFiles"
+                    MinHeight="16"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
                     twainctrl:Policy.PolicyName="DefaultTtsLang"
                     Background="{StaticResource BorderBackground}"
@@ -131,7 +132,7 @@
                 Background="{StaticResource BorderBackground}"
                 BorderBrush="{StaticResource GroupBoxBackGround}"
                 PopupParent="{Binding ElementName=LbTessFiles}"
-                Show="{Binding HasItems, Converter={StaticResource ReverseBooleanConverter}, ElementName=LbTessFiles}"
+                Show="{Binding ShowHelpDesc}"
                 ShowCloseButton="Visible" TimeToClose="10000"
                 TimeToShow="2500">
                 <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">

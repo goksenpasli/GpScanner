@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
@@ -17,27 +16,22 @@ public class TranslateViewModel : InpcBase
             client.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
             string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={Uri.EscapeUriString(text)}";
             HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
-            if (response.EnsureSuccessStatusCode().IsSuccessStatusCode)
+            _ = response.EnsureSuccessStatusCode();
+            string page = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            JavaScriptSerializer JSS = new();
+            object parsedObj = JSS.DeserializeObject(page);
+            string çeviri = string.Empty;
+            object[] data = parsedObj as object[];
+            foreach (object firstnodeItem in data[0] as object[])
             {
-                string page = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                JavaScriptSerializer JSS = new();
-                object parsedObj = JSS.DeserializeObject(page);
-                string çeviri = string.Empty;
-                object[] data = parsedObj as object[];
-                object firstnode = data.FirstOrDefault();
-                for (int i = 0; i < (firstnode as object[])?.Length; i++)
-                {
-                    çeviri += ((data.FirstOrDefault() as object[])?[i] as object[])?.ElementAtOrDefault(0).ToString();
-                }
-
-                return çeviri;
+                çeviri += (firstnodeItem as object[])[0].ToString();
             }
+
+            return çeviri;
         }
         catch (Exception)
         {
             return string.Empty;
         }
-
-        return string.Empty;
     }
 }

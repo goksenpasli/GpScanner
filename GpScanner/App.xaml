@@ -172,7 +172,8 @@
                                     </ListBox>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
-                            <Extensions:NumericUpDownControl LargeChange="1"
+                            <Extensions:NumericUpDownControl Width="48"
+                                LargeChange="1"
                                 Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                 Minimum="1" Orientation="Horizontal"
                                 SmallChange="1"

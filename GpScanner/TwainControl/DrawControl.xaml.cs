@@ -35,8 +35,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     private string selectedColor = "Black";
     private StylusTip selectedStylus = StylusTip.Ellipse;
     private bool smooth;
-    private double stylusHeight = 0.5d;
-    private double stylusWidth = 0.5d;
+    private double stylusHeight = 3d;
+    private double stylusWidth = 3d;
 
     public DrawControl()
     {
@@ -263,7 +263,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public Cursor ConvertToCursor(FrameworkElement fe)
     {
-        if (fe.Width < 1 || fe.Height < 1)
+        if (fe.Width < 0.5 || fe.Height < 0.5)
         {
             return Cursors.None;
         }
