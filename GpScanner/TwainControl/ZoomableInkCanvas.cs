@@ -1,44 +1,35 @@
-﻿using System.ComponentModel;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace TwainControl;
 
-public class ZoomableInkCanvas : InkCanvas, INotifyPropertyChanged
+public class ZoomableInkCanvas : InkCanvas
 {
-    private double currentZoom = 1d;
+    public static readonly DependencyProperty CurrentZoomProperty =
+        DependencyProperty.Register("CurrentZoom", typeof(double), typeof(ZoomableInkCanvas), new PropertyMetadata(1d, Changed));
+    public static readonly DependencyProperty MaxZoomProperty =
+        DependencyProperty.Register("MaxZoom", typeof(double), typeof(ZoomableInkCanvas), new PropertyMetadata(3d));
+    public static readonly DependencyProperty MinZoomProperty =
+        DependencyProperty.Register("MinZoom", typeof(double), typeof(ZoomableInkCanvas), new PropertyMetadata(0.01d));
 
-    public ZoomableInkCanvas() { PropertyChanged += ZoomableInkCanvas_PropertyChanged; }
+    public double CurrentZoom { get => (double)GetValue(CurrentZoomProperty); set => SetValue(CurrentZoomProperty, value); }
 
-    public event PropertyChangedEventHandler PropertyChanged;
+    public double MaxZoom { get => (double)GetValue(MaxZoomProperty); set => SetValue(MaxZoomProperty, value); }
 
-    public double CurrentZoom
+    public double MinZoom { get => (double)GetValue(MinZoomProperty); set => SetValue(MinZoomProperty, value); }
+
+    private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        get => currentZoom;
-
-        set
+        if (d is ZoomableInkCanvas zoomableInkCanvas && zoomableInkCanvas.CurrentZoom >= zoomableInkCanvas.MinZoom && zoomableInkCanvas.CurrentZoom <= zoomableInkCanvas.MaxZoom)
         {
-            if (currentZoom != value)
-            {
-                currentZoom = value;
-                OnPropertyChanged(nameof(CurrentZoom));
-            }
+            zoomableInkCanvas.ApplyZoom();
         }
     }
-
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private void ApplyZoom()
     {
         ScaleTransform scaleTransform = new(CurrentZoom, CurrentZoom);
         LayoutTransform = scaleTransform;
-    }
-
-    private void ZoomableInkCanvas_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is "CurrentZoom" && CurrentZoom is >= 0.1 and <= 3.0)
-        {
-            ApplyZoom();
-        }
     }
 }

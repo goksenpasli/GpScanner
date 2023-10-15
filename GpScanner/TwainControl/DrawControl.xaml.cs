@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
@@ -42,9 +43,10 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     {
         InitializeComponent();
         PropertyChanged += DrawControl_PropertyChanged;
-
+        DependencyPropertyDescriptor.FromProperty(ZoomableInkCanvas.CurrentZoomProperty, typeof(ZoomableInkCanvas))?.AddValueChanged(Ink, OnZoomChanged);
         GenerateCustomCursor();
         Ink.PreviewMouseDown += Ink_PreviewMouseDown;
+
         SaveEditedImage = new RelayCommand<object>(
             parameter =>
             {
@@ -263,7 +265,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public Cursor ConvertToCursor(FrameworkElement fe)
     {
-        if (fe.Width < 0.5 || fe.Height < 0.5)
+        if (fe.Width < 1 || fe.Height < 1)
         {
             return Cursors.None;
         }
@@ -278,8 +280,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public BitmapFrame SaveInkCanvasToImage()
     {
-        RenderTargetBitmap renderTargetBitmap =
-            new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+        RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Pbgra32);
         Rect bounds = VisualTreeHelper.GetDescendantBounds(Ink);
         DrawingVisual dv = new();
         using (DrawingContext ctx = dv.RenderOpen())
@@ -377,9 +378,5 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-    {
-        OnPropertyChanged(nameof(StylusHeight));
-        OnPropertyChanged(nameof(stylusWidth));
-    }
+    private void OnZoomChanged(object sender, EventArgs e) => GenerateCustomCursor();
 }

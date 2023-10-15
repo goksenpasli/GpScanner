@@ -178,10 +178,10 @@
             <Rectangle Width="24" Height="24" Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
             <Slider Width="100"
                 VerticalAlignment="Center"
-                AutoToolTipPlacement="TopLeft" Maximum="3"
-                Minimum="0.1"
+                AutoToolTipPlacement="TopLeft"
+                Maximum="{Binding ElementName=Ink, Path=MaxZoom}"
+                Minimum="{Binding ElementName=Ink, Path=MinZoom}"
                 Style="{DynamicResource Slider}"
-                ValueChanged="Slider_ValueChanged"
                 Value="{Binding ElementName=Ink, Path=CurrentZoom}" />
         </StackPanel>
         <Expander Grid.RowSpan="2" Grid.Column="1" ExpandDirection="Left">
