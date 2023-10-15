@@ -751,27 +751,24 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer)
+        if (d is PdfViewer pdfViewer && IsValidPdfFile(e.NewValue as string))
         {
-            pdfViewer.Source = null;
-            if (e.NewValue is not null && File.Exists(e.NewValue as string) && string.Equals(Path.GetExtension(e.NewValue as string), ".pdf", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                try
-                {
-                    using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
-                    int dpi = pdfViewer.Dpi;
-                    pdfViewer.Sayfa = 1;
-                    int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 96 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 96 * dpi);
-                    pdfViewer.ToplamSayfa = pdfDoc.PageCount;
-                    pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                    pdfViewer.Source = await RenderPdf(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
-                }
-                catch (Exception)
-                {
-                    pdfViewer.Source = null;
-                }
+                using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
+                int dpi = pdfViewer.Dpi;
+                pdfViewer.Sayfa = 1;
+                int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 96 * dpi);
+                int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 96 * dpi);
+                pdfViewer.ToplamSayfa = pdfDoc.PageCount;
+                pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                pdfViewer.Source = await RenderPdf(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
             }
+            catch (Exception)
+            {
+                pdfViewer.Source = null;
+            }
+
         }
     }
 
@@ -867,9 +864,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private void Scrollvwr_Drop(object sender, DragEventArgs e)
     {
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if (droppedfiles?.Length > 0)
+        string file = droppedfiles[0];
+        if (file is not null)
         {
-            PdfFilePath = droppedfiles[0];
+            PdfFilePath = file;
         }
     }
 
