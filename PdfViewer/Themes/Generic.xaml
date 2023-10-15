@@ -123,15 +123,21 @@
                                         </Image>
                                     </Button>
                                     <StackPanel Grid.Column="2" Orientation="Horizontal" Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                        <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding OverContent, RelativeSource={RelativeSource Mode=Self}}">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="19" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
+                                        <Extensions:ContentToggleButton ArrowVisibility="Collapsed" Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding OverContent, RelativeSource={RelativeSource Mode=Self}}">
+                                            <Canvas Width="24" Height="16">
+                                                <Image Canvas.Left="4" Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="19" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock Width="24" Height="16"
+                                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                    Text="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    TextWrapping="Wrap" />
+                                            </Canvas>
                                             <Extensions:ContentToggleButton.OverContent>
                                                 <ListBox VerticalContentAlignment="Center"
                                                     ItemTemplate="{StaticResource PdfThumbItemTemplate}"
@@ -212,7 +218,10 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
-                                    <Extensions:ContentToggleButton Grid.Column="6" Command="{Binding ReadPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding PdfTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Extensions:ContentToggleButton Grid.Column="6"
+                                        ArrowVisibility="Collapsed"
+                                        Command="{Binding ReadPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding PdfTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -231,7 +240,7 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="7" Visibility="{Binding SearchTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Extensions:ContentToggleButton Grid.Column="7" ArrowVisibility="Collapsed" Visibility="{Binding SearchTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -279,7 +288,10 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="8" Command="{Binding ReadPdfBookmarks, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding BookmarkContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Extensions:ContentToggleButton Grid.Column="8"
+                                        ArrowVisibility="Collapsed"
+                                        Command="{Binding ReadPdfBookmarks, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding BookmarkContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

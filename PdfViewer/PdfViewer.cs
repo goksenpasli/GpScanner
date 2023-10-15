@@ -760,12 +760,12 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
                     int dpi = pdfViewer.Dpi;
-                    int page = pdfViewer.Sayfa - 1;
-                    int width = (int)(pdfDoc.PageSizes[page].Width / 96 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page].Height / 96 * dpi);
+                    pdfViewer.Sayfa = 1;
+                    int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 96 * dpi);
                     pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                     pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                    pdfViewer.Source = await RenderPdf(pdfDoc, dpi, page, width, height);
+                    pdfViewer.Source = await RenderPdf(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
                 }
                 catch (Exception)
                 {

@@ -145,7 +145,7 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" Command="{Binding LoadPdfExtractFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -295,7 +295,7 @@
                     </Image>
                 </Button.Content>
             </Button>
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Extensions:ContentToggleButton.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -384,7 +384,7 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Canvas Width="16" Height="16">
                     <TextBlock Canvas.Top="0" FontSize="10" Text="1" />
                     <TextBlock Canvas.Left="4" Canvas.Top="2"

@@ -458,7 +458,7 @@
                 </Style.Triggers>
             </Style>
             <DataTemplate x:Key="ContributionImageTemplate">
-                <Image Width="64" Height="64" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                <Image Width="96" Height="96" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
                     <Image.Tag>
                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
@@ -476,7 +476,7 @@
             </DataTemplate>
             <ControlTemplate x:Key="CustomContributionTemplate" TargetType="{x:Type Extensions:ContributionControl}">
                 <ControlTemplate.Resources>
-                    <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="5" />
+                    <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
                 </ControlTemplate.Resources>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -570,7 +570,7 @@
                                             <LineBreak />
                                             <Run Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" />
                                             <LineBreak />
-                                            <ListBox Width="512" Height="512"
+                                            <ListBox Width="640" Height="640"
                                                 ItemsSource="{Binding Name}"
                                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                                 <ListBox.Style>
@@ -581,7 +581,7 @@
                                                                 <Setter Property="ItemsPanel">
                                                                     <Setter.Value>
                                                                         <ItemsPanelTemplate>
-                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="60,60" SpacingMode="None" />
+                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="100,100" SpacingMode="None" />
                                                                         </ItemsPanelTemplate>
                                                                     </Setter.Value>
                                                                 </Setter>
