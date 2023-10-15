@@ -90,8 +90,8 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <ListBox Grid.Column="0"
                                         VerticalContentAlignment="Center"
@@ -211,7 +211,7 @@
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="22" />
+                                                    <Binding Source="55" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
@@ -245,7 +245,7 @@
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                     <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="22" />
+                                                                    <Binding Source="55" />
                                                                 </MultiBinding>
                                                             </Image.Source>
                                                         </Image>
@@ -289,22 +289,51 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Slider Grid.Column="8"
-                                        Margin="2" VerticalAlignment="Center"
-                                        AutoToolTipPlacement="TopLeft" Minimum="0.01"
-                                        SmallChange="1"
-                                        Style="{StaticResource Slider}"
-                                        Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <Slider Grid.Column="9"
-                                        Margin="2" VerticalAlignment="Center"
-                                        AutoToolTipPlacement="TopLeft"
-                                        IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Maximum="360" SmallChange="1"
-                                        Style="{StaticResource Slider}"
-                                        Ticks="0, 90, 180, 270, 360"
-                                        Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Extensions:ContentToggleButton Grid.Column="8"
+                                        ArrowVisibility="Collapsed" PlacementMode="Top"
+                                        Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="22" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <Border Background="{StaticResource BorderBackground}" BorderBrush="Gray" BorderThickness="1">
+                                                <Slider Height="96"
+                                                    AutoToolTipPlacement="TopLeft" Minimum="0.01"
+                                                    Orientation="Vertical" SmallChange="1"
+                                                    Style="{StaticResource Slider}"
+                                                    Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            </Border>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                    <Extensions:ContentToggleButton Grid.Column="9"
+                                        ArrowVisibility="Collapsed" PlacementMode="Top"
+                                        Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="238" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <Border Background="{StaticResource BorderBackground}" BorderBrush="Gray" BorderThickness="1">
+                                                <Slider Height="96"
+                                                    AutoToolTipPlacement="TopLeft"
+                                                    IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Maximum="360" Orientation="Vertical"
+                                                    SmallChange="1"
+                                                    Style="{StaticResource Slider}"
+                                                    Ticks="0, 90, 180, 270, 360"
+                                                    Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            </Border>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
                                 </Grid>
                             </Grid>
                         </ContentControl>

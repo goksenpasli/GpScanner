@@ -1188,6 +1188,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.Source = null;
                     pdfviewer.Sayfa = 1;
+                    pdfviewer.ToplamSayfa = 0;
                     SayfaBaşlangıç = 1;
                     SayfaBitiş = 1;
                 }
