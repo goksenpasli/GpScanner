@@ -281,11 +281,10 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     public BitmapFrame SaveInkCanvasToImage()
     {
         RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Pbgra32);
-        Rect bounds = VisualTreeHelper.GetDescendantBounds(Ink);
         DrawingVisual dv = new();
         using (DrawingContext ctx = dv.RenderOpen())
         {
-            ctx.DrawRectangle(new VisualBrush(Ink), null, bounds);
+            ctx.DrawRectangle(new VisualBrush(Ink), null, new Rect(0, 0, (int)Ink.ActualWidth, (int)Ink.ActualHeight));
         }
 
         renderTargetBitmap.Render(dv);

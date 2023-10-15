@@ -119,94 +119,6 @@
                     <AdornedElementPlaceholder x:Name="Adorner" />
                 </Grid>
             </ControlTemplate>
-            <ControlTemplate x:Key="PdfViewerThumbTemplate" TargetType="{x:Type PdfViewer:PdfViewer}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <ScrollViewer x:Name="ScrlVwr" HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}" VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Image RenderTransformOrigin="0.5,0.5" ScrollViewer.CanContentScroll="True"
-                            Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
-                            Stretch="None">
-                            <Image.LayoutTransform>
-                                <TransformGroup>
-                                    <ScaleTransform x:Name="Pdfscale" ScaleX="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" ScaleY="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <RotateTransform x:Name="Pdfrotate" Angle="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
-                                </TransformGroup>
-                            </Image.LayoutTransform>
-                        </Image>
-                    </ScrollViewer>
-                    <ContentControl x:Name="Cnt" Grid.Row="1" Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                        <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}" Orientation="Horizontal" Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                            <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding ElementName=Lb}">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="19" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <ListBox x:Name="Lb"
-                                        VerticalContentAlignment="Center"
-                                        ItemTemplate="{StaticResource PdfThumbItemTemplate}"
-                                        ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                        SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                        VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                        VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
-                                        <ListBox.ItemContainerStyle>
-                                            <Style TargetType="ListBoxItem">
-                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                                <Setter Property="Margin" Value="1" />
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                        <ListBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <Extensions:VirtualizingWrapPanel Width="460" Height="300"
-                                                    CanHorizontallyScroll="False" ItemSize="140,140"
-                                                    StretchItems="False" />
-                                            </ItemsPanelTemplate>
-                                        </ListBox.ItemsPanel>
-                                    </ListBox>
-                                </Extensions:ContentToggleButton.OverContent>
-                            </Extensions:ContentToggleButton>
-                            <Extensions:NumericUpDownControl Width="48"
-                                LargeChange="1"
-                                Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                Minimum="1" Orientation="Horizontal"
-                                SmallChange="1"
-                                Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                            <ComboBox ItemStringFormat="{}{0} Dpi"
-                                ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
-                                SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
-                                Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <TextBlock VerticalAlignment="Center">
-                                <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}" CommandParameter="{Binding Mode=OneWay}" TextDecorations="None">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="4" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
-                    </ContentControl>
-                    <Extensions:Magnifier ContentPanel="{Binding ElementName=ScrlVwr}" IsActive="{Binding ShowMagnifier, Mode=OneWay, Source={x:Static properties:Settings.Default}}" ZoomFactor="{Binding MagnifyValue, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                </Grid>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Opacity" Value="0.56" />
-                    </Trigger>
-                    <DataTrigger Binding="{Binding Visibility, ElementName=Cnt}" Value="Collapsed">
-                        <Setter TargetName="Cnt" Property="Content" Value="{x:Null}" />
-                    </DataTrigger>
-                </ControlTemplate.Triggers>
-            </ControlTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -355,9 +267,8 @@
                         OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}, Delay=150}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
-                        SnapTick="True"
-                        Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}"
-                        Template="{StaticResource PdfViewerThumbTemplate}" />
+                        SliderZoomAngleVisibility="Collapsed" SnapTick="True"
+                        Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
