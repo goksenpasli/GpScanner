@@ -224,8 +224,7 @@
                         ContextMenuVisibility="Visible" Orientation="Height"
                         PdfFilePath="{Binding Mode=OneWay}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Visible"
-                        SearchTextContentVisibility="Collapsed" SeekingLowerPdfDpi="True"
-                        SnapTick="True" />
+                        SearchTextContentVisibility="Collapsed" SnapTick="True" />
                     <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                 </Grid>
             </DataTemplate>
@@ -407,12 +406,10 @@
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplate">
-                <twain:EypPdfViewer AutoFitContent="True"
-                    EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    SeekingLowerPdfDpi="True" ToolBarVisibility="Collapsed" />
+                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplateFull">
-                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" SeekingLowerPdfDpi="True" />
+                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
                 <Controls:MediaViewer Width="300" Height="300"

@@ -24,7 +24,7 @@ public class TranslateViewModel : InpcBase
             object[] data = parsedObj as object[];
             foreach (object firstnodeItem in data[0] as object[])
             {
-                çeviri += (firstnodeItem as object[])[0].ToString();
+                çeviri += (firstnodeItem as object[])?[0].ToString();
             }
 
             return çeviri;

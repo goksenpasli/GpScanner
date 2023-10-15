@@ -13,7 +13,6 @@ using System.Printing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -30,7 +29,6 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 namespace PdfViewer;
 
 [TemplatePart(Name = "ScrollVwr", Type = typeof(ScrollViewer))]
-[TemplatePart(Name = "UpDown", Type = typeof(NumericUpDownControl))]
 public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 {
     public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
@@ -51,10 +49,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         typeof(ScrollBarVisibility),
         typeof(PdfViewer),
         new PropertyMetadata(ScrollBarVisibility.Auto));
-    public static readonly DependencyProperty SeekingLowerPdfDpiProperty =
-        DependencyProperty.Register("SeekingLowerPdfDpi", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
-    public static readonly DependencyProperty SeekingPdfDpiProperty =
-        DependencyProperty.Register("SeekingPdfDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200));
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
@@ -84,7 +78,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private Visibility sliderZoomAngleVisibility = Visibility.Visible;
     private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
     private int toplamSayfa;
-    private NumericUpDownControl updown;
     private bool wholeWord;
 
     static PdfViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer))); }
@@ -460,10 +453,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool SeekingLowerPdfDpi { get => (bool)GetValue(SeekingLowerPdfDpiProperty); set => SetValue(SeekingLowerPdfDpiProperty, value); }
-
-    public int SeekingPdfDpi { get => (int)GetValue(SeekingPdfDpiProperty); set => SetValue(SeekingPdfDpiProperty, value); }
-
     public Visibility SliderZoomAngleVisibility
     {
         get => sliderZoomAngleVisibility;
@@ -705,16 +694,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             scrollvwr.Drop -= Scrollvwr_Drop;
             scrollvwr.Drop += Scrollvwr_Drop;
         }
-
-        if (SeekingLowerPdfDpi)
-        {
-            updown = GetTemplateChild("UpDown") as NumericUpDownControl;
-            if (updown != null)
-            {
-                updown.PreviewMouseLeftButtonUp -= UpDownMouseLeftButtonUp;
-                updown.PreviewMouseLeftButtonUp += UpDownMouseLeftButtonUp;
-            }
-        }
     }
 
     protected virtual void Dispose(bool disposing)
@@ -768,7 +747,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 pdfViewer.Source = null;
             }
-
         }
     }
 
@@ -796,10 +774,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 pdfViewer.Sayfa = 1;
             }
 
-            if (pdfViewer.SeekingLowerPdfDpi && pdfViewer.updown.FindVisualChildren<RepeatButton>().Any(z => z.IsMouseOver))
-            {
-                pdfViewer.Dpi = pdfViewer.Sayfa == 1 || pdfViewer.Sayfa == pdfViewer.ToplamSayfa ? pdfViewer.SeekingPdfDpi : DpiList.Min();
-            }
             pdfViewer.Source = await ConvertToImgAsync(pdfViewer.PdfFilePath, pdfViewer.Sayfa, pdfViewer.Dpi);
         }
     }
@@ -864,18 +838,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private void Scrollvwr_Drop(object sender, DragEventArgs e)
     {
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        string file = droppedfiles[0];
-        if (file is not null)
-        {
-            PdfFilePath = file;
-        }
-    }
-
-    private void UpDownMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-    {
-        if (SeekingLowerPdfDpi)
-        {
-            Dpi = SeekingPdfDpi;
-        }
+        PdfFilePath = (droppedfiles?[0]);
     }
 }
