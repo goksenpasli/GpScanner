@@ -390,29 +390,6 @@ public static class ExtensionMethods
         return image;
     }
 
-    public static BitmapSource ToBitmapSource(this Bitmap bitmap)
-    {
-        BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-        if (bitmapData is null)
-        {
-            return null;
-        }
-
-        BitmapSource bitmapSource = BitmapSource.Create(
-            bitmapData.Width,
-            bitmapData.Height,
-            bitmap.HorizontalResolution,
-            bitmap.VerticalResolution,
-            PixelFormats.Bgr24,
-            null,
-            bitmapData.Scan0,
-            bitmapData.Stride * bitmapData.Height,
-            bitmapData.Stride);
-        bitmapSource.Freeze();
-        bitmap.UnlockBits(bitmapData);
-        return bitmapSource;
-    }
-
     public static RenderTargetBitmap ToRenderTargetBitmap(this UIElement uiElement, double resolution = 96)
     {
         double scale = resolution / 96d;

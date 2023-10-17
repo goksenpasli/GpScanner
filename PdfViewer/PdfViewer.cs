@@ -526,7 +526,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public double Zoom { get => (double)GetValue(ZoomProperty); set => SetValue(ZoomProperty, value); }
 
-    public static async Task<BitmapSource> ConvertToImgAsync(string pdffilepath, int page, int dpi = 96)
+    public static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 96)
     {
         try
         {
@@ -547,7 +547,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
                     int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
                     using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
-                    BitmapSource bitmapImage = bitmap.ToBitmapSource();
+                    BitmapImage bitmapImage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
                     if (bitmapImage is null)
                     {
                         return null;

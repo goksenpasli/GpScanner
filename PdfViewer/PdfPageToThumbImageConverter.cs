@@ -35,7 +35,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
                 return Task.Run(
                     async () =>
                     {
-                        BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
+                        BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi);
                         if (bitmapImage == null)
                         {
                             return null;

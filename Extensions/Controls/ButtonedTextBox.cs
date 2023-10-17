@@ -28,7 +28,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ButtonedTextBox()
     {
-        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, ResetCanExecute));
         _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanCaseExecute));
@@ -180,7 +180,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void CanCaseExecute(object sender, CanExecuteRoutedEventArgs e)
     {
-        if (!string.IsNullOrWhiteSpace(Text) && SelectedText.Length > 0)
+        if (!string.IsNullOrWhiteSpace(Text) && SelectedText.Length > 0 && !IsReadOnly)
         {
             e.CanExecute = true;
         }
@@ -219,6 +219,14 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     }
 
     private void PasteCommand(object sender, ExecutedRoutedEventArgs e) => Text = Clipboard.GetText();
+
+    private void ResetCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        if (!string.IsNullOrWhiteSpace(Text) && !IsReadOnly)
+        {
+            e.CanExecute = true;
+        }
+    }
 
     private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
 
