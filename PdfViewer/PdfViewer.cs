@@ -540,20 +540,21 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                         return null;
                     }
                     using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                    if (pdfDoc != null)
+                    if (pdfDoc is null)
                     {
-                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                        using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
-                        BitmapSource bitmapImage = bitmap.ToBitmapSource();
-                        if (bitmapImage != null)
-                        {
-                            bitmapImage.Freeze();
-                            return bitmapImage;
-                        }
+                        return null;
+                    }
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                    using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                    BitmapSource bitmapImage = bitmap.ToBitmapSource();
+                    if (bitmapImage is null)
+                    {
+                        return null;
                     }
 
-                    return null;
+                    bitmapImage.Freeze();
+                    return bitmapImage;
                 });
         }
         catch (Exception)
@@ -573,21 +574,22 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     using MemoryStream ms = new(pdffilestream);
                     using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                    if (pdfDoc != null)
+                    if (pdfDoc is null)
                     {
-                        int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                        int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                        System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
-                        if (image != null)
-                        {
-                            MemoryStream stream = new();
-                            image.Save(stream, ImageFormat.Jpeg);
-                            pdffilestream = null;
-                            return stream;
-                        }
+                        return null;
+                    }
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                    System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
+                    if (image is null)
+                    {
+                        return null;
                     }
 
-                    return null;
+                    MemoryStream stream = new();
+                    image.Save(stream, ImageFormat.Jpeg);
+                    pdffilestream = null;
+                    return stream;
                 });
         }
         catch (Exception)
@@ -598,16 +600,16 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public static bool IsValidPdfFile(string filename)
     {
-        if (File.Exists(filename))
+        if (!File.Exists(filename))
         {
-            byte[] buffer = new byte[4];
-            using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-            _ = fs.Read(buffer, 0, buffer.Length);
-            byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
-            return buffer?.SequenceEqual(pdfheader) == true;
+            return false;
         }
 
-        return false;
+        byte[] buffer = new byte[4];
+        using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
+        _ = fs.Read(buffer, 0, buffer.Length);
+        byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
+        return buffer?.SequenceEqual(pdfheader) == true;
     }
 
     public static async Task<int> PdfPageCountAsync(byte[] stream)
@@ -838,6 +840,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private void Scrollvwr_Drop(object sender, DragEventArgs e)
     {
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        PdfFilePath = (droppedfiles?[0]);
+        PdfFilePath = droppedfiles?[0];
     }
 }

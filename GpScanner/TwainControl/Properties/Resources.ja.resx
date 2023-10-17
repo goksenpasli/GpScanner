@@ -629,4 +629,19 @@ PDFをマージ</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>色を反転</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>フォールド</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>鏡</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Ripple</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>インストール完了</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>ファイルが使用中です。アプリケーションを閉じ、ファイルを読み込まずにもう一度お試しください。</value>
+  </data>
 </root>

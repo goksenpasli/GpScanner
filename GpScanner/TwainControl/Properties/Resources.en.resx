@@ -628,4 +628,19 @@ TO FILE</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>INVERT COLOR</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>FOLD</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>MIRROR</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>RIPPLE</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>INSTALLED</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>File Is In Use. Close Application, Don't Load Any File and Try  Again.</value>
+  </data>
 </root>

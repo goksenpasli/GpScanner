@@ -307,10 +307,10 @@
                                     VerticalContentAlignment="Center"
                                     SelectedValue="{Binding Path=AnimationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                                     SelectedValuePath="Tag">
-                                    <ComboBoxItem Content="FOLD" Tag="0" />
-                                    <ComboBoxItem Content="RIPPLE" Tag="1" />
-                                    <ComboBoxItem Content="MIRROR" Tag="2" />
-                                    <ComboBoxItem Content="NONE" Tag="3" />
+                                    <ComboBoxItem Content="{twainctrl:Loc FOLD}" Tag="0" />
+                                    <ComboBoxItem Content="{twainctrl:Loc RIPPLE}" Tag="1" />
+                                    <ComboBoxItem Content="{twainctrl:Loc MIRROR}" Tag="2" />
+                                    <ComboBoxItem Content="{twainctrl:Loc NONE}" Tag="3" />
                                 </ComboBox>
                                 <Button Grid.Column="4" Command="{Binding PlayAnimation}">
                                     <Image Width="16" Height="16">

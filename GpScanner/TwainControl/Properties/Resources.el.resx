@@ -626,4 +626,19 @@ PDF!</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>Αντιστροφή χρώματος κειμένου</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>ΔΙΠΛΩΣΤΕ</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>MIRROR</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Κυματισμός</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>ΕΓΚΑΤΕΣΤΗΜΕΝΟ</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Το αρχείο χρησιμοποιείται. Κλείστε την εφαρμογή, μην φορτώσετε κανένα αρχείο και δοκιμάστε  ξανά.!</value>
+  </data>
 </root>

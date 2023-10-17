@@ -634,4 +634,19 @@ BELGE EKLE</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>TERS RENKLİ</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>KATLAMA</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>AYNA</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>DALGA</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>YÜKLENDİ</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Dosya Kullanımda. Uygulamayı Kapat, Sağ Kısıma Dosya Yükleme Tekrar Dene</value>
+  </data>
 </root>

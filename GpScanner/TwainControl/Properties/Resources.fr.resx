@@ -631,4 +631,19 @@ VOIR</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>Inverser la couleur</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>Réduire</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>MIROIR</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Ripple</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>Installé!</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Le fichier est en cours d'utilisation. Fermez l'application, ne chargez aucun fichier et réessayez. !</value>
+  </data>
 </root>

@@ -626,4 +626,19 @@ SOUBORY PDF</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>Invertovat barvu textu</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>SLOŽIT PRADLO</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>Zrcadlo</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Ripple</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>Nainstalováno</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Soubor se používá. Zavřete aplikaci, nenačtěte žádný soubor a zkuste to  znovu.!</value>
+  </data>
 </root>

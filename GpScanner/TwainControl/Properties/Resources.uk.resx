@@ -626,4 +626,19 @@ PDF-ФАЙЛ!</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>Інвертувати кольори</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>fold</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>Віддзерк.</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Ripple</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>Встановлено</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Файл використовується. Закрити програму, не завантажувати жодного файлу та повторити  спробу.!</value>
+  </data>
 </root>

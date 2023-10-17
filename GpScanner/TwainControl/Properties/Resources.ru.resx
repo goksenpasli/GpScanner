@@ -624,4 +624,19 @@ PDF-ФАЙЛЫ</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>Инвертировать цвет логотипа</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>Сгиб</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>ЗЕРКАЛО</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Ripple</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>Установлено!</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Файл используется. Закройте приложение, не загружайте файлы и повторите  попытку.!</value>
+  </data>
 </root>

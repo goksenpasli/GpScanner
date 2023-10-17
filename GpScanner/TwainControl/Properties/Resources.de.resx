@@ -627,4 +627,19 @@ ENTFERNEN</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>FARBE UMKEHREN!</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>Falten</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>Spiegel</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Ripple</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>Installiert!</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Datei wird verwendet. Anwendung schließen, keine Datei laden und erneut versuchen!</value>
+  </data>
 </root>

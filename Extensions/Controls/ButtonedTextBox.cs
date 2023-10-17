@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,9 +31,10 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
-        _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanExecute));
-        _ = CommandBindings.Add(new CommandBinding(TitleCase, TitleCaseCommand, CanExecute));
-        _ = CommandBindings.Add(new CommandBinding(LowerCase, LowerCaseCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(TitleCase, TitleCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(LowerCase, LowerCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(UpperLowerCase, UpperLowerCaseCaseCommand, CanCaseExecute));
         _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute));
     }
 
@@ -163,6 +165,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ICommand UpperCase { get; } = new RoutedCommand();
 
+    public ICommand UpperLowerCase { get; } = new RoutedCommand();
+
     protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     protected override void OnTextChanged(TextChangedEventArgs e)
@@ -172,6 +176,14 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
             RemainingTextLength = MaxLength - Text.Length;
         }
         base.OnTextChanged(e);
+    }
+
+    private void CanCaseExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        if (!string.IsNullOrWhiteSpace(Text) && SelectedText.Length > 0)
+        {
+            e.CanExecute = true;
+        }
     }
 
     private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -184,7 +196,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void CopyCommand(object sender, ExecutedRoutedEventArgs e) => Clipboard.SetText(Text);
 
-    private void LowerCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.ToLower();
+    private void LowerCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, SelectedText.ToLower());
 
     private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
     {
@@ -210,7 +222,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
 
-    private void TitleCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = CultureInfo.CurrentUICulture.TextInfo.ToTitleCase(Text.ToLower());
+    private void TitleCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text =
+    Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, CultureInfo.CurrentUICulture.TextInfo.ToTitleCase(SelectedText.ToLower()));
 
-    private void UpperCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.ToUpper();
+    private string ToggleTextCase(string text) => new(text.Select(z => char.IsLower(z) ? char.ToUpper(z) : char.IsUpper(z) ? char.ToLower(z) : z).ToArray());
+
+    private void UpperCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, SelectedText.ToUpper());
+
+    private void UpperLowerCaseCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, ToggleTextCase(SelectedText));
 }

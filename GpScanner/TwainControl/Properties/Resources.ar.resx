@@ -631,4 +631,19 @@
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>عكس اللون!</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>قم بالطي هنا</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>المرآة</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>شركة Ripple</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>المثبتة!</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>الملف قيد الاستخدام. أغلق التطبيق، لا تقم بتحميل أي ملف وحاول  مرة أخرى.!</value>
+  </data>
 </root>

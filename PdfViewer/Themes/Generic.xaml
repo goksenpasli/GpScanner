@@ -202,7 +202,8 @@
                                                 <Extensions:ButtonedTextBox IsReadOnly="True" OpenButtonVisibility="Collapsed"
                                                     ResetButtonVisibility="Collapsed"
                                                     Text="{Binding PdfTextContent, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" />
+                                                    TextWrapping="Wrap" TitleCaseMenuVisibility="Visible"
+                                                    VerticalScrollBarVisibility="Auto" />
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
@@ -225,7 +226,7 @@
                                                         <RowDefinition />
                                                         <RowDefinition Height="Auto" />
                                                     </Grid.RowDefinitions>
-                                                    <Extensions:ButtonedTextBox OpenButtonVisibility="Collapsed" Text="{Binding SearchTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    <Extensions:ButtonedTextBox OpenButtonVisibility="Collapsed" Text="{Binding SearchTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" TitleCaseMenuVisibility="Visible" />
                                                     <UniformGrid Grid.Row="1" Columns="2">
                                                         <CheckBox VerticalContentAlignment="Center" Content="Match Case" IsChecked="{Binding MatchCase, RelativeSource={RelativeSource TemplatedParent}}" />
                                                         <CheckBox VerticalContentAlignment="Center" Content="Whole Word" IsChecked="{Binding WholeWord, RelativeSource={RelativeSource TemplatedParent}}" />

@@ -396,6 +396,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string FILEINUSE {
+            get {
+                return ResourceManager.GetString("FILEINUSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FILENAME {
             get {
                 return ResourceManager.GetString("FILENAME", resourceCulture);
@@ -408,6 +417,15 @@ namespace TwainControl.Properties {
         public static string FILMSCANNER {
             get {
                 return ResourceManager.GetString("FILMSCANNER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FOLD {
+            get {
+                return ResourceManager.GetString("FOLD", resourceCulture);
             }
         }
         
@@ -504,6 +522,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string INSTALLED {
+            get {
+                return ResourceManager.GetString("INSTALLED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string INVERTCOLOR {
             get {
                 return ResourceManager.GetString("INVERTCOLOR", resourceCulture);
@@ -593,6 +620,15 @@ namespace TwainControl.Properties {
         public static string MINUTE {
             get {
                 return ResourceManager.GetString("MINUTE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MIRROR {
+            get {
+                return ResourceManager.GetString("MIRROR", resourceCulture);
             }
         }
         
@@ -782,6 +818,15 @@ namespace TwainControl.Properties {
         public static string REVERSE {
             get {
                 return ResourceManager.GetString("REVERSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string RIPPLE {
+            get {
+                return ResourceManager.GetString("RIPPLE", resourceCulture);
             }
         }
         

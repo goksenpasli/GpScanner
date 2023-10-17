@@ -623,4 +623,19 @@ AL ARCHIVO</value>
   <data name="INVERTCOLOR" xml:space="preserve">
     <value>Invertir color de texto</value>
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>Retirarse</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>ESPEJO</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Onda</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>Instalado!</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>El archivo está en uso. Cierre la aplicación, no cargue ningún archivo e inténtelo de nuevo.</value>
+  </data>
 </root>

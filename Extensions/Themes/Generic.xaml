@@ -800,6 +800,7 @@
                                     <MenuItem Command="{Binding UpperCase, RelativeSource={RelativeSource TemplatedParent}}" Header="AAA BBB" />
                                     <MenuItem Command="{Binding TitleCase, RelativeSource={RelativeSource TemplatedParent}}" Header="Aaa Bbb" />
                                     <MenuItem Command="{Binding LowerCase, RelativeSource={RelativeSource TemplatedParent}}" Header="aaa bbb" />
+                                    <MenuItem Command="{Binding UpperLowerCase, RelativeSource={RelativeSource TemplatedParent}}" Header="aAA bBB" />
                                     <MenuItem.Header>
                                         <Image Width="16" Height="16">
                                             <Image.Source>

@@ -682,6 +682,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         WebAdreseGit = new RelayCommand<object>(parameter => GotoPage(parameter as string), parameter => true);
 
+        ExtractNugetPackage = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new() { Filter = "NuGet Package (*.nupkg)|*.nupkg", Multiselect = false };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    try
+                    {
+                        string dllpath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\x86\pdfium.dll";
+                        ZipExtractSingleFile(openFileDialog.FileName, "runtimes/win-x86/native/pdfium.dll", dllpath);
+                        _ = MessageBox.Show($"{Translation.GetResStringValue("INSTALLED")}\n{Translation.GetResStringValue("RESTARTAPP")}", AppName);
+                    }
+                    catch (Exception)
+                    {
+                        _ = MessageBox.Show(Translation.GetResStringValue("FILEINUSE"), AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            },
+            parameter => true);
+
         LoadImage = new RelayCommand<object>(
             async parameter =>
             {
@@ -1734,6 +1754,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand ExploreFile { get; }
 
     public ICommand ExtractMultiplePdfFile { get; }
+
+    public RelayCommand<object> ExtractNugetPackage { get; }
 
     public ICommand ExtractPdfFile { get; }
 
@@ -3134,7 +3156,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    private  void RemoveSelectedImage(ScannedImage item)
+    private void RemoveSelectedImage(ScannedImage item)
     {
         _ = Scanner.Resimler?.Remove(item);
         ToolBox.ResetCropMargin();
@@ -3646,5 +3668,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Scanner.ArayüzEtkin = false;
             }
         }
+    }
+
+    private void ZipExtractSingleFile(string zipfileName, string zipcontentfilename, string destinationfilename)
+    {
+        using ZipArchive archive = ZipFile.OpenRead(zipfileName);
+        archive.Entries?.FirstOrDefault(z => z.FullName == zipcontentfilename)?.ExtractToFile(destinationfilename, true);
     }
 }

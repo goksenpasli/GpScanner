@@ -659,4 +659,19 @@
   <data name="INVERTCOLOR" xml:space="preserve">
     <value />
   </data>
+  <data name="FOLD" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value />
+  </data>
 </root>
