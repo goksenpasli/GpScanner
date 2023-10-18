@@ -140,6 +140,20 @@
                     <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="PdfViewerDocumentViewerTemplateMini">
+                <Image Width="96" Height="96" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                    <Image.Tag>
+                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                            <Binding Mode="OneWay" />
+                            <Binding Mode="OneWay">
+                                <Binding.Source>
+                                    <System:Int32>1</System:Int32>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </Image.Tag>
+                </Image>
+            </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid Margin="2">
                     <Grid.RowDefinitions>
@@ -247,8 +261,8 @@
                         <Extensions:NumericUpDownControl IsReadOnly="True"
                             Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="0" SmallChange="1"
-                            Value="{Binding PdfSplitCount, ElementName=TwainCtrl}" />
-                        <Button Command="{Binding SplitPdf, ElementName=TwainCtrl}" CommandParameter="{Binding ElementName=PdfVwr}">
+                            Value="{Binding PdfSplitCount}" />
+                        <Button Command="{Binding SplitPdf}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -267,8 +281,7 @@
                         OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
-                        SliderZoomAngleVisibility="Collapsed" SnapTick="True"
-                        Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}" />
+                        SliderZoomAngleVisibility="Collapsed" SnapTick="True" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
@@ -282,7 +295,6 @@
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
             </DataTemplate>
-
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -312,6 +324,13 @@
                             TextWrapping="Wrap" />
                     </Grid>
                 </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
+                <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    OpenButtonVisibility="Collapsed" OrijinalResimDosyaAçButtonVisibility="Collapsed"
+                    PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Collapsed"
+                    TifNavigasyonButtonEtkin="Collapsed" ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -524,6 +543,7 @@
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
+            <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector" Img="{StaticResource ImgViewerDocumentViewerTemplateMini}" Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}" />
             <twain:ViewerTemplateSelector x:Key="ThumbViewerSelector"
                 Eyp="{StaticResource EypViewerTemplate}"
                 Img="{StaticResource ImgViewerTemplate}"

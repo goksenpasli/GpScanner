@@ -12,7 +12,7 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -37,9 +37,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="24" Height="24"
-                            d:Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}"
-                            Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                        <ContentControl d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" Content="{Binding IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
                         <TextBlock VerticalAlignment="Center" d:Text="FileName" Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
                     </StackPanel>
                 </DataTemplate>
