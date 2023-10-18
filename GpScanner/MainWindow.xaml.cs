@@ -85,16 +85,32 @@ public partial class MainWindow : Window
         }
     }
 
-    private void DocumentRun_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    private void DocumentGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (sender is Run run)
+        if (sender is Grid grid)
         {
-            ListBoxItem listBoxItem = run.TemplatedParent as ListBoxItem;
-            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(listBoxItem.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(grid.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
             TwainCtrl.DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
-            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+            _ = DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
             e.Handled = true;
         }
+    }
+
+    private void Grid_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+    {
+        if (e.Effects == DragDropEffects.Move)
+        {
+            if (TwainCtrl.DragCursor != null)
+            {
+                e.UseDefaultCursors = false;
+                _ = Mouse.SetCursor(TwainCtrl.DragCursor);
+            }
+        }
+        else
+        {
+            e.UseDefaultCursors = true;
+        }
+        e.Handled = true;
     }
 
     private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -239,23 +255,6 @@ public partial class MainWindow : Window
                 }
             }
         }
-    }
-
-    private void Run_GiveFeedback(object sender, GiveFeedbackEventArgs e)
-    {
-        if (e.Effects == DragDropEffects.Move)
-        {
-            if (TwainCtrl.DragCursor != null)
-            {
-                e.UseDefaultCursors = false;
-                _ = Mouse.SetCursor(TwainCtrl.DragCursor);
-            }
-        }
-        else
-        {
-            e.UseDefaultCursors = true;
-        }
-        e.Handled = true;
     }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)

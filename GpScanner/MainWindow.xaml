@@ -457,7 +457,7 @@
                                                                 <TranslateTransform />
                                                             </TransformGroup>
                                                         </Border.RenderTransform>
-                                                        <Grid>
+                                                        <Grid GiveFeedback="Grid_GiveFeedback" MouseLeftButtonDown="DocumentGrid_MouseLeftButtonDown">
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="16" />
                                                                 <RowDefinition Height="19.2" />
@@ -468,7 +468,6 @@
                                                                 <TextBlock>
                                                                     <Run Cursor="SizeAll" FontFamily="Wingdings"
                                                                         FontSize="15" FontWeight="Bold"
-                                                                        GiveFeedback="Run_GiveFeedback" MouseLeftButtonDown="DocumentRun_MouseLeftButtonDown"
                                                                         Text="B" />
                                                                     <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
                                                                     <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
