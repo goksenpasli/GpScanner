@@ -434,15 +434,15 @@
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="EypSimplePdfTemplate">
-        <Grid>
+        <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
             <TextBlock VerticalAlignment="Center">
                 <Hyperlink BaselineAlignment="Center"
-                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                    CommandParameter="{Binding Mode=OneWay}"
+                    Command="{Binding EypPdfSeçiliDosyaSil}"
+                    CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     TextDecorations="None">
                     <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                 </Hyperlink>
@@ -454,7 +454,7 @@
                 PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                 PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden"
                 SliderZoomAngleVisibility="Collapsed" SnapTick="True"
-                Tag="{Binding RelativeSource={RelativeSource AncestorType=UserControl}}"
+                Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                 ToolBarVisibility="Collapsed" />
         </Grid>
     </DataTemplate>

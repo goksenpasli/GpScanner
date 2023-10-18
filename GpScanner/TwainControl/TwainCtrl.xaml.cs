@@ -1532,7 +1532,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public static System.Windows.Input.Cursor DragCursor { get; private set; }
+    public static System.Windows.Input.Cursor DragCursor { get; set; }
 
     public RelayCommand<object> AddActiveVisibleContentImage { get; }
 
@@ -2598,19 +2598,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public void DropPreviewFile(object sender, MouseEventArgs e)
-    {
-        if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
-        {
-            DragMoveStarted = true;
-            StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
-            using Icon icon = Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
-            DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
-            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
-            DragMoveStarted = false;
-        }
-    }
-
     public async Task ListBoxDropFileAsync(DragEventArgs e)
     {
         if (fileloadtask?.IsCompleted == false)
@@ -2619,8 +2606,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             return;
         }
 
-        string[] droppedfiles = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
-        if (droppedfiles?.Length > 0)
+        if (e.Data.GetData(typeof(Scanner)) is Scanner droppedData)
+        {
+            await Task.Run(() => AddFiles([droppedData.FileName], DecodeHeight));
+            return;
+        }
+
+        if ((e.Data.GetData(System.Windows.DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
         {
             await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
         }
@@ -2975,7 +2967,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             splitLists.Add(scannedImages.Skip(i * splitIndex).Take(splitIndex).ToList());
         }
-        return MixLists(splitIndex, [.. splitLists]);
+        return MixLists([.. splitLists]);
     }
 
     private void ImgViewer_MouseDown(object sender, MouseButtonEventArgs e)
@@ -3125,7 +3117,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private List<ScannedImage> MixLists(int splitIndex, List<ScannedImage>[] lists)
+    private List<ScannedImage> MixLists(List<ScannedImage>[] lists)
     {
         int maxLength = lists.Max(list => list.Count);
         List<ScannedImage> mixedList = [];
@@ -3190,7 +3182,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => DropPreviewFile(sender, e);
+    private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is Run run)
+        {
+            DragMoveStarted = true;
+            StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
+            using Icon icon = Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+            DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
+            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+            DragMoveStarted = false;
+            e.Handled = true;
+        }
+    }
 
     private void SaveJpgImage(BitmapFrame scannedImage, string filename) => Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality)));
 

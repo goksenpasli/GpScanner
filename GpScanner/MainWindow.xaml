@@ -466,6 +466,10 @@
                                                             <Grid>
                                                                 <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
                                                                 <TextBlock>
+                                                                    <Run Cursor="SizeAll" FontFamily="Wingdings"
+                                                                        FontSize="15" FontWeight="Bold"
+                                                                        GiveFeedback="Run_GiveFeedback" MouseLeftButtonDown="DocumentRun_MouseLeftButtonDown"
+                                                                        Text="B" />
                                                                     <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
                                                                     <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
                                                                 </TextBlock>
@@ -852,7 +856,7 @@
                                                                 Value="{Binding RotationAngle}" />
                                                         </InlineUIContainer><Run AllowDrop="True" Cursor="SizeAll"
                                                             FontFamily="Wingdings" FontSize="24"
-                                                            FontWeight="Bold" PreviewMouseMove="Run_PreviewMouseMove"
+                                                            FontWeight="Bold" MouseLeftButtonDown="MiniDocumentRun_MouseLeftButtonDown"
                                                             Text="B" /><Hyperlink twainctrl:Policy.PolicyName="ResimSil"
                                                             Command="{Binding DataContext.ResimSil, Source={x:Reference TwainCtrl}}"
                                                             CommandParameter="{Binding Mode=OneWay}"

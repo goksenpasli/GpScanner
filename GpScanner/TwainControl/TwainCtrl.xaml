@@ -1249,10 +1249,9 @@
                                                                     NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal"
                                                                     SmallChange="1"
                                                                     Value="{Binding RotationAngle}" />
-                                                            </InlineUIContainer><Run AllowDrop="True" Cursor="SizeAll"
-                                                                FontFamily="Wingdings" FontSize="24"
-                                                                FontWeight="Bold" PreviewMouseMove="Run_PreviewMouseMove"
-                                                                Text="B" /><InlineUIContainer BaselineAlignment="Center">
+                                                            </InlineUIContainer><Run Cursor="SizeAll" FontFamily="Wingdings"
+                                                                FontSize="24" FontWeight="Bold"
+                                                                MouseLeftButtonDown="Run_MouseLeftButtonDown" Text="B" /><InlineUIContainer BaselineAlignment="Center">
                                                                 <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                                                     Background="{x:Null}"
                                                                     BorderBrush="{x:Null}"

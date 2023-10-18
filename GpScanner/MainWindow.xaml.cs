@@ -9,9 +9,12 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using TwainControl;
 using static Extensions.ExtensionMethods;
+using static TwainControl.DrawControl;
 
 namespace GpScanner;
 
@@ -38,7 +41,7 @@ public partial class MainWindow : Window
             try
             {
                 string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                string pdfFilePath = pdfviewer.PdfFilePath;
+                string pdfFilePath = (string)pdfviewer.DataContext;
                 int curpage = pdfviewer.Sayfa;
                 droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
                 string[] processedfiles = [temporarypdf, pdfFilePath];
@@ -82,6 +85,18 @@ public partial class MainWindow : Window
         }
     }
 
+    private void DocumentRun_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is Run run)
+        {
+            ListBoxItem listBoxItem = run.TemplatedParent as ListBoxItem;
+            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(listBoxItem.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+            TwainCtrl.DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
+            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+            e.Handled = true;
+        }
+    }
+
     private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
     {
         if (DataContext is GpScannerViewModel ViewModel)
@@ -101,6 +116,20 @@ public partial class MainWindow : Window
     }
 
     private async void ListBox_DropAsync(object sender, DragEventArgs e) => await TwainCtrl.ListBoxDropFileAsync(e);
+
+    private void MiniDocumentRun_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        if (sender is Run run)
+        {
+            TwainCtrl.DragMoveStarted = true;
+            StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
+            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+            TwainCtrl.DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
+            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+            TwainCtrl.DragMoveStarted = false;
+            e.Handled = true;
+        }
+    }
 
     private void MW_ContentRendered(object sender, EventArgs e)
     {
@@ -212,7 +241,22 @@ public partial class MainWindow : Window
         }
     }
 
-    private void Run_PreviewMouseMove(object sender, MouseEventArgs e) => TwainCtrl.DropPreviewFile(sender, e);
+    private void Run_GiveFeedback(object sender, GiveFeedbackEventArgs e)
+    {
+        if (e.Effects == DragDropEffects.Move)
+        {
+            if (TwainCtrl.DragCursor != null)
+            {
+                e.UseDefaultCursors = false;
+                _ = Mouse.SetCursor(TwainCtrl.DragCursor);
+            }
+        }
+        else
+        {
+            e.UseDefaultCursors = true;
+        }
+        e.Handled = true;
+    }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

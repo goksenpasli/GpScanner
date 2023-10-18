@@ -13,8 +13,8 @@ public class SimplePdfViewer : PdfViewer.PdfViewer
     {
         if (pdfImportViewerControl == null)
         {
-            pdfImportViewerControl = new PdfImportViewerControl { DataContext = Tag };
-            string pdffilepath = (string)DataContext;
+            pdfImportViewerControl = new PdfImportViewerControl() { DataContext = DataContext };
+            string pdffilepath = (string)Tag;
             pdfImportViewerControl.PdfViewer.PdfFilePath = pdffilepath;
             pdfImportViewerControl.PdfViewer.AddToHistoryList(pdffilepath);
         }
