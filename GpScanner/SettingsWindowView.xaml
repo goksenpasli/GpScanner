@@ -141,6 +141,16 @@
                                     </Style>
                                     <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+                                                <Setter Property="BorderBrush" Value="{StaticResource GroupBoxBackGround}" />
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#1F26A0DA" />
+                                                <Setter Property="BorderBrush" Value="#A826A0DA" />
+                                            </Trigger>
+                                        </Style.Triggers>
                                     </Style>
                                 </ListBox.Resources>
                                 <ListBox.ItemsPanel>
@@ -257,6 +267,22 @@
                                         <StackPanel>
                                             <Image Source="/Resources/flag-of-Greece.png" />
                                             <TextBlock Text="ΕΛΛΗΝΙΚΑ" />
+                                        </StackPanel>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
+                                <ListBoxItem Tag="فلسطين">
+                                    <ListBoxItem.Content>
+                                        <StackPanel>
+                                            <Image Source="/Resources/flag-of-Palestine.png" />
+                                            <TextBlock Text="فلسطين" />
+                                        </StackPanel>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
+                                <ListBoxItem Tag="AZƏRBAYCAN">
+                                    <ListBoxItem.Content>
+                                        <StackPanel>
+                                            <Image Source="/Resources/flag-of-Azərbaycan.png" />
+                                            <TextBlock Text="AZƏRBAYCAN" />
                                         </StackPanel>
                                     </ListBoxItem.Content>
                                 </ListBoxItem>

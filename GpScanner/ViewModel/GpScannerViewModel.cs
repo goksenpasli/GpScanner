@@ -2058,6 +2058,17 @@ public class GpScannerViewModel : InpcBase
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("el");
                     CalendarLang = XmlLanguage.GetLanguage("el");
                     break;
+
+                case "فلسطين":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
+                    CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                    LangFlowDirection = FlowDirection.RightToLeft;
+                    break;
+
+                case "AZƏRBAYCAN":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("az");
+                    CalendarLang = XmlLanguage.GetLanguage("az");
+                    break;
             }
 
             Settings.Default.DefaultLang = SeçiliDil;
