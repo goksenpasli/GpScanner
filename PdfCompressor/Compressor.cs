@@ -32,7 +32,7 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-    private ObservableCollection<BatchPdfData> batchPdfList = new();
+    private ObservableCollection<BatchPdfData> batchPdfList = [];
     private double compressionProgress;
     private ListBox listbox;
 

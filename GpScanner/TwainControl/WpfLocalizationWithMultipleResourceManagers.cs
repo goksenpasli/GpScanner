@@ -91,7 +91,7 @@ public class Translation : DependencyObject
 
 public class TranslationSource : INotifyPropertyChanged
 {
-    private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = new();
+    private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = [];
     private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
 
     public event PropertyChangedEventHandler PropertyChanged;

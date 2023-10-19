@@ -104,8 +104,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private Point mousedowncoord;
     private int pageHeight;
     private int pageWidth;
-    private ObservableCollection<Paper> papers = new()
-    {
+    private ObservableCollection<Paper> papers =
+    [
         new Paper { Category = "A", Height = 118.9, PaperType = "A0", Width = 84.1 },
         new Paper { Category = "A", Height = 84.1, PaperType = "A1", Width = 59.4 },
         new Paper { Category = "A", Height = 59.4, PaperType = "A2", Width = 42 },
@@ -123,7 +123,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         new Paper { Height = 26.67, PaperType = "Executive", Width = 18.415 },
         new Paper { Category = string.Empty, Height = 0, PaperType = "Original", Width = 0 },
         new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth }
-    };
+    ];
     private double pdfLoadProgressValue;
     private int pdfMedianValue;
     private ObservableCollection<PdfData> pdfPages;

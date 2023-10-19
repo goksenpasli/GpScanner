@@ -501,7 +501,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
-    public ObservableCollection<string> PlayList { get; set; } = new();
+    public ObservableCollection<string> PlayList { get; set; } = [];
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]

@@ -31,7 +31,7 @@ namespace DvdBurner
         private long discMaxSize = (int)DiscSizes.CD;
         private Dictionary<string, string> drives;
         private bool eject = true;
-        private ObservableCollection<string> files = new();
+        private ObservableCollection<string> files = [];
         private bool ısCdWriterAvailable = true;
         private ListBox lb;
         private Brush progressForegroundBrush;

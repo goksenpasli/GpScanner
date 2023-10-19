@@ -7,8 +7,8 @@ namespace GpScanner.ViewModel;
 [XmlRoot(ElementName = "ScannerData")]
 public class ScannerData : InpcBase
 {
-    private ObservableCollection<Data> data = new();
-    private ObservableCollection<ReminderData> reminder = new();
+    private ObservableCollection<Data> data = [];
+    private ObservableCollection<ReminderData> reminder = [];
 
     [XmlElement(ElementName = "Data")]
     public ObservableCollection<Data> Data

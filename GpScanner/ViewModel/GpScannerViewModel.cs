@@ -50,12 +50,12 @@ public class GpScannerViewModel : InpcBase
     public CancellationTokenSource ocrcancellationToken;
     private static DispatcherTimer timer;
     private readonly string AppName = Application.Current?.MainWindow?.Title;
-    private readonly List<string> batchimagefileextensions = new() { ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp" };
+    private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"];
     private int allPdfPage;
     private bool anyDataExists;
     private string aramaMetni;
-    private ObservableCollection<string> barcodeList = new();
+    private ObservableCollection<string> barcodeList = [];
     private bool batchDialogOpen;
     private string batchFolder;
     private ObservableCollection<BatchFiles> batchFolderProcessedFileList;
@@ -90,7 +90,7 @@ public class GpScannerViewModel : InpcBase
     private double pdfMergeProgressValue;
     private Brush progressBarForegroundBrush = Brushes.Green;
     private double ripple;
-    private ObservableCollection<OcrData> scannedText = new();
+    private ObservableCollection<OcrData> scannedText = [];
     private string seçiliDil;
     private DateTime seçiliGün;
     private BatchFiles selectedBatchFile;
@@ -118,6 +118,8 @@ public class GpScannerViewModel : InpcBase
             RegisterSimplePdfFileWatcher();
         }
 
+        TesseractViewModel = new TesseractViewModel();
+        TranslateViewModel = new TranslateViewModel();
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
 
@@ -129,8 +131,6 @@ public class GpScannerViewModel : InpcBase
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         ScannerData = new ScannerData { Data = DataYükle(), Reminder = ReminderYükle() };
-        TesseractViewModel = new TesseractViewModel();
-        TranslateViewModel = new TranslateViewModel();
 
         if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
         {
@@ -1668,7 +1668,7 @@ public class GpScannerViewModel : InpcBase
             }
 
             _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
-            return new ObservableCollection<Data>();
+            return [];
         }
         catch (Exception ex)
         {
@@ -1991,83 +1991,114 @@ public class GpScannerViewModel : InpcBase
                 case "TÜRKÇE":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
                     CalendarLang = XmlLanguage.GetLanguage("tr-TR");
+                    TesseractViewModel.SeçiliDil = "Turkish";
                     break;
 
                 case "ENGLISH":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
                     CalendarLang = XmlLanguage.GetLanguage("en-EN");
+                    TesseractViewModel.SeçiliDil = "English";
+
                     break;
 
                 case "FRANÇAIS":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
                     CalendarLang = XmlLanguage.GetLanguage("fr-FR");
+                    TesseractViewModel.SeçiliDil = "French";
+
                     break;
 
                 case "ITALIANO":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("it-IT");
                     CalendarLang = XmlLanguage.GetLanguage("it-IT");
+                    TesseractViewModel.SeçiliDil = "Italian";
+
                     break;
 
                 case "عربي":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
                     CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                    TesseractViewModel.SeçiliDil = "Arabic";
+
                     LangFlowDirection = FlowDirection.RightToLeft;
                     break;
 
                 case "РУССКИЙ":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
                     CalendarLang = XmlLanguage.GetLanguage("ru-RU");
+                    TesseractViewModel.SeçiliDil = "Russian";
+
                     break;
 
                 case "DEUTSCH":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
                     CalendarLang = XmlLanguage.GetLanguage("de-DE");
+                    TesseractViewModel.SeçiliDil = "German";
+
                     break;
 
                 case "日本":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ja-JP");
                     CalendarLang = XmlLanguage.GetLanguage("ja-JP");
+                    TesseractViewModel.SeçiliDil = "Japanese";
+
                     break;
 
                 case "DUTCH":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
                     CalendarLang = XmlLanguage.GetLanguage("nl-NL");
+                    TesseractViewModel.SeçiliDil = "Dutch";
+
                     break;
 
                 case "CZECH":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("cs-CZ");
                     CalendarLang = XmlLanguage.GetLanguage("cs-CZ");
+                    TesseractViewModel.SeçiliDil = "Czech";
+
                     break;
 
                 case "ESPAÑOL":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("es-ES");
                     CalendarLang = XmlLanguage.GetLanguage("es-ES");
+                    TesseractViewModel.SeçiliDil = "Spanish";
+
                     break;
 
                 case "中國人":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("zh-CN");
                     CalendarLang = XmlLanguage.GetLanguage("zh-CN");
+                    TesseractViewModel.SeçiliDil = "Chinese";
+
                     break;
 
                 case "УКРАЇНСЬКА":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("uk-UA");
                     CalendarLang = XmlLanguage.GetLanguage("uk-UA");
+                    TesseractViewModel.SeçiliDil = "Ukrainian";
+
                     break;
 
                 case "ΕΛΛΗΝΙΚΑ":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("el");
                     CalendarLang = XmlLanguage.GetLanguage("el");
+                    TesseractViewModel.SeçiliDil = "Greek";
+
                     break;
 
                 case "فلسطين":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
                     CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                    TesseractViewModel.SeçiliDil = "Arabic";
+
                     LangFlowDirection = FlowDirection.RightToLeft;
                     break;
 
                 case "AZƏRBAYCAN":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("az");
                     CalendarLang = XmlLanguage.GetLanguage("az");
+                    TesseractViewModel.SeçiliDil = "Azerbaijani";
+
                     break;
             }
 
@@ -2137,7 +2168,7 @@ public class GpScannerViewModel : InpcBase
             }
 
             _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
-            return new ObservableCollection<ReminderData>();
+            return [];
         }
         catch (Exception ex)
         {

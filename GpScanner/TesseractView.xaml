@@ -16,8 +16,17 @@
     <UserControl.Resources>
         <Extension:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:NumberRangeToColorConverter x:Key="ListBoxNumberRangeToColorConverter" MaxNumber="6" MinNumber="1" />
+        <CollectionViewSource x:Key="Files" Source="{Binding OcrDatas}" />
     </UserControl.Resources>
     <GroupBox>
+        <GroupBox.Header>
+            <Button Command="{Binding ResetTesseractFilter}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                    <TextBlock Text="{twainctrl:Loc RESET}" />
+                </StackPanel>
+            </Button>
+        </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -25,7 +34,7 @@
             </Grid.RowDefinitions>
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}"
                 IsEnabled="{Binding IsFolderWritable, ValidatesOnDataErrors=True}"
-                ItemsSource="{Binding OcrDatas}"
+                ItemsSource="{Binding Mode=OneWay, Source={StaticResource Files}}"
                 Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                 <ItemsControl.Template>
                     <ControlTemplate>

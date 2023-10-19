@@ -19,7 +19,7 @@ public class TranslateViewModel : InpcBase
     private bool metinBoxIsreadOnly;
     private string mevcutDil = Settings.Default?.CurrentTranslateLanguage;
     private string okumaDili;
-    private ObservableCollection<string> taramaGeçmiş = new();
+    private ObservableCollection<string> taramaGeçmiş = [];
 
     static TranslateViewModel()
     {

@@ -74,7 +74,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string profileName;
     private TaskbarItemProgressState progressState = TaskbarItemProgressState.None;
     private IEnumerable<string> qrData;
-    private ObservableCollection<ScannedImage> resimler = new();
+    private ObservableCollection<ScannedImage> resimler = [];
     private double rotateAngle;
     private double saturation = 1;
     private string saveFileName;
@@ -93,7 +93,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string targetColor = "Transparent";
     private double threshold;
     private int toolBarBwThreshold = 160;
-    private ObservableCollection<string> unsupportedFiles = new();
+    private ObservableCollection<string> unsupportedFiles = [];
     private bool useFilmScanner;
     private bool useMozJpegEncoding;
     private bool usePageSeperator;

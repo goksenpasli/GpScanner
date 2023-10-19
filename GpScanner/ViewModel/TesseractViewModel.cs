@@ -23,6 +23,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     private readonly string AppName = Application.Current?.MainWindow?.Title;
     private List<TessFiles> checkedFiles;
     private bool ısFolderWritable;
+    private string seçiliDil;
     private bool showHelpDesc;
     private string tessdatafolder;
     private ObservableCollection<TessFiles> tesseractFiles;
@@ -35,7 +36,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         IsFolderWritable = FolderWritable(Tessdatafolder);
         OcrDatas = TesseractDownloadData();
         ShowHelpDesc = TesseractFiles?.Count == 0;
-
+        PropertyChanged += TesseractViewModel_PropertyChanged;
         TesseractDataFilesDownloadLink = new RelayCommand<object>(
             parameter =>
             {
@@ -130,6 +131,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
+        ResetTesseractFilter = new RelayCommand<object>(parameter => TesseractView.cvs.View.Filter = null, parameter => TesseractView.cvs is not null);
+
         if (PdfGeneration.Scanner is not null)
         {
             PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
@@ -165,6 +168,21 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     }
 
     public ObservableCollection<TesseractOcrData> OcrDatas { get; set; }
+
+    public RelayCommand<object> ResetTesseractFilter { get; }
+
+    public string SeçiliDil
+    {
+        get => seçiliDil;
+        set
+        {
+            if (seçiliDil != value)
+            {
+                seçiliDil = value;
+                OnPropertyChanged(nameof(SeçiliDil));
+            }
+        }
+    }
 
     public bool ShowHelpDesc
     {
@@ -288,8 +306,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     private ObservableCollection<TesseractOcrData> TesseractDownloadData()
     {
-        return new ObservableCollection<TesseractOcrData>
-        {
+        return
+        [
             new() { OcrName = "afr.traineddata", OcrLangName = "Afrikaans" },
             new() { OcrName = "amh.traineddata", OcrLangName = "Amharic" },
             new() { OcrName = "ara.traineddata", OcrLangName = "Arabic" },
@@ -407,7 +425,18 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new() { OcrName = "vie.traineddata", OcrLangName = "Vietnamese" },
             new() { OcrName = "yor.traineddata", OcrLangName = "Yoruba" },
             new() { OcrName = "zho.traineddata", OcrLangName = "Chinese" },
-            new() { OcrName = "zul.traineddata", OcrLangName = "Zulu" }
-        };
+            new() { OcrName = "zul.traineddata", OcrLangName = "Zulu" }];
+    }
+
+    private void TesseractViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "SeçiliDil" && !string.IsNullOrWhiteSpace(SeçiliDil) && TesseractView.cvs is not null)
+        {
+            TesseractView.cvs.Filter += (s, x) =>
+                                        {
+                                            TesseractOcrData tesseractOcrData = x.Item as TesseractOcrData;
+                                            x.Accepted = tesseractOcrData.OcrLangName.Contains(SeçiliDil);
+                                        };
+        }
     }
 }
