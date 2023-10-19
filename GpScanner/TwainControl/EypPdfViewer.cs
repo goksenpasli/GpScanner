@@ -76,24 +76,20 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     protected override void OnDrop(DragEventArgs e)
     {
-        string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if (droppedfiles?.Length > 0)
+        if (e.Data.GetData(typeof(Scanner)) is Scanner droppedData)
+        {
+            PdfFilePath = droppedData.FileName;
+            return;
+        }
+
+        if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
         {
             if (Path.GetExtension(droppedfiles[0]) == ".eyp")
             {
-                string eyppath = ExtractEypFilesToPdf(droppedfiles[0]);
-                if (PdfReader.TestPdfFile(eyppath) != 0)
-                {
-                    PdfFilePath = eyppath;
-                }
-
+                PdfFilePath = ExtractEypFilesToPdf(droppedfiles[0]);
                 return;
             }
-
-            if (PdfReader.TestPdfFile(droppedfiles[0]) != 0)
-            {
-                PdfFilePath = droppedfiles[0];
-            }
+            PdfFilePath = droppedfiles[0];
         }
     }
 
