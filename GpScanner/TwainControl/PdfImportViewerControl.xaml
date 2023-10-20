@@ -22,6 +22,7 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+            <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
             <Style TargetType="ComboBox">
                 <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
@@ -485,7 +486,9 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Expander d:IsExpanded="True" ExpandDirection="Right" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Expander x:Name="EditorExpander"
+                d:IsExpanded="True" ExpandDirection="Right"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <WrapPanel Orientation="Horizontal">
                     <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ComboBox.ItemTemplate>
@@ -708,6 +711,84 @@
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
+                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="73" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" FontSize="10" Text="{local:Loc APPLY}" />
+                        </StackPanel>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Border Background="{StaticResource BorderBackground}" BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
+                                <StackPanel>
+                                    <ToggleButton IsChecked="{Binding SinglePage}">
+                                        <ToggleButton.Style>
+                                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="ToggleButton">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter Property="Content">
+                                                            <Setter.Value>
+                                                                <TextBlock FontSize="10">
+                                                                    <Run Text="1" />
+                                                                    <Run Text="{local:Loc APPLY}" />
+                                                                </TextBlock>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="False">
+                                                        <Setter Property="Content">
+                                                            <Setter.Value>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Canvas Width="16" Height="16">
+                                                                        <TextBlock Canvas.Top="0" FontSize="10" Text="1" />
+                                                                        <TextBlock Canvas.Left="4" Canvas.Top="2"
+                                                                            FontSize="10" Text="2" />
+                                                                        <TextBlock Canvas.Left="8" Canvas.Top="4"
+                                                                            FontSize="10" Text="3" />
+                                                                    </Canvas>
+                                                                    <TextBlock VerticalAlignment="Center" FontSize="10">
+                                                                        <Run Text="{local:Loc ALL}" />
+                                                                        <Run Text="{local:Loc APPLY}" />
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
+                                    <UniformGrid Rows="2">
+                                        <MenuItem IsCheckable="True" IsChecked="{Binding ApplyPortrait}">
+                                            <MenuItem.Header>
+                                                <Rectangle Width="42" Height="59.4"
+                                                    Stroke="Black" StrokeThickness="1">
+                                                    <Rectangle.Effect>
+                                                        <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                    </Rectangle.Effect>
+                                                </Rectangle>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        <MenuItem IsCheckable="True" IsChecked="{Binding ApplyLandscape}">
+                                            <MenuItem.Header>
+                                                <Rectangle Width="59.4" Height="42"
+                                                    Stroke="Black" StrokeThickness="1">
+                                                    <Rectangle.Effect>
+                                                        <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                    </Rectangle.Effect>
+                                                </Rectangle>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Border>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                 </WrapPanel>
             </Expander>
         </WrapPanel>
@@ -716,7 +797,8 @@
                 x:FieldModifier="public" AutoFitContent="True"
                 OpenButtonVisibility="Visible" PreviewKeyDown="PdfViewer_PreviewKeyDown"
                 PreviewKeyUp="PdfViewer_PreviewKeyUp" PreviewMouseDown="PdfImportViewerControl_MouseDown"
-                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible" />
+                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible"
+                ZoomEnabled="{Binding ElementName=EditorExpander, Path=IsExpanded, Converter={StaticResource ReverseBooleanConverter}}" />
             <Canvas x:Name="cnv" />
         </Grid>
     </Grid>

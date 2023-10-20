@@ -102,11 +102,11 @@
                                                 <VirtualizingStackPanel Orientation="Horizontal" />
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
-                                        <ListBoxItem Tag="Width">
+                                        <ListBoxItem IsEnabled="{Binding ZoomEnabled, RelativeSource={RelativeSource TemplatedParent}}" Tag="Width">
                                             <TextBlock FontFamily="Wingdings 3" FontSize="16"
                                                 FontWeight="Bold" Text="F" />
                                         </ListBoxItem>
-                                        <ListBoxItem Tag="Height">
+                                        <ListBoxItem IsEnabled="{Binding ZoomEnabled, RelativeSource={RelativeSource TemplatedParent}}" Tag="Height">
                                             <TextBlock FontFamily="Wingdings 3" FontSize="16"
                                                 FontWeight="Bold" Text="G" />
                                         </ListBoxItem>
@@ -291,7 +291,9 @@
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
                                     <Extensions:ContentToggleButton Grid.Column="8"
-                                        ArrowVisibility="Collapsed" PlacementMode="Top"
+                                        ArrowVisibility="Collapsed"
+                                        IsEnabled="{Binding ZoomEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                        PlacementMode="Top"
                                         Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
