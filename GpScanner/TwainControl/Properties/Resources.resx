@@ -677,4 +677,13 @@
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value />
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value />
+  </data>
 </root>

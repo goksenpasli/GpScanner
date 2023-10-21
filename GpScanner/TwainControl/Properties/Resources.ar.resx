@@ -649,4 +649,13 @@
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>اضغط مع الاستمرار على زر Esc للإلغاء!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>صبغة اللون</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>التخليص!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>التشبع!</value>
+  </data>
 </root>

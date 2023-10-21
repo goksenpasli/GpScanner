@@ -609,11 +609,11 @@
                             </Image>
                         </Button.Content>
                     </Button>
-                    <Extensions:ContentToggleButton>
+                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Extensions:ContentToggleButton.OverContent>
                             <Extensions:ResizablePanel Width="300" Height="200"
                                 MinWidth="300" MinHeight="200">
-                                <Grid DataContext="{Binding Parent.Parent.Parent, Source={x:Reference PdfViewer}}">
+                                <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition />
                                         <RowDefinition Height="Auto" />

@@ -522,6 +522,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string HUE {
+            get {
+                return ResourceManager.GetString("HUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string IGNOREWIDTHHEIGHTEQUAL {
             get {
                 return ResourceManager.GetString("IGNOREWIDTHHEIGHTEQUAL", resourceCulture);
@@ -584,6 +593,15 @@ namespace TwainControl.Properties {
         public static string LICENSE {
             get {
                 return ResourceManager.GetString("LICENSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LIGHTNESS {
+            get {
+                return ResourceManager.GetString("LIGHTNESS", resourceCulture);
             }
         }
         
@@ -845,6 +863,15 @@ namespace TwainControl.Properties {
         public static string ROTSAVE {
             get {
                 return ResourceManager.GetString("ROTSAVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SATURATION {
+            get {
+                return ResourceManager.GetString("SATURATION", resourceCulture);
             }
         }
         

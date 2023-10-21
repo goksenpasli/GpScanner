@@ -642,4 +642,13 @@ PDF-ФАЙЛЫ</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Нажмите и удерживайте кнопку Esc, чтобы отменить!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>Цвет</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>ЗАЗОР!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>&amp; Насыщенность</value>
+  </data>
 </root>

@@ -652,4 +652,13 @@ BELGE EKLE</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>İptal Etmek İçin Esc Düğmesine Basılı Tutun</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>RENK TONU</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>AÇIKLIK</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>DOYGUNLUK</value>
+  </data>
 </root>

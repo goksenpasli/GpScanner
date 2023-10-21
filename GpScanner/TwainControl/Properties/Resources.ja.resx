@@ -647,4 +647,13 @@ PDFをマージ</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Escボタンを長押しするとキャンセルできます！</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>カラーシェード！</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>クリアランス！</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>タイルの彩度</value>
+  </data>
 </root>

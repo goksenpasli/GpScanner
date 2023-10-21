@@ -109,7 +109,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 try
                 {
-                    RenderTargetBitmap renderTargetBitmap = new((int)Ink.ActualWidth, (int)Ink.ActualHeight, 96, 96, PixelFormats.Default);
+                    RenderTargetBitmap renderTargetBitmap = new((int)Ink.DesiredSize.Width, (int)Ink.DesiredSize.Height, 96, 96, PixelFormats.Default);
                     renderTargetBitmap.Render(Ink);
                     renderTargetBitmap.Freeze();
                     DrawnImage = XImage.FromBitmapSource(renderTargetBitmap);
@@ -369,7 +369,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public ToolTip EscToolTip { get; set; }
+    public ToolTip EscToolTip { get; private set; }
 
     public XKnownColor GraphObjectColor
     {
@@ -754,29 +754,29 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         if (DrawString && !string.IsNullOrWhiteSpace(Text))
                         {
                             XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
-
+                            rect.Height = 0;
                             if (GraphObjectFillColor == XKnownColor.Transparent)
                             {
                                 if (page.Orientation == PageOrientation.Portrait)
                                 {
-                                    gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                                    gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.Default);
                                 }
                                 else
                                 {
                                     gfx.RotateAtTransform(-90, rect.Location);
-                                    gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.TopLeft);
+                                    gfx.DrawString(Text, font, XBrushes.Black, rect, XStringFormats.Default);
                                 }
                             }
                             else
                             {
                                 if (page.Orientation == PageOrientation.Portrait)
                                 {
-                                    gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
+                                    gfx.DrawString(Text, font, brush, rect, XStringFormats.Default);
                                 }
                                 else
                                 {
                                     gfx.RotateAtTransform(-90, rect.Location);
-                                    gfx.DrawString(Text, font, brush, rect, XStringFormats.TopLeft);
+                                    gfx.DrawString(Text, font, brush, rect, XStringFormats.Default);
                                 }
                             }
                         }

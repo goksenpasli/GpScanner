@@ -644,4 +644,13 @@ PDF!</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Πατήστε και κρατήστε πατημένο το κουμπί Esc για ακύρωση!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>ΧΡΩΜΑΤΙΚΉ ΑΠΌΧΡΩΣΗ!</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>ΆΔΕΙΑ!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>&amp; Κορεσμός</value>
+  </data>
 </root>

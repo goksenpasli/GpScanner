@@ -649,4 +649,13 @@ VOIR</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Appuyez et maintenez le bouton Échap pour annuler !</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>Couleur de la teinte</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>DÉGAGEMENT !</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>Saturation</value>
+  </data>
 </root>

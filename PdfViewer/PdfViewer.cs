@@ -241,8 +241,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
 
-    public int CurrentDpi { get; set; }
-
     public string DefaultPrinter { get; set; } = LocalPrintServer.GetDefaultPrintQueue()?.FullName;
 
     public RelayCommand<object> DosyaAç { get; }

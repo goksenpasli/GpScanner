@@ -848,4 +848,13 @@ EDİN</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Ləğv etmək üçün Esk düyməsini basın və basıb saxlayın!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>RƏNG KÖLGƏSİ!</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>ARALIQ.</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>DOYMA!</value>
+  </data>
 </root>

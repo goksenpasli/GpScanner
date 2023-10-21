@@ -649,4 +649,13 @@ VEDERE</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Premi e tieni premuto il pulsante Esc per annullare!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>COLORE</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>LIBERTÀ!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>SATURAZIONE</value>
+  </data>
 </root>

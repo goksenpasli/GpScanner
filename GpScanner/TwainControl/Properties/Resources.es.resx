@@ -641,4 +641,13 @@ AL ARCHIVO</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>¡Mantenga pulsado el botón Esc para cancelar!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>¡AUTORIZACIÓN!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>Saturación</value>
+  </data>
 </root>

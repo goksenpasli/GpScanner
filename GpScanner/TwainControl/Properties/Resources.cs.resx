@@ -644,4 +644,13 @@ SOUBORY PDF</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Stiskněte a podržte tlačítko Esc pro zrušení!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>BAREVNÝ ODSTÍN!</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>VÝPRODEJ!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>Sytost</value>
+  </data>
 </root>

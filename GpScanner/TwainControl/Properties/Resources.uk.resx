@@ -644,4 +644,13 @@ PDF-ФАЙЛ!</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Натисніть і утримуйте кнопку Esc, щоб скасувати!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>&amp; Колір</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>ДОЗВІЛ!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>Насиченість</value>
+  </data>
 </root>

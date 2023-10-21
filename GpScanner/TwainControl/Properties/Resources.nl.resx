@@ -643,4 +643,13 @@ PDF 'S SAMENVOEGEN</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Houd de Esc-knop ingedrukt om te annuleren!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>KLEURTINT!</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>OPRUIMING!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>VERZADIGING!</value>
+  </data>
 </root>

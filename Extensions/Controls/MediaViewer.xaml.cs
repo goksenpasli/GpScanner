@@ -297,7 +297,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                               .Append(item.Text)
                               .Append("\r\n\r\n")
                             : sb.Append(item.StartTime.ToString()).Append(" --> ").Append(item.EndTime.ToString()).Append("\r\n").Append(item.Text).Append("\r\n\r\n");
-
                     }
                     using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
                     streamWriter.WriteLine(sb.ToString().Trim());

@@ -645,4 +645,13 @@ ENTFERNEN</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Drücken und halten Sie die Esc-Taste, um abzubrechen!</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>FARBE</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>RÄUMUNG!</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>Sättigung</value>
+  </data>
 </root>

@@ -52,8 +52,11 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
         twainCtrl = DataContext as TwainCtrl;
-        twainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
-        Settings.Default.PropertyChanged += Default_PropertyChanged;
+        if (twainCtrl is not null)
+        {
+            twainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
+            Settings.Default.PropertyChanged += Default_PropertyChanged;
+        }
     }
 
     private void UserControl_Unloaded(object sender, RoutedEventArgs e)

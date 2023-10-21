@@ -647,4 +647,13 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>按住Esc按钮取消！</value>
   </data>
+  <data name="HUE" xml:space="preserve">
+    <value>颜色</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>通关！</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>彩度</value>
+  </data>
 </root>
