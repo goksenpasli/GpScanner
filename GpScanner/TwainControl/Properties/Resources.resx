@@ -674,4 +674,7 @@
   <data name="FILEINUSE" xml:space="preserve">
     <value />
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value />
+  </data>
 </root>

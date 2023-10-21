@@ -369,6 +369,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ESCTOCANCEL {
+            get {
+                return ResourceManager.GetString("ESCTOCANCEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FASTSCAN {
             get {
                 return ResourceManager.GetString("FASTSCAN", resourceCulture);

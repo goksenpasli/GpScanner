@@ -641,4 +641,7 @@ PDF-ФАЙЛ!</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>Файл використовується. Закрити програму, не завантажувати жодного файлу та повторити  спробу.!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Натисніть і утримуйте кнопку Esc, щоб скасувати!</value>
+  </data>
 </root>

@@ -639,4 +639,7 @@ PDF-ФАЙЛЫ</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>Файл используется. Закройте приложение, не загружайте файлы и повторите  попытку.!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Нажмите и удерживайте кнопку Esc, чтобы отменить!</value>
+  </data>
 </root>

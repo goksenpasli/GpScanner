@@ -646,4 +646,7 @@
   <data name="FILEINUSE" xml:space="preserve">
     <value>الملف قيد الاستخدام. أغلق التطبيق، لا تقم بتحميل أي ملف وحاول  مرة أخرى.!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>اضغط مع الاستمرار على زر Esc للإلغاء!</value>
+  </data>
 </root>

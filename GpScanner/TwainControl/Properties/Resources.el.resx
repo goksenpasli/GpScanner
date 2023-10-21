@@ -641,4 +641,7 @@ PDF!</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>Το αρχείο χρησιμοποιείται. Κλείστε την εφαρμογή, μην φορτώσετε κανένα αρχείο και δοκιμάστε  ξανά.!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Πατήστε και κρατήστε πατημένο το κουμπί Esc για ακύρωση!</value>
+  </data>
 </root>

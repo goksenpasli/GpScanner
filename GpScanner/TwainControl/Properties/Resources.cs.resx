@@ -641,4 +641,7 @@ SOUBORY PDF</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>Soubor se používá. Zavřete aplikaci, nenačtěte žádný soubor a zkuste to  znovu.!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Stiskněte a podržte tlačítko Esc pro zrušení!</value>
+  </data>
 </root>

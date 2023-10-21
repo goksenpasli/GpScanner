@@ -646,4 +646,7 @@ VEDERE</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>Il file è in uso. Chiudi l'applicazione, non caricare alcun file e riprova.!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Premi e tieni premuto il pulsante Esc per annullare!</value>
+  </data>
 </root>

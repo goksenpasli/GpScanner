@@ -649,4 +649,7 @@ BELGE EKLE</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>Dosya Kullanımda. Uygulamayı Kapat, Sağ Kısıma Dosya Yükleme Tekrar Dene</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>İptal Etmek İçin Esc Düğmesine Basılı Tutun</value>
+  </data>
 </root>

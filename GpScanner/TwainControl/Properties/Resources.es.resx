@@ -638,4 +638,7 @@ AL ARCHIVO</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>El archivo está en uso. Cierre la aplicación, no cargue ningún archivo e inténtelo de nuevo.</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>¡Mantenga pulsado el botón Esc para cancelar!</value>
+  </data>
 </root>

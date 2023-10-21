@@ -30,7 +30,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     {
         Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
+        StrokeDashArray = new DoubleCollection(new double[] { 1 }),
     };
     private readonly Line linebox = new()
     {
@@ -50,6 +50,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
+    private readonly ToolTip toolTip = new() { Content = Translation.GetResStringValue("ESCTOCANCEL") };
     private string annotationText = string.Empty;
     private bool applyLandscape = true;
     private bool applyPortrait = true;
@@ -591,6 +592,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
             if (isDrawMouseDown)
             {
+                cnv.ToolTip = toolTip;
+                toolTip.IsOpen = true;
                 if (DrawRect || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
                 {
                     if (!cnv.Children.Contains(rectangleselectionbox))
@@ -649,8 +652,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                 if (e.LeftButton == MouseButtonState.Released)
                 {
+                    toolTip.IsOpen = false;
                     cnv.Children?.Clear();
-
                     using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
                     List<PdfPage> pdfpages = null;
                     if (ApplyPortrait)
@@ -782,18 +785,21 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                             break;
                         }
                     }
-                    if (!Keyboard.IsKeyDown(Key.Escape))
-                    {
-                        string oldpdfpath = PdfViewer.PdfFilePath;
-                        reader.Save(PdfViewer.PdfFilePath);
-                        PdfViewer.PdfFilePath = null;
-                        PdfViewer.PdfFilePath = oldpdfpath;
-                    }
 
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isDrawMouseDown = false;
                     Cursor = Cursors.Arrow;
                     pdfpages = null;
+
+                    if (!Keyboard.IsKeyDown(Key.Escape))
+                    {
+                        int currentpage = PdfViewer.Sayfa;
+                        string oldpdfpath = PdfViewer.PdfFilePath;
+                        reader.Save(PdfViewer.PdfFilePath);
+                        PdfViewer.PdfFilePath = null;
+                        PdfViewer.PdfFilePath = oldpdfpath;
+                        PdfViewer.Sayfa = currentpage;
+                    }
                 }
             }
 

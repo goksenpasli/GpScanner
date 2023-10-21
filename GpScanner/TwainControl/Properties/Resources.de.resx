@@ -642,4 +642,7 @@ ENTFERNEN</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>Datei wird verwendet. Anwendung schließen, keine Datei laden und erneut versuchen!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Drücken und halten Sie die Esc-Taste, um abzubrechen!</value>
+  </data>
 </root>

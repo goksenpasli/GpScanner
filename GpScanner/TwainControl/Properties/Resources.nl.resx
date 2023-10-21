@@ -640,4 +640,7 @@ PDF 'S SAMENVOEGEN</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>Bestand is in gebruik. Sluit de applicatie, laad geen bestanden en probeer het  opnieuw.!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Houd de Esc-knop ingedrukt om te annuleren!</value>
+  </data>
 </root>

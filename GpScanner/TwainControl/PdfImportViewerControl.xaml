@@ -22,7 +22,6 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
-            <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
             <Style TargetType="ComboBox">
                 <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
@@ -486,7 +485,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Expander x:Name="EditorExpander"
+            <Expander
                 d:IsExpanded="True" ExpandDirection="Right"
                 IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <WrapPanel Orientation="Horizontal">
@@ -797,8 +796,7 @@
                 x:FieldModifier="public" AutoFitContent="True"
                 OpenButtonVisibility="Visible" PreviewKeyDown="PdfViewer_PreviewKeyDown"
                 PreviewKeyUp="PdfViewer_PreviewKeyUp" PreviewMouseDown="PdfImportViewerControl_MouseDown"
-                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible"
-                ZoomEnabled="{Binding ElementName=EditorExpander, Path=IsExpanded, Converter={StaticResource ReverseBooleanConverter}}" />
+                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible" />
             <Canvas x:Name="cnv" />
         </Grid>
     </Grid>

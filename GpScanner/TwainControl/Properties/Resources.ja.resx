@@ -644,4 +644,7 @@ PDFをマージ</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>ファイルが使用中です。アプリケーションを閉じ、ファイルを読み込まずにもう一度お試しください。</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Escボタンを長押しするとキャンセルできます！</value>
+  </data>
 </root>

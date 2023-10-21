@@ -845,4 +845,7 @@ EDİN</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>İstənilən Syan Rənginə Nəzarət Alt Şifrəli Ctrl Açarları Bir və ya Birindən Fərqli İşləyir!!</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Ləğv etmək üçün Esk düyməsini basın və basıb saxlayın!</value>
+  </data>
 </root>

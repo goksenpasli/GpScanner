@@ -643,4 +643,7 @@ TO FILE</value>
   <data name="FILEINUSE" xml:space="preserve">
     <value>File Is In Use. Close Application, Don't Load Any File and Try  Again.</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Press And Hold Esc Button To Cancel</value>
+  </data>
 </root>
