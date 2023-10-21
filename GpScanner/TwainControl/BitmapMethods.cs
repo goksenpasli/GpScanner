@@ -150,8 +150,16 @@ public static class BitmapMethods
     {
         try
         {
-            double widthmultiply = bitmapFrame.PixelWidth / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-            double heightmultiply = bitmapFrame.PixelHeight / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+            if (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth)
+            {
+                coordx -= (scrollviewer.ViewportWidth - scrollviewer.ExtentWidth) / 2;
+            }
+            if (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight)
+            {
+                coordy -= (scrollviewer.ViewportHeight - scrollviewer.ExtentHeight) / 2;
+            }
+            double widthmultiply = bitmapFrame.PixelWidth / scrollviewer.ExtentWidth;
+            double heightmultiply = bitmapFrame.PixelHeight / scrollviewer.ExtentHeight;
             Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
             CroppedBitmap cb = new(bitmapFrame, ınt32Rect);
             bitmapFrame = null;

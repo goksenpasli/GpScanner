@@ -11,7 +11,7 @@
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="600" d:DesignWidth="420"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
-    UseLayoutRounding="True"
+    Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -485,9 +485,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Expander
-                d:IsExpanded="True" ExpandDirection="Right"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Expander d:IsExpanded="True" ExpandDirection="Right" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <WrapPanel Orientation="Horizontal">
                     <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ComboBox.ItemTemplate>

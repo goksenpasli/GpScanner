@@ -122,8 +122,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         new Paper { Height = 35.56, PaperType = "Legal", Width = 21.59 },
         new Paper { Height = 26.67, PaperType = "Executive", Width = 18.415 },
         new Paper { Category = string.Empty, Height = 0, PaperType = "Original", Width = 0 },
-        new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth }
-    ];
+        new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth }];
     private double pdfLoadProgressValue;
     private int pdfMedianValue;
     private ObservableCollection<PdfData> pdfPages;
@@ -3001,8 +3000,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 double y1 = Math.Min(mousedowncoord.Y, mousemovecoord.Y);
                 double coordx = x1 + scrollviewer.HorizontalOffset;
                 double coordy = y1 + scrollviewer.VerticalOffset;
-                double widthmultiply = SeçiliResim.Resim.PixelWidth / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-                double heightmultiply = SeçiliResim.Resim.PixelHeight / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+                double widthmultiply = SeçiliResim.Resim.PixelWidth / scrollviewer.ExtentWidth;
+                double heightmultiply = SeçiliResim.Resim.PixelHeight / scrollviewer.ExtentHeight;
+                if (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth)
+                {
+                    coordx -= (scrollviewer.ViewportWidth - scrollviewer.ExtentWidth) / 2;
+                }
+                if (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight)
+                {
+                    coordy -= (scrollviewer.ViewportHeight - scrollviewer.ExtentHeight) / 2;
+                }
                 Int32Rect sourceRect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), 1, 1);
                 if (sourceRect.X < SeçiliResim.Resim.PixelWidth && sourceRect.Y < SeçiliResim.Resim.PixelHeight)
                 {

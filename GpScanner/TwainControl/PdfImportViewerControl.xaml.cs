@@ -50,7 +50,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
-    private readonly ToolTip toolTip = new() { Content = Translation.GetResStringValue("ESCTOCANCEL") };
     private string annotationText = string.Empty;
     private bool applyLandscape = true;
     private bool applyPortrait = true;
@@ -370,6 +369,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public ToolTip EscToolTip { get; set; }
+
     public XKnownColor GraphObjectColor
     {
         get => graphObjectColor;
@@ -555,8 +556,16 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         double height = Math.Abs(y2 - y1);
         double coordx = x1 + scrollviewer.HorizontalOffset;
         double coordy = y1 + scrollviewer.VerticalOffset;
-        double widthmultiply = page.Width / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-        double heightmultiply = page.Height / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
+        double widthmultiply = page.Width / scrollviewer.ExtentWidth;
+        double heightmultiply = page.Height / scrollviewer.ExtentHeight;
+        if (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth)
+        {
+            coordx -= (scrollviewer.ViewportWidth - scrollviewer.ExtentWidth) / 2;
+        }
+        if (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight)
+        {
+            coordy -= (scrollviewer.ViewportHeight - scrollviewer.ExtentHeight) / 2;
+        }
         return page.Orientation == PageOrientation.Portrait
                ? new Rect(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)
                : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
@@ -592,8 +601,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
             if (isDrawMouseDown)
             {
-                cnv.ToolTip = toolTip;
-                toolTip.IsOpen = true;
+                cnv.ToolTip = EscToolTip;
+                EscToolTip.IsOpen = true;
                 if (DrawRect || DrawImage || DrawRoundedRect || DrawAnnotation || DrawString)
                 {
                     if (!cnv.Children.Contains(rectangleselectionbox))
@@ -652,7 +661,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                 if (e.LeftButton == MouseButtonState.Released)
                 {
-                    toolTip.IsOpen = false;
+                    EscToolTip.IsOpen = false;
                     cnv.Children?.Clear();
                     using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
                     List<PdfPage> pdfpages = null;
@@ -853,4 +862,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) => Cursor = Cursors.Arrow;
+
+    private void UserControl_Loaded(object sender, RoutedEventArgs e) => EscToolTip = new() { Content = Translation.GetResStringValue("ESCTOCANCEL") };
 }

@@ -363,8 +363,16 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 System.Windows.Point mousemovecoord = e.GetPosition(Scr);
                 mousemovecoord.X += Scr.HorizontalOffset;
                 mousemovecoord.Y += Scr.VerticalOffset;
-                double widthmultiply = ((BitmapSource)Img.ImageSource).PixelWidth / (Ink.DesiredSize.Width < Ink.ActualWidth ? Ink.ActualWidth : Ink.DesiredSize.Width);
-                double heightmultiply = ((BitmapSource)Img.ImageSource).PixelHeight / (Ink.DesiredSize.Height < Ink.ActualHeight ? Ink.ActualHeight : Ink.DesiredSize.Height);
+                double widthmultiply = ((BitmapSource)Img.ImageSource).PixelWidth / Scr.ExtentWidth;
+                double heightmultiply = ((BitmapSource)Img.ImageSource).PixelHeight / Scr.ExtentHeight;
+                if (Scr.ExtentWidth < Scr.ViewportWidth)
+                {
+                    mousemovecoord.X -= (Scr.ViewportWidth - Scr.ExtentWidth) / 2;
+                }
+                if (Scr.ExtentHeight < Scr.ViewportHeight)
+                {
+                    mousemovecoord.Y -= (Scr.ViewportHeight - Scr.ExtentHeight) / 2;
+                }
                 Int32Rect sourceRect = new((int)(mousemovecoord.X * widthmultiply), (int)(mousemovecoord.Y * heightmultiply), 1, 1);
                 CroppedBitmap croppedbitmap = new((BitmapSource)Img.ImageSource, sourceRect);
                 byte[] pixels = new byte[4];
