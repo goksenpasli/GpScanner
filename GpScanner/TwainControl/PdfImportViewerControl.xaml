@@ -721,7 +721,7 @@
                             <TextBlock VerticalAlignment="Center" FontSize="10" Text="{local:Loc APPLY}" />
                         </StackPanel>
                         <Extensions:ContentToggleButton.OverContent>
-                            <Border Background="{StaticResource BorderBackground}" BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
+                            <Border Background="{DynamicResource BorderBackground}" BorderBrush="{DynamicResource GroupBoxBackGround}" BorderThickness="1">
                                 <StackPanel>
                                     <ToggleButton IsChecked="{Binding SinglePage}">
                                         <ToggleButton.Style>

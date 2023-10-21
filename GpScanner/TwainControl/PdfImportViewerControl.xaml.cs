@@ -162,14 +162,17 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 try
                 {
-                    if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
+                    if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath))
                     {
                         using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
                         PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
                         PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
-                        page?.Annotations?.Remove(annotation);
-                        twainCtrl?.Annotations?.Remove(selectedannotation);
-                        reader.Save(PdfViewer.PdfFilePath);
+                        if (annotation is not null)
+                        {
+                            page?.Annotations?.Remove(annotation);
+                            reader.Save(PdfViewer.PdfFilePath);
+                            ReadAnnotation.Execute(null);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -748,7 +751,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         if (DrawImage && DrawnImage is not null)
                         {
                             gfx.DrawImage(DrawnImage, rect);
-                            DrawnImage = null;
                         }
 
                         if (DrawString && !string.IsNullOrWhiteSpace(Text))
@@ -783,10 +785,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                         if (DrawAnnotation && !string.IsNullOrWhiteSpace(AnnotationText))
                         {
-                            PdfTextAnnotation pdftextannotaiton = new() { Contents = AnnotationText, Icon = PdfTextAnnotationIcon.Note };
+                            PdfTextAnnotation pdftextannotation = new() { Contents = AnnotationText, Icon = PdfTextAnnotationIcon.Note };
                             XRect annotrect = gfx.Transformer.WorldToDefaultPage(rect);
-                            pdftextannotaiton.Rectangle = new PdfRectangle(annotrect);
-                            page.Annotations.Add(pdftextannotaiton);
+                            pdftextannotation.Rectangle = new PdfRectangle(annotrect);
+                            page.Annotations.Add(pdftextannotation);
                         }
 
                         if (SinglePage)
@@ -799,6 +801,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     isDrawMouseDown = false;
                     Cursor = Cursors.Arrow;
                     pdfpages = null;
+                    DrawnImage = null;
 
                     if (!Keyboard.IsKeyDown(Key.Escape))
                     {
@@ -850,6 +853,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         if (e.PropertyName is "InkDrawColor")
         {
             DrawingAttribute.Color = (Color)ColorConverter.ConvertFromString(InkDrawColor);
+        }
+        if (e.PropertyName is "SinglePage" && !SinglePage)
+        {
+            DrawAnnotation = false;
         }
     }
 
