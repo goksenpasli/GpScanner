@@ -135,6 +135,7 @@
                                 <ListBox.Resources>
                                     <Style TargetType="Image">
                                         <Setter Property="Width" Value="60" />
+                                        <Setter Property="FlowDirection" Value="LeftToRight" />
                                     </Style>
                                     <Style TargetType="TextBlock">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
@@ -614,7 +615,7 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                             </StackPanel>
-                                            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <CheckBox Margin="1" VerticalContentAlignment="Center" IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                                 <CheckBox.ToolTip>
                                                     <TextBlock FontWeight="Bold" Foreground="Red" Text="{twainctrl:Loc PLAYSOUND}" />
                                                 </CheckBox.ToolTip>

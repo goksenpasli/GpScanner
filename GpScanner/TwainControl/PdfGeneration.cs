@@ -508,7 +508,7 @@ public static class PdfGeneration
     public static PdfDocument GenerateWatermarkedPdf(this PdfDocument pdfdocument, int sayfa, double rotation, SolidColorBrush textcolor, double textsize, string text, string font)
     {
         PdfPage page = pdfdocument.Pages[sayfa];
-        XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+        using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
         XBrush brush = new XSolidBrush(XColor.FromArgb(textcolor.Color.A, textcolor.Color.R, textcolor.Color.G, textcolor.Color.B));
         DrawPdfOverlayText(page, gfx, textsize, text, brush, font, rotation);
         return pdfdocument;

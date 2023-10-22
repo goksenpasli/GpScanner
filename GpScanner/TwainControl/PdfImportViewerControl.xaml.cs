@@ -7,6 +7,7 @@ using PdfSharp.Pdf.Annotations;
 using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -58,6 +59,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private bool drawEllipse;
     private bool drawImage;
     private bool drawLine;
+    private bool drawLines;
     private XImage drawnImage;
     private bool drawRect;
     private bool drawReverseLine;
@@ -200,6 +202,19 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
             },
             parameter => true);
+
+        DrawMultipleLine = new RelayCommand<object>(
+            parameter =>
+            {
+                using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
+                using XGraphics gfx = XGraphics.FromPdfPage(page);
+                XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
+                gfx.DrawLines(pen, Points.ToArray());
+                Points.Clear();
+                RefreshPdfPage(reader);
+            },
+            parameter => DrawLines && Points?.Count > 1);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -315,6 +330,22 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
         }
     }
+
+    public bool DrawLines
+    {
+        get => drawLines;
+
+        set
+        {
+            if (drawLines != value)
+            {
+                drawLines = value;
+                OnPropertyChanged(nameof(DrawLines));
+            }
+        }
+    }
+
+    public RelayCommand<object> DrawMultipleLine { get; }
 
     public XImage DrawnImage
     {
@@ -520,6 +551,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public ObservableCollection<XPoint> Points { get; set; } = [];
+
     public RelayCommand<object> ReadAnnotation { get; }
 
     public RelayCommand<object> RemoveAnnotation { get; }
@@ -598,10 +631,17 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 mousedowncoord = e.GetPosition(scrollviewer);
             }
 
-            if (Keyboard.IsKeyDown(Key.LeftShift) && (DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
+            if (Keyboard.IsKeyDown(Key.LeftShift) && ((DrawLines && SinglePage) || DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
             {
                 isDrawMouseDown = true;
                 mousedowncoord = e.GetPosition(scrollviewer);
+                if (DrawLines && SinglePage)
+                {
+                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
+                    Rect rect = CalculateRect(scrollviewer, mousedowncoord.X, 0, mousedowncoord.Y, 0, reader?.Pages[PdfViewer.Sayfa - 1]);
+                    Points.Add(new XPoint(rect.X, rect.Y));
+                    GC.Collect();
+                }
             }
         }
     }
@@ -819,12 +859,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                     if (!Keyboard.IsKeyDown(Key.Escape))
                     {
-                        int currentpage = PdfViewer.Sayfa;
-                        string oldpdfpath = PdfViewer.PdfFilePath;
-                        reader.Save(PdfViewer.PdfFilePath);
-                        PdfViewer.PdfFilePath = null;
-                        PdfViewer.PdfFilePath = oldpdfpath;
-                        PdfViewer.Sayfa = currentpage;
+                        RefreshPdfPage(reader);
                     }
                 }
             }
@@ -871,6 +906,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         if (e.PropertyName is "SinglePage" && !SinglePage)
         {
             DrawAnnotation = false;
+            DrawLines = false;
         }
     }
 
@@ -883,6 +919,16 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) => Cursor = Cursors.Arrow;
+
+    private void RefreshPdfPage(PdfDocument reader)
+    {
+        int currentpage = PdfViewer.Sayfa;
+        string oldpdfpath = PdfViewer.PdfFilePath;
+        reader.Save(PdfViewer.PdfFilePath);
+        PdfViewer.PdfFilePath = null;
+        PdfViewer.PdfFilePath = oldpdfpath;
+        PdfViewer.Sayfa = currentpage;
+    }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e) => EscToolTip = new() { Content = Translation.GetResStringValue("ESCTOCANCEL") };
 }

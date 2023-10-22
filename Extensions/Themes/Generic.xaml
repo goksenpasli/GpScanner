@@ -874,6 +874,7 @@
                 </LinearGradientBrush>
             </Setter.Value>
         </Setter>
+        <Setter Property="Padding" Value="1" />
         <Setter Property="BorderBrush" Value="#ACACAC" />
         <Setter Property="Template">
             <Setter.Value>
@@ -882,17 +883,20 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        SnapsToDevicePixels="True">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <ContentPresenter Grid.Column="0"
+                                Margin="{TemplateBinding Padding}"
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                 Content="{TemplateBinding Content}"
-                                Focusable="False" RecognizesAccessKey="True" />
+                                Focusable="False" RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
                             <Path x:Name="path"
                                 Grid.Column="1"
                                 Margin="2" HorizontalAlignment="Center"

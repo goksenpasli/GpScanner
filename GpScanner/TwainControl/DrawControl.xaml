@@ -18,10 +18,6 @@
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
@@ -175,7 +171,16 @@
             <Button local:Policy.PolicyName="SaveEditedImage" Command="{Binding SaveEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" CommandParameter="{Binding EditingImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
                 <Image Width="24" Height="24" Source="/TwainControl;component/Icons/save.png" />
             </Button>
-            <Rectangle Width="24" Height="24" Fill="{Binding SelectedBrush, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+            <Extension:ContentToggleButton Padding="2" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                <Rectangle Width="24" Height="24" Fill="{Binding SelectedBrush}" />
+                <Extension:ContentToggleButton.OverContent>
+                    <Border BorderThickness="1">
+                        <Extension:ColorPicker HexCode="{Binding SelectedColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible"
+                            SliderVisibility="Collapsed" />
+                    </Border>
+                </Extension:ContentToggleButton.OverContent>
+            </Extension:ContentToggleButton>
             <Slider Width="100"
                 VerticalAlignment="Center"
                 AutoToolTipPlacement="TopLeft"
@@ -184,10 +189,5 @@
                 Style="{DynamicResource Slider}"
                 Value="{Binding ElementName=Ink, Path=CurrentZoom}" />
         </StackPanel>
-        <Expander Grid.RowSpan="2" Grid.Column="1" ExpandDirection="Left">
-            <Extension:ColorPicker HexCode="{Binding SelectedColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible"
-                SliderVisibility="Collapsed" />
-        </Expander>
     </Grid>
 </UserControl>
