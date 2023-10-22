@@ -17,6 +17,18 @@ namespace TwainControl;
 
 public class Scanner : InpcBase, IDataErrorInfo
 {
+    public static readonly Dictionary<string, string> FileContextMenuDictionary = new()
+    {
+        { "[DATE]", DateTime.Now.Day.ToString() },
+        { "[MONTH]", DateTime.Now.Month.ToString() },
+        { "[YEAR]", DateTime.Now.Year.ToString() },
+        { "[HOUR]", DateTime.Now.Hour.ToString() },
+        { "[MINUTE]", DateTime.Now.Minute.ToString() },
+        { "[SECOND]", DateTime.Now.Second.ToString() },
+        { "[GUID]", Guid.NewGuid().ToString() },
+        { "[USERNAME]", Environment.UserName },
+        { "[RESOLUTION]", Settings.Default.Çözünürlük.ToString() }
+    };
     private bool allowCopy = true;
     private bool allowEdit = true;
     private bool allowPrint = true;
@@ -980,17 +992,20 @@ public class Scanner : InpcBase, IDataErrorInfo
     {
         get
         {
-            saveFileName = new[] { "[", "]" }.Any(FileName.Contains)
-                           ? FileName.Replace("[DATE]", DateTime.Now.Day.ToString())
-                             .Replace("[MONTH]", DateTime.Now.Month.ToString())
-                             .Replace("[YEAR]", DateTime.Now.Year.ToString())
-                             .Replace("[HOUR]", DateTime.Now.Hour.ToString())
-                             .Replace("[MINUTE]", DateTime.Now.Minute.ToString())
-                             .Replace("[SECOND]", DateTime.Now.Second.ToString())
-                             .Replace("[GUID]", Guid.NewGuid().ToString())
-                             .Replace("[USERNAME]", Environment.UserName)
-                             .Replace("[RESOLUTION]", Settings.Default.Çözünürlük.ToString())
-                           : FileName;
+            if (new[] { "[", "]" }.Any(FileName.Contains))
+            {
+                string tempfilename = FileName;
+                foreach (KeyValuePair<string, string> entry in FileContextMenuDictionary)
+                {
+                    tempfilename = tempfilename.Replace(entry.Key, entry.Value);
+                    saveFileName = tempfilename;
+                }
+            }
+            else
+            {
+                saveFileName = FileName;
+            }
+
             return saveFileName;
         }
 

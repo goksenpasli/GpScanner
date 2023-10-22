@@ -507,17 +507,22 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Expander d:IsExpanded="True" ExpandDirection="Right">
-                        <StackPanel Orientation="Horizontal">
-                            <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfDashLayout}}" SelectedItem="{Binding PenDash, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineLayout}}" SelectedItem="{Binding PenLineCap, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineJoinLayout}}" SelectedItem="{Binding PenLineJoin, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <Extensions:NumericUpDownControl Width="40"
-                                Maximum="512" Minimum="0.5"
-                                SmallChange="0.5"
-                                Value="{Binding PenWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                        </StackPanel>
-                    </Expander>
+                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <TextBlock FontFamily="Wingdings" FontSize="16" Text="!" />
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Border Background="{DynamicResource BorderBackground}" BorderBrush="{DynamicResource GroupBoxBackGround}" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfDashLayout}}" SelectedItem="{Binding PenDash}" />
+                                    <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineLayout}}" SelectedItem="{Binding PenLineCap}" />
+                                    <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineJoinLayout}}" SelectedItem="{Binding PenLineJoin}" />
+                                    <Extensions:NumericUpDownControl Width="40"
+                                        Maximum="512" Minimum="0.5"
+                                        SmallChange="0.5"
+                                        Value="{Binding PenWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                            </Border>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
@@ -584,7 +589,6 @@
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc GRAPH}" />
                     <ToggleButton IsChecked="{Binding DrawImage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding DrawnImage, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Image Width="16" Height="16">
@@ -642,73 +646,95 @@
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
+                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <TextBlock FontFamily="Wingdings" FontSize="16" Text="7" />
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Border Background="{DynamicResource BorderBackground}" BorderBrush="{DynamicResource GroupBoxBackGround}" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DRAWTEXT}" />
+                                    <TextBox Width="200" VerticalContentAlignment="Center" Text="{Binding Text}">
+                                        <TextBox.Background>
+                                            <SolidColorBrush Color="{Binding GraphObjectFillColor, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </TextBox.Background>
+                                    </TextBox>
+                                    <Extensions:NumericUpDownControl Width="40"
+                                        Maximum="512" Minimum="1"
+                                        SmallChange="1"
+                                        Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <ToggleButton IsChecked="{Binding DrawString}">
+                                        <ToggleButton.Content>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ToggleButton.Content>
+                                    </ToggleButton>
+                                </StackPanel>
+                            </Border>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="156" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Border Background="{DynamicResource BorderBackground}" BorderBrush="{DynamicResource GroupBoxBackGround}" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TAG}" />
+                                    <TextBox Width="64" VerticalContentAlignment="Center" Text="{Binding AnnotationText}" />
+                                    <ToggleButton IsChecked="{Binding DrawAnnotation}">
+                                        <ToggleButton.Content>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="156" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ToggleButton.Content>
+                                    </ToggleButton>
+                                    <Extensions:ContentToggleButton Command="{Binding ReadAnnotation}">
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <GroupBox Width="200" Height="200" Header="{local:Loc TAG}">
+                                                <ListBox ItemsSource="{Binding Annotations}">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock>
+                                                                <Hyperlink BaselineAlignment="Center"
+                                                                    Command="{Binding RemoveAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
+                                                                    CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                                    TextDecorations="None">
+                                                                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                                </Hyperlink>
+                                                                <Run Text="{Binding Mode=OneWay, Path=Contents}" />
+                                                                <Run Foreground="Red" Text="{Binding Mode=OneWay, Path=Subject}" />
+                                                                <Run Foreground="Blue" Text="{Binding Mode=OneWay, Path=Title}" />
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </GroupBox>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                </StackPanel>
+                            </Border>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
 
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DRAWTEXT}" />
-                    <TextBox Width="64" VerticalContentAlignment="Center" Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                        <TextBox.Background>
-                            <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
-                        </TextBox.Background>
-                    </TextBox>
-                    <Extensions:NumericUpDownControl Width="40"
-                        Maximum="512" Minimum="1"
-                        SmallChange="1"
-                        Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                    <ToggleButton IsChecked="{Binding DrawString, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                        <ToggleButton.Content>
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="70" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TAG}" />
-                    <TextBox Width="64" VerticalContentAlignment="Center" Text="{Binding AnnotationText, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                    <ToggleButton IsChecked="{Binding DrawAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                        <ToggleButton.Content>
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="156" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <Extensions:ContentToggleButton Command="{Binding ReadAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                        <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox Width="200" Height="200" Header="{local:Loc TAG}">
-                                <ListBox ItemsSource="{Binding Annotations}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock>
-                                                <Hyperlink BaselineAlignment="Center"
-                                                    Command="{Binding RemoveAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
-                                                    CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                                    TextDecorations="None">
-                                                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
-                                                </Hyperlink>
-                                                <Run Text="{Binding Mode=OneWay, Path=Contents}" />
-                                                <Run Foreground="Red" Text="{Binding Mode=OneWay, Path=Subject}" />
-                                                <Run Foreground="Blue" Text="{Binding Mode=OneWay, Path=Title}" />
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </GroupBox>
-                        </Extensions:ContentToggleButton.OverContent>
-                    </Extensions:ContentToggleButton>
-                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="16" Height="16">
                                 <Image.Source>

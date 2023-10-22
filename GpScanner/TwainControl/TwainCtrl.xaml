@@ -33,6 +33,7 @@
             <Converter:SplitConverter x:Key="SplitConverter" />
             <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
             <Converter:EnumOrientationToTwainVersionConverter x:Key="EnumOrientationToTwainVersionConverter" />
+            <Converter:FileDateContextMenuConverter x:Key="FileDateContextMenuConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
@@ -1004,7 +1005,8 @@
                                     d:Description="SaveFileName" d:Text="FileName"
                                     Description="{Binding Scanner.SaveFileName}"
                                     GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
-                                    OpenButtonVisibility="Collapsed" RemainingLengthVisibility="Visible"
+                                    OpenButtonVisibility="Collapsed" RemainingLengthVisibility="Collapsed"
+                                    ResetButtonVisibility="Collapsed"
                                     Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                     TitleCaseMenuVisibility="Visible"
                                     Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
@@ -1013,6 +1015,7 @@
                                             <ContextMenu.Resources>
                                                 <Style TargetType="{x:Type MenuItem}">
                                                     <Setter Property="Command" Value="{Binding InsertFileNamePlaceHolder}" />
+                                                    <Setter Property="ToolTip" Value="{Binding CommandParameter, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FileDateContextMenuConverter}}" />
                                                 </Style>
                                             </ContextMenu.Resources>
                                             <MenuItem CommandParameter="[DATE]" Header="{local:Loc DAY}" />

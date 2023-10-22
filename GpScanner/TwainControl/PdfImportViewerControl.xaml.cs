@@ -50,6 +50,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
         StrokeDashArray = new DoubleCollection(new double[] { 1 })
     };
+    private PdfAnnotations annotations;
     private string annotationText = string.Empty;
     private bool applyLandscape = true;
     private bool applyPortrait = true;
@@ -143,11 +144,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 try
                 {
-                    if (File.Exists(PdfViewer.PdfFilePath) && DataContext is TwainCtrl twainCtrl)
+                    if (File.Exists(PdfViewer.PdfFilePath))
                     {
                         using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
-                        PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
-                        twainCtrl.Annotations = page?.Annotations;
+                        Annotations = (reader?.Pages[PdfViewer.Sayfa - 1])?.Annotations;
                     }
                 }
                 catch (Exception ex)
@@ -166,7 +166,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     {
                         using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
                         PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
-                        PdfAnnotation annotation = page.Annotations.ToList().OfType<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
+                        PdfAnnotation annotation = page.Annotations.ToList().Cast<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
                         if (annotation is not null)
                         {
                             page?.Annotations?.Remove(annotation);
@@ -203,6 +203,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public PdfAnnotations Annotations
+    {
+        get => annotations;
+
+        set
+        {
+            if (annotations != value)
+            {
+                annotations = value;
+                OnPropertyChanged(nameof(Annotations));
+            }
+        }
+    }
 
     public string AnnotationText
     {

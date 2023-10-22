@@ -3,7 +3,6 @@ using Extensions.Controls;
 using Ocr;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
-using PdfSharp.Pdf.Annotations;
 using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
@@ -81,7 +80,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     };
     private ScanSettings _settings;
     private double allImageRotationAngle;
-    private PdfAnnotations annotations;
     private byte[] cameraQRCodeData;
     private bool canUndoImage;
     private CroppedBitmap croppedOcrBitmap;
@@ -1553,20 +1551,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 allImageRotationAngle = value;
                 OnPropertyChanged(nameof(AllImageRotationAngle));
-            }
-        }
-    }
-
-    public PdfAnnotations Annotations
-    {
-        get => annotations;
-
-        set
-        {
-            if (annotations != value)
-            {
-                annotations = value;
-                OnPropertyChanged(nameof(Annotations));
             }
         }
     }
