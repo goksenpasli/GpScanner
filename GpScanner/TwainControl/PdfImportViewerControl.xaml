@@ -589,7 +589,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
-                    <ToggleButton IsChecked="{Binding DrawLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <ToggleButton IsChecked="{Binding DrawLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Canvas Width="16" Height="16">
                                 <TextBlock Canvas.Top="-3"
@@ -606,8 +606,25 @@
                             </Canvas>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <Button Command="{Binding DrawMultipleLine, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/save.png" />
+                    <ToggleButton IsChecked="{Binding DrawBeziers, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Canvas Width="16" Height="16">
+                                <TextBlock Canvas.Top="-3"
+                                    d:Text="0" FontSize="10"
+                                    Foreground="Red"
+                                    Text="{Binding Points.Count, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                <Viewbox Canvas.Top="2" Width="16" Height="16">
+                                    <Path d:Stroke="Black" Data="M 10,100 C 100,0 200,200 300,100" StrokeThickness="20">
+                                        <Path.Stroke>
+                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Stroke>
+                                    </Path>
+                                </Viewbox>
+                            </Canvas>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <Button Command="{Binding ClearLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                     </Button>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -714,7 +731,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TAG}" />
                                     <TextBox Width="64" VerticalContentAlignment="Center" Text="{Binding AnnotationText}" />
-                                    <ToggleButton IsChecked="{Binding DrawAnnotation}">
+                                    <ToggleButton IsChecked="{Binding DrawAnnotation}" IsEnabled="{Binding SinglePage}">
                                         <ToggleButton.Content>
                                             <Image Width="16" Height="16">
                                                 <Image.Source>

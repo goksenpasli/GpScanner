@@ -56,6 +56,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private bool applyLandscape = true;
     private bool applyPortrait = true;
     private bool drawAnnotation;
+    private bool drawBeziers;
     private bool drawEllipse;
     private bool drawImage;
     private bool drawLine;
@@ -203,18 +204,22 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             },
             parameter => true);
 
-        DrawMultipleLine = new RelayCommand<object>(
+        SaveRefreshPdfPage = new RelayCommand<object>(
             parameter =>
             {
-                using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                PdfPage page = reader.Pages[PdfViewer.Sayfa - 1];
-                using XGraphics gfx = XGraphics.FromPdfPage(page);
-                XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
-                gfx.DrawLines(pen, Points.ToArray());
-                Points.Clear();
-                RefreshPdfPage(reader);
+                if (parameter is PdfDocument pdfDocument && pdfDocument is not null)
+                {
+                    int currentpage = PdfViewer.Sayfa;
+                    string oldpdfpath = PdfViewer.PdfFilePath;
+                    pdfDocument.Save(PdfViewer.PdfFilePath);
+                    PdfViewer.PdfFilePath = null;
+                    PdfViewer.PdfFilePath = oldpdfpath;
+                    PdfViewer.Sayfa = currentpage;
+                }
             },
-            parameter => DrawLines && Points?.Count > 1);
+            parameter => true);
+
+        ClearLines = new RelayCommand<object>(parameter => Points.Clear(), parameter => Points?.Count > 1);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -275,6 +280,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> ClearInkDrawImage { get; }
 
+    public RelayCommand<object> ClearLines { get; }
+
     public bool DrawAnnotation
     {
         get => drawAnnotation;
@@ -285,6 +292,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 drawAnnotation = value;
                 OnPropertyChanged(nameof(DrawAnnotation));
+            }
+        }
+    }
+
+    public bool DrawBeziers
+    {
+        get => drawBeziers;
+
+        set
+        {
+            if (drawBeziers != value)
+            {
+                drawBeziers = value;
+                OnPropertyChanged(nameof(DrawBeziers));
             }
         }
     }
@@ -344,8 +365,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
         }
     }
-
-    public RelayCommand<object> DrawMultipleLine { get; }
 
     public XImage DrawnImage
     {
@@ -557,6 +576,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> RemoveAnnotation { get; }
 
+    public RelayCommand<object> SaveRefreshPdfPage { get; }
+
     public bool SinglePage
     {
         get => singlePage;
@@ -631,11 +652,12 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 mousedowncoord = e.GetPosition(scrollviewer);
             }
 
-            if (Keyboard.IsKeyDown(Key.LeftShift) && ((DrawLines && SinglePage) || DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
+            if (Keyboard.IsKeyDown(Key.LeftShift) && (DrawLines || DrawBeziers || DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
+
             {
                 isDrawMouseDown = true;
                 mousedowncoord = e.GetPosition(scrollviewer);
-                if (DrawLines && SinglePage)
+                if (DrawLines || DrawBeziers)
                 {
                     using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
                     Rect rect = CalculateRect(scrollviewer, mousedowncoord.X, 0, mousedowncoord.Y, 0, reader?.Pages[PdfViewer.Sayfa - 1]);
@@ -790,6 +812,16 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                             }
                         }
 
+                        if (DrawLines && Points?.Count > 1)
+                        {
+                            gfx.DrawLines(pen, Points.ToArray());
+                        }
+
+                        if (DrawBeziers && (Points?.Count - 1) % 3 == 0)
+                        {
+                            gfx.DrawBeziers(pen, Points.ToArray());
+                        }
+
                         if (DrawReverseLine)
                         {
                             if (page.Orientation == PageOrientation.Portrait)
@@ -857,9 +889,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     pdfpages = null;
                     DrawnImage = null;
 
-                    if (!Keyboard.IsKeyDown(Key.Escape))
+                    if (!Keyboard.IsKeyDown(Key.Escape) && SaveRefreshPdfPage.CanExecute(null))
                     {
-                        RefreshPdfPage(reader);
+                        SaveRefreshPdfPage.Execute(reader);
                     }
                 }
             }
@@ -907,6 +939,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         {
             DrawAnnotation = false;
             DrawLines = false;
+            DrawBeziers = false;
         }
     }
 
@@ -919,16 +952,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) => Cursor = Cursors.Arrow;
-
-    private void RefreshPdfPage(PdfDocument reader)
-    {
-        int currentpage = PdfViewer.Sayfa;
-        string oldpdfpath = PdfViewer.PdfFilePath;
-        reader.Save(PdfViewer.PdfFilePath);
-        PdfViewer.PdfFilePath = null;
-        PdfViewer.PdfFilePath = oldpdfpath;
-        PdfViewer.Sayfa = currentpage;
-    }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e) => EscToolTip = new() { Content = Translation.GetResStringValue("ESCTOCANCEL") };
 }
