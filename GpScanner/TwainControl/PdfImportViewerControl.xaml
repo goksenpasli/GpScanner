@@ -614,6 +614,24 @@
                                     Foreground="Red"
                                     Text="{Binding Points.Count, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
                                 <Viewbox Canvas.Top="2" Width="16" Height="16">
+                                    <Path d:Stroke="Black" Data="M 10,100 C 100,100 200,200 200,200" StrokeThickness="20">
+                                        <Path.Stroke>
+                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Stroke>
+                                    </Path>
+                                </Viewbox>
+                            </Canvas>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawCurve, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Canvas Width="16" Height="16">
+                                <TextBlock Canvas.Top="-3"
+                                    d:Text="0" FontSize="10"
+                                    Foreground="Red">
+                                    <Run d:Text="0" Text="{Binding Points.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" /><Run Text="/" /><Run Text="{Binding PolygonCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                </TextBlock>
+                                <Viewbox Canvas.Top="2" Width="16" Height="16">
                                     <Path d:Stroke="Black" Data="M 10,100 C 100,0 200,200 300,100" StrokeThickness="20">
                                         <Path.Stroke>
                                             <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
@@ -623,6 +641,27 @@
                             </Canvas>
                         </ToggleButton.Content>
                     </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawPolygon, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Canvas Width="16" Height="16">
+                                <TextBlock Canvas.Top="-3"
+                                    d:Text="0" FontSize="10"
+                                    Foreground="Red">
+                                    <Run d:Text="0" Text="{Binding Points.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" /><Run Text="/" /><Run Text="{Binding PolygonCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                </TextBlock>
+                                <Viewbox Canvas.Top="3" Width="16" Height="16">
+                                    <Path d:Stroke="Black" Data="F1 M 19.6015,19.6015L 21.6741,6.51512L 9.86878,0.499996L 0.5,9.86878L 6.51513,21.6741L 19.6015,19.6015 Z " StrokeThickness="1">
+                                        <Path.Stroke>
+                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Stroke>
+                                    </Path>
+                                </Viewbox>
+                            </Canvas>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <Extensions:NumericUpDownControl IsReadOnly="True" Minimum="3"
+                        SmallChange="1"
+                        Value="{Binding PolygonCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
                     <Button Command="{Binding ClearLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                     </Button>

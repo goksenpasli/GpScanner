@@ -57,11 +57,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private bool applyPortrait = true;
     private bool drawAnnotation;
     private bool drawBeziers;
+    private bool drawCurve;
     private bool drawEllipse;
     private bool drawImage;
     private bool drawLine;
     private bool drawLines;
     private XImage drawnImage;
+    private bool drawPolygon;
     private bool drawRect;
     private bool drawReverseLine;
     private bool drawRoundedRect;
@@ -78,6 +80,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private XLineCap penLineCap = XLineCap.Flat;
     private XLineJoin penLineJoin = XLineJoin.Miter;
     private double penWidth = 0.5d;
+    private int polygonCount = 3;
     private bool singlePage = true;
     private string text = string.Empty;
     private double textSize = 12d;
@@ -219,7 +222,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             },
             parameter => true);
 
-        ClearLines = new RelayCommand<object>(parameter => Points.Clear(), parameter => Points?.Count > 1);
+        ClearLines = new RelayCommand<object>(parameter => Points.Clear(), parameter => Points is not null);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -310,6 +313,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public bool DrawCurve
+    {
+        get => drawCurve;
+
+        set
+        {
+            if (drawCurve != value)
+            {
+                drawCurve = value;
+                OnPropertyChanged(nameof(DrawCurve));
+            }
+        }
+    }
+
     public bool DrawEllipse
     {
         get => drawEllipse;
@@ -376,6 +393,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 drawnImage = value;
                 OnPropertyChanged(nameof(DrawnImage));
+            }
+        }
+    }
+
+    public bool DrawPolygon
+    {
+        get => drawPolygon;
+
+        set
+        {
+            if (drawPolygon != value)
+            {
+                drawPolygon = value;
+                OnPropertyChanged(nameof(DrawPolygon));
             }
         }
     }
@@ -572,6 +603,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public ObservableCollection<XPoint> Points { get; set; } = [];
 
+    public int PolygonCount
+    {
+        get => polygonCount;
+
+        set
+        {
+            if (polygonCount != value)
+            {
+                polygonCount = value;
+                OnPropertyChanged(nameof(PolygonCount));
+            }
+        }
+    }
+
     public RelayCommand<object> ReadAnnotation { get; }
 
     public RelayCommand<object> RemoveAnnotation { get; }
@@ -642,6 +687,25 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
     }
 
+    private List<PdfPage> GetPdfPagesOrientation(PdfDocument pdfDocument)
+    {
+        List<PdfPage> pdfpages = null;
+        if (ApplyPortrait)
+        {
+            pdfpages = pdfDocument?.Pages?.Cast<PdfPage>().Where(item => item.Width < item.Height).ToList();
+        }
+        if (ApplyLandscape)
+        {
+            pdfpages = pdfDocument?.Pages?.Cast<PdfPage>().Where(item => item.Width > item.Height).ToList();
+        }
+        if (ApplyLandscape && ApplyPortrait)
+        {
+            pdfpages = pdfDocument?.Pages?.Cast<PdfPage>().ToList();
+        }
+
+        return pdfpages;
+    }
+
     private void PdfImportViewerControl_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed)
@@ -652,12 +716,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 mousedowncoord = e.GetPosition(scrollviewer);
             }
 
-            if (Keyboard.IsKeyDown(Key.LeftShift) && (DrawLines || DrawBeziers || DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
+            if (Keyboard.IsKeyDown(Key.LeftShift) &&
+            (DrawLines || DrawBeziers || DrawCurve || DrawPolygon || DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
 
             {
                 isDrawMouseDown = true;
                 mousedowncoord = e.GetPosition(scrollviewer);
-                if (DrawLines || DrawBeziers)
+                if (DrawLines || DrawBeziers || DrawCurve || DrawPolygon)
                 {
                     using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
                     Rect rect = CalculateRect(scrollviewer, mousedowncoord.X, 0, mousedowncoord.Y, 0, reader?.Pages[PdfViewer.Sayfa - 1]);
@@ -742,23 +807,11 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     EscToolTip.IsOpen = false;
                     cnv.Children?.Clear();
-                    using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                    List<PdfPage> pdfpages = null;
-                    if (ApplyPortrait)
-                    {
-                        pdfpages = reader?.Pages?.Cast<PdfPage>().Where(item => item.Width < item.Height).ToList();
-                    }
-                    if (ApplyLandscape)
-                    {
-                        pdfpages = reader?.Pages?.Cast<PdfPage>().Where(item => item.Width > item.Height).ToList();
-                    }
-                    if (ApplyLandscape && ApplyPortrait)
-                    {
-                        pdfpages = reader?.Pages?.Cast<PdfPage>().ToList();
-                    }
+                    using PdfDocument pdfDocument = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                    List<PdfPage> pdfpages = GetPdfPagesOrientation(pdfDocument);
                     foreach (PdfPage pdfpage in pdfpages)
                     {
-                        PdfPage page = SinglePage ? reader.Pages[PdfViewer.Sayfa - 1] : pdfpage;
+                        PdfPage page = SinglePage ? pdfDocument.Pages[PdfViewer.Sayfa - 1] : pdfpage;
                         using XGraphics gfx = XGraphics.FromPdfPage(page);
                         Rect rect = CalculateRect(scrollviewer, x1, x2, y1, y2, page);
                         XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
@@ -820,6 +873,27 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         if (DrawBeziers && (Points?.Count - 1) % 3 == 0)
                         {
                             gfx.DrawBeziers(pen, Points.ToArray());
+                        }
+
+                        if ((DrawCurve || DrawPolygon) && Points?.Count == PolygonCount)
+                        {
+                            if (DrawCurve)
+                            {
+                                gfx.DrawCurve(pen, Points.ToArray());
+                            }
+
+                            if (DrawPolygon)
+                            {
+                                if (GraphObjectFillColor == XKnownColor.Transparent)
+                                {
+                                    gfx.DrawPolygon(pen, Points.ToArray());
+                                }
+                                else
+                                {
+                                    gfx.DrawPolygon(pen, brush, Points.ToArray(), XFillMode.Winding);
+                                }
+                            }
+                            Points.Clear();
                         }
 
                         if (DrawReverseLine)
@@ -891,7 +965,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                     if (!Keyboard.IsKeyDown(Key.Escape) && SaveRefreshPdfPage.CanExecute(null))
                     {
-                        SaveRefreshPdfPage.Execute(reader);
+                        SaveRefreshPdfPage.Execute(pdfDocument);
                     }
                 }
             }
@@ -940,6 +1014,12 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             DrawAnnotation = false;
             DrawLines = false;
             DrawBeziers = false;
+            DrawCurve = false;
+            DrawPolygon = false;
+        }
+        if (e.PropertyName is "DrawCurve" or "DrawPolygon" && (DrawCurve || DrawPolygon) && Points?.Count > PolygonCount)
+        {
+            Points.Clear();
         }
     }
 
