@@ -527,7 +527,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public bool ZoomEnabled { get => (bool)GetValue(ZoomEnabledProperty); set => SetValue(ZoomEnabledProperty, value); }
 
-    public static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 96)
+    internal static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 96)
     {
         try
         {
