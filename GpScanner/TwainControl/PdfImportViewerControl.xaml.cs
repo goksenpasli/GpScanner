@@ -9,15 +9,18 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TwainControl.Converter;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -82,6 +85,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private XLineJoin penLineJoin = XLineJoin.Miter;
     private double penWidth = 0.5d;
     private int polygonCount = 3;
+    private string selectedInk;
     private bool singlePage = true;
     private string text = string.Empty;
     private double textSize = 12d;
@@ -138,6 +142,24 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     Ink?.Strokes?.Clear();
                     DrawImage = false;
                     DrawnImage = null;
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message, AppName);
+                }
+            },
+            parameter => Ink?.Strokes?.Any() == true);
+
+        SaveInkDrawImage = new RelayCommand<object>(
+            parameter =>
+            {
+                try
+                {
+                    using MemoryStream ms = new();
+                    Ink.Strokes?.Save(ms, true);
+                    _ = Settings.Default.InkCollection.Add(Convert.ToBase64String(ms.ToArray()));
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
                 }
                 catch (Exception ex)
                 {
@@ -623,7 +645,22 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> RemoveAnnotation { get; }
 
+    public RelayCommand<object> SaveInkDrawImage { get; }
+
     public RelayCommand<object> SaveRefreshPdfPage { get; }
+
+    public string SelectedInk
+    {
+        get => selectedInk;
+        set
+        {
+            if (selectedInk != value)
+            {
+                selectedInk = value;
+                OnPropertyChanged(nameof(SelectedInk));
+            }
+        }
+    }
 
     public bool SinglePage
     {
@@ -1022,6 +1059,11 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         if (e.PropertyName is "DrawCurve" or "DrawPolygon" && (DrawCurve || DrawPolygon) && Points?.Count > PolygonCount)
         {
             Points.Clear();
+        }
+        if (e.PropertyName is "SelectedInk" && !string.IsNullOrWhiteSpace(SelectedInk))
+        {
+            Ink.Strokes.Clear();
+            Ink.Strokes.Add((StrokeCollection)new Base64StringToStrokeCollectionConverter().Convert(SelectedInk, null, null, CultureInfo.CurrentCulture));
         }
     }
 

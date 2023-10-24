@@ -19,6 +19,7 @@
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Converter:XKnownColorToBrushConverter x:Key="XKnownColorToBrushConverter" />
+            <Converter:Base64StringToStrokeCollectionConverter x:Key="Base64StringToStrokeCollectionConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
@@ -654,6 +655,9 @@
                                         <Path.Stroke>
                                             <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </Path.Stroke>
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Fill>
                                     </Path>
                                 </Viewbox>
                             </Canvas>
@@ -712,10 +716,22 @@
                                             </InkCanvas.DefaultDrawingAttributes>
                                         </InkCanvas>
                                     </GroupBox>
-                                    <UniformGrid Grid.Row="1" Columns="2">
+                                    <StackPanel Grid.Row="1">
                                         <Button Command="{Binding LoadInkDrawImage}" Content="{local:Loc LOAD}" />
                                         <Button Command="{Binding ClearInkDrawImage}" Content="{local:Loc DELETE}" />
-                                    </UniformGrid>
+                                        <Button Command="{Binding SaveInkDrawImage}" Content="{local:Loc SAVESELECTED}" />
+                                        <ComboBox Height="20" ItemsSource="{Binding InkCollection, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding SelectedInk}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Viewbox Width="100" Height="100">
+                                                        <InkCanvas Background="Transparent" EditingMode="None"
+                                                            EditingModeInverted="None"
+                                                            Strokes="{Binding Mode=OneWay, Converter={StaticResource Base64StringToStrokeCollectionConverter}}" />
+                                                    </Viewbox>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </StackPanel>
                                     <Extensions:ColorPicker Grid.RowSpan="2" Grid.Column="1"
                                         ColorPickerColumnCount="5"
                                         HexCode="{Binding InkDrawColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
