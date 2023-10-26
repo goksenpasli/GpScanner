@@ -1328,20 +1328,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    {
+                        Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
+                        return;
+                    }
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
                     using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
                     using Image image = Image.FromStream(ms);
                     Clipboard.SetImage(image);
-                }
-            },
-            parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
-
-        CopyThumbPdfBitmapFile = new RelayCommand<object>(
-            parameter =>
-            {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
-                {
-                    Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
@@ -1511,6 +1506,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => SeçiliResim is not null);
 
+        DetectEmptyPages = new RelayCommand<object>(
+            parameter => Parallel.ForEach(Scanner.Resimler, item => item.Seçili = item.Resim.Resize(0.1).BitmapSourceToBitmap().IsEmptyPage(Settings.Default.EmptyThreshold)),
+            parameter => Scanner?.Resimler?.Any() == true);
+
         AddActiveVisibleContentImage = new RelayCommand<object>(
             parameter =>
             {
@@ -1618,8 +1617,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CopyPdfBitmapFile { get; }
 
-    public ICommand CopyThumbPdfBitmapFile { get; }
-
     public CroppedBitmap CroppedOcrBitmap
     {
         get => croppedOcrBitmap;
@@ -1677,6 +1674,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public RelayCommand<object> DetectEmptyPages { get; }
 
     public string DistinctImages
     {

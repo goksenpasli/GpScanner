@@ -206,7 +206,7 @@ public static class ExtensionMethods
         return bitmapsource;
     }
 
-    public static bool IsEmptyPage(this Bitmap bitmap, double emptythreshold = 10)
+    public static bool IsEmptyPage(this Bitmap bitmap, double emptythreshold = 25)
     {
         double total = 0, totalVariance = 0;
         int count = 0;

@@ -39,7 +39,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <WrapPanel Orientation="Horizontal">
-            <Menu Background="{x:Null}">
+            <Menu Background="{x:Null}" IsMainMenu="False">
                 <MenuItem>
                     <MenuItem Name="Clear" Command="{Binding ClearPdfHistory, Mode=OneWay}" Header="{local:Loc CLEARLIST}">
                         <MenuItem.Icon>
@@ -227,7 +227,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Extensions:SplitButton Command="{Binding CopyPdfBitmapFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+            <Button BorderBrush="Cyan" Command="{Binding CopyPdfBitmapFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -236,19 +236,7 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-                <Extensions:SplitButton.InternalContent>
-                    <Button Command="{Binding CopyThumbPdfBitmapFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}, Mode=OneWay}">
-                        <Image Width="16" Height="16">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="139" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </Button>
-                </Extensions:SplitButton.InternalContent>
-            </Extensions:SplitButton>
+            </Button>
             <Button local:Policy.PolicyName="PasteFileToPdfFile" BorderBrush="Cyan"
                 Command="{Binding PasteFileToPdfFile}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">

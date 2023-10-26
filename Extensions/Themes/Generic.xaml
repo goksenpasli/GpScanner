@@ -795,7 +795,8 @@
                         <Border Name="title" Grid.Column="8" Visibility="{Binding TitleCaseMenuVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <Menu VerticalAlignment="Center" VerticalContentAlignment="Center"
                                 Background="{x:Null}"
-                                BorderBrush="{x:Null}">
+                                BorderBrush="{x:Null}"
+                                IsMainMenu="False">
                                 <MenuItem>
                                     <MenuItem Command="{Binding UpperCase, RelativeSource={RelativeSource TemplatedParent}}" Header="AAA BBB" />
                                     <MenuItem Command="{Binding TitleCase, RelativeSource={RelativeSource TemplatedParent}}" Header="Aaa Bbb" />
