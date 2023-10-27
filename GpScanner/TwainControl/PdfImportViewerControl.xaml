@@ -454,6 +454,23 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
+            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" Content="OCR"
+                DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
+                IsChecked="{Binding OcrDialogOpen}">
+                <Extensions:ContentToggleButton.OverContent>
+                    <GroupBox>
+                        <Extensions:ButtonedTextBox Width="320" Height="240"
+                            FontSizeButtonVisibility="Visible" IsReadOnly="True"
+                            OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                            RemainingLengthVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                            Text="{Binding OcrText, Mode=OneWay}"
+                            TextWrapping="Wrap" />
+                    </GroupBox>
+                </Extensions:ContentToggleButton.OverContent>
+            </Extensions:ContentToggleButton>
+            <StackPanel Orientation="Horizontal">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
             <Button local:Policy.PolicyName="MaximizePdfControl" Command="{Binding MaximizePdfControl}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -813,7 +830,6 @@
                             </Border>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>

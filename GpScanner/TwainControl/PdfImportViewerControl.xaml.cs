@@ -1,5 +1,6 @@
 ﻿using Extensions;
 using Microsoft.Win32;
+using Ocr;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
@@ -74,12 +75,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private bool drawString;
     private XKnownColor graphObjectColor = XKnownColor.Black;
     private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
-    private byte[] ımgData;
     private string ınkDrawColor = "Black";
     private BitmapSource ınkSource;
     private bool isDrawMouseDown;
     private bool isMouseDown;
     private Point mousedowncoord;
+    private bool ocrDialogOpen;
+    private string ocrText;
     private XDashStyle penDash = XDashStyle.Solid;
     private XLineCap penLineCap = XLineCap.Flat;
     private XLineJoin penLineJoin = XLineJoin.Miter;
@@ -521,20 +523,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public byte[] ImgData
-    {
-        get => ımgData;
-
-        set
-        {
-            if (ımgData != value)
-            {
-                ımgData = value;
-                OnPropertyChanged(nameof(ImgData));
-            }
-        }
-    }
-
     public string InkDrawColor
     {
         get => ınkDrawColor;
@@ -566,6 +554,32 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public RelayCommand<object> LoadDrawImage { get; }
 
     public RelayCommand<object> LoadInkDrawImage { get; }
+
+    public bool OcrDialogOpen
+    {
+        get => ocrDialogOpen;
+        set
+        {
+            if (ocrDialogOpen != value)
+            {
+                ocrDialogOpen = value;
+                OnPropertyChanged(nameof(OcrDialogOpen));
+            }
+        }
+    }
+
+    public string OcrText
+    {
+        get => ocrText;
+        set
+        {
+            if (ocrText != value)
+            {
+                ocrText = value;
+                OnPropertyChanged(nameof(OcrText));
+            }
+        }
+    }
 
     public RelayCommand<object> OpenPdfHistoryFile { get; }
 
@@ -772,9 +786,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private void PdfImportViewerControl_MouseMove(object sender, MouseEventArgs e)
+    private async void PdfImportViewerControl_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer)
+        if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && DataContext is TwainCtrl twainCtrl)
         {
             Point mousemovecoord = e.GetPosition(scrollviewer);
             double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
@@ -1028,10 +1042,17 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     double height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
                     double coordx = x1 + scrollviewer.HorizontalOffset;
                     double coordy = y1 + scrollviewer.VerticalOffset;
-                    ImgData = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+                    byte[] imgdata = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;
+                    if (!string.IsNullOrWhiteSpace(twainCtrl.Scanner.SelectedTtsLanguage))
+                    {
+                        OcrDialogOpen = false;
+                        OcrText = string.Join(" ", (await imgdata.OcrAsync(twainCtrl.Scanner.SelectedTtsLanguage))?.Select(z => z.Text));
+                        OcrDialogOpen = true;
+                    }
+                    imgdata = null;
                 }
             }
         }
@@ -1039,11 +1060,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private void PdfImportViewerControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "ImgData" && ImgData is not null && DataContext is TwainCtrl twainCtrl)
-        {
-            twainCtrl.ImgData = ImgData;
-            ImgData = null;
-        }
         if (e.PropertyName is "InkDrawColor")
         {
             DrawingAttribute.Color = (Color)ColorConverter.ConvertFromString(InkDrawColor);

@@ -122,7 +122,9 @@
                                                     <Hyperlink BaselineAlignment="Center"
                                                         Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                         CommandParameter="{Binding Mode=OneWay}"
-                                                        FontFamily="Segoe UI Black" TextDecorations="None">
+                                                        FontFamily="Segoe UI Black"
+                                                        IsEnabled="{Binding DataContext.IsFolderWritable, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                        TextDecorations="None">
                                                         <InlineUIContainer>
                                                             <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                                                         </InlineUIContainer>
