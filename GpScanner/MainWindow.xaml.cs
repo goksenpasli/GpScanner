@@ -177,34 +177,32 @@ public partial class MainWindow : Window
         {
             string filePath = commandLineArgs[1];
             string extension = Path.GetExtension(filePath)?.ToLower();
-
-            if (Settings.Default.DirectOpenEypFile && extension == ".eyp" && File.Exists(filePath))
+            if (File.Exists(filePath))
             {
-                EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
-                eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
-                eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
-                TwainCtrl.TbCtrl.SelectedIndex = 1;
-                TwainCtrl.MaximizePdfControl.Execute(null);
-                return;
-            }
+                if (Settings.Default.DirectOpenEypFile && extension == ".eyp")
+                {
+                    EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
+                    eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
+                    eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
+                    TwainCtrl.MaximizePdfControl.Execute(null);
+                    return;
+                }
 
-            if (Settings.Default.DirectOpenPdfFile && extension == ".pdf" && File.Exists(filePath))
-            {
-                EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
-                eypPdfViewer.PdfFilePath = filePath;
-                eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
-                TwainCtrl.TbCtrl.SelectedIndex = 1;
-                TwainCtrl.MaximizePdfControl.Execute(null);
-                return;
-            }
+                if (Settings.Default.DirectOpenPdfFile && extension == ".pdf")
+                {
+                    EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
+                    eypPdfViewer.PdfFilePath = filePath;
+                    eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
+                    TwainCtrl.MaximizePdfControl.Execute(null);
+                    return;
+                }
 
-            if (Settings.Default.DirectOpenUdfFile && extension == ".udf" && File.Exists(filePath))
-            {
-                TwainCtrl.xpsViewer.XpsDataFilePath = TwainCtrl.LoadUdfFile(filePath);
-                TwainCtrl.TbCtrl.SelectedIndex = 2;
-                return;
+                if (Settings.Default.DirectOpenUdfFile && extension == ".udf")
+                {
+                    TwainCtrl.xpsViewer.XpsDataFilePath = TwainCtrl.LoadUdfFile(filePath);
+                    return;
+                }
             }
-
             _ = TwainCtrl.AddFiles(commandLineArgs, TwainCtrl.DecodeHeight);
         }
 

@@ -142,7 +142,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private Orientation selectedOrientation = Orientation.Default;
     private Paper selectedPaper;
     private PageRotation selectedRotation = PageRotation.NONE;
-    private TabItem selectedTab;
+    private int selectedTabIndex;
     private Twain twain;
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
     private ScannedImage undoImage;
@@ -160,7 +160,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += TwainCtrl_PropertyChangedAsync;
         Camera.PropertyChanged += CameraUserControl_PropertyChangedAsync;
-        SelectedTab = TbCtrl.Items[0] as TabItem;
+        SelectedTabIndex = 0;
         SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
         if (Settings.Default.UseSelectedProfile)
@@ -731,27 +731,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         MaximizePdfControl = new RelayCommand<object>(
             parameter =>
             {
-                if (SelectedTab?.Content is PdfImportViewerControl pdfImportViewerControl)
+                SelectedTabIndex = 0;
+                Window maximizePdfWindow = new()
                 {
-                    Window maximizePdfWindow = new()
-                    {
-                        Owner = Application.Current?.MainWindow,
-                        Content = pdfImportViewerControl,
-                        WindowState = WindowState.Maximized,
-                        ShowInTaskbar = false,
-                        Title = AppName,
-                        WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                        DataContext = this
-                    };
-                    SelectedTab = TbCtrl?.Items[0] as TabItem;
-                    _ = maximizePdfWindow.ShowDialog();
+                    Owner = Application.Current?.MainWindow,
+                    Content = PdfImportViewer,
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = false,
+                    Title = AppName,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    DataContext = this
+                };
+                _ = maximizePdfWindow.ShowDialog();
 
-                    maximizePdfWindow.Closed += (s, e) =>
-                                                {
-                                                    SelectedTab = TbCtrl?.Items[1] as TabItem;
-                                                    SelectedTab.Content = pdfImportViewerControl;
-                                                };
-                }
+                maximizePdfWindow.Closed += (s, e) =>
+                                            {
+                                                SelectedTabIndex = 4;
+                                                (TbCtrl.Items[SelectedTabIndex] as TabItem).Content = PdfImportViewer;
+                                            };
+
             },
             parameter => true);
 
@@ -1062,10 +1060,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftCtrl) && TbCtrl?.Items[1] is TabItem selectedtab)
+                    if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftCtrl))
                     {
-                        ((PdfImportViewerControl)selectedtab.Content).PdfViewer.PdfFilePath = pdfviewer.PdfFilePath;
-                        SelectedTab = selectedtab;
+                        PdfImportViewer.PdfViewer.PdfFilePath = pdfviewer.PdfFilePath;
+                        SelectedTabIndex = 4;
                         return;
                     }
 
@@ -2206,16 +2204,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public TabItem SelectedTab
+    public int SelectedTabIndex
     {
-        get => selectedTab;
-
+        get => selectedTabIndex;
         set
         {
-            if (selectedTab != value)
+            if (selectedTabIndex != value)
             {
-                selectedTab = value;
-                OnPropertyChanged(nameof(SelectedTab));
+                selectedTabIndex = value;
+                OnPropertyChanged(nameof(SelectedTabIndex));
             }
         }
     }
@@ -2464,7 +2461,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     () =>
                                     {
                                         ArchiveVwr.ArchivePath = filename;
-                                        SelectedTab = TbCtrl?.Items[4] as TabItem;
+                                        SelectedTabIndex = 3;
                                     });
                                 break;
 
