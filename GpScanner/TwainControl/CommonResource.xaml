@@ -362,7 +362,9 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <Image x:Key="NoRotate" Width="16" Height="16">
+    <Image x:Key="NoRotate"
+        Width="16" Height="16"
+        x:Shared="false">
         <Image.Source>
             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                 <Binding Source="Shell32.dll" />
@@ -372,7 +374,7 @@
     </Image>
     <Image x:Key="RightRotate"
         Width="16" Height="16"
-        RenderTransformOrigin="0.5,0.5">
+        x:Shared="false" RenderTransformOrigin="0.5,0.5">
         <Image.RenderTransform>
             <ScaleTransform ScaleY="-1" />
         </Image.RenderTransform>
@@ -385,7 +387,7 @@
     </Image>
     <Image x:Key="LeftRotate"
         Width="16" Height="16"
-        RenderTransformOrigin="0.5,0.5">
+        x:Shared="false" RenderTransformOrigin="0.5,0.5">
         <Image.RenderTransform>
             <ScaleTransform ScaleX="-1" ScaleY="-1" />
         </Image.RenderTransform>

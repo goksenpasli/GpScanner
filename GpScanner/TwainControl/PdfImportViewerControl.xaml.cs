@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -740,6 +741,17 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
     }
 
+    private async Task<string> GetOcrData(string tesseractlanguage, byte[] imgdata)
+    {
+        if (string.IsNullOrWhiteSpace(tesseractlanguage))
+        {
+            return string.Empty;
+        }
+        OcrDialogOpen = false;
+        OcrDialogOpen = true;
+        return string.Join(" ", (await imgdata.OcrAsync(tesseractlanguage))?.Select(z => z.Text));
+    }
+
     private List<PdfPage> GetPdfPagesOrientation(PdfDocument pdfDocument)
     {
         List<PdfPage> pdfpages = null;
@@ -1046,13 +1058,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;
-                    if (!string.IsNullOrWhiteSpace(twainCtrl.Scanner.SelectedTtsLanguage))
-                    {
-                        OcrDialogOpen = false;
-                        OcrText = string.Join(" ", (await imgdata.OcrAsync(twainCtrl.Scanner.SelectedTtsLanguage))?.Select(z => z.Text));
-                        OcrDialogOpen = true;
-                    }
-                    imgdata = null;
+                    OcrText = await GetOcrData(twainCtrl.Scanner?.SelectedTtsLanguage, imgdata);
                 }
             }
         }
