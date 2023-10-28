@@ -399,14 +399,14 @@
         </Image.Source>
     </Image>
     <DataTemplate x:Key="EmptyTemplate">
-        <TextBlock Width="210" TextWrapping="Wrap">
+        <TextBlock Width="210" HorizontalAlignment="Right" TextWrapping="Wrap">
             <Hyperlink BaselineAlignment="Center"
                 Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                 CommandParameter="{Binding Mode=OneWay}"
                 TextDecorations="None">
-                <Image Width="32" Height="32" Source="/TwainControl;component/Icons/delete.png" />
+                <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
             </Hyperlink>
-            <Image Width="32" Height="32" Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+            <Image Width="16" Height="16" Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
             <Hyperlink BaselineAlignment="Center" Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Mode=OneWay}">
                 <Run Text="{Binding Mode=OneWay}" />
             </Hyperlink>
@@ -418,7 +418,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Hyperlink BaselineAlignment="Center"
                     Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                     CommandParameter="{Binding Mode=OneWay}"
@@ -441,7 +441,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Hyperlink BaselineAlignment="Center"
                     Command="{Binding EypPdfSeçiliDosyaSil}"
                     CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
@@ -456,8 +456,7 @@
                 PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                 PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden"
                 SliderZoomAngleVisibility="Collapsed" SnapTick="True"
-                Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                ToolBarVisibility="Collapsed" />
+                Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="XmlViewerTemplate">
@@ -466,7 +465,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <TextBlock VerticalAlignment="Center">
+            <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Hyperlink BaselineAlignment="Center"
                     Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
                     CommandParameter="{Binding Mode=OneWay}"
