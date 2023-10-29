@@ -22,6 +22,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     private Visibility remainingLengthVisibility = Visibility.Collapsed;
     private int remainingTextLength;
     private Visibility resetButtonVisibility = Visibility.Visible;
+    private Visibility textBoxVisibility = Visibility.Visible;
     private Visibility titleCaseMenuVisibility = Visibility.Collapsed;
 
     static ButtonedTextBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox))); }
@@ -144,6 +145,19 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
             {
                 resetButtonVisibility = value;
                 OnPropertyChanged(nameof(ResetButtonVisibility));
+            }
+        }
+    }
+
+    public Visibility TextBoxVisibility
+    {
+        get => textBoxVisibility;
+        set
+        {
+            if (textBoxVisibility != value)
+            {
+                textBoxVisibility = value;
+                OnPropertyChanged(nameof(TextBoxVisibility));
             }
         }
     }

@@ -732,7 +732,7 @@
                             </Style>
                         </Grid.Resources>
                         <ContentPresenter Name="contentPresenter" VerticalAlignment="Center" Content="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
-                        <Border Name="border" Grid.Column="1">
+                        <Border Name="border" Grid.Column="1" Visibility="{Binding TextBoxVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <ScrollViewer Name="PART_ContentHost"
                                 Focusable="False" HorizontalScrollBarVisibility="Hidden"
                                 VerticalScrollBarVisibility="Hidden" />

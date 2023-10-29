@@ -84,7 +84,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
         if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
         {
-            if (Path.GetExtension(droppedfiles[0]) == ".eyp")
+            if (string.Equals(Path.GetExtension(droppedfiles[0]), ".eyp", StringComparison.OrdinalIgnoreCase))
             {
                 PdfFilePath = ExtractEypFilesToPdf(droppedfiles[0]);
                 return;

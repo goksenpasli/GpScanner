@@ -990,6 +990,7 @@
                                         <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="100"
                                             Minimum="1" Orientation="Horizontal"
                                             SmallChange="1"
+                                            ToolTip="{local:Loc THRESHOLD}"
                                             Value="{Binding EmptyThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
                                     <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding Scanner.ApplyMedian}">

@@ -1,6 +1,7 @@
 ﻿<Window x:Class="GpScanner.DocumentViewerWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
@@ -38,12 +39,21 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <ContentControl d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" Content="{Binding IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                        <TextBlock VerticalAlignment="Center" d:Text="FileName" Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                        <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                            d:Text="FileName"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            CopyButtonVisibility="Collapsed"
+                            Description="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}"
+                            IsReadOnly="True" PasteButtonVisibility="Collapsed"
+                            ResetButtonVisibility="Collapsed"
+                            Text="{Binding Mode=OneWay}"
+                            TextBoxVisibility="Collapsed" />
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Command="{Binding Back}"
+        <RepeatButton Command="{Binding Back}"
             Content="ç" FontFamily="Wingdings"
             FontSize="16" />
         <ContentControl x:Name="cnt"
@@ -52,7 +62,7 @@
             d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
             Content="{Binding FilePath, IsAsync=True, Mode=OneWay}"
             ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
-        <Button Grid.Column="2"
+        <RepeatButton Grid.Column="2"
             Command="{Binding Forward}"
             Content="è" FontFamily="Wingdings"
             FontSize="16" />
