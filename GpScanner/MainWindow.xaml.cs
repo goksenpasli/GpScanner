@@ -329,6 +329,12 @@ public partial class MainWindow : Window
                     ViewModel.AddBarcodeToList(qrcode.GetImageBarcodeResult(TwainCtrl.ImgData));
                 }
 
+                if (string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
+                {
+                    TwainCtrl.ImgData = null;
+                    return;
+                }
+
                 ViewModel.OcrIsBusy = true;
                 ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsync(Settings.Default.DefaultTtsLang);
                 if (ViewModel.ScannedText != null)
