@@ -59,13 +59,13 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         BlackAndWhiteImage = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     Scanner.CroppedImage = ((BitmapSource)Scanner.CopyCroppedImage).BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg);
                     return;
                 }
 
-                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                if (Keyboard.Modifiers == ModifierKeys.Shift)
                 {
                     foreach (ScannedImage image in Scanner?.Resimler?.Where(z => z.Seçili)?.ToList())
                     {
@@ -141,7 +141,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 {
                     List<ScannedImage> listcroppedimages;
                     PdfDocument pdfdocument = null;
-                    bool splitpdfbypage = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
+                    bool splitpdfbypage = Keyboard.Modifiers == ModifierKeys.Alt;
                     await Task.Run(
                         async () =>
                         {
@@ -178,7 +178,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 if (DataContext is TwainCtrl twainControl)
                 {
                     List<ScannedImage> listcroppedimages;
-                    Orientation orientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? Orientation.Vertical : Orientation.Horizontal;
+                    Orientation orientation = Keyboard.Modifiers == ModifierKeys.Alt ? Orientation.Vertical : Orientation.Horizontal;
                     string savefolder = CreateSaveFolder("MERGE");
                     string path = savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "jpg");
                     await Task.Run(
@@ -200,7 +200,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         MergeAllImage = new RelayCommand<object>(
             async parameter =>
             {
-                PageOrientation pageOrientation = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? PageOrientation.Portrait : PageOrientation.Landscape;
+                PageOrientation pageOrientation = Keyboard.Modifiers == ModifierKeys.Alt ? PageOrientation.Portrait : PageOrientation.Landscape;
                 string savefolder = CreateSaveFolder("MERGE");
                 List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                 PdfDocument pdfdocument = new();

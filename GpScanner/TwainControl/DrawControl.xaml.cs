@@ -357,7 +357,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     {
         if (e.RightButton == MouseButtonState.Pressed)
         {
-            DrawControlContextMenu = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            DrawControlContextMenu = Keyboard.Modifiers == ModifierKeys.Shift;
             if (DrawControlContextMenu)
             {
                 System.Windows.Point mousemovecoord = e.GetPosition(Scr);

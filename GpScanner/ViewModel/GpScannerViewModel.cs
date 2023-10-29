@@ -144,7 +144,7 @@ public class GpScannerViewModel : InpcBase
         PdfBirleştir = new RelayCommand<object>(
             async parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     await Task.Run(
                         async () =>
@@ -265,7 +265,7 @@ public class GpScannerViewModel : InpcBase
                     {
                         OcrIsBusy = true;
                         ObservableCollection<OcrData> ocrdata;
-                        if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                        if (Keyboard.Modifiers == ModifierKeys.Alt)
                         {
                             for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
                             {
@@ -356,7 +356,7 @@ public class GpScannerViewModel : InpcBase
         Tümünüİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     foreach (Scanner item in Dosyalar)
                     {
@@ -376,7 +376,7 @@ public class GpScannerViewModel : InpcBase
         TümününİşaretiniKaldır = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     foreach (Scanner item in Dosyalar)
                     {
@@ -396,7 +396,7 @@ public class GpScannerViewModel : InpcBase
         Tersiniİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     foreach (Scanner item in Dosyalar)
                     {

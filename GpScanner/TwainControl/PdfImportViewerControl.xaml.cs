@@ -775,13 +775,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     {
         if (e.OriginalSource is Image img && img.Parent is ScrollViewer scrollviewer && e.LeftButton == MouseButtonState.Pressed)
         {
-            if (Keyboard.IsKeyDown(Key.LeftCtrl))
+            if (Keyboard.Modifiers == ModifierKeys.Control)
             {
                 isMouseDown = true;
                 mousedowncoord = e.GetPosition(scrollviewer);
             }
 
-            if (Keyboard.IsKeyDown(Key.LeftShift) &&
+            if (Keyboard.Modifiers == ModifierKeys.Shift &&
             (DrawLines || DrawBeziers || DrawCurve || DrawPolygon || DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
 
             {
@@ -1091,7 +1091,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private void PdfViewer_PreviewKeyDown(object sender, KeyEventArgs e)
     {
-        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.LeftCtrl))
+        if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
         {
             Cursor = Cursors.Cross;
         }

@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="TwainControl.XmlViewerControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:TwainControl"
@@ -16,15 +17,15 @@
         <SolidColorBrush x:Key="xmlTagBrush" ice:Freeze="true" Color="DarkMagenta" />
         <SolidColorBrush x:Key="xmlMarkBrush" ice:Freeze="true" Color="Blue" />
         <DataTemplate x:Key="attributeTemplate">
-            <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
+            <Extensions:SelectableTextBlock Margin="3,0,0,0" VerticalAlignment="Center">
                 <Run BaselineAlignment="Center" Foreground="{StaticResource xmAttributeBrush}" Text="{Binding Path=Name, Mode=OneWay}" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlMarkBrush}" Text="=&quot;" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlValueBrush}" Text="{Binding Path=Value, Mode=OneWay}" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlMarkBrush}" Text="&quot;" />
-            </TextBlock>
+            </Extensions:SelectableTextBlock>
         </DataTemplate>
         <Style TargetType="{x:Type TreeViewItem}">
             <Setter Property="IsExpanded" Value="True" />
         </Style>
         <HierarchicalDataTemplate x:Key="treeViewTemplate" ItemsSource="{Binding XPath=child::node()}">
-            <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
+            <Extensions:SelectableTextBlock Margin="3,0,0,0" VerticalAlignment="Center">
                 <Run x:Name="startTag"
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
@@ -56,7 +57,7 @@
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlMarkBrush}"
                     Text="&gt;" />
-            </TextBlock>
+            </Extensions:SelectableTextBlock>
             <HierarchicalDataTemplate.Triggers>
                 <DataTrigger Binding="{Binding NodeType}">
                     <DataTrigger.Value>

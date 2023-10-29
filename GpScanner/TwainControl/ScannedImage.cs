@@ -137,7 +137,7 @@ public class ScannedImage : InpcBase
     {
         if (e.PropertyName is "RotationAngle" && RotationAngle != 0)
         {
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 Resim = await Resim.FlipImageAsync(RotationAngle);
                 RotationAngle = 0;

@@ -197,7 +197,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
                 Player.Play();
 
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     string singlefile = null;
                     for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)

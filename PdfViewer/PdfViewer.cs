@@ -108,7 +108,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         ViewerBack = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     Sayfa = 1;
                     return;
@@ -121,7 +121,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         ViewerNext = new RelayCommand<object>(
             parameter =>
             {
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     Sayfa = ToplamSayfa;
                     return;

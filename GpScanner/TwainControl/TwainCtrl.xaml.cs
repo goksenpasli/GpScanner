@@ -247,13 +247,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is ScannedImage item)
                 {
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
                         item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
                         return;
                     }
 
-                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    if (Keyboard.Modifiers == ModifierKeys.Shift)
                     {
                         item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
                         return;
@@ -288,8 +288,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         InvertSelectedImage = new RelayCommand<object>(
             parameter =>
             {
-                bool bw = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt);
-                bool grayscale = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+                bool bw = Keyboard.Modifiers == ModifierKeys.Alt;
+                bool grayscale = Keyboard.Modifiers == ModifierKeys.Shift;
                 foreach (ScannedImage item in Scanner?.Resimler?.Where(z => z.Seçili))
                 {
                     if (bw)
@@ -379,14 +379,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 ObservableCollection<ScannedImage> resimler = Scanner.Resimler;
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     for (int i = 1; i < resimler.Count; i += 2)
                     {
                         resimler[i].Seçili = true;
                     }
                 }
-                else if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                else if (Keyboard.Modifiers == ModifierKeys.Shift)
                 {
                     for (int i = 0; i < resimler.Count; i += 2)
                     {
@@ -798,7 +798,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     AddFromClipBoard.Execute(null);
                 }
 
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     if (SeçiliDirektPdfKaydet.CanExecute(null))
                     {
@@ -890,7 +890,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string oldpdfpath = pdfViewer.PdfFilePath;
                     using (PdfDocument reader = PdfReader.Open(oldpdfpath))
                     {
-                        if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                        if (Keyboard.Modifiers == ModifierKeys.Alt)
                         {
                             for (int i = 0; i < reader.PageCount; i++)
                             {
@@ -922,7 +922,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     string pdfFilePath = pdfviewer.PdfFilePath;
                     string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                    string[] processedfiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? [pdfFilePath, temporarypdf] : [temporarypdf, pdfFilePath];
+                    string[] processedfiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporarypdf] : [temporarypdf, pdfFilePath];
                     await Task.Run(
                         async () =>
                         {
@@ -953,7 +953,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                     string pdfFilePath = pdfviewer.PdfFilePath;
                     string temporaryPdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                    string[] processedFiles = Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? [pdfFilePath, temporaryPdf] : [temporaryPdf, pdfFilePath];
+                    string[] processedFiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporaryPdf] : [temporaryPdf, pdfFilePath];
                     if (clipboardData.GetDataPresent(DataFormats.FileDrop))
                     {
                         string[] clipboardFiles = (string[])clipboardData.GetData(System.Windows.DataFormats.FileDrop);
@@ -1024,7 +1024,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is string filepath && File.Exists(filepath))
                 {
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
                         ExploreFile.Execute(filepath);
                         return;
@@ -1060,21 +1060,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) && Keyboard.IsKeyDown(Key.LeftCtrl))
+                    if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt))
                     {
                         PdfImportViewer.PdfViewer.PdfFilePath = pdfviewer.PdfFilePath;
                         SelectedTabIndex = 4;
                         return;
                     }
 
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
                         await AddFiles([pdfviewer.PdfFilePath], DecodeHeight);
-
                         return;
                     }
 
-                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    if (Keyboard.Modifiers == ModifierKeys.Shift)
                     {
                         if (SayfaBaşlangıç <= SayfaBitiş)
                         {
@@ -1105,9 +1104,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string path = pdfviewer.PdfFilePath;
                     int currentpage = pdfviewer.Sayfa;
                     using PdfDocument inputDocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Import);
-                    if ((Keyboard.IsKeyDown(Key.LeftCtrl) && Keyboard.IsKeyDown(Key.LeftAlt)) || (Keyboard.IsKeyDown(Key.RightCtrl) && Keyboard.IsKeyDown(Key.RightAlt)))
+                    if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt))
                     {
-                        if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                        if (Keyboard.Modifiers == ModifierKeys.Shift)
                         {
                             SavePageRotated(path, inputDocument, -90);
                             pdfviewer.PdfFilePath = null;
@@ -1121,7 +1120,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         return;
                     }
 
-                    SavePageRotated(path, inputDocument, Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt) ? -90 : 90, pdfviewer.Sayfa - 1);
+                    SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.Sayfa = currentpage;
                     pdfviewer.PdfFilePath = path;
@@ -1326,7 +1325,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
                         Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
                         return;
@@ -1396,7 +1395,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string oldpdfpath = pdfviewer.PdfFilePath;
                     int currentpage = pdfviewer.Sayfa;
                     using PdfDocument document = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                    if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
                         for (int i = 0; i < document.PageCount; i++)
                         {
@@ -2953,7 +2952,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (e.OriginalSource is System.Windows.Controls.Image img && img.Parent is ScrollViewer scrollviewer)
         {
-            if (e.LeftButton == MouseButtonState.Pressed && Keyboard.IsKeyDown(Key.LeftCtrl))
+            if (e.LeftButton == MouseButtonState.Pressed && Keyboard.Modifiers == ModifierKeys.Control)
             {
                 isMouseDown = true;
                 Cursor = Cursors.Cross;
@@ -3034,7 +3033,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     double coordy = y1 + scrollviewer.VerticalOffset;
                     ImgData = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
 
-                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                    if (Keyboard.Modifiers == ModifierKeys.Shift)
                     {
                         if (ImgData is not null)
                         {
@@ -3057,7 +3056,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void ImgViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
-        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+        if (Keyboard.Modifiers == ModifierKeys.Control)
         {
             double change = e.Delta > 0 ? .05 : -.05;
             if (ImgViewer.Zoom + change <= 0.01)
@@ -3089,7 +3088,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void ListBox_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
-        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+        if (Keyboard.Modifiers == ModifierKeys.Control)
         {
             Settings.Default.PreviewWidth += e.Delta > 0 ? 10 : -10;
             if (Settings.Default.PreviewWidth <= 85)
@@ -3601,7 +3600,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if (e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
         {
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
                 {
@@ -3612,7 +3611,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 return;
             }
 
-            if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+            if (Keyboard.Modifiers == ModifierKeys.Alt)
             {
                 foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
                 {
