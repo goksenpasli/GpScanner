@@ -644,20 +644,7 @@
                                             <DataTemplate>
                                                 <TextBlock>
                                                     <Hyperlink Command="{Binding FileCrcGenerate, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}">
-                                                        <Run>
-                                                            <Run.Style>
-                                                                <Style TargetType="Run">
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding CalculateCrc, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" Value="true">
-                                                                            <Setter Property="Text" Value="{Binding Crc}" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding CalculateCrc, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" Value="false">
-                                                                            <Setter Property="Text" Value="{Binding Crc, TargetNullValue='HESAPLA'}" />
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Run.Style>
-                                                        </Run>
+                                                        <Run Text="{Binding Crc, TargetNullValue='HESAPLA'}" />
                                                     </Hyperlink>
                                                 </TextBlock>
                                             </DataTemplate>

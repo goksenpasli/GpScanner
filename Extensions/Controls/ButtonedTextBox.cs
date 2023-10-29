@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -220,7 +221,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title);
+            throw new ArgumentException(ex.Message);
         }
     }
 

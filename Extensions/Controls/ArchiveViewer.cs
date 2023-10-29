@@ -14,7 +14,6 @@ namespace Extensions
     public class ArchiveViewer : Control, INotifyPropertyChanged, IDisposable
     {
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
-        public static readonly DependencyProperty CalculateCrcProperty = DependencyProperty.Register("CalculateCrc", typeof(bool), typeof(ArchiveViewer), new PropertyMetadata(false));
         private ObservableCollection<ArchiveData> arşivİçerik;
         private ICollectionView cvs;
         private bool disposedValue;
@@ -69,15 +68,22 @@ namespace Extensions
             FileCrcGenerate = new RelayCommand<object>(
                 parameter =>
                 {
-                    using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
-                    if (archive != null)
+                    try
                     {
+                        using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
                         ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.TamYol);
-                        using Stream stream = dosya.Open();
-                        SelectedFile.Crc = CalculateFileCRC(stream);
+                        if (dosya != null)
+                        {
+                            using Stream stream = dosya.Open();
+                            SelectedFile.Crc = CalculateFileCRC(stream);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException(ex.Message);
                     }
                 },
-                parameter => !string.IsNullOrWhiteSpace(ArchivePath) && SelectedFile is not null && !CalculateCrc);
+                parameter => !string.IsNullOrWhiteSpace(ArchivePath) && SelectedFile is not null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -101,8 +107,6 @@ namespace Extensions
         }
 
         public RelayCommand<object> ArşivTekDosyaÇıkar { get; }
-
-        public bool CalculateCrc { get => (bool)GetValue(CalculateCrcProperty); set => SetValue(CalculateCrcProperty, value); }
 
         public RelayCommand<object> FileCrcGenerate { get; }
 
@@ -190,10 +194,9 @@ namespace Extensions
                         TamYol = item.FullName,
                         Boyut = item.Length,
                         Oran = (float)item.CompressedLength / item.Length,
-                        DüzenlenmeZamanı = item.LastWriteTime.Date
+                        DüzenlenmeZamanı = item.LastWriteTime.Date,
+                        Crc = null
                     };
-                    using Stream stream = item.Open();
-                    archiveData.Crc = CalculateCrc ? CalculateFileCRC(stream) : null;
                     archiveViewer.Arşivİçerik.Add(archiveData);
                 }
             }

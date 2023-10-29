@@ -39,7 +39,7 @@ public class CustomArchiveViewer : ArchiveViewer
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(ArchivePath));

@@ -2360,7 +2360,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title);
             }
         }
     }
@@ -2639,8 +2639,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
         }
+
+        return null;
     }
 
     protected virtual void Dispose(bool disposing)
