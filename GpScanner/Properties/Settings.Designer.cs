@@ -97,18 +97,6 @@ namespace GpScanner.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool WatchFolderPdfFileChange {
-            get {
-                return ((bool)(this["WatchFolderPdfFileChange"]));
-            }
-            set {
-                this["WatchFolderPdfFileChange"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("2")]
         public int PreviewIndex {
             get {

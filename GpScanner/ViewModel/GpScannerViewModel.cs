@@ -53,7 +53,6 @@ public class GpScannerViewModel : InpcBase
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"];
     private int allPdfPage;
-    private bool anyDataExists;
     private string aramaMetni;
     private ObservableCollection<string> barcodeList = [];
     private bool batchDialogOpen;
@@ -112,12 +111,7 @@ public class GpScannerViewModel : InpcBase
             XmlDataPath = Settings.Default.DatabaseFile = $@"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}\Data.xml";
             Settings.Default.Save();
         }
-
-        if (Settings.Default.WatchFolderPdfFileChange && AnyDataExists)
-        {
-            RegisterSimplePdfFileWatcher();
-        }
-
+        RegisterSimplePdfFileWatcher();
         TesseractViewModel = new TesseractViewModel();
         TranslateViewModel = new TranslateViewModel();
         Settings.Default.PropertyChanged += Default_PropertyChanged;
@@ -852,20 +846,6 @@ public class GpScannerViewModel : InpcBase
             {
                 allPdfPage = value;
                 OnPropertyChanged(nameof(AllPdfPage));
-            }
-        }
-    }
-
-    public bool AnyDataExists
-    {
-        get => DataYükle()?.Count > 0;
-
-        set
-        {
-            if (anyDataExists != value)
-            {
-                anyDataExists = value;
-                OnPropertyChanged(nameof(AnyDataExists));
             }
         }
     }
@@ -1794,11 +1774,6 @@ public class GpScannerViewModel : InpcBase
             }
         }
 
-        if (e.PropertyName is "WatchFolderPdfFileChange" && Settings.Default.WatchFolderPdfFileChange)
-        {
-            _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), AppName);
-        }
-
         if (e.PropertyName is "BatchFolder" or "BatchSaveFolder")
         {
             if (Settings.Default.BatchFolder?.Length == 0 || Settings.Default.BatchSaveFolder?.Length == 0)
@@ -2140,17 +2115,21 @@ public class GpScannerViewModel : InpcBase
 
     private void RegisterSimplePdfFileWatcher()
     {
-        FileSystemWatcher watcher = new(Twainsettings.Settings.Default.AutoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
-        watcher.Renamed += (s, e) =>
-                           {
-                               foreach (Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))
+        string autoFolder = Twainsettings.Settings.Default.AutoFolder;
+        if (!string.IsNullOrWhiteSpace(autoFolder))
+        {
+            FileSystemWatcher watcher = new(autoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
+            watcher.Renamed += (s, e) =>
                                {
-                                   item.FileName = e.FullPath;
-                               }
+                                   foreach (Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))
+                                   {
+                                       item.FileName = e.FullPath;
+                                   }
 
-                               DatabaseSave.Execute(null);
-                               Dosyalar = GetScannerFileData();
-                           };
+                                   DatabaseSave.Execute(null);
+                                   Dosyalar = GetScannerFileData();
+                               };
+        }
     }
 
     private ObservableCollection<ReminderData> ReminderYükle()

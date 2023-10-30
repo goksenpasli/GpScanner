@@ -294,7 +294,6 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="80" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
@@ -324,13 +323,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FILE}" />
                                     </StackPanel>
                                 </Button>
-                                <CheckBox Grid.Column="2"
-                                    VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                    IsChecked="{Binding WatchFolderPdfFileChange, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                                    IsEnabled="{Binding AnyDataExists}">
-                                    <TextBlock Foreground="Blue" Text="{twainctrl:Loc PDFTRACK}" TextWrapping="Wrap" />
-                                </CheckBox>
-                                <ComboBox Grid.Column="3"
+                                <ComboBox Grid.Column="2"
                                     VerticalContentAlignment="Center"
                                     SelectedValue="{Binding Path=AnimationType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                                     SelectedValuePath="Tag">
@@ -339,7 +332,7 @@
                                     <ComboBoxItem Content="{twainctrl:Loc MIRROR}" Tag="2" />
                                     <ComboBoxItem Content="{twainctrl:Loc NONE}" Tag="3" />
                                 </ComboBox>
-                                <Button Grid.Column="4" Command="{Binding PlayAnimation}">
+                                <Button Grid.Column="3" Command="{Binding PlayAnimation}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

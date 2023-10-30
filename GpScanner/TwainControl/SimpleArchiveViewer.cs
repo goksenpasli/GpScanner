@@ -18,7 +18,7 @@ public class SimpleArchiveViewer : ArchiveViewer
             {
                 try
                 {
-                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename)))
+                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename).ToLower()))
                     {
                         string extractedfile = ExtractToFile(parameter as string);
                         _ = Process.Start(extractedfile);
