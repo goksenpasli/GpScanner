@@ -540,7 +540,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 async () =>
                 {
                     List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
-                    if (Scanner.ApplyDataBaseOcr)
+                    if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
                     {
                         Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
                         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
@@ -3234,7 +3234,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private async Task SavePdfImageAsync(BitmapFrame scannedImage, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false)
     {
         ObservableCollection<OcrData> ocrtext = null;
-        if (applyocr && !string.IsNullOrEmpty(Scanner.SelectedTtsLanguage))
+        if (applyocr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
         {
             scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
             _ = await Dispatcher.Invoke(async () => ocrtext = await scannedImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage));
@@ -3253,7 +3253,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private async Task SavePdfImageAsync(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false, int dpi = 120)
     {
         List<ObservableCollection<OcrData>> scannedtext = null;
-        if (applyocr && !string.IsNullOrEmpty(Scanner.SelectedTtsLanguage))
+        if (applyocr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
         {
             scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
             scannedtext = [];
@@ -3319,7 +3319,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private async Task SaveTxtFileAsync(BitmapFrame bitmapFrame, string fileName)
     {
-        if (bitmapFrame is not null && !string.IsNullOrEmpty(Scanner.SelectedTtsLanguage))
+        if (bitmapFrame is not null && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
         {
             await Dispatcher.Invoke(
                 async () =>
@@ -3332,7 +3332,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName)
     {
-        if (images is not null && !string.IsNullOrEmpty(Scanner.SelectedTtsLanguage))
+        if (images is not null && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
         {
             for (int i = 0; i < images.Count; i++)
             {

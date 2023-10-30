@@ -21,6 +21,21 @@
     UseLayoutRounding="True" WindowStartupLocation="CenterScreen"
     WindowState="Maximized"
     mc:Ignorable="d">
+    <Window.InputBindings>
+        <KeyBinding Key="F"
+            Command="{Binding FocusControl}"
+            CommandParameter="{Binding ElementName=TbSearch}"
+            Modifiers="Ctrl" />
+        <KeyBinding Key="F1" Command="{Binding OpenHelpDialog, ElementName=TwainCtrl}" />
+        <KeyBinding Key="S" Command="{Binding ScanImage, ElementName=TwainCtrl}" Modifiers="Alt" />
+        <KeyBinding Key="F" Command="{Binding FastScanImage, ElementName=TwainCtrl}" Modifiers="Alt" />
+        <KeyBinding Key="S" Command="{Binding SeçiliDirektPdfKaydet, ElementName=TwainCtrl}" Modifiers="Ctrl+Shift" />
+        <KeyBinding Key="S" Command="{Binding SeçiliKaydet, ElementName=TwainCtrl}" Modifiers="Ctrl" />
+        <KeyBinding Key="O" Command="{Binding LoadImage, ElementName=TwainCtrl}" Modifiers="Ctrl" />
+        <KeyBinding Key="A" Command="{Binding Tümünüİşaretle, ElementName=TwainCtrl}" Modifiers="Ctrl" />
+        <KeyBinding Key="Delete" Command="{Binding SeçiliListeTemizle, ElementName=TwainCtrl}" />
+        <KeyBinding Key="Delete" Command="{Binding ListeTemizle, ElementName=TwainCtrl}" Modifiers="Shift" />
+    </Window.InputBindings>
     <Window.Resources>
         <ViewModel:FoldEffect x:Key="Fold" PresentationOptions:Freeze="true" FoldAmount="{Binding Fold}" />
         <ViewModel:RippleEffect x:Key="Ripple" PresentationOptions:Freeze="true" Progress="{Binding Ripple}" />
@@ -350,7 +365,8 @@
                                     Content="è" FontFamily="Wingdings"
                                     FontSize="16" />
                             </Grid>
-                            <Extensions:ButtonedTextBox Grid.Column="1"
+                            <Extensions:ButtonedTextBox x:Name="TbSearch"
+                                Grid.Column="1"
                                 VerticalContentAlignment="Center"
                                 d:Text="AramaMetni" CopyButtonVisibility="Collapsed"
                                 OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"

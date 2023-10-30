@@ -152,7 +152,7 @@ public partial class MainWindow : Window
         this.SystemMenu();
         if (DataContext is GpScannerViewModel ViewModel)
         {
-            if (Settings.Default.RegisterBatchWatcher && Directory.Exists(Settings.Default.BatchFolder) && Directory.Exists(Settings.Default.BatchSaveFolder))
+            if (Settings.Default.RegisterBatchWatcher)
             {
                 ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.SelectedPaper, Settings.Default.BatchFolder, Settings.Default.BatchSaveFolder);
             }

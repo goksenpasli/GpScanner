@@ -792,6 +792,16 @@ public class GpScannerViewModel : InpcBase
 
         PlayAudio = new RelayCommand<object>(parameter => TwainCtrl.PlayNotificationSound(parameter as string), parameter => true);
 
+        FocusControl = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is UIElement uIElement)
+                {
+                    uIElement.Focus();
+                }
+            },
+            parameter => true);
+
         PlayAnimation = new RelayCommand<object>(
             parameter =>
             {
@@ -1107,6 +1117,8 @@ public class GpScannerViewModel : InpcBase
             }
         }
     }
+
+    public RelayCommand<object> FocusControl { get; }
 
     public double Fold
     {
@@ -1681,31 +1693,34 @@ public class GpScannerViewModel : InpcBase
 
     public void RegisterBatchImageFileWatcher(Paper paper, string batchfolder, string batchsavefolder)
     {
-        FileSystemWatcherProcessedFileList = [];
-        FileSystemWatcher watcher = new(batchfolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
-        batchimagefileextensions.Add(".webp");
-        watcher.Created += async (s, e) =>
-                           {
-                               string currentfilepath = e.FullPath;
-                               string currentfilename = e.Name;
-                               bool isFileLocked = IsFileLocked(currentfilepath);
-                               while (isFileLocked)
+        if (Directory.Exists(batchfolder) && Directory.Exists(batchsavefolder))
+        {
+            FileSystemWatcherProcessedFileList = [];
+            FileSystemWatcher watcher = new(batchfolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
+            batchimagefileextensions.Add(".webp");
+            watcher.Created += async (s, e) =>
                                {
-                                   await Task.Delay(100);
-                                   isFileLocked = IsFileLocked(currentfilepath);
-                               }
-
-                               if (File.Exists(currentfilepath) && batchimagefileextensions.Contains(Path.GetExtension(currentfilename.ToLower())))
-                               {
-                                   await FileSystemWatcherOcrFile(paper, batchsavefolder, currentfilepath, currentfilename);
-                                   await Application.Current?.Dispatcher?.InvokeAsync(
-                                   () =>
+                                   string currentfilepath = e.FullPath;
+                                   string currentfilename = e.Name;
+                                   bool isFileLocked = IsFileLocked(currentfilepath);
+                                   while (isFileLocked)
                                    {
-                                       string item = $"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}";
-                                       FileSystemWatcherProcessedFileList.Add(item);
-                                   });
-                               }
-                           };
+                                       await Task.Delay(100);
+                                       isFileLocked = IsFileLocked(currentfilepath);
+                                   }
+
+                                   if (File.Exists(currentfilepath) && batchimagefileextensions.Contains(Path.GetExtension(currentfilename.ToLower())))
+                                   {
+                                       await FileSystemWatcherOcrFile(paper, batchsavefolder, currentfilepath, currentfilename);
+                                       await Application.Current?.Dispatcher?.InvokeAsync(
+                                       () =>
+                                       {
+                                           string item = $"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}";
+                                           FileSystemWatcherProcessedFileList.Add(item);
+                                       });
+                                   }
+                               };
+        }
     }
 
     public void ReloadFileDatas()

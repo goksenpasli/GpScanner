@@ -19,13 +19,6 @@
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
-    <UserControl.InputBindings>
-        <KeyBinding Key="F1" Command="{Binding OpenHelpDialog}" />
-        <KeyBinding Key="S" Command="{Binding ScanImage}" Modifiers="Alt" />
-        <KeyBinding Key="F" Command="{Binding FastScanImage}" Modifiers="Alt" />
-        <KeyBinding Key="S" Command="{Binding SeçiliDirektPdfKaydet}" Modifiers="Ctrl" />
-        <KeyBinding Key="N" Command="{Binding LoadImage}" Modifiers="Ctrl" />
-    </UserControl.InputBindings>
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -1299,13 +1292,6 @@
                                 SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                                 VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                 VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
-                                <ListBox.InputBindings>
-                                    <KeyBinding Key="A" Command="{Binding Tümünüİşaretle}" Modifiers="Ctrl" />
-                                    <KeyBinding Key="Delete" Command="{Binding SeçiliListeTemizle}" />
-                                    <KeyBinding Key="Delete" Command="{Binding ListeTemizle}" Modifiers="Shift" />
-                                    <KeyBinding Key="S" Command="{Binding SeçiliKaydet}" Modifiers="Ctrl" />
-                                    <KeyBinding Key="S" Command="{Binding SeçiliDirektPdfKaydet}" Modifiers="Ctrl+Shift" />
-                                </ListBox.InputBindings>
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ListBoxItem}">
                                         <Setter Property="Template">
