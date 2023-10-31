@@ -39,4 +39,18 @@ public class SimpleArchiveViewer : ArchiveViewer
     }
 
     public new RelayCommand<object> ArşivTekDosyaÇıkar { get; }
+
+    protected override void OnDrop(DragEventArgs e)
+    {
+        if (e.Data.GetData(typeof(Scanner)) is Scanner scanner && File.Exists(scanner.FileName))
+        {
+            LoadDroppedZipFile([scanner.FileName]);
+            return;
+        }
+
+        if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+        {
+            LoadDroppedZipFile(droppedfiles);
+        }
+    }
 }

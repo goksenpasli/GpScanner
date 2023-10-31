@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -215,6 +216,14 @@ namespace Extensions
             }
         }
 
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+            {
+                LoadDroppedZipFile(droppedfiles);
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -261,6 +270,39 @@ namespace Extensions
             byte[] crcValue = crc32.ComputeHash(stream);
             stream?.Dispose();
             return BitConverter.ToString(crcValue).Replace("-", string.Empty).ToUpper();
+        }
+
+        protected void LoadDroppedZipFile(string[] droppedfiles)
+        {
+            if (droppedfiles.Contains(ArchivePath))
+            {
+                return;
+            }
+            if (File.Exists(ArchivePath) && ArşivDosyaEkle.CanExecute(null))
+            {
+                string temppath = ArchivePath;
+                SelectedFiles = droppedfiles;
+                ArşivDosyaEkle.Execute(null);
+                ArchivePath = null;
+                ArchivePath = temppath;
+                return;
+            }
+            SaveFileDialog saveFileDialog = new() { Filter = "Zip File (*.zip)|*.zip", AddExtension = true, FileName = "File" };
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                if (droppedfiles.Contains(saveFileDialog.FileName))
+                {
+                    return;
+                }
+                using (ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update))
+                {
+                    foreach (string path in droppedfiles)
+                    {
+                        _ = archive.CreateEntryFromFile(path, Path.GetFileName(path));
+                    }
+                }
+                ArchivePath = saveFileDialog.FileName;
+            }
         }
     }
 }

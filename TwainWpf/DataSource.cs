@@ -332,7 +332,7 @@ namespace TwainWpf
         {
             try
             {
-                if (scanSettings.UseFilmScanner.HasValue && SupportsFilmScanner)
+                if (scanSettings.UseFilmScanner == true && SupportsFilmScanner)
                 {
                     _ = scanSettings.UseFilmScanner.Value
                         ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
