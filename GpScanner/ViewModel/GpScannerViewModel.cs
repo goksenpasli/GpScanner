@@ -797,7 +797,7 @@ public class GpScannerViewModel : InpcBase
             {
                 if (parameter is UIElement uIElement)
                 {
-                    uIElement.Focus();
+                    _ = uIElement.Focus();
                 }
             },
             parameter => true);
@@ -1875,22 +1875,24 @@ public class GpScannerViewModel : InpcBase
                     _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
                     return new { Scanner = scanner, ParentDate = parsedDateTime };
                 });
-
-            DateTime first = files.Where(z => z.ParentDate > DateTime.MinValue).Min(z => z.ParentDate);
-            DateTime last = files.Max(z => z.ParentDate);
-            for (DateTime? date = first; date <= last; date = date.Value.AddDays(1))
+            if (files is not null)
             {
-                if (!files.Select(z => z.ParentDate).Contains(date.Value))
+                DateTime first = files.Where(z => z.ParentDate > DateTime.MinValue).Min(z => z.ParentDate);
+                DateTime last = files.Max(z => z.ParentDate);
+                for (DateTime? date = first; date <= last; date = date.Value.AddDays(1))
                 {
-                    contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
+                    if (!files.Select(z => z.ParentDate).Contains(date.Value))
+                    {
+                        contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
+                    }
                 }
-            }
 
-            foreach (IGrouping<DateTime, Scanner> file in files.GroupBy(item => item.ParentDate, item => item.Scanner))
-            {
-                contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
+                foreach (IGrouping<DateTime, Scanner> file in files.GroupBy(item => item.ParentDate, item => item.Scanner))
+                {
+                    contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
+                }
+                return new ObservableCollection<ContributionData>(contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate));
             }
-            return new ObservableCollection<ContributionData>(contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate));
         }
         catch (Exception)
         {

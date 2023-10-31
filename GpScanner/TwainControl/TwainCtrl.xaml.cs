@@ -2715,6 +2715,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ms = null;
     }
 
+    private void AddPdfFilesToUnsupportedDocs(string[] droppedfiles)
+    {
+        foreach (string file in droppedfiles.Where(file => string.Equals(Path.GetExtension(file), ".pdf", StringComparison.OrdinalIgnoreCase)))
+        {
+            Scanner?.UnsupportedFiles?.Add(file);
+        }
+    }
+
     private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) => Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
 
     private async void CameraUserControl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
@@ -3076,13 +3084,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void LbEypContent_Drop(object sender, DragEventArgs e)
     {
-        string[] droppedfiles = (string[])e.Data.GetData(System.Windows.DataFormats.FileDrop);
-        if (droppedfiles?.Length > 0)
+        if (e.Data.GetData(typeof(Scanner)) is Scanner scanner && File.Exists(scanner.FileName))
         {
-            foreach (string file in droppedfiles.Where(file => string.Equals(Path.GetExtension(file), ".pdf", StringComparison.OrdinalIgnoreCase)))
-            {
-                Scanner?.UnsupportedFiles?.Add(file);
-            }
+            AddPdfFilesToUnsupportedDocs([scanner.FileName]);
+            return;
+        }
+        if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+        {
+            AddPdfFilesToUnsupportedDocs(droppedfiles);
         }
     }
 

@@ -129,23 +129,7 @@ public class GraphControl : FrameworkElement
     [Category("Graph")]
     public Visibility ValueTextVisibility { get => (Visibility)GetValue(ValueTextVisibilityProperty); set => SetValue(ValueTextVisibilityProperty, value); }
 
-    protected override void OnRender(DrawingContext drawingContext)
-    {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-        {
-            DrawGraph(drawingContext, Series);
-            return;
-        }
-
-        MockData =
-        [
-            new() { ChartBrush = Brushes.Blue, ChartValue = 100, Description = "Sample Item 1" },
-            new() { ChartBrush = Brushes.Red, ChartValue = 40, Description = "Sample Item 2" },
-            new() { ChartBrush = Brushes.Yellow, ChartValue = 60, Description = "Sample Item 3" }];
-        DrawGraph(drawingContext, MockData);
-    }
-
-    private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
+    protected void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
     {
         if (Series?.Any() == true)
         {
@@ -184,6 +168,21 @@ public class GraphControl : FrameworkElement
 
             drawingContext.DrawDrawing(graphgeometrygroup);
         }
+    }
+
+    protected override void OnRender(DrawingContext drawingContext)
+    {
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        {
+            DrawGraph(drawingContext, Series);
+            return;
+        }
+
+        MockData = [
+            new() { ChartBrush = Brushes.Blue, ChartValue = 100, Description = "Sample Item 1" },
+            new() { ChartBrush = Brushes.Red, ChartValue = 40, Description = "Sample Item 2" },
+            new() { ChartBrush = Brushes.Yellow, ChartValue = 60, Description = "Sample Item 3" }];
+        DrawGraph(drawingContext, MockData);
     }
 
     private void DrawLineDot(Pen linepen, Point point1, DrawingContext graph)

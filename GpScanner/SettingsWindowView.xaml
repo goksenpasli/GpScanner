@@ -299,16 +299,24 @@
                                 </Grid.ColumnDefinitions>
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                     IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                                    PasteButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                    OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                    ResetButtonVisibility="Collapsed"
                                     Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="1" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" BorderBrush="{x:Null}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <GroupBox>
+                                                <twainctrl:XmlViewerControl Width="480" Height="300" twainctrl:XmlViewerControlModel.XmlContent="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                            </GroupBox>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
                                 </Extensions:ButtonedTextBox>
                                 <Button Grid.Column="1" twainctrl:Policy.PolicyName="ChangeDataFolder" Command="{Binding ChangeDataFolder}">
                                     <StackPanel Orientation="Horizontal">
