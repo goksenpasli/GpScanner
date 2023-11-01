@@ -2,6 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:TwainControl"
     xmlns:pdfsharpdrawing="clr-namespace:PdfSharp.Drawing;assembly=PdfSharp-wpf"
@@ -401,13 +402,13 @@
     <DataTemplate x:Key="EmptyTemplate">
         <TextBlock Width="210" HorizontalAlignment="Right" TextWrapping="Wrap">
             <Hyperlink BaselineAlignment="Center"
-                Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
                 CommandParameter="{Binding Mode=OneWay}"
                 TextDecorations="None">
                 <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
             </Hyperlink>
             <Image Width="16" Height="16" Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-            <Hyperlink BaselineAlignment="Center" Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}" CommandParameter="{Binding Mode=OneWay}">
+            <Hyperlink BaselineAlignment="Center" Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
                 <Run Text="{Binding Mode=OneWay}" />
             </Hyperlink>
         </TextBlock>
@@ -420,7 +421,7 @@
             </Grid.RowDefinitions>
             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Hyperlink BaselineAlignment="Center"
-                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
                     CommandParameter="{Binding Mode=OneWay}"
                     TextDecorations="None">
                     <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
@@ -436,7 +437,7 @@
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="EypSimplePdfTemplate">
-        <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}">
+        <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
@@ -449,14 +450,23 @@
                     <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                 </Hyperlink>
             </TextBlock>
-            <local:SimplePdfViewer Grid.Row="1"
+            <Image Grid.Row="1"
                 Width="210" Height="297"
-                AutoFitContent="True" Dpi="36"
-                DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden"
-                SliderZoomAngleVisibility="Collapsed" SnapTick="True"
-                Tag="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                <Image.Resources>
+                    <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="36" />
+                </Image.Resources>
+                <Image.Tag>
+                    <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                        <Binding Mode="OneWay" Path="DataContext" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
+                        <Binding Mode="OneWay">
+                            <Binding.Source>
+                                <System:Int32>1</System:Int32>
+                            </Binding.Source>
+                        </Binding>
+                    </MultiBinding>
+                </Image.Tag>
+            </Image>
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="XmlViewerTemplate">
@@ -467,7 +477,7 @@
             </Grid.RowDefinitions>
             <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center">
                 <Hyperlink BaselineAlignment="Center"
-                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
                     CommandParameter="{Binding Mode=OneWay}"
                     TextDecorations="None">
                     <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />

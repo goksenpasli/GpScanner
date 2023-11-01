@@ -837,13 +837,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         EypPdfİçerikBirleştir = new RelayCommand<object>(
             async parameter =>
             {
-                string[] files = Scanner.UnsupportedFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
-                if (files.Length > 0)
+                string[] files = Scanner?.UnsupportedFiles?.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
+                if (files?.Length > 0)
                 {
                     await files.SavePdfFilesAsync();
                 }
             },
-            parameter => Scanner?.UnsupportedFiles?.Count(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)) > 1);
+            parameter => true);
 
         EypPdfSeçiliDosyaSil = new RelayCommand<object>(parameter => Scanner?.UnsupportedFiles?.Remove(parameter as string), parameter => true);
 
