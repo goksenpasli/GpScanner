@@ -385,7 +385,10 @@
                 </Style.Triggers>
             </Style>
             <DataTemplate x:Key="ContributionImageTemplate">
-                <Image Width="96" Height="96" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                <Image Width="150" Height="150" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                    <Image.Resources>
+                        <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="20" />
+                    </Image.Resources>
                     <Image.Tag>
                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
@@ -402,9 +405,6 @@
                 <TextBlock Text="{Binding Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextWrapping="Wrap" />
             </DataTemplate>
             <ControlTemplate x:Key="CustomContributionTemplate" TargetType="{x:Type Extensions:ContributionControl}">
-                <ControlTemplate.Resources>
-                    <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
-                </ControlTemplate.Resources>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -492,42 +492,50 @@
                                         </Style>
                                     </Rectangle.Style>
                                     <Rectangle.ToolTip>
-                                        <TextBlock>
-                                            <Run Text="{Binding Count}" />
-                                            <LineBreak />
-                                            <Run Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" />
-                                            <LineBreak />
-                                            <ListBox Width="640" Height="640"
-                                                ItemsSource="{Binding Name}"
-                                                ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
-                                                <ListBox.Style>
-                                                    <Style TargetType="ListBox">
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
-                                                                <Setter Property="ItemTemplate" Value="{StaticResource ContributionImageTemplate}" />
-                                                                <Setter Property="ItemsPanel">
-                                                                    <Setter.Value>
-                                                                        <ItemsPanelTemplate>
-                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="100,100" SpacingMode="None" />
-                                                                        </ItemsPanelTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </DataTrigger>
-                                                            <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="false">
-                                                                <Setter Property="ItemTemplate" Value="{StaticResource ContributionTextTemplate}" />
-                                                                <Setter Property="ItemsPanel">
-                                                                    <Setter.Value>
-                                                                        <ItemsPanelTemplate>
-                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="250,18" SpacingMode="None" />
-                                                                        </ItemsPanelTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </ListBox.Style>
-                                            </ListBox>
-                                        </TextBlock>
+                                        <ToolTip>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock>
+                                                    <Run FontWeight="Bold" Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" />
+                                                    <LineBreak />
+                                                    <Run Text="{Binding Count}" />
+                                                </TextBlock>
+                                                <ListBox Grid.Row="1"
+                                                    Width="800" Height="600"
+                                                    ItemsSource="{Binding Name}"
+                                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                                    <ListBox.Style>
+                                                        <Style TargetType="ListBox">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
+                                                                    <Setter Property="ItemTemplate" Value="{StaticResource ContributionImageTemplate}" />
+                                                                    <Setter Property="ItemsPanel">
+                                                                        <Setter.Value>
+                                                                            <ItemsPanelTemplate>
+                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="155,155" SpacingMode="None" />
+                                                                            </ItemsPanelTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="false">
+                                                                    <Setter Property="ItemTemplate" Value="{StaticResource ContributionTextTemplate}" />
+                                                                    <Setter Property="ItemsPanel">
+                                                                        <Setter.Value>
+                                                                            <ItemsPanelTemplate>
+                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="250,18" SpacingMode="None" />
+                                                                            </ItemsPanelTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </ListBox.Style>
+                                                </ListBox>
+                                            </Grid>
+                                        </ToolTip>
                                     </Rectangle.ToolTip>
                                 </Rectangle>
                             </DataTemplate>

@@ -20,10 +20,6 @@ public class XmlViewerControlModel
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-        {
-            return;
-        }
         if (d is XmlViewerControl xmlViewerControl && e.NewValue is string path && File.Exists(path))
         {
             try
