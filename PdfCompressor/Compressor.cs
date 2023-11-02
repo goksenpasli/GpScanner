@@ -173,8 +173,8 @@ public class Compressor : Control, INotifyPropertyChanged
             {
                 for (int i = 0; i < pdfDoc.PageCount; i++)
                 {
-                    int width = (int)(pdfDoc.PageSizes[i].Width / 96 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[i].Height / 96 * dpi);
+                    int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
                     using System.Drawing.Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
                     images.Add(image.ToBitmapImage(ImageFormat.Jpeg));
                     CompressionProgress = (i + 1) / (double)pdfDoc.PageCount;

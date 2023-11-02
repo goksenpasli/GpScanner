@@ -6,17 +6,18 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Printing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Xps;
 using static Extensions.ExtensionMethods;
 using Control = System.Windows.Controls.Control;
 using DataFormats = System.Windows.DataFormats;
@@ -240,8 +241,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     }
 
     public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
-
-    public string DefaultPrinter { get; set; } = LocalPrintServer.GetDefaultPrintQueue()?.FullName;
 
     public RelayCommand<object> DosyaAç { get; }
 
@@ -527,43 +526,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public bool ZoomEnabled { get => (bool)GetValue(ZoomEnabledProperty); set => SetValue(ZoomEnabledProperty, value); }
 
-    internal static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 96)
-    {
-        try
-        {
-            return !File.Exists(pdffilepath)
-                   ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
-                   : await Task.Run(
-                () =>
-                {
-                    if (!IsValidPdfFile(pdffilepath))
-                    {
-                        return null;
-                    }
-                    using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                    if (pdfDoc is null)
-                    {
-                        return null;
-                    }
-                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
-                    using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
-                    BitmapImage bitmapImage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
-                    if (bitmapImage is null)
-                    {
-                        return null;
-                    }
-
-                    bitmapImage.Freeze();
-                    return bitmapImage;
-                });
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-
     public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] pdffilestream, int page, int dpi)
     {
         try
@@ -579,8 +541,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         return null;
                     }
-                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
                     System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
                     if (image is null)
                     {
@@ -699,6 +661,43 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    internal static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 72)
+    {
+        try
+        {
+            return !File.Exists(pdffilepath)
+                   ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
+                   : await Task.Run(
+                () =>
+                {
+                    if (!IsValidPdfFile(pdffilepath))
+                    {
+                        return null;
+                    }
+                    using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
+                    if (pdfDoc is null)
+                    {
+                        return null;
+                    }
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                    using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                    BitmapImage bitmapImage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
+                    if (bitmapImage is null)
+                    {
+                        return null;
+                    }
+
+                    bitmapImage.Freeze();
+                    return bitmapImage;
+                });
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)
@@ -740,8 +739,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
                 int dpi = pdfViewer.Dpi;
                 pdfViewer.Sayfa = 1;
-                int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 96 * dpi);
-                int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 96 * dpi);
+                int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 72 * dpi);
+                int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 72 * dpi);
                 pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                 pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                 pdfViewer.Source = await RenderPdf(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
@@ -805,36 +804,48 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void PrintPdf(PdfDocument pdfDocument)
+    private void PrintPdf(PdfDocument document, int Dpi = 300)
     {
-        using System.Windows.Forms.PrintDialog form = new();
-        using PrintDocument document = pdfDocument.CreatePrintDocument(PdfPrintMode.ShrinkToMargin);
-        if (document != null)
+        PrintDialog pd = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)document.PageCount, MinPage = 1 };
+        if (pd.ShowDialog() == true)
         {
-            form.AllowSomePages = true;
-            form.Document = document;
-        }
-
-        form.UseEXDialog = true;
-        form.Document.PrinterSettings.FromPage = 1;
-        form.Document.PrinterSettings.ToPage = pdfDocument.PageCount;
-        if (DefaultPrinter != null)
-        {
-            form.Document.PrinterSettings.PrinterName = DefaultPrinter;
-        }
-
-        if (form.ShowDialog() == DialogResult.OK)
-        {
-            try
+            int startPage;
+            int endPage;
+            if (pd.PageRangeSelection == PageRangeSelection.AllPages)
             {
-                if (form.Document.PrinterSettings.FromPage <= pdfDocument.PageCount)
-                {
-                    form.Document.Print();
-                }
+                startPage = 1;
+                endPage = document.PageCount;
             }
-            catch
+            else
             {
+                startPage = pd.PageRange.PageFrom;
+                endPage = pd.PageRange.PageTo;
             }
+
+            FixedDocument fixedDocument = new();
+            for (int i = startPage; i <= endPage; i++)
+            {
+                PageContent pageContent = new();
+                FixedPage fixedPage = new();
+                int width = (int)(document.PageSizes[i - 1].Width / 72 * Dpi);
+                int height = (int)(document.PageSizes[i - 1].Height / 72 * Dpi);
+                using Bitmap bitmap = document.Render(i - 1, width, height, Dpi, Dpi, true) as Bitmap;
+                BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
+                bitmapimage.Freeze();
+
+                System.Windows.Controls.Image image = new() { Source = bitmapimage };
+                fixedPage.Width = width < height ? pd.PrintableAreaWidth : pd.PrintableAreaHeight;
+                fixedPage.Height = width > height ? pd.PrintableAreaWidth : pd.PrintableAreaHeight;
+                _ = fixedPage.Children.Add(image);
+                fixedPage.SetValue(WidthProperty, fixedPage.Width);
+                fixedPage.SetValue(HeightProperty, fixedPage.Height);
+
+                ((IAddChild)pageContent).AddChild(fixedPage);
+                _ = fixedDocument.Pages.Add(pageContent);
+                GC.Collect();
+            }
+            XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
+            xpsWriter.WriteAsync(fixedDocument);
         }
     }
 
