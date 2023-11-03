@@ -43,6 +43,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         typeof(PdfViewer),
         new PropertyMetadata(FitImageOrientation.Width, Changed));
     public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
+    public static readonly DependencyProperty PrintDpiProperty = DependencyProperty.Register("PrintDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(300));
     public static readonly DependencyProperty SayfaProperty =
         DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
     public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register(
@@ -73,7 +74,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private string pdfTextContent;
     private Visibility pdfTextContentVisibility;
     private Visibility printButtonVisibility = Visibility.Collapsed;
-    private int printDpi = 300;
+    private bool printDpiSettingsListEnabled = true;
     private ScrollViewer scrollvwr;
     private PdfMatch searchPdfMatch;
     private string searchTextContent;
@@ -394,15 +395,17 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public int PrintDpi
+    public int PrintDpi { get => (int)GetValue(PrintDpiProperty); set => SetValue(PrintDpiProperty, value); }
+
+    public bool PrintDpiSettingsListEnabled
     {
-        get => printDpi;
+        get => printDpiSettingsListEnabled;
         set
         {
-            if (printDpi != value)
+            if (printDpiSettingsListEnabled != value)
             {
-                printDpi = value;
-                OnPropertyChanged(nameof(PrintDpi));
+                printDpiSettingsListEnabled = value;
+                OnPropertyChanged(nameof(PrintDpiSettingsListEnabled));
             }
         }
     }

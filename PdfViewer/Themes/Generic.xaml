@@ -157,7 +157,10 @@
                                             SmallChange="1"
                                             Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
-                                    <Extensions:SplitButton Grid.Column="2" Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Extensions:SplitButton Grid.Column="2"
+                                        Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        SplitContentPartIsEnabled="{Binding PrintDpiSettingsListEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

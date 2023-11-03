@@ -5,13 +5,17 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Printing;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using System.Windows.Xps;
 
 namespace Extensions;
 
@@ -148,19 +152,29 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                         bitiş = pd.PageRange.PageTo - 1;
                     }
 
+                    FixedDocument fixedDocument = new();
                     for (int i = başlangıç; i <= bitiş; i++)
                     {
-                        using (DrawingContext dc = dv.RenderOpen())
-                        {
-                            BitmapSource imagesource = Source.Width > Source.Height
-                                                       ? Decoder.Frames[i]?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                                       : Decoder.Frames[i]?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
-                            imagesource.Freeze();
-                            dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
-                        }
+                        PageContent pageContent = new();
+                        FixedPage fixedPage = new();
+                        BitmapSource imagesource = Decoder.Frames[i];
+                        fixedPage.Width = imagesource.Width < imagesource.Height ? pd.PrintableAreaWidth : pd.PrintableAreaHeight;
+                        fixedPage.Height = imagesource.Width > imagesource.Height ? pd.PrintableAreaWidth : pd.PrintableAreaHeight;
+                        imagesource = Decoder.Frames[i].Resize(fixedPage.Width, fixedPage.Height);
+                        imagesource.Freeze();
+                        Image image = new() { Source = imagesource };
+                        _ = fixedPage.Children.Add(image);
+                        fixedPage.SetValue(WidthProperty, fixedPage.Width);
+                        fixedPage.SetValue(HeightProperty, fixedPage.Height);
 
-                        pd.PrintVisual(dv, string.Empty);
+                        ((IAddChild)pageContent).AddChild(fixedPage);
+                        _ = fixedDocument.Pages.Add(pageContent);
+                        imagesource = null;
+                        image = null;
+                        GC.Collect();
                     }
+                    XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
+                    xpsWriter.WriteAsync(fixedDocument);
                 }
             },
             parameter => Source is not null);
