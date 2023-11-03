@@ -73,6 +73,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private string pdfTextContent;
     private Visibility pdfTextContentVisibility;
     private Visibility printButtonVisibility = Visibility.Collapsed;
+    private int printDpi = 300;
     private ScrollViewer scrollvwr;
     private PdfMatch searchPdfMatch;
     private string searchTextContent;
@@ -102,7 +103,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PrintPdf(pdfDocument);
+                PrintPdf(pdfDocument, PrintDpi);
             },
             parameter => PdfFilePath is not null);
 
@@ -389,6 +390,19 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 printButtonVisibility = value;
                 OnPropertyChanged(nameof(PrintButtonVisibility));
+            }
+        }
+    }
+
+    public int PrintDpi
+    {
+        get => printDpi;
+        set
+        {
+            if (printDpi != value)
+            {
+                printDpi = value;
+                OnPropertyChanged(nameof(PrintDpi));
             }
         }
     }

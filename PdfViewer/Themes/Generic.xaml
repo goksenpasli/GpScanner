@@ -157,7 +157,7 @@
                                             SmallChange="1"
                                             Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
-                                    <Button Grid.Column="2" Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Extensions:SplitButton Grid.Column="2" Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -166,7 +166,10 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                    </Button>
+                                        <Extensions:SplitButton.InternalContent>
+                                            <ListBox ItemStringFormat="{}{0} Dpi" ItemsSource="{x:Static local:PdfViewer.DpiList}" SelectedItem="{Binding PrintDpi, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        </Extensions:SplitButton.InternalContent>
+                                    </Extensions:SplitButton>
                                     <ComboBox Grid.Column="3"
                                         VerticalContentAlignment="Center"
                                         ItemStringFormat="{}{0} Dpi"
