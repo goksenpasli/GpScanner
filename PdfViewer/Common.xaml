@@ -2,7 +2,12 @@
     <local:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
     <DataTemplate x:Key="PdfThumbItemTemplate">
         <StackPanel HorizontalAlignment="Center">
-            <TextBlock HorizontalAlignment="Center" Text="{Binding Mode=OneWay}" />
+            <TextBlock HorizontalAlignment="Center">
+                <Run Text="{Binding Mode=OneWay}" />
+                <Hyperlink Command="{Binding PrintSinglePage, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" CommandParameter="{Binding Mode=OneWay}">
+                    <Run FontFamily="Wingdings 2" FontSize="14" Text="7" />
+                </Hyperlink>
+            </TextBlock>
             <local:ShadowedImage HorizontalAlignment="Center" ShowShadow="True">
                 <local:ShadowedImage.Tag>
                     <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">

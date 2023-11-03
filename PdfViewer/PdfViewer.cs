@@ -108,6 +108,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             },
             parameter => PdfFilePath is not null);
 
+        PrintSinglePage = new RelayCommand<object>(
+            parameter =>
+            {
+                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                PrintPdf(pdfDocument, (int)parameter, (int)parameter, PrintDpi);
+            },
+            parameter => PdfFilePath is not null);
+
         ViewerBack = new RelayCommand<object>(
             parameter =>
             {
@@ -409,6 +417,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             }
         }
     }
+
+    public RelayCommand<object> PrintSinglePage { get; }
 
     public RelayCommand<object> ReadPdfBookmarks { get; }
 
@@ -842,28 +852,49 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             FixedDocument fixedDocument = new();
             for (int i = startPage; i <= endPage; i++)
             {
-                PageContent pageContent = new();
-                FixedPage fixedPage = new();
-                int width = (int)(document.PageSizes[i - 1].Width / 72 * Dpi);
-                int height = (int)(document.PageSizes[i - 1].Height / 72 * Dpi);
-                using Bitmap bitmap = document.Render(i - 1, width, height, Dpi, Dpi, true) as Bitmap;
-                BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
-                bitmapimage.Freeze();
-
-                System.Windows.Controls.Image image = new() { Source = bitmapimage };
-                fixedPage.Width = width < height ? pd.PrintableAreaWidth : pd.PrintableAreaHeight;
-                fixedPage.Height = width > height ? pd.PrintableAreaWidth : pd.PrintableAreaHeight;
-                _ = fixedPage.Children.Add(image);
-                fixedPage.SetValue(WidthProperty, fixedPage.Width);
-                fixedPage.SetValue(HeightProperty, fixedPage.Height);
-
-                ((IAddChild)pageContent).AddChild(fixedPage);
-                _ = fixedDocument.Pages.Add(pageContent);
-                GC.Collect();
+                RenderPageContents(document, Dpi, pd.PrintableAreaWidth, pd.PrintableAreaHeight, fixedDocument, i);
             }
             XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
             xpsWriter.WriteAsync(fixedDocument);
         }
+    }
+
+    private void PrintPdf(PdfDocument document, int startPage, int endPage, int Dpi = 300)
+    {
+        PrintDialog pd = new() { CurrentPageEnabled = true, PageRangeSelection = PageRangeSelection.CurrentPage, UserPageRangeEnabled = false, MaxPage = (uint)document.PageCount, MinPage = 1 };
+        if (pd.ShowDialog() == true)
+        {
+            pd.PageRange = new PageRange(startPage, endPage);
+            FixedDocument fixedDocument = new();
+            for (int i = startPage; i <= endPage; i++)
+            {
+                RenderPageContents(document, Dpi, pd.PrintableAreaWidth, pd.PrintableAreaHeight, fixedDocument, i);
+            }
+            XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
+            xpsWriter.WriteAsync(fixedDocument);
+        }
+    }
+
+    private void RenderPageContents(PdfDocument document, int Dpi, double printdwidth, double printdheight, FixedDocument fixedDocument, int i)
+    {
+        PageContent pageContent = new();
+        FixedPage fixedPage = new();
+        int width = (int)(document.PageSizes[i - 1].Width / 72 * Dpi);
+        int height = (int)(document.PageSizes[i - 1].Height / 72 * Dpi);
+        using Bitmap bitmap = document.Render(i - 1, width, height, Dpi, Dpi, true) as Bitmap;
+        BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
+        bitmapimage.Freeze();
+
+        System.Windows.Controls.Image image = new() { Source = bitmapimage };
+        fixedPage.Width = width < height ? printdwidth : printdheight;
+        fixedPage.Height = width > height ? printdwidth : printdheight;
+        _ = fixedPage.Children.Add(image);
+        fixedPage.SetValue(WidthProperty, fixedPage.Width);
+        fixedPage.SetValue(HeightProperty, fixedPage.Height);
+
+        ((IAddChild)pageContent).AddChild(fixedPage);
+        _ = fixedDocument.Pages.Add(pageContent);
+        GC.Collect();
     }
 
     private void Scrollvwr_Drop(object sender, DragEventArgs e)
