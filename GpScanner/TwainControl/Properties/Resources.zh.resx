@@ -656,4 +656,7 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="SATURATION" xml:space="preserve">
     <value>彩度</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>简单的PDF预览。适用于慢速计算机。！</value>
+  </data>
 </root>

@@ -653,4 +653,7 @@ PDF!</value>
   <data name="SATURATION" xml:space="preserve">
     <value>&amp; Κορεσμός</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Απλή προεπισκόπηση PDF. Κατάλληλο για αργούς υπολογιστές.!</value>
+  </data>
 </root>

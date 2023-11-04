@@ -749,7 +749,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                                 SelectedTabIndex = 4;
                                                 (TbCtrl.Items[SelectedTabIndex] as TabItem).Content = PdfImportViewer;
                                             };
-
             },
             parameter => true);
 
@@ -2086,6 +2085,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public DoubleCollection ScanResolutionList { get; } = [72, 96, 120, 150, 200, 300, 450, 600, 1200, 2400, 4800];
 
     public ICommand SeçiliDirektPdfKaydet { get; }
 

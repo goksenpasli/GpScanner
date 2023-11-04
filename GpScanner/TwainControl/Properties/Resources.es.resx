@@ -650,4 +650,7 @@ AL ARCHIVO</value>
   <data name="SATURATION" xml:space="preserve">
     <value>Saturación</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Vista previa en PDF sencilla. ¡Adecuado para ordenadores lentos.!</value>
+  </data>
 </root>

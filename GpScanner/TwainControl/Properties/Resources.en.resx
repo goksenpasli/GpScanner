@@ -646,4 +646,16 @@ TO FILE</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Press And Hold Esc Button To Cancel</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Simple Pdf Preview. Suitable for Slow Computers</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>HUE</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>LIGHTNESS</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>SATURATION</value>
+  </data>
 </root>

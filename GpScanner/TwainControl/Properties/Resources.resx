@@ -686,4 +686,7 @@
   <data name="SATURATION" xml:space="preserve">
     <value />
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value />
+  </data>
 </root>

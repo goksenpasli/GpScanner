@@ -469,29 +469,49 @@
                                             </Style>
                                         </ComboBox.ItemContainerStyle>
                                     </ComboBox>
-                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
-                                        FontFamily="Webdings" FontSize="32"
-                                        Foreground="Red" Text="N">
-                                        <TextBlock.ToolTip>
-                                            <Canvas Width="210" Height="297">
-                                                <Canvas.Resources>
-                                                    <Style TargetType="Rectangle">
-                                                        <Setter Property="StrokeThickness" Value="2" />
-                                                        <Setter Property="Effect">
-                                                            <Setter.Value>
-                                                                <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
-                                                            </Setter.Value>
-                                                        </Setter>
-                                                    </Style>
-                                                </Canvas.Resources>
-                                                <Rectangle Width="210" Height="297" Stroke="Black" />
-                                                <Rectangle Canvas.Bottom="0"
-                                                    Width="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource PageSizePreviewWidthConverter}}"
-                                                    Height="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource PageSizePreviewHeightConverter}}"
-                                                    Stroke="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center"
+                                            FontFamily="Webdings" FontSize="32"
+                                            Foreground="Red" Text="N">
+                                            <TextBlock.ToolTip>
+                                                <Canvas Width="210" Height="297">
+                                                    <Canvas.Resources>
+                                                        <Style TargetType="Rectangle">
+                                                            <Setter Property="StrokeThickness" Value="2" />
+                                                            <Setter Property="Effect">
+                                                                <Setter.Value>
+                                                                    <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Canvas.Resources>
+                                                    <Rectangle Width="210" Height="297" Stroke="Black" />
+                                                    <Rectangle Canvas.Bottom="0"
+                                                        Width="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource PageSizePreviewWidthConverter}}"
+                                                        Height="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource PageSizePreviewHeightConverter}}"
+                                                        Stroke="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                                </Canvas>
+                                            </TextBlock.ToolTip>
+                                        </TextBlock>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        </StackPanel>
+                                        <ToggleButton IsChecked="{Binding FastSimplePdfThumbViewer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" ToolTip="{twainctrl:Loc FASTPDFVIEW}">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <Image Canvas.Right="0" Canvas.Bottom="0"
+                                                    Width="16" Height="16"
+                                                    Visibility="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="20" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
                                             </Canvas>
-                                        </TextBlock.ToolTip>
-                                    </TextBlock>
+                                        </ToggleButton>
+                                    </StackPanel>
                                     <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
                                     <ComboBox VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="DefaultThumbNailDpi" ItemStringFormat="{}{0} Dpi"

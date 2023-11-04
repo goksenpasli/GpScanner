@@ -230,7 +230,7 @@
                                         VerticalContentAlignment="Center"
                                         ItemStringFormat="{}{0} Dpi"
                                         ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
-                                        SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
+                                        SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}}"
                                         Template="{StaticResource ComboBoxStyle}"
                                         Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Button Grid.Column="4" Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">

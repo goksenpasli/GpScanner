@@ -658,4 +658,7 @@ VEDERE</value>
   <data name="SATURATION" xml:space="preserve">
     <value>SATURAZIONE</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Anteprima PDF semplice. Adatto per computer lenti.!</value>
+  </data>
 </root>

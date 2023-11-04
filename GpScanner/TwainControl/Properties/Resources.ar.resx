@@ -658,4 +658,7 @@
   <data name="SATURATION" xml:space="preserve">
     <value>التشبع!</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>معاينة PDF بسيطة. مناسبة لأجهزة الكمبيوتر البطيئة.!</value>
+  </data>
 </root>

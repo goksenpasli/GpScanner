@@ -651,4 +651,7 @@ PDF-ФАЙЛЫ</value>
   <data name="SATURATION" xml:space="preserve">
     <value>&amp; Насыщенность</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Простой предварительный просмотр PDF. Подходит для медленных компьютеров.!</value>
+  </data>
 </root>

@@ -654,4 +654,7 @@ ENTFERNEN</value>
   <data name="SATURATION" xml:space="preserve">
     <value>Sättigung</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Einfache PDF-Vorschau. Geeignet für langsame Computer.!</value>
+  </data>
 </root>

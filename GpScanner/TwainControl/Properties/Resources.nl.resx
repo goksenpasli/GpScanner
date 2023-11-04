@@ -652,4 +652,7 @@ PDF 'S SAMENVOEGEN</value>
   <data name="SATURATION" xml:space="preserve">
     <value>VERZADIGING!</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Eenvoudig PDF-voorbeeld. Geschikt voor langzame computers.!</value>
+  </data>
 </root>

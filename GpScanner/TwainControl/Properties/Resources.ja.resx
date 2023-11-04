@@ -656,4 +656,7 @@ PDFをマージ</value>
   <data name="SATURATION" xml:space="preserve">
     <value>タイルの彩度</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>シンプルなPDFプレビュー。遅いコンピュータに適しています。！</value>
+  </data>
 </root>

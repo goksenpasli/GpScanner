@@ -528,7 +528,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="17.6" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <ComboBox x:Name="CbFolderFormat"
                                     local:Policy.PolicyName="FolderDateFormat"
@@ -569,21 +569,11 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <Grid Grid.Column="1" VerticalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="50" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        FontWeight="Bold"
-                                        Text="{Binding Çözünürlük, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
-                                    <Slider Grid.Column="1"
-                                        IsSnapToTickEnabled="True" Maximum="4800"
-                                        Minimum="72" SmallChange="1"
-                                        Style="{StaticResource Slider}"
-                                        Ticks="72,96,120,150,200,300,450,600,1200,2400,4800"
-                                        Value="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                </Grid>
+                                <ComboBox Grid.Column="1"
+                                    VerticalContentAlignment="Center"
+                                    FontWeight="Bold" ItemStringFormat="{}{0} Dpi"
+                                    ItemsSource="{Binding ScanResolutionList, Mode=OneWay}"
+                                    SelectedItem="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 <UniformGrid Grid.Column="2" Columns="2">
                                     <ListBox VerticalContentAlignment="Center"
                                         local:Policy.PolicyName="SelectedRotation"

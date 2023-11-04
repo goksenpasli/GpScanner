@@ -653,4 +653,7 @@ SOUBORY PDF</value>
   <data name="SATURATION" xml:space="preserve">
     <value>Sytost</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Jednoduchý náhled PDF. Vhodné pro pomalé počítače.!</value>
+  </data>
 </root>

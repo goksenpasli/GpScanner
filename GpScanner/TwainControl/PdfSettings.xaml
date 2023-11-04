@@ -154,7 +154,7 @@
                         <Slider IsSnapToTickEnabled="True" Maximum="1200"
                             Minimum="72" SmallChange="1"
                             Style="{StaticResource Slider}"
-                            Ticks="72,96,120,150,200,300,450,600,1200"
+                            Ticks="{Binding ScanResolutionList, Mode=OneWay}"
                             Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                     </HeaderedContentControl>
                 </Border>

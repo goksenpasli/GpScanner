@@ -601,8 +601,20 @@
                                                                 d:ContentTemplate="{StaticResource PdfViewerTemplateFull}"
                                                                 d:ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
                                                                 Content="{Binding FileName, IsAsync=True, Mode=OneWay}"
-                                                                ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
-                                                                MouseDoubleClick="ContentControl_MouseDoubleClick" />
+                                                                MouseDoubleClick="ContentControl_MouseDoubleClick">
+                                                                <ContentControl.Style>
+                                                                    <Style TargetType="ContentControl">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
+                                                                                <Setter Property="ContentTemplateSelector" Value="{StaticResource FastPdfThumbViewerSelector}" />
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="false">
+                                                                                <Setter Property="ContentTemplateSelector" Value="{StaticResource ThumbViewerSelector}" />
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </ContentControl.Style>
+                                                            </ContentControl>
                                                         </Grid>
                                                     </Border>
                                                 </CheckBox>

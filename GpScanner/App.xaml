@@ -358,6 +358,20 @@
             <DataTemplate x:Key="XmlViewerThumbTemplate">
                 <twain:XmlViewerControl Grid.Row="1" twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="SimplePdfTemplate">
+                <Image Grid.Row="1" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                    <Image.Tag>
+                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                            <Binding Mode="OneWay" Path="DataContext" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
+                            <Binding Mode="OneWay">
+                                <Binding.Source>
+                                    <System:Int32>1</System:Int32>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </Image.Tag>
+                </Image>
+            </DataTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -556,6 +570,14 @@
                 Eyp="{StaticResource EypViewerTemplate}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
+                Vid="{StaticResource VideoViewerTemplateMini}"
+                Xml="{StaticResource XmlViewerThumbTemplate}"
+                Xps="{StaticResource XpsViewerTemplate}"
+                Zip="{StaticResource ZipViewerTemplate}" />
+            <twain:ViewerTemplateSelector x:Key="FastPdfThumbViewerSelector"
+                Eyp="{StaticResource EypViewerTemplate}"
+                Img="{StaticResource ImgViewerTemplate}"
+                Pdf="{StaticResource SimplePdfTemplate}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"

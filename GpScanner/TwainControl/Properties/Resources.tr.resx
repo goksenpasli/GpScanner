@@ -661,4 +661,7 @@ BELGE EKLE</value>
   <data name="SATURATION" xml:space="preserve">
     <value>DOYGUNLUK</value>
   </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Basit Pdf Önizleme. Yavaş Bilgisayarlar İçin Uygundur.</value>
+  </data>
 </root>

@@ -378,6 +378,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string FASTPDFVIEW {
+            get {
+                return ResourceManager.GetString("FASTPDFVIEW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FASTSCAN {
             get {
                 return ResourceManager.GetString("FASTSCAN", resourceCulture);
