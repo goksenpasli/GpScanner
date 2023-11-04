@@ -116,32 +116,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             },
             parameter => PdfFilePath is not null);
 
-        ViewerBack = new RelayCommand<object>(
-            parameter =>
-            {
-                if (Keyboard.Modifiers == ModifierKeys.Alt)
-                {
-                    Sayfa = 1;
-                    return;
-                }
-
-                Sayfa--;
-            },
-            parameter => Source is not null && Sayfa > 1 && Sayfa <= ToplamSayfa);
-
-        ViewerNext = new RelayCommand<object>(
-            parameter =>
-            {
-                if (Keyboard.Modifiers == ModifierKeys.Alt)
-                {
-                    Sayfa = ToplamSayfa;
-                    return;
-                }
-
-                Sayfa++;
-            },
-            parameter => Source is not null && Sayfa >= 1 && Sayfa < ToplamSayfa);
-
         SaveImage = new RelayCommand<object>(
             parameter =>
             {
@@ -529,10 +503,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public RelayCommand<object> ViewerBack { get; }
-
-    public RelayCommand<object> ViewerNext { get; }
-
     public bool WholeWord
     {
         get => wholeWord;
@@ -875,19 +845,19 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void RenderPageContents(PdfDocument document, int Dpi, double printdwidth, double printdheight, FixedDocument fixedDocument, int i)
+    private void RenderPageContents(PdfDocument pdfiumdocument, int Dpi, double printwidth, double printheight, FixedDocument fixedDocument, int pagenumber)
     {
         PageContent pageContent = new();
         FixedPage fixedPage = new();
-        int width = (int)(document.PageSizes[i - 1].Width / 72 * Dpi);
-        int height = (int)(document.PageSizes[i - 1].Height / 72 * Dpi);
-        using Bitmap bitmap = document.Render(i - 1, width, height, Dpi, Dpi, true) as Bitmap;
+        int width = (int)(pdfiumdocument.PageSizes[pagenumber - 1].Width / 72 * Dpi);
+        int height = (int)(pdfiumdocument.PageSizes[pagenumber - 1].Height / 72 * Dpi);
+        using Bitmap bitmap = pdfiumdocument.Render(pagenumber - 1, width, height, Dpi, Dpi, true) as Bitmap;
         BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
         bitmapimage.Freeze();
 
         System.Windows.Controls.Image image = new() { Source = bitmapimage };
-        fixedPage.Width = width < height ? printdwidth : printdheight;
-        fixedPage.Height = width > height ? printdwidth : printdheight;
+        fixedPage.Width = width < height ? printwidth : printheight;
+        fixedPage.Height = width > height ? printwidth : printheight;
         _ = fixedPage.Children.Add(image);
         fixedPage.SetValue(WidthProperty, fixedPage.Width);
         fixedPage.SetValue(HeightProperty, fixedPage.Height);

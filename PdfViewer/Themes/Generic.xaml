@@ -15,32 +15,85 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:PdfViewer}">
-                    <Grid>
+                    <Grid ContextMenuService.IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
                         <Grid.ContextMenu>
                             <ContextMenu Visibility="{Binding ContextMenuVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                <MenuItem Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="GERİ">
+                                <MenuItem Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="AÇ" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <MenuItem.Icon>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="246" />
+                                                    <Binding Source="3" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
                                     </MenuItem.Icon>
                                 </MenuItem>
-                                <MenuItem Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="İLERİ">
+                                <MenuItem Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Header="YAZDIR" Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <MenuItem.Icon>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="247" />
+                                                    <Binding Source="16" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
                                     </MenuItem.Icon>
+                                </MenuItem>
+                                <MenuItem>
+                                    <MenuItem.Icon>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="19" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                    <MenuItem.Header>
+                                        <Extensions:NumericUpDownControl Width="100"
+                                            LargeChange="1"
+                                            Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                            Minimum="1" Orientation="Horizontal"
+                                            SmallChange="1"
+                                            Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}"
+                                            Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                    </MenuItem.Header>
+                                </MenuItem>
+                                <MenuItem>
+                                    <MenuItem.Icon>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="22" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                    <MenuItem.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Slider Width="50"
+                                                Margin="1"
+                                                AutoToolTipPlacement="TopLeft"
+                                                IsEnabled="{Binding ZoomEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Minimum="0.01" SmallChange="1"
+                                                Style="{StaticResource Slider}"
+                                                Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <Slider Width="50"
+                                                Margin="1"
+                                                AutoToolTipPlacement="TopLeft"
+                                                IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Maximum="360" SmallChange="1"
+                                                Style="{StaticResource Slider}"
+                                                Ticks="0, 90, 180, 270, 360"
+                                                Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                        </StackPanel>
+                                    </MenuItem.Header>
                                 </MenuItem>
                             </ContextMenu>
                         </Grid.ContextMenu>
