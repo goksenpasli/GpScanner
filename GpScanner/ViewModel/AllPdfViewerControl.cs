@@ -18,7 +18,11 @@ public class AllPdfViewerControl : DependencyObject
     {
         if (d is PdfViewer.PdfViewer pdfviewer)
         {
-            pdfviewer.Sayfa = (int)e.NewValue;
+            int sayfa = (int)e.NewValue;
+            if (sayfa > 0)
+            {
+                pdfviewer.Sayfa = sayfa;
+            }
         }
     }
 }

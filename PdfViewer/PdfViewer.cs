@@ -762,17 +762,17 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0)
         {
-            if (pdfViewer.Sayfa > pdfViewer.ToplamSayfa)
+            int sayfa = (int)e.NewValue;
+            if (sayfa > pdfViewer.ToplamSayfa)
             {
-                pdfViewer.Sayfa = pdfViewer.ToplamSayfa;
+                sayfa = pdfViewer.ToplamSayfa;
             }
 
-            if (pdfViewer.Sayfa < 1)
+            if (sayfa < 1)
             {
-                pdfViewer.Sayfa = 1;
+                sayfa = 1;
             }
-
-            pdfViewer.Source = await ConvertToImgAsync(pdfViewer.PdfFilePath, pdfViewer.Sayfa, pdfViewer.Dpi);
+            pdfViewer.Source = await ConvertToImgAsync(pdfViewer.PdfFilePath, sayfa, pdfViewer.Dpi);
         }
     }
 
