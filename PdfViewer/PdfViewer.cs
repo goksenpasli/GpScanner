@@ -668,10 +668,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                    : await Task.Run(
                 () =>
                 {
-                    if (page < 1)
-                    {
-                        return null;
-                    }
                     using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
                     if (pdfDoc is null)
                     {
@@ -764,7 +760,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void SayfaChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0 && pdfViewer.Sayfa != 0)
+        if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0)
         {
             if (pdfViewer.Sayfa > pdfViewer.ToplamSayfa)
             {
