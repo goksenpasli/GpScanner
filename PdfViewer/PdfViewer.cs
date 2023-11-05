@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -667,7 +668,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                    : await Task.Run(
                 () =>
                 {
-                    if (!IsValidPdfFile(pdffilepath))
+                    if (page < 1)
                     {
                         return null;
                     }
@@ -749,19 +750,21 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static Task<BitmapImage> RenderPdf(PdfDocument pdfDoc, int dpi, int page, int width, int height)
+    private static Task<BitmapSource> RenderPdf(PdfDocument pdfDoc, int dpi, int page, int width, int height)
     {
         return Task.Run(
             () =>
             {
-                using System.Drawing.Image image = pdfDoc.Render(page, width, height, dpi, dpi, false);
-                return image.ToBitmapImage(ImageFormat.Jpeg);
+                using Bitmap image = pdfDoc.Render(page, width, height, dpi, dpi, false) as Bitmap;
+                BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(image.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                bitmapSource?.Freeze();
+                return bitmapSource;
             });
     }
 
     private static async void SayfaChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0)
+        if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0 && pdfViewer.Sayfa != 0)
         {
             if (pdfViewer.Sayfa > pdfViewer.ToplamSayfa)
             {

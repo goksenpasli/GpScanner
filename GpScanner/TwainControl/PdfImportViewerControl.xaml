@@ -72,8 +72,8 @@
                         </MenuItem.Icon>
                         <MenuItem.ItemTemplate>
                             <DataTemplate>
-                                <TextBlock>
-                                    <Image Width="128" Height="128" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                                <StackPanel Margin="2" Orientation="Horizontal">
+                                    <Pdfviewer:PdfShadowedImage Width="128" Height="128" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
                                         <Image.Tag>
                                             <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                 <Binding Mode="OneWay" />
@@ -84,9 +84,12 @@
                                                 </Binding>
                                             </MultiBinding>
                                         </Image.Tag>
-                                    </Image>
-                                    <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                </TextBlock>
+                                    </Pdfviewer:PdfShadowedImage>
+                                    <TextBlock Width="100"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Mode=OneWay}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
                         <MenuItem.ItemContainerStyle>
