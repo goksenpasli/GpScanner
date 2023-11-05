@@ -294,7 +294,7 @@
                             <TextBlock VerticalAlignment="Center"><Run Text="PDF" /><Run Text=" " /><Run Text="{twainctrl:Loc ALL}" /><Run Text=" " /><Run Text="{twainctrl:Loc PAGENUMBER}" /></TextBlock>
                             <Extensions:NumericUpDownControl Minimum="1" Orientation="Horizontal"
                                 SmallChange="1"
-                                Value="{Binding AllPdfPage, Mode=OneWayToSource}" />
+                                Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                 twainctrl:Policy.PolicyName="PdfBirleştir" BorderBrush="Cyan"
                                 Command="{Binding PdfBirleştir}">

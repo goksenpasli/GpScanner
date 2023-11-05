@@ -52,7 +52,7 @@ public class GpScannerViewModel : InpcBase
     private readonly string AppName = Application.Current?.MainWindow?.Title;
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"];
-    private int allPdfPage;
+    private int allPdfPage = 1;
     private string aramaMetni;
     private ObservableCollection<string> barcodeList = [];
     private bool batchDialogOpen;
