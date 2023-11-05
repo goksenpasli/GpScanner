@@ -136,17 +136,17 @@ namespace Extensions
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ContributionControl contributionControl && e.NewValue is not null)
+            if (d is ContributionControl contributionControl && e.NewValue is ObservableCollection<ContributionData> contributiondata && contributiondata.Count > 0)
             {
-                contributionControl.MaxContribution = (e.NewValue as ObservableCollection<ContributionData>).Max(z => z.Count);
-                contributionControl.Days = (e.NewValue as ObservableCollection<ContributionData>).Take(7).Select(z => z.ContrubutionDate.Value.ToString("ddd"));
-                contributionControl.Months = (e.NewValue as ObservableCollection<ContributionData>).Select(z => z.ContrubutionDate.Value.ToString("MMM")).Distinct();
+                contributionControl.MaxContribution = contributiondata.Max(z => z.Count);
+                contributionControl.Days = contributiondata.Take(7).Select(z => z.ContrubutionDate.Value.ToString("ddd"));
+                contributionControl.Months = contributiondata.Select(z => z.ContrubutionDate.Value.ToString("MMM")).Distinct();
             }
         }
 
         private void ContributionControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is "SelectedMonth" && Contributions is not null)
+            if (e.PropertyName is "SelectedMonth" && Contributions?.Any() == true)
             {
                 foreach (ContributionData item in Contributions)
                 {

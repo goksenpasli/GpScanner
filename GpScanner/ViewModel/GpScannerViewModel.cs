@@ -59,6 +59,7 @@ public class GpScannerViewModel : InpcBase
     private string batchFolder;
     private ObservableCollection<BatchFiles> batchFolderProcessedFileList;
     private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
+    private ObservableCollection<string> burnFiles = [];
     private string calendarDesc;
     private XmlLanguage calendarLang;
     private bool calendarPanelIsExpanded;
@@ -119,7 +120,6 @@ public class GpScannerViewModel : InpcBase
 
         GenerateAnimationTimer();
         Dosyalar = GetScannerFileData();
-        ContributionData = GetContributionData();
         SeçiliDil = Settings.Default.DefaultLang;
         GenerateJumpList();
         SeçiliGün = DateTime.Today;
@@ -828,6 +828,8 @@ public class GpScannerViewModel : InpcBase
                 ScannerData.Reminder = ReminderYükle();
             },
             parameter => ScannerData?.Reminder?.Any() == true);
+
+        LoadContributionData = new RelayCommand<object>(parameter => ContributionData = GetContributionData(), parameter => true);
     }
 
     public static bool IsAdministrator
@@ -960,6 +962,19 @@ public class GpScannerViewModel : InpcBase
             {
                 batchTxtOcrs = value;
                 OnPropertyChanged(nameof(BatchTxtOcrs));
+            }
+        }
+    }
+
+    public ObservableCollection<string> BurnFiles
+    {
+        get => burnFiles;
+        set
+        {
+            if (burnFiles != value)
+            {
+                burnFiles = value;
+                OnPropertyChanged(nameof(BurnFiles));
             }
         }
     }
@@ -1204,6 +1219,8 @@ public class GpScannerViewModel : InpcBase
             }
         }
     }
+
+    public RelayCommand<object> LoadContributionData { get; }
 
     public GridLength MainWindowDocumentGuiControlLength
     {
@@ -1726,7 +1743,6 @@ public class GpScannerViewModel : InpcBase
     public void ReloadFileDatas()
     {
         Dosyalar = GetScannerFileData();
-        ContributionData = GetContributionData();
         SeçiliGün = DateTime.Today;
     }
 
@@ -1874,8 +1890,8 @@ public class GpScannerViewModel : InpcBase
                     string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
                     _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
                     return new { Scanner = scanner, ParentDate = parsedDateTime };
-                });
-            if (files is not null)
+                }).ToList();
+            if (files?.Any() == true)
             {
                 DateTime first = files.Where(z => z.ParentDate > DateTime.MinValue).Min(z => z.ParentDate);
                 DateTime last = files.Max(z => z.ParentDate);
@@ -2100,6 +2116,16 @@ public class GpScannerViewModel : InpcBase
         if (e.PropertyName is "LangFlowDirection")
         {
             Application.Current?.Windows?.Cast<Window>()?.ToList()?.ForEach(z => z.FlowDirection = LangFlowDirection);
+        }
+
+        if (e.PropertyName is "CheckedPdfCount")
+        {
+            ObservableCollection<string> files = [];
+            foreach (Scanner item in Dosyalar?.Where(z => z.Seçili))
+            {
+                files.Add(item.FileName);
+            }
+            BurnFiles = files;
         }
     }
 

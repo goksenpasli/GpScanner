@@ -21,6 +21,11 @@ namespace DvdBurner
     [TemplatePart(Name = "Lb", Type = typeof(ListBox))]
     public class Burner : Control, INotifyPropertyChanged
     {
+        public static readonly DependencyProperty FilesProperty = DependencyProperty.Register(
+            "Files",
+            typeof(ObservableCollection<string>),
+            typeof(Burner),
+            new PropertyMetadata(new ObservableCollection<string>(), Changed));
         private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
         private static Task Burntask;
         private static Task Erasetask;
@@ -31,7 +36,6 @@ namespace DvdBurner
         private long discMaxSize = (int)DiscSizes.CD;
         private Dictionary<string, string> drives;
         private bool eject = true;
-        private ObservableCollection<string> files = [];
         private bool ısCdWriterAvailable = true;
         private ListBox lb;
         private Brush progressForegroundBrush;
@@ -134,7 +138,6 @@ namespace DvdBurner
                         ActionTextForeground = Brushes.Black;
                         ActionText = string.Empty;
                         AddFiles(openFileDialog.FileNames);
-                        UpdateProgressFileSize();
                     }
                 },
                 parameter => true);
@@ -149,7 +152,7 @@ namespace DvdBurner
                     }
                     if (parameter is string file && Files.Remove(file))
                     {
-                        UpdateProgressFileSize();
+                        UpdateProgressFileSize([.. Files]);
                     }
                 },
                 parameter => true);
@@ -216,7 +219,7 @@ namespace DvdBurner
                 parameter =>
                 {
                     Files.Clear();
-                    UpdateProgressFileSize();
+                    UpdateProgressFileSize([.. Files]);
                 },
                 parameter => Files?.Any() == true);
         }
@@ -309,18 +312,7 @@ namespace DvdBurner
 
         public RelayCommand<object> EraseDvd { get; }
 
-        public ObservableCollection<string> Files
-        {
-            get => files;
-            set
-            {
-                if (files != value)
-                {
-                    files = value;
-                    OnPropertyChanged(nameof(Files));
-                }
-            }
-        }
+        public ObservableCollection<string> Files { get => (ObservableCollection<string>)GetValue(FilesProperty); set => SetValue(FilesProperty, value); }
 
         public RelayCommand<object> GetSupportedDiscFormats { get; }
 
@@ -436,6 +428,14 @@ namespace DvdBurner
 
         protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is Burner burner && !DesignerProperties.GetIsInDesignMode(burner))
+            {
+                burner.UpdateProgressFileSize([.. burner.Files]);
+            }
+        }
+
         private void AddFiles(string[] files)
         {
             foreach (string item in files)
@@ -450,6 +450,7 @@ namespace DvdBurner
                     ActionText = "Aynı İsimde Dosya Var.";
                 }
             }
+            UpdateProgressFileSize([.. Files]);
         }
 
         private void Burner_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -542,7 +543,7 @@ namespace DvdBurner
             return listdrives;
         }
 
-        private long GetTotalFileSizeMB(string[] files) => files.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024;
+        private long GetTotalFileSizeMB(string[] files) => files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024 ?? 0;
 
         private void Listbox_Drop(object sender, DragEventArgs e)
         {
@@ -550,13 +551,12 @@ namespace DvdBurner
             if (droppedfiles?.Length > 0)
             {
                 AddFiles(droppedfiles);
-                UpdateProgressFileSize();
             }
         }
 
-        private void UpdateProgressFileSize()
+        private void UpdateProgressFileSize(string[] files)
         {
-            TotalFileSize = GetTotalFileSizeMB([.. Files]);
+            TotalFileSize = files?.Any() == false ? 0 : GetTotalFileSizeMB(files);
             ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
         }
     }

@@ -7,7 +7,8 @@
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dvd="clr-namespace:DvdBurner;assembly=DvdBurner" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
@@ -337,6 +338,22 @@
                                     </StackPanel>
                                 </ToggleButton.ToolTip>
                             </ToggleButton>
+                            <Extensions:ContentToggleButton>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="113" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ResizablePanel Width="512" Height="384"
+                                        MinWidth="320" MinHeight="240">
+                                        <dvd:Burner Files="{Binding BurnFiles}" />
+                                    </Extensions:ResizablePanel>
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
                         </StackPanel>
                         <Separator Grid.Row="1" />
                         <Grid Grid.Row="2" Background="{StaticResource BorderBackground}">
@@ -817,7 +834,7 @@
                             </Image.Source>
                         </Image>
                     </Extensions:ContentToggleButton>
-                    <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}">
+                    <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}" Command="{Binding LoadContributionData}">
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
                                 <Extensions:ContributionControl Width="700" Height="120"
