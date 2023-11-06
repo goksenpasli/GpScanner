@@ -824,6 +824,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string REMOVECD {
+            get {
+                return ResourceManager.GetString("REMOVECD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string RES {
             get {
                 return ResourceManager.GetString("RES", resourceCulture);

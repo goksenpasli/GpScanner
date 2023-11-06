@@ -658,4 +658,7 @@ TO FILE</value>
   <data name="SATURATION" xml:space="preserve">
     <value>SATURATION</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>When Finished Remove CD</value>
+  </data>
 </root>

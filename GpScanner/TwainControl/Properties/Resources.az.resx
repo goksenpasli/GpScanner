@@ -657,4 +657,7 @@ EDİN</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>Sadə Pdf Önbaxış. Yavaş Kompüterlər üçün uyğundur.!</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Tamamlandıqda CD'yi Çıkar</value>
+  </data>
 </root>

@@ -656,4 +656,7 @@ PDF-ФАЙЛ!</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>Простий попередній перегляд у форматі PDF. Підходить для повільних комп 'ютерів.!</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Після завершення видаліть компакт-диск!</value>
+  </data>
 </root>

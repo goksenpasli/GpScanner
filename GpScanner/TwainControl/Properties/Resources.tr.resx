@@ -664,4 +664,7 @@ BELGE EKLE</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>Basit Pdf Önizleme. Yavaş Bilgisayarlar İçin Uygundur.</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Bittiğinde CD'yi Çıkar</value>
+  </data>
 </root>

@@ -656,4 +656,7 @@ SOUBORY PDF</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>Jednoduchý náhled PDF. Vhodné pro pomalé počítače.!</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Po dokončení vyjměte CD!</value>
+  </data>
 </root>

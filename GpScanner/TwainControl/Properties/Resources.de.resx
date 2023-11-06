@@ -657,4 +657,7 @@ ENTFERNEN</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>Einfache PDF-Vorschau. Geeignet für langsame Computer.!</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Wenn du fertig bist, entferne die CD!</value>
+  </data>
 </root>

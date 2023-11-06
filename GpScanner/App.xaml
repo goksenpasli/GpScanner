@@ -582,6 +582,33 @@
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
+            <DataTemplate x:Key="EmptyViewerTemplate">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                    FontSize="36" Foreground="Red"
+                    Text="ÖNİZLEME YOK" />
+            </DataTemplate>
+            <DataTemplate x:Key="DvdImgViewerTemplate">
+                <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Collapsed" />
+            </DataTemplate>
+            <DataTemplate x:Key="DvdPdfViewerTemplate">
+                <PdfViewer:PdfViewer AllowDrop="True" AutoFitContent="True"
+                    Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
+                    OpenButtonVisibility="Collapsed"
+                    PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
+                    SliderZoomAngleVisibility="Collapsed" SnapTick="True" />
+            </DataTemplate>
+            <twain:ViewerTemplateSelector x:Key="DvdBurnerDocumentViewerSelector"
+                Empty="{StaticResource EmptyViewerTemplate}"
+                Eyp="{StaticResource EypViewerTemplate}"
+                Img="{StaticResource DvdImgViewerTemplate}"
+                Pdf="{StaticResource DvdPdfViewerTemplate}"
+                Vid="{StaticResource VideoViewerTemplateFull}"
+                Xml="{StaticResource XmlViewerThumbTemplate}"
+                Xps="{StaticResource XpsViewerTemplate}"
+                Zip="{StaticResource ZipViewerTemplate}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

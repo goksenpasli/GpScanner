@@ -653,4 +653,7 @@ AL ARCHIVO</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>Vista previa en PDF sencilla. ¡Adecuado para ordenadores lentos.!</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>¡Cuando haya terminado, retire el CD!</value>
+  </data>
 </root>

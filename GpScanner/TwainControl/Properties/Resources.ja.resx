@@ -659,4 +659,7 @@ PDFをマージ</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>シンプルなPDFプレビュー。遅いコンピュータに適しています。！</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>完了したら、CDを削除してください！</value>
+  </data>
 </root>

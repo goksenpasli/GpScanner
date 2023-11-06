@@ -130,6 +130,7 @@
                                 AllowDrop="True"
                                 Background="{DynamicResource BorderBackground}"
                                 BorderBrush="{x:Null}"
+                                ContextMenuService.IsEnabled="{Binding Path=HasItems, RelativeSource={RelativeSource Mode=Self}}"
                                 ItemsSource="{Binding Files, RelativeSource={RelativeSource TemplatedParent}}">
                                 <ListBox.ContextMenu>
                                     <ContextMenu>

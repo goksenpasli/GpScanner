@@ -656,4 +656,7 @@ PDF!</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>Απλή προεπισκόπηση PDF. Κατάλληλο για αργούς υπολογιστές.!</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Όταν ολοκληρωθεί, αφαιρέστε το CD!</value>
+  </data>
 </root>

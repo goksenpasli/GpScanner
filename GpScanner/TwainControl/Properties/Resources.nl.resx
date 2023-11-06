@@ -655,4 +655,7 @@ PDF 'S SAMENVOEGEN</value>
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value>Eenvoudig PDF-voorbeeld. Geschikt voor langzame computers.!</value>
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Wanneer u klaar bent, verwijdert u de cd!</value>
+  </data>
 </root>

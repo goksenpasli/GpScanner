@@ -689,4 +689,7 @@
   <data name="FASTPDFVIEW" xml:space="preserve">
     <value />
   </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value />
+  </data>
 </root>
