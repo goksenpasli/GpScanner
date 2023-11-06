@@ -608,7 +608,7 @@
                 Vid="{StaticResource VideoViewerTemplateFull}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
-                Zip="{StaticResource ZipViewerTemplate}" />
+                Zip="{StaticResource ZipViewerTemplateFull}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>
