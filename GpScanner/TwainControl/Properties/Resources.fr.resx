@@ -664,4 +664,16 @@ VOIR</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>Lorsque vous avez terminé, retirez le CD !</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>horizontal, paysage, largeur;</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Prenez la première et la dernière continuez !</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Diviser et trier !</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>ALÉATOIRE</value>
+  </data>
 </root>

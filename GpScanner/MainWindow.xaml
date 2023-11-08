@@ -26,15 +26,15 @@
             Command="{Binding FocusControl}"
             CommandParameter="{Binding ElementName=TbSearch}"
             Modifiers="Ctrl" />
-        <KeyBinding Key="F1" Command="{Binding OpenHelpDialog, ElementName=TwainCtrl}" />
-        <KeyBinding Key="S" Command="{Binding ScanImage, ElementName=TwainCtrl}" Modifiers="Alt" />
-        <KeyBinding Key="F" Command="{Binding FastScanImage, ElementName=TwainCtrl}" Modifiers="Alt" />
-        <KeyBinding Key="S" Command="{Binding SeçiliDirektPdfKaydet, ElementName=TwainCtrl}" Modifiers="Ctrl+Shift" />
-        <KeyBinding Key="S" Command="{Binding SeçiliKaydet, ElementName=TwainCtrl}" Modifiers="Ctrl" />
-        <KeyBinding Key="O" Command="{Binding LoadImage, ElementName=TwainCtrl}" Modifiers="Ctrl" />
-        <KeyBinding Key="A" Command="{Binding Tümünüİşaretle, ElementName=TwainCtrl}" Modifiers="Ctrl" />
-        <KeyBinding Key="Delete" Command="{Binding SeçiliListeTemizle, ElementName=TwainCtrl}" />
-        <KeyBinding Key="Delete" Command="{Binding ListeTemizle, ElementName=TwainCtrl}" Modifiers="Shift" />
+        <KeyBinding Key="F1" Command="{Binding OpenHelpDialog, ElementName=twainCtrl}" />
+        <KeyBinding Key="S" Command="{Binding ScanImage, ElementName=twainCtrl}" Modifiers="Alt" />
+        <KeyBinding Key="F" Command="{Binding FastScanImage, ElementName=twainCtrl}" Modifiers="Alt" />
+        <KeyBinding Key="S" Command="{Binding SeçiliDirektPdfKaydet, ElementName=twainCtrl}" Modifiers="Ctrl+Shift" />
+        <KeyBinding Key="S" Command="{Binding SeçiliKaydet, ElementName=twainCtrl}" Modifiers="Ctrl" />
+        <KeyBinding Key="O" Command="{Binding LoadImage, ElementName=twainCtrl}" Modifiers="Ctrl" />
+        <KeyBinding Key="A" Command="{Binding Tümünüİşaretle, ElementName=twainCtrl}" Modifiers="Ctrl" />
+        <KeyBinding Key="Delete" Command="{Binding SeçiliListeTemizle, ElementName=twainCtrl}" />
+        <KeyBinding Key="Delete" Command="{Binding ListeTemizle, ElementName=twainCtrl}" Modifiers="Shift" />
     </Window.InputBindings>
     <Window.Resources>
         <ViewModel:FoldEffect x:Key="Fold" PresentationOptions:Freeze="true" FoldAmount="{Binding Fold}" />
@@ -147,7 +147,7 @@
         </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=TwainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=TwainCtrl, Mode=OneWay}" />
+        <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=twainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=twainCtrl, Mode=OneWay}" />
     </Window.TaskbarItemInfo>
     <Grid d:Effect="{x:Null}">
         <Grid.Style>
@@ -174,7 +174,7 @@
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="{Binding MainWindowDocumentGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="2*" />
         </Grid.ColumnDefinitions>
-        <twainctrl:TwainCtrl x:Name="TwainCtrl" />
+        <twainctrl:TwainCtrl x:Name="twainCtrl" />
         <GridSplitter Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"
@@ -674,7 +674,7 @@
                             <Button HorizontalContentAlignment="Stretch"
                                 twainctrl:Policy.PolicyName="OcrPage"
                                 Command="{Binding OcrPage, Mode=OneWay}"
-                                CommandParameter="{Binding SeçiliResim.Resim, ElementName=TwainCtrl}">
+                                CommandParameter="{Binding SeçiliResim.Resim, ElementName=twainCtrl}">
                                 <Button.Style>
                                     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                                         <Style.Triggers>
@@ -717,7 +717,7 @@
             </TabControl>
         </GroupBox>
         <StatusBar Grid.Row="1" Grid.ColumnSpan="3" Background="Maroon">
-            <StatusBarItem Visibility="{Binding Scanner.PasswordProtect, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TwainCtrl}">
+            <StatusBarItem Visibility="{Binding Scanner.PasswordProtect, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=twainCtrl}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -727,7 +727,7 @@
                     </Image.Source>
                 </Image>
             </StatusBarItem>
-            <StatusBarItem Visibility="{Binding Scanner.ApplyPdfSaveOcr, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TwainCtrl}">
+            <StatusBarItem Visibility="{Binding Scanner.ApplyPdfSaveOcr, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=twainCtrl}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -737,7 +737,7 @@
                     </Image.Source>
                 </Image>
             </StatusBarItem>
-            <StatusBarItem Visibility="{Binding Scanner.ApplyDataBaseOcr, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=TwainCtrl}">
+            <StatusBarItem Visibility="{Binding Scanner.ApplyDataBaseOcr, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=twainCtrl}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -748,7 +748,7 @@
                 </Image>
             </StatusBarItem>
             <StatusBarItem>
-                <TextBlock FontStyle="Italic" Foreground="White"><Run Text="{Binding SelectedPaper.PaperType, ElementName=TwainCtrl}" />
+                <TextBlock FontStyle="Italic" Foreground="White"><Run Text="{Binding SelectedPaper.PaperType, ElementName=twainCtrl}" />
                     <Run Text="{Binding Çözünürlük, Mode=OneWay, StringFormat=\{0\} DPI, Source={x:Static twainproperties:Settings.Default}}" />
                     <Run Text="{Binding SeçiliTarayıcı, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" />
                 </TextBlock>
@@ -801,7 +801,7 @@
                                         <DataTemplate>
                                             <StackPanel>
                                                 <CheckBox HorizontalAlignment="Center" FontWeight="Bold" IsChecked="{Binding Seen}">
-                                                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, Source={x:Reference TwainCtrl}}" CommandParameter="{Binding FileName, Mode=OneWay}">
+                                                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, Source={x:Reference twainCtrl}}" CommandParameter="{Binding FileName, Mode=OneWay}">
                                                         <Run Text="{Binding Tarih}" />
                                                         <Run Text="{Binding Açıklama}" />
                                                     </Hyperlink>
@@ -865,7 +865,7 @@
                                             </Grid.ColumnDefinitions>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
-                                                <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl, Source={x:Reference TwainCtrl}}">
+                                                <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl, Source={x:Reference twainCtrl}}">
                                                     <Image Width="16" Height="16" Source="/TwainControl;component/Icons/undo.png" />
                                                 </Button>
                                             </StackPanel>
@@ -884,7 +884,7 @@
                                         AllowDrop="True"
                                         Background="{StaticResource BorderBackground}"
                                         Drop="ListBox_DropAsync"
-                                        ItemsSource="{Binding Scanner.Resimler, Source={x:Reference TwainCtrl}}"
+                                        ItemsSource="{Binding Scanner.Resimler, Source={x:Reference twainCtrl}}"
                                         VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
                                         VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
                                         VirtualizingPanel.VirtualizationMode="Standard">
@@ -901,7 +901,7 @@
                                                             FontFamily="Wingdings" FontSize="24"
                                                             FontWeight="Bold" MouseLeftButtonDown="MiniDocumentRun_MouseLeftButtonDown"
                                                             Text="B" /><Hyperlink twainctrl:Policy.PolicyName="ResimSil"
-                                                            Command="{Binding DataContext.ResimSil, Source={x:Reference TwainCtrl}}"
+                                                            Command="{Binding DataContext.ResimSil, Source={x:Reference twainCtrl}}"
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             TextDecorations="None">
                                                             <InlineUIContainer>
@@ -1054,7 +1054,7 @@
                                             <ProgressBar Background="{x:Null}"
                                                 BorderBrush="{x:Null}"
                                                 Maximum="1" Minimum="0"
-                                                Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, Source={x:Reference TwainCtrl}}" />
+                                                Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, Source={x:Reference twainCtrl}}" />
                                             <Image Width="32" Height="32"
                                                 HorizontalAlignment="Center"
                                                 Source="/TwainControl;component/Icons/delete.png" />

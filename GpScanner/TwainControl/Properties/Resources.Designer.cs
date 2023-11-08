@@ -441,6 +441,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string FIRSTLAST {
+            get {
+                return ResourceManager.GetString("FIRSTLAST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FOLD {
             get {
                 return ResourceManager.GetString("FOLD", resourceCulture);
@@ -525,6 +534,15 @@ namespace TwainControl.Properties {
         public static string HELP {
             get {
                 return ResourceManager.GetString("HELP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string HORIZONTAL {
+            get {
+                return ResourceManager.GetString("HORIZONTAL", resourceCulture);
             }
         }
         
@@ -806,6 +824,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string RANDOM {
+            get {
+                return ResourceManager.GetString("RANDOM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string READACTIVEPAGE {
             get {
                 return ResourceManager.GetString("READACTIVEPAGE", resourceCulture);
@@ -1034,6 +1061,15 @@ namespace TwainControl.Properties {
         public static string SOURCELANG {
             get {
                 return ResourceManager.GetString("SOURCELANG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SPLITSORT {
+            get {
+                return ResourceManager.GetString("SPLITSORT", resourceCulture);
             }
         }
         

@@ -667,4 +667,16 @@ BELGE EKLE</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>Bittiğinde CD'yi Çıkar</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>YATAY</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>İlk ve Son Sayfaları Seçip Sırala</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Böl ve Sırala</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>RASTGELE</value>
+  </data>
 </root>

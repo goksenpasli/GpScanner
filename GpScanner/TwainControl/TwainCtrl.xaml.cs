@@ -1235,6 +1235,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
+        FirstLastSortSequenceData = new RelayCommand<object>(
+            parameter =>
+            {
+                Scanner.Resimler = FirstLastSequence(Scanner.Resimler);
+                Scanner.RefreshIndexNumbers(Scanner.Resimler);
+            },
+            parameter => Scanner?.Resimler?.Count > 2 && Scanner?.Resimler?.Count % 2 == 0);
+
         ReverseDataHorizontal = new RelayCommand<object>(
             parameter =>
             {
@@ -1367,8 +1375,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     List<PdfData> currentpages = PdfPages.Where(currentpage => currentpage.Selected).ToList();
                     foreach (PdfData currentpage in currentpages)
                     {
-                        string savefilename =
-                                                $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
+                        string savefilename = $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
                         await PdfPageRangeSaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
                         files.Add(savefilename);
                     }
@@ -1746,6 +1753,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand FastScanImage { get; }
 
     public RelayCommand<object> FirstLastGroup { get; }
+
+    public RelayCommand<object> FirstLastSortSequenceData { get; }
 
     public int GroupSplitCount
     {
@@ -2920,6 +2929,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         PdfFileOcrData = null;
         twain.ScanningComplete -= FastScanComplete;
         Scanner.ArayüzEtkin = true;
+    }
+
+    private ObservableCollection<ScannedImage> FirstLastSequence(ObservableCollection<ScannedImage> images)
+    {
+        ObservableCollection<ScannedImage> result = [];
+        int startIndex = 0;
+        int endIndex = images.Count - 1;
+
+        while (startIndex <= endIndex)
+        {
+            result.Add(images[startIndex++]);
+            if (startIndex > endIndex)
+            {
+                break;
+            }
+            result.Add(images[endIndex--]);
+        }
+
+        return result;
     }
 
     private CroppedBitmap GenerateCroppedImage(BitmapSource evrak, int top, int left, int bottom, int right)

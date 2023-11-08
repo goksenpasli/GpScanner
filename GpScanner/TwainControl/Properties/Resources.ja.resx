@@ -662,4 +662,16 @@ PDFをマージ</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>完了したら、CDを削除してください！</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>横</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>テイク・ファースト・アンド・ラスト・コンティニュー！</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>分割と並べ替え！</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>ランダム</value>
+  </data>
 </root>

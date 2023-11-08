@@ -28,10 +28,10 @@
             </Button>
         </GroupBox.Header>
         <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}"
                 IsEnabled="{Binding IsFolderWritable, ValidatesOnDataErrors=True}"
                 ItemsSource="{Binding Mode=OneWay, Source={StaticResource Files}}"
@@ -80,7 +80,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
-            <GroupBox Grid.Row="1">
+            <GroupBox Grid.Column="1">
                 <GroupBox.Header>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
                         <Hyperlink BaselineAlignment="Center"
@@ -118,7 +118,6 @@
                                             <CheckBox.Content>
                                                 <TextBlock VerticalAlignment="Center" FontWeight="Bold">
                                                     <Run d:Text="DisplayName" BaselineAlignment="Center" Text="{Binding Path=DisplayName, Mode=OneWay}" />
-                                                    <Run d:Text="FileSize" BaselineAlignment="Center" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\}MB}" />
                                                     <Hyperlink BaselineAlignment="Center"
                                                         Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                         CommandParameter="{Binding Mode=OneWay}"

@@ -658,4 +658,16 @@ PDF 'S SAMENVOEGEN</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>Wanneer u klaar bent, verwijdert u de cd!</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>HORIZONTAAL</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Eerste en laatste doorgaan!</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Splitsen en sorteren!</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>WILLEKEURIG</value>
+  </data>
 </root>

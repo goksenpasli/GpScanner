@@ -692,4 +692,16 @@
   <data name="REMOVECD" xml:space="preserve">
     <value />
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value />
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value />
+  </data>
 </root>

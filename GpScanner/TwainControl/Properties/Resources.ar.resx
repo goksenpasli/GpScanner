@@ -664,4 +664,16 @@
   <data name="REMOVECD" xml:space="preserve">
     <value>عند الانتهاء، قم بإزالة القرص المضغوط!</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>أفقي</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>خذ المتابعة الأولى والأخيرة!</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>تقسيم وفرز!</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>عشوائي</value>
+  </data>
 </root>

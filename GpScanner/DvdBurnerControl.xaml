@@ -113,6 +113,7 @@
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <ListBox x:Name="Lb"
+                        d:ItemsSource="{d:SampleData ItemCount=3}"
                         AllowDrop="True"
                         Background="{DynamicResource BorderBackground}"
                         BorderBrush="{x:Null}"
@@ -141,7 +142,7 @@
                                         </InlineUIContainer>
                                     </Hyperlink><InlineUIContainer>
                                         <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
-                                    </InlineUIContainer><Run BaselineAlignment="Center" Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" /></TextBlock>
+                                    </InlineUIContainer><Run d:Text="FileName" BaselineAlignment="Center" Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" /></TextBlock>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

@@ -1248,16 +1248,34 @@
                                         <Run d:Text="0" BaselineAlignment="Center" Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
                                         <Run d:Text="/" BaselineAlignment="Center" Text="/" />
                                         <Run d:Text="0" BaselineAlignment="Center" Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
-                                        <Hyperlink BaselineAlignment="Center" Command="{Binding ReverseData}" TextDecorations="None">
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding ReverseData}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc REVERSE}">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="E" />
                                         </Hyperlink>
-                                        <Hyperlink BaselineAlignment="Center" Command="{Binding ReverseDataHorizontal}" TextDecorations="None">
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding ReverseDataHorizontal}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc HORIZONTAL}">
                                             <Run FontFamily="Wingdings 3" FontSize="16" Text="D" />
                                         </Hyperlink>
-                                        <Hyperlink BaselineAlignment="Center" Command="{Binding ShuffleData}" TextDecorations="None">
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding FirstLastSortSequenceData}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc FIRSTLAST}">
+                                            <Run FontFamily="Wingdings 3" FontSize="16" Text="G" />
+                                        </Hyperlink>
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding ShuffleData}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc RANDOM}">
                                             <Image Width="16" Height="16" Source="/TwainControl;component/Icons/dice.png" />
                                         </Hyperlink>
-                                        <Run BaselineAlignment="Top" FontSize="13" Text="1" /><Hyperlink BaselineAlignment="Center" Command="{Binding FirstLastGroup}" TextDecorations="None">
+                                        <Run BaselineAlignment="Top" FontSize="13" Text="1" /><Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding FirstLastGroup}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc SPLITSORT}">
                                             <Run BaselineAlignment="Center" FontFamily="Wingdings 3"
                                                 FontSize="18" Text="F" />
                                         </Hyperlink>

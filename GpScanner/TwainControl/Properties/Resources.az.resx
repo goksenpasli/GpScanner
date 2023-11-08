@@ -562,7 +562,7 @@ EDİN</value>
     <value>Skan Olunmuş Sənədlərdə Sıxılmış Faylı Bilavasitə Üstünə Yazın!</value>
   </data>
   <data name="PAGENUMBER" xml:space="preserve">
-    <value>&lt;g id="1"&gt;SƏHİFƏ №: &lt;x id="2"/&gt;&lt;/g&gt;/</value>
+    <value>SƏHİFƏ №</value>
   </data>
   <data name="PDFOPEN" xml:space="preserve">
     <value>Birbaşa Pdf Faylları Açın!</value>
@@ -659,5 +659,17 @@ EDİN</value>
   </data>
   <data name="REMOVECD" xml:space="preserve">
     <value>Tamamlandıqda CD'yi Çıkar</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>Üfiqi xətt</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>İlk və Son Davam Edin!</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Bölüşdürün və çeşidləyin!</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>Təsadüfi</value>
   </data>
 </root>

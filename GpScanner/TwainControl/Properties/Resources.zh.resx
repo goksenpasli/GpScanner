@@ -662,4 +662,16 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>完成后移除CD ！</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>水平</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>拿第一个和最后一个继续！</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>拆分和排序！</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>随机</value>
+  </data>
 </root>

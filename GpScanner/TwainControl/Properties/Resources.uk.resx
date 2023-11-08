@@ -659,4 +659,16 @@ PDF-ФАЙЛ!</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>Після завершення видаліть компакт-диск!</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>ГОРИЗОНТАЛЬНИЙ</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Візьміть перший і останній продовження!</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Розділіть і впорядкуйте!</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>Випадково</value>
+  </data>
 </root>

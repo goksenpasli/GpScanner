@@ -656,4 +656,16 @@ AL ARCHIVO</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>¡Cuando haya terminado, retire el CD!</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>HORIZONTAL</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>¡Tome Primero y Último Continúe!</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>¡Dividir y ordenar!</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>ALEATORIO</value>
+  </data>
 </root>

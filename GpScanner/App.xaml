@@ -160,7 +160,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <WrapPanel DataContext="{Binding Path=DataContext, ElementName=TwainCtrl}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}" Orientation="Horizontal">
+                    <WrapPanel DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}" Orientation="Horizontal">
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1" SmallChange="1"
                             Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
@@ -285,7 +285,7 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <ViewModel:CustomArchiveViewer AllowDrop="True" ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}" />
+                <ViewModel:CustomArchiveViewer AllowDrop="True" ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" Tag="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
                 <Extensions:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -584,27 +584,14 @@
                 Zip="{StaticResource ZipViewerTemplate}" />
             <DataTemplate x:Key="EmptyViewerTemplate">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                    FontSize="36" Foreground="Red"
-                    Text="ÖNİZLEME YOK" />
-            </DataTemplate>
-            <DataTemplate x:Key="DvdImgViewerTemplate">
-                <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"
-                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Collapsed" />
-            </DataTemplate>
-            <DataTemplate x:Key="DvdPdfViewerTemplate">
-                <PdfViewer:PdfViewer AllowDrop="True" AutoFitContent="True"
-                    Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
-                    OpenButtonVisibility="Collapsed"
-                    PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
-                    SliderZoomAngleVisibility="Collapsed" SnapTick="True" />
+                    FontFamily="Webdings" FontSize="256"
+                    Foreground="Red" Text="N" />
             </DataTemplate>
             <twain:ViewerTemplateSelector x:Key="DvdBurnerDocumentViewerSelector"
                 Empty="{StaticResource EmptyViewerTemplate}"
                 Eyp="{StaticResource EypViewerTemplate}"
-                Img="{StaticResource DvdImgViewerTemplate}"
-                Pdf="{StaticResource DvdPdfViewerTemplate}"
+                Img="{StaticResource ImgViewerTemplate}"
+                Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"

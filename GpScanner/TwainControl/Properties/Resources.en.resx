@@ -661,4 +661,16 @@ TO FILE</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>When Finished Remove CD</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>HORIZONTAL</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Take First And Last Continue</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Split and Sort</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>RANDOM</value>
+  </data>
 </root>

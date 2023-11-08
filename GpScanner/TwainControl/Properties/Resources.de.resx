@@ -660,4 +660,16 @@ ENTFERNEN</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>Wenn du fertig bist, entferne die CD!</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>Horizontal</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Nehmen Sie zuerst und zuletzt weiter!</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Teilen und sortieren!</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>Zufällig</value>
+  </data>
 </root>

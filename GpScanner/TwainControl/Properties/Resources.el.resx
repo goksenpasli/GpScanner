@@ -659,4 +659,16 @@ PDF!</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>Όταν ολοκληρωθεί, αφαιρέστε το CD!</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>οριζόντια</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Πάρτε την Πρώτη και την Τελευταία Συνέχεια!</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Διαχωρισμός και ταξινόμηση!</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>Τυχαία Σειρά</value>
+  </data>
 </root>

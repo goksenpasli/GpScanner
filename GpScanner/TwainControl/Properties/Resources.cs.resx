@@ -659,4 +659,16 @@ SOUBORY PDF</value>
   <data name="REMOVECD" xml:space="preserve">
     <value>Po dokončení vyjměte CD!</value>
   </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>Horizontální</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Vezměte první a poslední Pokračujte!</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Rozděl a seřiď!</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>NÁHODNÝ</value>
+  </data>
 </root>

@@ -14,8 +14,8 @@
     <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
     <DataTemplate x:Key="EmptyViewerTemplate">
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-            FontSize="36" Foreground="Red"
-            Text="ÖNİZLEME YOK" />
+            FontFamily="Webdings" FontSize="256"
+            Foreground="Red" Text="N" />
     </DataTemplate>
     <DataTemplate x:Key="ZipViewerTemplateFull">
         <Extensions:ArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
