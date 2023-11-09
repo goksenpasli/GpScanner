@@ -2315,7 +2315,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         try
         {
-            if (eypfilepath is not null)
+            if (eypfilepath is not null && string.Equals(Path.GetExtension(eypfilepath), ".eyp", StringComparison.OrdinalIgnoreCase))
             {
                 using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
                 if (archive != null)

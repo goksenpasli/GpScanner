@@ -844,30 +844,6 @@
                                 </Image.Source>
                             </Image>
                             <TextBlock VerticalAlignment="Center" Text="SHAREPOINT" />
-                        </StackPanel>
-                    </TabItem.Header>
-                    <GroupBox>
-                        <StackPanel>
-                            <Extensions:ButtonedTextBox Description="URL" ResetButtonVisibility="Collapsed" Text="{Binding SharePointUrl, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                            <Extensions:ButtonedTextBox Description="{twainctrl:Loc LIBRARY}"
-                                OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
-                                Text="{Binding SharePointLibraryName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                            <Separator />
-                            <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}" OpenButtonVisibility="Collapsed" Text="{Binding SharePointUserName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PASSWORD}" />
-                                <PasswordBox Grid.Column="1" Extensions:PasswordBoxHelper.Password="{Binding SharePointUserPassword, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                            </Grid>
-                        </StackPanel>
-                    </GroupBox>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -879,60 +855,80 @@
                             <TextBlock VerticalAlignment="Center" Text="FTP" />
                         </StackPanel>
                     </TabItem.Header>
-                    <GroupBox>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
+                    <UniformGrid Columns="2">
+                        <GroupBox Margin="1" Header="SHAREPOINT">
                             <StackPanel>
-                                <Extensions:ButtonedTextBox Description="FTP" OpenButtonVisibility="Collapsed"
-                                    Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
-                                    ToolTip="ftp://adress:portnumber" />
-                                <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}" OpenButtonVisibility="Collapsed" Text="{Binding FtpUserName, UpdateSourceTrigger=PropertyChanged}" />
+                                <Extensions:ButtonedTextBox Description="URL" ResetButtonVisibility="Collapsed" Text="{Binding SharePointUrl, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                <Extensions:ButtonedTextBox Description="{twainctrl:Loc LIBRARY}"
+                                    OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                    Text="{Binding SharePointLibraryName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                <Separator />
+                                <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}" OpenButtonVisibility="Collapsed" Text="{Binding SharePointUserName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PASSWORD}" />
-                                    <PasswordBox Grid.Column="1" Extensions:PasswordBoxHelper.Password="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
+                                    <PasswordBox Grid.Column="1" Extensions:PasswordBoxHelper.Password="{Binding SharePointUserPassword, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                 </Grid>
-                                <Button twainctrl:Policy.PolicyName="AddFtpSites" Command="{Binding AddFtpSites}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="144" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc APPLY}" />
-                                    </StackPanel>
-                                </Button>
                             </StackPanel>
-                            <ListBox Grid.Row="1"
-                                d:ItemsSource="{d:SampleData ItemCount=5}"
-                                twainctrl:Policy.PolicyName="FtpSites"
-                                Background="{StaticResource BorderBackground}"
-                                ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Margin="1" Orientation="Horizontal">
-                                            <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
-                                                FontStyle="Italic"
-                                                Text="{Binding Mode=OneWay}">
-                                                <Hyperlink twainctrl:Policy.PolicyName="RemoveSelectedFtp" Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding Mode=OneWay}">
-                                                    <Run Text="{twainctrl:Loc DELETE}" />
-                                                </Hyperlink>
-                                            </TextBlock>
+                        </GroupBox>
+                        <GroupBox Margin="1" Header="FTP">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <StackPanel>
+                                    <Extensions:ButtonedTextBox Description="FTP" OpenButtonVisibility="Collapsed"
+                                        Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
+                                        ToolTip="ftp://adress:portnumber" />
+                                    <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}" OpenButtonVisibility="Collapsed" Text="{Binding FtpUserName, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PASSWORD}" />
+                                        <PasswordBox Grid.Column="1" Extensions:PasswordBoxHelper.Password="{Binding FtpPassword, UpdateSourceTrigger=PropertyChanged}" />
+                                    </Grid>
+                                    <Button twainctrl:Policy.PolicyName="AddFtpSites" Command="{Binding AddFtpSites}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="144" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc APPLY}" />
                                         </StackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
-                        </Grid>
-                    </GroupBox>
+                                    </Button>
+                                </StackPanel>
+                                <ListBox Grid.Row="1"
+                                    d:ItemsSource="{d:SampleData ItemCount=5}"
+                                    twainctrl:Policy.PolicyName="FtpSites"
+                                    Background="{StaticResource BorderBackground}"
+                                    ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Margin="1" Orientation="Horizontal">
+                                                <TextBlock Margin="0,0,5,0" VerticalAlignment="Center"
+                                                    FontStyle="Italic"
+                                                    Text="{Binding Mode=OneWay}">
+                                                    <Hyperlink twainctrl:Policy.PolicyName="RemoveSelectedFtp" Command="{Binding DataContext.RemoveSelectedFtp, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding Mode=OneWay}">
+                                                        <Run Text="{twainctrl:Loc DELETE}" />
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Grid>
+                        </GroupBox>
+                    </UniformGrid>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
@@ -1305,6 +1301,54 @@
                             </GroupBox>
                         </TabItem>
                     </TabControl>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Canvas Width="32" Height="32">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="171" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <Image Canvas.Right="5" Canvas.Bottom="9"
+                                    Width="16" Height="16"
+                                    Source="/TwainControl;component/Icons/delete.png" />
+                            </Canvas>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc UNINDEXED}" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <UniformGrid Columns="2">
+                        <GroupBox Margin="1">
+                            <ListBox x:Name="LbUnindexed" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UnIndexedFiles}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}">
+                                            <Hyperlink BaselineAlignment="Center"
+                                                Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding ElementName=PdfVwr}"
+                                                IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="171" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Hyperlink>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                        <GroupBox Margin="1">
+                            <twainctrl:SimplePdfViewer x:Name="PdfVwr" PdfFilePath="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=LbUnindexed}" />
+                        </GroupBox>
+                    </UniformGrid>
                 </TabItem>
             </TabControl>
         </GroupBox>

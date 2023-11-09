@@ -668,4 +668,7 @@ AL ARCHIVO</value>
   <data name="RANDOM" xml:space="preserve">
     <value>ALEATORIO</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>¡ARCHIVOS UNINDEXED!</value>
+  </data>
 </root>

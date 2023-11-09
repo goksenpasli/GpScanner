@@ -674,4 +674,7 @@ PDFをマージ</value>
   <data name="RANDOM" xml:space="preserve">
     <value>ランダム</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>UNINDEXEDファイル！</value>
+  </data>
 </root>

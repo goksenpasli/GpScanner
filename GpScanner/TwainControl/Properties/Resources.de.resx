@@ -672,4 +672,7 @@ ENTFERNEN</value>
   <data name="RANDOM" xml:space="preserve">
     <value>Zufällig</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>UNDEXED-DATEIEN!</value>
+  </data>
 </root>

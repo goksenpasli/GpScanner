@@ -672,4 +672,7 @@ EDİN</value>
   <data name="RANDOM" xml:space="preserve">
     <value>Təsadüfi</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>UNINDEXED FAYLLARI!</value>
+  </data>
 </root>

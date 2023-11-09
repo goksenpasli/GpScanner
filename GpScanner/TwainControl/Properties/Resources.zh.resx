@@ -674,4 +674,7 @@ PDF保护也可以被第三方应用程序破坏。</value>
   <data name="RANDOM" xml:space="preserve">
     <value>随机</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>UNINDEXED文件！</value>
+  </data>
 </root>

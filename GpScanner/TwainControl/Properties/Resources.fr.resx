@@ -676,4 +676,7 @@ VOIR</value>
   <data name="RANDOM" xml:space="preserve">
     <value>ALÉATOIRE</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>FICHIERS UNINDEXED !</value>
+  </data>
 </root>

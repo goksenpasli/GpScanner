@@ -671,4 +671,7 @@ SOUBORY PDF</value>
   <data name="RANDOM" xml:space="preserve">
     <value>NÁHODNÝ</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>UNINDEXED SOUBORY!</value>
+  </data>
 </root>

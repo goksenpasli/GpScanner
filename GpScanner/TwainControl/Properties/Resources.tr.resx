@@ -679,4 +679,7 @@ BELGE EKLE</value>
   <data name="RANDOM" xml:space="preserve">
     <value>RASTGELE</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>İNDEKSLENMEMİŞ DOSYALAR</value>
+  </data>
 </root>

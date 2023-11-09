@@ -671,4 +671,7 @@ PDF!</value>
   <data name="RANDOM" xml:space="preserve">
     <value>Τυχαία Σειρά</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>ΑΡΧΕΊΑ UNINDEXED!</value>
+  </data>
 </root>

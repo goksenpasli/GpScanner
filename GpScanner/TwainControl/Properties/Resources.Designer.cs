@@ -1175,6 +1175,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string UNINDEXED {
+            get {
+                return ResourceManager.GetString("UNINDEXED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string UNREGSTI {
             get {
                 return ResourceManager.GetString("UNREGSTI", resourceCulture);

@@ -676,4 +676,7 @@
   <data name="RANDOM" xml:space="preserve">
     <value>عشوائي</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>ملفات UNINDEXED!</value>
+  </data>
 </root>

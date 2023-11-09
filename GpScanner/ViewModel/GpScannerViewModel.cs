@@ -125,6 +125,7 @@ public class GpScannerViewModel : InpcBase
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         ScannerData = new ScannerData { Data = DataYükle(), Reminder = ReminderYükle() };
+        UnIndexedFiles = GetUnindexedFileData();
 
         if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
         {
@@ -285,6 +286,26 @@ public class GpScannerViewModel : InpcBase
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && (Settings.Default.ThumbMultipleOcrEnabled || !OcrIsBusy));
+
+        UnindexedFileOcr = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfViewer)
+                {
+                    OcrIsBusy = true;
+                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
+                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
+                    ObservableCollection<OcrData> ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
+                    ScannerData.Data.Add(new Data { Id = DataSerialize.RandomNumber(), FileName = pdfViewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                    DatabaseSave.Execute(null);
+                    filedata = null;
+                    ocrdata = null;
+                    OcrIsBusy = false;
+                    _ = UnIndexedFiles?.Remove(pdfViewer.PdfFilePath);
+                    GC.Collect();
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         WordOcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>
@@ -1618,6 +1639,10 @@ public class GpScannerViewModel : InpcBase
 
     public ICommand TümününİşaretiniKaldır { get; }
 
+    public ObservableCollection<string> UnIndexedFiles { get; set; }
+
+    public RelayCommand<object> UnindexedFileOcr { get; }
+
     public ICommand UnRegisterSti { get; }
 
     public RelayCommand<object> UploadSharePoint { get; }
@@ -1890,7 +1915,8 @@ public class GpScannerViewModel : InpcBase
                     string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
                     _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
                     return new { Scanner = scanner, ParentDate = parsedDateTime };
-                }).ToList();
+                })
+                                 .ToList();
             if (files?.Any() == true)
             {
                 DateTime first = files.Where(z => z.ParentDate > DateTime.MinValue).Min(z => z.ParentDate);
@@ -1942,6 +1968,27 @@ public class GpScannerViewModel : InpcBase
         }
 
         return null;
+    }
+
+    private ObservableCollection<string> GetUnindexedFileData()
+    {
+        try
+        {
+            if (Dosyalar == null || ScannerData == null)
+            {
+                return null;
+            }
+
+            IEnumerable<string> pdfFiles = Dosyalar.Where(z => string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName);
+
+            IEnumerable<string> scannedFiles = ScannerData.Data?.Where(x => !string.IsNullOrEmpty(x.FileContent)).Select(x => x.FileName);
+
+            return pdfFiles == null || scannedFiles == null ? null : new ObservableCollection<string>(pdfFiles.Except(scannedFiles));
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
     private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

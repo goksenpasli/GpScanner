@@ -669,4 +669,7 @@ PDF-ФАЙЛЫ</value>
   <data name="RANDOM" xml:space="preserve">
     <value>Выборочно</value>
   </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>ФАЙЛЫ UNINDEXED!</value>
+  </data>
 </root>
