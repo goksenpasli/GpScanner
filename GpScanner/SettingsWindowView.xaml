@@ -7,6 +7,7 @@
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:pdfviewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
@@ -1346,7 +1347,7 @@
                             </ListBox>
                         </GroupBox>
                         <GroupBox Margin="1">
-                            <twainctrl:SimplePdfViewer x:Name="PdfVwr" PdfFilePath="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=LbUnindexed}" />
+                            <pdfviewer:PdfViewer x:Name="PdfVwr" PdfFilePath="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=LbUnindexed}" />
                         </GroupBox>
                     </UniformGrid>
                 </TabItem>
