@@ -524,6 +524,39 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public bool ZoomEnabled { get => (bool)GetValue(ZoomEnabledProperty); set => SetValue(ZoomEnabledProperty, value); }
 
+    public static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 72)
+    {
+        try
+        {
+            return !File.Exists(pdffilepath)
+                   ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
+                   : await Task.Run(
+                () =>
+                {
+                    using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
+                    if (pdfDoc is null)
+                    {
+                        return null;
+                    }
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                    using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
+                    BitmapImage bitmapImage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
+                    if (bitmapImage is null)
+                    {
+                        return null;
+                    }
+
+                    bitmapImage.Freeze();
+                    return bitmapImage;
+                });
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] pdffilestream, int page, int dpi)
     {
         try
@@ -656,39 +689,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         {
             scrollvwr.Drop -= Scrollvwr_Drop;
             scrollvwr.Drop += Scrollvwr_Drop;
-        }
-    }
-
-    internal static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 72)
-    {
-        try
-        {
-            return !File.Exists(pdffilepath)
-                   ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
-                   : await Task.Run(
-                () =>
-                {
-                    using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                    if (pdfDoc is null)
-                    {
-                        return null;
-                    }
-                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                    using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
-                    BitmapImage bitmapImage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
-                    if (bitmapImage is null)
-                    {
-                        return null;
-                    }
-
-                    bitmapImage.Freeze();
-                    return bitmapImage;
-                });
-        }
-        catch (Exception)
-        {
-            return null;
         }
     }
 

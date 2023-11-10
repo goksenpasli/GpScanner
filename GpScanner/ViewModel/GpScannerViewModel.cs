@@ -75,6 +75,7 @@ public class GpScannerViewModel : InpcBase
     private string ftpPassword = string.Empty;
     private string ftpSite = string.Empty;
     private string ftpUserName = string.Empty;
+    private int ındexedFileCount;
     private FlowDirection langFlowDirection = FlowDirection.LeftToRight;
     private bool listBoxBorderAnimation;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
@@ -290,22 +291,40 @@ public class GpScannerViewModel : InpcBase
         UnindexedFileOcr = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer)
+                if (parameter is string pdffilepath)
                 {
                     OcrIsBusy = true;
-                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
-                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
-                    ObservableCollection<OcrData> ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
-                    ScannerData.Data.Add(new Data { Id = DataSerialize.RandomNumber(), FileName = pdfViewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                    BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(pdffilepath, 1, Twainsettings.Settings.Default.ImgLoadResolution);
+                    ObservableCollection<OcrData> ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                    string ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
+                    if (string.IsNullOrEmpty(ocrtext))
+                    {
+                        ocrtext = " ";
+                    }
+                    ScannerData.Data.Add(new Data { Id = DataSerialize.RandomNumber(), FileName = pdffilepath, FileContent = ocrtext });
                     DatabaseSave.Execute(null);
-                    filedata = null;
                     ocrdata = null;
                     OcrIsBusy = false;
-                    _ = UnIndexedFiles?.Remove(pdfViewer.PdfFilePath);
+                    _ = UnIndexedFiles?.Remove(pdffilepath);
                     GC.Collect();
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+            parameter => parameter is string pdffilepath && File.Exists(pdffilepath) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+
+        UnindexedAllFilesOcr = new RelayCommand<object>(
+            parameter =>
+            {
+                for (int i = 0; i < UnIndexedFiles.Count; i++)
+                {
+                    string item = UnIndexedFiles[i];
+                    if (UnindexedFileOcr.CanExecute(item))
+                    {
+                        UnindexedFileOcr.Execute(item);
+                        IndexedFileCount = i + 1;
+                    }
+                }
+            },
+            parameter => UnIndexedFiles?.Count > 1 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         WordOcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>
@@ -1214,6 +1233,20 @@ public class GpScannerViewModel : InpcBase
 
     public ObservableCollection<Size> GetPreviewSize => new() { new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645) };
 
+    public int IndexedFileCount
+    {
+        get => ındexedFileCount;
+
+        set
+        {
+            if (ındexedFileCount != value)
+            {
+                ındexedFileCount = value;
+                OnPropertyChanged(nameof(IndexedFileCount));
+            }
+        }
+    }
+
     public FlowDirection LangFlowDirection
     {
         get => langFlowDirection;
@@ -1640,6 +1673,8 @@ public class GpScannerViewModel : InpcBase
     public ICommand TümününİşaretiniKaldır { get; }
 
     public ObservableCollection<string> UnIndexedFiles { get; set; }
+
+    public RelayCommand<object> UnindexedAllFilesOcr { get; }
 
     public RelayCommand<object> UnindexedFileOcr { get; }
 

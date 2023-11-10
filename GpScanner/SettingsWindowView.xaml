@@ -1324,30 +1324,57 @@
                     </TabItem.Header>
                     <UniformGrid Columns="2">
                         <GroupBox Margin="1">
-                            <ListBox x:Name="LbUnindexed" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UnIndexedFiles}">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}">
-                                            <Hyperlink BaselineAlignment="Center"
-                                                Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                CommandParameter="{Binding ElementName=PdfVwr}"
-                                                IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="171" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Hyperlink>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ListBox x:Name="LbUnindexed" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UnIndexedFiles}">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}">
+                                                    <Hyperlink BaselineAlignment="Center" Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="171" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <Button Grid.Row="1" Command="{Binding DataContext.UnindexedAllFilesOcr, RelativeSource={RelativeSource AncestorType=Window}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                            <Run d:Text="0" Foreground="LawnGreen" Text="{Binding DataContext.IndexedFileCount, RelativeSource={RelativeSource AncestorType=Window}}" />
+                                            <Run Text="/" />
+                                            <Run Foreground="Red" Text="{Binding ElementName=LbUnindexed, Path=Items.Count, Mode=OneWay}" />
                                         </TextBlock>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="171" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run Text="{twainctrl:Loc ALL}" />
+                                            <Run Text="{twainctrl:Loc UNINDEXED}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
                         </GroupBox>
                         <GroupBox Margin="1">
-                            <pdfviewer:PdfViewer x:Name="PdfVwr" PdfFilePath="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=LbUnindexed}" />
+                            <pdfviewer:PdfViewer PdfFilePath="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=LbUnindexed}" />
                         </GroupBox>
                     </UniformGrid>
                 </TabItem>
