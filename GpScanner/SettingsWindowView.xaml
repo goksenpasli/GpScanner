@@ -291,6 +291,38 @@
                                             </StackPanel>
                                         </ListBoxItem.Content>
                                     </ListBoxItem>
+                                    <ListBoxItem Tag="HRVATSKI">
+                                        <ListBoxItem.Content>
+                                            <StackPanel>
+                                                <Image Source="/Resources/flag-of-Croatian.png" />
+                                                <TextBlock Text="HRVATSKI" />
+                                            </StackPanel>
+                                        </ListBoxItem.Content>
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="DANSK">
+                                        <ListBoxItem.Content>
+                                            <StackPanel>
+                                                <Image Source="/Resources/flag-of-Danish.png" />
+                                                <TextBlock Text="DANSK" />
+                                            </StackPanel>
+                                        </ListBoxItem.Content>
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="БЕЛАРУСКАЯ">
+                                        <ListBoxItem.Content>
+                                            <StackPanel>
+                                                <Image Source="/Resources/flag-of-Belarusian.png" />
+                                                <TextBlock Text="БЕЛАРУСКАЯ" />
+                                            </StackPanel>
+                                        </ListBoxItem.Content>
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="БЪЛГАРСКИ">
+                                        <ListBoxItem.Content>
+                                            <StackPanel>
+                                                <Image Source="/Resources/flag-of-Bulgarian.png" />
+                                                <TextBlock Text="БЪЛГАРСКИ" />
+                                            </StackPanel>
+                                        </ListBoxItem.Content>
+                                    </ListBoxItem>
                                 </ListBox>
                                 <local:TesseractView Grid.Column="1" Height="140" />
                             </Grid>

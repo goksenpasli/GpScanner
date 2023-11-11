@@ -2190,6 +2190,33 @@ public class GpScannerViewModel : InpcBase
                     TesseractViewModel.SeçiliDil = "Azerbaijani";
 
                     break;
+                case "БЕЛАРУСКАЯ":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("be");
+                    CalendarLang = XmlLanguage.GetLanguage("be");
+                    TesseractViewModel.SeçiliDil = "Belarusian";
+
+                    break;
+
+                case "БЪЛГАРСКИ":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("bg");
+                    CalendarLang = XmlLanguage.GetLanguage("bg");
+                    TesseractViewModel.SeçiliDil = "Bulgarian";
+
+                    break;
+
+                case "DANSK":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("da");
+                    CalendarLang = XmlLanguage.GetLanguage("da");
+                    TesseractViewModel.SeçiliDil = "Danish";
+
+                    break;
+
+                case "HRVATSKI":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("hr");
+                    CalendarLang = XmlLanguage.GetLanguage("hr");
+                    TesseractViewModel.SeçiliDil = "Croatian";
+
+                    break;
             }
 
             Settings.Default.DefaultLang = SeçiliDil;

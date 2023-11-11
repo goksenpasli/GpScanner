@@ -1,0 +1,675 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>VÆLG KILDE</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>INDSTILLINGER</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>LØSNING</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>ADF</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>SORT HVID</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>GRÅ</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>FARVE</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>TO SIDE</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>VIS GUI</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>SEPERAT SCANNING</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>VIS FIL EFTER HURTIG SCANNING</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>ANDRE INDSTILLINGER</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>DESKEW</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>AUTOMATISK GRÆNDEDETEKTERING</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>VIS FREMSKRIDT</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>AUTOMATISK ROTATION</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>INGEN HANDLING</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>LUK COMPUTER</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>GENSTART COMPUTEREN</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>FILNAVN</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>DAG</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>MÅNED</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>ÅR</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>TID</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>MINUT</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>ANDEN</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>GUID</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>BRUGERNAVN</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>GEM PROFIL</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>SLET</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>SCAN</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>HURTIG</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>AUTO SCAN</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>ALLE</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>INGEN</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>BAGLÆNS</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>Størrelse på FORBILLEDSVISNING</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF BESKYTTELSE</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>KRYPTER</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>DE INDSTILLINGER, DER GØRES HER, PÅVIRKER ALLE PDF-INDSTILLINGER.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>TILLAD UDSKRIVNING</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>TILLAD KOPIERING</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>TILLAD REDIGER</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>GEM UDVALGTE</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>RYD LISTE</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>FLET PDF</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>OM</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>DOKUMENT</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>TRIM BILLEDE</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>NULSTIL</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>BREDDETAL</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>HØJDETAL</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>SKIVE</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>TEKST</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>TEKST STØRRELSE</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>TEKSTVINKEL</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>FONT</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>TEGNET TEKST</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>GEM PDF</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>HJÆLP</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>FIL</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>KALENDER</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>KURVE</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>SE ALT</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>FORBINDELSE AF FIL</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESSERACT</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>FUSIONERE</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>FLET VALGT</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>VÆLG MINDST TO PDF-FILER</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>LÆS AKTIV</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>INDHOLD</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>VIS I MAPPE</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Da tesseract og leptonica binære filer er kompileret med Visual Studio 2019, skal du sørge for at have Visual Studio 2019 Runtime installeret</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Download også andre sprogdatafiler til tesseract 4.1.0 fra tesseract-ocr, hvis det er nødvendigt.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Studio 2019 x86 og x64 Runtimes</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Andre tesseract sprogdata</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>SCANNER</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>ADGANGSKODE</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Nedlukning eller genstart er indstillet.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Efter hurtig scanning</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Indstil Auto Gem mappe</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Automatisk lagringssti ændret.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Alle scannede dokumenter på den nederste liste vil blive slettet Vil du fortsætte?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Scan</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Anvend rotation</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Applikationen kører allerede.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>TILMELD STI</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>OVERSÆTTE</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>KILDESPROG</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>DESTINATIONSSPROG</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>AFREGISTER STI-ENHED</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Gem hver side til separat fil Filer gemmes i mappen specificeret nedenfor.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>GEM OCR PDF</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Hold op</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>TOM</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DESPEKLE</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Det anbefales at vælge det passende format til mappeindekset for din gamle browserapplikation.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>BRUGERDEFINERET BREDDE</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>BRUGERDEFINERET HØJDE</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Angiv Auto Gem mappe.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Kendte problemer</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Nogle gange, selvom en fil føjes til listen, vises den ikke på listen.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Viser hvor mange sekunder scanneren vil vente før scanning!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>FILMSCANNER</value>
+  </data>
+  <data name="LICENSE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignorer Bredde Højde Ens.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>BIBLIOTEK</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Vælg Pdf Gem mappe</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Vælg billedmappe</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Afspil lyd, når scanningen er fuldført</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Hvis markeret, kan flere dokumenter OCR-behandles på samme tid</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Luk fil</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>INVERTER FARVE</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>FOLDE</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>SPEJL</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>RIPPLE</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>INSTALLERET</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Filen er i brug.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Tryk og hold Esc-knappen nede for at annullere</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>HUE</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>LETTE</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>MÆTNING</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Enkel pdf-forhåndsvisning.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Når du er færdig Fjern cd'en</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>VANDRET</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Tag først og sidste fortsæt</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Opdel og sorter</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>TILFÆLDIG</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>UINDEKSERT FILER</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>TILFØJ DOKUMENT</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>TILFØJ OCR TIL DATABASE</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Hvis dette er markeret, gemmes det nedenstående dokument i databasen som teksten i det aktive dokument til venstre.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Denne applikation er udviklet til at lette scanning og dokumentsporing.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>ANSØGE</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>SKIFT FARVE</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AUTOMATISK</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>AUTOMATISK BILLEDE</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>AUTOMATISK TEKST</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>PARTI</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Når billedfiler føjes til mappen specificeret nedenfor, foretages automatisk konvertering til pdf-filer i samme mappe, så længe programmet er åbent</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>KAMERA</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Hvis du klikker på dette efter at have indstillet tærskelværdien, kan du foretage et andet farvevalg.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>KOMPRIMERE</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>STANDARD</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>DESTINATIONSFARVE</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>SKIP OVER TOM SIDE</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Åbn Eyp-filer direkte.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>FLADSEN</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG-KVALITET</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>VENSTRE</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Dette filformat har begrænset support.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>BELASTNING</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Ingen patchkode fundet</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>INGEN PROFIL VALGT</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf Ocr-proces tager ekstra tid.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>MINE ANDRE APPS</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Overskriv komprimeret fil direkte i scannede dokumenter</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>SIDENUMMER</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Åbn pdf-filer direkte.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>SE PDF-MAPPESKIFT</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>OPSÆT QR</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Slet behandlede filer fra dokumentlisten</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Vil du slette det valgte billede?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Erstat sider</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>GENSTART APP</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>HØJRE</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>DREJ 180 GRADER</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>DREJ 270 GRADER</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ROTER 90 GRADER</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>BRUG SEPERATØR</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Delt</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Dobbeltklik for at gendanne, højreklik for at udvide</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>KILDEFARVE</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Højreklik for at vælge kildefarve.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>TAG</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Nogle opgaver kører Vent på, at det er færdigt.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Vælg Tesseract-sprog</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>3. PARTS BIBLIOTEKER, DER BRUGT I APPLIKATIONEN</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>GRÆNSEVÆRDI</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Processen er i gang.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>OPDATERING</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>VANDMÆRKE</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Enhver cyan farvet kontrol fungerer anderledes med en eller flere af Alt Shift Ctrl-tasterne</value>
+  </data>
+</root>
