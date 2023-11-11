@@ -26,13 +26,17 @@ namespace PdfCompressor;
 [TemplatePart(Name = "ListBox", Type = typeof(ListBox))]
 public class Compressor : Control, INotifyPropertyChanged
 {
+    public static readonly DependencyProperty BatchPdfListProperty = DependencyProperty.Register(
+        "BatchPdfList",
+        typeof(ObservableCollection<BatchPdfData>),
+        typeof(Compressor),
+        new PropertyMetadata(new ObservableCollection<BatchPdfData>()));
     public static readonly DependencyProperty BatchProcessIsEnabledProperty = DependencyProperty.Register("BatchProcessIsEnabled", typeof(bool), typeof(Compressor), new PropertyMetadata(true));
     public static readonly DependencyProperty BlackAndWhiteProperty = DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
     public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-    private ObservableCollection<BatchPdfData> batchPdfList = [];
     private double compressionProgress;
     private ListBox listbox;
 
@@ -120,18 +124,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public RelayCommand<object> BatchCompressFile { get; }
 
-    public ObservableCollection<BatchPdfData> BatchPdfList
-    {
-        get => batchPdfList;
-        set
-        {
-            if (batchPdfList != value)
-            {
-                batchPdfList = value;
-                OnPropertyChanged(nameof(BatchPdfList));
-            }
-        }
-    }
+    public ObservableCollection<BatchPdfData> BatchPdfList { get => (ObservableCollection<BatchPdfData>)GetValue(BatchPdfListProperty); set => SetValue(BatchPdfListProperty, value); }
 
     public bool BatchProcessIsEnabled { get => (bool)GetValue(BatchProcessIsEnabledProperty); set => SetValue(BatchProcessIsEnabledProperty, value); }
 
@@ -165,7 +158,92 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
 
-    public async Task<List<BitmapImage>> AddToListAsync(PdfiumViewer.PdfDocument pdfDoc, int dpi)
+    public bool IsValidPdfFile(string filename)
+    {
+        if (File.Exists(filename))
+        {
+            byte[] buffer = new byte[4];
+            using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
+            _ = fs.Read(buffer, 0, buffer.Length);
+            byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
+            return buffer?.SequenceEqual(pdfheader) == true;
+        }
+
+        return false;
+    }
+
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        listbox = GetTemplateChild("ListBox") as ListBox;
+        if (listbox != null)
+        {
+            listbox.Drop -= Listbox_Drop;
+            listbox.Drop += Listbox_Drop;
+        }
+    }
+
+    protected async Task<PdfDocument> CompressFilePdfDocumentAsync(string path)
+    {
+        PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(path);
+        List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
+        loadedpdfdoc?.Dispose();
+        return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi, progress => CompressionProgress = progress);
+    }
+
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    private static void BwChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Compressor compressor)
+        {
+            if (!compressor.UseMozJpeg)
+            {
+                compressor.BlackAndWhite = Settings.Default.Bw = (bool)e.NewValue;
+                Settings.Default.Save();
+                return;
+            }
+
+            compressor.BlackAndWhite = Settings.Default.Bw = false;
+            Settings.Default.Save();
+        }
+    }
+
+    private static void DefaultPdfCompression(PdfDocument doc)
+    {
+        if (doc is null)
+        {
+            throw new ArgumentNullException(nameof(doc));
+        }
+
+        doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
+        doc.Options.CompressContentStreams = true;
+        doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
+        doc.Options.NoCompression = false;
+        doc.Options.EnableCcittCompressionForBilevelImages = true;
+    }
+
+    private static void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        Settings.Default.Dpi = (int)e.NewValue;
+        Settings.Default.Save();
+    }
+
+    private static void MozpegChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is Compressor compressor && (bool)e.NewValue)
+        {
+            compressor.BlackAndWhite = false;
+        }
+    }
+
+    private static void QualityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        Settings.Default.Quality = (int)e.NewValue;
+        Settings.Default.Save();
+    }
+
+    private async Task<List<BitmapImage>> AddToListAsync(PdfiumViewer.PdfDocument pdfDoc, int dpi)
     {
         List<BitmapImage> images = [];
         await Task.Run(
@@ -183,7 +261,31 @@ public class Compressor : Control, INotifyPropertyChanged
         return images;
     }
 
-    public async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200, Action<double> progresscallback = null)
+    private Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
+    {
+        if (bitmapsource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapsource));
+        }
+
+        FormatConvertedBitmap src = new();
+        src.BeginInit();
+        src.Source = bitmapsource;
+        src.DestinationFormat = PixelFormats.Bgra32;
+        src.EndInit();
+        src.Freeze();
+        Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
+        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+        if (data != null)
+        {
+            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+        }
+
+        return bitmap;
+    }
+
+    private async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200, Action<double> progresscallback = null)
     {
         if (bitmapFrames?.Count == 0)
         {
@@ -260,115 +362,6 @@ public class Compressor : Control, INotifyPropertyChanged
         }
 
         return document;
-    }
-
-    public bool IsValidPdfFile(string filename)
-    {
-        if (File.Exists(filename))
-        {
-            byte[] buffer = new byte[4];
-            using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
-            _ = fs.Read(buffer, 0, buffer.Length);
-            byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
-            return buffer?.SequenceEqual(pdfheader) == true;
-        }
-
-        return false;
-    }
-
-    public override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-        listbox = GetTemplateChild("ListBox") as ListBox;
-        if (listbox != null)
-        {
-            listbox.Drop -= Listbox_Drop;
-            listbox.Drop += Listbox_Drop;
-        }
-    }
-
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-    private static void BwChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is Compressor compressor)
-        {
-            if (!compressor.UseMozJpeg)
-            {
-                compressor.BlackAndWhite = Settings.Default.Bw = (bool)e.NewValue;
-                Settings.Default.Save();
-                return;
-            }
-
-            compressor.BlackAndWhite = Settings.Default.Bw = false;
-            Settings.Default.Save();
-        }
-    }
-
-    private static void DefaultPdfCompression(PdfDocument doc)
-    {
-        if (doc is null)
-        {
-            throw new ArgumentNullException(nameof(doc));
-        }
-
-        doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
-        doc.Options.CompressContentStreams = true;
-        doc.Options.UseFlateDecoderForJpegImages = PdfUseFlateDecoderForJpegImages.Automatic;
-        doc.Options.NoCompression = false;
-        doc.Options.EnableCcittCompressionForBilevelImages = true;
-    }
-
-    private static void DpiChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        Settings.Default.Dpi = (int)e.NewValue;
-        Settings.Default.Save();
-    }
-
-    private static void MozpegChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is Compressor compressor && (bool)e.NewValue)
-        {
-            compressor.BlackAndWhite = false;
-        }
-    }
-
-    private static void QualityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        Settings.Default.Quality = (int)e.NewValue;
-        Settings.Default.Save();
-    }
-
-    private Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
-    {
-        if (bitmapsource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapsource));
-        }
-
-        FormatConvertedBitmap src = new();
-        src.BeginInit();
-        src.Source = bitmapsource;
-        src.DestinationFormat = PixelFormats.Bgra32;
-        src.EndInit();
-        src.Freeze();
-        Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-        if (data != null)
-        {
-            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-            bitmap.UnlockBits(data);
-        }
-
-        return bitmap;
-    }
-
-    private async Task<PdfDocument> CompressFilePdfDocumentAsync(string path)
-    {
-        PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(path);
-        List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
-        loadedpdfdoc?.Dispose();
-        return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi, progress => CompressionProgress = progress);
     }
 
     private void Listbox_Drop(object sender, DragEventArgs e)

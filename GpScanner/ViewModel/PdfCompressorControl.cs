@@ -1,13 +1,8 @@
 ﻿using Extensions;
-using GpScanner.Properties;
 using PdfCompressor;
 using PdfSharp.Pdf;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using TwainControl;
 
 namespace GpScanner.ViewModel;
 
@@ -15,34 +10,27 @@ public class PdfCompressorControl : Compressor
 {
     public PdfCompressorControl()
     {
-        CompressFile = new RelayCommand<object>(
+        BatchCompressFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (IsValidPdfFile(LoadedPdfPath))
+                foreach (BatchPdfData file in BatchPdfList)
                 {
-                    PdfDocument pdfDocument;
-                    using (PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(LoadedPdfPath))
+                    if (IsValidPdfFile(file.Filename))
                     {
-                        List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
-                        pdfDocument = await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi, progress => CompressionProgress = progress);
-                        images = null;
-                    }
-
-                    string savefilename = Settings.Default.DirectlyOverwriteCompressedPdf
-                                          ? LoadedPdfPath
-                                          : $"{Path.GetDirectoryName(LoadedPdfPath)}\\{Path.GetFileNameWithoutExtension(LoadedPdfPath)}{Translation.GetResStringValue("COMPRESS")}.pdf";
-                    pdfDocument?.Save(savefilename);
-                    pdfDocument?.Dispose();
-                    if (Application.Current?.MainWindow?.DataContext is GpScannerViewModel gpScannerViewModel)
-                    {
-                        DateTime date = gpScannerViewModel.SeçiliGün;
-                        gpScannerViewModel.ReloadFileDatas();
-                        gpScannerViewModel.SeçiliGün = date;
+                        PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
+                        pdfDocument.Save($"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf");
+                        file.Completed = true;
                     }
                 }
+                if (DataContext is GpScannerViewModel gpScannerViewModel)
+                {
+                    DateTime date = gpScannerViewModel.SeçiliGün;
+                    gpScannerViewModel.ReloadFileDatas();
+                    gpScannerViewModel.SeçiliGün = date;
+                }
             },
-            parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath));
+            parameter => BatchPdfList?.Count > 0);
     }
 
-    public new RelayCommand<object> CompressFile { get; }
+    public new RelayCommand<object> BatchCompressFile { get; }
 }

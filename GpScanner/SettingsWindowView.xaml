@@ -828,49 +828,6 @@
                             <Image Width="32" Height="32">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Zipfldr.dll" />
-                                        <Binding Source="0" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center">
-                                <Run Text="PDF" />
-                                <LineBreak />
-                                <Run Text="{twainctrl:Loc COMPRESS}" />
-                            </TextBlock>
-                        </StackPanel>
-                    </TabItem.Header>
-                    <GroupBox>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <PdfCompressor:Compressor />
-                            <StackPanel Grid.Row="1" Orientation="Horizontal">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="77" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                    FontWeight="Bold" Foreground="Red"
-                                    IsChecked="{Binding DirectlyOverwriteCompressedPdf, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                    <TextBlock Text="{twainctrl:Loc OVERWRITECOMPRESSED}" TextWrapping="Wrap" />
-                                </CheckBox>
-                            </StackPanel>
-                        </Grid>
-                    </GroupBox>
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="32" Height="32">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                         <Binding Source="Shell32.dll" />
                                         <Binding Source="135" />
                                     </MultiBinding>

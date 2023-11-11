@@ -2,6 +2,7 @@
 using GpScanner.Properties;
 using Microsoft.SharePoint.Client;
 using Ocr;
+using PdfCompressor;
 using PdfSharp.Pdf;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,7 @@ public class GpScannerViewModel : InpcBase
     private XmlLanguage calendarLang;
     private bool calendarPanelIsExpanded;
     private int checkedPdfCount = 0;
+    private ObservableCollection<BatchPdfData> compressedFiles = [];
     private ObservableCollection<ContributionData> contributionData;
     private int cycleIndex;
     private bool detectBarCode = true;
@@ -1080,6 +1082,20 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ICommand CheckUpdate { get; }
+
+    public ObservableCollection<BatchPdfData> CompressedFiles
+    {
+        get => compressedFiles;
+
+        set
+        {
+            if (compressedFiles != value)
+            {
+                compressedFiles = value;
+                OnPropertyChanged(nameof(CompressedFiles));
+            }
+        }
+    }
 
     public ObservableCollection<ContributionData> ContributionData
     {
@@ -2229,12 +2245,15 @@ public class GpScannerViewModel : InpcBase
 
         if (e.PropertyName is "CheckedPdfCount")
         {
-            ObservableCollection<string> files = [];
+            ObservableCollection<string> burnfiles = [];
+            ObservableCollection<BatchPdfData> compressedfiles = [];
             foreach (Scanner item in Dosyalar?.Where(z => z.Seçili))
             {
-                files.Add(item.FileName);
+                burnfiles.Add(item.FileName);
+                compressedfiles.Add(new BatchPdfData() { Filename = item.FileName });
             }
-            BurnFiles = files;
+            BurnFiles = burnfiles;
+            CompressedFiles = compressedfiles;
         }
     }
 
