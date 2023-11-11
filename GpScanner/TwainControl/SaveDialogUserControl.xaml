@@ -153,6 +153,7 @@
                         <TextBlock>
                             <Run Text="{local:Loc BW}" />
                             <Run Text="{local:Loc SETTİNGS}" />
+                            <Run Text="{local:Loc THRESHOLD}" />
                         </TextBlock>
                     </StackPanel>
                 </HeaderedContentControl.Header>

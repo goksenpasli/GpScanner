@@ -291,7 +291,7 @@ public class GpScannerViewModel : InpcBase
         UnindexedFileOcr = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is string pdffilepath)
+                if (parameter is string pdffilepath && PdfViewer.PdfViewer.IsValidPdfFile(pdffilepath))
                 {
                     OcrIsBusy = true;
                     BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(pdffilepath, 1, Twainsettings.Settings.Default.ImgLoadResolution);
@@ -324,7 +324,7 @@ public class GpScannerViewModel : InpcBase
                     }
                 }
             },
-            parameter => UnIndexedFiles?.Count > 1 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+            parameter => UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         WordOcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>

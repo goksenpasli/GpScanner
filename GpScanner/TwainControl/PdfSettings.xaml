@@ -163,6 +163,7 @@
                         <TextBlock>
                             <Run Text="{local:Loc BW}" />
                             <Run Text="{local:Loc SETTİNGS}" />
+                            <Run Text="{local:Loc THRESHOLD}" />
                             <Run Text="{Binding Path=BwThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0}}" />
                         </TextBlock>
                     </HeaderedContentControl.Header>

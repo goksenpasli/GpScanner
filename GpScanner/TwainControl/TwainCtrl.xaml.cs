@@ -2931,9 +2931,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.ArayüzEtkin = true;
     }
 
-    private ObservableCollection<ScannedImage> FirstLastSequence(ObservableCollection<ScannedImage> images)
+    private ObservableCollection<T> FirstLastSequence<T>(ObservableCollection<T> images)
     {
-        ObservableCollection<ScannedImage> result = [];
+        ObservableCollection<T> result = [];
         int startIndex = 0;
         int endIndex = images.Count - 1;
 
@@ -2976,10 +2976,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         DocumentGridLength = new GridLength(0, GridUnitType.Star);
     }
 
-    private List<ScannedImage> GroupByFirstLastList(List<ScannedImage> scannedImages, int splitCount = 2)
+    private List<T> GroupByFirstLastList<T>(List<T> scannedImages, int splitCount = 2)
     {
         int splitIndex = scannedImages.Count / splitCount;
-        List<List<ScannedImage>> splitLists = [];
+        List<List<T>> splitLists = [];
         for (int i = 0; i < splitCount; i++)
         {
             splitLists.Add(scannedImages.Skip(i * splitIndex).Take(splitIndex).ToList());
@@ -3143,13 +3143,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private List<ScannedImage> MixLists(List<ScannedImage>[] lists)
+    private List<T> MixLists<T>(List<T>[] lists)
     {
         int maxLength = lists.Max(list => list.Count);
-        List<ScannedImage> mixedList = [];
+        List<T> mixedList = [];
         for (int i = 0; i < maxLength; i++)
         {
-            foreach (List<ScannedImage> list in lists)
+            foreach (List<T> list in lists)
             {
                 if (i < list.Count)
                 {
@@ -3585,6 +3585,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                  : Scanner?.PaperBackScan == true
                                    ? EvrakOluştur(bitmap, (ColourSetting)Settings.Default.BackMode, PageHeight)
                                    : EvrakOluştur(bitmap, (ColourSetting)Settings.Default.Mode, PageHeight);
+
             if (Scanner.ApplyMedian)
             {
                 evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue);
