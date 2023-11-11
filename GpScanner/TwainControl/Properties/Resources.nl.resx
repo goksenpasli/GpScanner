@@ -118,61 +118,61 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SRC" xml:space="preserve">
-    <value>SELECTEER BRON</value>
+    <value>KIES BRON</value>
   </data>
   <data name="SETTİNGS" xml:space="preserve">
-    <value>Instellingen</value>
+    <value>INSTELLINGEN</value>
   </data>
   <data name="RES" xml:space="preserve">
-    <value>RESOLUTIE</value>
+    <value>OPLOSSING</value>
   </data>
   <data name="ADF" xml:space="preserve">
-    <value>DOCUMENTINVOER</value>
+    <value>ADF</value>
   </data>
   <data name="BW" xml:space="preserve">
-    <value>ZWART-WIT</value>
+    <value>ZWART WIT</value>
   </data>
   <data name="GRAY" xml:space="preserve">
-    <value>GRAY</value>
+    <value>GRIJS</value>
   </data>
   <data name="COLOR" xml:space="preserve">
-    <value>KLEURRIJK</value>
+    <value>KLEUR</value>
   </data>
   <data name="TWOSIDE" xml:space="preserve">
-    <value>TWEERICHTINGSVERKEER</value>
+    <value>TWEE KANTEN</value>
   </data>
   <data name="GUI" xml:space="preserve">
-    <value>TOON INTERFACE</value>
+    <value>TOON GUI</value>
   </data>
   <data name="SEPERATESCAN" xml:space="preserve">
-    <value>SCAN ELKE PAGINA AFZONDERLIJK</value>
+    <value>AFZONDERLIJKE SCAN</value>
   </data>
   <data name="SHOWFILE" xml:space="preserve">
-    <value>TOON BESTAND NA QUICK SCAN</value>
+    <value>TOON BESTAND NA SNELLE SCAN</value>
   </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
     <value>ANDERE INSTELLINGEN</value>
   </data>
   <data name="DESKEW" xml:space="preserve">
-    <value>CORRIGEER DE KROMMING</value>
+    <value>DESKEW</value>
   </data>
   <data name="BORDERDETECT" xml:space="preserve">
-    <value>AUTOMATISCHE RANDDETECTIE</value>
+    <value>AUTOMATISCHE GRENSDETECTIE</value>
   </data>
   <data name="SHOWPROGRESS" xml:space="preserve">
-    <value>LAAT ME HET PERCENTAGE ZIEN</value>
+    <value>TOON VOORUITGANG</value>
   </data>
   <data name="AUTOROTATE" xml:space="preserve">
-    <value>AUTOMATISCH ROTEREN</value>
+    <value>AUTOMATISCH DRAAIEN</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
     <value>GEEN ACTIE</value>
   </data>
   <data name="CLOSECOMP" xml:space="preserve">
-    <value>ZET DE COMPUTER UIT</value>
+    <value>SLUIT COMPUTER</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
-    <value>START DE COMPUTER OPNIEUW OP</value>
+    <value>HERSTART COMPUTER</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
     <value>BESTANDSNAAM</value>
@@ -181,7 +181,7 @@
     <value>DAG</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>DE MAAN</value>
+    <value>MAAND</value>
   </data>
   <data name="YEAR" xml:space="preserve">
     <value>JAAR</value>
@@ -190,10 +190,10 @@
     <value>TIJD</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>MINUTEN</value>
+    <value>MINUUT</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>SECONDEN</value>
+    <value>SECONDE</value>
   </data>
   <data name="GUID" xml:space="preserve">
     <value>GUID</value>
@@ -202,88 +202,85 @@
     <value>GEBRUIKERSNAAM</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
-    <value>VERBERG PROFIEL</value>
+    <value>PROFIEL OPSLAAN</value>
   </data>
   <data name="DELETE" xml:space="preserve">
     <value>VERWIJDEREN</value>
   </data>
   <data name="SCAN" xml:space="preserve">
-    <value>ZOEK</value>
+    <value>SCANNEN</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
-    <value>QUICK
-SCAN</value>
+    <value>SNEL</value>
   </data>
   <data name="AUTOPATH" xml:space="preserve">
-    <value>AUTOMATISCH
-OPSLAAN</value>
+    <value>AUTO SCAN</value>
   </data>
   <data name="ALL" xml:space="preserve">
-    <value>ALLEMAAL</value>
+    <value>ALLE</value>
   </data>
   <data name="NONE" xml:space="preserve">
-    <value>GEEN VAN HEN</value>
+    <value>GEEN</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
     <value>ACHTERUIT</value>
   </data>
   <data name="PREVIEWSIZE" xml:space="preserve">
-    <value>AFBEELDINGSVOORBEELDGROOTTE</value>
+    <value>AFBEELDING VOORBEELD GROOTTE</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
-    <value>SLA PDF OP</value>
+    <value>PDF-BEVEILIGING</value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
-    <value>VERSLEUTELEN</value>
+    <value>ENCRYPT</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>DE HIER GEMAAKTE INSTELLINGEN ZIJN VAN INVLOED OP ALLE PDF-RECORDS.
-OOK PDF-BESCHERMING KAN WORDEN VERBROKEN DOOR APPLICATIES VAN DERDEN.</value>
+    <value>DE HIER GEMAAKTE INSTELLINGEN ZIJN VAN INVLOED OP ALLE PDF-INSTELLINGEN.</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
-    <value>TOESTAAN OM AF TE DRUKKEN</value>
+    <value>AFDRUKKEN TOESTAAN</value>
   </data>
   <data name="ALLOWCOPY" xml:space="preserve">
-    <value>INHOUD KOPIËREN TOESTAAN</value>
+    <value>KOPIE TOESTAAN</value>
   </data>
   <data name="ALLOWEDIT" xml:space="preserve">
-    <value>DOCUMENTBEWERKING TOESTAAN</value>
+    <value>BEWERKEN TOESTAAN</value>
   </data>
   <data name="SAVESELECTED" xml:space="preserve">
-    <value>PICKS OPSLAAN</value>
+    <value>GESELECTEERD OPSLAAN</value>
   </data>
   <data name="CLEARLIST" xml:space="preserve">
-    <value>MAAK DE LIJST LEEG</value>
+    <value>DUIDELIJKE LIJST</value>
   </data>
   <data name="MERGEPDF" xml:space="preserve">
-    <value>PDF SAMENVOEGEN</value>
+    <value>SAMENVOEGEN PDF</value>
   </data>
   <data name="ABOUT" xml:space="preserve">
     <value>OVER</value>
   </data>
   <data name="DOCUMENT" xml:space="preserve">
-    <value>L.D.</value>
+    <value>DOCUMENT</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
-    <value>SNIJD DE FOTO BIJ</value>
+    <value>SNIJD AFBEELDING</value>
   </data>
   <data name="RESET" xml:space="preserve">
-    <value>RESETTEN</value>
+    <value>RESET</value>
   </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
-    <value>HET NUMMER VAN HET MEEST</value>
+    <value>BREEDTE AANTAL</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
-    <value>AANTAL HOOGTES</value>
+    <value>HOOGTE AANTAL</value>
   </data>
   <data name="SLICE" xml:space="preserve">
-    <value>- Sloop 'm</value>
+    <value>PLAK</value>
   </data>
   <data name="TEXT" xml:space="preserve">
     <value>TEKST</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
-    <value>TEKSTGROOTTE</value>
+    <value>LETTERGROOTTE</value>
   </data>
   <data name="TEXTANGLE" xml:space="preserve">
     <value>TEKST HOEK</value>
@@ -295,7 +292,7 @@ OOK PDF-BESCHERMING KAN WORDEN VERBROKEN DOOR APPLICATIES VAN DERDEN.</value>
     <value>TEKEN TEKST</value>
   </data>
   <data name="SAVEPDF" xml:space="preserve">
-    <value>Opslaan</value>
+    <value>BEWAAR PDF</value>
   </data>
   <data name="HELP" xml:space="preserve">
     <value>HULP</value>
@@ -304,53 +301,52 @@ OOK PDF-BESCHERMING KAN WORDEN VERBROKEN DOOR APPLICATIES VAN DERDEN.</value>
     <value>OCR</value>
   </data>
   <data name="FILE" xml:space="preserve">
-    <value>Dossier...</value>
+    <value>BESTAND</value>
   </data>
   <data name="CALENDAR" xml:space="preserve">
     <value>KALENDER</value>
   </data>
   <data name="GRAPH" xml:space="preserve">
-    <value>GRAFISCH</value>
+    <value>GRAFIEK</value>
   </data>
   <data name="VIEWALL" xml:space="preserve">
     <value>BEKIJK ALLES</value>
   </data>
   <data name="PREVIEWFILE" xml:space="preserve">
-    <value>BESTANDSVOORBEELD</value>
+    <value>VOORBEELD BESTAND</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
     <value>TESSERACT</value>
   </data>
   <data name="MERGE" xml:space="preserve">
-    <value>ZET HET IN ELKAAR</value>
+    <value>SAMENVOEGEN</value>
   </data>
   <data name="MERGESELECTED" xml:space="preserve">
-    <value>GEMARKEERDE 
-PDF 'S SAMENVOEGEN</value>
+    <value>GESELECTEERD SAMENVOEGEN</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>SELECTEER MINSTENS TWEE PDF-BESTANDEN</value>
+    <value>SELECTEER TEN MINSTE TWEE PDF-BESTANDEN</value>
   </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
-    <value>LEES DE ACTIEVE PAGINA</value>
+    <value>LEES ACTIEF</value>
   </data>
   <data name="CONTENT" xml:space="preserve">
-    <value>DRANKJES GELEZEN</value>
+    <value>INHOUD</value>
   </data>
   <data name="SHOWFOLDER" xml:space="preserve">
     <value>WEERGEVEN IN MAP</value>
   </data>
   <data name="CRUNTIME" xml:space="preserve">
-    <value>Aangezien Tesseract en leptonica binaries zijn gecompileerd met Visual Studio 2019, moet u ervoor zorgen dat Visual Studio 2019 Runtime is geïnstalleerd</value>
+    <value>Omdat de binaire bestanden tesseract en leptonica zijn gecompileerd met Visual Studio 2019, moet u ervoor zorgen dat Visual Studio 2019 Runtime is geïnstalleerd</value>
   </data>
   <data name="OTHERTESSERACT" xml:space="preserve">
-    <value>Download indien nodig ook andere taalgegevensbestanden voor tesseract 4.1.0 van tesseract-ocr. Zet het in de map Tessdata</value>
+    <value>Download indien nodig ook andere taalgegevensbestanden voor tesseract 4.1.0 van tesseract-ocr.</value>
   </data>
   <data name="VC" xml:space="preserve">
-    <value>Visual Studio 2019 x86 en x64 Runtime</value>
+    <value>Visual Studio 2019 x86- en x64-runtimes</value>
   </data>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
-    <value>Andere tesseract taalgegevens</value>
+    <value>Andere tesseract-taalgegevens</value>
   </data>
   <data name="SCANNER" xml:space="preserve">
     <value>SCANNER</value>
@@ -359,163 +355,163 @@ PDF 'S SAMENVOEGEN</value>
     <value>WACHTWOORD</value>
   </data>
   <data name="WARNREBOOT" xml:space="preserve">
-    <value>Afsluiten of herstarten ingesteld!</value>
+    <value>Afsluiten of opnieuw opstarten is ingesteld.</value>
   </data>
   <data name="FASTSCANAFTER" xml:space="preserve">
-    <value>Actie moet worden ondernomen nadat de quickscan is voltooid</value>
+    <value>Na een snelle scantaak</value>
   </data>
   <data name="AUTOFOLDER" xml:space="preserve">
-    <value>Geef de map Automatisch opslaan op.</value>
+    <value>Stel de map Automatisch opslaan in</value>
   </data>
   <data name="AUTOFOLDERCHANGE" xml:space="preserve">
-    <value>Pad gewijzigd automatisch opslaan Oude bestanden worden niet naar de nieuwe map verplaatst.</value>
+    <value>Pad voor automatisch opslaan gewijzigd.</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>Alle gescande documenten in de bovenstaande lijst worden verwijderd. Wilt u doorgaan?</value>
+    <value>Alle gescande documenten in de onderste lijst worden verwijderd. Wilt u doorgaan?</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
-    <value>Browsen</value>
+    <value>Scannen</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
-    <value>Opslaan met rotatie toegepast?</value>
+    <value>Rotatie toepassen</value>
   </data>
   <data name="APPRUNNING" xml:space="preserve">
-    <value>De app is al actief</value>
+    <value>De applicatie is al actief.</value>
   </data>
   <data name="REGSTI" xml:space="preserve">
-    <value>VOEG TOE AAN BROWSER MENU</value>
+    <value>REGISTREER STI</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
-    <value>VERTALING</value>
+    <value>VERTALEN</value>
   </data>
   <data name="SOURCELANG" xml:space="preserve">
-    <value>Bron</value>
+    <value>BRONTAAL</value>
   </data>
   <data name="DESTLANG" xml:space="preserve">
-    <value>Doel</value>
+    <value>BESTEMMINGSTAAL</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
-    <value>VERWIJDEREN UIT BROWSERMENU</value>
+    <value>STI-APPARAAT AFMELDEN</value>
   </data>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
-    <value>Sla elke pagina op in een afzonderlijk bestand Bestanden worden opgeslagen in de map hieronder gespecificeerd.</value>
+    <value>Sla elke pagina op in een afzonderlijk bestand Bestanden worden opgeslagen in de hieronder aangegeven map.</value>
   </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
-    <value>SLA OCR PDF OP</value>
+    <value>OPSLAAN OCR-PDF</value>
   </data>
   <data name="ADDDOC" xml:space="preserve">
-    <value>VOEG DOCUMENTEN TOE AAN HET BESTAND</value>
+    <value>DOCUMENT TOEVOEGEN</value>
   </data>
   <data name="ADDOCRTODB" xml:space="preserve">
-    <value>OCR-GEGEVENS OPSLAAN</value>
+    <value>OCR TOEVOEGEN AAN DATABASE</value>
   </data>
   <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>Als dit is aangevinkt, wordt de tekst van het actieve document aan de linkerkant opgeslagen in de database.</value>
+    <value>Als dit is aangevinkt, wordt het hieronder gemarkeerde document in de database opgeslagen als de tekst van het actieve document aan de linkerkant.</value>
   </data>
   <data name="APPDESC" xml:space="preserve">
-    <value>Deze applicatie is ontwikkeld om scannen en documenttracking te vergemakkelijken</value>
+    <value>Deze applicatie is ontwikkeld om het scannen en volgen van documenten te vergemakkelijken.</value>
   </data>
   <data name="APPLY" xml:space="preserve">
-    <value>Toepassen</value>
+    <value>TOEPASSEN</value>
   </data>
   <data name="APPLYCOLOR" xml:space="preserve">
-    <value>Toepassen</value>
+    <value>VERANDER KLEUR</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>AUTOMATISCH</value>
   </data>
   <data name="AutoPicture" xml:space="preserve">
-    <value>AUTO-PICTURE</value>
+    <value>AUTOMATISCH BEELD</value>
   </data>
   <data name="AutoText" xml:space="preserve">
     <value>AUTOMATISCHE TEKST</value>
   </data>
   <data name="BATCH" xml:space="preserve">
-    <value>COLLECTIEF WERK</value>
+    <value>PARTIJ</value>
   </data>
   <data name="BATCHDESC" xml:space="preserve">
-    <value>Wanneer afbeeldingsbestanden worden toegevoegd aan de map hieronder, wordt automatische vertaling uitgevoerd naar PDF-bestand in dezelfde map zolang het programma geopend is</value>
+    <value>Wanneer afbeeldingsbestanden worden toegevoegd aan de hieronder gespecificeerde map, wordt er automatisch geconverteerd naar PDF-bestanden in dezelfde map zolang het programma geopend is</value>
   </data>
   <data name="CAMERA" xml:space="preserve">
-    <value>Actie </value>
+    <value>CAMERA</value>
   </data>
   <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>Als u hierop klikt na het instellen van de drempelwaarde, kunt u een tweede kleur kiezen</value>
+    <value>Als u hierop klikt nadat u de drempelwaarde heeft ingesteld, kunt u een tweede kleurselectie maken.</value>
   </data>
   <data name="COMPRESS" xml:space="preserve">
-    <value>KNIJPEN</value>
+    <value>SAMENDRUKKEN</value>
   </data>
   <data name="Default" xml:space="preserve">
     <value>STANDAARD</value>
   </data>
   <data name="DSTCOLOR" xml:space="preserve">
-    <value>DOELKLEUR</value>
+    <value>BESTEMMINGSKLEUR</value>
   </data>
   <data name="EMPTYPAGE" xml:space="preserve">
-    <value>SLA DE LEGE PAGINA 'S OVER</value>
+    <value>OVERSLAAN LEGE PAGINA</value>
   </data>
   <data name="EYPOPEN" xml:space="preserve">
-    <value>Open Eyp-bestanden direct</value>
+    <value>Open Eyp-bestanden rechtstreeks.</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
-    <value>FLATBED</value>
+    <value>OPLEGGER</value>
   </data>
   <data name="JPEGQUALITY" xml:space="preserve">
-    <value>JPEG-KWALITEITSRATIO</value>
+    <value>JPEG-KWALITEIT</value>
   </data>
   <data name="Left" xml:space="preserve">
-    <value>Links</value>
+    <value>LINKS</value>
   </data>
   <data name="LIMITED" xml:space="preserve">
     <value>Dit bestandsformaat heeft beperkte ondersteuning.</value>
   </data>
   <data name="LOAD" xml:space="preserve">
-    <value>Aanvallen.</value>
+    <value>LADEN</value>
   </data>
   <data name="NOPATCHCODE" xml:space="preserve">
-    <value>Patchcode niet gedetecteerd</value>
+    <value>Geen patchcode gedetecteerd</value>
   </data>
   <data name="NOPROFILE" xml:space="preserve">
     <value>GEEN PROFIEL GESELECTEERD</value>
   </data>
   <data name="OCRTIME" xml:space="preserve">
-    <value>Pdf OCR kost veel tijd</value>
+    <value>Pdf Ocr-proces kost extra tijd.</value>
   </data>
   <data name="OTHERAPPS" xml:space="preserve">
-    <value>MIJN ANDERE TOEPASSINGEN</value>
+    <value>MIJN ANDERE APPS</value>
   </data>
   <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Overschrijf direct gecomprimeerd bestand in gescande documenten</value>
+    <value>Gecomprimeerd bestand in gescande documenten direct overschrijven</value>
   </data>
   <data name="PAGENUMBER" xml:space="preserve">
-    <value>PAGINANR</value>
+    <value>PAGINANUMMER</value>
   </data>
   <data name="PDFOPEN" xml:space="preserve">
-    <value>Open PDF-bestanden direct.</value>
+    <value>Open pdf-bestanden rechtstreeks.</value>
   </data>
   <data name="PDFTRACK" xml:space="preserve">
-    <value>BEKIJK HOE DE PDF-MAP VERANDERT</value>
+    <value>BEKIJK DE PDF-MAPWIJZIGING</value>
   </data>
   <data name="QRDETECT" xml:space="preserve">
     <value>DETECTEER QR</value>
   </data>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>Verwerkte bestanden uit documentenlijst verwijderen</value>
+    <value>Verwijder verwerkte bestanden uit de documentenlijst</value>
   </data>
   <data name="REMOVESELECTED" xml:space="preserve">
     <value>Wilt u de geselecteerde afbeelding verwijderen?</value>
   </data>
   <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Pagina 's vervangen</value>
+    <value>Pagina's vervangen</value>
   </data>
   <data name="RESTARTAPP" xml:space="preserve">
-    <value>De toepassing moet opnieuw worden gestart</value>
+    <value>HERSTARTAPP</value>
   </data>
   <data name="Right" xml:space="preserve">
-    <value>Rechts</value>
+    <value>RECHTS</value>
   </data>
   <data name="Rotate180" xml:space="preserve">
-    <value>180 graden draaien</value>
+    <value>DRAAI 180 GRADEN</value>
   </data>
   <data name="Rotate270" xml:space="preserve">
     <value>DRAAI 270 GRADEN</value>
@@ -524,10 +520,10 @@ PDF 'S SAMENVOEGEN</value>
     <value>DRAAI 90 GRADEN</value>
   </data>
   <data name="SEPERATOR" xml:space="preserve">
-    <value>Haakje</value>
+    <value>GEBRUIK SEPERATOR</value>
   </data>
   <data name="SPLIT" xml:space="preserve">
-    <value>- Het breekt af.</value>
+    <value>Opgesplitst</value>
   </data>
   <data name="SPLITTERTOOLTIP" xml:space="preserve">
     <value>Dubbelklik om te herstellen, klik met de rechtermuisknop om uit te vouwen</value>
@@ -536,31 +532,31 @@ PDF 'S SAMENVOEGEN</value>
     <value>BRONKLEUR</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Klik met de rechtermuisknop en kies uw kleur</value>
+    <value>Klik met de rechtermuisknop om de bronkleur te selecteren.</value>
   </data>
   <data name="START" xml:space="preserve">
-    <value>- Activeer.</value>
+    <value>BEGIN</value>
   </data>
   <data name="TAG" xml:space="preserve">
     <value>LABEL</value>
   </data>
   <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Wacht tot sommige taken zijn voltooid</value>
+    <value>Sommige taken worden uitgevoerd, wacht tot deze zijn voltooid.</value>
   </data>
   <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Selecteer Tesseract Language</value>
+    <value>Selecteer Tesseract-taal</value>
   </data>
   <data name="THIRDPARTY" xml:space="preserve">
-    <value>BIBLIOTHEKEN VAN DERDEN DIE IN DE PRAKTIJK WORDEN GEBRUIKT</value>
+    <value>BIBLIOTHEKEN VAN DERDEN DIE IN DE APPLICATIE WORDEN GEBRUIKT</value>
   </data>
   <data name="THRESHOLD" xml:space="preserve">
-    <value>DREMPEL</value>
+    <value>DREMPELWAARDE</value>
   </data>
   <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>Bewerking wordt uitgevoerd. Wacht tot het is voltooid.</value>
+    <value>Het proces is in uitvoering.</value>
   </data>
   <data name="UPDATE" xml:space="preserve">
-    <value>Update</value>
+    <value>UPDATE</value>
   </data>
   <data name="WATERMARK" xml:space="preserve">
     <value>WATERMERK</value>
@@ -572,105 +568,105 @@ PDF 'S SAMENVOEGEN</value>
     <value>LEEG</value>
   </data>
   <data name="DESPECKLE" xml:space="preserve">
-    <value>ONTVLEKKEN</value>
+    <value>ONTSPECKEL</value>
   </data>
   <data name="FOLDERFORMAT" xml:space="preserve">
-    <value>Het wordt aanbevolen om het juiste formaat te kiezen voor de mapindex van uw oude browsertoepassing. Hier wordt gefilterd volgens het geselecteerde formaat.</value>
+    <value>Het wordt aanbevolen om het juiste formaat te kiezen voor de mapindex van uw oude browserapplicatie.</value>
   </data>
   <data name="CHEIGHT" xml:space="preserve">
-    <value>AANGEPASTE HOOGTE!</value>
+    <value>AANGEPASTE HOOGTE</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
-    <value>AANGEPASTE BREEDTE!</value>
+    <value>AANGEPASTE BREEDTE</value>
   </data>
   <data name="CYANCONTROL" xml:space="preserve">
-    <value>Elke cyaankleurige bediening werkt anders met een of meer van de Alt Shift Ctrl-toetsen!</value>
+    <value>Elk cyaan gekleurd besturingselement werkt anders met een of meer van de Alt Shift Ctrl-toetsen</value>
   </data>
   <data name="AUTOFOLDERHELP" xml:space="preserve">
-    <value>Specificeer de map voor automatisch opslaan. In het Quick Scan-proces wordt deze map opgeslagen!</value>
+    <value>Geef Map voor automatisch opslaan op.</value>
   </data>
   <data name="KNOWNPROBLEMS" xml:space="preserve">
-    <value>Bekende problemen!</value>
+    <value>Bekende problemen</value>
   </data>
   <data name="ERROR1" xml:space="preserve">
-    <value>Soms verschijnt het niet in de lijst ondanks het toevoegen van bestanden aan de lijst. Om het op te lossen, moet je het wiel van de muis schuiven!</value>
+    <value>Soms verschijnt een bestand, hoewel het aan de lijst is toegevoegd, niet in de lijst.</value>
   </data>
   <data name="SCANDELAYHELP" xml:space="preserve">
-    <value>Toont hoeveel seconden de scanner zal wachten voordat hij scant!</value>
+    <value>Toont hoeveel seconden de scanner wacht voordat hij gaat scannen!</value>
   </data>
   <data name="FILMSCANNER" xml:space="preserve">
-    <value>FILM-SCANNER</value>
+    <value>FILMSCANNER</value>
   </data>
   <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
-    <value>Negeer Breedte Hoogte Gelijk. Er kan een uitzondering optreden!</value>
+    <value>Negeer breedte hoogte gelijk.</value>
   </data>
   <data name="LIBRARY" xml:space="preserve">
     <value>BIBLIOTHEEK</value>
   </data>
   <data name="PDFFOLDER" xml:space="preserve">
-    <value>Selecteer Pdf-map opslaan!</value>
+    <value>Selecteer PDF-opslagmap</value>
   </data>
   <data name="GRAPHFOLDER" xml:space="preserve">
-    <value>Selecteer afbeeldingenmap!</value>
+    <value>Selecteer de map Afbeeldingen</value>
   </data>
   <data name="PLAYSOUND" xml:space="preserve">
-    <value>Geluid afspelen wanneer de scan is voltooid!</value>
+    <value>Speel geluid af wanneer het scannen is voltooid</value>
   </data>
   <data name="THUMBMULTIPLEOCR" xml:space="preserve">
-    <value>Indien aangevinkt, kunnen meerdere documenten tegelijkertijd met OCRworden bewerkt!</value>
+    <value>Indien aangevinkt kunnen meerdere documenten tegelijkertijd worden OCR-bewerking</value>
   </data>
   <data name="CLOSEFILE" xml:space="preserve">
-    <value>Bestand sluiten!</value>
+    <value>Sluit bestand</value>
   </data>
   <data name="INVERTCOLOR" xml:space="preserve">
-    <value>KLEUR OMKEREN!</value>
+    <value>KLEUR OMKEREN</value>
   </data>
   <data name="FOLD" xml:space="preserve">
-    <value>GEVOUWEN</value>
+    <value>VOUW</value>
   </data>
   <data name="MIRROR" xml:space="preserve">
-    <value>SPIEGELEN</value>
+    <value>SPIEGEL</value>
   </data>
   <data name="RIPPLE" xml:space="preserve">
-    <value>KLEPEL</value>
+    <value>RIMPELING</value>
   </data>
   <data name="INSTALLED" xml:space="preserve">
-    <value>Installatie</value>
+    <value>GEÏNSTALLEERD</value>
   </data>
   <data name="FILEINUSE" xml:space="preserve">
-    <value>Bestand is in gebruik. Sluit de applicatie, laad geen bestanden en probeer het  opnieuw.!</value>
+    <value>Bestand is in gebruik.</value>
   </data>
   <data name="ESCTOCANCEL" xml:space="preserve">
-    <value>Houd de Esc-knop ingedrukt om te annuleren!</value>
+    <value>Houd de Esc-knop ingedrukt om te annuleren</value>
   </data>
   <data name="HUE" xml:space="preserve">
-    <value>KLEURTINT!</value>
+    <value>TINT</value>
   </data>
   <data name="LIGHTNESS" xml:space="preserve">
-    <value>OPRUIMING!</value>
+    <value>LICHTHEID</value>
   </data>
   <data name="SATURATION" xml:space="preserve">
-    <value>VERZADIGING!</value>
+    <value>VERZADIGING</value>
   </data>
   <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>Eenvoudig PDF-voorbeeld. Geschikt voor langzame computers.!</value>
+    <value>Eenvoudig pdf-voorbeeld.</value>
   </data>
   <data name="REMOVECD" xml:space="preserve">
-    <value>Wanneer u klaar bent, verwijdert u de cd!</value>
+    <value>Wanneer u klaar bent Verwijder de cd</value>
   </data>
   <data name="HORIZONTAL" xml:space="preserve">
     <value>HORIZONTAAL</value>
   </data>
   <data name="FIRSTLAST" xml:space="preserve">
-    <value>Eerste en laatste doorgaan!</value>
+    <value>Neem de eerste en de laatste Ga verder</value>
   </data>
   <data name="SPLITSORT" xml:space="preserve">
-    <value>Splitsen en sorteren!</value>
+    <value>Splitsen en sorteren</value>
   </data>
   <data name="RANDOM" xml:space="preserve">
     <value>WILLEKEURIG</value>
   </data>
   <data name="UNINDEXED" xml:space="preserve">
-    <value>UNINDEXED-BESTANDEN!</value>
+    <value>NIET-GEINDEXEERDE BESTANDEN</value>
   </data>
 </root>

@@ -121,58 +121,58 @@
     <value>ソースを選択</value>
   </data>
   <data name="SETTİNGS" xml:space="preserve">
-    <value>調整</value>
+    <value>設定</value>
   </data>
   <data name="RES" xml:space="preserve">
-    <value>解像度</value>
+    <value>解決</value>
   </data>
   <data name="ADF" xml:space="preserve">
-    <value>ドキュメントフィーダー</value>
+    <value>ADF</value>
   </data>
   <data name="BW" xml:space="preserve">
-    <value>黒と白</value>
+    <value>黒、白</value>
   </data>
   <data name="GRAY" xml:space="preserve">
-    <value>グレイ</value>
+    <value>グレー</value>
   </data>
   <data name="COLOR" xml:space="preserve">
-    <value>カラフル</value>
+    <value>色</value>
   </data>
   <data name="TWOSIDE" xml:space="preserve">
-    <value>双方向</value>
+    <value>両面</value>
   </data>
   <data name="GUI" xml:space="preserve">
-    <value>インターフェースを表示</value>
+    <value>GUIを表示</value>
   </data>
   <data name="SEPERATESCAN" xml:space="preserve">
-    <value>各ページを個別にスキャン</value>
+    <value>個別のスキャン</value>
   </data>
   <data name="SHOWFILE" xml:space="preserve">
-    <value>クイックスキャン後にファイルを表示</value>
+    <value>高速スキャン後にファイルを表示</value>
   </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
     <value>その他の設定</value>
   </data>
   <data name="DESKEW" xml:space="preserve">
-    <value>曲線を修正してください</value>
+    <value>デスキュー</value>
   </data>
   <data name="BORDERDETECT" xml:space="preserve">
-    <value>自動エッジ検出</value>
+    <value>自動境界検出</value>
   </data>
   <data name="SHOWPROGRESS" xml:space="preserve">
-    <value>比率を教えてください</value>
+    <value>進行状況を表示</value>
   </data>
   <data name="AUTOROTATE" xml:space="preserve">
     <value>自動回転</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
-    <value>アクションなし</value>
+    <value>何もしない</value>
   </data>
   <data name="CLOSECOMP" xml:space="preserve">
-    <value>パソコンを消せ</value>
+    <value>コンピュータを閉じる</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
-    <value>パソコンを再起動</value>
+    <value>コンピューターを再起動</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
     <value>ファイル名</value>
@@ -202,91 +202,88 @@
     <value>ユーザー名</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
-    <value>プロフィールを隠す</value>
+    <value>プロファイルを保存</value>
   </data>
   <data name="DELETE" xml:space="preserve">
-    <value>削除</value>
+    <value>消去</value>
   </data>
   <data name="SCAN" xml:space="preserve">
-    <value>タラ</value>
+    <value>スキャン</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
-    <value>クイック
-スキャン</value>
+    <value>速い</value>
   </data>
   <data name="AUTOPATH" xml:space="preserve">
-    <value>自動
-保存</value>
+    <value>自動スキャン</value>
   </data>
   <data name="ALL" xml:space="preserve">
-    <value>全員だ</value>
+    <value>全て</value>
   </data>
   <data name="NONE" xml:space="preserve">
-    <value>どれでもない</value>
+    <value>なし</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
-    <value>リバース</value>
+    <value>逆行する</value>
   </data>
   <data name="PREVIEWSIZE" xml:space="preserve">
-    <value>画像プレビューサイズ</value>
+    <value>画像のプレビュー サイズ</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
-    <value>PDFを保存</value>
+    <value>PDFプロテクト</value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
     <value>暗号化</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>ここで行われた設定は、すべてのPDFレコードに影響します。
-また、PDF保護はサードパーティアプリケーションによって破られる可能性があります。</value>
+    <value>ここで行った設定はすべての PDF 設定に影響します。</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
-    <value>印刷させてください</value>
+    <value>印刷を許可する</value>
   </data>
   <data name="ALLOWCOPY" xml:space="preserve">
-    <value>コンテンツのコピーを許可します</value>
+    <value>コピーを許可する</value>
   </data>
   <data name="ALLOWEDIT" xml:space="preserve">
-    <value>ドキュメントの編集を許可します。</value>
+    <value>編集を許可する</value>
   </data>
   <data name="SAVESELECTED" xml:space="preserve">
-    <value>おすすめを保存</value>
+    <value>選択したものを保存</value>
   </data>
   <data name="CLEARLIST" xml:space="preserve">
-    <value>リストをクリア</value>
+    <value>明確なリスト</value>
   </data>
   <data name="MERGEPDF" xml:space="preserve">
-    <value>PDFをマージ</value>
+    <value>PDFを結合</value>
   </data>
   <data name="ABOUT" xml:space="preserve">
-    <value>詳細はこちら</value>
+    <value>について</value>
   </data>
   <data name="DOCUMENT" xml:space="preserve">
-    <value>書類作成</value>
+    <value>書類</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
-    <value>絵をトリミング</value>
+    <value>画像のトリミング</value>
   </data>
   <data name="RESET" xml:space="preserve">
     <value>リセット</value>
   </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
-    <value>最多の数</value>
+    <value>幅のカウント</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
-    <value>高さの数</value>
+    <value>身長カウント</value>
   </data>
   <data name="SLICE" xml:space="preserve">
-    <value>叩き潰せ</value>
+    <value>スライス</value>
   </data>
   <data name="TEXT" xml:space="preserve">
-    <value>メティン</value>
+    <value>文章</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
     <value>文字サイズ</value>
   </data>
   <data name="TEXTANGLE" xml:space="preserve">
-    <value>文字角度</value>
+    <value>テキストの角度</value>
   </data>
   <data name="FONT" xml:space="preserve">
     <value>フォント</value>
@@ -304,53 +301,49 @@
     <value>OCR</value>
   </data>
   <data name="FILE" xml:space="preserve">
-    <value>ファイルは？</value>
+    <value>ファイル</value>
   </data>
   <data name="CALENDAR" xml:space="preserve">
     <value>カレンダー</value>
   </data>
   <data name="GRAPH" xml:space="preserve">
-    <value>グラフィック</value>
+    <value>グラフ</value>
   </data>
   <data name="VIEWALL" xml:space="preserve">
     <value>すべて見る</value>
   </data>
   <data name="PREVIEWFILE" xml:space="preserve">
-    <value>ファイル
-プレビュー</value>
+    <value>プレビューファイル</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
     <value>テッセラクト</value>
   </data>
   <data name="MERGE" xml:space="preserve">
-    <value>まとめて</value>
+    <value>マージ</value>
   </data>
   <data name="MERGESELECTED" xml:space="preserve">
-    <value>マークされた
-PDFをマージ</value>
+    <value>選択したものを結合</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>少なくとも2つのPDF
-ファイルを選択してください</value>
+    <value>少なくとも 2 つの PDF ファイルを選択してください</value>
   </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
-    <value>アクティブなページ
-を読む</value>
+    <value>アクティブな読み取り</value>
   </data>
   <data name="CONTENT" xml:space="preserve">
-    <value>ドリンクを読もう</value>
+    <value>コンテンツ</value>
   </data>
   <data name="SHOWFOLDER" xml:space="preserve">
-    <value>フォルダに表示</value>
+    <value>フォルダで見て</value>
   </data>
   <data name="CRUNTIME" xml:space="preserve">
-    <value>TesseractとleptonicaのバイナリはVisual Studio 2019でコンパイルされているため、Visual Studio 2019 Runtimeがインストールされていることを確認する必要があります。</value>
+    <value>tesseract および leptonica のバイナリは Visual Studio 2019 でコンパイルされるため、Visual Studio 2019 ランタイムがインストールされていることを確認する必要があります。</value>
   </data>
   <data name="OTHERTESSERACT" xml:space="preserve">
-    <value>また、必要に応じてtesseract -ocrからtesseract 4.1.0用の他の言語データファイルをダウンロードします。それをTessdataフォルダに入れてください</value>
+    <value>必要に応じて、tesseract 4.1.0 の他の言語データ ファイルも tesseract-ocr からダウンロードします。</value>
   </data>
   <data name="VC" xml:space="preserve">
-    <value>Visual Studio 2019 x 86およびx 64ランタイム</value>
+    <value>Visual Studio 2019 x86 および x64 ランタイム</value>
   </data>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>その他のtesseract言語データ</value>
@@ -362,59 +355,58 @@ PDFをマージ</value>
     <value>パスワード</value>
   </data>
   <data name="WARNREBOOT" xml:space="preserve">
-    <value>シャットダウンまたは再起動セット!!</value>
+    <value>シャットダウンまたは再起動が設定されています。</value>
   </data>
   <data name="FASTSCANAFTER" xml:space="preserve">
-    <value>クイックスキャンが完了した後に実行するアクション</value>
+    <value>高速スキャンジョブ後</value>
   </data>
   <data name="AUTOFOLDER" xml:space="preserve">
-    <value>自動保存フォルダを指定します。!</value>
+    <value>自動保存フォルダーの設定</value>
   </data>
   <data name="AUTOFOLDERCHANGE" xml:space="preserve">
-    <value>自動保存パスが変更されました。古いファイルは新しいフォルダに移動されません。</value>
+    <value>自動保存パスが変更されました。</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>上記のリスト内のすべてのスキャンされたドキュメントが削除されます。続行しますか？</value>
+    <value>一番下のリストにあるスキャンされたドキュメントはすべて削除されます。続行しますか?</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
-    <value>スキャンしないでください</value>
+    <value>スキャン</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
-    <value>回転を適用して保存しますか？</value>
+    <value>回転を適用する</value>
   </data>
   <data name="APPRUNNING" xml:space="preserve">
-    <value>アプリは既に実行されています</value>
+    <value>アプリケーションはすでに実行されています。</value>
   </data>
   <data name="REGSTI" xml:space="preserve">
-    <value>ブラウザメニューに追加</value>
+    <value>STIを登録する</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
-    <value>翻訳</value>
+    <value>翻訳する</value>
   </data>
   <data name="SOURCELANG" xml:space="preserve">
     <value>ソース言語</value>
   </data>
   <data name="DESTLANG" xml:space="preserve">
-    <value>対象</value>
+    <value>目的地の言語</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
-    <value>ブラウザメニューから削除</value>
+    <value>STI デバイスの登録を解除する</value>
   </data>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
-    <value>各ページを別々のファイルに保存するファイルは、以下に指定されたフォルダに保存されます。</value>
+    <value>各ページを別のファイルに保存 ファイルは、以下で指定したフォルダーに保存されます。</value>
   </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
-    <value>OCR PDFを保存</value>
+    <value>OCR PDF を保存</value>
   </data>
   <data name="ADDDOC" xml:space="preserve">
-    <value>ファイルに
-ドキュメントを添付してください</value>
+    <value>ドキュメントの追加</value>
   </data>
   <data name="ADDOCRTODB" xml:space="preserve">
-    <value>OCRデータを保存</value>
+    <value>OCRをデータベースに追加</value>
   </data>
   <data name="OCRTIME" xml:space="preserve">
-    <value>Pdf Ocr プロセスに余分な時間がかかります。</value>
+    <value>PDF OCR プロセスに余分な時間がかかる。</value>
   </data>
   <data name="OTHERAPPS" xml:space="preserve">
     <value>私の他のアプリ</value>
@@ -423,73 +415,73 @@ PDFをマージ</value>
     <value>ページ番号</value>
   </data>
   <data name="PDFOPEN" xml:space="preserve">
-    <value>PDFファイルを直接開く</value>
+    <value>PDF ファイルを直接開きます。</value>
   </data>
   <data name="PDFTRACK" xml:space="preserve">
-    <value>PDF フォルダの変更を見る</value>
+    <value>PDF フォルダーの変更を監視する</value>
   </data>
   <data name="QRDETECT" xml:space="preserve">
-    <value>QR検出</value>
+    <value>QRの検出</value>
   </data>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>ドキュメント一覧から処理済みファイルを削除</value>
+    <value>処理済みファイルを文書リストから削除</value>
   </data>
   <data name="REMOVESELECTED" xml:space="preserve">
     <value>選択した画像を削除しますか?</value>
   </data>
   <data name="REPLACEPAGE" xml:space="preserve">
-    <value>ページを入れ替える</value>
+    <value>ページを置換する</value>
   </data>
   <data name="RESTARTAPP" xml:space="preserve">
-    <value>アプリケーションを再起動する必要があります。</value>
+    <value>アプリを再起動する</value>
   </data>
   <data name="Right" xml:space="preserve">
     <value>右</value>
   </data>
   <data name="Rotate180" xml:space="preserve">
-    <value>180 度回転</value>
+    <value>180度回転</value>
   </data>
   <data name="Rotate270" xml:space="preserve">
-    <value>270 度回転</value>
+    <value>270度回転</value>
   </data>
   <data name="Rotate90" xml:space="preserve">
     <value>90度回転</value>
   </data>
   <data name="SEPERATOR" xml:space="preserve">
-    <value>ブラケット</value>
+    <value>セパレータを使用する</value>
   </data>
   <data name="SPLIT" xml:space="preserve">
-    <value>壊れた</value>
+    <value>分割された</value>
   </data>
   <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>ダブルクリックで復元、右クリックで展開</value>
+    <value>ダブルクリックして元に戻し、右クリックして展開します</value>
   </data>
   <data name="SRCCOLOR" xml:space="preserve">
     <value>ソースカラー</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>右クリックして色を選択</value>
+    <value>右クリックしてソースカラーを選択します。</value>
   </data>
   <data name="START" xml:space="preserve">
     <value>始める</value>
   </data>
   <data name="TAG" xml:space="preserve">
-    <value>チケット</value>
+    <value>鬼ごっこ</value>
   </data>
   <data name="TASKSRUNNING" xml:space="preserve">
-    <value>一部のタスクが実行中です。終了するまで待ちます。</value>
+    <value>いくつかのタスクが実行中です。完了するまで待機しています。</value>
   </data>
   <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Tesseract 言語を選択</value>
+    <value>Tesseract言語の選択</value>
   </data>
   <data name="THIRDPARTY" xml:space="preserve">
-    <value>アプリケーションで使用されるサードパーティ ライブラリ</value>
+    <value>アプリケーションで使用されるサードパーティのライブラリ</value>
   </data>
   <data name="THRESHOLD" xml:space="preserve">
     <value>しきい値</value>
   </data>
   <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>プロセスは進行中です。完了するまで待ちます。</value>
+    <value>プロセスは進行中です。</value>
   </data>
   <data name="UPDATE" xml:space="preserve">
     <value>アップデート</value>
@@ -498,31 +490,31 @@ PDFをマージ</value>
     <value>透かし</value>
   </data>
   <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>これがチェックされている場合、下にマークされた文書は、左側のアクティブな文書のテキストとしてデータベースに保存されます。</value>
+    <value>これをチェックすると、下でマークされた文書が、左側のアクティブな文書のテキストとしてデータベースに保存されます。</value>
   </data>
   <data name="APPDESC" xml:space="preserve">
-    <value>このアプリケーションは、スキャンとドキュメントの追跡を容易にするために開発されました。</value>
+    <value>このアプリケーションは、スキャンと文書追跡を容易にするために開発されました。</value>
   </data>
   <data name="APPLY" xml:space="preserve">
-    <value>申し込み</value>
+    <value>適用する</value>
   </data>
   <data name="APPLYCOLOR" xml:space="preserve">
-    <value>色を適用</value>
+    <value>色を変える</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>自動</value>
   </data>
   <data name="AutoPicture" xml:space="preserve">
-    <value>オートピクチャー</value>
+    <value>自動画像</value>
   </data>
   <data name="AutoText" xml:space="preserve">
     <value>自動テキスト</value>
   </data>
   <data name="BATCH" xml:space="preserve">
-    <value>共同作業</value>
+    <value>バッチ</value>
   </data>
   <data name="BATCHDESC" xml:space="preserve">
-    <value>以下のフォルダに画像ファイルを追加すると、プログラムを開いている限り、同じフォルダ内で自動的にPDFファイルに変換されます</value>
+    <value>以下で指定したフォルダーに画像ファイルを追加すると、プログラムを開いている限り、同じフォルダー内のPDFファイルに自動変換されます</value>
   </data>
   <data name="CAMERA" xml:space="preserve">
     <value>カメラ</value>
@@ -537,91 +529,91 @@ PDFをマージ</value>
     <value>デフォルト</value>
   </data>
   <data name="DSTCOLOR" xml:space="preserve">
-    <value>ターゲットカラー</value>
+    <value>目的地の色</value>
   </data>
   <data name="EMPTYPAGE" xml:space="preserve">
-    <value>空白ページをスキップ</value>
+    <value>空のページをスキップ</value>
   </data>
   <data name="EYPOPEN" xml:space="preserve">
-    <value>Eyp ファイルを直接開く</value>
+    <value>Eyp ファイルを直接開きます。</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
     <value>フラットベッド</value>
   </data>
   <data name="JPEGQUALITY" xml:space="preserve">
-    <value>JPEG品質率</value>
+    <value>JPEG品質</value>
   </data>
   <data name="Left" xml:space="preserve">
     <value>左</value>
   </data>
   <data name="LIMITED" xml:space="preserve">
-    <value>このファイル形式のサポートは限定的です。</value>
+    <value>このファイル形式のサポートは限定されています。</value>
   </data>
   <data name="LOAD" xml:space="preserve">
-    <value>ロード</value>
+    <value>負荷</value>
   </data>
   <data name="NOPATCHCODE" xml:space="preserve">
-    <value>パッチ コードが検出されませんでした</value>
+    <value>パッチコードが検出されませんでした</value>
   </data>
   <data name="NOPROFILE" xml:space="preserve">
     <value>プロファイルが選択されていません</value>
   </data>
   <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>スキャン文書の圧縮ファイルを直接上書き</value>
+    <value>スキャンした文書内の圧縮ファイルを直接上書きする</value>
   </data>
   <data name="STOP" xml:space="preserve">
-    <value>ストップ</value>
+    <value>停止</value>
   </data>
   <data name="EMPTY" xml:space="preserve">
-    <value>空</value>
+    <value>空の</value>
   </data>
   <data name="DESPECKLE" xml:space="preserve">
     <value>斑点除去</value>
   </data>
   <data name="FOLDERFORMAT" xml:space="preserve">
-    <value>古いブラウザ アプリケーションのフォルダー インデックスには適切な形式を選択することをお勧めします。ここでは、選択したフォーマットに従ってフィルタリングが行われます。</value>
+    <value>古いブラウザ アプリケーションのフォルダー インデックスには適切な形式を選択することをお勧めします。</value>
   </data>
   <data name="CHEIGHT" xml:space="preserve">
-    <value>カスタムの高さ！</value>
+    <value>カスタムの高さ</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
-    <value>カスタム幅！</value>
+    <value>カスタム幅</value>
   </data>
   <data name="CYANCONTROL" xml:space="preserve">
-    <value>任意のシアン色のコントロールは、Alt Shift CTRLキーの1つ以上で異なる働きをします！</value>
+    <value>シアン色のコントロールは、1 つ以上の Alt Shift Ctrl キーを使用すると動作が異なります。</value>
   </data>
   <data name="AUTOFOLDERHELP" xml:space="preserve">
-    <value>自動保存フォルダを指定します。クイックスキャンプロセスでは、このフォルダが保存されます！</value>
+    <value>自動保存フォルダーを指定します。</value>
   </data>
   <data name="KNOWNPROBLEMS" xml:space="preserve">
-    <value>既知の問題！</value>
+    <value>既知の問題</value>
   </data>
   <data name="ERROR1" xml:space="preserve">
-    <value>ファイルがリストに追加されたにもかかわらず、リストに表示されないことがあります。それを解決するには、マウスのホイールをスライドさせる必要があります！</value>
+    <value>ファイルがリストに追加されても、リストに表示されないことがあります。</value>
   </data>
   <data name="SCANDELAYHELP" xml:space="preserve">
-    <value>スキャンする前にスキャナーが待つ秒数を表示します！</value>
+    <value>スキャナーがスキャンする前に待機する秒数を示します。</value>
   </data>
   <data name="FILMSCANNER" xml:space="preserve">
     <value>フィルムスキャナー</value>
   </data>
   <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
-    <value>Width Height Equalを無視します。例外が発生する可能性があります！</value>
+    <value>幅高さが等しい場合は無視します。</value>
   </data>
   <data name="LIBRARY" xml:space="preserve">
     <value>図書館</value>
   </data>
   <data name="PDFFOLDER" xml:space="preserve">
-    <value>PDF保存フォルダを選択してください！</value>
+    <value>PDF保存フォルダーを選択</value>
   </data>
   <data name="GRAPHFOLDER" xml:space="preserve">
-    <value>画像フォルダを選択！</value>
+    <value>画像フォルダーを選択</value>
   </data>
   <data name="PLAYSOUND" xml:space="preserve">
-    <value>スキャンが完了したらサウンドを再生！</value>
+    <value>スキャン完了時に音を鳴らす</value>
   </data>
   <data name="THUMBMULTIPLEOCR" xml:space="preserve">
-    <value>チェックされている場合、複数のドキュメントを同時にOCRすることができます！</value>
+    <value>チェックすると、複数のドキュメントを同時に OCR できます。</value>
   </data>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>ファイルを閉じる</value>
@@ -630,51 +622,51 @@ PDFをマージ</value>
     <value>色を反転</value>
   </data>
   <data name="FOLD" xml:space="preserve">
-    <value>フォールド</value>
+    <value>折り畳み</value>
   </data>
   <data name="MIRROR" xml:space="preserve">
     <value>鏡</value>
   </data>
   <data name="RIPPLE" xml:space="preserve">
-    <value>Ripple</value>
+    <value>波紋</value>
   </data>
   <data name="INSTALLED" xml:space="preserve">
-    <value>インストール完了</value>
+    <value>インストール済み</value>
   </data>
   <data name="FILEINUSE" xml:space="preserve">
-    <value>ファイルが使用中です。アプリケーションを閉じ、ファイルを読み込まずにもう一度お試しください。</value>
+    <value>ファイルは使用中です。</value>
   </data>
   <data name="ESCTOCANCEL" xml:space="preserve">
-    <value>Escボタンを長押しするとキャンセルできます！</value>
+    <value>キャンセルするにはEscボタンを押し続けてください</value>
   </data>
   <data name="HUE" xml:space="preserve">
-    <value>カラーシェード！</value>
+    <value>色相</value>
   </data>
   <data name="LIGHTNESS" xml:space="preserve">
-    <value>クリアランス！</value>
+    <value>軽さ</value>
   </data>
   <data name="SATURATION" xml:space="preserve">
-    <value>タイルの彩度</value>
+    <value>飽和</value>
   </data>
   <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>シンプルなPDFプレビュー。遅いコンピュータに適しています。！</value>
+    <value>シンプルなPDFプレビュー。</value>
   </data>
   <data name="REMOVECD" xml:space="preserve">
-    <value>完了したら、CDを削除してください！</value>
+    <value>完了したら CD を取り出します</value>
   </data>
   <data name="HORIZONTAL" xml:space="preserve">
-    <value>横</value>
+    <value>水平方向</value>
   </data>
   <data name="FIRSTLAST" xml:space="preserve">
-    <value>テイク・ファースト・アンド・ラスト・コンティニュー！</value>
+    <value>最初と最後の継続を取得</value>
   </data>
   <data name="SPLITSORT" xml:space="preserve">
-    <value>分割と並べ替え！</value>
+    <value>分割して並べ替える</value>
   </data>
   <data name="RANDOM" xml:space="preserve">
     <value>ランダム</value>
   </data>
   <data name="UNINDEXED" xml:space="preserve">
-    <value>UNINDEXEDファイル！</value>
+    <value>インデックスのないファイル</value>
   </data>
 </root>

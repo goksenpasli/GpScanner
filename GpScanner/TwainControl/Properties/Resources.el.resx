@@ -118,19 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="SRC" xml:space="preserve">
-    <value>Επιλέξτε τύπο</value>
+    <value>ΕΠΙΛΕΞΤΕ ΠΗΓΗ</value>
   </data>
   <data name="SETTİNGS" xml:space="preserve">
     <value>ΡΥΘΜΙΣΕΙΣ</value>
   </data>
   <data name="RES" xml:space="preserve">
-    <value>Ανάλυση</value>
+    <value>ΑΝΑΛΥΣΗ</value>
   </data>
   <data name="ADF" xml:space="preserve">
-    <value>ADF!</value>
+    <value>ADF</value>
   </data>
   <data name="BW" xml:space="preserve">
-    <value>Μαύρο/Λευκό</value>
+    <value>ΜΑΥΡΟ ΑΣΠΡΟ</value>
   </data>
   <data name="GRAY" xml:space="preserve">
     <value>ΓΚΡΙ</value>
@@ -139,162 +139,160 @@
     <value>ΧΡΩΜΑ</value>
   </data>
   <data name="TWOSIDE" xml:space="preserve">
-    <value>ΔΎΟ ΌΨΕΙΣ!</value>
+    <value>ΔΙΠΛΕΥΡΕΣ</value>
   </data>
   <data name="GUI" xml:space="preserve">
-    <value>ΕΜΦΆΝΙΣΗ GUI!</value>
+    <value>ΕΜΦΑΝΙΣΗ GUI</value>
   </data>
   <data name="SEPERATESCAN" xml:space="preserve">
-    <value>ΞΕΧΩΡΙΣΤΉ ΣΆΡΩΣΗ!</value>
+    <value>ΞΕΧΩΡΙΣΤΗ ΣΑΡΩΣΗ</value>
   </data>
   <data name="SHOWFILE" xml:space="preserve">
-    <value>ΕΜΦΆΝΙΣΗ ΑΡΧΕΊΟΥ ΜΕΤΆ ΑΠΌ ΓΡΉΓΟΡΗ ΣΆΡΩΣΗ!</value>
+    <value>ΕΜΦΑΝΙΣΗ ΑΡΧΕΙΟΥ ΜΕΤΑ ΓΡΗΓΟΡΗ ΣΑΡΩΣΗ</value>
   </data>
   <data name="OTHERSETTINGS" xml:space="preserve">
-    <value>ΆΛΛΕΣ ΡΥΘΜΊΣΕΙΣ!</value>
+    <value>ΑΛΛΕΣ ΡΥΘΜΙΣΕΙΣ</value>
   </data>
   <data name="DESKEW" xml:space="preserve">
-    <value>DESKEW!</value>
+    <value>DESKEW</value>
   </data>
   <data name="BORDERDETECT" xml:space="preserve">
-    <value>ΑΥΤΌΜΑΤΗ ΑΝΊΧΝΕΥΣΗ ΠΕΡΙΓΡΆΜΜΑΤΟΣ!</value>
+    <value>ΑΥΤΟΜΑΤΗ ΑΝΙΧΝΕΥΣΗ ΣΥΝΟΡΙΩΝ</value>
   </data>
   <data name="SHOWPROGRESS" xml:space="preserve">
-    <value>ΕΜΦΆΝΙΣΗ ΠΡΟΌΔΟΥ!</value>
+    <value>ΔΕΙΞΤΕ ΠΡΟΟΔΟ</value>
   </data>
   <data name="AUTOROTATE" xml:space="preserve">
-    <value>Ταχύτητα αυτόματης περιστροφής</value>
+    <value>ΑΥΤΟΜΑΤΗ ΠΕΡΙΣΤΡΟΦΗ</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
-    <value>Καμία δράση.</value>
+    <value>ΚΑΜΙΑ ΕΝΕΡΓΕΙΑ</value>
   </data>
   <data name="CLOSECOMP" xml:space="preserve">
-    <value>ΚΛΕΊΣΤΕ ΤΟΝ ΥΠΟΛΟΓΙΣΤΉ!</value>
+    <value>ΚΛΕΙΣΙΜΟ ΥΠΟΛΟΓΙΣΤΗ</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
-    <value>Επανεκκίνηση υπολογιστή</value>
+    <value>ΕΠΑΝΕΚΚΙΝΗΣΗ ΥΠΟΛΟΓΙΣΤΗ</value>
   </data>
   <data name="FILENAME" xml:space="preserve">
-    <value>Όνομα αρχείου</value>
+    <value>ΟΝΟΜΑ ΑΡΧΕΙΟΥ</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>Ημέρα</value>
+    <value>ΗΜΕΡΑ</value>
   </data>
   <data name="MONTH" xml:space="preserve">
     <value>ΜΗΝΑΣ</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>το έτος</value>
+    <value>ΕΤΟΣ</value>
   </data>
   <data name="TIME" xml:space="preserve">
-    <value>ΩΡΑ</value>
+    <value>ΧΡΟΝΟΣ</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>λεπτό</value>
+    <value>ΛΕΠΤΟ</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>ΔΕΥΤΕΡΟΝ.</value>
+    <value>ΔΕΥΤΕΡΟΣ</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>Guid</value>
+    <value>ΟΔΗΓΟΣ</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>Όνομα χρήστη</value>
+    <value>ΟΝΟΜΑ ΧΡΗΣΤΗ</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
-    <value>Αποθήκευση προφίλ</value>
+    <value>ΑΠΟΘΗΚΕΥΣΗ ΠΡΟΦΙΛ</value>
   </data>
   <data name="DELETE" xml:space="preserve">
-    <value>ΔΙΑΓΡΑΦΗ</value>
+    <value>ΔΙΑΓΡΑΦΩ</value>
   </data>
   <data name="SCAN" xml:space="preserve">
     <value>ΣΑΡΩΣΗ</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
-    <value>ΓΡΉΓΟΡΗ
-ΣΆΡΩΣΗ!</value>
+    <value>ΓΡΗΓΟΡΑ</value>
   </data>
   <data name="AUTOPATH" xml:space="preserve">
-    <value>ΔΙΑΔΡΟΜΉ ΑΥΤΌΜΑΤΗΣ ΣΆΡΩΣΗΣ!</value>
+    <value>ΑΥΤΟΜΑΤΗ ΣΑΡΩΣΗ</value>
   </data>
   <data name="ALL" xml:space="preserve">
     <value>ΟΛΑ</value>
   </data>
   <data name="NONE" xml:space="preserve">
-    <value>ΤΙΠΟΤΑ</value>
+    <value>ΚΑΝΕΝΑΣ</value>
   </data>
   <data name="REVERSE" xml:space="preserve">
-    <value>ΠΙΣΩ ΠΛΕΥΡΑ</value>
+    <value>ΑΝΤΙΣΤΡΟΦΗ</value>
   </data>
   <data name="PREVIEWSIZE" xml:space="preserve">
-    <value>Προεπισκόπηση εικόνας</value>
+    <value>ΜΕΓΕΘΟΣ ΠΡΟΕΠΙΣΚΟΠΗΣΗΣ ΕΙΚΟΝΑΣ</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
-    <value>PDF PROTECT!</value>
+    <value>PDF PROTECT</value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
-    <value>ΚΡΥΠΤΟΓΡΆΦΗΣΗ!</value>
+    <value>ΚΡΥΠΤΟ</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>ΟΙ ΡΥΘΜΊΣΕΙΣ ΠΟΥ ΠΡΑΓΜΑΤΟΠΟΙΟΎΝΤΑΙ ΕΔΏ ΕΠΗΡΕΆΖΟΥΝ ΌΛΕΣ ΤΙΣ ΕΓΓΡΑΦΈΣ PDF. 
-ΕΠΙΣΗΣ Η ΠΡΟΣΤΑΣΙΑ PDF ΜΠΟΡΕΙ ΝΑ ΔΙΑΚΟΠΤΕΙ απο ΕΦΑΡΜΟΓΕΣ ΤΡΙΤΩΝ</value>
+    <value>ΟΙ ΡΥΘΜΙΣΕΙΣ ΠΟΥ ΓΙΝΟΝΤΑΙ ΕΔΩ ΕΠΗΡΕΑΖΟΥΝ ΟΛΕΣ ΤΙΣ ΡΥΘΜΙΣΕΙΣ PDF.</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
-    <value>ΝΑ ΕΠΙΤΡΈΠΕΤΑΙ Η ΕΚΤΎΠΩΣΗ!</value>
+    <value>ΕΠΙΤΡΕΠΕΤΑΙ ΕΚΤΥΠΩΣΗ</value>
   </data>
   <data name="ALLOWCOPY" xml:space="preserve">
-    <value>ΝΑ ΕΠΙΤΡΈΠΕΤΑΙ Η ΑΝΤΙΓΡΑΦΉ!</value>
+    <value>ΕΠΙΤΡΕΠΕΙ ΤΟ ΑΝΤΙΓΡΑΦΟ</value>
   </data>
   <data name="ALLOWEDIT" xml:space="preserve">
-    <value>ΝΑ ΕΠΙΤΡΈΠΕΤΑΙ Η ΕΠΕΞΕΡΓΑΣΊΑ!</value>
+    <value>ΕΠΙΤΡΕΠΕΙ ΤΗΝ ΕΠΕΞΕΡΓΑΣΙΑ</value>
   </data>
   <data name="SAVESELECTED" xml:space="preserve">
-    <value>Αποθήκευση επιλεγμένων</value>
+    <value>ΑΠΟΘΗΚΕΥΣΗ ΕΠΙΛΕΓΜΕΝΩΝ</value>
   </data>
   <data name="CLEARLIST" xml:space="preserve">
-    <value>Καθαρισμός λίστας</value>
+    <value>ΣΑΦΗ ΚΑΤΑΛΟΓΟ</value>
   </data>
   <data name="MERGEPDF" xml:space="preserve">
-    <value>Συγχώνευση</value>
+    <value>MERGE PDF</value>
   </data>
   <data name="ABOUT" xml:space="preserve">
-    <value>ΠΟΙΟΙ ΕΙΜΑΣΤΕ</value>
+    <value>ΣΧΕΤΙΚΑ ΜΕ</value>
   </data>
   <data name="DOCUMENT" xml:space="preserve">
-    <value>ΠΑΡΑΣΤΑΤΙΚΟΥ</value>
+    <value>ΕΓΓΡΑΦΟ</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
-    <value>ΠΕΡΙΚΟΠΉ ΕΙΚΌΝΑΣ!</value>
+    <value>ΠΕΡΙΠΤΩΣΗ ΕΙΚΟΝΑΣ</value>
   </data>
   <data name="RESET" xml:space="preserve">
     <value>ΕΠΑΝΑΦΟΡΑ</value>
   </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
-    <value>ΠΛΉΘΟΣ ΠΛΆΤΟΥΣ!</value>
+    <value>ΜΕΤΡΗΣΗ ΠΛΑΤΟΣ</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
-    <value>ΜΈΤΡΗΣΗ ΎΨΟΥΣ!</value>
+    <value>ΑΡΘΡΟ ΥΨΟΣ</value>
   </data>
   <data name="SLICE" xml:space="preserve">
-    <value>φέτα</value>
+    <value>ΦΕΤΑ</value>
   </data>
   <data name="TEXT" xml:space="preserve">
     <value>ΚΕΙΜΕΝΟ</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
-    <value>Μέγεθος κειμένου</value>
+    <value>ΜΕΓΕΘΟΣ ΚΕΙΜΕΝΟΥ</value>
   </data>
   <data name="TEXTANGLE" xml:space="preserve">
-    <value>Γωνία κειμένου</value>
+    <value>ΚΕΙΜΕΝΟ ΓΩΝΙΑ</value>
   </data>
   <data name="FONT" xml:space="preserve">
     <value>ΓΡΑΜΜΑΤΟΣΕΙΡΑ</value>
   </data>
   <data name="DRAWTEXT" xml:space="preserve">
-    <value>ΣΧΕΔΊΑΣΗ ΚΕΙΜΈΝΟΥ!</value>
+    <value>ΣΧΕΔΙΑΣΗ ΚΕΙΜΕΝΟΥ</value>
   </data>
   <data name="SAVEPDF" xml:space="preserve">
-    <value>Αποθήκευση PDF</value>
+    <value>ΑΠΟΘΗΚΕΥΣΗ PDF</value>
   </data>
   <data name="HELP" xml:space="preserve">
     <value>ΒΟΗΘΕΙΑ</value>
@@ -309,292 +307,289 @@
     <value>ΗΜΕΡΟΛΟΓΙΟ</value>
   </data>
   <data name="GRAPH" xml:space="preserve">
-    <value>Γράφημα</value>
+    <value>ΓΡΑΦΙΚΗ ΠΑΡΑΣΤΑΣΗ</value>
   </data>
   <data name="VIEWALL" xml:space="preserve">
-    <value>ΠΡΟΒΟΛΗ ΟΛΩΝ</value>
+    <value>ΔΕΙΤΕ ΟΛΑ</value>
   </data>
   <data name="PREVIEWFILE" xml:space="preserve">
-    <value>Προεπισκόπηση αρχείου</value>
+    <value>ΠΡΟΕΠΙΣΚΟΠΗΣΗ ΑΡΧΕΙΟΥ</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
-    <value>Τεσσεράκτιο</value>
+    <value>TESSERACT</value>
   </data>
   <data name="MERGE" xml:space="preserve">
-    <value>Συγχώνευση</value>
+    <value>ΣΥΓΧΩΝΕΥΣΗ</value>
   </data>
   <data name="MERGESELECTED" xml:space="preserve">
-    <value>ΣΥΓΧΏΝΕΥΣΗ ΕΠΙΛΕΓΜΈΝΟΥ
-PDF!</value>
+    <value>ΣΥΓΧΩΝΕΥΣΗ ΕΠΙΛΕΓΜΕΝΩΝ</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>ΕΠΙΛΕΞΤΕ ΤΟΥΛΑΧΙΣΤΟΝ ΔΥΟ ΑΡΧΕΙΑ PDF!</value>
+    <value>ΕΠΙΛΕΞΤΕ ΤΟΥΛΑΧΙΣΤΟΝ ΔΥΟ ΑΡΧΕΙΑ PDF</value>
   </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
-    <value>ΑΝΆΓΝΩΣΗ ΕΝΕΡΓΉΣ
-ΣΕΛΊΔΑΣ!</value>
+    <value>ΔΙΑΒΑΣΤΕ ΕΝΕΡΓΗ</value>
   </data>
   <data name="CONTENT" xml:space="preserve">
-    <value>ΠΕΡΙΕΧΟΜΕΝΑ</value>
+    <value>ΠΕΡΙΕΧΟΜΕΝΟ</value>
   </data>
   <data name="SHOWFOLDER" xml:space="preserve">
-    <value>Προβολή στον φάκελο</value>
+    <value>ΕΜΦΑΝΙΣΗ ΣΕ ΦΑΚΕΛΟ</value>
   </data>
   <data name="CRUNTIME" xml:space="preserve">
-    <value>Δεδομένου ότι τα δυαδικά αρχεία tesseract και leptonica έχουν συνταχθεί με το Visual Studio 2019, πρέπει να βεβαιωθείτε ότι έχετε εγκαταστήσει το Visual Studio 2019 Runtime!</value>
+    <value>Δεδομένου ότι τα δυαδικά αρχεία tesseract και leptonica έχουν μεταγλωττιστεί με το Visual Studio 2019, πρέπει να βεβαιωθείτε ότι έχετε εγκαταστήσει το Visual Studio 2019 Runtime</value>
   </data>
   <data name="OTHERTESSERACT" xml:space="preserve">
-    <value>Επίσης, κατεβάστε άλλα αρχεία δεδομένων γλώσσας για το tesseract 4.1.0 από το tesseract-ocr, αν χρειαστεί. Βάλτε το στο φάκελο tessdata.!</value>
+    <value>Επίσης, κατεβάστε αρχεία δεδομένων άλλων γλωσσών για το tesseract 4.1.0 από το tesseract-ocr εάν χρειάζεται.</value>
   </data>
   <data name="VC" xml:space="preserve">
-    <value>Visual Studio 2019 x86 και x64 Runtimes!</value>
+    <value>Visual Studio 2019 x86 και x64 Runtimes</value>
   </data>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
-    <value>Άλλα δεδομένα γλώσσας tesseract!</value>
+    <value>Άλλα δεδομένα γλώσσας tesseract</value>
   </data>
   <data name="SCANNER" xml:space="preserve">
-    <value>σαρωτής</value>
+    <value>ΕΡΕΥΝΗΤΗΣ</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
-    <value>ΚΩΔΙΚΟΣ</value>
+    <value>ΚΩΔΙΚΟΣ ΠΡΟΣΒΑΣΗΣ</value>
   </data>
   <data name="WARNREBOOT" xml:space="preserve">
-    <value>Ο τερματισμός ή η επανεκκίνηση έχει οριστεί.!</value>
+    <value>Έχει ρυθμιστεί ο τερματισμός λειτουργίας ή η επανεκκίνηση.</value>
   </data>
   <data name="FASTSCANAFTER" xml:space="preserve">
-    <value>Μετά την εργασία γρήγορης σάρωσης!</value>
+    <value>Μετά την εργασία γρήγορης σάρωσης</value>
   </data>
   <data name="AUTOFOLDER" xml:space="preserve">
-    <value>Ορισμός αυτόματης αποθήκευσης φακέλου!</value>
+    <value>Ορισμός φακέλου αυτόματης αποθήκευσης</value>
   </data>
   <data name="AUTOFOLDERCHANGE" xml:space="preserve">
-    <value>Η διαδρομή αυτόματης αποθήκευσης άλλαξε. Τα παλιά αρχεία δεν θα μετακινηθούν στον πρόσφατα καθορισμένο φάκελο.!</value>
+    <value>Η διαδρομή αυτόματης αποθήκευσης άλλαξε.</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>Όλα τα σαρωμένα έγγραφα στην κάτω λίστα θα διαγραφούν Θέλετε να συνεχίσετε;!</value>
+    <value>Όλα τα σαρωμένα έγγραφα στην κάτω λίστα θα διαγραφούν Θέλετε να συνεχίσετε;</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Σάρωση</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
-    <value>Εφαρμογή περιστροφής!</value>
+    <value>Εφαρμογή περιστροφής</value>
   </data>
   <data name="APPRUNNING" xml:space="preserve">
-    <value>Η εφαρμογή εκτελείται ήδη.!</value>
+    <value>Η εφαρμογή εκτελείται ήδη.</value>
   </data>
   <data name="REGSTI" xml:space="preserve">
-    <value>ΚΑΤΑΧΩΡΉΣΤΕ ΤΗ ΣΥΣΚΕΥΉ ΣΜΝ!</value>
+    <value>ΕΓΓΡΑΦΕΙΤΕ STI</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
-    <value>Μετάφραση</value>
+    <value>ΜΕΤΑΦΡΑΖΩ</value>
   </data>
   <data name="SOURCELANG" xml:space="preserve">
-    <value>Γλώσσα πηγής</value>
+    <value>ΓΛΩΣΣΑ ΠΗΓΗΣ</value>
   </data>
   <data name="DESTLANG" xml:space="preserve">
-    <value>ΓΛΏΣΣΑ ΠΡΟΟΡΙΣΜΟΎ!</value>
+    <value>ΓΛΩΣΣΑ ΠΡΟΟΡΙΣΜΟΥ</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
-    <value>ΚΑΤΆΡΓΗΣΗ ΕΓΓΡΑΦΉΣ ΣΥΣΚΕΥΉΣ STI!</value>
+    <value>ΚΑΤΑΓΡΑΦΗ ΣΥΣΚΕΥΗΣ STI</value>
   </data>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
-    <value>Αποθηκεύστε κάθε σελίδα για να διαχωρίσετε τα αρχεία που αποθηκεύονται στον φάκελο που καθορίζεται παρακάτω.!</value>
+    <value>Αποθήκευση κάθε σελίδας σε ξεχωριστό αρχείο Τα αρχεία αποθηκεύονται στον φάκελο που καθορίζεται παρακάτω.</value>
   </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
-    <value>ΑΠΟΘΉΚΕΥΣΗ PDF OCR!</value>
+    <value>ΑΠΟΘΗΚΕΥΣΗ OCR PDF</value>
   </data>
   <data name="STOP" xml:space="preserve">
-    <value>Σταμάτα!</value>
+    <value>Να σταματήσει</value>
   </data>
   <data name="EMPTY" xml:space="preserve">
-    <value>Κενό</value>
+    <value>ΑΔΕΙΑΖΩ</value>
   </data>
   <data name="DESPECKLE" xml:space="preserve">
-    <value>DESPECKLE!</value>
+    <value>ΔΕΣΠΕΚΛΕ</value>
   </data>
   <data name="FOLDERFORMAT" xml:space="preserve">
-    <value>Συνιστάται να επιλέξετε την κατάλληλη μορφή για το ευρετήριο φακέλων της παλιάς εφαρμογής του προγράμματος περιήγησής σας. Εδώ, το φιλτράρισμα θα γίνει σύμφωνα με την επιλεγμένη μορφή.!</value>
+    <value>Συνιστάται να επιλέξετε την κατάλληλη μορφή για το ευρετήριο φακέλων της παλιάς εφαρμογής του προγράμματος περιήγησής σας.</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
-    <value>Προσαρμοσμένο πλάτος</value>
+    <value>ΠΡΟΣΑΡΜΟΣΜΕΝΟ ΠΛΑΤΟΣ</value>
   </data>
   <data name="CHEIGHT" xml:space="preserve">
-    <value>Προσαρμοσμένο Ύψος</value>
+    <value>ΠΡΟΣΑΡΜΟΣΜΕΝΟ ΥΨΟΣ</value>
   </data>
   <data name="ADDDOC" xml:space="preserve">
-    <value>ΠΡΟΣΘΗΚΗ ΕΓΓΡΑΦΟΥ
-ΣΤΟ ΑΡΧΕΙΟ!</value>
+    <value>ΠΡΟΣΘΗΚΗ ΕΓΓΡΑΦΟΥ</value>
   </data>
   <data name="ADDOCRTODB" xml:space="preserve">
-    <value>ΠΡΟΣΘΗΚΗ OCR ΣΤΗ ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ!</value>
+    <value>ΠΡΟΣΘΗΚΗ OCR ΣΤΗ ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ</value>
   </data>
   <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>Εάν αυτό είναι επιλεγμένο, το έγγραφο που επισημαίνεται παρακάτω αποθηκεύεται στη βάση δεδομένων ως το κείμενο του ενεργού εγγράφου στα αριστερά.!</value>
+    <value>Εάν αυτό είναι επιλεγμένο, το έγγραφο που επισημαίνεται παρακάτω αποθηκεύεται στη βάση δεδομένων ως το κείμενο του ενεργού εγγράφου στα αριστερά.</value>
   </data>
   <data name="APPDESC" xml:space="preserve">
-    <value>Αυτή η εφαρμογή έχει αναπτυχθεί για να διευκολύνει τη σάρωση και την παρακολούθηση εγγράφων.!</value>
+    <value>Αυτή η εφαρμογή έχει αναπτυχθεί για να διευκολύνει τη σάρωση και την παρακολούθηση εγγράφων.</value>
   </data>
   <data name="APPLY" xml:space="preserve">
-    <value>ΕΦΑΡΜΟΓΗ</value>
+    <value>ΙΣΧΥΟΥΝ</value>
   </data>
   <data name="APPLYCOLOR" xml:space="preserve">
-    <value>Αλλαγή χρώματος</value>
+    <value>ΑΛΛΑΞΕ ΧΡΩΜΑ</value>
   </data>
   <data name="Auto" xml:space="preserve">
     <value>ΑΥΤΟΜΑΤΟ</value>
   </data>
   <data name="AutoPicture" xml:space="preserve">
-    <value>ΑΥΤΌΜΑΤΗ ΕΙΚΌΝΑ!</value>
+    <value>ΑΥΤΟΜΑΤΗ ΕΙΚΟΝΑ</value>
   </data>
   <data name="AutoText" xml:space="preserve">
-    <value>Aυτόματος</value>
+    <value>ΑΥΤΟΜΑΤΟ ΚΕΙΜΕΝΟ</value>
   </data>
   <data name="BATCH" xml:space="preserve">
-    <value>Batch</value>
+    <value>ΣΥΝΟΛΟ ΠΑΡΑΓΩΓΗΣ</value>
   </data>
   <data name="BATCHDESC" xml:space="preserve">
-    <value>Όταν προστίθενται αρχεία εικόνας στον φάκελο που καθορίζεται παρακάτω, η αυτόματη μετατροπή σε αρχεία Pdf στον ίδιο φάκελο πραγματοποιείται όσο το πρόγραμμα είναι ανοιχτό!</value>
+    <value>Όταν τα αρχεία εικόνας προστίθενται στον φάκελο που καθορίζεται παρακάτω, η αυτόματη μετατροπή σε αρχεία Pdf στον ίδιο φάκελο πραγματοποιείται όσο το πρόγραμμα είναι ανοιχτό</value>
   </data>
   <data name="CAMERA" xml:space="preserve">
-    <value>ΚΑΜΕΡΑ</value>
+    <value>ΦΩΤΟΓΡΑΦΙΚΗ ΜΗΧΑΝΗ</value>
   </data>
   <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>Εάν κάνετε κλικ σε αυτό αφού ορίσετε την τιμή κατωφλίου, μπορείτε να κάνετε μια δεύτερη επιλογή χρώματος.!</value>
+    <value>Εάν κάνετε κλικ σε αυτό αφού ορίσετε την τιμή κατωφλίου, μπορείτε να κάνετε μια δεύτερη επιλογή χρώματος.</value>
   </data>
   <data name="COMPRESS" xml:space="preserve">
-    <value>Συμπίεση</value>
+    <value>ΣΥΜΠΙΕΖΩ</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>Προεπιλογή</value>
+    <value>ΠΡΟΚΑΘΟΡΙΣΜΕΝΟ</value>
   </data>
   <data name="DSTCOLOR" xml:space="preserve">
-    <value>ΧΡΏΜΑ ΠΡΟΟΡΙΣΜΟΎ!</value>
+    <value>ΧΡΩΜΑ ΠΡΟΟΡΙΣΜΟΥ</value>
   </data>
   <data name="EMPTYPAGE" xml:space="preserve">
-    <value>ΠΑΡΆΛΕΙΨΗ ΚΕΝΉΣ ΣΕΛΊΔΑΣ!</value>
+    <value>ΠΑΡΑΒΕΙΨΗ ΚΕΝΗΣ ΣΕΛΙΔΑΣ</value>
   </data>
   <data name="EYPOPEN" xml:space="preserve">
-    <value>Ανοίξτε τα αρχεία Eyp άμεσα.!</value>
+    <value>Ανοίξτε απευθείας τα αρχεία Eyp.</value>
   </data>
   <data name="FLATBED" xml:space="preserve">
-    <value>Flatbed</value>
+    <value>ΕΠΙΠΕΔΟ ΚΡΕΒΑΤΙ</value>
   </data>
   <data name="JPEGQUALITY" xml:space="preserve">
-    <value>Ποιότητα JPEG</value>
+    <value>ΠΟΙΟΤΗΤΑ JPEG</value>
   </data>
   <data name="Left" xml:space="preserve">
-    <value>Αριστερό βέλος</value>
+    <value>ΑΡΙΣΤΕΡΑ</value>
   </data>
   <data name="LIMITED" xml:space="preserve">
-    <value>Αυτή η μορφή αρχείου έχει περιορισμένη υποστήριξη.!</value>
+    <value>Αυτή η μορφή αρχείου έχει περιορισμένη υποστήριξη.</value>
   </data>
   <data name="LOAD" xml:space="preserve">
-    <value>Φόρτωση</value>
+    <value>ΦΟΡΤΩΝΩ</value>
   </data>
   <data name="NOPATCHCODE" xml:space="preserve">
-    <value>Δεν εντοπίστηκε κωδικός επιδιόρθωσης!</value>
+    <value>Δεν εντοπίστηκε κώδικας ενημέρωσης κώδικα</value>
   </data>
   <data name="NOPROFILE" xml:space="preserve">
-    <value>ΔΕΝ ΕΠΙΛΕΧΘΗΚΕ ΠΡΟΦΙ</value>
+    <value>ΔΕΝ ΕΠΙΛΕΓΕ ΠΡΟΦΙΛ</value>
   </data>
   <data name="OCRTIME" xml:space="preserve">
-    <value>Η διαδικασία Pdf Ocr απαιτεί επιπλέον χρόνο.!</value>
+    <value>Η διαδικασία Pdf Ocr απαιτεί επιπλέον χρόνο.</value>
   </data>
   <data name="OTHERAPPS" xml:space="preserve">
-    <value>Αλλες εφαρμογές</value>
+    <value>ΟΙ ΑΛΛΕΣ ΕΦΑΡΜΟΓΕΣ ΜΟΥ</value>
   </data>
   <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Άμεση αντικατάσταση συμπιεσμένου αρχείου σε σαρωμένα έγγραφα!</value>
+    <value>Απευθείας αντικατάσταση συμπιεσμένου αρχείου σε σαρωμένα έγγραφα</value>
   </data>
   <data name="PAGENUMBER" xml:space="preserve">
-    <value>Ορίστε τον ελάχιστο αριθμό σελίδας για τον πίνακα "Χώρα κορυφαίας χρέωσης"</value>
+    <value>ΑΡΙΘΜΟΣ ΣΕΛΙΔΑΣ</value>
   </data>
   <data name="PDFOPEN" xml:space="preserve">
-    <value>Ανοίξτε αρχεία Pdf άμεσα.!</value>
+    <value>Ανοίξτε απευθείας αρχεία Pdf.</value>
   </data>
   <data name="PDFTRACK" xml:space="preserve">
-    <value>ΠΑΡΑΚΟΛΟΎΘΗΣΗ ΑΛΛΑΓΉΣ ΦΑΚΈΛΟΥ PDF!</value>
+    <value>ΠΑΡΑΚΟΛΟΥΘΗΣΤΕ ΑΛΛΑΓΗ ΦΑΚΕΛΟΥ PDF</value>
   </data>
   <data name="QRDETECT" xml:space="preserve">
-    <value>ΕΝΤΟΠΊΣΤΕ ΤΟ QR!</value>
+    <value>ΑΝΙΧΝΕΥΣΗ QR</value>
   </data>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>Διαγραφή επεξεργασμένων αρχείων από τη λίστα εγγράφων!</value>
+    <value>Διαγραφή επεξεργασμένων αρχείων από τη λίστα εγγράφων</value>
   </data>
   <data name="REMOVESELECTED" xml:space="preserve">
-    <value>Θέλετε να διαγράψετε την επιλεγμένη εικόνα;!</value>
+    <value>Θέλετε να διαγράψετε την επιλεγμένη εικόνα;</value>
   </data>
   <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Αντικατάσταση σελίδων!</value>
+    <value>Αντικατάσταση σελίδων</value>
   </data>
   <data name="RESTARTAPP" xml:space="preserve">
-    <value>RESTARTAPP!</value>
+    <value>ΕΠΑΝΕΚΚΙΝΗΣΗ ΕΦΑΡΜΟΓΗΣ</value>
   </data>
   <data name="Right" xml:space="preserve">
-    <value>ΔΕΞΙΑ</value>
+    <value>ΣΩΣΤΑ</value>
   </data>
   <data name="Rotate180" xml:space="preserve">
-    <value>ΠΕΡΙΣΤΡΈΨΤΕ 180 ΜΟΊΡΕΣ!</value>
+    <value>ΠΕΡΙΣΤΡΟΦΗ 180 ΜΟΙΡΩΝ</value>
   </data>
   <data name="Rotate270" xml:space="preserve">
-    <value>ΠΕΡΙΣΤΡΈΨΤΕ 270 ΜΟΊΡΕΣ!</value>
+    <value>ΠΕΡΙΣΤΡΟΦΗ 270 ΜΟΙΡΩΝ</value>
   </data>
   <data name="Rotate90" xml:space="preserve">
-    <value>ΠΕΡΙΣΤΡΈΨΤΕ 90 ΜΟΊΡΕΣ!</value>
+    <value>ΠΕΡΙΣΤΡΟΦΗ 90 ΜΟΙΡΩΝ</value>
   </data>
   <data name="SEPERATOR" xml:space="preserve">
-    <value>Διαχωριστικό</value>
+    <value>ΧΡΗΣΗ ΔΙΑΧΩΡΙΣΤΗ</value>
   </data>
   <data name="SPLIT" xml:space="preserve">
-    <value>Χωριστά!</value>
+    <value>Χωρισμένος</value>
   </data>
   <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>Διπλό κλικ για επαναφορά, δεξί κλικ για επέκταση!</value>
+    <value>Κάντε διπλό κλικ για επαναφορά, δεξί κλικ για επέκταση</value>
   </data>
   <data name="SRCCOLOR" xml:space="preserve">
-    <value>ΧΡΏΜΑ ΠΗΓΉΣ!</value>
+    <value>ΠΗΓΗ ΧΡΩΜΑ</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Κάντε δεξί κλικ για να επιλέξετε το χρώμα της πηγής.!</value>
+    <value>Κάντε δεξί κλικ για να επιλέξετε το χρώμα πηγής.</value>
   </data>
   <data name="START" xml:space="preserve">
-    <value>ΕΝΑΡΞΗ</value>
+    <value>ΑΡΧΗ</value>
   </data>
   <data name="TAG" xml:space="preserve">
-    <value>Ετικέτα</value>
+    <value>ΕΤΙΚΕΤΑ</value>
   </data>
   <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Ορισμένες εργασίες εκτελούνται Περιμένετε να ολοκληρωθεί.!</value>
+    <value>Ορισμένες εργασίες εκτελούνται Περιμένετε να τελειώσει.</value>
   </data>
   <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Επιλέξτε γλώσσα Tesseract!</value>
+    <value>Επιλέξτε Tesseract Language</value>
   </data>
   <data name="THIRDPARTY" xml:space="preserve">
-    <value>ΒΙΒΛΙΟΘΗΚΕΣ ΤΡΙΤΩΝ ΠΟΥ ΧΡΗΣΙΜΟΠΟΙΟΥΝΤΑΙ</value>
+    <value>ΒΙΒΛΙΟΘΗΚΕΣ ΤΡΙΤΩΝ ΠΟΥ ΧΡΗΣΙΜΟΠΟΙΟΥΝΤΑΙ ΣΤΗΝ ΕΦΑΡΜΟΓΗ</value>
   </data>
   <data name="THRESHOLD" xml:space="preserve">
-    <value>κατώφλι</value>
+    <value>ΚΑΤΩΦΛΙ</value>
   </data>
   <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>Η Διαδικασία βρίσκεται σε εξέλιξη. Περιμένετε να τελειώσει.!</value>
+    <value>Η Διαδικασία βρίσκεται σε εξέλιξη.</value>
   </data>
   <data name="UPDATE" xml:space="preserve">
-    <value>ΕΝΗΜΕΡΩΣΗ</value>
+    <value>ΕΚΣΥΓΧΡΟΝΙΖΩ</value>
   </data>
   <data name="WATERMARK" xml:space="preserve">
-    <value>Υδατογράφημα</value>
+    <value>ΑΦΑΝΗΣ ΣΦΡΑΓΙΔΑ ΧΑΡΤΟΥ</value>
   </data>
   <data name="CYANCONTROL" xml:space="preserve">
-    <value>Οποιοσδήποτε έλεγχος κυανού χρώματος λειτουργεί διαφορετικά με ένα ή περισσότερα από τα πλήκτρα Alt Shift Ctrl!</value>
+    <value>Οποιοδήποτε στοιχείο ελέγχου κυανού χρώματος λειτουργεί διαφορετικά με ένα ή περισσότερα από τα πλήκτρα Alt Shift Ctrl</value>
   </data>
   <data name="AUTOFOLDERHELP" xml:space="preserve">
-    <value>Καθορίστε τον φάκελο αυτόματης αποθήκευσης. Στη διαδικασία γρήγορης σάρωσης, αυτός ο φάκελος αποθηκεύεται!</value>
+    <value>Καθορίστε τον φάκελο Αυτόματη αποθήκευση.</value>
   </data>
   <data name="KNOWNPROBLEMS" xml:space="preserve">
-    <value>Γνωστά προβλήματα!</value>
+    <value>Γνωστά Προβλήματα</value>
   </data>
   <data name="ERROR1" xml:space="preserve">
-    <value>Μερικές φορές δεν εμφανίζεται στη λίστα παρά την προσθήκη αρχείων στη λίστα. Για να το λύσετε, πρέπει να σύρετε τον τροχό του ποντικιού!</value>
+    <value>Μερικές φορές, αν και ένα αρχείο προστίθεται στη λίστα, δεν εμφανίζεται στη λίστα.</value>
   </data>
   <data name="SCANDELAYHELP" xml:space="preserve">
     <value>Δείχνει πόσα δευτερόλεπτα θα περιμένει ο σαρωτής πριν από τη σάρωση!</value>
@@ -603,75 +598,75 @@ PDF!</value>
     <value>FILM SCANNER</value>
   </data>
   <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
-    <value>Αγνοήστε το ύψος πλάτους ίσο. Ενδέχεται να προκύψει εξαίρεση!</value>
+    <value>Αγνοήστε το πλάτος Ύψος ίσο.</value>
   </data>
   <data name="LIBRARY" xml:space="preserve">
     <value>ΒΙΒΛΙΟΘΗΚΗ</value>
   </data>
   <data name="PDFFOLDER" xml:space="preserve">
-    <value>Επιλέξτε Pdf Αποθήκευση φακέλου!</value>
+    <value>Επιλέξτε Pdf Save Folder</value>
   </data>
   <data name="GRAPHFOLDER" xml:space="preserve">
-    <value>Επιλέξτε Φάκελο Εικόνων!</value>
+    <value>Επιλέξτε Φάκελο εικόνων</value>
   </data>
   <data name="PLAYSOUND" xml:space="preserve">
-    <value>Αναπαραγωγή ήχου όταν ολοκληρωθεί η σάρωση!</value>
+    <value>Αναπαραγωγή ήχου όταν ολοκληρωθεί η σάρωση</value>
   </data>
   <data name="THUMBMULTIPLEOCR" xml:space="preserve">
-    <value>Εάν ελεγχθεί, το Πολλαπλό έγγραφο μπορεί να είναι OCR'ed ταυτόχρονα!</value>
+    <value>Εάν επιλεγεί, πολλαπλά έγγραφα μπορούν να υποβληθούν σε OCR την ίδια ώρα</value>
   </data>
   <data name="CLOSEFILE" xml:space="preserve">
     <value>Κλείσιμο αρχείου</value>
   </data>
   <data name="INVERTCOLOR" xml:space="preserve">
-    <value>Αντιστροφή χρώματος κειμένου</value>
+    <value>ΑΝΤΙΣΤΡΟΦΟ ΧΡΩΜΑ</value>
   </data>
   <data name="FOLD" xml:space="preserve">
-    <value>ΔΙΠΛΩΣΤΕ</value>
+    <value>ΠΤΥΧΗ</value>
   </data>
   <data name="MIRROR" xml:space="preserve">
-    <value>MIRROR</value>
+    <value>ΚΑΘΡΕΦΤΗΣ</value>
   </data>
   <data name="RIPPLE" xml:space="preserve">
-    <value>Κυματισμός</value>
+    <value>ΚΥΜΑΤΙΣΜΟΣ</value>
   </data>
   <data name="INSTALLED" xml:space="preserve">
-    <value>ΕΓΚΑΤΕΣΤΗΜΕΝΟ</value>
+    <value>ΕΓΚΑΤΑΣΤΑΘΗΚΕ</value>
   </data>
   <data name="FILEINUSE" xml:space="preserve">
-    <value>Το αρχείο χρησιμοποιείται. Κλείστε την εφαρμογή, μην φορτώσετε κανένα αρχείο και δοκιμάστε  ξανά.!</value>
+    <value>Το αρχείο είναι σε χρήση.</value>
   </data>
   <data name="ESCTOCANCEL" xml:space="preserve">
-    <value>Πατήστε και κρατήστε πατημένο το κουμπί Esc για ακύρωση!</value>
+    <value>Πατήστε και κρατήστε πατημένο το κουμπί Esc για ακύρωση</value>
   </data>
   <data name="HUE" xml:space="preserve">
-    <value>ΧΡΩΜΑΤΙΚΉ ΑΠΌΧΡΩΣΗ!</value>
+    <value>ΑΠΟΧΡΩΣΗ</value>
   </data>
   <data name="LIGHTNESS" xml:space="preserve">
-    <value>ΆΔΕΙΑ!</value>
+    <value>ΕΛΑΦΡΟΤΗΤΑ</value>
   </data>
   <data name="SATURATION" xml:space="preserve">
-    <value>&amp; Κορεσμός</value>
+    <value>ΚΟΡΕΣΜΟΣ</value>
   </data>
   <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>Απλή προεπισκόπηση PDF. Κατάλληλο για αργούς υπολογιστές.!</value>
+    <value>Απλή προεπισκόπηση Pdf.</value>
   </data>
   <data name="REMOVECD" xml:space="preserve">
-    <value>Όταν ολοκληρωθεί, αφαιρέστε το CD!</value>
+    <value>Όταν τελειώσει Αφαιρέστε το CD</value>
   </data>
   <data name="HORIZONTAL" xml:space="preserve">
-    <value>οριζόντια</value>
+    <value>ΟΡΙΖΟΝΤΙΟΣ</value>
   </data>
   <data name="FIRSTLAST" xml:space="preserve">
-    <value>Πάρτε την Πρώτη και την Τελευταία Συνέχεια!</value>
+    <value>Πάρτε πρώτος και τελευταίος Συνέχεια</value>
   </data>
   <data name="SPLITSORT" xml:space="preserve">
-    <value>Διαχωρισμός και ταξινόμηση!</value>
+    <value>Διαίρεση και ταξινόμηση</value>
   </data>
   <data name="RANDOM" xml:space="preserve">
-    <value>Τυχαία Σειρά</value>
+    <value>ΤΥΧΑΙΟΣ</value>
   </data>
   <data name="UNINDEXED" xml:space="preserve">
-    <value>ΑΡΧΕΊΑ UNINDEXED!</value>
+    <value>ΑΡΧΕΙΑ ΜΗ ΑΝΤΙΚΕΙΜΕΝΟΥ</value>
   </data>
 </root>
