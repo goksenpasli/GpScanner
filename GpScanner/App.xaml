@@ -372,6 +372,9 @@
                     </Image.Tag>
                 </Image>
             </DataTemplate>
+            <ItemsPanelTemplate x:Key="ListBoxWrapItemsPanel">
+                <Extensions:VirtualizingWrapPanel CanVerticallyScroll="False" ItemSize="100,100" SpacingMode="None" />
+            </ItemsPanelTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Template">
                     <Setter.Value>
