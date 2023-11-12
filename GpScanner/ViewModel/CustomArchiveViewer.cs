@@ -24,7 +24,7 @@ public class CustomArchiveViewer : ArchiveViewer
                 {
                     if (parameter is string filename)
                     {
-                        if (!supportedFilesExtension.Contains(Path.GetExtension(filename)))
+                        if (!supportedFilesExtension.Contains(Path.GetExtension(filename.ToLower())))
                         {
                             string extractedfile = ExtractToFile(filename);
                             _ = Process.Start(extractedfile);
