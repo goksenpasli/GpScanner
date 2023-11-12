@@ -1,0 +1,672 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>સ્ત્રોત પસંદ કરો</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>સેટિંગ્સ</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>ઠરાવ</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>એડીએફ</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>કાળા ધોળા</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>ભૂખરા</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>રંગ</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>બે બાજુ</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>GUI બતાવો</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>અલગ સ્કેન</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>ફાસ્ટ સ્કેન પછી ફાઇલ બતાવો</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>અન્ય સેટિંગ્સ</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>ડેસ્ક્યુ</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>ઓટોમેટિક બોર્ડર ડિટેક્ટ</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>પ્રગતિ બતાવો</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>સ્વતઃ ફેરવો</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>કાર્યવાહી નથી</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>કમ્પ્યુટર બંધ કરો</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>કોમ્પ્યુટર રીસ્ટાર્ટ કરો</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>ફાઈલનું નામ</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>DAY</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>માસ</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>YEAR</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>સમય</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>મિનિટ</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>સેકન્ડ</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>GUID</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>USERNAME</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>પ્રોફાઇલ સાચવો</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>કાઢી નાખો</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>સ્કેન કરો</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>ઝડપી</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>ઓટો સ્કેન</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>બધા</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>કોઈ નહીં</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>રિવર્સ</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>છબી પૂર્વાવલોકન કદ</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>પીડીએફ પ્રોટેક્ટ</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>એનક્રિપ્ટ</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>અહીં બનાવેલી સેટિંગ્સ તમામ PDF સેટિંગ્સને અસર કરે છે.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>પ્રિન્ટ કરવાની મંજૂરી આપો</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>નકલ કરવાની મંજૂરી આપો</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>સંપાદન કરવાની મંજૂરી આપો</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>પસંદ કરેલ સાચવો</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>સ્પષ્ટ યાદી</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>પીડીએફ મર્જ કરો</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>વિશે</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>દસ્તાવેજ</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>ટ્રિમ ઇમેજ</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>રીસેટ કરો</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>WIDTH COUNT</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>ઊંચાઈ કાઉન્ટ</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>સ્લાઈસ</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>ટેક્સ્ટ</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>ટેક્સ્ટનું કદ</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>ટેક્સ્ટ એન્ગલ</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>ફોન્ટ</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>ટેક્સ્ટ દોરો</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>પીડીએફ સાચવો</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>ફાઇલ</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>કૅલેન્ડર</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>ગ્રાફ</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>બધુજ જુઓ</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>પૂર્વાવલોકન ફાઇલ</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESSERACT</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>મર્જ કરો</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>મર્જ પસંદ કરેલ</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>ઓછામાં ઓછી બે PDF ફાઇલો પસંદ કરો</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>સક્રિય વાંચો</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>સામગ્રી</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>ફોલ્ડરમાં બતાવો</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>ટેસેરેક્ટ અને લેપ્ટોનિકા દ્વિસંગી વિઝ્યુઅલ સ્ટુડિયો 2019 સાથે સંકલિત હોવાથી, તમારે ખાતરી કરવાની જરૂર છે કે તમારી પાસે વિઝ્યુઅલ સ્ટુડિયો 2019 રનટાઇમ ઇન્સ્ટોલ કરેલ છે.</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>જો જરૂરી હોય તો tesseract-ocr પરથી tesseract 4.1.0 માટે અન્ય ભાષાની ડેટા ફાઇલો પણ ડાઉનલોડ કરો.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>વિઝ્યુઅલ સ્ટુડિયો 2019 x86 અને x64 રનટાઇમ્સ</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>અન્ય ટેસેરેક્ટ ભાષા ડેટા</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>સ્કેનર</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>પાસવર્ડ</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>શટડાઉન અથવા પુનઃપ્રારંભ સેટ છે.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>ફાસ્ટ સ્કેન જોબ પછી</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>ઓટો સેવ ફોલ્ડર સેટ કરો</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>ઓટો સેવ પાથ બદલાયો.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>નીચેની સૂચિમાંના બધા સ્કેન કરેલા દસ્તાવેજો કાઢી નાખવામાં આવશે શું તમે ચાલુ રાખવા માંગો છો?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>સ્કેન કરો</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>પરિભ્રમણ લાગુ કરો</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>એપ્લિકેશન પહેલેથી જ ચાલી રહી છે.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>STI નોંધણી કરો</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>અનુવાદ કરો</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>સ્ત્રોત ભાષા</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>ગંતવ્ય ભાષા</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>STI ઉપકરણની નોંધણી રદ કરો</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>દરેક પૃષ્ઠને અલગ ફાઇલમાં સાચવો ફાઇલો નીચે ઉલ્લેખિત ફોલ્ડરમાં સાચવવામાં આવે છે.</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>રંગ બદલો</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>ગંતવ્ય રંગ</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>સ્ત્રોત રંગ</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>સ્ત્રોત રંગ પસંદ કરવા માટે જમણું ક્લિક કરો.</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>થ્રેશોલ્ડ</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>અરજી કરો</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>જો તમે થ્રેશોલ્ડ મૂલ્ય સેટ કર્યા પછી આને ક્લિક કરો છો, તો તમે બીજી રંગની પસંદગી કરી શકો છો.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>OCR PDF સાચવો</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>ડેટાબેઝમાં OCR ઉમેરો</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>જો આ ચકાસાયેલ છે, તો નીચે ચિહ્નિત થયેલ દસ્તાવેજ ડાબી બાજુના સક્રિય દસ્તાવેજના લખાણ તરીકે ડેટાબેઝમાં સાચવવામાં આવશે.</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>QR શોધો</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>સેપરેટરનો ઉપયોગ કરો</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>TAG</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>ખાલી પૃષ્ઠ છોડો</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG ગુણવત્તા</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>આ એપ્લિકેશન સ્કેનિંગ અને દસ્તાવેજ ટ્રેકિંગની સુવિધા માટે વિકસાવવામાં આવી છે.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>મારી અન્ય એપ્સ</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>અરજીમાં વપરાયેલ તૃતીય પક્ષ લાઇબ્રેરીઓ</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf Ocr પ્રક્રિયા વધારાનો સમય લે છે.</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>દસ્તાવેજ ઉમેરો</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>વિભાજિત</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>પુનઃસ્થાપિત કરવા માટે ડબલ ક્લિક કરો, વિસ્તૃત કરવા માટે જમણું ક્લિક કરો</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>બેચ</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>શરૂઆત</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>લોડ</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>કોઈ પ્રોફાઇલ પસંદ કરેલ નથી</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>કૅમેરા</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>ફ્લેટબેડ</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>સ્વયંસંચાલિત</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>સ્વચાલિત ચિત્ર</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>ઓટોમેટિક ટેક્સ્ટ</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>ડિફોલ્ટ</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>180 ડિગ્રી ફેરવો</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>270 ડિગ્રી ફેરવો</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>90 ડિગ્રી ફેરવો</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>પીડીએફ ફોલ્ડર ચેન્જ જુઓ</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>પૃષ્ઠ નંબર</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>કેટલાક કાર્યો ચાલી રહ્યા છે તે પૂર્ણ થવાની રાહ જુઓ.</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>પ્રક્રિયા ચાલુ છે.</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>આ ફાઇલ ફોર્મેટને મર્યાદિત સમર્થન છે.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>ટેસેરેક્ટ ભાષા પસંદ કરો</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>કોઈ પેચ કોડ મળ્યો નથી</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>ડાબે</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>અધિકાર</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>દસ્તાવેજ સૂચિમાંથી પ્રક્રિયા કરેલી ફાઇલો કાઢી નાખો</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>પૃષ્ઠો બદલો</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>વોટરમાર્ક</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>જ્યારે નીચે દર્શાવેલ ફોલ્ડરમાં ઈમેજ ફાઈલો ઉમેરવામાં આવે છે, ત્યારે તે જ ફોલ્ડરમાં પીડીએફ ફાઈલોમાં ઓટોમેટીક કન્વર્ઝન પ્રોગ્રામ ઓપન હોય ત્યાં સુધી કરવામાં આવે છે.</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>પુનઃપ્રારંભ કરો</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>શું તમે પસંદ કરેલી છબી કાઢી નાખવા માંગો છો?</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>અપડેટ કરો</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Eyp ફાઇલો સીધી ખોલો.</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>પીડીએફ ફાઇલો સીધી ખોલો.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>કોમ્પ્રેસ</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>સ્કેન કરેલા દસ્તાવેજોમાં સંકુચિત ફાઇલને સીધી ઓવરરાઇટ કરો</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>બંધ</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>ખાલી</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DESPECKLE</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>તમારી જૂની બ્રાઉઝર એપ્લિકેશનના ફોલ્ડર અનુક્રમણિકા માટે યોગ્ય ફોર્મેટ પસંદ કરવાની ભલામણ કરવામાં આવે છે.</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>કસ્ટમ ઊંચાઈ</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>કસ્ટમ પહોળાઈ</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>કોઈપણ સ્યાન રંગનું નિયંત્રણ એક અથવા વધુ Alt Shift Ctrl કી સાથે અલગ રીતે કામ કરે છે</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>મદદ</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>ઓટો સેવ ફોલ્ડર સ્પષ્ટ કરો.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>જાણીતી સમસ્યાઓ</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>કેટલીકવાર, સૂચિમાં ફાઇલ ઉમેરવામાં આવી હોવા છતાં, તે સૂચિમાં દેખાતી નથી.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>સ્કેનર સ્કેન કરતા પહેલા કેટલી સેકંડ રાહ જોશે તે બતાવે છે!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>ફિલ્મ સ્કેનર</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>પહોળાઈ ઊંચાઈ સમાન અવગણો.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>પુસ્તકાલય</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>પીડીએફ સેવ ફોલ્ડર પસંદ કરો</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>છબીઓ ફોલ્ડર પસંદ કરો</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>જ્યારે સ્કેન પૂર્ણ થાય ત્યારે અવાજ ચલાવો</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>જો તપાસવામાં આવે તો બહુવિધ દસ્તાવેજ એક જ સમયે OCR કરી શકાય છે</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>ફાઇલ બંધ કરો</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>ઊંધો રંગ</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>ફોલ્ડ</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>મિરર</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>લહેર</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>ઇન્સ્ટોલ કરેલ</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>ફાઇલ ઉપયોગમાં છે.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>રદ કરવા માટે Esc બટન દબાવો અને પકડી રાખો</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>સરળ પીડીએફ પૂર્વાવલોકન.</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>HUE</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>હળવાશ</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>સંતૃપ્તિ</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>જ્યારે સમાપ્ત થાય ત્યારે સીડી દૂર કરો</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>આડું</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>પ્રથમ અને છેલ્લે ચાલુ રાખો</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>સ્પ્લિટ અને સૉર્ટ કરો</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>રેન્ડમ</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>અનઇન્ડેક્સ્ડ ફાઇલો</value>
+  </data>
+</root>

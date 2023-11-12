@@ -2233,6 +2233,19 @@ public class GpScannerViewModel : InpcBase
                     TesseractViewModel.SeçiliDil = "Croatian";
 
                     break;
+
+                case "भारतीय":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("gu");
+                    CalendarLang = XmlLanguage.GetLanguage("gu");
+                    TesseractViewModel.SeçiliDil = "Hindi";
+
+                    break;
+                case "PORTUGUÊS":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("pt");
+                    CalendarLang = XmlLanguage.GetLanguage("pt");
+                    TesseractViewModel.SeçiliDil = "Portuguese";
+
+                    break;
             }
 
             Settings.Default.DefaultLang = SeçiliDil;
