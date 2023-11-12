@@ -1111,22 +1111,40 @@
                                     </Button>
                                     <Extensions:ContentToggleButton ArrowVisibility="Collapsed">
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Command="{Binding ListeTemizle}">
-                                                    <StackPanel Orientation="Horizontal">
+                                            <StackPanel Background="{StaticResource GroupBoxBackGround}">
+                                                <MenuItem BorderBrush="{StaticResource GroupBoxBackGround}" Command="{Binding ListeTemizle}">
+                                                    <MenuItem.Icon>
                                                         <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                    </MenuItem.Icon>
+                                                    <MenuItem.Header>
                                                         <TextBlock VerticalAlignment="Center">
                                                             <Run Text="{local:Loc ALL}" />
                                                             <Run Text="{local:Loc CLEARLIST}" />
                                                         </TextBlock>
-                                                    </StackPanel>
-                                                </Button>
-                                                <Button Command="{Binding SeçiliListeTemizle}">
-                                                    <StackPanel Orientation="Horizontal">
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <MenuItem BorderBrush="{StaticResource GroupBoxBackGround}" Command="{Binding SeçiliListeTemizle}">
+                                                    <MenuItem.Icon>
                                                         <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                    </MenuItem.Icon>
+                                                    <MenuItem.Header>
                                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
-                                                    </StackPanel>
-                                                </Button>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <Separator />
+                                                <MenuItem  IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock>
+                                                            <Run Text="{local:Loc FILE}" />
+                                                            <Run Text="{local:Loc DELETE}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <MenuItem 
+                                                    FontWeight="Bold" Foreground="Red"
+                                                    Header="{local:Loc REMOVEPROCESSEDIMAGE}"
+                                                    IsCheckable="True"
+                                                    IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
                                             </StackPanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                         <Image Width="24" Height="24" Source="/TwainControl;component/Icons/delete.png" />

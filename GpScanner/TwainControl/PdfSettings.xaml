@@ -25,41 +25,22 @@
     </UserControl.Resources>
     <GroupBox Background="{StaticResource GroupBoxBackGround}">
         <GroupBox.Header>
-            <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <CheckBox VerticalAlignment="Center" Content="{local:Loc ENCRYPT}" IsChecked="{Binding Scanner.PasswordProtect}" />
-                    <Image Width="32" Height="32">
-                        <Image.Source>
-                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                <Binding Source="Shell32.dll" />
-                                <Binding Source="77" />
-                            </MultiBinding>
-                        </Image.Source>
-                    </Image>
-                    <TextBlock Width="370"
-                        VerticalAlignment="Center"
-                        FontSize="14" FontStyle="Italic"
-                        Foreground="Red"
-                        Text="{local:Loc PDFWARN}"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-                <Separator />
-                <UniformGrid Columns="2">
-                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                        Content="{local:Loc REMOVEPROCESSEDIMAGE}"
-                        FontStyle="Italic" FontWeight="Bold"
-                        Foreground="Red"
-                        IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
-                    <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                        FontStyle="Italic" FontWeight="Bold"
-                        Foreground="Red"
-                        IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
-                        <TextBlock>
-                            <Run Text="{local:Loc FILE}" />
-                            <Run Text="{local:Loc DELETE}" />
-                        </TextBlock>
-                    </CheckBox>
-                </UniformGrid>
+            <StackPanel Orientation="Horizontal">
+                <CheckBox VerticalAlignment="Center" Content="{local:Loc ENCRYPT}" IsChecked="{Binding Scanner.PasswordProtect}" />
+                <Image Width="32" Height="32">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="77" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+                <TextBlock Width="370"
+                    VerticalAlignment="Center"
+                    FontSize="14" FontStyle="Italic"
+                    Foreground="Red"
+                    Text="{local:Loc PDFWARN}"
+                    TextWrapping="Wrap" />
             </StackPanel>
         </GroupBox.Header>
         <StackPanel>

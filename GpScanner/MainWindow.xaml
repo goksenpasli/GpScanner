@@ -287,11 +287,13 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Canvas Width="32" Height="32">
                                         <Image Width="32" Height="32" Source="/TwainControl;component/Icons/selectall.png" />
-                                        <TextBlock Canvas.Left="12" Canvas.Top="7"
-                                            VerticalAlignment="Center"
+                                        <TextBlock Canvas.Top="7"
+                                            Width="32"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center"
                                             d:Text="0" FontWeight="Bold"
                                             Foreground="Red"
-                                            Text="{Binding CheckedPdfCount}" />
+                                            Text="{Binding CheckedPdfCount}"
+                                            TextAlignment="Center" />
                                     </Canvas>
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                 </StackPanel>
@@ -311,24 +313,38 @@
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                 twainctrl:Policy.PolicyName="PdfZipBirleştir"
                                 Command="{Binding PdfZipBirleştir}">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="zipfldr.dll" />
-                                            <Binding Source="0" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <Canvas Width="32" Height="32">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="zipfldr.dll" />
+                                                <Binding Source="0" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock Canvas.Top="3" Canvas.Right="3" Text="ZIP" />
+                                </Canvas>
                             </Button>
                             <ToggleButton IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="70" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
+                                <Canvas Width="32" Height="32">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="70" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Image Canvas.Left="2" Canvas.Top="2"
+                                        Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="70" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Canvas>
                                 <ToggleButton.ToolTip>
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32" Height="32">

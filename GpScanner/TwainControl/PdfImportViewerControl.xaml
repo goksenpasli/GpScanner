@@ -162,8 +162,13 @@
                     </Image.Source>
                 </Image>
                 <Extensions:ContentToggleButton.OverContent>
-                    <GroupBox>
-                        <StackPanel>
+                    <Extensions:ResizablePanel Width="460" Height="300"
+                        MinWidth="460" MinHeight="300">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
                             <ListBox ItemsSource="{Binding PdfPages}"
                                 SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
                                 VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.ScrollUnit="Pixel"
@@ -195,22 +200,34 @@
                                 </ListBox.ItemTemplate>
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <Extensions:VirtualizingWrapPanel Width="460" Height="300"
-                                            CanHorizontallyScroll="False" ItemSize="140,140"
-                                            StretchItems="False" />
+                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
-                            <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16"
-                                        VerticalAlignment="Bottom"
-                                        Source="/TwainControl;component/Icons/save.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </GroupBox>
+                            <UniformGrid Grid.Row="1" Columns="3">
+                                <Button Command="{Binding PdfImportViewerTümünüİşaretle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Height="24" Source="/TwainControl;component/Icons/selectall.png" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding PdfImportViewerTersiniİşaretle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Height="24" Source="/TwainControl;component/Icons/inverse.png" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Height="24"
+                                            VerticalAlignment="Bottom"
+                                            Source="/TwainControl;component/Icons/save.png" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
+                                    </StackPanel>
+                                </Button>
+                            </UniformGrid>
+                        </Grid>
+                    </Extensions:ResizablePanel>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
             <Button local:Policy.PolicyName="ReversePdfFile" Command="{Binding ReversePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">

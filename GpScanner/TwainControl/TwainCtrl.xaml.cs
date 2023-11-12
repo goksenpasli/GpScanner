@@ -403,6 +403,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Policy.CheckPolicy("Tümünüİşaretle") && Scanner?.Resimler?.Count > 0);
 
+        PdfImportViewerTümünüİşaretle = new RelayCommand<object>(
+            parameter =>
+            {
+                foreach (PdfData item in PdfPages)
+                {
+                    item.Selected = true;
+                }
+            },
+            parameter => PdfPages?.Count > 0);
+
+        PdfImportViewerTersiniİşaretle = new RelayCommand<object>(
+            parameter =>
+            {
+                foreach (PdfData item in PdfPages)
+                {
+                    item.Selected = !item.Selected;
+                }
+            },
+            parameter => PdfPages?.Count > 0);
+
         TümünüİşaretleDikey = new RelayCommand<object>(
             parameter =>
             {
@@ -1882,6 +1902,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public ICommand PasteFileToPdfFile { get; }
+
+    public RelayCommand<object> PdfImportViewerTersiniİşaretle { get; }
+
+    public RelayCommand<object> PdfImportViewerTümünüİşaretle { get; }
 
     public double PdfLoadProgressValue
     {
