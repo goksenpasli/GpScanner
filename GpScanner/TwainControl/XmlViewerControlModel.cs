@@ -25,13 +25,13 @@ public class XmlViewerControlModel
             try
             {
                 XmlDocument XMLdoc = new();
-                XMLdoc.Load(path);
+                XMLdoc?.Load(path);
                 Binding binding = new() { Source = new XmlDataProvider { Document = XMLdoc }, XPath = "child::node()" };
                 _ = xmlViewerControl.xmlTree.SetBinding(ItemsControl.ItemsSourceProperty, binding);
             }
             catch (XmlException ex)
             {
-                throw new ArgumentException(ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
     }

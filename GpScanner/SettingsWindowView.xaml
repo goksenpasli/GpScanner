@@ -346,25 +346,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                     IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                                    OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
-                                    ResetButtonVisibility="Collapsed"
-                                    Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" BorderBrush="{x:Null}">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="1" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <Extensions:ContentToggleButton.OverContent>
-                                            <GroupBox>
-                                                <twainctrl:XmlViewerControl Width="480" Height="300" twainctrl:XmlViewerControlModel.XmlContent="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                                            </GroupBox>
-                                        </Extensions:ContentToggleButton.OverContent>
-                                    </Extensions:ContentToggleButton>
-                                </Extensions:ButtonedTextBox>
+                                    PasteButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                    Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                                 <Button Grid.Column="1" twainctrl:Policy.PolicyName="ChangeDataFolder" Command="{Binding ChangeDataFolder}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24" Height="24">
@@ -961,7 +944,10 @@
                                             <Grid>
                                                 <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
                                                 <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}">
-                                                    <Hyperlink BaselineAlignment="Center" Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                                    <Hyperlink BaselineAlignment="Center"
+                                                        Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        TextDecorations="None">
                                                         <Image Width="16" Height="16">
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

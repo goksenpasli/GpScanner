@@ -752,7 +752,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             () =>
             {
                 using Bitmap image = pdfDoc.Render(page, width, height, dpi, dpi, false) as Bitmap;
-                BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(image.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                IntPtr gdibitmap = image.GetHbitmap();
+                BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                _ = Helpers.DeleteObject(gdibitmap);
                 bitmapSource?.Freeze();
                 return bitmapSource;
             });

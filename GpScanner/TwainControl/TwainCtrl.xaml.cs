@@ -1010,7 +1010,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (clipboardData.GetDataPresent(DataFormats.Bitmap))
                     {
                         using Bitmap bitmap = (Bitmap)clipboardData.GetData(DataFormats.Bitmap);
-                        BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        IntPtr gdibitmap = bitmap.GetHbitmap();
+                        BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                        _ = Helpers.DeleteObject(gdibitmap);
                         if (image != null)
                         {
                             BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
@@ -2804,7 +2806,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private BitmapFrame CreateBitmapFromClipBoard(System.Windows.Forms.IDataObject clipboardData)
     {
         using Bitmap bitmap = (Bitmap)clipboardData.GetData(DataFormats.Bitmap);
-        BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(bitmap.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        IntPtr gdibitmap = bitmap.GetHbitmap();
+        BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+        _ = Helpers.DeleteObject(gdibitmap);
         return image != null ? GenerateBitmapFrame(image) : null;
     }
 

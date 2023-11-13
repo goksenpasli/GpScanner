@@ -308,22 +308,33 @@ public class GpScannerViewModel : InpcBase
                     ocrdata = null;
                     OcrIsBusy = false;
                     _ = UnIndexedFiles?.Remove(pdffilepath);
-                    GC.Collect();
                 }
             },
             parameter => parameter is string pdffilepath && File.Exists(pdffilepath) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         UnindexedAllFilesOcr = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
-                for (int i = 0; i < UnIndexedFiles.Count; i++)
+                int i = 0;
+                foreach (string unIndexedFile in UnIndexedFiles.ToList())
                 {
-                    string item = UnIndexedFiles[i];
-                    if (UnindexedFileOcr.CanExecute(item))
+                    OcrIsBusy = true;
+                    string item = unIndexedFile;
+                    BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(item, 1, Twainsettings.Settings.Default.ImgLoadResolution);
+                    ObservableCollection<OcrData> ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                    string ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
+                    if (string.IsNullOrEmpty(ocrtext))
                     {
-                        UnindexedFileOcr.Execute(item);
-                        IndexedFileCount = i + 1;
+                        ocrtext = " ";
                     }
+                    ScannerData.Data.Add(new Data { Id = DataSerialize.RandomNumber(), FileName = item, FileContent = ocrtext });
+                    DatabaseSave.Execute(null);
+                    ocrdata = null;
+                    OcrIsBusy = false;
+                    _ = UnIndexedFiles?.Remove(item);
+                    IndexedFileCount = i + 1;
+                    i++;
+                    GC.Collect();
                 }
             },
             parameter => UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -1749,7 +1760,7 @@ public class GpScannerViewModel : InpcBase
 
             if (File.Exists(XmlDataPath))
             {
-                return XmlDataPath.DeSerialize<ScannerData>().Data;
+                return XmlDataPath.DeSerialize<ScannerData>()?.Data;
             }
 
             _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
@@ -2327,7 +2338,7 @@ public class GpScannerViewModel : InpcBase
 
             if (File.Exists(XmlDataPath))
             {
-                return new ObservableCollection<ReminderData>(XmlDataPath.DeSerialize<ScannerData>().Reminder.Where(z => z.Tarih > DateTime.Today && !z.Seen).OrderBy(z => z.Tarih));
+                return new ObservableCollection<ReminderData>(XmlDataPath.DeSerialize<ScannerData>()?.Reminder?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih));
             }
 
             _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
