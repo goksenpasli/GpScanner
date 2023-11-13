@@ -1448,6 +1448,79 @@
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
+                    <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="171" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Foreground="White" Text="{twainctrl:Loc UNINDEXED}" />
+                        </StackPanel>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <UniformGrid Width="800" Height="400" Columns="2">
+                                <GroupBox>
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="Auto" />
+                                        </Grid.RowDefinitions>
+                                        <ListBox x:Name="LbUnindexed" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UnIndexedFiles}">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid>
+                                                        <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay}">
+                                                            <Hyperlink BaselineAlignment="Center"
+                                                                Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                TextDecorations="None">
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="171" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Hyperlink>
+                                                        </TextBlock>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                        <Button Grid.Row="1" Command="{Binding UnindexedAllFilesOcr}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                    <Run d:Text="0" Foreground="LawnGreen" Text="{Binding IndexedFileCount}" />
+                                                    <Run Text="/" />
+                                                    <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
+                                                </TextBlock>
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="171" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Run Text="{twainctrl:Loc ALL}" />
+                                                    <Run Text="{twainctrl:Loc UNINDEXED}" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </Button>
+                                    </Grid>
+                                </GroupBox>
+                                <GroupBox Margin="1">
+                                    <PdfViewer:PdfViewer PdfFilePath="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}" />
+                                </GroupBox>
+                            </UniformGrid>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                 </StackPanel>
             </StatusBarItem>
         </StatusBar>

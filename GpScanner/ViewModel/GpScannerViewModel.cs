@@ -337,7 +337,7 @@ public class GpScannerViewModel : InpcBase
                     GC.Collect();
                 }
             },
-            parameter => UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+            parameter => !OcrIsBusy && UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         WordOcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>
