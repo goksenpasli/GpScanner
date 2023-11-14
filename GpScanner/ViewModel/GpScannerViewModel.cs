@@ -673,13 +673,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
                 BatchFolderProcessedFileList = [];
-                List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => batchimagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
-                int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
-                Scanner scanner = ToolBox.Scanner;
-                scanner.ProgressState = TaskbarItemProgressState.Normal;
-                BatchTxtOcrs = [];
-                List<Task> Tasks = [];
-                ocrcancellationToken = new CancellationTokenSource();
+                InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks);
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
                     if (item.Count > 0)
@@ -774,13 +768,7 @@ public class GpScannerViewModel : InpcBase
                     return;
                 }
 
-                List<string> files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => batchimagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
-                int slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
-                Scanner scanner = ToolBox.Scanner;
-                scanner.ProgressState = TaskbarItemProgressState.Normal;
-                BatchTxtOcrs = [];
-                List<Task> Tasks = [];
-                ocrcancellationToken = new CancellationTokenSource();
+                InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks);
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
                     if (item.Count > 0)
@@ -1277,7 +1265,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<Size> GetPreviewSize => new() { new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645) };
+    public ObservableCollection<Size> GetPreviewSize => [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645)];
 
     public int IndexedFileCount
     {
@@ -2298,6 +2286,17 @@ public class GpScannerViewModel : InpcBase
             BurnFiles = burnfiles;
             CompressedFiles = compressedfiles;
         }
+    }
+
+    private void InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks)
+    {
+        files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => batchimagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+        slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
+        scanner = ToolBox.Scanner;
+        scanner.ProgressState = TaskbarItemProgressState.Normal;
+        BatchTxtOcrs = [];
+        Tasks = [];
+        ocrcancellationToken = new CancellationTokenSource();
     }
 
     private bool IsFileLocked(string filePath)

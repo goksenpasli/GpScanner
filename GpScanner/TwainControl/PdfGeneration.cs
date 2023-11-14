@@ -212,24 +212,7 @@ public static class PdfGeneration
 
                 gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
             }
-
-            if (Scanner.PdfPageNumberDraw)
-            {
-                gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
-            }
-
-            if (Scanner.PdfPageTextDraw)
-            {
-                Color color = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
-                XBrush brush = new XSolidBrush(XColor.FromArgb(color.A, color.R, color.G, color.B));
-                DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, brush, "Times New Roman", Scanner.PdfPageTextAngle);
-            }
-
-            if (Scanner.PasswordProtect)
-            {
-                document.ApplyPdfSecurity();
-            }
-
+            ApplyPageNumberTextPasswordSettings(document, page, gfx);
             document.ApplyDefaultPdfCompression();
         }
         catch (Exception ex)
@@ -323,23 +306,7 @@ public static class PdfGeneration
                 gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
             }
 
-            if (Scanner.PdfPageNumberDraw)
-            {
-                gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
-            }
-
-            if (Scanner.PdfPageTextDraw)
-            {
-                Color color = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
-                XBrush brush = new XSolidBrush(XColor.FromArgb(color.A, color.R, color.G, color.B));
-                DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, brush, "Times New Roman", Scanner.PdfPageTextAngle);
-            }
-
-            if (Scanner.PasswordProtect)
-            {
-                document.ApplyPdfSecurity();
-            }
-
+            ApplyPageNumberTextPasswordSettings(document, page, gfx);
             document.ApplyDefaultPdfCompression();
             ms = null;
             data = null;
@@ -587,6 +554,26 @@ public static class PdfGeneration
     }
 
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) => new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
+
+    private static void ApplyPageNumberTextPasswordSettings(PdfDocument document, PdfPage page, XGraphics gfx)
+    {
+        if (Scanner.PdfPageNumberDraw)
+        {
+            gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), "1", GetPdfTextLayout(page)[0], GetPdfTextLayout(page)[1]);
+        }
+
+        if (Scanner.PdfPageTextDraw)
+        {
+            Color color = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
+            XBrush brush = new XSolidBrush(XColor.FromArgb(color.A, color.R, color.G, color.B));
+            DrawPdfOverlayText(page, gfx, Scanner.PdfPageTextSize, Scanner.PdfPageText, brush, "Times New Roman", Scanner.PdfPageTextAngle);
+        }
+
+        if (Scanner.PasswordProtect)
+        {
+            document.ApplyPdfSecurity();
+        }
+    }
 
     private static void ApplyPdfSecurity(this PdfDocument document)
     {

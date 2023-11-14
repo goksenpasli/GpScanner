@@ -262,7 +262,7 @@ public static class ExtensionMethods
 
         Helpers.SHParseDisplayName(Path.Combine(folderPath, file), IntPtr.Zero, out IntPtr nativeFile, 0, out _);
 
-        IntPtr[] fileArray = nativeFile == IntPtr.Zero ? new IntPtr[0] : [nativeFile];
+        IntPtr[] fileArray = nativeFile == IntPtr.Zero ? [] : [nativeFile];
         _ = Helpers.SHOpenFolderAndSelectItems(nativeFolder, (uint)fileArray.Length, fileArray, 0);
 
         Marshal.FreeCoTaskMem(nativeFolder);

@@ -543,16 +543,13 @@
                                                                 <RowDefinition Height="19.2" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
-                                                            <Grid>
-                                                                <ProgressBar Background="{x:Null}" BorderBrush="{x:Null}" IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" />
-                                                                <TextBlock>
-                                                                    <Run Cursor="SizeAll" FontFamily="Wingdings"
-                                                                        FontSize="15" FontWeight="Bold"
-                                                                        Text="B" />
-                                                                    <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
-                                                                    <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
-                                                                </TextBlock>
-                                                            </Grid>
+                                                            <TextBlock>
+                                                                <Run Cursor="SizeAll" FontFamily="Wingdings"
+                                                                    FontSize="15" FontWeight="Bold"
+                                                                    Text="B" />
+                                                                <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
+                                                                <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
+                                                            </TextBlock>
                                                             <UniformGrid Grid.Row="1" Columns="3">
                                                                 <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
@@ -727,7 +724,7 @@
                 </TabItem>
             </TabControl>
         </GroupBox>
-        <StatusBar Grid.Row="1" Grid.ColumnSpan="3" Background="Maroon">
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="3" Background="Black">
             <StatusBarItem Visibility="{Binding Scanner.PasswordProtect, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=twainCtrl}">
                 <Image Width="16" Height="16">
                     <Image.Source>
