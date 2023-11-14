@@ -871,6 +871,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     private void Scrollvwr_Drop(object sender, DragEventArgs e)
     {
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        PdfFilePath = droppedfiles?[0];
+        if (IsValidPdfFile(droppedfiles?[0]))
+        {
+            PdfFilePath = droppedfiles?[0];
+        }
     }
 }
