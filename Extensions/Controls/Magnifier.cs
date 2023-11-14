@@ -33,7 +33,7 @@ namespace Extensions
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnPropertyChanged(e);
-            if ((e.Property == ContentPanelProperty) && (VisualTreeHelper.GetParent(ContentPanel) is Panel container))
+            if (ContentPanel is not null && (e.Property == ContentPanelProperty) && (VisualTreeHelper.GetParent(ContentPanel) is Panel container))
             {
                 MagnifierBrush = new VisualBrush(ContentPanel) { ViewboxUnits = BrushMappingMode.Absolute };
                 MagnifierCircle = new Ellipse { Stroke = Stroke, Width = 2 * Radius, Height = 2 * Radius, Visibility = Visibility.Hidden, Fill = MagnifierBrush };

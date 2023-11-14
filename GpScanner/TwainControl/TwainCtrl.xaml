@@ -1132,7 +1132,7 @@
                                                     </MenuItem.Header>
                                                 </MenuItem>
                                                 <Separator />
-                                                <MenuItem  IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
+                                                <MenuItem IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
                                                     <MenuItem.Header>
                                                         <TextBlock>
                                                             <Run Text="{local:Loc FILE}" />
@@ -1140,8 +1140,7 @@
                                                         </TextBlock>
                                                     </MenuItem.Header>
                                                 </MenuItem>
-                                                <MenuItem 
-                                                    FontWeight="Bold" Foreground="Red"
+                                                <MenuItem FontWeight="Bold" Foreground="Red"
                                                     Header="{local:Loc REMOVEPROCESSEDIMAGE}"
                                                     IsCheckable="True"
                                                     IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />

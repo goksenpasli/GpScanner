@@ -528,7 +528,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         try
         {
-            return !File.Exists(pdffilepath)
+            return !File.Exists(pdffilepath) || !IsValidPdfFile(pdffilepath)
                    ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
                    : await Task.Run(
                 () =>
