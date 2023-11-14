@@ -282,6 +282,7 @@
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
                         SliderZoomAngleVisibility="Collapsed" SnapTick="True" />
+                    <Extensions:Magnifier ContentPanel="{Binding ElementName=PdfVwr}" IsActive="{Binding ShowMagnifier, Mode=OneWay, Source={x:Static properties:Settings.Default}}" ZoomFactor="{Binding MagnifyValue, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">

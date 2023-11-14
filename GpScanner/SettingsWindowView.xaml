@@ -472,7 +472,7 @@
                         </GroupBox>
                         <GroupBox Grid.Row="3">
                             <StackPanel>
-                                <UniformGrid Columns="8">
+                                <UniformGrid Columns="9">
                                     <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                                         <Run Text="{twainctrl:Loc FILE}" />
                                         <Run Text="{twainctrl:Loc RES}" />
@@ -487,7 +487,7 @@
                                             </Style>
                                         </ComboBox.ItemContainerStyle>
                                     </ComboBox>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" TextWrapping="Wrap" />
                                     <ComboBox VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="DefaultThumbPictureResizeRatio" ItemStringFormat="%{0}"
                                         ItemsSource="{Binding SettingsPagePictureResizeList}"
@@ -541,7 +541,7 @@
                                             </Canvas>
                                         </ToggleButton>
                                     </StackPanel>
-                                    <TextBlock VerticalAlignment="Center" Text="PDF DPI" />
+                                    <TextBlock VerticalAlignment="Center" Text="PDF DPI" TextWrapping="Wrap" />
                                     <ComboBox VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="DefaultThumbNailDpi" ItemStringFormat="{}{0} Dpi"
                                         ItemsSource="{Binding SettingsPagePdfDpiList}"
@@ -566,6 +566,25 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <Canvas Width="32" Height="32" IsEnabled="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="TimeDate.cpl" />
+                                                            <Binding Source="0" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Extensions:NumericUpDownControl Canvas.Bottom="1"
+                                                    FontWeight="Bold" Maximum="30"
+                                                    Minimum="1" SmallChange="1"
+                                                    Value="{Binding NotifyCalendarDateValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                            </Canvas>
+                                        </CheckBox>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
+                                    </StackPanel>
                                 </UniformGrid>
                                 <Separator />
                                 <UniformGrid Columns="2">
@@ -595,26 +614,6 @@
                                     </StackPanel>
                                     <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                                <Canvas Width="32" Height="32" IsEnabled="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="TimeDate.cpl" />
-                                                                <Binding Source="0" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <Extensions:NumericUpDownControl Canvas.Bottom="1"
-                                                        FontWeight="Bold" Maximum="30"
-                                                        Minimum="1" SmallChange="1"
-                                                        Value="{Binding NotifyCalendarDateValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                </Canvas>
-                                            </CheckBox>
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
-                                            <StackPanel Orientation="Horizontal">
-                                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                            </StackPanel>
                                             <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                                 <CheckBox.Content>
                                                     <Canvas Width="32" Height="32">

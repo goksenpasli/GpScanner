@@ -310,7 +310,7 @@ public class GpScannerViewModel : InpcBase
                     _ = UnIndexedFiles?.Remove(pdffilepath);
                 }
             },
-            parameter => parameter is string pdffilepath && File.Exists(pdffilepath) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+            parameter => !OcrIsBusy && parameter is string pdffilepath && File.Exists(pdffilepath) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         UnindexedAllFilesOcr = new RelayCommand<object>(
             async parameter =>
