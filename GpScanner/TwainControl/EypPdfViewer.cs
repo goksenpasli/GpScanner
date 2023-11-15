@@ -76,7 +76,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     protected override void OnDrop(DragEventArgs e)
     {
-        if (e.Data.GetData(typeof(Scanner)) is Scanner droppedData)
+        if (e.Data.GetData(typeof(Scanner)) is Scanner droppedData && IsValidPdfFile(droppedData.FileName))
         {
             PdfFilePath = droppedData.FileName;
             return;
@@ -89,7 +89,10 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 PdfFilePath = ExtractEypFilesToPdf(droppedfiles[0]);
                 return;
             }
-            PdfFilePath = droppedfiles[0];
+            if (IsValidPdfFile(droppedfiles[0]))
+            {
+                PdfFilePath = droppedfiles[0];
+            }
         }
     }
 
