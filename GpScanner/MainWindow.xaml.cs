@@ -15,6 +15,7 @@ using System.Windows.Interop;
 using TwainControl;
 using static Extensions.ExtensionMethods;
 using static TwainControl.DrawControl;
+using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner;
 
@@ -155,6 +156,12 @@ public partial class MainWindow : Window
         this.SystemMenu();
         if (DataContext is GpScannerViewModel ViewModel)
         {
+            if (Keyboard.IsKeyDown(Key.F8))
+            {
+                Settings.Default.Reset();
+                Twainsettings.Settings.Default.Reset();
+                _ = MessageBox.Show(this, Translation.GetResStringValue("RESTARTAPP"));
+            }
             if (Settings.Default.RegisterBatchWatcher)
             {
                 ViewModel.RegisterBatchImageFileWatcher(twainCtrl.SelectedPaper, Settings.Default.BatchFolder, Settings.Default.BatchSaveFolder);
