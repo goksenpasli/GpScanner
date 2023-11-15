@@ -2281,7 +2281,10 @@ public class GpScannerViewModel : InpcBase
             foreach (Scanner item in Dosyalar?.Where(z => z.Seçili))
             {
                 burnfiles.Add(item.FileName);
-                compressedfiles.Add(new BatchPdfData() { Filename = item.FileName });
+                if (Path.GetExtension(item.FileName.ToLower()) == ".pdf")
+                {
+                    compressedfiles.Add(new BatchPdfData() { Filename = item.FileName });
+                }
             }
             BurnFiles = burnfiles;
             CompressedFiles = compressedfiles;

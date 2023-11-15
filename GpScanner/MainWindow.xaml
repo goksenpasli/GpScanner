@@ -1463,63 +1463,92 @@
                             </StackPanel>
                         </Grid>
                         <Extensions:ContentToggleButton.OverContent>
-                            <UniformGrid Width="800" Height="400" Columns="2">
-                                <GroupBox>
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition />
-                                            <RowDefinition Height="Auto" />
-                                        </Grid.RowDefinitions>
-                                        <ListBox x:Name="LbUnindexed" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UnIndexedFiles}">
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
-                                                        <Run Text="{Binding Mode=OneWay}" />
-                                                        <Hyperlink BaselineAlignment="Center"
-                                                            Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                                                            CommandParameter="{Binding Mode=OneWay}"
-                                                            TextDecorations="None">
-                                                            <Image Width="16" Height="16">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="171" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Hyperlink>
+                            <StackPanel>
+                                <ToggleButton IsChecked="{Binding Shutdown}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="27" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Canvas.Right="0" Canvas.Bottom="0"
+                                                Width="16" Height="16"
+                                                Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Comres.dll" />
+                                                        <Binding Source="8" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
+                                        <TextBlock VerticalAlignment="Center"
+                                            FontWeight="Bold" Foreground="Red"
+                                            Text="{twainctrl:Loc CLOSECOMP}" />
+                                    </StackPanel>
+                                </ToggleButton>
+                                <UniformGrid Width="800" Height="400" Columns="2">
+                                    <GroupBox>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <ListBox x:Name="LbUnindexed" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UnIndexedFiles}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                                            <Run Text="{Binding Mode=OneWay}" />
+                                                            <Hyperlink BaselineAlignment="Center"
+                                                                Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                TextDecorations="None">
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="171" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Hyperlink>
+                                                        </TextBlock>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                            <Button Grid.Row="1" Command="{Binding UnindexedAllFilesOcr}">
+                                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                        <Run d:Text="0" Foreground="LawnGreen" Text="{Binding IndexedFileCount}" />
+                                                        <Run Text="/" />
+                                                        <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
                                                     </TextBlock>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                        <Button Grid.Row="1" Command="{Binding UnindexedAllFilesOcr}">
-                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                    <Run d:Text="0" Foreground="LawnGreen" Text="{Binding IndexedFileCount}" />
-                                                    <Run Text="/" />
-                                                    <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
-                                                </TextBlock>
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="171" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock VerticalAlignment="Center">
-                                                    <Run Text="{twainctrl:Loc ALL}" />
-                                                    <Run Text="{twainctrl:Loc UNINDEXED}" />
-                                                </TextBlock>
-                                            </StackPanel>
-                                        </Button>
-                                    </Grid>
-                                </GroupBox>
-                                <GroupBox>
-                                    <ContentControl Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
-                                </GroupBox>
-                            </UniformGrid>
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="171" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <Run Text="{twainctrl:Loc ALL}" />
+                                                        <Run Text="{twainctrl:Loc UNINDEXED}" />
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Button>
+                                        </Grid>
+                                    </GroupBox>
+                                    <GroupBox>
+                                        <ContentControl Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                    </GroupBox>
+                                </UniformGrid>
+                            </StackPanel>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
                 </StackPanel>
