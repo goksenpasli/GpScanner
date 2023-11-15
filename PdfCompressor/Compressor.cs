@@ -412,7 +412,7 @@ public class Compressor : Control, INotifyPropertyChanged
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
         if (droppedfiles?.Length > 0)
         {
-            foreach (string file in droppedfiles.Where(IsValidPdfFile))
+            foreach (string file in droppedfiles.Where(file => imagefileextensions.Contains(Path.GetExtension(file).ToLower()) || IsValidPdfFile(file)))
             {
                 BatchPdfList.Add(new BatchPdfData() { Filename = file });
             }
