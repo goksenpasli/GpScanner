@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -1051,23 +1052,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         return;
                     }
 
-                    using PdfDocument reader = PdfReader.Open(filepath, PdfDocumentOpenMode.ReadOnly);
+                    using PdfDocument reader = PdfReader.Open(filepath, PdfDocumentOpenMode.InformationOnly);
                     StringBuilder stringBuilder = new();
                     _ = stringBuilder.AppendLine(filepath)
                         .AppendLine("PDF ")
-                        .Append($"{reader.Version / 10d:#.#}")
+                        .Append((reader.Version / 10d).ToString("n1", CultureInfo.InvariantCulture))
                         .AppendLine(reader.Info.Title)
                         .Append(Translation.GetResStringValue("PAGENUMBER"))
                         .Append(": ")
                         .Append(reader.PageCount)
                         .AppendLine()
                         .AppendLine(reader.Info.Producer)
-                        .AppendLine(reader.Info.Keywords)
                         .AppendLine(reader.Info.Creator)
                         .AppendLine(reader.Info.Author)
-                        .Append(reader.Info.CreationDate)
-                        .AppendLine()
-                        .Append(reader.Info.ModificationDate)
+                        .Append(reader.Info.CreationDate.AddHours(DateTimeOffset.Now.Offset.Hours))
                         .AppendLine()
                         .Append($"{reader.FileSize / 1048576d:##.##}")
                         .AppendLine(" MB");

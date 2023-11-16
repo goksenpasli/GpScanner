@@ -482,6 +482,24 @@ public class GpScannerViewModel : InpcBase
         ExploreFile =
             new RelayCommand<object>(parameter => OpenFolderAndSelectItem(Path.GetDirectoryName(parameter as string), Path.GetFileName(parameter as string)), parameter => true);
 
+        GridSplitterMouseDoubleClick =
+            new RelayCommand<object>(
+            parameter =>
+            {
+                MainWindowDocumentGuiControlLength = new GridLength(1, GridUnitType.Star);
+                MainWindowGuiControlLength = new GridLength(3, GridUnitType.Star);
+            },
+            parameter => true);
+
+        GridSplitterMouseRightButtonDown =
+            new RelayCommand<object>(
+            parameter =>
+            {
+                MainWindowDocumentGuiControlLength = new GridLength(0, GridUnitType.Star);
+                MainWindowGuiControlLength = new GridLength(1, GridUnitType.Star);
+            },
+            parameter => true);
+
         CheckUpdate = new RelayCommand<object>(
             parameter =>
             {
@@ -1266,6 +1284,10 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ObservableCollection<Size> GetPreviewSize => [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645)];
+
+    public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
+
+    public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
 
     public int IndexedFileCount
     {

@@ -77,18 +77,6 @@ public partial class MainWindow : Window
         }
     }
 
-    private void ContentControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        if (DataContext is GpScannerViewModel gpScannerViewModel && e.LeftButton is MouseButtonState.Pressed && e.MouseDevice.DirectlyOver is Image image)
-        {
-            string filepath = image.DataContext.ToString();
-            if (gpScannerViewModel.OpenOriginalFile.CanExecute(filepath))
-            {
-                gpScannerViewModel.OpenOriginalFile.Execute(filepath);
-            }
-        }
-    }
-
     private void DocumentGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (sender is Grid grid)
@@ -115,24 +103,6 @@ public partial class MainWindow : Window
             e.UseDefaultCursors = true;
         }
         e.Handled = true;
-    }
-
-    private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        if (DataContext is GpScannerViewModel ViewModel)
-        {
-            ViewModel.MainWindowDocumentGuiControlLength = new GridLength(1, GridUnitType.Star);
-            ViewModel.MainWindowGuiControlLength = new GridLength(3, GridUnitType.Star);
-        }
-    }
-
-    private void GridSplitter_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        if (DataContext is GpScannerViewModel ViewModel)
-        {
-            ViewModel.MainWindowDocumentGuiControlLength = new GridLength(0, GridUnitType.Star);
-            ViewModel.MainWindowGuiControlLength = new GridLength(1, GridUnitType.Star);
-        }
     }
 
     private async void ListBox_DropAsync(object sender, DragEventArgs e) => await twainCtrl.ListBoxDropFileAsync(e);

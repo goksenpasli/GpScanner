@@ -184,8 +184,12 @@
             Width="3"
             HorizontalAlignment="Stretch"
             Background="{StaticResource GroupBoxBackGround}"
-            MouseDoubleClick="GridSplitter_MouseDoubleClick" MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
-            ToolTip="{twainctrl:Loc SPLITTERTOOLTIP}" />
+            ToolTip="{twainctrl:Loc SPLITTERTOOLTIP}">
+            <GridSplitter.InputBindings>
+                <MouseBinding Command="{Binding GridSplitterMouseDoubleClick}" Gesture="LeftDoubleClick" />
+                <MouseBinding Command="{Binding GridSplitterMouseRightButtonDown}" Gesture="RightClick" />
+            </GridSplitter.InputBindings>
+        </GridSplitter>
         <GroupBox Grid.Column="2">
             <GroupBox.Header>
                 <UniformGrid Columns="2">
@@ -543,13 +547,25 @@
                                                                 <RowDefinition Height="19.2" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
-                                                            <TextBlock>
-                                                                <Run Cursor="SizeAll" FontFamily="Wingdings"
-                                                                    FontSize="15" FontWeight="Bold"
-                                                                    Text="B" />
-                                                                <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
-                                                                <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
-                                                            </TextBlock>
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition />
+                                                                    <ColumnDefinition Width="Auto" />
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock>
+                                                                    <Run Cursor="SizeAll" FontFamily="Wingdings"
+                                                                        FontSize="15" FontWeight="Bold"
+                                                                        Text="B" />
+                                                                    <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
+                                                                    <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
+                                                                </TextBlock>
+                                                                <TextBlock Grid.Column="1">
+                                                                    <Hyperlink Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay, Path=FileName}" TextDecorations="None">
+                                                                        <Run FontFamily="Wingdings 2" FontSize="18"
+                                                                            FontWeight="Bold" Text="4" />
+                                                                    </Hyperlink>
+                                                                </TextBlock>
+                                                            </Grid>
                                                             <UniformGrid Grid.Row="1" Columns="3">
                                                                 <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
                                                                     <Extensions:ContentToggleButton.Style>
@@ -624,8 +640,7 @@
                                                             <ContentControl Grid.Row="2"
                                                                 d:ContentTemplate="{StaticResource PdfViewerTemplateFull}"
                                                                 d:ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
-                                                                Content="{Binding FileName, IsAsync=True, Mode=OneWay}"
-                                                                MouseDoubleClick="ContentControl_MouseDoubleClick">
+                                                                Content="{Binding FileName, IsAsync=True, Mode=OneWay}">
                                                                 <ContentControl.Style>
                                                                     <Style TargetType="ContentControl">
                                                                         <Style.Triggers>
