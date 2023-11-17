@@ -14,9 +14,6 @@ public class CustomArchiveViewer : ArchiveViewer
 
     public CustomArchiveViewer()
     {
-        Drop -= CustomArchiveViewer_Drop;
-        Drop += CustomArchiveViewer_Drop;
-
         ArşivTekDosyaÇıkar = new RelayCommand<object>(
             parameter =>
             {
@@ -47,7 +44,7 @@ public class CustomArchiveViewer : ArchiveViewer
 
     public new RelayCommand<object> ArşivTekDosyaÇıkar { get; }
 
-    private void CustomArchiveViewer_Drop(object sender, DragEventArgs e)
+    protected override void OnDrop(DragEventArgs e)
     {
         if (e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles && droppedfiles?.Length > 0)
         {

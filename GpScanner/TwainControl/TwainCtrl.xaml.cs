@@ -1547,6 +1547,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => SeçiliResim is not null);
+
+        GridSplitterMouseDoubleClick =
+       new RelayCommand<object>(
+            parameter =>
+            {
+                TwainGuiControlLength = new GridLength(3, GridUnitType.Star);
+                DocumentGridLength = new GridLength(5, GridUnitType.Star);
+            },
+            parameter => true);
+
+        GridSplitterMouseRightButtonDown =
+            new RelayCommand<object>(
+            parameter =>
+            {
+                TwainGuiControlLength = new GridLength(1, GridUnitType.Star);
+                DocumentGridLength = new GridLength(0, GridUnitType.Star);
+            },
+            parameter => true);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -1619,8 +1637,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ClosePdfFile { get; }
 
-    public List<Tuple<string, int, double, bool, double>> CompressionProfiles => new()
-    {
+    public List<Tuple<string, int, double, bool, double>> CompressionProfiles => [
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Low, false, (double)Quality.Low),
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Low, true, (double)Quality.Low),
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("BW"), 0, (double)Resolution.Medium, false, (double)Quality.Medium),
@@ -1636,7 +1653,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Standard, false, (double)Quality.Standard),
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.High, false, (double)Quality.High),
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Ultra, false, (double)Quality.Ultra)
-    };
+    ];
 
     public ICommand CopyPdfBitmapFile { get; }
 
@@ -1775,6 +1792,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> FirstLastGroup { get; }
 
     public RelayCommand<object> FirstLastSortSequenceData { get; }
+
+    public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
+
+    public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
 
     public int GroupSplitCount
     {
@@ -2988,18 +3009,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             return croppedbitmap;
         }
         return null;
-    }
-
-    private void GridSplitter_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-    {
-        TwainGuiControlLength = new GridLength(3, GridUnitType.Star);
-        DocumentGridLength = new GridLength(5, GridUnitType.Star);
-    }
-
-    private void GridSplitter_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        TwainGuiControlLength = new GridLength(1, GridUnitType.Star);
-        DocumentGridLength = new GridLength(0, GridUnitType.Star);
     }
 
     private List<T> GroupByFirstLastList<T>(List<T> scannedImages, int splitCount = 2)

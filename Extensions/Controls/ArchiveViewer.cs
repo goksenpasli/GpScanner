@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -181,26 +182,28 @@ namespace Extensions
             return null;
         }
 
-        public void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
+        public async void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
         {
             archiveViewer.Arşivİçerik = [];
-            using (ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read))
-            {
-                foreach (ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0))
+            await Task.Run(
+                () =>
                 {
-                    ArchiveData archiveData = new()
+                    using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
+                    foreach (ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0))
                     {
-                        SıkıştırılmışBoyut = item.CompressedLength,
-                        DosyaAdı = item.Name,
-                        TamYol = item.FullName,
-                        Boyut = item.Length,
-                        Oran = (float)item.CompressedLength / item.Length,
-                        DüzenlenmeZamanı = item.LastWriteTime.Date,
-                        Crc = null
-                    };
-                    archiveViewer.Arşivİçerik.Add(archiveData);
-                }
-            }
+                        ArchiveData archiveData = new()
+                        {
+                            SıkıştırılmışBoyut = item.CompressedLength,
+                            DosyaAdı = item.Name,
+                            TamYol = item.FullName,
+                            Boyut = item.Length,
+                            Oran = (float)item.CompressedLength / item.Length,
+                            DüzenlenmeZamanı = item.LastWriteTime.Date,
+                            Crc = null
+                        };
+                        _ = Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                    }
+                });
             archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
             cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
         }
@@ -214,62 +217,6 @@ namespace Extensions
                 }
                 disposedValue = true;
             }
-        }
-
-        protected override void OnDrop(DragEventArgs e)
-        {
-            if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
-            {
-                LoadDroppedZipFile(droppedfiles);
-            }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ArchiveViewer archiveViewer && e.NewValue is not null)
-            {
-                string ArchiveFilePath = (string)e.NewValue;
-                archiveViewer.ReadArchiveContent(ArchiveFilePath, archiveViewer);
-            }
-        }
-
-        private void AddFilesToZip(string zipPath, string[] files)
-        {
-            if (files?.Length == 0)
-            {
-                return;
-            }
-
-            using ZipArchive zipArchive = ZipFile.Open(zipPath, ZipArchiveMode.Update);
-            foreach (string file in files)
-            {
-                FileInfo fileInfo = new(file);
-                _ = zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
-            }
-        }
-
-        private void ArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName is "Search" && cvs is not null)
-            {
-                cvs.Filter = !string.IsNullOrWhiteSpace(Search)
-                             ? (x =>
-                                {
-                                    ArchiveData archiveData = x as ArchiveData;
-                                    return archiveData?.DosyaAdı?.Contains(Search, StringComparison.CurrentCultureIgnoreCase) == true;
-                                })
-                             : null;
-            }
-        }
-
-        private string CalculateFileCRC(Stream stream)
-        {
-            using CRC32 crc32 = new();
-            byte[] crcValue = crc32.ComputeHash(stream);
-            stream?.Dispose();
-            return BitConverter.ToString(crcValue).Replace("-", string.Empty).ToUpper();
         }
 
         protected void LoadDroppedZipFile(string[] droppedfiles)
@@ -303,6 +250,62 @@ namespace Extensions
                 }
                 ArchivePath = saveFileDialog.FileName;
             }
+        }
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+            {
+                LoadDroppedZipFile(droppedfiles);
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is ArchiveViewer archiveViewer && e.NewValue is not null)
+            {
+                string ArchiveFilePath = (string)e.NewValue;
+                archiveViewer.ReadArchiveContent(ArchiveFilePath, archiveViewer);
+            }
+        }
+
+        private void AddFilesToZip(string zipPath, string[] files)
+        {
+            if (files?.Length == 0 || files.Contains(zipPath))
+            {
+                return;
+            }
+
+            using ZipArchive zipArchive = ZipFile.Open(zipPath, ZipArchiveMode.Update);
+            foreach (string file in files)
+            {
+                FileInfo fileInfo = new(file);
+                _ = zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
+            }
+        }
+
+        private void ArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "Search" && cvs is not null)
+            {
+                cvs.Filter = !string.IsNullOrWhiteSpace(Search)
+                             ? (x =>
+                                {
+                                    ArchiveData archiveData = x as ArchiveData;
+                                    return archiveData?.DosyaAdı?.Contains(Search, StringComparison.CurrentCultureIgnoreCase) == true;
+                                })
+                             : null;
+            }
+        }
+
+        private string CalculateFileCRC(Stream stream)
+        {
+            using CRC32 crc32 = new();
+            byte[] crcValue = crc32.ComputeHash(stream);
+            stream?.Dispose();
+            return BitConverter.ToString(crcValue).Replace("-", string.Empty).ToUpper();
         }
     }
 }

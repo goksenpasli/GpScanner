@@ -1544,8 +1544,12 @@
             Width="3"
             HorizontalAlignment="Stretch"
             Background="{StaticResource GroupBoxBackGround}"
-            MouseDoubleClick="GridSplitter_MouseDoubleClick" MouseRightButtonDown="GridSplitter_MouseRightButtonDown"
-            ToolTip="{local:Loc SPLITTERTOOLTIP}" />
+            ToolTip="{local:Loc SPLITTERTOOLTIP}">
+            <GridSplitter.InputBindings>
+                <MouseBinding Command="{Binding GridSplitterMouseDoubleClick}" Gesture="LeftDoubleClick" />
+                <MouseBinding Command="{Binding GridSplitterMouseRightButtonDown}" Gesture="RightClick" />
+            </GridSplitter.InputBindings>
+        </GridSplitter>
         <GroupBox Grid.Column="2">
             <TabControl x:Name="TbCtrl" SelectedIndex="{Binding SelectedTabIndex}">
                 <TabItem>
