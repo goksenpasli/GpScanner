@@ -34,6 +34,7 @@
                 Value="{Binding FtpLoadProgressValue}" />
             <GroupBox Grid.Row="1" Header="FTP">
                 <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                    twaincontrol:Policy.PolicyName="FtpSites"
                     Background="{StaticResource BorderBackground}"
                     ItemsSource="{Binding FtpSites, Source={x:Static properties:Settings.Default}}"
                     SelectedItem="{Binding SelectedFtp, Source={x:Static properties:Settings.Default}}">
@@ -84,6 +85,7 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        twaincontrol:Policy.PolicyName="CopyToDrive"
                         Command="{Binding CopyToDrive, RelativeSource={RelativeSource AncestorType=local:FtpUserControl}}"
                         CommandParameter="{Binding Mode=OneWay}">
                         <Grid>

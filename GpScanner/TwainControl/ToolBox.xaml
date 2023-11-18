@@ -17,7 +17,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
@@ -383,7 +383,7 @@
                         <Button local:Policy.PolicyName="SetWatermark" Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DRAWTEXT}" />
                         <Button local:Policy.PolicyName="DeskewImage" Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DESKEW}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
-                        <Extensions:ContentToggleButton Background="{Binding Scanner.SourceColor, Mode=OneWay}">
+                        <Extensions:ContentToggleButton local:Policy.PolicyName="SourceColor" Background="{Binding Scanner.SourceColor, Mode=OneWay}">
                             <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ColorPicker Width="350" Height="250"
@@ -392,7 +392,7 @@
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc DSTCOLOR}" />
-                        <Extensions:ContentToggleButton Background="{Binding Scanner.TargetColor, Mode=OneWay}">
+                        <Extensions:ContentToggleButton local:Policy.PolicyName="TargetColor" Background="{Binding Scanner.TargetColor, Mode=OneWay}">
                             <TextBlock d:Text="Blue" Text="{Binding Scanner.TargetColor, Mode=OneWay}" />
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ColorPicker Width="350" Height="250"
@@ -402,16 +402,19 @@
                         </Extensions:ContentToggleButton>
                         <TextBlock Text="{local:Loc THRESHOLD}" />
                         <Slider VerticalAlignment="Center"
+                            local:Policy.PolicyName="Threshold"
                             IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                             Maximum="128" Minimum="0"
                             Value="{Binding Scanner.Threshold, Delay=100}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc HUE}" />
-                        <Slider Background="{DynamicResource Colorfull}"
+                        <Slider local:Policy.PolicyName="Hue"
+                            Background="{DynamicResource Colorfull}"
                             IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                             Maximum="1" Minimum="0"
                             Value="{Binding Scanner.Hue, Delay=100}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SATURATION}" />
-                        <Slider IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                        <Slider local:Policy.PolicyName="Saturation"
+                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                             Maximum="2" Minimum="0"
                             Value="{Binding Scanner.Saturation, Delay=100}">
                             <Slider.Background>
@@ -422,7 +425,8 @@
                             </Slider.Background>
                         </Slider>
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc LIGHTNESS}" />
-                        <Slider IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                        <Slider local:Policy.PolicyName="Lightness"
+                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                             Maximum="1" Minimum="0"
                             Value="{Binding Scanner.Lightness, Delay=100}">
                             <Slider.Background>

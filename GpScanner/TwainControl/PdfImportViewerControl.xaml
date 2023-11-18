@@ -945,10 +945,11 @@
         </WrapPanel>
         <Grid Grid.Row="1">
             <local:EypPdfViewer x:Name="PdfViewer"
-                x:FieldModifier="public" AutoFitContent="True"
-                OpenButtonVisibility="Visible" PreviewKeyDown="PdfViewer_PreviewKeyDown"
-                PreviewKeyUp="PdfViewer_PreviewKeyUp" PreviewMouseDown="PdfImportViewerControl_MouseDown"
-                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible" />
+                local:Policy.PolicyName="EypPdfViewer" x:FieldModifier="public"
+                AutoFitContent="True" OpenButtonVisibility="Visible"
+                PreviewKeyDown="PdfViewer_PreviewKeyDown" PreviewKeyUp="PdfViewer_PreviewKeyUp"
+                PreviewMouseDown="PdfImportViewerControl_MouseDown" PreviewMouseMove="PdfImportViewerControl_MouseMove"
+                PrintButtonVisibility="Visible" />
             <Canvas x:Name="cnv" />
         </Grid>
     </Grid>

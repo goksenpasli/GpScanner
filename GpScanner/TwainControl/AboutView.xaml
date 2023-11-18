@@ -14,7 +14,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -39,48 +39,48 @@
                     Text="{local:Loc THIRDPARTY}"
                     TextWrapping="Wrap" />
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/charlesw/tesseract">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/charlesw/tesseract">
                         TESSERACT
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="http://www.pdfsharp.net">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="http://www.pdfsharp.net">
                         PDFSHARP
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/micjahn/ZXing.Net">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/micjahn/ZXing.Net">
                         ZXing.Net
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/GMZ">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/GMZ">
                         TWAINWPF
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/MozJpeg-wrapper">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/MozJpeg-wrapper">
                         MozJpeg
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://bitbucket.org/jvandezande/wpfcap/src/master/">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://bitbucket.org/jvandezande/wpfcap/src/master/">
                         WPFCap
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/pvginkel/PdfiumViewer">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/pvginkel/PdfiumViewer">
                         PdfiumViewer
                     </Hyperlink>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://www.nuget.org/packages/bblanchon.PDFium.Win32">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://www.nuget.org/packages/bblanchon.PDFium.Win32">
                         NuGet
                     </Hyperlink>
-                    <Hyperlink Command="{Binding ExtractNugetPackage}">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding ExtractNugetPackage}">
                         Install
                     </Hyperlink>
                 </TextBlock>
                 <TextBlock>
-                    <Hyperlink Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/WebP-wrapper">
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/JosePineiro/WebP-wrapper">
                         WebP-Wrapper
                     </Hyperlink>
                 </TextBlock>

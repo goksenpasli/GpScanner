@@ -3,7 +3,7 @@
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions" xmlns:local="clr-namespace:PdfViewer"
     xmlns:pdfium="clr-namespace:PdfiumViewer;assembly=PdfiumViewer">
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+        <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
         <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
         <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
     </ResourceDictionary.MergedDictionaries>
@@ -181,26 +181,27 @@
                                                     TextWrapping="Wrap" />
                                             </Canvas>
                                             <Extensions:ContentToggleButton.OverContent>
-                                                <ListBox VerticalContentAlignment="Center"
-                                                    ItemTemplate="{StaticResource PdfThumbItemTemplate}"
-                                                    ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                                    VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                                    VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
-                                                    <ListBox.ItemContainerStyle>
-                                                        <Style TargetType="ListBoxItem">
-                                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                                            <Setter Property="Margin" Value="1" />
-                                                        </Style>
-                                                    </ListBox.ItemContainerStyle>
-                                                    <ListBox.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <Extensions:VirtualizingWrapPanel Width="460" Height="300"
-                                                                CanHorizontallyScroll="False" ItemSize="140,140"
-                                                                StretchItems="False" />
-                                                        </ItemsPanelTemplate>
-                                                    </ListBox.ItemsPanel>
-                                                </ListBox>
+                                                <Extensions:ResizablePanel Width="460" Height="300"
+                                                    MinWidth="460" MinHeight="300">
+                                                    <ListBox VerticalContentAlignment="Center"
+                                                        ItemTemplate="{StaticResource PdfThumbItemTemplate}"
+                                                        ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                                        VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
+                                                        VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                                                        <ListBox.ItemContainerStyle>
+                                                            <Style TargetType="ListBoxItem">
+                                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                                                <Setter Property="Margin" Value="1" />
+                                                            </Style>
+                                                        </ListBox.ItemContainerStyle>
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                    </ListBox>
+                                                </Extensions:ResizablePanel>
                                             </Extensions:ContentToggleButton.OverContent>
                                         </Extensions:ContentToggleButton>
                                         <Extensions:NumericUpDownControl Width="48"

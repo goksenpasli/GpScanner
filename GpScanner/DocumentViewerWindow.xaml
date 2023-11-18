@@ -43,19 +43,22 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <ContentControl d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" Content="{Binding IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                        <StackPanel>
-                            <Extensions:ButtonedTextBox VerticalAlignment="Center"
-                                d:Description="FileName" d:Text="FileName"
-                                Background="{x:Null}"
-                                BorderBrush="{x:Null}"
-                                CopyButtonVisibility="Collapsed"
-                                Description="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}"
-                                IsReadOnly="True" PasteButtonVisibility="Collapsed"
-                                ResetButtonVisibility="Collapsed"
-                                Text="{Binding Mode=OneWay}"
-                                TextBoxVisibility="Collapsed" />
-                            <TextBlock d:Text="PdfData" Text="{Binding Mode=OneWay, Converter={StaticResource PdfFileNameToInfoConverter}}" />
-                        </StackPanel>
+                        <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                            d:Description="FileName" d:Text="FileName"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            CopyButtonVisibility="Collapsed" Focusable="False"
+                            IsReadOnly="True" PasteButtonVisibility="Collapsed"
+                            ResetButtonVisibility="Collapsed"
+                            Text="{Binding Mode=OneWay}"
+                            TextBoxVisibility="Collapsed">
+                            <Extensions:ButtonedTextBox.Description>
+                                <TextBlock>
+                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource PdfFileNameToInfoConverter}}" />
+                                </TextBlock>
+                            </Extensions:ButtonedTextBox.Description>
+                        </Extensions:ButtonedTextBox>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

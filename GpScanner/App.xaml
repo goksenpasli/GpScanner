@@ -14,7 +14,7 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
                 <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
@@ -299,7 +299,7 @@
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="4*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Extensions:ImageViewer x:Name="ImgVwr"
@@ -310,7 +310,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Slider LargeChange="1"
                             Maximum="{Binding ElementName=ImgVwr, Path=OriginalPixelHeight}"
@@ -326,12 +326,21 @@
                     </Grid>
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="DvdBurnerEmptyViewerTemplate">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                    FontFamily="Webdings" FontSize="256"
+                    Foreground="Red" Text="N" />
+            </DataTemplate>
+            <DataTemplate x:Key="EmptyViewerTemplate">
+                <Image Width="32" Height="32" Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
                 <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    OpenButtonVisibility="Collapsed" OrijinalResimDosyaAçButtonVisibility="Collapsed"
-                    PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Collapsed"
-                    TifNavigasyonButtonEtkin="Collapsed" ToolBarVisibility="Collapsed" />
+                    IsHitTestVisible="False" OpenButtonVisibility="Collapsed"
+                    OrijinalResimDosyaAçButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Collapsed" TifNavigasyonButtonEtkin="Collapsed"
+                    ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -569,7 +578,14 @@
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
-            <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector" Img="{StaticResource ImgViewerDocumentViewerTemplateMini}" Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}" />
+            <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector"
+                Eyp="{StaticResource EmptyViewerTemplate}"
+                Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
+                Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}"
+                Vid="{StaticResource EmptyViewerTemplate}"
+                Xml="{StaticResource EmptyViewerTemplate}"
+                Xps="{StaticResource EmptyViewerTemplate}"
+                Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="ThumbViewerSelector"
                 Eyp="{StaticResource EypViewerTemplate}"
                 Img="{StaticResource ImgViewerTemplate}"
@@ -586,13 +602,8 @@
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
-            <DataTemplate x:Key="EmptyViewerTemplate">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                    FontFamily="Webdings" FontSize="256"
-                    Foreground="Red" Text="N" />
-            </DataTemplate>
             <twain:ViewerTemplateSelector x:Key="DvdBurnerDocumentViewerSelector"
-                Empty="{StaticResource EmptyViewerTemplate}"
+                Empty="{StaticResource DvdBurnerEmptyViewerTemplate}"
                 Eyp="{StaticResource EypViewerTemplate}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"

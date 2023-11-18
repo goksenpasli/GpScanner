@@ -22,7 +22,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <PdfViewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
@@ -267,21 +267,12 @@
             </CollectionViewSource>
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
-                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
             <Style TargetType="{x:Type RepeatButton}">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
-                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
-            </Style>
-            <Style TargetType="{x:Type ListBox}">
-                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
             <Style TargetType="{x:Type ComboBox}">
                 <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
-                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
-            </Style>
-            <Style TargetType="{x:Type Hyperlink}">
-                <Setter Property="local:Policy.PolicyEnabled" Value="True" />
             </Style>
             <Style TargetType="{x:Type Extensions:ContentToggleButton}">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
@@ -427,8 +418,9 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="120"
-                                        Minimum="0" SmallChange="1"
+                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanDelay" IsReadOnly="True"
+                                        Maximum="120" Minimum="0"
+                                        SmallChange="1"
                                         Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -438,13 +430,15 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="120"
-                                        Minimum="0" SmallChange="1"
+                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanBetweenDelay" IsReadOnly="True"
+                                        Maximum="120" Minimum="0"
+                                        SmallChange="1"
                                         Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SECOND}" />
                                 </StackPanel>
                                 <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Columns="4">
-                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" StaysOpen="True" TopMost="False">
+                                    <Extensions:ContentToggleButton local:Policy.PolicyName="Camera" ArrowVisibility="Collapsed"
+                                        StaysOpen="True" TopMost="False">
                                         <Extensions:ContentToggleButton.OverContent>
                                             <Extensions:ResizablePanel Width="680" Height="480"
                                                 MinWidth="480" MinHeight="360">
@@ -571,7 +565,8 @@
                                 </ComboBox>
                                 <ComboBox Grid.Column="1"
                                     VerticalContentAlignment="Center"
-                                    FontWeight="Bold" ItemStringFormat="{}{0} Dpi"
+                                    local:Policy.PolicyName="Çözünürlük" FontWeight="Bold"
+                                    ItemStringFormat="{}{0} Dpi"
                                     ItemsSource="{Binding ScanResolutionList, Mode=OneWay}"
                                     SelectedItem="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 <UniformGrid Grid.Column="2" Columns="2">
@@ -716,7 +711,7 @@
                                             <ColumnDefinition Width="80" />
                                             <ColumnDefinition Width="70" />
                                         </Grid.ColumnDefinitions>
-                                        <Extensions:ContentToggleButton ArrowVisibility="Collapsed">
+                                        <Extensions:ContentToggleButton local:Policy.PolicyName="ScanProfiles" ArrowVisibility="Collapsed">
                                             <Extensions:ContentToggleButton.OverContent>
                                                 <GroupBox>
                                                     <StackPanel>
@@ -991,6 +986,7 @@
                                 <Separator />
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                     d:Description="SaveFileName" d:Text="FileName"
+                                    local:Policy.PolicyName="SaveFileName"
                                     Description="{Binding Scanner.SaveFileName}"
                                     GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
                                     OpenButtonVisibility="Collapsed" RemainingLengthVisibility="Collapsed"
@@ -1085,7 +1081,7 @@
                                     </Border>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
-                            <Extensions:ContentToggleButton Grid.Column="1" ArrowVisibility="Collapsed">
+                            <Extensions:ContentToggleButton Grid.Column="1" local:Policy.PolicyName="PdfSettingsPage" ArrowVisibility="Collapsed">
                                 <Extensions:ContentToggleButton.OverContent>
                                     <local:PdfSettings Width="500" />
                                 </Extensions:ContentToggleButton.OverContent>
@@ -1109,7 +1105,7 @@
                                     <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
                                         <Image Width="24" Height="24" Source="/TwainControl;component/Icons/undo.png" />
                                     </Button>
-                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed">
+                                    <Extensions:ContentToggleButton local:Policy.PolicyName="RemoveFiles" ArrowVisibility="Collapsed">
                                         <Extensions:ContentToggleButton.OverContent>
                                             <StackPanel Background="{StaticResource GroupBoxBackGround}">
                                                 <MenuItem BorderBrush="{StaticResource GroupBoxBackGround}" Command="{Binding ListeTemizle}">
@@ -1148,7 +1144,7 @@
                                         </Extensions:ContentToggleButton.OverContent>
                                         <Image Width="24" Height="24" Source="/TwainControl;component/Icons/delete.png" />
                                     </Extensions:ContentToggleButton>
-                                    <Button Command="{Binding DetectEmptyPages}">
+                                    <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
                                         <Button.ToolTip>
                                             <TextBlock>
                                                 <Run Text="{local:Loc EMPTYPAGE}" />

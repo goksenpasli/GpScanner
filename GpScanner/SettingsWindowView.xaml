@@ -25,18 +25,8 @@
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
         <Converter:PageSizePreviewWidthConverter x:Key="PageSizePreviewWidthConverter" />
         <Converter:PageSizePreviewHeightConverter x:Key="PageSizePreviewHeightConverter" />
-        <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
-        </Style>
-        <Style TargetType="{x:Type ListBox}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
-        </Style>
         <Style TargetType="{x:Type ComboBox}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
-        </Style>
-        <Style TargetType="{x:Type Hyperlink}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
     </Window.Resources>
     <Grid>
@@ -394,8 +384,12 @@
                                         <RowDefinition />
                                     </Grid.RowDefinitions>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox VerticalAlignment="Center" Content="{twainctrl:Loc QRDETECT}" IsChecked="{Binding DetectBarCode}" />
                                         <CheckBox VerticalAlignment="Center"
+                                            twainctrl:Policy.PolicyName="DetectBarCode"
+                                            Content="{twainctrl:Loc QRDETECT}"
+                                            IsChecked="{Binding DetectBarCode}" />
+                                        <CheckBox VerticalAlignment="Center"
+                                            twainctrl:Policy.PolicyName="DetectPageSeperator"
                                             Content="{twainctrl:Loc SEPERATOR}"
                                             IsChecked="{Binding DetectPageSeperator}"
                                             IsEnabled="{Binding DetectBarCode}" />
@@ -525,7 +519,7 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         </StackPanel>
-                                        <ToggleButton IsChecked="{Binding FastSimplePdfThumbViewer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" ToolTip="{twainctrl:Loc FASTPDFVIEW}">
+                                        <ToggleButton twainctrl:Policy.PolicyName="FastSimplePdfThumbViewer" IsChecked="{Binding FastSimplePdfThumbViewer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" ToolTip="{twainctrl:Loc FASTPDFVIEW}">
                                             <Canvas Width="32" Height="32">
                                                 <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                                 <Image Canvas.Right="0" Canvas.Bottom="0"
@@ -567,7 +561,7 @@
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox VerticalContentAlignment="Center" twainctrl:Policy.PolicyName="NotifyCalendar" IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <Canvas Width="32" Height="32" IsEnabled="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                                 <Image Width="32" Height="32">
                                                     <Image.Source>
@@ -589,7 +583,7 @@
                                 <Separator />
                                 <UniformGrid Columns="2">
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox VerticalContentAlignment="Center" twainctrl:Policy.PolicyName="DirectOpenPdfFile" IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <CheckBox.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
@@ -600,7 +594,7 @@
                                                 </StackPanel>
                                             </CheckBox.Content>
                                         </CheckBox>
-                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox VerticalContentAlignment="Center" twainctrl:Policy.PolicyName="DirectOpenEypFile" IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <CheckBox.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32" Height="32" Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
@@ -614,7 +608,7 @@
                                     </StackPanel>
                                     <ScrollViewer Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                                         <StackPanel Orientation="Horizontal">
-                                            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <CheckBox VerticalContentAlignment="Center" twainctrl:Policy.PolicyName="ContributionIsImageMode" IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                                 <CheckBox.Content>
                                                     <Canvas Width="32" Height="32">
                                                         <Image Width="32" Height="32">
@@ -641,7 +635,7 @@
                                                 Maximum="10" Minimum="1"
                                                 SmallChange="1"
                                                 Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                            <ToggleButton IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier" IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                                 <Canvas Width="32" Height="32">
                                                     <Image Width="32" Height="32">
                                                         <Image.Source>
@@ -664,7 +658,9 @@
                                             <StackPanel Orientation="Horizontal">
                                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                             </StackPanel>
-                                            <CheckBox Margin="1" VerticalContentAlignment="Center" IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                            <CheckBox Margin="1" VerticalContentAlignment="Center"
+                                                twainctrl:Policy.PolicyName="PlayNotificationAudio"
+                                                IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                                 <CheckBox.ToolTip>
                                                     <TextBlock FontWeight="Bold" Foreground="Red" Text="{twainctrl:Loc PLAYSOUND}" />
                                                 </CheckBox.ToolTip>

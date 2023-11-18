@@ -35,6 +35,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         }
 
                         PdfFilePath = eypfile;
+                        AddToHistoryList(PdfFilePath);
                     }
 
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
@@ -45,9 +46,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         }
 
                         PdfFilePath = openFileDialog.FileName;
+                        AddToHistoryList(PdfFilePath);
                     }
-
-                    AddToHistoryList(PdfFilePath);
                 }
             });
     }
@@ -79,6 +79,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         if (e.Data.GetData(typeof(Scanner)) is Scanner droppedData && IsValidPdfFile(droppedData.FileName))
         {
             PdfFilePath = droppedData.FileName;
+            AddToHistoryList(PdfFilePath);
+
             return;
         }
 
@@ -87,11 +89,14 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             if (string.Equals(Path.GetExtension(droppedfiles[0]), ".eyp", StringComparison.OrdinalIgnoreCase))
             {
                 PdfFilePath = ExtractEypFilesToPdf(droppedfiles[0]);
+                AddToHistoryList(PdfFilePath);
+
                 return;
             }
             if (IsValidPdfFile(droppedfiles[0]))
             {
                 PdfFilePath = droppedfiles[0];
+                AddToHistoryList(PdfFilePath);
             }
         }
     }

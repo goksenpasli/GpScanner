@@ -99,7 +99,6 @@ public class GpScannerViewModel : InpcBase
     private DateTime seçiliGün;
     private BatchFiles selectedBatchFile;
     private ContributionData selectedContribution;
-    private Scanner selectedDocument;
     private string selectedFtp;
     private Size selectedSize;
     private bool shutdown;
@@ -1606,20 +1605,6 @@ public class GpScannerViewModel : InpcBase
             {
                 selectedContribution = value;
                 OnPropertyChanged(nameof(SelectedContribution));
-            }
-        }
-    }
-
-    public Scanner SelectedDocument
-    {
-        get => selectedDocument;
-
-        set
-        {
-            if (selectedDocument != value)
-            {
-                selectedDocument = value;
-                OnPropertyChanged(nameof(SelectedDocument));
             }
         }
     }

@@ -78,7 +78,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ToggleButton x:Name="Tb" Margin="1" IsChecked="True">
+        <ToggleButton x:Name="Tb"
+            Margin="1"
+            local:Policy.PolicyName="ExpandXml" IsChecked="True">
             <Image Width="16" Height="16" Source="/TwainControl;component/Icons/portrait.png" />
         </ToggleButton>
         <TreeView Name="xmlTree"

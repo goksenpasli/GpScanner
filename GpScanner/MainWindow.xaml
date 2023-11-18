@@ -123,26 +123,16 @@
             </Style.Triggers>
         </Style>
         <Style TargetType="{x:Type Button}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
             <Setter Property="Background" Value="{StaticResource BorderBackground}" />
         </Style>
         <Style TargetType="{x:Type RepeatButton}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
             <Setter Property="Background" Value="{StaticResource BorderBackground}" />
         </Style>
         <Style TargetType="{x:Type ToggleButton}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
             <Setter Property="Background" Value="{StaticResource BorderBackground}" />
         </Style>
-        <Style TargetType="{x:Type ListBox}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
-        </Style>
         <Style TargetType="{x:Type ComboBox}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
-        </Style>
-        <Style TargetType="{x:Type Hyperlink}">
-            <Setter Property="twainctrl:Policy.PolicyEnabled" Value="True" />
         </Style>
         <Style TargetType="{x:Type Extensions:ContentToggleButton}">
             <Setter Property="Background" Value="{StaticResource BorderBackground}" />
@@ -312,7 +302,9 @@
                                 <LineBreak />
                                 <Run Text="{twainctrl:Loc PAGENUMBER}" />
                             </TextBlock>
-                            <Extensions:NumericUpDownControl Minimum="1" SmallChange="1" Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <Extensions:NumericUpDownControl twainctrl:Policy.PolicyName="AllPdfPage" Minimum="1"
+                                SmallChange="1"
+                                Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                                 twainctrl:Policy.PolicyName="PdfBirleştir" BorderBrush="Cyan"
                                 Command="{Binding PdfBirleştir}">
@@ -333,7 +325,7 @@
                                     <TextBlock Canvas.Top="3" Canvas.Right="3" Text="ZIP" />
                                 </Canvas>
                             </Button>
-                            <ToggleButton IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                            <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
@@ -369,7 +361,7 @@
                                     </StackPanel>
                                 </ToggleButton.ToolTip>
                             </ToggleButton>
-                            <Extensions:ContentToggleButton ArrowVisibility="Collapsed">
+                            <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="DvdBurnerControl" ArrowVisibility="Collapsed">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -385,7 +377,7 @@
                                     </Extensions:ResizablePanel>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
-                            <Extensions:ContentToggleButton ArrowVisibility="Collapsed">
+                            <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="PdfCompressorControl" ArrowVisibility="Collapsed">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                     <Image Canvas.Right="0" Canvas.Bottom="0"
@@ -424,6 +416,7 @@
                                     Content="ç" FontFamily="Wingdings"
                                     FontSize="16" />
                                 <DatePicker Grid.Column="1"
+                                    twainctrl:Policy.PolicyName="SeçiliGün"
                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                     Language="{Binding CalendarLang}"
                                     SelectedDate="{Binding SeçiliGün}" />
@@ -436,8 +429,9 @@
                             <Extensions:ButtonedTextBox x:Name="TbSearch"
                                 Grid.Column="1"
                                 VerticalContentAlignment="Center"
-                                d:Text="AramaMetni" CopyButtonVisibility="Collapsed"
-                                OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                d:Text="AramaMetni" twainctrl:Policy.PolicyName="AramaMetni"
+                                CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=350, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <ComboBox VerticalContentAlignment="Center"
@@ -450,7 +444,8 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <ToggleButton FontFamily="Wingdings" FontSize="16"
+                                <ToggleButton twainctrl:Policy.PolicyName="Sıralama" FontFamily="Wingdings"
+                                    FontSize="16"
                                     IsChecked="{Binding Sıralama}"
                                     IsEnabled="{Binding HasItems, ElementName=LbDoc}">
                                     <ToggleButton.Style>
@@ -497,7 +492,6 @@
                             BorderThickness="2" IsSynchronizedWithCurrentItem="False"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                             ScrollViewer.IsDeferredScrollingEnabled="{Binding IsChecked, ElementName=TbExpandDocument}"
-                            SelectedItem="{Binding SelectedDocument, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             SelectionMode="Extended"
                             Style="{StaticResource ListBoxAnimationStyle}"
                             VirtualizingPanel.CacheLength="{Binding SelectedSize, Converter={StaticResource SelectedSizeToCacheLengthConverter}, Mode=OneWay}"
@@ -560,7 +554,10 @@
                                                                     <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
                                                                 </TextBlock>
                                                                 <TextBlock Grid.Column="1">
-                                                                    <Hyperlink Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding Mode=OneWay, Path=FileName}" TextDecorations="None">
+                                                                    <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                                                                        Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                        CommandParameter="{Binding Mode=OneWay, Path=FileName}"
+                                                                        TextDecorations="None">
                                                                         <Run FontFamily="Wingdings 2" FontSize="18"
                                                                             FontWeight="Bold" Text="4" />
                                                                     </Hyperlink>
@@ -1054,7 +1051,6 @@
                                 <Setter Property="Foreground" Value="White" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding RegisterBatchWatcher, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
-                                        <Setter Property="FontWeight" Value="Bold" />
                                         <Setter Property="Foreground" Value="GreenYellow" />
                                     </DataTrigger>
                                 </Style.Triggers>
@@ -1316,7 +1312,7 @@
                                                         <UniformGrid Columns="2">
                                                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                                                 CopyButtonVisibility="Collapsed" IsReadOnly="True"
-                                                                PasteButtonVisibility="Collapsed"
+                                                                PasteButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                                                                 Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                             <UniformGrid Columns="3">
                                                                 <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder" Command="{Binding SetBatchWatchFolder}">
@@ -1380,7 +1376,7 @@
                                                             </Grid.ColumnDefinitions>
                                                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                                                 CopyButtonVisibility="Collapsed" IsReadOnly="True"
-                                                                PasteButtonVisibility="Collapsed"
+                                                                PasteButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
                                                                 Text="{Binding BatchSaveFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                             <Button Grid.Column="1" Command="{Binding SetBatchSaveFolder}">
                                                                 <StackPanel Orientation="Horizontal">

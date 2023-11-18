@@ -12,6 +12,9 @@
     <UserControl.Resources>
         <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
         <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Template" Value="{DynamicResource ComboBoxStyle}" />
+        </Style>
     </UserControl.Resources>
     <GroupBox>
         <UniformGrid Columns="2">

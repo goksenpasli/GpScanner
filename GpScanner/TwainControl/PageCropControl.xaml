@@ -19,7 +19,9 @@
     <GroupBox>
         <GroupBox.Header>
             <StackPanel>
-                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding Path=CropScan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                    local:Policy.PolicyName="CropScan"
+                    IsChecked="{Binding Path=CropScan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                     <StackPanel Orientation="Horizontal">
                         <Image Width="16" Height="16">
                             <Image.Source>
@@ -35,7 +37,7 @@
                         </TextBlock>
                     </StackPanel>
                 </CheckBox>
-                <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding AutoCropImage, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox VerticalContentAlignment="Center" local:Policy.PolicyName="AutoCropImage" IsChecked="{Binding AutoCropImage, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel IsEnabled="{Binding AutoCropImage, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Orientation="Horizontal">
                         <Image Width="16" Height="16">
                             <Image.Source>
@@ -61,7 +63,7 @@
                 </CheckBox>
                 <Separator />
                 <UniformGrid Columns="2">
-                    <Button Command="{Binding PrepareCropCurrentImage}">
+                    <Button local:Policy.PolicyName="PrepareCropCurrentImage" Command="{Binding PrepareCropCurrentImage}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32" VerticalAlignment="Center">
                                 <Image.Source>
@@ -81,7 +83,7 @@
                         </StackPanel>
                     </Button>
                     <UniformGrid Rows="2">
-                        <Button Command="{Binding ApplyCropCurrentImage}">
+                        <Button local:Policy.PolicyName="ApplyCropCurrentImage" Command="{Binding ApplyCropCurrentImage}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32" Height="32" VerticalAlignment="Center">
                                     <Image.Source>
@@ -98,7 +100,10 @@
                                 </TextBlock>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding ApplyCropAllImages}" ToolTipService.IsEnabled="{Binding SelectedImageWidthHeightIsEqual, Converter={StaticResource ReverseBooleanConverter}}" ToolTipService.ShowOnDisabled="True">
+                        <Button local:Policy.PolicyName="ApplyCropAllImages"
+                            Command="{Binding ApplyCropAllImages}"
+                            ToolTipService.IsEnabled="{Binding SelectedImageWidthHeightIsEqual, Converter={StaticResource ReverseBooleanConverter}}"
+                            ToolTipService.ShowOnDisabled="True">
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32" VerticalAlignment="Center">
@@ -296,7 +301,7 @@
                 </Grid>
             </ScrollViewer>
             <UniformGrid Grid.Row="1" Columns="2">
-                <Button Command="{Binding ResetCrop}">
+                <Button local:Policy.PolicyName="ResetCrop" Command="{Binding ResetCrop}">
                     <StackPanel Orientation="Horizontal">
                         <Image Width="32" Height="32" VerticalAlignment="Bottom">
                             <Image.Source>
@@ -312,7 +317,7 @@
                         </TextBlock>
                     </StackPanel>
                 </Button>
-                <ToggleButton IsChecked="{Binding IgnoreImageWidthHeight}">
+                <ToggleButton local:Policy.PolicyName="IgnoreImageWidthHeight" IsChecked="{Binding IgnoreImageWidthHeight}">
                     <ToggleButton.ToolTip>
                         <StackPanel Orientation="Horizontal">
                             <Image Width="32" Height="32">

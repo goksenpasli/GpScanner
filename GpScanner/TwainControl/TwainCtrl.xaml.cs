@@ -1388,11 +1388,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ExtractMultiplePdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer)
+                if (parameter is PdfViewer.PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     List<string> files = [];
-                    List<PdfData> currentpages = PdfPages.Where(currentpage => currentpage.Selected).ToList();
+                    List<PdfData> currentpages = PdfPages?.Where(currentpage => currentpage.Selected).ToList();
                     foreach (PdfData currentpage in currentpages)
                     {
                         string savefilename = $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";

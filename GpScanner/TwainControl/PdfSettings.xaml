@@ -15,7 +15,7 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
@@ -26,7 +26,10 @@
     <GroupBox Background="{StaticResource GroupBoxBackGround}">
         <GroupBox.Header>
             <StackPanel Orientation="Horizontal">
-                <CheckBox VerticalAlignment="Center" Content="{local:Loc ENCRYPT}" IsChecked="{Binding Scanner.PasswordProtect}" />
+                <CheckBox VerticalAlignment="Center"
+                    local:Policy.PolicyName="PasswordProtect"
+                    Content="{local:Loc ENCRYPT}"
+                    IsChecked="{Binding Scanner.PasswordProtect}" />
                 <Image Width="32" Height="32">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -45,19 +48,21 @@
         </GroupBox.Header>
         <StackPanel>
             <HeaderedContentControl Header="{local:Loc PASSWORD}">
-                <PasswordBox IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
+                <PasswordBox local:Policy.PolicyName="PasswordProtect" IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
             </HeaderedContentControl>
             <UniformGrid Columns="2">
                 <GroupBox>
                     <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
-                        <CheckBox Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
-                        <CheckBox Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
-                        <CheckBox Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
+                        <CheckBox local:Policy.PolicyName="AllowPrint" Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
+                        <CheckBox local:Policy.PolicyName="AllowCopy" Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
+                        <CheckBox local:Policy.PolicyName="AllowEdit" Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
                     </StackPanel>
                 </GroupBox>
                 <GroupBox>
                     <StackPanel>
-                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Extensions:ButtonedTextBox local:Policy.PolicyName="UserName" CopyButtonVisibility="Collapsed"
+                            OpenButtonVisibility="Collapsed"
+                            Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -67,7 +72,9 @@
                                 </Image.Source>
                             </Image>
                         </Extensions:ButtonedTextBox>
-                        <Extensions:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Extensions:ButtonedTextBox local:Policy.PolicyName="CreatorAppName" CopyButtonVisibility="Collapsed"
+                            OpenButtonVisibility="Collapsed"
+                            Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -87,7 +94,7 @@
                 </GroupBox>
             </UniformGrid>
             <Separator />
-            <Grid>
+            <Grid local:Policy.PolicyName="SaveQuality">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="41.6" />
                     <RowDefinition Height="41.6" />
@@ -182,7 +189,7 @@
                 </Canvas>
             </Grid>
             <Separator />
-            <CheckBox IsChecked="{Binding Scanner.Deskew}">
+            <CheckBox local:Policy.PolicyName="Deskew" IsChecked="{Binding Scanner.Deskew}">
                 <CheckBox.Content>
                     <StackPanel Orientation="Horizontal">
                         <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
@@ -190,7 +197,7 @@
                     </StackPanel>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox IsChecked="{Binding Scanner.ApplyPdfSaveOcr}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+            <CheckBox local:Policy.PolicyName="ApplyPdfSaveOcr" IsChecked="{Binding Scanner.ApplyPdfSaveOcr}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                 <CheckBox.Content>
                     <TextBlock TextWrapping="Wrap">
                         <Run Text="{local:Loc FILE}" />
@@ -199,7 +206,7 @@
                     </TextBlock>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox IsChecked="{Binding Scanner.ApplyDataBaseOcr}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+            <CheckBox local:Policy.PolicyName="ApplyDataBaseOcr" IsChecked="{Binding Scanner.ApplyDataBaseOcr}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                 <CheckBox.Content>
                     <TextBlock TextWrapping="Wrap">
                         <Run Text="{local:Loc ADDOCRTODB}" />
@@ -207,12 +214,12 @@
                     </TextBlock>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox IsChecked="{Binding Scanner.UseMozJpegEncoding}" IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}">
+            <CheckBox local:Policy.PolicyName="UseMozJpegEncoding" IsChecked="{Binding Scanner.UseMozJpegEncoding}" IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}">
                 <CheckBox.Content>
                     <TextBlock FontWeight="Bold" Foreground="{StaticResource Colorfull}" Text="MOZJPEG" />
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Scanner.PdfPageNumberDraw}">
+            <CheckBox VerticalContentAlignment="Center" local:Policy.PolicyName="PdfPageNumberDraw" IsChecked="{Binding Scanner.PdfPageNumberDraw}">
                 <CheckBox.Content>
                     <StackPanel IsEnabled="{Binding Scanner.PdfPageNumberDraw}" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc PAGENUMBER}" />
@@ -247,7 +254,7 @@
                     </StackPanel>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Scanner.PdfPageTextDraw}">
+            <CheckBox VerticalContentAlignment="Center" local:Policy.PolicyName="PdfPageTextDraw" IsChecked="{Binding Scanner.PdfPageTextDraw}">
                 <StackPanel IsEnabled="{Binding Scanner.PdfPageTextDraw}" Orientation="Horizontal">
                     <Extensions:ButtonedTextBox Width="150"
                         VerticalAlignment="Center"

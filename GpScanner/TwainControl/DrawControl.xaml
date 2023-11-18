@@ -26,6 +26,7 @@
             <local:ZoomableInkCanvas x:Name="Ink"
                 Width="{Binding ElementName=Img, Path=ImageSource.Width}"
                 Height="{Binding ElementName=Img, Path=ImageSource.Height}"
+                local:Policy.PolicyName="ZoomableInkCanvas"
                 ContextMenuService.IsEnabled="{Binding DrawControlContextMenu, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                 Cursor="{Binding DrawCursor, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                 EditingMode="{Binding ElementName=CbEdit, Path=SelectedItem}"
