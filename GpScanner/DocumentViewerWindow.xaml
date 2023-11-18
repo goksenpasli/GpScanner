@@ -5,7 +5,7 @@
     xmlns:converter="clr-namespace:GpScanner.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     Title="{Binding Title, TargetNullValue=''}"
     Width="800" Height="600"
     d:DataContext="{d:DesignInstance Type=viewmodel:DocumentViewerModel}"
@@ -13,7 +13,7 @@
     WindowStartupLocation="CenterOwner" WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
-        <converter:PdfFileNameToInfoConverter x:Key="PdfFileNameToInfoConverter" />
+        <converter:PdfFileNameToInfoConverter x:Key="PdfFileNameToInfoConverter" IsEnabled="{Binding Path=ShowPdfInfo, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>

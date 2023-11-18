@@ -669,4 +669,7 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>الملفات غير المفهرسة</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>عرض معلومات قوات الدفاع الشعبي</value>
+  </data>
 </root>

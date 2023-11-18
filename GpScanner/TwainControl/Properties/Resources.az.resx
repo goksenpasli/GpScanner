@@ -669,4 +669,7 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>QEYRİ İNDEKSİYON FAYLLAR</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Pdf məlumat göstərin</value>
+  </data>
 </root>

@@ -779,6 +779,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string PDFINFO {
+            get {
+                return ResourceManager.GetString("PDFINFO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PDFPROTECT {
             get {
                 return ResourceManager.GetString("PDFPROTECT", resourceCulture);

@@ -4,16 +4,21 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Windows;
 using System.Windows.Data;
 using TwainControl;
 
 namespace GpScanner.Converter;
 
-public sealed class PdfFileNameToInfoConverter : IValueConverter
+public sealed class PdfFileNameToInfoConverter : DependencyObject, IValueConverter
 {
+    public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register("IsEnabled", typeof(bool), typeof(PdfFileNameToInfoConverter), new PropertyMetadata(false));
+
+    public bool IsEnabled { get => (bool)GetValue(IsEnabledProperty); set => SetValue(IsEnabledProperty, value); }
+
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string filename && File.Exists(filename) && Path.GetExtension(filename.ToLower()) == ".pdf")
+        if (IsEnabled && value is string filename && File.Exists(filename) && Path.GetExtension(filename.ToLower()) == ".pdf")
         {
             using PdfDocument reader = PdfReader.Open(filename, PdfDocumentOpenMode.InformationOnly);
             StringBuilder stringBuilder = new();

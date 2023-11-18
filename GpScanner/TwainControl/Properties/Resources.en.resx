@@ -676,4 +676,7 @@ TO FILE</value>
   <data name="UNINDEXED" xml:space="preserve">
     <value>UNINDEXED FILES</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Show Pdf Information</value>
+  </data>
 </root>

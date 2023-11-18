@@ -516,9 +516,6 @@
                                                 </Canvas>
                                             </TextBlock.ToolTip>
                                         </TextBlock>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        </StackPanel>
                                         <ToggleButton twainctrl:Policy.PolicyName="FastSimplePdfThumbViewer" IsChecked="{Binding FastSimplePdfThumbViewer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" ToolTip="{twainctrl:Loc FASTPDFVIEW}">
                                             <Canvas Width="32" Height="32">
                                                 <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
@@ -529,6 +526,21 @@
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="20" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Canvas>
+                                        </ToggleButton>
+                                        <ToggleButton twainctrl:Policy.PolicyName="ShowPdfInfo" IsChecked="{Binding ShowPdfInfo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" ToolTip="{twainctrl:Loc PDFINFO}">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <Image Canvas.Right="0" Canvas.Bottom="0"
+                                                    Width="16" Height="16"
+                                                    Visibility="{Binding ShowPdfInfo, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="70" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>

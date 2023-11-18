@@ -672,4 +672,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Svaka kontrola cijan boje radi drugačije s jednom ili više tipki Alt Shift Ctrl</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Prikaži informacije o PDF-u</value>
+  </data>
 </root>

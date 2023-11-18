@@ -169,7 +169,7 @@
             <ColumnDefinition Width="3" />
             <ColumnDefinition Width="{Binding MainWindowDocumentGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="2*" />
         </Grid.ColumnDefinitions>
-        <twainctrl:TwainCtrl x:Name="twainCtrl" />
+        <twainctrl:TwainCtrl x:Name="twainCtrl" twainctrl:Policy.PolicyName="TwainCtrl" />
         <GridSplitter Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"
@@ -180,7 +180,7 @@
                 <MouseBinding Command="{Binding GridSplitterMouseRightButtonDown}" Gesture="RightClick" />
             </GridSplitter.InputBindings>
         </GridSplitter>
-        <GroupBox Grid.Column="2">
+        <GroupBox Grid.Column="2" twainctrl:Policy.PolicyName="DocumentPanel">
             <GroupBox.Header>
                 <UniformGrid Columns="2">
                     <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
@@ -736,7 +736,8 @@
                 </TabItem>
             </TabControl>
         </GroupBox>
-        <StatusBar Grid.Row="1" Grid.ColumnSpan="3" Background="Black">
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="3"
+            twainctrl:Policy.PolicyName="StatusBar" Background="Black">
             <StatusBarItem Visibility="{Binding Scanner.PasswordProtect, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=twainCtrl}">
                 <Image Width="16" Height="16">
                     <Image.Source>

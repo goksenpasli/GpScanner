@@ -669,4 +669,7 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>FICHIERS NON INDEXÉS</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Afficher les informations PDF</value>
+  </data>
 </root>

@@ -669,4 +669,7 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>ΑΡΧΕΙΑ ΜΗ ΑΝΤΙΚΕΙΜΕΝΟΥ</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Εμφάνιση πληροφοριών PDF</value>
+  </data>
 </root>

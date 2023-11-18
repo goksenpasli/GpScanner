@@ -669,4 +669,7 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>NEINDEXOVANÉ SOUBORY</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Zobrazit informace ve formátu PDF</value>
+  </data>
 </root>

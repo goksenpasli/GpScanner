@@ -672,4 +672,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Любы элемент кіравання блакітнага колеру працуе па-рознаму з адной або некалькімі клавішамі Alt Shift Ctrl</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Паказаць інфармацыю пра pdf</value>
+  </data>
 </root>

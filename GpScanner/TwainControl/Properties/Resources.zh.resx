@@ -669,4 +669,7 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>未索引的文件</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>显示 PDF 信息</value>
+  </data>
 </root>

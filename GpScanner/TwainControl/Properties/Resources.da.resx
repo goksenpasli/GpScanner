@@ -672,4 +672,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Enhver cyan farvet kontrol fungerer anderledes med en eller flere af Alt Shift Ctrl-tasterne</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Vis pdf-information</value>
+  </data>
 </root>

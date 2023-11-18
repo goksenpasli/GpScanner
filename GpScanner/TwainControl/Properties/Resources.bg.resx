@@ -672,4 +672,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Всяка контрола с цвят на циан работи по различен начин с един или повече от клавишите Alt Shift Ctrl</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Показване на информация за PDF</value>
+  </data>
 </root>

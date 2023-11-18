@@ -682,4 +682,7 @@ BELGE EKLE</value>
   <data name="UNINDEXED" xml:space="preserve">
     <value>İNDEKSLENMEMİŞ DOSYALAR</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Pdf Bilgilerini Göster</value>
+  </data>
 </root>

@@ -669,4 +669,7 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>અનઇન્ડેક્સ્ડ ફાઇલો</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>પીડીએફ માહિતી બતાવો</value>
+  </data>
 </root>
