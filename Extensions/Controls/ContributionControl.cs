@@ -26,8 +26,10 @@ namespace Extensions
             new PropertyMetadata(null));
         private IEnumerable<string> days;
         private int maxContribution;
+        private int? monthDateTotalContribution;
         private IEnumerable<string> months;
         private int? monthTotalContribution;
+        private string selectedDay;
         private string selectedMonth;
 
         static ContributionControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ContributionControl), new FrameworkPropertyMetadata(typeof(ContributionControl))); }
@@ -48,6 +50,14 @@ namespace Extensions
                 ];
             }
             PropertyChanged += ContributionControl_PropertyChanged;
+
+            ResetDate = new RelayCommand<object>(
+                parameter =>
+                {
+                    SelectedDay = null;
+                    SelectedMonth = null;
+                },
+                parameter => !string.IsNullOrEmpty(SelectedMonth) || !string.IsNullOrEmpty(SelectedDay));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -89,6 +99,22 @@ namespace Extensions
         }
 
         [Browsable(false)]
+
+        public int? MonthDateTotalContribution
+        {
+            get => monthDateTotalContribution;
+
+            set
+            {
+                if (monthDateTotalContribution != value)
+                {
+                    monthDateTotalContribution = value;
+                    OnPropertyChanged(nameof(MonthDateTotalContribution));
+                }
+            }
+        }
+
+        [Browsable(false)]
         public IEnumerable<string> Months
         {
             get => months;
@@ -116,7 +142,23 @@ namespace Extensions
             }
         }
 
+        public RelayCommand<object> ResetDate { get; }
+
         public ContributionData SelectedContribution { get => (ContributionData)GetValue(SelectedContributionProperty); set => SetValue(SelectedContributionProperty, value); }
+
+        [Browsable(false)]
+        public string SelectedDay
+        {
+            get => selectedDay;
+            set
+            {
+                if (selectedDay != value)
+                {
+                    selectedDay = value;
+                    OnPropertyChanged(nameof(SelectedDay));
+                }
+            }
+        }
 
         [Browsable(false)]
         public string SelectedMonth
@@ -146,13 +188,16 @@ namespace Extensions
 
         private void ContributionControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is "SelectedMonth" && Contributions?.Any() == true)
+            if (Contributions?.Any() == true && e.PropertyName is "SelectedMonth" or "SelectedDay")
             {
+                List<ContributionData> contributionsForSelectedMonth = Contributions.Where(z => z.ContrubutionDate.Value.ToString("MMM") == SelectedMonth).ToList();
                 foreach (ContributionData item in Contributions)
                 {
-                    item.Stroke = item.ContrubutionDate.Value.ToString("MMM") == SelectedMonth ? Brushes.Red : null;
+                    item.Stroke = item.ContrubutionDate.HasValue && item.ContrubutionDate.Value.ToString("MMM") == SelectedMonth ? Brushes.Red : null;
                 }
-                MonthTotalContribution = Contributions.Where(z => z.ContrubutionDate.Value.ToString("MMM") == SelectedMonth).Sum(z => z.Count);
+                MonthTotalContribution = contributionsForSelectedMonth.Sum(z => z.Count);
+                List<ContributionData> contributionsForSelectedDay = contributionsForSelectedMonth.Where(z => z.ContrubutionDate.Value.ToString("ddd") == SelectedDay).ToList();
+                MonthDateTotalContribution = contributionsForSelectedDay.Sum(z => z.Count);
             }
         }
     }

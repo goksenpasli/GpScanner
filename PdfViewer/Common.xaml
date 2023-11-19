@@ -4,7 +4,7 @@
         <StackPanel HorizontalAlignment="Center">
             <TextBlock HorizontalAlignment="Center">
                 <Run Text="{Binding Mode=OneWay}" />
-                <Hyperlink Command="{Binding PrintSinglePage, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" CommandParameter="{Binding Mode=OneWay}">
+                <Hyperlink Command="{Binding PrintSinglePage, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" CommandParameter="{Binding Mode=OneWay}" TextDecorations="None">
                     <Run FontFamily="Wingdings 2" FontSize="14" Text="7" />
                 </Hyperlink>
             </TextBlock>

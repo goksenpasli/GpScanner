@@ -19,11 +19,18 @@
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" Grid.Column="0"
                             VerticalAlignment="Center"
-                            FontSize="9"
-                            Text="{Binding MonthTotalContribution, RelativeSource={RelativeSource TemplatedParent}}" />
+                            FontSize="9">
+                            <Run Text="{Binding MonthDateTotalContribution, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Run Text="/" />
+                            <Run Text="{Binding MonthTotalContribution, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Hyperlink Command="{Binding ResetDate, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
+                                <Run FontWeight="Bold" Text="X" />
+                            </Hyperlink>
+                        </TextBlock>
                         <ListBox Grid.Row="1" Grid.Column="0"
                             FontSize="9"
-                            ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}}">
+                            ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}}"
+                            SelectedItem="{Binding SelectedDay, RelativeSource={RelativeSource TemplatedParent}}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
                                     <Setter Property="Padding" Value="0" />
