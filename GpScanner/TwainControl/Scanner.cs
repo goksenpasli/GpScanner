@@ -710,7 +710,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string LocalizedPath
     {
-        get => ExtensionMethods.GetDisplayName(Settings.Default.AutoFolder);
+        get => ShellIcon.GetDisplayName(Settings.Default.AutoFolder);
 
         set
         {

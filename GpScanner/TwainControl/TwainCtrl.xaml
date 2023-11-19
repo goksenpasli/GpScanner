@@ -32,6 +32,7 @@
             <Converter:EnumOrientationToTwainVersionConverter x:Key="EnumOrientationToTwainVersionConverter" />
             <Converter:FileDateContextMenuConverter x:Key="FileDateContextMenuConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+            <Extensions:FilePathToIconConverter x:Key="ListFilePathToIconConverter" IconSize="extraLarge" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Image x:Key="TimeIcon"
@@ -1399,7 +1400,7 @@
                                                                         <PdfViewer:PdfShadowedImage.Source>
                                                                             <PriorityBinding>
                                                                                 <Binding IsAsync="True" Mode="OneWay" Path="ResimThumb" />
-                                                                                <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
+                                                                                <Binding Converter="{StaticResource ListFilePathToIconConverter}" Path="FilePath" />
                                                                             </PriorityBinding>
                                                                         </PdfViewer:PdfShadowedImage.Source>
                                                                     </PdfViewer:PdfShadowedImage>

@@ -1,6 +1,6 @@
-﻿using Extensions;
-using Microsoft.Win32.SafeHandles;
+﻿using Microsoft.Win32.SafeHandles;
 using System;
+using static Extensions.ShellIcon;
 
 namespace TwainControl;
 
@@ -13,6 +13,6 @@ public partial class DrawControl
         {
         }
 
-        protected override bool ReleaseHandle() => handle.DestroyIcon();
+        protected override bool ReleaseHandle() => Win32.DestroyIcon(handle);
     }
 }

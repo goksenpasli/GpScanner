@@ -475,7 +475,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     Settings.Default.AutoFolder = dialog.SelectedPath;
-                    Scanner.LocalizedPath = GetDisplayName(dialog.SelectedPath);
+                    Scanner.LocalizedPath = ShellIcon.GetDisplayName(dialog.SelectedPath);
                 }
 
                 if (!string.IsNullOrWhiteSpace(oldpath) && oldpath != Settings.Default.AutoFolder)

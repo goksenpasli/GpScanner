@@ -21,6 +21,7 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverterEmptyViewerTemplate" IconSize="jumbo" />
             <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
             <Converter:FilePathCheckConverter x:Key="FilePathCheckConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
@@ -141,7 +142,7 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateMini">
-                <Image Width="96" Height="96" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                <Image Width="150" Height="150" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
                     <Image.Tag>
                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
@@ -332,10 +333,10 @@
                     Foreground="Red" Text="N" />
             </DataTemplate>
             <DataTemplate x:Key="EmptyViewerTemplate">
-                <Image Width="32" Height="32" Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Image Width="128" Height="128" Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverterEmptyViewerTemplate}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
-                <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
+                <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     IsHitTestVisible="False" OpenButtonVisibility="Collapsed"
                     OrijinalResimDosyaAçButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
@@ -386,10 +387,12 @@
                 <Extensions:VirtualizingWrapPanel CanVerticallyScroll="False" ItemSize="100,100" SpacingMode="None" />
             </ItemsPanelTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Margin" Value="1" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <Border Padding="{TemplateBinding Control.Padding}"
+                            <Border Margin="{TemplateBinding Control.Margin}"
+                                Padding="{TemplateBinding Control.Padding}"
                                 Background="{TemplateBinding Panel.Background}"
                                 BorderBrush="{TemplateBinding Border.BorderBrush}"
                                 BorderThickness="{TemplateBinding Border.BorderThickness}"
@@ -411,23 +414,6 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            <DataTemplate x:Key="ContributionImageTemplate">
-                <Image Width="150" Height="150" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
-                    <Image.Resources>
-                        <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="20" />
-                    </Image.Resources>
-                    <Image.Tag>
-                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
-                            <Binding Mode="OneWay" />
-                            <Binding Mode="OneWay">
-                                <Binding.Source>
-                                    <System:Int32>1</System:Int32>
-                                </Binding.Source>
-                            </Binding>
-                        </MultiBinding>
-                    </Image.Tag>
-                </Image>
-            </DataTemplate>
             <DataTemplate x:Key="ContributionTextTemplate">
                 <TextBlock Text="{Binding Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextWrapping="Wrap" />
             </DataTemplate>
@@ -538,7 +524,7 @@
                                                         <Style TargetType="ListBox">
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
-                                                                    <Setter Property="ItemTemplate" Value="{StaticResource ContributionImageTemplate}" />
+                                                                    <Setter Property="ItemTemplateSelector" Value="{DynamicResource DocumentViewerMiniSelector}" />
                                                                     <Setter Property="ItemsPanel">
                                                                         <Setter.Value>
                                                                             <ItemsPanelTemplate>

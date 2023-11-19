@@ -1010,7 +1010,7 @@ namespace WebPWrapper
             }
         }
 
-        private int MyWriter([InAttribute] IntPtr data, UIntPtr data_size, ref WebPPicture picture)
+        private int MyWriter([In] IntPtr data, UIntPtr data_size, ref WebPPicture picture)
         {
             UnsafeNativeMethods.CopyMemory(picture.custom_ptr, data, (uint)data_size);
             picture.custom_ptr = new IntPtr(picture.custom_ptr.ToInt64() + (int)data_size);
@@ -1020,7 +1020,7 @@ namespace WebPWrapper
     }
 
     #region | Import libwebp functions |
-    [SuppressUnmanagedCodeSecurityAttribute]
+    [SuppressUnmanagedCodeSecurity]
     internal sealed class UnsafeNativeMethods
     {
 /// <summary>
@@ -1628,22 +1628,22 @@ namespace WebPWrapper
             WebPDecode_x86(IntPtr data, UIntPtr data_size, ref WebPDecoderConfig config);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPDecodeARGBInto")]
-        private static extern IntPtr WebPDecodeARGBInto_x64([InAttribute] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
+        private static extern IntPtr WebPDecodeARGBInto_x64([In] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPDecodeARGBInto")]
-        private static extern IntPtr WebPDecodeARGBInto_x86([InAttribute] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
+        private static extern IntPtr WebPDecodeARGBInto_x86([In] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPDecodeBGRAInto")]
-        private static extern IntPtr WebPDecodeBGRAInto_x64([InAttribute] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
+        private static extern IntPtr WebPDecodeBGRAInto_x64([In] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPDecodeBGRAInto")]
-        private static extern IntPtr WebPDecodeBGRAInto_x86([InAttribute] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
+        private static extern IntPtr WebPDecodeBGRAInto_x86([In] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPDecodeBGRInto")]
-        private static extern IntPtr WebPDecodeBGRInto_x64([InAttribute] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
+        private static extern IntPtr WebPDecodeBGRInto_x64([In] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPDecodeBGRInto")]
-        private static extern IntPtr WebPDecodeBGRInto_x86([InAttribute] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
+        private static extern IntPtr WebPDecodeBGRInto_x86([In] IntPtr data, UIntPtr data_size, IntPtr output_buffer, int output_buffer_size, int output_stride);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncode")]
         private static extern int WebPEncode_x64(ref WebPConfig config, ref WebPPicture picture);
@@ -1652,28 +1652,28 @@ namespace WebPWrapper
         private static extern int WebPEncode_x86(ref WebPConfig config, ref WebPPicture picture);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncodeBGR")]
-        private static extern int WebPEncodeBGR_x64([InAttribute] IntPtr bgr, int width, int height, int stride, float quality_factor, out IntPtr output);
+        private static extern int WebPEncodeBGR_x64([In] IntPtr bgr, int width, int height, int stride, float quality_factor, out IntPtr output);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncodeBGR")]
-        private static extern int WebPEncodeBGR_x86([InAttribute] IntPtr bgr, int width, int height, int stride, float quality_factor, out IntPtr output);
+        private static extern int WebPEncodeBGR_x86([In] IntPtr bgr, int width, int height, int stride, float quality_factor, out IntPtr output);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncodeBGRA")]
-        private static extern int WebPEncodeBGRA_x64([InAttribute] IntPtr bgra, int width, int height, int stride, float quality_factor, out IntPtr output);
+        private static extern int WebPEncodeBGRA_x64([In] IntPtr bgra, int width, int height, int stride, float quality_factor, out IntPtr output);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncodeBGRA")]
-        private static extern int WebPEncodeBGRA_x86([InAttribute] IntPtr bgra, int width, int height, int stride, float quality_factor, out IntPtr output);
+        private static extern int WebPEncodeBGRA_x86([In] IntPtr bgra, int width, int height, int stride, float quality_factor, out IntPtr output);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncodeLosslessBGR")]
-        private static extern int WebPEncodeLosslessBGR_x64([InAttribute] IntPtr bgr, int width, int height, int stride, out IntPtr output);
+        private static extern int WebPEncodeLosslessBGR_x64([In] IntPtr bgr, int width, int height, int stride, out IntPtr output);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncodeLosslessBGR")]
-        private static extern int WebPEncodeLosslessBGR_x86([InAttribute] IntPtr bgr, int width, int height, int stride, out IntPtr output);
+        private static extern int WebPEncodeLosslessBGR_x86([In] IntPtr bgr, int width, int height, int stride, out IntPtr output);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncodeLosslessBGRA")]
-        private static extern int WebPEncodeLosslessBGRA_x64([InAttribute] IntPtr bgra, int width, int height, int stride, out IntPtr output);
+        private static extern int WebPEncodeLosslessBGRA_x64([In] IntPtr bgra, int width, int height, int stride, out IntPtr output);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPEncodeLosslessBGRA")]
-        private static extern int WebPEncodeLosslessBGRA_x86([InAttribute] IntPtr bgra, int width, int height, int stride, out IntPtr output);
+        private static extern int WebPEncodeLosslessBGRA_x86([In] IntPtr bgra, int width, int height, int stride, out IntPtr output);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPFree")]
         private static extern void WebPFree_x64(IntPtr p);
@@ -1694,16 +1694,16 @@ namespace WebPWrapper
         private static extern int WebPGetDecoderVersion_x86();
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetFeaturesInternal")]
-        private static extern VP8StatusCode WebPGetFeaturesInternal_x64([InAttribute] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
+        private static extern VP8StatusCode WebPGetFeaturesInternal_x64([In] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetFeaturesInternal")]
-        private static extern VP8StatusCode WebPGetFeaturesInternal_x86([InAttribute] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
+        private static extern VP8StatusCode WebPGetFeaturesInternal_x86([In] IntPtr rawWebP, UIntPtr data_size, ref WebPBitstreamFeatures features, int WEBP_DECODER_ABI_VERSION);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetInfo")]
-        private static extern int WebPGetInfo_x64([InAttribute] IntPtr data, UIntPtr data_size, out int width, out int height);
+        private static extern int WebPGetInfo_x64([In] IntPtr data, UIntPtr data_size, out int width, out int height);
 
         [DllImport("libwebp_x86.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPGetInfo")]
-        private static extern int WebPGetInfo_x86([InAttribute] IntPtr data, UIntPtr data_size, out int width, out int height);
+        private static extern int WebPGetInfo_x86([In] IntPtr data, UIntPtr data_size, out int width, out int height);
 
         [DllImport("libwebp_x64.dll", CallingConvention = CallingConvention.Cdecl, EntryPoint = "WebPInitDecoderConfigInternal")]
         private static extern int WebPInitDecoderConfigInternal_x64(ref WebPDecoderConfig webPDecoderConfig, int WEBP_DECODER_ABI_VERSION);
@@ -2116,17 +2116,17 @@ namespace WebPWrapper
     /// <summary>
     /// Union of buffer parameters
     /// </summary>
-    [StructLayoutAttribute(LayoutKind.Explicit)]
+    [StructLayout(LayoutKind.Explicit)]
     internal struct RGBA_YUVA_Buffer
     {
-        [FieldOffsetAttribute(0)] public WebPRGBABuffer RGBA;
-        [FieldOffsetAttribute(0)] public WebPYUVABuffer YUVA;
+        [FieldOffset(0)] public WebPRGBABuffer RGBA;
+        [FieldOffset(0)] public WebPYUVABuffer YUVA;
     }
 
     /// <summary>
     /// Structure for storing auxiliary statistics (mostly for lossy encoding)
     /// </summary>
-    [StructLayoutAttribute(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WebPAuxStats
     {
         /// <summary>
@@ -2312,14 +2312,14 @@ namespace WebPWrapper
         /// <summary>
         /// Padding for later use
         /// </summary>
-        [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.U4)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.U4)]
         private readonly uint[] pad;
     }
 
     /// <summary>
     /// Features gathered from the bit stream
     /// </summary>
-    [StructLayoutAttribute(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WebPBitstreamFeatures
     {
         /// <summary>
@@ -2345,14 +2345,14 @@ namespace WebPWrapper
         /// <summary>
         /// Padding for later use
         /// </summary>
-        [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 5, ArraySubType = UnmanagedType.U4)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5, ArraySubType = UnmanagedType.U4)]
         private readonly uint[] pad;
     }
 
     /// <summary>
     /// Compression parameters
     /// </summary>
-    [StructLayoutAttribute(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WebPConfig
     {
         /// <summary>
@@ -2476,7 +2476,7 @@ namespace WebPWrapper
     /// <summary>
     /// Output buffer
     /// </summary>
-    [StructLayoutAttribute(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WebPDecBuffer
     {
         /// <summary>
@@ -2523,7 +2523,7 @@ namespace WebPWrapper
         public IntPtr private_memory;
     }
 
-    [StructLayoutAttribute(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WebPDecoderConfig
     {
         /// <summary>
@@ -2543,7 +2543,7 @@ namespace WebPWrapper
     /// <summary>
     /// Main exchange structure (input samples, output bytes, statistics)
     /// </summary>
-    [StructLayoutAttribute(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WebPPicture
     {
         /// <summary>
@@ -2594,7 +2594,7 @@ namespace WebPWrapper
         /// <summary>
         /// Padding for later use
         /// </summary>
-        [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.U4)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.U4)]
         private readonly uint[] pad1;
         /// <summary>
         /// Pointer to ARGB (32 bit) plane
@@ -2607,7 +2607,7 @@ namespace WebPWrapper
         /// <summary>
         /// Padding for later use
         /// </summary>
-        [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.U4)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3, ArraySubType = UnmanagedType.U4)]
         private readonly uint[] pad2;
         /// <summary>
         /// Byte-emission hook, to store compressed bytes as they are ready
@@ -2646,7 +2646,7 @@ namespace WebPWrapper
         /// <summary>
         /// Padding for later use
         /// </summary>
-        [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 13, ArraySubType = UnmanagedType.U4)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 13, ArraySubType = UnmanagedType.U4)]
         private readonly uint[] pad3;
         /// <summary>
         /// Row chunk of memory for YUVA planes
@@ -2659,14 +2659,14 @@ namespace WebPWrapper
         /// <summary>
         /// Padding for later use
         /// </summary>
-        [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.U4)]
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2, ArraySubType = UnmanagedType.U4)]
         private readonly uint[] pad4;
     }
 
     /// <summary>
     /// Generic structure for describing the output sample buffer
     /// </summary>
-    [StructLayoutAttribute(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WebPRGBABuffer
     {
         /// <summary>
@@ -2683,7 +2683,7 @@ namespace WebPWrapper
         public UIntPtr size;
     }
 
-    [StructLayoutAttribute(LayoutKind.Sequential)]
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WebPYUVABuffer
     {
         /// <summary>

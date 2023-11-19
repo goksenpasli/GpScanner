@@ -339,7 +339,7 @@ namespace Tesseract
         #region Config
 
         /// <summary>
-        /// Gets or sets default <see cref="PageSegMode"/> mode used by <see cref="TesseractEngine.Process(Pix, Rect,
+        /// Gets or sets default <see cref="PageSegMode"/> mode used by <see cref="Process(Pix, Rect,
         /// PageSegMode?)"/>.
         /// </summary>
         public PageSegMode DefaultPageSegMode { get; set; }

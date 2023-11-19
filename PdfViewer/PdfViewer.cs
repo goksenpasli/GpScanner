@@ -528,8 +528,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         try
         {
-            return !File.Exists(pdffilepath) || !IsValidPdfFile(pdffilepath)
-                   ? throw new ArgumentNullException(nameof(pdffilepath), "filepath can not be null")
+            return !IsValidPdfFile(pdffilepath)
+                   ? throw new ArgumentNullException(nameof(pdffilepath), "pdf is not valid")
                    : await Task.Run(
                 () =>
                 {
@@ -562,7 +562,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         try
         {
             return pdffilestream?.Length == 0
-                   ? throw new ArgumentNullException(nameof(pdffilestream), "file can not be null or length zero")
+                   ? throw new ArgumentNullException(nameof(pdffilestream), "stream can not be null or length zero")
                    : await Task.Run(
                 () =>
                 {
@@ -611,7 +611,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         try
         {
             return stream?.Length == 0
-                   ? throw new ArgumentNullException(nameof(stream), "file can not be null or length zero")
+                   ? throw new ArgumentNullException(nameof(stream), "stream can not be null or length zero")
                    : await Task.Run(
                 () =>
                 {

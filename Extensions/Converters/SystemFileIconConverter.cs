@@ -13,7 +13,7 @@ public sealed class SystemFileIconConverter : IMultiValueConverter
         {
             try
             {
-                return $@"{Environment.SystemDirectory}\{systemfilename}".IconCreate(System.Convert.ToInt32(index));
+                return ShellIcon.IconCreate($@"{Environment.SystemDirectory}\{systemfilename}", System.Convert.ToInt32(index));
             }
             catch (Exception)
             {

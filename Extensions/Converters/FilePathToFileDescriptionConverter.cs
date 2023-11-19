@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using static Extensions.ExtensionMethods;
+using static Extensions.ShellIcon;
 
 namespace Extensions;
 
@@ -11,7 +11,7 @@ public sealed class FilePathToFileDescriptionConverter : IValueConverter
     {
         try
         {
-            return (value as string).GetFileType(new SHFILEINFO());
+            return GetFileType(value as string, new SHFILEINFO());
         }
         catch (Exception)
         {

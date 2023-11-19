@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -9,7 +8,6 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Brush = System.Windows.Media.Brush;
@@ -21,23 +19,7 @@ namespace Extensions;
 
 public static class ExtensionMethods
 {
-    public const uint FILE_ATTRIBUTE_NORMAL = 0x00000080;
-    public const uint SHGFI_DISPLAYNAME = 0x000000200;
-    public const uint SHGFI_ICON = 0x000000100;
-    public const uint SHGFI_LARGEICON = 0x000000000;
-    public const uint SHGFI_OPENICON = 0x000000002;
-    public const uint SHGFI_SMALLICON = 0x000000001;
-    public const uint SHGFI_TYPENAME = 0x000000400;
-    public const uint SHGFI_USEFILEATTRIBUTES = 0x000000010;
     private static readonly Random _random = new();
-    private static readonly IntPtr hwnd = Process.GetCurrentProcess().Handle;
-
-    public enum FolderType
-    {
-        Closed = 0,
-
-        Open = 1
-    }
 
     public enum Format
     {
@@ -48,13 +30,6 @@ public static class ExtensionMethods
         Jpg = 2,
 
         Png = 3
-    }
-
-    public enum IconSize
-    {
-        Large = 0,
-
-        Small = 1
     }
 
     public static Bitmap BitmapChangeFormat(this Bitmap bitmap, PixelFormat format)
@@ -69,41 +44,41 @@ public static class ExtensionMethods
     {
         unsafe
         {
-            BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-            if (bitmapData == null)
+    BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
+    if (bitmapData == null)
+    {
+        return bitmap;
+    }
+    int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+    int heightInPixels = bitmapData.Height;
+    int widthInBytes = bitmapData.Width * bytesPerPixel;
+    byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
+    _ = Parallel.For(
+        0,
+        heightInPixels,
+        y =>
+        {
+            byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
+            for (int x = 0; x < widthInBytes; x += bytesPerPixel)
             {
-                return bitmap;
-            }
-            int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-            int heightInPixels = bitmapData.Height;
-            int widthInBytes = bitmapData.Width * bytesPerPixel;
-            byte* ptrFirstPixel = (byte*)bitmapData.Scan0;
-            _ = Parallel.For(
-                0,
-                heightInPixels,
-                y =>
+                byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
+                if (grayscale)
                 {
-                    byte* currentLine = ptrFirstPixel + (y * bitmapData.Stride);
-                    for (int x = 0; x < widthInBytes; x += bytesPerPixel)
-                    {
-                        byte gray = (byte)((currentLine[x] * 0.299) + (currentLine[x + 1] * 0.587) + (currentLine[x + 2] * 0.114));
-                        if (grayscale)
-                        {
-                            currentLine[x] = gray;
-                            currentLine[x + 1] = gray;
-                            currentLine[x + 2] = gray;
-                        }
-                        else
-                        {
-                            currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
-                            currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
-                            currentLine[x + 2] = (byte)(gray < bWthreshold ? 0 : 255);
-                        }
-                    }
-                });
-            bitmap.UnlockBits(bitmapData);
-            bitmapData = null;
-            return bitmap;
+                    currentLine[x] = gray;
+                    currentLine[x + 1] = gray;
+                    currentLine[x + 2] = gray;
+                }
+                else
+                {
+                    currentLine[x] = (byte)(gray < bWthreshold ? 0 : 255);
+                    currentLine[x + 1] = (byte)(gray < bWthreshold ? 0 : 255);
+                    currentLine[x + 2] = (byte)(gray < bWthreshold ? 0 : 255);
+                }
+            }
+        });
+    bitmap.UnlockBits(bitmapData);
+    bitmapData = null;
+    return bitmap;
         }
     }
 
@@ -145,66 +120,7 @@ public static class ExtensionMethods
         return filesNames;
     }
 
-    [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
-    public static extern IntPtr ExtractIcon(this IntPtr hInst, string lpszExeFileName, int nIconIndex);
-
     public static IEnumerable<string> FilterFiles(this string path, params string[] exts) => exts.SelectMany(ext => Directory.EnumerateFiles(path, ext, SearchOption.TopDirectoryOnly));
-
-    public static string GetDisplayName(string path) => Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out SHFILEINFO shfi, (uint)Marshal.SizeOf(typeof(SHFILEINFO)), SHGFI_DISPLAYNAME) != IntPtr.Zero
-                                                        ? shfi.szDisplayName
-                                                        : null;
-
-    public static string GetFileType(this string filename, SHFILEINFO shinfo)
-    {
-        _ = Helpers.SHGetFileInfo(filename, FILE_ATTRIBUTE_NORMAL, out shinfo, (uint)Marshal.SizeOf(shinfo), SHGFI_TYPENAME | SHGFI_USEFILEATTRIBUTES);
-        return shinfo.szTypeName;
-    }
-
-    public static BitmapSource IconCreate(this string filepath, int iconindex)
-    {
-        if (string.IsNullOrWhiteSpace(filepath))
-        {
-            return null;
-        }
-        IntPtr hIcon = hwnd.ExtractIcon(filepath, iconindex);
-        if (hIcon == IntPtr.Zero)
-        {
-            _ = hIcon.DestroyIcon();
-            return null;
-        }
-
-        _ = Icon.FromHandle(hIcon);
-        BitmapSource bitmapsource = Imaging.CreateBitmapSourceFromHIcon(hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-        bitmapsource.Freeze();
-        _ = hIcon.DestroyIcon();
-        return bitmapsource;
-    }
-
-    public static BitmapSource IconCreate(this string path, IconSize size, SHFILEINFO shfi)
-    {
-        if (string.IsNullOrWhiteSpace(path))
-        {
-            return null;
-        }
-
-        uint flags = SHGFI_ICON | SHGFI_USEFILEATTRIBUTES;
-
-        flags = IconSize.Small == size ? flags + SHGFI_SMALLICON : flags + SHGFI_LARGEICON;
-        IntPtr res = Helpers.SHGetFileInfo(path, FILE_ATTRIBUTE_NORMAL, out shfi, (uint)Marshal.SizeOf(shfi), flags);
-
-        if (res == IntPtr.Zero)
-        {
-            throw Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
-        }
-
-        _ = Icon.FromHandle(shfi.hIcon);
-        using Icon icon = (Icon)Icon.FromHandle(shfi.hIcon).Clone();
-        _ = shfi.hIcon.DestroyIcon();
-        BitmapSource bitmapsource =
-            Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-        bitmapsource.Freeze();
-        return bitmapsource;
-    }
 
     public static bool IsEmptyPage(this Bitmap bitmap, double emptythreshold = 25)
     {
@@ -217,30 +133,30 @@ public static class ExtensionMethods
             int stride = bmData.Stride;
             unsafe
             {
-                int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
-                byte* p = (byte*)(void*)bmData.Scan0;
-                int nOffset = stride - (bitmap.Width * 3);
-                int widthInBytes = bmData.Width * bytesPerPixel;
-                for (int y = 0; y < bmData.Height; ++y)
-                {
-                    for (int x = 0; x < widthInBytes; x += bytesPerPixel)
-                    {
-                        count++;
-                        byte blue = p[0];
-                        byte green = p[1];
-                        byte red = p[2];
+    int bytesPerPixel = Image.GetPixelFormatSize(bitmap.PixelFormat) / 8;
+    byte* p = (byte*)(void*)bmData.Scan0;
+    int nOffset = stride - (bitmap.Width * 3);
+    int widthInBytes = bmData.Width * bytesPerPixel;
+    for (int y = 0; y < bmData.Height; ++y)
+    {
+        for (int x = 0; x < widthInBytes; x += bytesPerPixel)
+        {
+            count++;
+            byte blue = p[0];
+            byte green = p[1];
+            byte red = p[2];
 
-                        int pixelValue = red + green + blue;
-                        total += pixelValue;
-                        double avg = total / count;
-                        totalVariance += Math.Pow(pixelValue - avg, 2);
-                        stdDev = Math.Sqrt(totalVariance / count);
+            int pixelValue = red + green + blue;
+            total += pixelValue;
+            double avg = total / count;
+            totalVariance += Math.Pow(pixelValue - avg, 2);
+            stdDev = Math.Sqrt(totalVariance / count);
 
-                        p += 3;
-                    }
+            p += 3;
+        }
 
-                    p += nOffset;
-                }
+        p += nOffset;
+    }
             }
 
             bitmap.UnlockBits(bmData);
@@ -452,17 +368,5 @@ public static class ExtensionMethods
         {
             throw new ArgumentException(ex.Message);
         }
-    }
-
-    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-    public struct SHFILEINFO
-    {
-        public IntPtr hIcon;
-        public int iIcon;
-        public uint dwAttributes;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
-        public string szDisplayName;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 80)]
-        public string szTypeName;
     }
 }
