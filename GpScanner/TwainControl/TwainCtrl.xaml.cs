@@ -747,7 +747,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     await AddFiles(openFileDialog.FileNames, DecodeHeight);
                 }
             },
-            parameter => true);
+            parameter => Policy.CheckPolicy("LoadImage"));
 
         MaximizePdfControl = new RelayCommand<object>(
             parameter =>

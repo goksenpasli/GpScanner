@@ -1,9 +1,7 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Interop;
 using TwainControl;
 
@@ -19,19 +17,6 @@ public static class WindowExtensions
     private const uint MF_GRAYED = 0x00000001;
     private const uint SC_CLOSE = 0xF060;
     private const int WM_SYSCOMMAND = 0x112;
-
-    static WindowExtensions()
-    {
-        OpenSettings = new RelayCommand<object>(
-            parameter =>
-            {
-                SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
-                _ = settingswindow.ShowDialog();
-            },
-            parameter => Policy.CheckPolicy("OpenSettings"));
-    }
-
-    public static ICommand OpenSettings { get; }
 
     public static void DisableCloseButton(this Window window, bool disable)
     {

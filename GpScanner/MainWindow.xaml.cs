@@ -141,14 +141,14 @@ public partial class MainWindow : Window
             {
                 ViewModel.CheckUpdate.Execute(null);
             }
-        }
 
-        if (Settings.Default.IsFirstRun)
-        {
-            Settings.Default.IsFirstRun = false;
-            if (WindowExtensions.OpenSettings.CanExecute(null))
+            if (Settings.Default.IsFirstRun)
             {
-                WindowExtensions.OpenSettings.Execute(null);
+                Settings.Default.IsFirstRun = false;
+                if (ViewModel.OpenSettings.CanExecute(null))
+                {
+                    ViewModel.OpenSettings.Execute(null);
+                }
             }
         }
 

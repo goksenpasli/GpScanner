@@ -142,7 +142,26 @@
         </Style>
     </Window.Resources>
     <Window.TaskbarItemInfo>
-        <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=twainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=twainCtrl, Mode=OneWay}" />
+        <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=twainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=twainCtrl, Mode=OneWay}">
+            <TaskbarItemInfo.ThumbButtonInfos>
+                <ThumbButtonInfo Command="{Binding FastScanImage, Mode=OneWay, ElementName=twainCtrl}" Description="{twainctrl:Loc FASTSCAN}">
+                    <ThumbButtonInfo.ImageSource>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="201" />
+                        </MultiBinding>
+                    </ThumbButtonInfo.ImageSource>
+                </ThumbButtonInfo>
+                <ThumbButtonInfo Command="{Binding LoadImage, Mode=OneWay, ElementName=twainCtrl}" Description="{twainctrl:Loc FILE}">
+                    <ThumbButtonInfo.ImageSource>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="139" />
+                        </MultiBinding>
+                    </ThumbButtonInfo.ImageSource>
+                </ThumbButtonInfo>
+            </TaskbarItemInfo.ThumbButtonInfos>
+        </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
     <Grid d:Effect="{x:Null}">
         <Grid.Style>
@@ -183,7 +202,7 @@
         <GroupBox Grid.Column="2" twainctrl:Policy.PolicyName="DocumentPanel">
             <GroupBox.Header>
                 <UniformGrid Columns="2">
-                    <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding Source={x:Static ViewModel:WindowExtensions.OpenSettings}}">
+                    <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding OpenSettings}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="16" Height="16">
                                 <Image.Source>

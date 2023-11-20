@@ -907,6 +907,14 @@ public class GpScannerViewModel : InpcBase
             parameter => ScannerData?.Reminder?.Any() == true);
 
         LoadContributionData = new RelayCommand<object>(parameter => ContributionData = GetContributionData(), parameter => true);
+
+        OpenSettings = new RelayCommand<object>(
+            parameter =>
+            {
+                SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
+                _ = settingswindow.ShowDialog();
+            },
+            parameter => Policy.CheckPolicy("OpenSettings"));
     }
 
     public static bool IsAdministrator
@@ -1419,6 +1427,8 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ICommand OpenOriginalFile { get; }
+
+    public RelayCommand<object> OpenSettings { get; }
 
     public string PatchFileName
     {
