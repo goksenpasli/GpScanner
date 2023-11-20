@@ -635,6 +635,7 @@
                                                                 </Extensions:ContentToggleButton>
                                                             </UniformGrid>
                                                             <ContentControl Grid.Row="2"
+                                                                Extensions:IgnoreMouseWheelBehavior.IgnoreMouseWheel="True"
                                                                 d:ContentTemplate="{StaticResource PdfViewerTemplateFull}"
                                                                 d:ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
                                                                 Content="{Binding FileName, IsAsync=True, Mode=OneWay}">

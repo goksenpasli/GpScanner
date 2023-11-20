@@ -94,6 +94,7 @@
     <Compile Include="Converters\FilePathToFileNameConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
+    <Compile Include="IgnoreMouseWheelBehavior.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
