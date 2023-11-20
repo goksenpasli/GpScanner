@@ -28,7 +28,7 @@ namespace TwainControl
         {
             if (!DesignerProperties.GetIsInDesignMode(container) && item is string dosya)
             {
-                string[] imgext = [".jpg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff"];
+                string[] imgext = [".jpg", ".jpeg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff"];
                 string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
                 string ext = Path.GetExtension(dosya).ToLower();
                 if (ext != null)

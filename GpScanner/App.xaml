@@ -336,7 +336,8 @@
                 <Image Width="128" Height="128" Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverterEmptyViewerTemplate}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
-                <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                <Extensions:ImageViewer Width="150" Height="150"
+                    DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     IsHitTestVisible="False" OpenButtonVisibility="Collapsed"
                     OrijinalResimDosyaAçButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"

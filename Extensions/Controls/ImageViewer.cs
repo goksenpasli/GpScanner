@@ -91,19 +91,17 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 if (Source is not null)
                 {
-                    switch (Orientation)
+                    if (Orientation == FitImageOrientation.Width)
                     {
-                        case FitImageOrientation.Width:
-                            Zoom = ActualHeight / Source.Height;
-                            return;
-
-                        case FitImageOrientation.Height:
-                            Zoom = ActualWidth / Source.Width;
-                            return;
-
-                        case FitImageOrientation.None:
-                            Zoom = 1;
-                            break;
+                        Zoom = ActualHeight / Source.Height;
+                    }
+                    if (Orientation == FitImageOrientation.Height)
+                    {
+                        Zoom = ActualWidth / Source.Width;
+                    }
+                    if (Zoom == 0 || Orientation == FitImageOrientation.None)
+                    {
+                        Zoom = 1;
                     }
                 }
             },
@@ -488,13 +486,6 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
                     imageViewer.Source = imageViewer.Decoder.Frames[0];
                     imageViewer.Pages = Enumerable.Range(1, imageViewer.Decoder.Frames.Count);
-                    if (imageViewer.TemplatedParent is ContentPresenter contentpresenter)
-                    {
-                        imageViewer.Zoom = imageViewer.Orientation != FitImageOrientation.Width
-                                           ? contentpresenter.ActualHeight / imageViewer.Source.Height
-                                           : contentpresenter.ActualWidth / imageViewer.Source.Width;
-                    }
-
                     return;
 
                 case ".png" or ".jpg" or ".jpeg" or ".bmp":
