@@ -25,7 +25,6 @@ public class PdfCompressorControl : Compressor
 
                         file.Completed = true;
                     }
-
                     else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLower())))
                     {
                         using (PdfDocument pdfDocument = await GeneratePdf(file.Filename))

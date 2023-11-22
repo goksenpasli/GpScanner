@@ -88,7 +88,6 @@ public class Compressor : Control, INotifyPropertyChanged
                         }
                         file.Completed = true;
                     }
-
                     else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLower())))
                     {
                         using (PdfDocument pdfDocument = await GeneratePdf(file.Filename))
@@ -99,7 +98,6 @@ public class Compressor : Control, INotifyPropertyChanged
 
                         file.Completed = true;
                     }
-
                 }
             },
             parameter => BatchPdfList?.Count > 0);

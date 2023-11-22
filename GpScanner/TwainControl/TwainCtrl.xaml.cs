@@ -1565,6 +1565,76 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 DocumentGridLength = new GridLength(0, GridUnitType.Star);
             },
             parameter => true);
+
+        PdfViewerFullScreen =
+            new RelayCommand<object>(
+            parameter =>
+            {
+                PdfViewer.PdfViewer pdfViewer = new() { PdfFilePath = parameter as string };
+
+                Window maximizedWindow = new()
+                {
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    Title = Application.Current?.MainWindow?.Title,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                };
+                maximizedWindow.Closed += (s, e) =>
+                                          {
+                                              maximizedWindow = null;
+                                              pdfViewer?.Dispose();
+                                              pdfViewer.PdfFilePath = null;
+                                          };
+                maximizedWindow.Content = pdfViewer;
+                _ = maximizedWindow.ShowDialog();
+            },
+            parameter => true);
+
+        ImageViewerFullScreen =
+            new RelayCommand<object>(
+            parameter =>
+            {
+                ImageViewer imageViewer = new() { PanoramaButtonVisibility = Visibility.Collapsed, PrintButtonVisibility = Visibility.Visible, ImageFilePath = parameter as string };
+                Window maximizedWindow = new()
+                {
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    Title = Application.Current?.MainWindow?.Title,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                };
+                maximizedWindow.Closed += (s, e) =>
+                                          {
+                                              maximizedWindow = null;
+                                              imageViewer?.Dispose();
+                                              imageViewer.ImageFilePath = null;
+                                          };
+                maximizedWindow.Content = imageViewer;
+                _ = maximizedWindow.ShowDialog();
+            },
+            parameter => true);
+
+        XmlViewerFullScreen =
+            new RelayCommand<object>(
+            parameter =>
+            {
+                XmlViewerControl xmlViewerControl = new();
+                XmlViewerControlModel.SetXmlContent(xmlViewerControl, parameter as string);
+                Window maximizedWindow = new()
+                {
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    Title = Application.Current?.MainWindow?.Title,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner
+                };
+                maximizedWindow.Closed += (s, e) =>
+                                          {
+                                              maximizedWindow = null;
+                                              XmlViewerControlModel.SetXmlContent(xmlViewerControl, null);
+                                          };
+                maximizedWindow.Content = xmlViewerControl;
+                _ = maximizedWindow.ShowDialog();
+            },
+            parameter => true);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -1836,6 +1906,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public RelayCommand<object> ImageViewerFullScreen { get; }
+
     public byte[] ImgData
     {
         get => ımgData;
@@ -1983,6 +2055,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public RelayCommand<object> PdfViewerFullScreen { get; }
 
     public ICommand PdfWaterMark { get; }
 
@@ -2332,6 +2406,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public FileVersionInfo Version => FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess()?.MainModule?.FileName);
 
     public ICommand WebAdreseGit { get; }
+
+    public RelayCommand<object> XmlViewerFullScreen { get; }
 
     public static async Task ArrangeFileAsync(string loadfilename, string savefilename, int start, int end)
     {
