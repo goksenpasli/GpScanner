@@ -31,6 +31,29 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+    <DrawingBrush x:Key="Qr" Stretch="Uniform">
+        <DrawingBrush.Drawing>
+            <DrawingGroup>
+                <DrawingGroup.Children>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 0.5,0.500001L 16.5,0.500001L 16.5,16.5L 0.5,16.5L 0.5,0.500001 Z ">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF000000" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 8.5,0.947958L 8.5,16.6043">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF000000" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FFFFFFFF" Geometry="F1 M 0.979165,8.5L 16.9805,8.5">
+                        <GeometryDrawing.Pen>
+                            <Pen Brush="#FF000000" LineJoin="Round" />
+                        </GeometryDrawing.Pen>
+                    </GeometryDrawing>
+                </DrawingGroup.Children>
+            </DrawingGroup>
+        </DrawingBrush.Drawing>
+    </DrawingBrush>
     <LinearGradientBrush x:Key="Colorfull" PresentationOptions:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Offset="0.0" Color="Red" />
         <GradientStop Offset="0.17" Color="Orange" />

@@ -489,11 +489,26 @@
                 <Extensions:ContentToggleButton.OverContent>
                     <Extensions:ResizablePanel Width="320" Height="240"
                         MinWidth="320" MinHeight="240">
-                        <Extensions:ButtonedTextBox FontSizeButtonVisibility="Visible" IsReadOnly="True"
-                            OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
-                            RemainingLengthVisibility="Collapsed" ResetButtonVisibility="Collapsed"
-                            Text="{Binding OcrText, Mode=OneWay}"
-                            TextWrapping="Wrap" />
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Extensions:ButtonedTextBox FontSizeButtonVisibility="Visible" IsReadOnly="True"
+                                OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                RemainingLengthVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                Text="{Binding OcrText, Mode=OneWay}"
+                                TextWrapping="Wrap" />
+                            <Extensions:ButtonedTextBox Grid.Row="1"
+                                FontSizeButtonVisibility="Collapsed" IsReadOnly="True"
+                                PasteButtonVisibility="Collapsed" RemainingLengthVisibility="Collapsed"
+                                ResetButtonVisibility="Collapsed"
+                                Text="{Binding QrText, Mode=OneWay}">
+                                <Extensions:ButtonedTextBox.Description>
+                                    <Canvas Width="16" Height="16" Background="{DynamicResource Qr}" />
+                                </Extensions:ButtonedTextBox.Description>
+                            </Extensions:ButtonedTextBox>
+                        </Grid>
                     </Extensions:ResizablePanel>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>

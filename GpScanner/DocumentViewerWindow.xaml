@@ -17,16 +17,17 @@
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="160" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="255" />
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <ListBox x:Name="Lb"
-            Grid.Column="1"
+            Grid.Row="1" Grid.Column="0"
             d:ItemsSource="{d:SampleData ItemCount=15}"
             ItemsSource="{Binding DirectoryAllPdfFiles}"
             SelectedIndex="{Binding Index}"
@@ -34,16 +35,14 @@
             <ListBox.Resources>
                 <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
             </ListBox.Resources>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <ContentControl d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" Content="{Binding IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                        <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                    <StackPanel>
+                        <ContentControl HorizontalAlignment="Left"
+                            d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}"
+                            Content="{Binding IsAsync=True, Mode=OneWay}"
+                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                        <Extensions:ButtonedTextBox HorizontalAlignment="Left"
                             d:Description="FileName" d:Text="FileName"
                             Background="{x:Null}"
                             BorderBrush="{x:Null}"
@@ -67,12 +66,12 @@
             Content="ç" FontFamily="Wingdings"
             FontSize="16" />
         <ContentControl x:Name="cnt"
-            Grid.Row="1" Grid.ColumnSpan="3"
+            Grid.RowSpan="3" Grid.Column="1"
             d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
             d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
             Content="{Binding FilePath, IsAsync=True, Mode=OneWay}"
             ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
-        <RepeatButton Grid.Column="2"
+        <RepeatButton Grid.Row="2"
             Command="{Binding Forward}"
             Content="è" FontFamily="Wingdings"
             FontSize="16" />

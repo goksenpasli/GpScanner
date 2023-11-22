@@ -88,6 +88,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private XLineJoin penLineJoin = XLineJoin.Miter;
     private double penWidth = 0.5d;
     private int polygonCount = 3;
+    private string qrText;
     private string selectedInk;
     private bool singlePage = true;
     private string text = string.Empty;
@@ -656,6 +657,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public string QrText
+    {
+        get => qrText;
+
+        set
+        {
+            if (qrText != value)
+            {
+                qrText = value;
+                OnPropertyChanged(nameof(QrText));
+            }
+        }
+    }
+
     public RelayCommand<object> ReadAnnotation { get; }
 
     public RelayCommand<object> RemoveAnnotation { get; }
@@ -1059,6 +1074,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;
                     OcrText = await GetOcrData(twainCtrl.Scanner?.SelectedTtsLanguage, imgdata);
+                    QrCode.QrCode qrCode = new();
+                    QrText = qrCode.GetImageBarcodeResult(imgdata);
                 }
             }
         }
