@@ -7,6 +7,12 @@
                 <Hyperlink Command="{Binding PrintSinglePage, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" CommandParameter="{Binding Mode=OneWay}" TextDecorations="None">
                     <Run FontFamily="Wingdings 2" FontSize="14" Text="7" />
                 </Hyperlink>
+                <Hyperlink Command="{Binding SaveImage, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" CommandParameter="{Binding Mode=OneWay}" TextDecorations="None">
+                    <Run FontFamily="Wingdings" FontSize="14" Text="=" />
+                </Hyperlink>
+                <Hyperlink Command="{Binding DeleteSinglePage, RelativeSource={RelativeSource AncestorType={x:Type local:PdfViewer}}}" CommandParameter="{Binding Mode=OneWay}" TextDecorations="None">
+                    <Run FontFamily="Wingdings 2" FontSize="14" Text="3" />
+                </Hyperlink>
             </TextBlock>
             <local:ShadowedImage HorizontalAlignment="Center" ShowShadow="True">
                 <local:ShadowedImage.Tag>

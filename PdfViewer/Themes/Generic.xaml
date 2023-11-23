@@ -144,7 +144,6 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
                                     <ListBox Grid.Column="0"
                                         VerticalContentAlignment="Center"
@@ -234,17 +233,7 @@
                                         SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}}"
                                         Template="{StaticResource ComboBoxStyle}"
                                         Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <Button Grid.Column="4" Command="{Binding SaveImage, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="6" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button>
-                                    <Extensions:ContentToggleButton Grid.Column="5"
+                                    <Extensions:ContentToggleButton Grid.Column="4"
                                         ArrowVisibility="Collapsed"
                                         Command="{Binding ReadPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding PdfTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
@@ -267,7 +256,7 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="6" ArrowVisibility="Collapsed" Visibility="{Binding SearchTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Extensions:ContentToggleButton Grid.Column="5" ArrowVisibility="Collapsed" Visibility="{Binding SearchTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -315,7 +304,7 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="7"
+                                    <Extensions:ContentToggleButton Grid.Column="6"
                                         ArrowVisibility="Collapsed"
                                         Command="{Binding ReadPdfBookmarks, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding BookmarkContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
@@ -350,7 +339,7 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="8"
+                                    <Extensions:ContentToggleButton Grid.Column="7"
                                         ArrowVisibility="Collapsed"
                                         IsEnabled="{Binding ZoomEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                         PlacementMode="Top"
@@ -373,7 +362,7 @@
                                             </Border>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="9"
+                                    <Extensions:ContentToggleButton Grid.Column="8"
                                         ArrowVisibility="Collapsed" PlacementMode="Top"
                                         Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">

@@ -410,9 +410,9 @@
                                     </Image>
                                 </Canvas>
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <Extensions:ResizablePanel Width="640" Height="640"
+                                    <Extensions:ResizablePanel Width="720" Height="640"
                                         MinWidth="320" MinHeight="240">
-                                        <ViewModel:PdfCompressorControl BatchPdfList="{Binding CompressedFiles}" />
+                                        <local:PdfCompressorControl />
                                     </Extensions:ResizablePanel>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>

@@ -117,8 +117,22 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             },
             parameter => PdfFilePath is not null);
 
-        SaveImage = new RelayCommand<object>(
+        DeleteSinglePage = new RelayCommand<object>(
             parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = "Dosya" };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                    int selectedpage = (int)parameter - 1;
+                    pdfDocument.DeletePage(selectedpage);
+                    pdfDocument.Save(saveFileDialog.FileName);
+                }
+            },
+            parameter => PdfFilePath is not null && Pages?.Count() > 1);
+
+        SaveImage = new RelayCommand<object>(
+            async parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası(*.jpg)|*.jpg", FileName = "Resim" };
 
@@ -126,7 +140,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     try
                     {
-                        File.WriteAllBytes(saveFileDialog.FileName, Source.ToTiffJpegByteArray(Format.Jpg));
+                        byte[] image = (await ConvertToImgAsync(PdfFilePath, (int)parameter, PrintDpi)).ToTiffJpegByteArray(Format.Jpg);
+                        File.WriteAllBytes(saveFileDialog.FileName, image);
                     }
                     catch (Exception ex)
                     {
@@ -134,7 +149,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     }
                 }
             },
-            parameter => Source is not null);
+            parameter => PdfFilePath is not null);
 
         Resize = new RelayCommand<object>(
             delegate
@@ -226,6 +241,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     }
 
     public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
+
+    public RelayCommand<object> DeleteSinglePage { get; }
 
     public RelayCommand<object> DosyaAç { get; }
 
