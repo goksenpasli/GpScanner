@@ -20,7 +20,7 @@
 
         /// <summary>
         /// The text line from the top to the bottom of the page when the page is rotated so it's orientation is <see
-        /// cref="Orientation.PageUp"/>.
+        /// cref="Orientation.PageUp"/> .
         /// </summary>
         TopToBottom
     }

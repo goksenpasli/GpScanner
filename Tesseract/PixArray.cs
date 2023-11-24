@@ -14,7 +14,6 @@ namespace Tesseract
     public sealed class PixArray : DisposableBase, IEnumerable<Pix>
     {
         #region Constructor
-
         private PixArray(IntPtr handle)
         {
             _handle = new HandleRef(this, handle);
@@ -22,7 +21,6 @@ namespace Tesseract
 
             _count = LeptonicaApi.Native.pixaGetCount(_handle);
         }
-
         #endregion Constructor
 
         #region Properties
@@ -30,13 +28,14 @@ namespace Tesseract
         /// <summary>
         /// Gets the number of <see cref="Pix"/> contained in the array.
         /// </summary>
-        public int Count {
-            get {
+        public int Count
+        {
+            get
+            {
                 VerifyNotDisposed();
                 return _count;
             }
         }
-
         #endregion Properties
 
         #region Enumerator implementation
@@ -47,7 +46,6 @@ namespace Tesseract
         private class PixArrayEnumerator : DisposableBase, IEnumerator<Pix>
         {
             #region Constructor
-
             public PixArrayEnumerator(PixArray array)
             {
                 this.array = array;
@@ -56,11 +54,9 @@ namespace Tesseract
                 index = 0;
                 current = null;
             }
-
             #endregion Constructor
 
             #region Disposal
-
             protected override void Dispose(bool disposing)
             {
                 if (disposing)
@@ -75,11 +71,9 @@ namespace Tesseract
                     }
                 }
             }
-
             #endregion Disposal
 
             #region Fields
-
             private readonly PixArray array;
 
             private readonly Pix[] items;
@@ -89,14 +83,15 @@ namespace Tesseract
             private Pix current;
 
             private int index;
-
             #endregion Fields
 
             #region Enumerator Implementation
 
             /// <inheritdoc/>
-            public Pix Current {
-                get {
+            public Pix Current
+            {
+                get
+                {
                     VerifyArrayUnchanged();
                     VerifyNotDisposed();
 
@@ -106,8 +101,8 @@ namespace Tesseract
 
             /// <inheritdoc/>
             object IEnumerator.Current => index == 0 || index == items.Length + 1
-                ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")
-                : (object)Current;
+                                          ? throw new InvalidOperationException("The enumerator is positioned either before the first item or after the last item .")
+                                          : (object)Current;
 
             /// <inheritdoc/>
             public bool MoveNext()
@@ -150,14 +145,11 @@ namespace Tesseract
                     throw new InvalidOperationException("PixArray was modified; enumeration operation may not execute.");
                 }
             }
-
             #endregion Enumerator Implementation
         }
-
         #endregion Enumerator implementation
 
         #region Static Constructors
-
         public static PixArray Create(int n)
         {
             IntPtr pixaHandle = LeptonicaApi.Native.pixaCreate(n);
@@ -174,11 +166,9 @@ namespace Tesseract
             IntPtr pixaHandle = LeptonicaApi.Native.pixaReadMultipageTiff(filename);
             return pixaHandle == IntPtr.Zero ? throw new IOException($"Failed to load image '{filename}'.") : new PixArray(pixaHandle);
         }
-
         #endregion Static Constructors
 
         #region Fields
-
         private readonly int version;
 
         private int _count;
@@ -187,7 +177,6 @@ namespace Tesseract
         /// Gets the handle to the underlying PixA structure.
         /// </summary>
         private HandleRef _handle;
-
         #endregion Fields
 
         #region Methods
@@ -205,11 +194,7 @@ namespace Tesseract
         public bool Add(Pix pix, PixArrayAccessType copyflag = PixArrayAccessType.Clone)
         {
             Guard.RequireNotNull("pix", pix);
-            Guard.Require(
-                nameof(copyflag),
-                copyflag == PixArrayAccessType.Clone || copyflag == PixArrayAccessType.Copy,
-                "Copy flag must be either copy or clone but was {0}.",
-                copyflag);
+            Guard.Require(nameof(copyflag), copyflag == PixArrayAccessType.Clone || copyflag == PixArrayAccessType.Copy, "Copy flag must be either copy or clone but was {0}.", copyflag);
 
             int result = LeptonicaApi.Native.pixaAddPix(_handle, pix.Handle, copyflag);
             if (result == 0)
@@ -243,10 +228,7 @@ namespace Tesseract
         /// enumerator has been disposed of you must clone it using <see cref="Pix.Clone()"/>.
         /// </remarks>
         /// <returns>A <see cref="IEnumerator{Pix}"/> that iterates the the array of <see cref="Pix"/>.</returns>
-        public IEnumerator<Pix> GetEnumerator()
-        {
-            return new PixArrayEnumerator(this);
-        }
+        public IEnumerator<Pix> GetEnumerator() => new PixArrayEnumerator(this);
 
         /// <summary>
         /// Gets the <see cref="Pix"/> located at <paramref name="index"/> using the specified <paramref
@@ -259,11 +241,7 @@ namespace Tesseract
         /// <returns>The retrieved <see cref="Pix"/>.</returns>
         public Pix GetPix(int index, PixArrayAccessType accessType = PixArrayAccessType.Clone)
         {
-            Guard.Require(
-                nameof(accessType),
-                accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy,
-                "Access type must be either copy or clone but was {0}.",
-                accessType);
+            Guard.Require(nameof(accessType), accessType == PixArrayAccessType.Clone || accessType == PixArrayAccessType.Copy, "Access type must be either copy or clone but was {0}.", accessType);
             Guard.Require(nameof(index), index >= 0 && index < Count, "The index {0} must be between 0 and {1}.", index, Count);
 
             VerifyNotDisposed();
@@ -291,10 +269,7 @@ namespace Tesseract
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return new PixArrayEnumerator(this);
-        }
+        IEnumerator IEnumerable.GetEnumerator() => new PixArrayEnumerator(this);
 
         protected override void Dispose(bool disposing)
         {
@@ -302,7 +277,6 @@ namespace Tesseract
             LeptonicaApi.Native.pixaDestroy(ref handle);
             _handle = new HandleRef(this, handle);
         }
-
         #endregion Methods
     }
 }

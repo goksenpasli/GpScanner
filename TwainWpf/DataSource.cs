@@ -6,6 +6,9 @@ namespace TwainWpf
 {
     public class DataSource : IDisposable
     {
+        private readonly Identity _applicationId;
+        private readonly IWindowsMessageHook _messageHook;
+
         public DataSource(Identity applicationId, Identity sourceId, IWindowsMessageHook messageHook)
         {
             _applicationId = applicationId;
@@ -13,8 +16,12 @@ namespace TwainWpf
             _messageHook = messageHook;
         }
 
-        public bool PaperDetectable {
-            get {
+        ~DataSource() { Dispose(false); }
+
+        public bool PaperDetectable
+        {
+            get
+            {
                 try
                 {
                     return Capability.GetBoolCapability(Capabilities.FeederLoaded, _applicationId, SourceId);
@@ -28,8 +35,10 @@ namespace TwainWpf
 
         public Identity SourceId { get; }
 
-        public bool SupportsDuplex {
-            get {
+        public bool SupportsDuplex
+        {
+            get
+            {
                 try
                 {
                     Capability cap = new Capability(Capabilities.Duplex, TwainType.Int16, _applicationId, SourceId);
@@ -42,11 +51,13 @@ namespace TwainWpf
             }
         }
 
-        public bool SupportsFilmScanner {
-            get {
+        public bool SupportsFilmScanner
+        {
+            get
+            {
                 try
                 {
-                    Capability cap = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
+                    _ = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);
 
                     return true;
                 }
@@ -141,13 +152,7 @@ namespace TwainWpf
                 {
                     UserInterface userInterface = new UserInterface();
 
-                    TwainResult result = Twain32Native.DsUserInterface(
-                        _applicationId,
-                        SourceId,
-                        DataGroup.Control,
-                        DataArgumentType.UserInterface,
-                        Message.DisableDS,
-                        userInterface);
+                    TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.DisableDS, userInterface);
 
                     if (result != TwainResult.Failure)
                     {
@@ -327,7 +332,7 @@ namespace TwainWpf
         {
             try
             {
-                if (scanSettings.UseFilmScanner.HasValue && SupportsFilmScanner)
+                if (scanSettings.UseFilmScanner == true && SupportsFilmScanner)
                 {
                     _ = scanSettings.UseFilmScanner.Value
                         ? Capability.SetBasicCapability(Capabilities.Lightpath, (ushort)Lightpath.Transmissive, TwainType.UInt16, _applicationId, SourceId)
@@ -477,11 +482,6 @@ namespace TwainWpf
             }
         }
 
-        ~DataSource()
-        {
-            Dispose(false);
-        }
-
         private bool NegotiateArea(ScanSettings scanSettings)
         {
             AreaSettings area = scanSettings.Area;
@@ -503,18 +503,11 @@ namespace TwainWpf
             {
             }
 
-            ImageLayout imageLayout = new ImageLayout
-            {
-                Frame = new Frame { Left = new Fix32(area.Left), Top = new Fix32(area.Top), Right = new Fix32(area.Right), Bottom = new Fix32(area.Bottom) }
-            };
+            ImageLayout imageLayout = new ImageLayout { Frame = new Frame { Left = new Fix32(area.Left), Top = new Fix32(area.Top), Right = new Fix32(area.Right), Bottom = new Fix32(area.Bottom) } };
 
             TwainResult result = Twain32Native.DsImageLayout(_applicationId, SourceId, DataGroup.Image, DataArgumentType.ImageLayout, Message.Set, imageLayout);
 
             return result != TwainResult.Success ? throw new TwainException("DsImageLayout.GetDefault error", result) : true;
         }
-
-        private readonly Identity _applicationId;
-
-        private readonly IWindowsMessageHook _messageHook;
     }
 }

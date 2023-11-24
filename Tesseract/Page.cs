@@ -12,6 +12,19 @@ namespace Tesseract
 {
     public sealed class Page : DisposableBase
     {
+        private static readonly TraceSource trace = new TraceSource("Tesseract");
+        private Rect regionOfInterest;
+        private bool runRecognitionPhase;
+
+        internal Page(TesseractEngine engine, Pix image, string imageName, Rect regionOfInterest, PageSegMode pageSegmentMode)
+        {
+            Engine = engine;
+            Image = image;
+            ImageName = imageName;
+            RegionOfInterest = regionOfInterest;
+            PageSegmentMode = pageSegmentMode;
+        }
+
         public TesseractEngine Engine { get; }
 
         /// <summary>
@@ -36,10 +49,12 @@ namespace Tesseract
         /// <summary>
         /// The current region of interest being parsed.
         /// </summary>
-        public Rect RegionOfInterest {
+        public Rect RegionOfInterest
+        {
             get => regionOfInterest;
 
-            set {
+            set
+            {
                 if (value.X1 < 0 || value.Y1 < 0 || value.X2 > Image.Width || value.Y2 > Image.Height)
                 {
                     throw new ArgumentException("The region of interest to be processed must be within the image bounds.", nameof(value));
@@ -90,10 +105,8 @@ namespace Tesseract
             }
 
             orientation = orientationDegrees > 315 || orientationDegrees <= 45
-                ? Orientation.PageUp
-                : orientationDegrees > 45 && orientationDegrees <= 135
-                    ? Orientation.PageRight
-                    : orientationDegrees > 135 && orientationDegrees <= 225 ? Orientation.PageDown : Orientation.PageLeft;
+                          ? Orientation.PageUp
+                          : orientationDegrees > 45 && orientationDegrees <= 135 ? Orientation.PageRight : orientationDegrees > 135 && orientationDegrees <= 225 ? Orientation.PageDown : Orientation.PageLeft;
 
             confidence = orientationConfidence;
         }
@@ -107,10 +120,7 @@ namespace Tesseract
         /// </remarks>
         /// <param name="orientation">The detected clockwise page rotation in degrees (0, 90, 180, or 270).</param>
         /// <param name="confidence">The confidence level of the orientation (15 is reasonably confident).</param>
-        public void DetectBestOrientation(out int orientation, out float confidence)
-        {
-            DetectBestOrientationAndScript(out orientation, out confidence, out _, out _);
-        }
+        public void DetectBestOrientation(out int orientation, out float confidence) => DetectBestOrientationAndScript(out orientation, out confidence, out _, out _);
 
         /// <summary>
         ///     Detects the page orientation, with corresponding confidence when using <see cref="PageSegMode.OsdOnly" />.
@@ -299,15 +309,6 @@ namespace Tesseract
             return TessApi.BaseAPIGetWordStrBoxText(Engine.Handle, pageNum);
         }
 
-        internal Page(TesseractEngine engine, Pix image, string imageName, Rect regionOfInterest, PageSegMode pageSegmentMode)
-        {
-            Engine = engine;
-            Image = image;
-            ImageName = imageName;
-            RegionOfInterest = regionOfInterest;
-            PageSegmentMode = pageSegmentMode;
-        }
-
         internal void Recognize()
         {
             Guard.Verify(PageSegmentMode != PageSegMode.OsdOnly, "Cannot OCR image when using OSD only page segmentation, please use DetectBestOrientation instead.");
@@ -346,11 +347,5 @@ namespace Tesseract
                 TessApi.Native.BaseAPIClear(Engine.Handle);
             }
         }
-
-        private static readonly TraceSource trace = new TraceSource("Tesseract");
-
-        private Rect regionOfInterest;
-
-        private bool runRecognitionPhase;
     }
 }

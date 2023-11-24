@@ -144,6 +144,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string AUTOFOLDERHELP {
+            get {
+                return ResourceManager.GetString("AUTOFOLDERHELP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string AUTOPATH {
             get {
                 return ResourceManager.GetString("AUTOPATH", resourceCulture);
@@ -189,6 +198,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string CHEIGHT {
+            get {
+                return ResourceManager.GetString("CHEIGHT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string CLEARLIST {
             get {
                 return ResourceManager.GetString("CLEARLIST", resourceCulture);
@@ -201,6 +219,15 @@ namespace TwainControl.Properties {
         public static string CLOSECOMP {
             get {
                 return ResourceManager.GetString("CLOSECOMP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CLOSEFILE {
+            get {
+                return ResourceManager.GetString("CLOSEFILE", resourceCulture);
             }
         }
         
@@ -228,6 +255,15 @@ namespace TwainControl.Properties {
         public static string CRUNTIME {
             get {
                 return ResourceManager.GetString("CRUNTIME", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string CWIDTH {
+            get {
+                return ResourceManager.GetString("CWIDTH", resourceCulture);
             }
         }
         
@@ -264,6 +300,15 @@ namespace TwainControl.Properties {
         public static string DESKEW {
             get {
                 return ResourceManager.GetString("DESKEW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string DESPECKLE {
+            get {
+                return ResourceManager.GetString("DESPECKLE", resourceCulture);
             }
         }
         
@@ -315,6 +360,33 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ERROR1 {
+            get {
+                return ResourceManager.GetString("ERROR1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ESCTOCANCEL {
+            get {
+                return ResourceManager.GetString("ESCTOCANCEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FASTPDFVIEW {
+            get {
+                return ResourceManager.GetString("FASTPDFVIEW", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FASTSCAN {
             get {
                 return ResourceManager.GetString("FASTSCAN", resourceCulture);
@@ -342,6 +414,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string FILEINUSE {
+            get {
+                return ResourceManager.GetString("FILEINUSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FILENAME {
             get {
                 return ResourceManager.GetString("FILENAME", resourceCulture);
@@ -351,9 +432,36 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
-        public static string FIX {
+        public static string FILMSCANNER {
             get {
-                return ResourceManager.GetString("FIX", resourceCulture);
+                return ResourceManager.GetString("FILMSCANNER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FIRSTLAST {
+            get {
+                return ResourceManager.GetString("FIRSTLAST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FOLD {
+            get {
+                return ResourceManager.GetString("FOLD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FOLDERFORMAT {
+            get {
+                return ResourceManager.GetString("FOLDERFORMAT", resourceCulture);
             }
         }
         
@@ -372,6 +480,15 @@ namespace TwainControl.Properties {
         public static string GRAPH {
             get {
                 return ResourceManager.GetString("GRAPH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string GRAPHFOLDER {
+            get {
+                return ResourceManager.GetString("GRAPHFOLDER", resourceCulture);
             }
         }
         
@@ -408,6 +525,110 @@ namespace TwainControl.Properties {
         public static string HEIGHTCOUNT {
             get {
                 return ResourceManager.GetString("HEIGHTCOUNT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string HELP {
+            get {
+                return ResourceManager.GetString("HELP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string HORIZONTAL {
+            get {
+                return ResourceManager.GetString("HORIZONTAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string HUE {
+            get {
+                return ResourceManager.GetString("HUE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string IGNOREWIDTHHEIGHTEQUAL {
+            get {
+                return ResourceManager.GetString("IGNOREWIDTHHEIGHTEQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string INSTALLED {
+            get {
+                return ResourceManager.GetString("INSTALLED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string INVERTCOLOR {
+            get {
+                return ResourceManager.GetString("INVERTCOLOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string KNOWNPROBLEMS {
+            get {
+                return ResourceManager.GetString("KNOWNPROBLEMS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LIBRARY {
+            get {
+                return ResourceManager.GetString("LIBRARY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apache License
+        ///                           Version 2.0, January 2004
+        ///                        http://www.apache.org/licenses/
+        ///
+        ///   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+        ///
+        ///   1. Definitions.
+        ///
+        ///      &quot;License&quot; shall mean the terms and conditions for use, reproduction,
+        ///      and distribution as defined by Sections 1 through 9 of this document.
+        ///
+        ///      &quot;Licensor&quot; shall mean the copyright owner or entity authorized by
+        ///      the copyright owner that is granting the License.
+        ///
+        ///      &quot; [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string LICENSE {
+            get {
+                return ResourceManager.GetString("LICENSE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string LIGHTNESS {
+            get {
+                return ResourceManager.GetString("LIGHTNESS", resourceCulture);
             }
         }
         
@@ -459,6 +680,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string MIRROR {
+            get {
+                return ResourceManager.GetString("MIRROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MONTH {
             get {
                 return ResourceManager.GetString("MONTH", resourceCulture);
@@ -489,6 +719,15 @@ namespace TwainControl.Properties {
         public static string OCR {
             get {
                 return ResourceManager.GetString("OCR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string OCRALL {
+            get {
+                return ResourceManager.GetString("OCRALL", resourceCulture);
             }
         }
         
@@ -540,6 +779,24 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string PDFFOLDER {
+            get {
+                return ResourceManager.GetString("PDFFOLDER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PDFINFO {
+            get {
+                return ResourceManager.GetString("PDFINFO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PDFPROTECT {
             get {
                 return ResourceManager.GetString("PDFPROTECT", resourceCulture);
@@ -552,6 +809,15 @@ namespace TwainControl.Properties {
         public static string PDFWARN {
             get {
                 return ResourceManager.GetString("PDFWARN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PLAYSOUND {
+            get {
+                return ResourceManager.GetString("PLAYSOUND", resourceCulture);
             }
         }
         
@@ -576,6 +842,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string RANDOM {
+            get {
+                return ResourceManager.GetString("RANDOM", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string READACTIVEPAGE {
             get {
                 return ResourceManager.GetString("READACTIVEPAGE", resourceCulture);
@@ -588,6 +863,15 @@ namespace TwainControl.Properties {
         public static string REGSTI {
             get {
                 return ResourceManager.GetString("REGSTI", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string REMOVECD {
+            get {
+                return ResourceManager.GetString("REMOVECD", resourceCulture);
             }
         }
         
@@ -630,9 +914,27 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string RIPPLE {
+            get {
+                return ResourceManager.GetString("RIPPLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string ROTSAVE {
             get {
                 return ResourceManager.GetString("ROTSAVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SATURATION {
+            get {
+                return ResourceManager.GetString("SATURATION", resourceCulture);
             }
         }
         
@@ -669,6 +971,15 @@ namespace TwainControl.Properties {
         public static string SCAN {
             get {
                 return ResourceManager.GetString("SCAN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SCANDELAYHELP {
+            get {
+                return ResourceManager.GetString("SCANDELAYHELP", resourceCulture);
             }
         }
         
@@ -774,6 +1085,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SPLITSORT {
+            get {
+                return ResourceManager.GetString("SPLITSORT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SRC {
             get {
                 return ResourceManager.GetString("SRC", resourceCulture);
@@ -828,6 +1148,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string THUMBMULTIPLEOCR {
+            get {
+                return ResourceManager.GetString("THUMBMULTIPLEOCR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string TIME {
             get {
                 return ResourceManager.GetString("TIME", resourceCulture);
@@ -858,6 +1187,15 @@ namespace TwainControl.Properties {
         public static string TWOSIDE {
             get {
                 return ResourceManager.GetString("TWOSIDE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string UNINDEXED {
+            get {
+                return ResourceManager.GetString("UNINDEXED", resourceCulture);
             }
         }
         

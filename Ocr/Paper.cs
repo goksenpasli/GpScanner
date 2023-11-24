@@ -2,10 +2,31 @@
 
 public class Paper : InpcBase
 {
-    public double Height {
+    private string category;
+    private double height;
+    private string paperType;
+    private double width;
+
+    public string Category
+    {
+        get => category;
+
+        set
+        {
+            if (category != value)
+            {
+                category = value;
+                OnPropertyChanged(nameof(Category));
+            }
+        }
+    }
+
+    public double Height
+    {
         get => height;
 
-        set {
+        set
+        {
             if (height != value)
             {
                 height = value;
@@ -14,10 +35,12 @@ public class Paper : InpcBase
         }
     }
 
-    public string PaperType {
+    public string PaperType
+    {
         get => paperType;
 
-        set {
+        set
+        {
             if (paperType != value)
             {
                 paperType = value;
@@ -26,10 +49,12 @@ public class Paper : InpcBase
         }
     }
 
-    public double Width {
+    public double Width
+    {
         get => width;
 
-        set {
+        set
+        {
             if (width != value)
             {
                 width = value;
@@ -37,10 +62,4 @@ public class Paper : InpcBase
             }
         }
     }
-
-    private double height;
-
-    private string paperType;
-
-    private double width;
 }

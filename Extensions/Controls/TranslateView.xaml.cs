@@ -7,6 +7,5 @@ namespace Extensions.Controls;
 /// </summary>
 public partial class TranslateView : UserControl
 {
-    public TranslateView()
-    { InitializeComponent(); }
+    public TranslateView() { InitializeComponent(); }
 }

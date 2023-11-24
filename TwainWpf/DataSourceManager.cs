@@ -12,6 +12,19 @@ namespace TwainWpf
     /// <seealso cref="IDisposable"/>
     public class DataSourceManager : IDisposable
     {
+        public static readonly Identity DefaultApplicationId = new Identity()
+        {
+            Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
+            Version = new TwainVersion() { MajorNum = 1, MinorNum = 1, Language = Language.USA, Country = Country.USA, Info = Assembly.GetExecutingAssembly().FullName },
+            ProtocolMajor = TwainConstants.ProtocolMajor,
+            ProtocolMinor = TwainConstants.ProtocolMinor,
+            SupportedGroups = (int)(DataGroup.Image | DataGroup.Control),
+            Manufacturer = "TwainDotNet",
+            ProductFamily = "TwainDotNet",
+            ProductName = "TwainDotNet",
+        };
+        private Event _eventMessage;
+
         public DataSourceManager(Identity applicationId, IWindowsMessageHook messageHook)
         {
             ApplicationId = applicationId.Clone();
@@ -33,6 +46,8 @@ namespace TwainWpf
 
             DataSource = result == TwainResult.Success ? DataSource.GetDefault(ApplicationId, MessageHook) : throw new TwainException($"Error initialising DSM: {result}", result);
         }
+
+        ~DataSourceManager() { Dispose(false); }
 
         /// <summary>
         /// Notification that the scanning has completed.
@@ -98,18 +113,6 @@ namespace TwainWpf
             }
         }
 
-        public static readonly Identity DefaultApplicationId = new Identity()
-        {
-            Id = BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0),
-            Version = new TwainVersion() { MajorNum = 1, MinorNum = 1, Language = Language.USA, Country = Country.USA, Info = Assembly.GetExecutingAssembly().FullName },
-            ProtocolMajor = TwainConstants.ProtocolMajor,
-            ProtocolMinor = TwainConstants.ProtocolMinor,
-            SupportedGroups = (int)(DataGroup.Image | DataGroup.Control),
-            Manufacturer = "TwainDotNet",
-            ProductFamily = "TwainDotNet",
-            ProductName = "TwainDotNet",
-        };
-
         internal void CloseDsAndCompleteScanning(Exception exception)
         {
             EndingScan();
@@ -142,10 +145,7 @@ namespace TwainWpf
             }
         }
 
-        protected void EndingScan()
-        {
-            MessageHook.UseFilter = false;
-        }
+        protected void EndingScan() => MessageHook.UseFilter = false;
 
         protected IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
@@ -157,16 +157,7 @@ namespace TwainWpf
 
             int pos = User32Native.GetMessagePos();
 
-            WindowsMessage message = new WindowsMessage
-            {
-                hwnd = hwnd,
-                message = msg,
-                wParam = wParam,
-                lParam = lParam,
-                time = User32Native.GetMessageTime(),
-                x = (short)pos,
-                y = (short)(pos >> 16)
-            };
+            WindowsMessage message = new WindowsMessage { hwnd = hwnd, message = msg, wParam = wParam, lParam = lParam, time = User32Native.GetMessageTime(), x = (short)pos, y = (short)(pos >> 16) };
 
             Marshal.StructureToPtr(message, _eventMessage.EventPtr, false);
             _eventMessage.Message = 0;
@@ -268,12 +259,5 @@ namespace TwainWpf
                 _ = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.Reset, pendingTransfer);
             }
         }
-
-        ~DataSourceManager()
-        {
-            Dispose(false);
-        }
-
-        private Event _eventMessage;
     }
 }

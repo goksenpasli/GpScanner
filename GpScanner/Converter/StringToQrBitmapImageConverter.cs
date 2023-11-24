@@ -7,13 +7,11 @@ namespace GpScanner.Converter;
 
 public sealed class StringToQrBitmapImageConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value is string data && !string.IsNullOrWhiteSpace(data) ? QrCode.QrCode.GenerateQr(data) : null;
-    }
+    private readonly QrCode.QrCode qrcode = new();
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-    {
-        return value is WriteableBitmap bitmapImage ? QrCode.QrCode.GetImageBarcodeResult(BitmapFrame.Create(bitmapImage)) : null;
-    }
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is string data && !string.IsNullOrWhiteSpace(data) ? qrcode.GenerateQr(data) : (object)null;
+
+    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value is WriteableBitmap bitmapImage
+                                                                                                       ? qrcode.GetImageBarcodeResult(BitmapFrame.Create(bitmapImage))
+                                                                                                       : (object)null;
 }

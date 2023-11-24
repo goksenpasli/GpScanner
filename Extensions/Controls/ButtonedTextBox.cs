@@ -1,24 +1,42 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace Extensions;
 
+[DefaultProperty("Description")]
+[ContentProperty("Description")]
 public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
-    static ButtonedTextBox()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox)));
-    }
+    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
+    private Visibility copyButtonVisibility = Visibility.Visible;
+    private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
+    private Visibility openButtonVisibility = Visibility.Visible;
+    private Visibility pasteButtonVisibility = Visibility.Visible;
+    private Visibility remainingLengthVisibility = Visibility.Collapsed;
+    private int remainingTextLength;
+    private Visibility resetButtonVisibility = Visibility.Visible;
+    private Visibility textBoxVisibility = Visibility.Visible;
+    private Visibility titleCaseMenuVisibility = Visibility.Collapsed;
+
+    static ButtonedTextBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox))); }
 
     public ButtonedTextBox()
     {
-        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, ResetCanExecute));
         _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(TitleCase, TitleCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(LowerCase, LowerCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(UpperLowerCase, UpperLowerCaseCaseCommand, CanCaseExecute));
         _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute));
     }
 
@@ -26,10 +44,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public new ICommand Copy { get; } = new RoutedCommand();
 
-    public Visibility CopyButtonVisibility {
+    public Visibility CopyButtonVisibility
+    {
         get => copyButtonVisibility;
 
-        set {
+        set
+        {
             if (copyButtonVisibility != value)
             {
                 copyButtonVisibility = value;
@@ -38,14 +58,31 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public string Description { get => (string)GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+    public object Description { get => GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
+
+    public Visibility FontSizeButtonVisibility
+    {
+        get => fontSizeButtonVisibility;
+        set
+        {
+            if (fontSizeButtonVisibility != value)
+            {
+                fontSizeButtonVisibility = value;
+                OnPropertyChanged(nameof(FontSizeButtonVisibility));
+            }
+        }
+    }
+
+    public ICommand LowerCase { get; } = new RoutedCommand();
 
     public ICommand Open { get; } = new RoutedCommand();
 
-    public Visibility OpenButtonVisibility {
+    public Visibility OpenButtonVisibility
+    {
         get => openButtonVisibility;
 
-        set {
+        set
+        {
             if (openButtonVisibility != value)
             {
                 openButtonVisibility = value;
@@ -56,10 +93,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public new ICommand Paste { get; } = new RoutedCommand();
 
-    public Visibility PasteButtonVisibility {
+    public Visibility PasteButtonVisibility
+    {
         get => pasteButtonVisibility;
 
-        set {
+        set
+        {
             if (pasteButtonVisibility != value)
             {
                 pasteButtonVisibility = value;
@@ -68,12 +107,41 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
+    public Visibility RemainingLengthVisibility
+    {
+        get => remainingLengthVisibility;
+        set
+        {
+            if (remainingLengthVisibility != value)
+            {
+                remainingLengthVisibility = value;
+                OnPropertyChanged(nameof(RemainingLengthVisibility));
+            }
+        }
+    }
+
+    public int RemainingTextLength
+    {
+        get => remainingTextLength;
+
+        set
+        {
+            if (remainingTextLength != value)
+            {
+                remainingTextLength = value;
+                OnPropertyChanged(nameof(RemainingTextLength));
+            }
+        }
+    }
+
     public ICommand Reset { get; } = new RoutedCommand();
 
-    public Visibility ResetButtonVisibility {
+    public Visibility ResetButtonVisibility
+    {
         get => resetButtonVisibility;
 
-        set {
+        set
+        {
             if (resetButtonVisibility != value)
             {
                 resetButtonVisibility = value;
@@ -82,15 +150,55 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register(
-                                                        "Description",
-        typeof(string),
-        typeof(ButtonedTextBox),
-        new PropertyMetadata(string.Empty));
-
-    protected virtual void OnPropertyChanged(string propertyName)
+    public Visibility TextBoxVisibility
     {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        get => textBoxVisibility;
+        set
+        {
+            if (textBoxVisibility != value)
+            {
+                textBoxVisibility = value;
+                OnPropertyChanged(nameof(TextBoxVisibility));
+            }
+        }
+    }
+
+    public ICommand TitleCase { get; } = new RoutedCommand();
+
+    public Visibility TitleCaseMenuVisibility
+    {
+        get => titleCaseMenuVisibility;
+        set
+        {
+            if (titleCaseMenuVisibility != value)
+            {
+                titleCaseMenuVisibility = value;
+                OnPropertyChanged(nameof(TitleCaseMenuVisibility));
+            }
+        }
+    }
+
+    public ICommand UpperCase { get; } = new RoutedCommand();
+
+    public ICommand UpperLowerCase { get; } = new RoutedCommand();
+
+    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    protected override void OnTextChanged(TextChangedEventArgs e)
+    {
+        if (RemainingLengthVisibility == Visibility.Visible && MaxLength > 0)
+        {
+            RemainingTextLength = MaxLength - Text.Length;
+        }
+        base.OnTextChanged(e);
+    }
+
+    private void CanCaseExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        if (!string.IsNullOrWhiteSpace(Text) && SelectedText.Length > 0 && !IsReadOnly)
+        {
+            e.CanExecute = true;
+        }
     }
 
     private void CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -101,10 +209,9 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    private void CopyCommand(object sender, ExecutedRoutedEventArgs e)
-    {
-        Clipboard.SetText(Text);
-    }
+    private void CopyCommand(object sender, ExecutedRoutedEventArgs e) => Clipboard.SetText(Text);
+
+    private void LowerCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, SelectedText.ToLower());
 
     private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
     {
@@ -114,7 +221,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message);
+            throw new ArgumentException(ex.Message);
         }
     }
 
@@ -126,21 +233,24 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    private void PasteCommand(object sender, ExecutedRoutedEventArgs e)
+    private void PasteCommand(object sender, ExecutedRoutedEventArgs e) => Text = Clipboard.GetText();
+
+    private void ResetCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
-        Text = Clipboard.GetText();
+        if (!string.IsNullOrWhiteSpace(Text) && !IsReadOnly)
+        {
+            e.CanExecute = true;
+        }
     }
 
-    private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
-    {
-        Text = string.Empty;
-    }
+    private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
 
-    private Visibility copyButtonVisibility = Visibility.Visible;
+    private void TitleCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text =
+    Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, CultureInfo.CurrentUICulture.TextInfo.ToTitleCase(SelectedText.ToLower()));
 
-    private Visibility openButtonVisibility = Visibility.Visible;
+    private string ToggleTextCase(string text) => new(text.Select(z => char.IsLower(z) ? char.ToUpper(z) : char.IsUpper(z) ? char.ToLower(z) : z).ToArray());
 
-    private Visibility pasteButtonVisibility = Visibility.Visible;
+    private void UpperCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, SelectedText.ToUpper());
 
-    private Visibility resetButtonVisibility = Visibility.Visible;
+    private void UpperLowerCaseCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, ToggleTextCase(SelectedText));
 }

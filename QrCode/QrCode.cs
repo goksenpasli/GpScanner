@@ -1,9 +1,8 @@
-﻿using System;
+﻿using Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Imaging;
-using Extensions;
 using ZXing;
 using ZXing.Common;
 using ZXing.QrCode.Internal;
@@ -13,19 +12,7 @@ namespace QrCode;
 
 public class QrCode : InpcBase
 {
-    public ResultPoint[] BarcodePosition {
-        get => barcodePosition;
-
-        set {
-            if (barcodePosition != value)
-            {
-                barcodePosition = value;
-                OnPropertyChanged(nameof(BarcodePosition));
-            }
-        }
-    }
-
-    public static WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
+    public WriteableBitmap GenerateQr(string text, int width = 120, int height = 120)
     {
         if (!string.IsNullOrWhiteSpace(text))
         {
@@ -39,7 +26,7 @@ public class QrCode : InpcBase
         return null;
     }
 
-    public static string GetImageBarcodeResult(BitmapFrame bitmapFrame)
+    public string GetImageBarcodeResult(BitmapFrame bitmapFrame)
     {
         if (bitmapFrame is not null)
         {
@@ -51,7 +38,7 @@ public class QrCode : InpcBase
         return null;
     }
 
-    public static string GetImageBarcodeResult(byte[] imgbyte)
+    public string GetImageBarcodeResult(byte[] imgbyte)
     {
         if (imgbyte is not null)
         {
@@ -66,24 +53,22 @@ public class QrCode : InpcBase
             Result result = reader.Decode(bitmapImage);
             imgbyte = null;
             bitmapImage = null;
-            GC.Collect();
+
             return result?.Text;
         }
 
         return null;
     }
 
-    public static IEnumerable<string> GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
+    public List<string> GetMultipleImageBarcodeResult(BitmapFrame bitmapFrame)
     {
         if (bitmapFrame is not null)
         {
             BarcodeReader reader = new();
             reader.Options.TryHarder = true;
-            return reader.DecodeMultiple(bitmapFrame)?.Select(z => z.Text);
+            return reader.DecodeMultiple(bitmapFrame)?.Select(z => z.Text).ToList();
         }
 
         return null;
     }
-
-    private ResultPoint[] barcodePosition;
 }

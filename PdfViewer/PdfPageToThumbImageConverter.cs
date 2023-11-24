@@ -1,19 +1,23 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Extensions;
 
 namespace PdfViewer;
 
 public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
-    public int Dpi {
+    private int dpi = 16;
+
+    public int Dpi
+    {
         get => dpi;
 
-        set {
+        set
+        {
             if (dpi != value)
             {
                 dpi = value;
@@ -31,28 +35,22 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
                 return Task.Run(
                     async () =>
                     {
-                        BitmapSource bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi).ConfigureAwait(false);
+                        BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi);
+                        if (bitmapImage == null)
+                        {
+                            return null;
+                        }
                         bitmapImage.Freeze();
-                        GC.Collect();
                         return bitmapImage;
-                    })
-                    .ConfigureAwait(false)
-                    .GetAwaiter()
-                    .GetResult();
+                    });
             }
             catch (Exception)
             {
                 return null;
             }
         }
-
         return null;
     }
 
-    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-
-    private int dpi = 9;
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

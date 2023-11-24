@@ -5,47 +5,15 @@ using System.Windows.Controls.Primitives;
 
 namespace Extensions;
 
-public enum ResizeDirections
-{
-    TopLeft = 0,
-
-    Left = 1,
-
-    BottomLeft = 2,
-
-    Bottom = 3,
-
-    BottomRight = 4,
-
-    Right = 5,
-
-    TopRight = 6,
-
-    Top = 7
-}
-
-public class ResizablePanel : ContentControl
-{
-    static ResizablePanel()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(ResizablePanel), new FrameworkPropertyMetadata(typeof(ResizablePanel)));
-    }
-}
-
 public class Resizer : Thumb
 {
-    static Resizer()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(Resizer), new FrameworkPropertyMetadata(typeof(Resizer)));
-    }
-
-    public Resizer()
-    { DragDelta += Resizer_DragDelta; }
-
-    public ResizeDirections ThumbDirection { get => (ResizeDirections)GetValue(ThumbDirectionProperty); set => SetValue(ThumbDirectionProperty, value); }
-
     public static DependencyProperty ThumbDirectionProperty =
                     DependencyProperty.Register("ThumbDirection", typeof(ResizeDirections), typeof(Resizer));
+
+    static Resizer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Resizer), new FrameworkPropertyMetadata(typeof(Resizer))); }
+    public Resizer() { DragDelta += Resizer_DragDelta; }
+
+    public ResizeDirections ThumbDirection { get => (ResizeDirections)GetValue(ThumbDirectionProperty); set => SetValue(ThumbDirectionProperty, value); }
 
     private static double ResizeBottom(DragDeltaEventArgs e, Control designerItem)
     {

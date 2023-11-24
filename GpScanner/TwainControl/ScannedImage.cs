@@ -1,20 +1,30 @@
-﻿using System.ComponentModel;
+﻿using Extensions;
+using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Extensions;
 using TwainControl.Properties;
 
 namespace TwainControl;
 
 public class ScannedImage : InpcBase
 {
-    public ScannedImage()
-    { PropertyChanged += ScannedImage_PropertyChangedAsync; }
+    private bool animate;
+    private string filePath;
+    private double flipAngle;
+    private int ındex;
+    private BitmapFrame resim;
+    private BitmapSource resimThumb;
+    private double rotationAngle;
+    private bool seçili;
 
-    public bool Animate {
+    public ScannedImage() { PropertyChanged += ScannedImage_PropertyChangedAsync; }
+
+    public bool Animate
+    {
         get => animate;
 
-        set {
+        set
+        {
             if (animate != value)
             {
                 animate = value;
@@ -23,10 +33,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public string FilePath {
+    public string FilePath
+    {
         get => filePath;
 
-        set {
+        set
+        {
             if (filePath != value)
             {
                 filePath = value;
@@ -35,10 +47,25 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public int Index {
+    public double FlipAngle
+    {
+        get => flipAngle;
+        set
+        {
+            if (flipAngle != value)
+            {
+                flipAngle = value;
+                OnPropertyChanged(nameof(FlipAngle));
+            }
+        }
+    }
+
+    public int Index
+    {
         get => ındex;
 
-        set {
+        set
+        {
             if (ındex == value)
             {
                 return;
@@ -49,10 +76,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public BitmapFrame Resim {
+    public BitmapFrame Resim
+    {
         get => resim;
 
-        set {
+        set
+        {
             if (resim != value)
             {
                 resim = value;
@@ -62,10 +91,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public BitmapSource ResimThumb {
-        get => Resim.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+    public BitmapSource ResimThumb
+    {
+        get => Resim?.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
 
-        set {
+        set
+        {
             if (resimThumb != value)
             {
                 resimThumb = value;
@@ -74,10 +105,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public double RotationAngle {
+    public double RotationAngle
+    {
         get => rotationAngle;
 
-        set {
+        set
+        {
             if (rotationAngle != value)
             {
                 rotationAngle = value;
@@ -86,10 +119,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public bool Seçili {
+    public bool Seçili
+    {
         get => seçili;
 
-        set {
+        set
+        {
             if (seçili != value)
             {
                 seçili = value;
@@ -102,7 +137,7 @@ public class ScannedImage : InpcBase
     {
         if (e.PropertyName is "RotationAngle" && RotationAngle != 0)
         {
-            if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 Resim = await Resim.FlipImageAsync(RotationAngle);
                 RotationAngle = 0;
@@ -112,19 +147,10 @@ public class ScannedImage : InpcBase
             Resim = await Resim.RotateImageAsync(RotationAngle);
             RotationAngle = 0;
         }
+        if (e.PropertyName is "FlipAngle" && FlipAngle != 0)
+        {
+            Resim = await Resim.FlipImageAsync(FlipAngle);
+            FlipAngle = 0;
+        }
     }
-
-    private bool animate;
-
-    private string filePath;
-
-    private int ındex;
-
-    private BitmapFrame resim;
-
-    private BitmapSource resimThumb;
-
-    private double rotationAngle;
-
-    private bool seçili;
 }

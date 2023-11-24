@@ -7,6 +7,12 @@ namespace Tesseract.Internal.InteropDotNet
 {
     public sealed class LibraryLoader
     {
+        private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
+        private readonly ILibraryLoaderLogic logic;
+        private readonly object syncLock = new object();
+
+        private LibraryLoader(ILibraryLoaderLogic logic) { this.logic = logic; }
+
         public string CustomSearchPath { get; set; }
 
         public bool FreeLibrary(string fileName)
@@ -80,17 +86,12 @@ namespace Tesseract.Internal.InteropDotNet
                         dllHandle = CheckWorkingDirecotry(fileName, platformName);
                     }
 
-                    loadedAssemblies[fileName] = dllHandle != IntPtr.Zero
-                        ? dllHandle
-                        : throw new DllNotFoundException($"Failed to find library \"{fileName}\" for platform {platformName}.");
+                    loadedAssemblies[fileName] = dllHandle != IntPtr.Zero ? dllHandle : throw new DllNotFoundException($"Failed to find library \"{fileName}\" for platform {platformName}.");
                 }
 
                 return loadedAssemblies[fileName];
             }
         }
-
-        private LibraryLoader(ILibraryLoaderLogic logic)
-        { this.logic = logic; }
 
         private IntPtr CheckCurrentAppDomain(string fileName, string platformName)
         {
@@ -157,10 +158,7 @@ namespace Tesseract.Internal.InteropDotNet
             return InternalLoadLibrary(baseDirectory, platformName, fileName);
         }
 
-        private string FixUpLibraryName(string fileName)
-        {
-            return logic.FixUpLibraryName(fileName);
-        }
+        private string FixUpLibraryName(string fileName) => logic.FixUpLibraryName(fileName);
 
         private IntPtr InternalLoadLibrary(string baseDirectory, string platformName, string fileName)
         {
@@ -168,16 +166,11 @@ namespace Tesseract.Internal.InteropDotNet
             return File.Exists(fullPath) ? logic.LoadLibrary(fullPath) : IntPtr.Zero;
         }
 
-        private readonly Dictionary<string, IntPtr> loadedAssemblies = new Dictionary<string, IntPtr>();
-
-        private readonly ILibraryLoaderLogic logic;
-
-        private readonly object syncLock = new object();
-
         #region Singleton
-
-        public static LibraryLoader Instance {
-            get {
+        public static LibraryLoader Instance
+        {
+            get
+            {
                 if (instance == null)
                 {
                     switch (SystemManager.GetOperatingSystem())
@@ -207,7 +200,6 @@ namespace Tesseract.Internal.InteropDotNet
         }
 
         private static LibraryLoader instance;
-
-        #endregion Singleton
+    #endregion Singleton
     }
 }

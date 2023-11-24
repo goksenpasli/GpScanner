@@ -1,15 +1,13 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:local="clr-namespace:PdfCompressor" xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg">
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions" xmlns:local="clr-namespace:PdfCompressor"
+    xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg">
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Style TargetType="{x:Type local:Compressor}">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:Compressor}">
-                    <Border Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
+                    <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -17,34 +15,31 @@
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding LoadedPdfPath, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <Button Grid.Column="1" Command="{Binding OpenFile, RelativeSource={RelativeSource TemplatedParent}}">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="3" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </Button>
-                            <UniformGrid Grid.Row="1" Grid.Column="0"
-                                Rows="2">
-                                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="4800"
-                                    Minimum="12" SmallChange="1"
+                            <UniformGrid Grid.Row="0" Grid.Column="0" Rows="2">
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="{Binding Dpi, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Run Text="DPI" />
+                                </TextBlock>
+                                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
+                                    Maximum="4800" Minimum="12"
+                                    SmallChange="1"
                                     Style="{DynamicResource Slider}"
                                     Ticks="12,24,36,48,72,96,120,150,200,300,450,600,1200,2400,4800"
                                     Value="{Binding Dpi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Slider AutoToolTipPlacement="TopLeft" LargeChange="1" Maximum="100"
-                                    Minimum="1" SmallChange="1"
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="QUALITY" />
+                                    <Run Text="{Binding Quality, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </TextBlock>
+                                <Slider AutoToolTipPlacement="TopLeft" LargeChange="1"
+                                    Maximum="100" Minimum="1"
+                                    SmallChange="1"
                                     Style="{DynamicResource Slider}"
                                     Value="{Binding Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                             </UniformGrid>
-                            <Button Grid.Row="1" Grid.Column="1"
-                                Command="{Binding CompressFile, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Button Grid.Row="0" Grid.Column="1" Command="{Binding CompressFile, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Image Width="24" Height="24">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -54,14 +49,77 @@
                                     </Image.Source>
                                 </Image>
                             </Button>
-                            <UniformGrid Grid.Row="2" Grid.ColumnSpan="2"
-                                Columns="3">
+                            <ListBox x:Name="ListBox"
+                                Grid.Row="1" Grid.Column="0"
+                                AllowDrop="True"
+                                IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource TemplatedParent}}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Hyperlink BaselineAlignment="Center"
+                                                    Command="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType=local:Compressor}}"
+                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                    TextDecorations="None">
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="131" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Hyperlink>
+                                            </TextBlock>
+                                            <Extensions:ButtonedTextBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                CopyButtonVisibility="Collapsed" IsReadOnly="True"
+                                                PasteButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                                Text="{Binding Filename}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Completed}" Value="true">
+                                                <Setter Property="Foreground" Value="Green" />
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                            <StackPanel Grid.Row="1" Grid.Column="1"
+                                IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                Orientation="Horizontal">
+                                <Button Command="{Binding OpenBatchPdfFolder, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="19" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <Button Command="{Binding BatchCompressFile, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Zipfldr.dll" />
+                                                <Binding Source="0" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                            </StackPanel>
+                            <UniformGrid Grid.Row="2" Grid.ColumnSpan="2" Columns="3">
                                 <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
                                     Content="MOZJPEG"
                                     IsChecked="{Binding UseMozJpeg, RelativeSource={RelativeSource TemplatedParent}}"
                                     IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
-                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                    IsChecked="{Binding BlackAndWhite, RelativeSource={RelativeSource TemplatedParent}}">
+                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center" IsChecked="{Binding BlackAndWhite, RelativeSource={RelativeSource TemplatedParent}}">
                                     <CheckBox.Content>
                                         <TextBlock>
                                             <Run Text="B" /><Run Foreground="White" Text="W" />

@@ -5,14 +5,13 @@
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:Pdfviewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:TwainControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="600" d:DesignWidth="420"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
-    UseLayoutRounding="True"
+    Loaded="UserControl_Loaded" UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -20,9 +19,18 @@
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Converter:XKnownColorToBrushConverter x:Key="XKnownColorToBrushConverter" />
+            <Converter:Base64StringToStrokeCollectionConverter x:Key="Base64StringToStrokeCollectionConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
+            <Style TargetType="ComboBox">
+                <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
+            </Style>
+            <Image x:Key="PdfImage"
+                Width="16" Height="16"
+                x:Shared="false"
+                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -31,20 +39,67 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <WrapPanel Orientation="Horizontal">
-            <Menu Background="{x:Null}">
+            <Menu Background="{x:Null}" IsMainMenu="False">
                 <MenuItem>
-                    <MenuItem.ItemsSource>
-                        <CompositeCollection>
-                            <MenuItem Command="{Binding ClearPdfHistory, Mode=OneWay}" Header="{local:Loc CLEARLIST}">
-                                <MenuItem.Icon>
-                                    <Image Width="16" Height="16"
-                                        Source="/TwainControl;component/Icons/delete.png" />
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <Separator />
-                            <CollectionContainer Collection="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                        </CompositeCollection>
-                    </MenuItem.ItemsSource>
+                    <MenuItem Name="Clear" Command="{Binding ClearPdfHistory, Mode=OneWay}" Header="{local:Loc CLEARLIST}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding ClosePdfFile, Mode=OneWay}" CommandParameter="{Binding Source={x:Reference PdfViewer}}" Header="{local:Loc CLOSEFILE}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="27" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <Separator />
+                    <MenuItem Header="{local:Loc DOCUMENT}" IsEnabled="{Binding ElementName=Clear, Path=IsEnabled}" ItemsSource="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="1" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                        <MenuItem.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="2" Orientation="Horizontal">
+                                    <Pdfviewer:PdfShadowedImage Width="128" Height="128" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                                        <Image.Tag>
+                                            <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                                                <Binding Mode="OneWay" />
+                                                <Binding Mode="OneWay">
+                                                    <Binding.Source>
+                                                        <System:Int32>1</System:Int32>
+                                                    </Binding.Source>
+                                                </Binding>
+                                            </MultiBinding>
+                                        </Image.Tag>
+                                    </Pdfviewer:PdfShadowedImage>
+                                    <TextBlock Width="100"
+                                        VerticalAlignment="Center"
+                                        Text="{Binding Mode=OneWay}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </MenuItem.ItemTemplate>
+                        <MenuItem.ItemContainerStyle>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Command" Value="{Binding OpenPdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
+                                <Setter Property="Icon" Value="{StaticResource PdfImage}" />
+                            </Style>
+                        </MenuItem.ItemContainerStyle>
+                    </MenuItem>
                     <MenuItem.Header>
                         <Image Width="20" Height="20">
                             <Image.Source>
@@ -55,12 +110,6 @@
                             </Image.Source>
                         </Image>
                     </MenuItem.Header>
-                    <MenuItem.ItemContainerStyle>
-                        <Style TargetType="MenuItem">
-                            <Setter Property="Command" Value="{Binding OpenPdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
-                        </Style>
-                    </MenuItem.ItemContainerStyle>
                 </MenuItem>
             </Menu>
             <StackPanel Orientation="Horizontal">
@@ -74,9 +123,7 @@
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1" SmallChange="1"
                 Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
-            <Button local:Policy.PolicyName="ExtractPdfFile"
-                Command="{Binding ExtractPdfFile}"
-                CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
+            <Button local:Policy.PolicyName="ExtractPdfFile" Command="{Binding ExtractPdfFile}" CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -86,15 +133,10 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Button local:Policy.PolicyName="RemoveSelectedPage"
-                Command="{Binding RemoveSelectedPage}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
-                <Image Width="16" Height="16"
-                    Source="/TwainControl;component/Icons/delete.png" />
+            <Button local:Policy.PolicyName="RemoveSelectedPage" Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
             </Button>
-            <Button local:Policy.PolicyName="ArrangePdfFile"
-                Command="{Binding ArrangePdfFile}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="ArrangePdfFile" Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -107,7 +149,10 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+            <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
+                Command="{Binding LoadPdfExtractFile}"
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
+                StaysOpen="True" TopMost="False">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -117,12 +162,17 @@
                     </Image.Source>
                 </Image>
                 <Extensions:ContentToggleButton.OverContent>
-                    <GroupBox>
-                        <StackPanel>
+                    <Extensions:ResizablePanel Width="460" Height="300"
+                        MinWidth="460" MinHeight="300">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
                             <ListBox ItemsSource="{Binding PdfPages}"
-                                ScrollViewer.IsDeferredScrollingEnabled="True" SelectionMode="Extended"
-                                VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                                SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
+                                VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.ScrollUnit="Pixel"
+                                VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Selected}">
@@ -134,13 +184,14 @@
                                                     </TextBlock>
                                                     <Pdfviewer:ShadowedImage Width="96" Height="96"
                                                         HorizontalAlignment="Center"
-                                                        ShowShadow="True">
-                                                        <Pdfviewer:ShadowedImage.Source>
+                                                        ShowShadow="True"
+                                                        Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                                                        <Pdfviewer:ShadowedImage.Tag>
                                                             <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                                                                 <Binding ElementName="PdfViewer" Path="PdfFilePath" />
                                                                 <Binding Mode="OneWay" Path="PageNumber" />
                                                             </MultiBinding>
-                                                        </Pdfviewer:ShadowedImage.Source>
+                                                        </Pdfviewer:ShadowedImage.Tag>
                                                     </Pdfviewer:ShadowedImage>
                                                 </StackPanel>
                                             </CheckBox.Content>
@@ -149,26 +200,37 @@
                                 </ListBox.ItemTemplate>
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <Extensions:VirtualizingWrapPanel Width="460" Height="300"
-                                            CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
+                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
-                            <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16"
-                                        VerticalAlignment="Bottom"
-                                        Source="/TwainControl;component/Icons/save.png" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-                    </GroupBox>
+                            <UniformGrid Grid.Row="1" Columns="3">
+                                <Button Command="{Binding PdfImportViewerTümünüİşaretle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Height="24" Source="/TwainControl;component/Icons/selectall.png" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding PdfImportViewerTersiniİşaretle}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Height="24" Source="/TwainControl;component/Icons/inverse.png" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="24" Height="24"
+                                            VerticalAlignment="Bottom"
+                                            Source="/TwainControl;component/Icons/save.png" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
+                                    </StackPanel>
+                                </Button>
+                            </UniformGrid>
+                        </Grid>
+                    </Extensions:ResizablePanel>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Button local:Policy.PolicyName="ReversePdfFile"
-                Command="{Binding ReversePdfFile}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="ReversePdfFile" Command="{Binding ReversePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -178,9 +240,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Button local:Policy.PolicyName="AddPdfAttachmentFile"
-                Command="{Binding AddPdfAttachmentFile}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="AddPdfAttachmentFile" Command="{Binding AddPdfAttachmentFile}" CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -190,7 +250,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Extensions:SplitButton Command="{Binding CopyPdfBitmapFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+            <Button BorderBrush="Cyan" Command="{Binding CopyPdfBitmapFile}" CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -199,19 +259,7 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-                <Extensions:SplitButton.InternalContent>
-                    <Button Command="{Binding CopyThumbPdfBitmapFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}, Mode=OneWay}">
-                        <Image Width="16" Height="16">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="139" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </Button>
-                </Extensions:SplitButton.InternalContent>
-            </Extensions:SplitButton>
+            </Button>
             <Button local:Policy.PolicyName="PasteFileToPdfFile" BorderBrush="Cyan"
                 Command="{Binding PasteFileToPdfFile}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
@@ -229,8 +277,7 @@
             <Button local:Policy.PolicyName="RotateSelectedPage" BorderBrush="Cyan"
                 Command="{Binding RotateSelectedPage}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
-                <Image Width="16" Height="16"
-                    Source="/TwainControl;component/Icons/rotate.png" />
+                <Image Width="16" Height="16" Source="/TwainControl;component/Icons/rotate.png" />
             </Button>
             <Button local:Policy.PolicyName="AddAllFileToControlPanel" BorderBrush="Cyan"
                 Command="{Binding AddAllFileToControlPanel}"
@@ -260,7 +307,7 @@
                     </Image>
                 </Button.Content>
             </Button>
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Extensions:ContentToggleButton.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -276,9 +323,7 @@
                         <StackPanel>
                             <TextBox VerticalContentAlignment="Center" Text="{Binding PdfWaterMarkText, UpdateSourceTrigger=PropertyChanged}" />
                             <UniformGrid Columns="2">
-                                <ComboBox Height="22.4"
-                                    VerticalContentAlignment="Center"
-                                    SelectedItem="{Binding PdfWatermarkFont}">
+                                <ComboBox Height="22.4" VerticalContentAlignment="Center" SelectedItem="{Binding PdfWatermarkFont}">
                                     <ComboBox.Items>
                                         <System:String>Arial</System:String>
                                         <System:String>Calibri</System:String>
@@ -307,13 +352,13 @@
                             <UniformGrid Columns="2">
                                 <StackPanel>
                                     <TextBlock Text="{local:Loc TEXTSIZE}" />
-                                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="512" Minimum="1"
-                                        SmallChange="1"
+                                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="512"
+                                        Minimum="1" SmallChange="1"
                                         Value="{Binding PdfWatermarkFontSize, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Text="{local:Loc TEXTANGLE}" />
                                     <Slider Width="50"
-                                        AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
-                                        SmallChange="1"
+                                        AutoToolTipPlacement="TopLeft" Maximum="360"
+                                        Minimum="0" SmallChange="1"
                                         Style="{DynamicResource Slider}"
                                         Value="{Binding PdfWatermarkFontAngle}" />
                                 </StackPanel>
@@ -331,9 +376,7 @@
                                     </TextBlock.RenderTransform>
                                 </TextBlock>
                             </UniformGrid>
-                            <Button BorderBrush="Cyan"
-                                Command="{Binding PdfWaterMark}"
-                                CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                            <Button BorderBrush="Cyan" Command="{Binding PdfWaterMark}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
@@ -353,10 +396,9 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Canvas Width="16" Height="16">
-                    <TextBlock Canvas.Top="0"
-                        FontSize="10" Text="1" />
+                    <TextBlock Canvas.Top="0" FontSize="10" Text="1" />
                     <TextBlock Canvas.Left="4" Canvas.Top="2"
                         FontSize="10" Text="2" />
                     <TextBlock Canvas.Left="8" Canvas.Top="4"
@@ -365,9 +407,7 @@
                 <Extensions:ContentToggleButton.OverContent>
                     <GroupBox>
                         <StackPanel>
-                            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
-                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfLayout}}"
-                                SelectedItem="{Binding Scanner.Layout}">
+                            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfLayout}}" SelectedItem="{Binding Scanner.Layout}">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock FontFamily="WingDings 3" Style="{StaticResource TextBlockPdfLayout}" />
@@ -379,22 +419,17 @@
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
-                            <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding Scanner.PdfAlignTextColor}">
+                            <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding Scanner.PdfPageNumberAlignTextColor}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Rectangle Width="16" Height="16"
-                                                Fill="{Binding ElementName=Tb, Path=Text}" />
-                                            <TextBlock x:Name="Tb"
-                                                VerticalAlignment="Center"
-                                                Text="{Binding Mode=OneWay}" />
+                                            <Rectangle Width="16" Height="16" Fill="{Binding ElementName=Tb, Path=Text}" />
+                                            <TextBlock x:Name="Tb" VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
                                         </StackPanel>
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Button BorderBrush="Cyan"
-                                Command="{Binding AddPageNumber}"
-                                CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                            <Button BorderBrush="Cyan" Command="{Binding AddPageNumber}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -415,14 +450,11 @@
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
             <Extensions:NumericUpDownControl IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
-                IsReadOnly="True" Maximum="10" Minimum="0"
-                SmallChange="1"
+                IsReadOnly="True" Maximum="10"
+                Minimum="0" SmallChange="1"
                 Value="{Binding PdfMedianValue}" />
-            <Button local:Policy.PolicyName="ApplyPdfMedianFilter"
-                Command="{Binding ApplyPdfMedianFilter}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
-                <Image Width="16" Height="16"
-                    Source="/TwainControl;component/Icons/save.png" />
+            <Button local:Policy.PolicyName="ApplyPdfMedianFilter" Command="{Binding ApplyPdfMedianFilter}" CommandParameter="{Binding ElementName=PdfViewer}">
+                <Image Width="16" Height="16" Source="/TwainControl;component/Icons/save.png" />
             </Button>
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -432,9 +464,7 @@
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="0" SmallChange="1"
                 Value="{Binding PdfSplitCount}" />
-            <Button local:Policy.PolicyName="SplitPdf"
-                Command="{Binding SplitPdf}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="SplitPdf" Command="{Binding SplitPdf}" CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -447,9 +477,45 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Button local:Policy.PolicyName="MaximizePdfControl"
-                Command="{Binding MaximizePdfControl}"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsChecked="{Binding OcrDialogOpen}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="70" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+                <Extensions:ContentToggleButton.OverContent>
+                    <Extensions:ResizablePanel Width="320" Height="240"
+                        MinWidth="320" MinHeight="240">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Extensions:ButtonedTextBox FontSizeButtonVisibility="Visible" IsReadOnly="True"
+                                OpenButtonVisibility="Collapsed" PasteButtonVisibility="Collapsed"
+                                RemainingLengthVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                Text="{Binding OcrText, Mode=OneWay}"
+                                TextWrapping="Wrap" />
+                            <Extensions:ButtonedTextBox Grid.Row="1"
+                                FontSizeButtonVisibility="Collapsed" IsReadOnly="True"
+                                PasteButtonVisibility="Collapsed" RemainingLengthVisibility="Collapsed"
+                                ResetButtonVisibility="Collapsed"
+                                Text="{Binding QrText, Mode=OneWay}">
+                                <Extensions:ButtonedTextBox.Description>
+                                    <Canvas Width="16" Height="16" Background="{DynamicResource Qr}" />
+                                </Extensions:ButtonedTextBox.Description>
+                            </Extensions:ButtonedTextBox>
+                        </Grid>
+                    </Extensions:ResizablePanel>
+                </Extensions:ContentToggleButton.OverContent>
+            </Extensions:ContentToggleButton>
+            <StackPanel Orientation="Horizontal">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
+            <Button local:Policy.PolicyName="MaximizePdfControl" Command="{Binding MaximizePdfControl}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -459,9 +525,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Button local:Policy.PolicyName="ClosePdfFile"
-                Command="{Binding ClosePdfFile}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+            <Button local:Policy.PolicyName="ClosePdfFile" Command="{Binding ClosePdfFile}" CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -471,62 +535,50 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <Expander d:IsExpanded="True" ExpandDirection="Right"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Expander d:IsExpanded="True" ExpandDirection="Right" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <WrapPanel Orientation="Horizontal">
-                    <ComboBox VerticalContentAlignment="Center"
-                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
-                        SelectedItem="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="12" Height="12"
-                                        Fill="{Binding ElementName=Tb, Path=Text}" />
-                                    <TextBlock x:Name="Tb"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding Mode=OneWay}" />
+                                    <Rectangle Width="12" Height="12" Fill="{Binding ElementName=Tb, Path=Text}" />
+                                    <TextBlock x:Name="Tb" VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <ComboBox VerticalContentAlignment="Center"
-                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
-                        SelectedItem="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <Rectangle Width="12" Height="12"
-                                        Fill="{Binding ElementName=Tb, Path=Text}" />
-                                    <TextBlock x:Name="Tb"
-                                        VerticalAlignment="Center"
-                                        Text="{Binding Mode=OneWay}" />
+                                    <Rectangle Width="12" Height="12" Fill="{Binding ElementName=Tb, Path=Text}" />
+                                    <TextBlock x:Name="Tb" VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
                                 </StackPanel>
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
-                    <Expander d:IsExpanded="True" ExpandDirection="Right">
-                        <StackPanel Orientation="Horizontal">
-                            <ComboBox VerticalContentAlignment="Center"
-                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfDashLayout}}"
-                                SelectedItem="{Binding PenDash, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <ComboBox VerticalContentAlignment="Center"
-                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineLayout}}"
-                                SelectedItem="{Binding PenLineCap, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <ComboBox VerticalContentAlignment="Center"
-                                ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineJoinLayout}}"
-                                SelectedItem="{Binding PenLineJoin, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                            <Extensions:NumericUpDownControl Width="40"
-                                Maximum="512" Minimum="0.5" SmallChange="0.5"
-                                Value="{Binding PenWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                        </StackPanel>
-                    </Expander>
+                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <TextBlock FontFamily="Wingdings" FontSize="16" Text="!" />
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Border Background="{DynamicResource BorderBackground}" BorderBrush="{DynamicResource GroupBoxBackGround}" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfDashLayout}}" SelectedItem="{Binding PenDash}" />
+                                    <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineLayout}}" SelectedItem="{Binding PenLineCap}" />
+                                    <ComboBox VerticalContentAlignment="Center" ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineJoinLayout}}" SelectedItem="{Binding PenLineJoin}" />
+                                    <Extensions:NumericUpDownControl Width="40"
+                                        Maximum="512" Minimum="0.5"
+                                        SmallChange="0.5"
+                                        Value="{Binding PenWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                            </Border>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
                     <ToggleButton IsChecked="{Binding DrawEllipse, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
-                            <Ellipse Width="16" Height="16"
-                                d:Stroke="Black">
+                            <Ellipse Width="16" Height="16" d:Stroke="Black">
                                 <Ellipse.Stroke>
                                     <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Ellipse.Stroke>
@@ -538,8 +590,9 @@
                     </ToggleButton>
                     <ToggleButton IsChecked="{Binding DrawLine, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
-                            <Line d:Stroke="Black" X1="0" X2="16"
-                                Y1="0" Y2="16">
+                            <Line d:Stroke="Black" X1="0"
+                                X2="16" Y1="0"
+                                Y2="16">
                                 <Line.Stroke>
                                     <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Line.Stroke>
@@ -548,8 +601,9 @@
                     </ToggleButton>
                     <ToggleButton IsChecked="{Binding DrawReverseLine, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
-                            <Line d:Stroke="Black" X1="16" X2="0"
-                                Y1="0" Y2="16">
+                            <Line d:Stroke="Black" X1="16"
+                                X2="0" Y1="0"
+                                Y2="16">
                                 <Line.Stroke>
                                     <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Line.Stroke>
@@ -558,8 +612,7 @@
                     </ToggleButton>
                     <ToggleButton IsChecked="{Binding DrawRect, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
-                            <Rectangle Width="16" Height="16"
-                                d:Stroke="Black">
+                            <Rectangle Width="16" Height="16" d:Stroke="Black">
                                 <Rectangle.Stroke>
                                     <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Rectangle.Stroke>
@@ -572,7 +625,8 @@
                     <ToggleButton IsChecked="{Binding DrawRoundedRect, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Rectangle Width="16" Height="16"
-                                d:Stroke="Black" RadiusX="3" RadiusY="3">
+                                d:Stroke="Black" RadiusX="3"
+                                RadiusY="3">
                                 <Rectangle.Stroke>
                                     <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Rectangle.Stroke>
@@ -585,7 +639,88 @@
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc GRAPH}" />
+                    <ToggleButton IsChecked="{Binding DrawLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Canvas Width="16" Height="16">
+                                <TextBlock Canvas.Top="-3"
+                                    d:Text="0" FontSize="10"
+                                    Foreground="Red"
+                                    Text="{Binding Points.Count, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                <Viewbox Canvas.Top="2" Width="16" Height="16">
+                                    <Path d:Stroke="Black" Data="M 10.506667,247.04 L 88.906667,120.64 L 150.506667,225.44 L 274.506667,74.24" StrokeThickness="20">
+                                        <Path.Stroke>
+                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Stroke>
+                                    </Path>
+                                </Viewbox>
+                            </Canvas>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawBeziers, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Canvas Width="16" Height="16">
+                                <TextBlock Canvas.Top="-3"
+                                    d:Text="0" FontSize="10"
+                                    Foreground="Red"
+                                    Text="{Binding Points.Count, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                <Viewbox Canvas.Top="2" Width="16" Height="16">
+                                    <Path d:Stroke="Black" Data="M 10,100 C 100,100 200,200 200,200" StrokeThickness="20">
+                                        <Path.Stroke>
+                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Stroke>
+                                    </Path>
+                                </Viewbox>
+                            </Canvas>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawCurve, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Canvas Width="16" Height="16">
+                                <TextBlock Canvas.Top="-3"
+                                    d:Text="0" FontSize="10"
+                                    Foreground="Red">
+                                    <Run d:Text="0" Text="{Binding Points.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" /><Run Text="/" /><Run Text="{Binding PolygonCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                </TextBlock>
+                                <Viewbox Canvas.Top="2" Width="16" Height="16">
+                                    <Path d:Stroke="Black" Data="M 10,100 C 100,0 200,200 300,100" StrokeThickness="20">
+                                        <Path.Stroke>
+                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Stroke>
+                                    </Path>
+                                </Viewbox>
+                            </Canvas>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <ToggleButton IsChecked="{Binding DrawPolygon, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ToggleButton.Content>
+                            <Canvas Width="16" Height="16">
+                                <TextBlock Canvas.Top="-3"
+                                    d:Text="0" FontSize="10"
+                                    Foreground="Red">
+                                    <Run d:Text="0" Text="{Binding Points.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" /><Run Text="/" /><Run Text="{Binding PolygonCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                                </TextBlock>
+                                <Viewbox Canvas.Top="3" Width="16" Height="16">
+                                    <Path d:Stroke="Black" Data="F1 M 19.6015,19.6015L 21.6741,6.51512L 9.86878,0.499996L 0.5,9.86878L 6.51513,21.6741L 19.6015,19.6015 Z " StrokeThickness="1">
+                                        <Path.Stroke>
+                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Stroke>
+                                        <Path.Fill>
+                                            <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Path.Fill>
+                                    </Path>
+                                </Viewbox>
+                            </Canvas>
+                        </ToggleButton.Content>
+                    </ToggleButton>
+                    <Extensions:NumericUpDownControl IsReadOnly="True" Minimum="3"
+                        SmallChange="1"
+                        Value="{Binding PolygonCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                    <Button Command="{Binding ClearLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                    </Button>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
                     <ToggleButton IsChecked="{Binding DrawImage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding DrawnImage, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Image Width="16" Height="16">
@@ -610,74 +745,214 @@
                             </Image>
                         </Button.Content>
                     </Button>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DRAWTEXT}" />
-                    <TextBox Width="64"
-                        VerticalContentAlignment="Center"
-                        Text="{Binding Text, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                        <TextBox.Background>
-                            <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
-                        </TextBox.Background>
-                    </TextBox>
-                    <Extensions:NumericUpDownControl Width="40"
-                        Maximum="512" Minimum="1" SmallChange="1"
-                        Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                    <ToggleButton IsChecked="{Binding DrawString, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                        <ToggleButton.Content>
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="70" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
-                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TAG}" />
-                    <TextBox Width="64"
-                        VerticalContentAlignment="Center"
-                        Text="{Binding AnnotationText, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-                    <ToggleButton IsChecked="{Binding DrawAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                        <ToggleButton.Content>
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="156" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </ToggleButton.Content>
-                    </ToggleButton>
-                    <Extensions:ContentToggleButton Command="{Binding ReadAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox Width="200" Height="200"
-                                Header="{local:Loc TAG}">
-                                <ListBox ItemsSource="{Binding Annotations}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock>
-                                                <Hyperlink BaselineAlignment="Center"
-                                                    Command="{Binding RemoveAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
-                                                    CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                                                    TextDecorations="None">
-                                                    <Image Width="16" Height="16"
-                                                        Source="/TwainControl;component/Icons/delete.png" />
-                                                </Hyperlink>
-                                                <Run Text="{Binding Mode=OneWay, Path=Contents}" />
-                                                <Run Foreground="Red" Text="{Binding Mode=OneWay, Path=Subject}" />
-                                                <Run Foreground="Blue" Text="{Binding Mode=OneWay, Path=Title}" />
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </GroupBox>
+                            <Extensions:ResizablePanel Width="300" Height="200"
+                                MinWidth="300" MinHeight="200">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <GroupBox Header="{local:Loc DRAWTEXT}">
+                                        <InkCanvas x:Name="Ink" Background="Transparent">
+                                            <InkCanvas.DefaultDrawingAttributes>
+                                                <DrawingAttributes x:Name="DrawingAttribute" />
+                                            </InkCanvas.DefaultDrawingAttributes>
+                                        </InkCanvas>
+                                    </GroupBox>
+                                    <StackPanel Grid.Row="1">
+                                        <Button Command="{Binding LoadInkDrawImage}" Content="{local:Loc LOAD}" />
+                                        <Button Command="{Binding ClearInkDrawImage}" Content="{local:Loc DELETE}" />
+                                        <Button Command="{Binding SaveInkDrawImage}" Content="{local:Loc SAVESELECTED}" />
+                                        <ComboBox Height="20" ItemsSource="{Binding InkCollection, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding SelectedInk}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Viewbox Width="100" Height="100">
+                                                        <InkCanvas Background="Transparent" EditingMode="None"
+                                                            EditingModeInverted="None"
+                                                            Strokes="{Binding Mode=OneWay, Converter={StaticResource Base64StringToStrokeCollectionConverter}}" />
+                                                    </Viewbox>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </StackPanel>
+                                    <Extensions:ColorPicker Grid.RowSpan="2" Grid.Column="1"
+                                        ColorPickerColumnCount="5"
+                                        HexCode="{Binding InkDrawColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        HexCodeVisibility="Collapsed" PredefinedColorVisibility="Visible"
+                                        SelectorLength="0*" SliderVisibility="Collapsed" />
+                                </Grid>
+                            </Extensions:ResizablePanel>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <TextBlock FontFamily="Wingdings" FontSize="16" Text="7" />
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Border Background="{DynamicResource BorderBackground}" BorderBrush="{DynamicResource GroupBoxBackGround}" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DRAWTEXT}" />
+                                    <TextBox Width="200" VerticalContentAlignment="Center" Text="{Binding Text}">
+                                        <TextBox.Background>
+                                            <SolidColorBrush Color="{Binding GraphObjectFillColor, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </TextBox.Background>
+                                    </TextBox>
+                                    <Extensions:NumericUpDownControl Width="40"
+                                        Maximum="512" Minimum="1"
+                                        SmallChange="1"
+                                        Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <ToggleButton IsChecked="{Binding DrawString}">
+                                        <ToggleButton.Content>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ToggleButton.Content>
+                                    </ToggleButton>
+                                </StackPanel>
+                            </Border>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="156" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Border Background="{DynamicResource BorderBackground}" BorderBrush="{DynamicResource GroupBoxBackGround}" BorderThickness="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc TAG}" />
+                                    <TextBox Width="64" VerticalContentAlignment="Center" Text="{Binding AnnotationText}" />
+                                    <ToggleButton IsChecked="{Binding DrawAnnotation}" IsEnabled="{Binding SinglePage}">
+                                        <ToggleButton.Content>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="156" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ToggleButton.Content>
+                                    </ToggleButton>
+                                    <Extensions:ContentToggleButton Command="{Binding ReadAnnotation}">
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <GroupBox Width="200" Height="200" Header="{local:Loc TAG}">
+                                                <ListBox ItemsSource="{Binding Annotations}">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock>
+                                                                <Hyperlink BaselineAlignment="Center"
+                                                                    Command="{Binding RemoveAnnotation, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
+                                                                    CommandParameter="{Binding Path=Content, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                                                                    TextDecorations="None">
+                                                                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                                </Hyperlink>
+                                                                <Run Text="{Binding Mode=OneWay, Path=Contents}" />
+                                                                <Run Foreground="Red" Text="{Binding Mode=OneWay, Path=Subject}" />
+                                                                <Run Foreground="Blue" Text="{Binding Mode=OneWay, Path=Title}" />
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </GroupBox>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                </StackPanel>
+                            </Border>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
+                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="73" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" FontSize="10" Text="{local:Loc APPLY}" />
+                        </StackPanel>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <Border Background="{DynamicResource BorderBackground}" BorderBrush="{DynamicResource GroupBoxBackGround}" BorderThickness="1">
+                                <StackPanel>
+                                    <ToggleButton IsChecked="{Binding SinglePage}">
+                                        <ToggleButton.Style>
+                                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="ToggleButton">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsChecked" Value="True">
+                                                        <Setter Property="Content">
+                                                            <Setter.Value>
+                                                                <TextBlock FontSize="10">
+                                                                    <Run Text="1" />
+                                                                    <Run Text="{local:Loc APPLY}" />
+                                                                </TextBlock>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                    <Trigger Property="IsChecked" Value="False">
+                                                        <Setter Property="Content">
+                                                            <Setter.Value>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Canvas Width="16" Height="16">
+                                                                        <TextBlock Canvas.Top="0" FontSize="10" Text="1" />
+                                                                        <TextBlock Canvas.Left="4" Canvas.Top="2"
+                                                                            FontSize="10" Text="2" />
+                                                                        <TextBlock Canvas.Left="8" Canvas.Top="4"
+                                                                            FontSize="10" Text="3" />
+                                                                    </Canvas>
+                                                                    <TextBlock VerticalAlignment="Center" FontSize="10">
+                                                                        <Run Text="{local:Loc ALL}" />
+                                                                        <Run Text="{local:Loc APPLY}" />
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ToggleButton.Style>
+                                    </ToggleButton>
+                                    <UniformGrid Rows="2">
+                                        <MenuItem IsCheckable="True" IsChecked="{Binding ApplyPortrait}">
+                                            <MenuItem.Header>
+                                                <Rectangle Width="42" Height="59.4"
+                                                    Stroke="Black" StrokeThickness="1">
+                                                    <Rectangle.Effect>
+                                                        <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                    </Rectangle.Effect>
+                                                </Rectangle>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                        <MenuItem IsCheckable="True" IsChecked="{Binding ApplyLandscape}">
+                                            <MenuItem.Header>
+                                                <Rectangle Width="59.4" Height="42"
+                                                    Stroke="Black" StrokeThickness="1">
+                                                    <Rectangle.Effect>
+                                                        <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                    </Rectangle.Effect>
+                                                </Rectangle>
+                                            </MenuItem.Header>
+                                        </MenuItem>
+                                    </UniformGrid>
+                                </StackPanel>
+                            </Border>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
                 </WrapPanel>
@@ -685,11 +960,11 @@
         </WrapPanel>
         <Grid Grid.Row="1">
             <local:EypPdfViewer x:Name="PdfViewer"
-                x:FieldModifier="public" AutoFitContent="True" OpenButtonVisibility="Visible"
+                local:Policy.PolicyName="EypPdfViewer" x:FieldModifier="public"
+                AutoFitContent="True" OpenButtonVisibility="Visible"
                 PreviewKeyDown="PdfViewer_PreviewKeyDown" PreviewKeyUp="PdfViewer_PreviewKeyUp"
-                PreviewMouseDown="PdfImportViewerControl_MouseDown"
-                PreviewMouseMove="PdfImportViewerControl_MouseMove" PrintButtonVisibility="Visible"
-                SeekingLowerPdfDpi="True" />
+                PreviewMouseDown="PdfImportViewerControl_MouseDown" PreviewMouseMove="PdfImportViewerControl_MouseMove"
+                PrintButtonVisibility="Visible" />
             <Canvas x:Name="cnv" />
         </Grid>
     </Grid>

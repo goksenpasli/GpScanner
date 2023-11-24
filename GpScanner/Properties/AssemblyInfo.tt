@@ -13,7 +13,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Goksen")]
 [assembly: AssemblyProduct("GpScanner")]
-[assembly: AssemblyCopyright("Copyright © 2023")]
+[assembly: AssemblyCopyright("Copyright © <#= Year #>")]
 [assembly: AssemblyTrademark("Gok$en")]
 [assembly: AssemblyCulture("")]
 
@@ -44,7 +44,8 @@ using System.Windows;
 
 [assembly: Guid("143762b8-772a-47af-bae6-08e0a1d0ca89")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.1.<#= RevisionNumber #>")]
+[assembly: AssemblyFileVersion("5.0.3.<#= RevisionNumber #>")]
 <#+
-    private readonly int RevisionNumber = (int)(DateTime.UtcNow - new DateTime(1984, 1, 1)).TotalDays;
+    private readonly int RevisionNumber = (int)(DateTime.UtcNow - new DateTime(1984, 3, 9)).TotalDays;
+    private static int Year = DateTime.Today.Year;
 #>

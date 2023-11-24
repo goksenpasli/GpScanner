@@ -1,79 +1,116 @@
-﻿using System;
+﻿using Extensions;
+using IMAPI2;
+using IMAPI2FS;
+using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
-using Extensions;
-using IMAPI2;
-using IMAPI2FS;
+using System.Windows.Controls;
+using System.Windows.Media;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DvdBurner
 {
+    [TemplatePart(Name = "Lb", Type = typeof(ListBox))]
     public class Burner : Control, INotifyPropertyChanged
     {
-        static Burner()
-        {
-            DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner)));
-        }
+        public static readonly DependencyProperty FilesProperty = DependencyProperty.Register(
+            "Files",
+            typeof(ObservableCollection<string>),
+            typeof(Burner),
+            new PropertyMetadata(new ObservableCollection<string>(), Changed));
+        private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
+        private static Task Burntask;
+        private static Task Erasetask;
+        private readonly string AppName = Application.Current?.MainWindow?.Title;
+        private string actionText;
+        private SolidColorBrush actionTextForeground = Brushes.Black;
+        private string cdLabel = DateTime.Now.ToString();
+        private long discMaxSize = (int)DiscSizes.CD;
+        private Dictionary<string, string> drives;
+        private bool eject = true;
+        private bool ısCdWriterAvailable = true;
+        private ListBox lb;
+        private Brush progressForegroundBrush;
+        private bool progressIndeterminate;
+        private double progressValue;
+        private DiscSizes selectedDiscSize = DiscSizes.CD;
+        private dynamic selectedDrive;
+        private long totalFileSize;
+
+        static Burner() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner))); }
 
         public Burner()
         {
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                Files = ["File", "File", "File"];
+            }
+            PropertyChanged += Burner_PropertyChanged;
+
+            MsftDiscMaster2 g_DiscMaster = new();
+            if (!g_DiscMaster.IsSupportedEnvironment)
+            {
+                IsCdWriterAvailable = false;
+                return;
+            }
+
+            Drives = GetCdWriters(g_DiscMaster);
+
             BurnDvd = new RelayCommand<object>(
                 parameter =>
                 {
                     if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
-                        _ = MessageBox.Show(WarnText);
+                        _ = MessageBox.Show(WarnText, AppName);
                         return;
                     }
 
-                    dynamic Index;
                     dynamic recorder = null;
-                    dynamic FolderPath;
                     dynamic Stream;
-                    Index = 0;
-                    FolderPath = BurnDirectory;
                     Burntask = Task.Run(
                         () =>
                         {
                             try
                             {
-                                dynamic g_DiscMaster = new MsftDiscMaster2();
-                                if (g_DiscMaster.Count > 0)
+                                recorder = new MsftDiscRecorder2();
+                                recorder.InitializeDiscRecorder(SelectedDrive);
+
+                                dynamic FSI;
+                                dynamic dataWriter;
+
+                                FSI = new MsftFileSystemImage();
+                                _ = FSI.Root;
+
+                                dataWriter = new MsftDiscFormat2Data();
+                                dataWriter.Recorder = recorder;
+                                dataWriter.ClientName = AppName;
+                                FSI.VolumeName = CdLabel;
+                                FSI.ChooseImageDefaults(recorder);
+                                dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
+                                IFsiDirectoryItem rootDirectory = FSI.Root;
+                                foreach (string file in Files.Where(file => File.Exists(file)))
                                 {
-                                    dynamic uniqueId;
-                                    recorder = new MsftDiscRecorder2();
-                                    uniqueId = g_DiscMaster.Item(Index);
-                                    recorder.InitializeDiscRecorder(uniqueId);
-
-                                    dynamic FSI;
-                                    dynamic Dir;
-                                    dynamic dataWriter;
-
-                                    FSI = new MsftFileSystemImage();
-                                    Dir = FSI.Root;
-
-                                    dataWriter = new MsftDiscFormat2Data();
-                                    dataWriter.Recorder = recorder;
-                                    dataWriter.ClientName = AppName;
-                                    FSI.VolumeName = CdLabel;
-                                    FSI.ChooseImageDefaults(recorder);
-                                    dataWriter.Update += new DDiscFormat2DataEvents_UpdateEventHandler(DataWriter_Update);
-                                    Dir?.AddTree(FolderPath, false);
-                                    dynamic result = FSI.CreateResultImage();
-                                    Stream = result?.ImageStream;
-                                    dataWriter.ForceOverwrite = true;
-                                    dataWriter.Write(Stream);
+                                    string fileName = Path.GetFileName(file);
+                                    rootDirectory?.AddFile(fileName, ManagedIStream.Create(new FileStream(file, FileMode.Open, FileAccess.Read)));
                                 }
+
+                                dynamic result = FSI.CreateResultImage();
+                                Stream = result?.ImageStream;
+                                dataWriter.ForceOverwrite = true;
+                                dataWriter.Write(Stream);
                             }
                             catch (Exception ex)
                             {
-                                ActionText = ex.Message;
+                                ActionText = ex.Message.Trim();
+                                ActionTextForeground = Brushes.Red;
                             }
                             finally
                             {
@@ -84,15 +121,38 @@ namespace DvdBurner
                             }
                         });
                 },
-                parameter => Directory.Exists(BurnDirectory) && !string.IsNullOrWhiteSpace(CdLabel) && Directory.EnumerateFiles(BurnDirectory)?.Any() == true);
+                parameter => !string.IsNullOrWhiteSpace(CdLabel) && Files?.Any() == true && SelectedDrive != null);
 
             SelectBurnDir = new RelayCommand<object>(
                 parameter =>
                 {
-                    FolderBrowserDialog dialog = new FolderBrowserDialog { Description = "Yazılacak Klasörü Seçin." };
-                    if (dialog.ShowDialog() == DialogResult.OK)
+                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
-                        BurnDirectory = dialog.SelectedPath;
+                        _ = MessageBox.Show(WarnText, AppName);
+                        return;
+                    }
+
+                    OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Tüm Dosyalar (*.*)|*.*", };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        ActionTextForeground = Brushes.Black;
+                        ActionText = string.Empty;
+                        AddFiles(openFileDialog.FileNames);
+                    }
+                },
+                parameter => true);
+
+            RemoveFile = new RelayCommand<object>(
+                parameter =>
+                {
+                    if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
+                    {
+                        _ = MessageBox.Show(WarnText, AppName);
+                        return;
+                    }
+                    if (parameter is string file && Files.Remove(file))
+                    {
+                        UpdateProgressFileSize([.. Files]);
                     }
                 },
                 parameter => true);
@@ -102,7 +162,7 @@ namespace DvdBurner
                 {
                     if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
-                        _ = MessageBox.Show(WarnText);
+                        _ = MessageBox.Show(WarnText, AppName);
                         return;
                     }
 
@@ -112,22 +172,20 @@ namespace DvdBurner
                             MsftDiscRecorder2 recorder = null;
                             try
                             {
-                                dynamic g_DiscMaster = new MsftDiscMaster2();
-                                dynamic uniqueId;
-                                dynamic Index = 0;
                                 MsftDiscFormat2Erase discFormatErase = null;
                                 if (g_DiscMaster.Count > 0)
                                 {
+                                    ActionText = "Medya Siliniyor.";
                                     recorder = new MsftDiscRecorder2();
-                                    uniqueId = g_DiscMaster.Item(Index);
-                                    recorder.InitializeDiscRecorder(uniqueId);
+                                    recorder.InitializeDiscRecorder(SelectedDrive);
                                     discFormatErase = new MsftDiscFormat2Erase { Recorder = recorder, ClientName = AppName, FullErase = false };
                                     discFormatErase.EraseMedia();
                                 }
                             }
                             catch (Exception ex)
                             {
-                                ActionText = ex.Message;
+                                ActionText = ex.Message.Trim();
+                                ActionTextForeground = Brushes.Red;
                             }
                             finally
                             {
@@ -138,15 +196,42 @@ namespace DvdBurner
                             }
                         });
                 },
-                parameter => true);
+                parameter => SelectedDrive != null);
+
+            GetSupportedDiscFormats = new RelayCommand<object>(
+                parameter =>
+                {
+                    dynamic recorder = new MsftDiscRecorder2();
+                    recorder.InitializeDiscRecorder(SelectedDrive);
+                    IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
+                    List<string> supportedformats =
+                    [
+                        .. from object supportedMediaType in (object[])recorder.SupportedProfiles
+                           where values.Contains((int)supportedMediaType)
+                           select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType),
+                    ];
+                    _ = MessageBox.Show(string.Join("\n", supportedformats), AppName);
+                    recorder = null;
+                },
+                parameter => SelectedDrive != null);
+
+            RemoveAllFile = new RelayCommand<object>(
+                parameter =>
+                {
+                    Files.Clear();
+                    UpdateProgressFileSize([.. Files]);
+                },
+                parameter => Files?.Any() == true);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string ActionText {
+        public string ActionText
+        {
             get => actionText;
 
-            set {
+            set
+            {
                 if (actionText != value)
                 {
                     actionText = value;
@@ -155,14 +240,28 @@ namespace DvdBurner
             }
         }
 
-        public string BurnDirectory { get => (string)GetValue(BurnDirectoryProperty); set => SetValue(BurnDirectoryProperty, value); }
+        public SolidColorBrush ActionTextForeground
+        {
+            get => actionTextForeground;
+
+            set
+            {
+                if (actionTextForeground != value)
+                {
+                    actionTextForeground = value;
+                    OnPropertyChanged(nameof(ActionTextForeground));
+                }
+            }
+        }
 
         public RelayCommand<object> BurnDvd { get; }
 
-        public string CdLabel {
+        public string CdLabel
+        {
             get => cdLabel;
 
-            set {
+            set
+            {
                 if (cdLabel != value)
                 {
                     cdLabel = value;
@@ -171,10 +270,38 @@ namespace DvdBurner
             }
         }
 
-        public bool Eject {
+        public long DiscMaxSize
+        {
+            get => discMaxSize;
+            set
+            {
+                if (discMaxSize != value)
+                {
+                    discMaxSize = value;
+                    OnPropertyChanged(nameof(DiscMaxSize));
+                }
+            }
+        }
+
+        public Dictionary<string, string> Drives
+        {
+            get => drives;
+            set
+            {
+                if (drives != value)
+                {
+                    drives = value;
+                    OnPropertyChanged(nameof(Drives));
+                }
+            }
+        }
+
+        public bool Eject
+        {
             get => eject;
 
-            set {
+            set
+            {
                 if (eject != value)
                 {
                     eject = value;
@@ -185,10 +312,42 @@ namespace DvdBurner
 
         public RelayCommand<object> EraseDvd { get; }
 
-        public bool ProgressIndeterminate {
+        public ObservableCollection<string> Files { get => (ObservableCollection<string>)GetValue(FilesProperty); set => SetValue(FilesProperty, value); }
+
+        public RelayCommand<object> GetSupportedDiscFormats { get; }
+
+        public bool IsCdWriterAvailable
+        {
+            get => ısCdWriterAvailable;
+            set
+            {
+                if (ısCdWriterAvailable != value)
+                {
+                    ısCdWriterAvailable = value;
+                    OnPropertyChanged(nameof(IsCdWriterAvailable));
+                }
+            }
+        }
+
+        public Brush ProgressForegroundBrush
+        {
+            get => progressForegroundBrush;
+            set
+            {
+                if (progressForegroundBrush != value)
+                {
+                    progressForegroundBrush = value;
+                    OnPropertyChanged(nameof(ProgressForegroundBrush));
+                }
+            }
+        }
+
+        public bool ProgressIndeterminate
+        {
             get => progressIndeterminate;
 
-            set {
+            set
+            {
                 if (progressIndeterminate != value)
                 {
                     progressIndeterminate = value;
@@ -197,10 +356,12 @@ namespace DvdBurner
             }
         }
 
-        public double ProgressValue {
+        public double ProgressValue
+        {
             get => progressValue;
 
-            set {
+            set
+            {
                 if (progressValue != value)
                 {
                     progressValue = value;
@@ -209,17 +370,96 @@ namespace DvdBurner
             }
         }
 
+        public RelayCommand<object> RemoveAllFile { get; }
+
+        public RelayCommand<object> RemoveFile { get; }
+
         public RelayCommand<object> SelectBurnDir { get; }
 
-        public static readonly DependencyProperty BurnDirectoryProperty = DependencyProperty.Register(
-                                                                                                            "BurnDirectory",
-            typeof(string),
-            typeof(Burner),
-            new PropertyMetadata(string.Empty));
-
-        protected virtual void OnPropertyChanged(string propertyName = null)
+        public DiscSizes SelectedDiscSize
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get => selectedDiscSize;
+            set
+            {
+                if (selectedDiscSize != value)
+                {
+                    selectedDiscSize = value;
+                    OnPropertyChanged(nameof(SelectedDiscSize));
+                }
+            }
+        }
+
+        public dynamic SelectedDrive
+        {
+            get => selectedDrive;
+            set
+            {
+                if (selectedDrive != value)
+                {
+                    selectedDrive = value;
+                    OnPropertyChanged(nameof(SelectedDrive));
+                }
+            }
+        }
+
+        public long TotalFileSize
+        {
+            get => totalFileSize;
+            set
+            {
+                if (totalFileSize != value)
+                {
+                    totalFileSize = value;
+                    OnPropertyChanged(nameof(TotalFileSize));
+                }
+            }
+        }
+
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+            lb = GetTemplateChild("Lb") as ListBox;
+            if (lb != null)
+            {
+                lb.Drop -= Listbox_Drop;
+                lb.Drop += Listbox_Drop;
+            }
+        }
+
+        protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is Burner burner && !DesignerProperties.GetIsInDesignMode(burner))
+            {
+                burner.UpdateProgressFileSize([.. burner.Files]);
+            }
+        }
+
+        private void AddFiles(string[] files)
+        {
+            foreach (string item in files)
+            {
+                if (!Files.Select(Path.GetFileName).Contains(Path.GetFileName(item)))
+                {
+                    Files.Add(item);
+                }
+                else
+                {
+                    ActionTextForeground = Brushes.Red;
+                    ActionText = "Aynı İsimde Dosya Var.";
+                }
+            }
+            UpdateProgressFileSize([.. Files]);
+        }
+
+        private void Burner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "SelectedDiscSize")
+            {
+                DiscMaxSize = (int)SelectedDiscSize;
+                ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
+            }
         }
 
         private void DataWriter_Update(dynamic @object, dynamic progress)
@@ -263,14 +503,11 @@ namespace DvdBurner
                         dynamic writtenSectors;
                         dynamic startLba;
                         dynamic lastWrittenLba;
-                        dynamic percentDone;
                         totalSectors = progress.SectorCount;
                         startLba = progress.StartLba;
                         lastWrittenLba = progress.LastWrittenLba;
                         writtenSectors = lastWrittenLba - startLba;
-                        percentDone =
-                            FormatPercent(Convert.ToDecimal(writtenSectors) / Convert.ToDecimal(totalSectors));
-                        ActionText = percentDone;
+                        ActionText = FormatPercent(Convert.ToDecimal(writtenSectors) / Convert.ToDecimal(totalSectors));
                         break;
 
                     default:
@@ -290,22 +527,37 @@ namespace DvdBurner
             return d.ToString("0%");
         }
 
-        private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
+        private Dictionary<string, string> GetCdWriters(dynamic discMaster)
+        {
+            Dictionary<string, string> listdrives = [];
+            dynamic discRecorder;
+            for (int i = 0; i < discMaster.Count; i++)
+            {
+                discRecorder = new MsftDiscRecorder2();
+                dynamic uniqueId = discMaster?.Item[i];
+                discRecorder.InitializeDiscRecorder(uniqueId);
+                string volumePathName = discRecorder?.VolumePathNames[0];
+                string productId = discRecorder.ProductId;
+                listdrives.Add($"{volumePathName} {productId}", uniqueId);
+            }
+            return listdrives;
+        }
 
-        private static Task Burntask;
+        private long GetTotalFileSizeMB(string[] files) => files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024 ?? 0;
 
-        private static Task Erasetask;
+        private void Listbox_Drop(object sender, DragEventArgs e)
+        {
+            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            if (droppedfiles?.Length > 0)
+            {
+                AddFiles(droppedfiles);
+            }
+        }
 
-        private readonly string AppName = Application.Current?.MainWindow?.Title;
-
-        private string actionText;
-
-        private string cdLabel = DateTime.Now.ToString();
-
-        private bool eject = true;
-
-        private bool progressIndeterminate;
-
-        private double progressValue;
+        private void UpdateProgressFileSize(string[] files)
+        {
+            TotalFileSize = files?.Any() == false ? 0 : GetTotalFileSizeMB(files);
+            ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
+        }
     }
 }

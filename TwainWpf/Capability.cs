@@ -5,6 +5,11 @@ namespace TwainWpf
 {
     public class Capability
     {
+        private readonly Identity _applicationId;
+        private readonly Capabilities _capability;
+        private readonly Identity _sourceId;
+        private readonly TwainType _twainType;
+
         public Capability(Capabilities capability, TwainType twainType, Identity applicationId, Identity sourceId)
         {
             _capability = capability;
@@ -18,9 +23,7 @@ namespace TwainWpf
             Capability c = new Capability(capability, TwainType.Int16, applicationId, sourceId);
             BasicCapabilityResult capResult = c.GetBasicValue();
 
-            return capResult.ConditionCode != ConditionCode.Success
-                ? throw new TwainException($"Unsupported capability {capability}", capResult.ErrorCode, capResult.ConditionCode)
-                : capResult.BoolValue;
+            return capResult.ConditionCode != ConditionCode.Success ? throw new TwainException($"Unsupported capability {capability}", capResult.ErrorCode, capResult.ConditionCode) : capResult.BoolValue;
         }
 
         public static int SetBasicCapability(Capabilities capability, int rawValue, TwainType twainType, Identity applicationId, Identity sourceId)
@@ -43,14 +46,16 @@ namespace TwainWpf
             basicValue = c.GetBasicValue();
 
             return basicValue.ConditionCode != ConditionCode.Success
-                ? throw new TwainException($"Unexpected failure verifying capability {capability}", basicValue.ErrorCode, basicValue.ConditionCode)
-                : basicValue.RawBasicValue;
+                   ? throw new TwainException($"Unexpected failure verifying capability {capability}", basicValue.ErrorCode, basicValue.ConditionCode)
+                   : basicValue.RawBasicValue;
         }
 
-        public static short SetCapability(Capabilities capability, short value, Identity applicationId, Identity sourceId)
-        {
-            return (short)SetBasicCapability(capability, value, TwainType.Int16, applicationId, sourceId);
-        }
+        public static short SetCapability(Capabilities capability, short value, Identity applicationId, Identity sourceId) => (short)SetBasicCapability(
+            capability,
+            value,
+            TwainType.Int16,
+            applicationId,
+            sourceId);
 
         public static void SetCapability(Capabilities capability, bool value, Identity applicationId, Identity sourceId)
         {
@@ -100,15 +105,9 @@ namespace TwainWpf
             return new BasicCapabilityResult() { RawBasicValue = oneValue.Value };
         }
 
-        public void SetValue(short value)
-        {
-            SetValue<short>(value);
-        }
+        public void SetValue(short value) => SetValue<short>(value);
 
-        protected ConditionCode GetStatus()
-        {
-            return DataSourceManager.GetConditionCode(_applicationId, _sourceId);
-        }
+        protected ConditionCode GetStatus() => DataSourceManager.GetConditionCode(_applicationId, _sourceId);
 
         protected void SetValue<T>(T value)
         {
@@ -131,13 +130,5 @@ namespace TwainWpf
                 throw new TwainException("Failed to set capability.", result);
             }
         }
-
-        private readonly Identity _applicationId;
-
-        private readonly Capabilities _capability;
-
-        private readonly Identity _sourceId;
-
-        private readonly TwainType _twainType;
     }
 }

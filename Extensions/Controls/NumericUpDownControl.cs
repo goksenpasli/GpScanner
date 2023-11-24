@@ -8,6 +8,20 @@ namespace Extensions;
 
 public class NumericUpDownControl : ScrollBar
 {
+    public static readonly DependencyProperty DateValueProperty = DependencyProperty.Register("DateValue", typeof(DateTime?), typeof(NumericUpDownControl), new PropertyMetadata(null));
+    public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(NumericUpDownControl), new PropertyMetadata(false));
+    public static readonly DependencyProperty NumericUpDownButtonsVisibilityProperty =
+        DependencyProperty.Register("NumericUpDownButtonsVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty =
+        DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register("ShowMode", typeof(Mode), typeof(NumericUpDownControl), new PropertyMetadata(Mode.NumberMode, ModeChanged));
+    [Browsable(false)]
+    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+        "Text",
+        typeof(double),
+        typeof(NumericUpDownControl),
+        new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+
     static NumericUpDownControl()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDownControl), new FrameworkPropertyMetadata(typeof(NumericUpDownControl)));
@@ -28,50 +42,13 @@ public class NumericUpDownControl : ScrollBar
 
     public bool IsReadOnly { get => (bool)GetValue(IsReadOnlyProperty); set => SetValue(IsReadOnlyProperty, value); }
 
-    public Visibility NumericUpDownButtonsVisibility {
-        get => (Visibility)GetValue(NumericUpDownButtonsVisibilityProperty);
-        set => SetValue(NumericUpDownButtonsVisibilityProperty, value);
-    }
+    public Visibility NumericUpDownButtonsVisibility { get => (Visibility)GetValue(NumericUpDownButtonsVisibilityProperty); set => SetValue(NumericUpDownButtonsVisibilityProperty, value); }
 
-    public Visibility NumericUpdownTextBoxVisibility {
-        get => (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty);
-        set => SetValue(NumericUpdownTextBoxVisibilityProperty, value);
-    }
+    public Visibility NumericUpdownTextBoxVisibility { get => (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty); set => SetValue(NumericUpdownTextBoxVisibilityProperty, value); }
 
     public Mode ShowMode { get => (Mode)GetValue(ShowModeProperty); set => SetValue(ShowModeProperty, value); }
 
     public double Text { get => (double)GetValue(TextProperty); set => SetValue(TextProperty, value); }
-
-    public static readonly DependencyProperty DateValueProperty = DependencyProperty.Register(
-                                        "DateValue",
-        typeof(DateTime?),
-        typeof(NumericUpDownControl),
-        new PropertyMetadata(null));
-
-    public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
-        "IsReadOnly",
-        typeof(bool),
-        typeof(NumericUpDownControl),
-        new PropertyMetadata(false));
-
-    public static readonly DependencyProperty NumericUpDownButtonsVisibilityProperty =
-        DependencyProperty.Register("NumericUpDownButtonsVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty =
-        DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register(
-        "ShowMode",
-        typeof(Mode),
-        typeof(NumericUpDownControl),
-        new PropertyMetadata(Mode.NumberMode, ModeChanged));
-
-    [Browsable(false)]
-    public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
-        "Text",
-        typeof(double),
-        typeof(NumericUpDownControl),
-        new FrameworkPropertyMetadata(0d, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     protected override void OnPreviewKeyDown(KeyEventArgs e)
     {

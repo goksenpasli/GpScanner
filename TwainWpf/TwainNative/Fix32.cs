@@ -7,7 +7,6 @@ namespace TwainWpf.TwainNative
     public class Fix32
     {
         public short Whole;
-
         public ushort Frac;
 
         public Fix32(float f)

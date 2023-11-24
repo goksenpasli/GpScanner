@@ -11,13 +11,11 @@ namespace TwainWpf.TwainNative
         public int CurrentIndex { get; set; }
 
         public int DefaultIndex { get; set; }
-
 #pragma warning restore 169
 
         public int ItemCount { get; set; }
 
         public TwainType TwainType { get; set; }
-
 #pragma warning disable 169
     }
 }

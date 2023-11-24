@@ -2,27 +2,21 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Interop;
-using Extensions;
-using Microsoft.Win32;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
 
 public static class WindowExtensions
 {
-    static WindowExtensions()
-    {
-        OpenSettings = new RelayCommand<object>(
-            parameter =>
-            {
-                SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
-                _ = settingswindow.ShowDialog();
-            }, parameter => Policy.CheckPolicy("OpenSettings", Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && Policy.CheckPolicy("OpenSettings", Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner")));
-    }
-
-    public static ICommand OpenSettings { get; }
+    private const int _AboutSysMenuID = 1001;
+    private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
+    private const uint MF_BYCOMMAND = 0x00000000;
+    private const int MF_BYPOSITION = 0x400;
+    private const uint MF_ENABLED = 0x00000000;
+    private const uint MF_GRAYED = 0x00000001;
+    private const uint SC_CLOSE = 0xF060;
+    private const int WM_SYSCOMMAND = 0x112;
 
     public static void DisableCloseButton(this Window window, bool disable)
     {
@@ -78,20 +72,4 @@ public static class WindowExtensions
 
         return IntPtr.Zero;
     }
-
-    private const int _AboutSysMenuID = 1001;
-
-    private const int GWL_STYLE = -16, WS_MINIMIZEBOX = 0x20000;
-
-    private const uint MF_BYCOMMAND = 0x00000000;
-
-    private const int MF_BYPOSITION = 0x400;
-
-    private const uint MF_ENABLED = 0x00000000;
-
-    private const uint MF_GRAYED = 0x00000001;
-
-    private const uint SC_CLOSE = 0xF060;
-
-    private const int WM_SYSCOMMAND = 0x112;
 }

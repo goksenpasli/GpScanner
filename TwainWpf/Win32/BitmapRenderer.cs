@@ -7,6 +7,12 @@ namespace TwainWpf.Win32
 {
     public class BitmapRenderer : IDisposable
     {
+        private readonly BitmapInfoHeader _bitmapInfo;
+        private readonly IntPtr _bitmapPointer;
+        private readonly IntPtr _dibHandle;
+        private readonly IntPtr _pixelInfoPointer;
+        private Rectangle _rectangle;
+
         public BitmapRenderer(IntPtr dibHandle)
         {
             _dibHandle = dibHandle;
@@ -36,6 +42,8 @@ namespace TwainWpf.Win32
 
             _pixelInfoPointer = new IntPtr(pixelInfoPointer);
         }
+
+        ~BitmapRenderer() { Dispose(false); }
 
         public void Dispose()
         {
@@ -72,26 +80,11 @@ namespace TwainWpf.Win32
             _ = Kernel32Native.GlobalFree(_dibHandle);
         }
 
-        ~BitmapRenderer()
-        {
-            Dispose(false);
-        }
-
         private static float PpmToDpi(double pixelsPerMeter)
         {
             double pixelsPerMillimeter = pixelsPerMeter / 1000.0;
             double dotsPerInch = pixelsPerMillimeter * 25.4;
             return (float)Math.Round(dotsPerInch, 2);
         }
-
-        private readonly BitmapInfoHeader _bitmapInfo;
-
-        private readonly IntPtr _bitmapPointer;
-
-        private readonly IntPtr _dibHandle;
-
-        private readonly IntPtr _pixelInfoPointer;
-
-        private Rectangle _rectangle;
     }
 }

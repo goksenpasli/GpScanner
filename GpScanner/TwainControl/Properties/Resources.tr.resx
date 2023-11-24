@@ -179,28 +179,28 @@ BESLEYİCİ</value>
     <value>DOSYA ADI</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>[GÜN]</value>
+    <value>GÜN</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>[AY]</value>
+    <value>AY</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>[YIL]</value>
+    <value>YIL</value>
   </data>
   <data name="TIME" xml:space="preserve">
-    <value>[SAAT]</value>
+    <value>SAAT</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>[DAKİKA]</value>
+    <value>DAKİKA</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>[SANİYE]</value>
+    <value>SANİYE</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>[GUID]</value>
+    <value>GUID</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>[KULLANICIADI]</value>
+    <value>KULLANICIADI</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
     <value>PROFİL SAKLA</value>
@@ -576,5 +576,116 @@ BELGE EKLE</value>
   </data>
   <data name="EMPTY" xml:space="preserve">
     <value>BOŞ</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>NOKTA KALDIR</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Eski Tarayıcı Uygulamanızın Klasör Dizinine Uygun Formatı Seçmeniz Önerilir. Burada Seçilen Formata Göre Filtreleme Yapılacaktır.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>ÖZEL GENİŞLİK</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ÖZEL YÜKSEKLİK</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Herhangi Bir Camgöbeği Renkli Kontrol, Alt Shift Ctrl Tuşlarından Bir veya Daha Fazlası ile Farklı Şekilde Çalışır!</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>YARDIM</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Otomatik Kayıt Klasörünü Belirtin. Hızlı Tarama İşleminde Bu Klasöre Kayıt Yapılır.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Bilinen Sorunlar</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Bazı Zamanlar Listeye Dosya Eklenmesine Rağmen Listede Görünmemektedir. Çözüm İçin Farenin Tekerleğini Kaydırmak Gerekir.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Tarayıcının Tarama İşleminden Önce Kaç Saniye Bekleyeceğini Gösterir.</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>FİLM TARAYICI</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Genişlik Yükseklik Eşitliğini Yoksay. Uygulamada Hata Oluşabilir</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>KÜTÜPHANE</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>PDF Kaydedilecek Klasörü Seçin</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Görüntüler Klasörünü seçin</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Tarama Tamamlandığında Ses Çal</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>İşaretlenirse Birden Fazla Belge Aynı Anda OCR Edilebilir</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>DOSYAYI KAPAT</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>TERS RENKLİ</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>KATLAMA</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>AYNA</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>DALGA</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>YÜKLENDİ</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Dosya Kullanımda. Uygulamayı Kapat, Sağ Kısıma Dosya Yükleme Tekrar Dene</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>İptal Etmek İçin Esc Düğmesine Basılı Tutun</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>RENK TONU</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>AÇIKLIK</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>DOYGUNLUK</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Basit Pdf Önizleme. Yavaş Bilgisayarlar İçin Uygundur.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Bittiğinde CD'yi Çıkar</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>YATAY</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>İlk ve Son Sayfaları Seçip Sırala</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Böl ve Sırala</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>RASTGELE</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>İNDEKSLENMEMİŞ DOSYALAR</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Pdf Bilgilerini Göster</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Tüm Pdf Sayfalarını Ocr Yap</value>
   </data>
 </root>

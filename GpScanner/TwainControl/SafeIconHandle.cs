@@ -1,30 +1,18 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
+using static Extensions.ShellIcon;
 
-namespace TwainControl
+namespace TwainControl;
+
+public partial class DrawControl
 {
-    public partial class DrawControl
+    public class SafeIconHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        public class SafeIconHandle : SafeHandleZeroOrMinusOneIsInvalid
+        public SafeIconHandle(IntPtr hIcon) : base(true) { SetHandle(hIcon); }
+        private SafeIconHandle() : base(true)
         {
-            public SafeIconHandle(IntPtr hIcon) : base(true)
-            {
-                SetHandle(hIcon);
-            }
-
-            [DllImport("user32.dll", SetLastError = true)]
-            [return: MarshalAs(UnmanagedType.Bool)]
-            internal static extern bool DestroyIcon([In] IntPtr hIcon);
-
-            protected override bool ReleaseHandle()
-            {
-                return DestroyIcon(handle);
-            }
-
-            private SafeIconHandle() : base(true)
-            {
-            }
         }
+
+        protected override bool ReleaseHandle() => Win32.DestroyIcon(handle);
     }
 }

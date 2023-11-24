@@ -6,11 +6,8 @@ namespace TwainWpf.TwainNative
     public class Frame
     {
         public Fix32 Left;
-
         public Fix32 Top;
-
         public Fix32 Right;
-
         public Fix32 Bottom;
     }
 }

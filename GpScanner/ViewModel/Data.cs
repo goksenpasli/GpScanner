@@ -1,16 +1,23 @@
-﻿using System.Xml.Serialization;
-using Extensions;
+﻿using Extensions;
+using System.Xml.Serialization;
 
 namespace GpScanner.ViewModel;
 
 [XmlRoot(ElementName = "Data")]
 public class Data : InpcBase
 {
+    private string fileContent;
+    private string fileName;
+    private int ıd;
+    private string qrData;
+
     [XmlAttribute(AttributeName = "FileContent")]
-    public string FileContent {
+    public string FileContent
+    {
         get => fileContent;
 
-        set {
+        set
+        {
             if (fileContent != value)
             {
                 fileContent = value;
@@ -20,10 +27,12 @@ public class Data : InpcBase
     }
 
     [XmlAttribute(AttributeName = "FileName")]
-    public string FileName {
+    public string FileName
+    {
         get => fileName;
 
-        set {
+        set
+        {
             if (fileName != value)
             {
                 fileName = value;
@@ -33,10 +42,12 @@ public class Data : InpcBase
     }
 
     [XmlAttribute(AttributeName = "Id")]
-    public int Id {
+    public int Id
+    {
         get => ıd;
 
-        set {
+        set
+        {
             if (ıd != value)
             {
                 ıd = value;
@@ -46,10 +57,12 @@ public class Data : InpcBase
     }
 
     [XmlAttribute(AttributeName = "QrData")]
-    public string QrData {
+    public string QrData
+    {
         get => qrData;
 
-        set {
+        set
+        {
             if (qrData != value)
             {
                 qrData = value;
@@ -57,12 +70,4 @@ public class Data : InpcBase
             }
         }
     }
-
-    private string fileContent;
-
-    private string fileName;
-
-    private int ıd;
-
-    private string qrData;
 }

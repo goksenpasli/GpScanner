@@ -42,7 +42,6 @@ namespace Tesseract.Internal.InteropDotNet
         }
 
         #region Main steps
-
         private static MethodItem[] BuildMethods(Type interfaceType)
         {
             MethodInfo[] methodInfoArray = interfaceType.GetMethods();
@@ -53,8 +52,8 @@ namespace Tesseract.Internal.InteropDotNet
                 {
                     Info = methodInfoArray[i],
                     DllImportAttribute =
-                        GetRuntimeDllImportAttribute(methodInfoArray[i]) ??
-                            throw new Exception($"Method '{methodInfoArray[i].Name}' of interface '{interfaceType.Name}' should be marked with the RuntimeDllImport attribute")
+                    GetRuntimeDllImportAttribute(methodInfoArray[i]) ??
+                        throw new Exception($"Method '{methodInfoArray[i].Name}' of interface '{interfaceType.Name}' should be marked with the RuntimeDllImport attribute")
                 };
             }
 
@@ -164,10 +163,7 @@ namespace Tesseract.Internal.InteropDotNet
             const MethodAttributes methodAttributes = MethodAttributes.Public | MethodAttributes.HideBySig | MethodAttributes.NewSlot | MethodAttributes.Virtual;
 
             string delegateName = GetDelegateName(assemblyName, method.Info);
-            TypeBuilder delegateBuilder = moduleBuilder.DefineType(
-                delegateName,
-                TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed,
-                typeof(MulticastDelegate));
+            TypeBuilder delegateBuilder = moduleBuilder.DefineType(delegateName, TypeAttributes.Public | TypeAttributes.AutoClass | TypeAttributes.Sealed, typeof(MulticastDelegate));
 
             RuntimeDllImportAttribute importAttribute = method.DllImportAttribute;
             ConstructorInfo attributeCtor =
@@ -240,11 +236,9 @@ namespace Tesseract.Internal.InteropDotNet
                 typeBuilder.DefineMethodOverride(methodBuilder, method.Info);
             }
         }
-
         #endregion Main steps
 
         #region Reflection and emit helpers
-
         private static MethodBuilder DefineMethod(TypeBuilder typeBuilder, string name, MethodAttributes attributes, Type returnType, LightParameterInfo[] infoArray)
         {
             MethodBuilder methodBuilder =
@@ -288,11 +282,9 @@ namespace Tesseract.Internal.InteropDotNet
                     break;
             }
         }
-
         #endregion Reflection and emit helpers
 
         #region Method helpers
-
         private enum InfoArrayMode
         {
             Invoke,
@@ -382,25 +374,14 @@ namespace Tesseract.Internal.InteropDotNet
 
             public Type ReturnType => Info.ReturnType;
         }
-
         #endregion Method helpers
 
         #region Name helpers
+        private static string GetAssemblyName(Type interfaceType) => $"InteropRuntimeImplementer.{GetSubstantialName(interfaceType)}Instance";
 
-        private static string GetAssemblyName(Type interfaceType)
-        {
-            return $"InteropRuntimeImplementer.{GetSubstantialName(interfaceType)}Instance";
-        }
+        private static string GetDelegateName(string assemblyName, MethodInfo methodInfo) => $"{assemblyName}.{methodInfo.Name}Delegate";
 
-        private static string GetDelegateName(string assemblyName, MethodInfo methodInfo)
-        {
-            return $"{assemblyName}.{methodInfo.Name}Delegate";
-        }
-
-        private static string GetImplementationTypeName(string assemblyName, Type interfaceType)
-        {
-            return $"{assemblyName}.{GetSubstantialName(interfaceType)}Implementation";
-        }
+        private static string GetImplementationTypeName(string assemblyName, Type interfaceType) => $"{assemblyName}.{GetSubstantialName(interfaceType)}Implementation";
 
         private static string GetSubstantialName(Type interfaceType)
         {
@@ -412,7 +393,6 @@ namespace Tesseract.Internal.InteropDotNet
 
             return name;
         }
-
         #endregion Name helpers
     }
 }

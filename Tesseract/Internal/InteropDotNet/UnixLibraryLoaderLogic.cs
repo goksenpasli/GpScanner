@@ -5,6 +5,10 @@ namespace Tesseract.Internal.InteropDotNet
 {
     internal class UnixLibraryLoaderLogic : ILibraryLoaderLogic
     {
+        private const int RTLD_NOW = 2;
+        private static readonly string FileExtension =
+            SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
+
         public string FixUpLibraryName(string fileName)
         {
             if (!string.IsNullOrEmpty(fileName))
@@ -23,10 +27,7 @@ namespace Tesseract.Internal.InteropDotNet
             return fileName;
         }
 
-        public bool FreeLibrary(IntPtr libraryHandle)
-        {
-            return UnixFreeLibrary(libraryHandle) != 0;
-        }
+        public bool FreeLibrary(IntPtr libraryHandle) => UnixFreeLibrary(libraryHandle) != 0;
 
         public IntPtr GetProcAddress(IntPtr libraryHandle, string functionName)
         {
@@ -71,11 +72,7 @@ namespace Tesseract.Internal.InteropDotNet
             catch (Exception e)
             {
                 IntPtr lastError = UnixGetLastError();
-                Logger.TraceError(
-                    "Failed to load native library \"{0}\".\r\nLast Error:{1}\r\nCheck inner exception and\\or windows event log.\r\nInner Exception: {2}",
-                    fileName,
-                    lastError,
-                    e.ToString());
+                Logger.TraceError("Failed to load native library \"{0}\".\r\nLast Error:{1}\r\nCheck inner exception and\\or windows event log.\r\nInner Exception: {2}", fileName, lastError, e.ToString());
             }
 
             return libraryHandle;
@@ -92,10 +89,5 @@ namespace Tesseract.Internal.InteropDotNet
 
         [DllImport("libdl", EntryPoint = "dlopen")]
         private static extern IntPtr UnixLoadLibrary(string fileName, int flags);
-
-        private const int RTLD_NOW = 2;
-
-        private static readonly string FileExtension =
-            SystemManager.GetOperatingSystem() == OperatingSystem.MacOSX ? ".dylib" : ".so";
     }
 }

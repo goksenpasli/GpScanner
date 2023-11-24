@@ -6,11 +6,8 @@ namespace TwainWpf.TwainNative
     public class ImageLayout
     {
         public Frame Frame;
-
         public uint DocumentNumber;
-
         public uint PageNumber;
-
         public uint FrameNumber;
     }
 }

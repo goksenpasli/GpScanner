@@ -43,4 +43,4 @@ using System.Windows;
 
 [assembly: Guid("143762b8-772a-47af-bae6-08e0a1d0ca89")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.1.14412")]
+[assembly: AssemblyFileVersion("5.0.3.14504")]

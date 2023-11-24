@@ -1,13 +1,18 @@
-﻿using System.Windows;
-
-namespace Ocr;
+﻿namespace Ocr;
 
 public class TesseractOcrData : InpcBase
 {
-    public bool IsEnabled {
+    private bool ısEnabled = true;
+    private string ocrLangName;
+    private string ocrName;
+    private double progressValue;
+
+    public bool IsEnabled
+    {
         get => ısEnabled;
 
-        set {
+        set
+        {
             if (ısEnabled != value)
             {
                 ısEnabled = value;
@@ -16,22 +21,25 @@ public class TesseractOcrData : InpcBase
         }
     }
 
-    public Visibility IsVisible {
-        get => ısVisible;
-
-        set {
-            if (ısVisible != value)
+    public string OcrLangName
+    {
+        get => ocrLangName;
+        set
+        {
+            if (ocrLangName != value)
             {
-                ısVisible = value;
-                OnPropertyChanged(nameof(IsVisible));
+                ocrLangName = value;
+                OnPropertyChanged(nameof(OcrLangName));
             }
         }
     }
 
-    public string OcrName {
+    public string OcrName
+    {
         get => ocrName;
 
-        set {
+        set
+        {
             if (ocrName != value)
             {
                 ocrName = value;
@@ -40,10 +48,12 @@ public class TesseractOcrData : InpcBase
         }
     }
 
-    public double ProgressValue {
+    public double ProgressValue
+    {
         get => progressValue;
 
-        set {
+        set
+        {
             if (progressValue != value)
             {
                 progressValue = value;
@@ -51,12 +61,4 @@ public class TesseractOcrData : InpcBase
             }
         }
     }
-
-    private bool ısEnabled = true;
-
-    private Visibility ısVisible = Visibility.Collapsed;
-
-    private string ocrName;
-
-    private double progressValue;
 }

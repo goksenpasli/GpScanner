@@ -3,12 +3,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
-    xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="588" d:DesignWidth="420"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
@@ -17,12 +17,21 @@
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Converter:FontSizeConverter x:Key="FontSizeConverter" />
+            <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
+            <ObjectDataProvider x:Key="PageRotations" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="local:PageRotation" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <Style TargetType="{x:Type ComboBox}">
+                <Setter Property="Template" Value="{DynamicResource ComboBoxStyle}" />
+            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid>
@@ -32,34 +41,34 @@
                 BorderThickness="1" CornerRadius="1">
                 <StackPanel>
                     <DockPanel>
-                        <Extensions:NumericUpDownControl HorizontalAlignment="Center"
-                            DockPanel.Dock="Top" IsReadOnly="True"
+                        <DockPanel.Resources>
+                            <Style BasedOn="{StaticResource Slider}" TargetType="Slider">
+                                <Setter Property="AutoToolTipPlacement" Value="TopLeft" />
+                                <Setter Property="IsEnabled" Value="{Binding ElementName=BtnPreview, Path=IsEnabled}" />
+                                <Setter Property="Minimum" Value="0" />
+                                <Setter Property="SmallChange" Value="1" />
+                            </Style>
+                        </DockPanel.Resources>
+                        <Slider Margin="20.8,0,20.8,0"
+                            DockPanel.Dock="Top"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                            Minimum="0" SmallChange="1"
-                            Value="{Binding Scanner.CropTop}" />
-                        <Extensions:NumericUpDownControl HorizontalAlignment="Center"
-                            DockPanel.Dock="Bottom" IsReadOnly="True"
+                            Value="{Binding Scanner.CropTop, Delay=100}" />
+                        <Slider Margin="20.8,0,20.8,0"
+                            DockPanel.Dock="Bottom"
                             Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
-                            Minimum="0" SmallChange="1"
-                            Value="{Binding Scanner.CropBottom}" />
-                        <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                            DockPanel.Dock="Left" IsReadOnly="True"
+                            Value="{Binding Scanner.CropBottom, Delay=100}" />
+                        <Slider DockPanel.Dock="Left"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                            Minimum="0" SmallChange="1"
-                            Value="{Binding Scanner.CropLeft}" />
-                        <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                            DockPanel.Dock="Right" IsReadOnly="True"
+                            Orientation="Vertical"
+                            Value="{Binding Scanner.CropLeft, Delay=100}" />
+                        <Slider DockPanel.Dock="Right"
                             Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
-                            Minimum="0" SmallChange="1"
-                            Value="{Binding Scanner.CropRight}" />
-                        <Border Background="{StaticResource BorderBackground}"
-                            BorderBrush="{StaticResource GroupBoxBackGround}"
-                            BorderThickness="1">
+                            Orientation="Vertical"
+                            Value="{Binding Scanner.CropRight, Delay=100}" />
+                        <Border Background="{StaticResource BorderBackground}" BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
                             <Grid Width="200" Height="200">
-                                <ProgressBar Background="{x:Null}"
-                                    Maximum="1"
-                                    Value="{Binding ToolBoxPdfMergeProgressValue, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
-                                <Image x:Name="Img" Source="{Binding Scanner.CroppedImage}" />
+                                <ProgressBar Background="{x:Null}" Maximum="1" Value="{Binding ToolBoxPdfMergeProgressValue, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
+                                <Image x:Name="Img" Source="{Binding Scanner.CroppedImageThumb}" />
                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                     d:FontSize="25" d:Text="Watermark"
                                     FontFamily="{Binding Scanner.WatermarkFont}"
@@ -81,8 +90,8 @@
                                     Height="{Binding ElementName=Img, Path=ActualHeight}"
                                     ShowGridLines="True" />
                                 <TextBlock HorizontalAlignment="Right" VerticalAlignment="Bottom"
-                                    FontFamily="Webdings" FontSize="20" Foreground="Red"
-                                    Text="N">
+                                    FontFamily="Webdings" FontSize="20"
+                                    Foreground="Red" Text="N">
                                     <TextBlock.ToolTip>
                                         <Image Source="{Binding Scanner.CroppedImage}" />
                                     </TextBlock.ToolTip>
@@ -103,58 +112,50 @@
                                     </Hyperlink>
                                 </TextBlock>
                                 <TextBlock HorizontalAlignment="Left" VerticalAlignment="Top">
-                                    <Hyperlink local:Policy.PolicyName="TransferImage"
-                                        Command="{Binding TransferImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                                        TextDecorations="None">
-                                        <Run FontFamily="Wingdings" FontSize="16" Foreground="Black"
-                                            Text="ç" />
+                                    <Hyperlink local:Policy.PolicyName="TransferImage" Command="{Binding TransferImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" TextDecorations="None">
+                                        <Run FontFamily="Wingdings" FontSize="16"
+                                            Foreground="Black" Text="ç" />
                                     </Hyperlink>
                                 </TextBlock>
                             </Grid>
                         </Border>
                     </DockPanel>
+                    <Separator />
                     <UniformGrid Columns="2">
                         <StackPanel>
-                            <UniformGrid Columns="2">
+                            <UniformGrid Columns="2" IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}">
                                 <Slider VerticalAlignment="Center"
-                                    IsSnapToTickEnabled="True" Maximum="360" Minimum="0"
-                                    Orientation="Horizontal" SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    Ticks="0, 90, 180, 270, 360"
+                                    IsSnapToTickEnabled="True" Maximum="360"
+                                    Minimum="0" Orientation="Horizontal"
+                                    SmallChange="1" Ticks="0, 90, 180, 270, 360"
                                     Value="{Binding Scanner.CroppedImageAngle}" />
-                                <Extensions:NumericUpDownControl Maximum="10" Minimum="0" SmallChange="1"
+                                <Extensions:NumericUpDownControl Maximum="10" Minimum="0"
+                                    SmallChange="1"
                                     Value="{Binding Scanner.MedianValue, UpdateSourceTrigger=PropertyChanged}" />
                             </UniformGrid>
-                            <UniformGrid Columns="2">
-                                <Slider VerticalAlignment="Center"
-                                    Maximum="255" Minimum="-255" Orientation="Horizontal"
-                                    SmallChange="1"
-                                    Style="{StaticResource Slider}"
-                                    Value="{Binding Scanner.Brightness, Delay=100}">
-                                    <Slider.Background>
-                                        <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
-                                            <GradientStop Offset="0" Color="Black" />
-                                            <GradientStop Offset="1" Color="White" />
-                                        </LinearGradientBrush>
-                                    </Slider.Background>
-                                </Slider>
-                                <Button local:Policy.PolicyName="InvertImage"
-                                    Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                                    Content="{local:Loc REVERSE}" />
-                            </UniformGrid>
+                            <Button local:Policy.PolicyName="InvertImage" Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc REVERSE}" />
                         </StackPanel>
                         <UniformGrid Columns="2">
                             <StackPanel>
-                                <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True" Maximum="255"
+                                <Slider AutoToolTipPlacement="TopLeft"
+                                    IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                                    IsSnapToTickEnabled="True" Maximum="255"
                                     Minimum="1" SmallChange="1"
-                                    Style="{StaticResource Slider}"
                                     ToolTip="{local:Loc BW}"
-                                    Value="{Binding Scanner.ToolBarBwThreshold, UpdateSourceTrigger=PropertyChanged}" />
-                                <Button local:Policy.PolicyName="InvertImage"
+                                    Value="{Binding Scanner.ToolBarBwThreshold, Delay=100, UpdateSourceTrigger=PropertyChanged}">
+                                    <Slider.Background>
+                                        <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                            <GradientStop Offset="0" Color="White" />
+                                            <GradientStop Offset="1" Color="Black" />
+                                        </LinearGradientBrush>
+                                    </Slider.Background>
+                                </Slider>
+                                <Button local:Policy.PolicyName="InvertImage" BorderBrush="Cyan"
                                     Command="{Binding BlackAndWhiteImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                     Content="{local:Loc BW}" />
                             </StackPanel>
-                            <Button local:Policy.PolicyName="LoadCroppedImage" Background="Green"
+                            <Button x:Name="BtnPreview"
+                                local:Policy.PolicyName="LoadCroppedImage" Background="Green"
                                 Command="{Binding LoadCroppedImage}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">
@@ -170,7 +171,7 @@
                             </Button>
                         </UniformGrid>
                     </UniformGrid>
-                    <UniformGrid Columns="2" Rows="10">
+                    <UniformGrid Columns="2" Rows="13">
                         <UniformGrid Columns="2">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
@@ -189,16 +190,13 @@
                             <Button local:Policy.PolicyName="SplitImage" Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
-                                    <Image Width="16" Height="16"
-                                        Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                    <Image Width="16" Height="16" Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                                 </StackPanel>
                             </Button>
-                            <Button local:Policy.PolicyName="MergeHorizontal" BorderBrush="Cyan"
-                                Command="{Binding MergeHorizontal, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                            <Button local:Policy.PolicyName="MergeHorizontal" BorderBrush="Cyan" Command="{Binding MergeHorizontal, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGE}" />
-                                    <Image Width="16" Height="16"
-                                        Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                    <Image Width="16" Height="16" Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                                 </StackPanel>
                             </Button>
                         </UniformGrid>
@@ -208,24 +206,28 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1" Minimum="1"
-                                SmallChange="1"
+                            <Extensions:NumericUpDownControl IsReadOnly="True" LargeChange="1"
+                                Minimum="1" SmallChange="1"
                                 Value="{Binding Scanner.SliceCountWidth}" />
                             <Extensions:NumericUpDownControl Grid.Column="1"
-                                IsReadOnly="True" LargeChange="1" Minimum="1"
-                                SmallChange="1"
+                                IsReadOnly="True" LargeChange="1"
+                                Minimum="1" SmallChange="1"
                                 Value="{Binding Scanner.SliceCountHeight}" />
                             <Button Grid.Column="2"
                                 local:Policy.PolicyName="SplitAllImage" BorderBrush="Cyan"
                                 Command="{Binding SplitAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
                                     <StackPanel Orientation="Horizontal">
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Run FontFamily="Webdings" Text="§" />
-                                            <Run Text="{local:Loc SLICE}" />
-                                        </TextBlock>
-                                        <Image Width="16" Height="16"
-                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Compstui.dll" />
+                                                    <Binding Source="33" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
+                                        <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
@@ -237,9 +239,23 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <ToggleButton BorderBrush="{x:Null}"
+                            <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                IsChecked="{Binding AutoRotate, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                IsEnabled="{Binding CompressImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <ComboBox VerticalContentAlignment="Center"
+                                    IsEnabled="{Binding AutoRotate, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    SelectedValue="{Binding SelectedRotation, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                    SelectedValuePath="Tag">
+                                    <ComboBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
+                                    <ComboBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
+                                    <ComboBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
+                                </ComboBox>
+                            </CheckBox>
+                            <ToggleButton Grid.Column="1"
+                                BorderBrush="{x:Null}"
                                 IsChecked="{Binding CompressImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                 IsEnabled="{Binding ResizeRatioImage, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Image Width="16" Height="16">
@@ -251,9 +267,7 @@
                                     </Image.Source>
                                 </Image>
                             </ToggleButton>
-                            <ToggleButton Grid.Column="1"
-                                BorderBrush="{x:Null}"
-                                IsChecked="{Binding ResizeRatioImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                            <ToggleButton Grid.Column="2" BorderBrush="{x:Null}" IsChecked="{Binding ResizeRatioImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -263,42 +277,42 @@
                                     </Image.Source>
                                 </Image>
                             </ToggleButton>
-                            <Extensions:NumericUpDownControl Grid.Column="2"
-                                IsReadOnly="True" LargeChange="1" Minimum="1"
-                                SmallChange="1"
-                                Value="{Binding Scanner.SliceCountWidth}" />
                             <Extensions:NumericUpDownControl Grid.Column="3"
-                                IsReadOnly="True" LargeChange="1" Minimum="1"
-                                SmallChange="1"
+                                IsReadOnly="True" LargeChange="1"
+                                Minimum="1" SmallChange="1"
+                                Value="{Binding Scanner.SliceCountWidth}" />
+                            <Extensions:NumericUpDownControl Grid.Column="4"
+                                IsReadOnly="True" LargeChange="1"
+                                Minimum="1" SmallChange="1"
                                 Value="{Binding Scanner.SliceCountHeight}" />
-                            <Border Grid.Column="4"
-                                BorderBrush="White" BorderThickness="1">
+                            <Border Grid.Column="5" BorderBrush="White" BorderThickness="1">
                                 <Extensions:NumericUpDownControl IsEnabled="{Binding ResizeRatioImage, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                                    IsReadOnly="True" LargeChange="1" Minimum="0"
-                                    SmallChange="1"
+                                    IsReadOnly="True" LargeChange="1"
+                                    Minimum="0" SmallChange="1"
                                     Value="{Binding BorderSize, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
                             </Border>
-                            <Button Grid.Column="5"
+                            <Button Grid.Column="6"
                                 local:Policy.PolicyName="MergeAllImage" BorderBrush="Cyan"
                                 Command="{Binding MergeAllImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <Button.Content>
                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Run FontFamily="Webdings" Text="§" />
-                                            <Run Text="{local:Loc MERGE}" />
-                                        </TextBlock>
-                                        <Image Width="16" Height="16"
-                                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Compstui.dll" />
+                                                    <Binding Source="33" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGE}" />
+                                        <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                     </StackPanel>
                                 </Button.Content>
                             </Button>
                         </Grid>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Text="{local:Loc TEXT}" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{local:Loc TEXT}" />
                         <UniformGrid Columns="2">
-                            <TextBox MaxWidth="200"
-                                VerticalContentAlignment="Center"
-                                Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBox MaxWidth="200" VerticalContentAlignment="Center" Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             <Extensions:ContentToggleButton Background="{Binding Scanner.WatermarkColor, Mode=OneWay}">
                                 <Extensions:ContentToggleButton.OverContent>
                                     <Extensions:ColorPicker Width="350" Height="250"
@@ -310,54 +324,66 @@
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
                             <Slider Width="50"
-                                AutoToolTipPlacement="TopLeft" Maximum="1024" Minimum="12"
-                                SmallChange="1"
-                                Style="{StaticResource Slider}"
+                                AutoToolTipPlacement="TopLeft" Maximum="1024"
+                                Minimum="12" SmallChange="1"
                                 Value="{Binding Scanner.WatermarkTextSize}" />
                         </StackPanel>
                         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
                             <Slider Width="50"
-                                AutoToolTipPlacement="TopLeft" Maximum="360" Minimum="0"
-                                SmallChange="1"
-                                Style="{StaticResource Slider}"
+                                AutoToolTipPlacement="TopLeft" Maximum="360"
+                                Minimum="0" SmallChange="1"
                                 Value="{Binding Scanner.WatermarkAngle}" />
                         </StackPanel>
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Text="{local:Loc FONT}" />
-                        <ComboBox Height="25.6"
-                            VerticalContentAlignment="Center"
-                            local:Policy.PolicyName="WatermarkFont"
-                            ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
-                            SelectedValue="{Binding Scanner.WatermarkFont}"
-                            SelectedValuePath="Source">
-                            <ComboBox.ItemTemplate>
-                                <DataTemplate>
-                                    <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
-                                </DataTemplate>
-                            </ComboBox.ItemTemplate>
-                            <ComboBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel />
-                                </ItemsPanelTemplate>
-                            </ComboBox.ItemsPanel>
-                        </ComboBox>
-                        <Button local:Policy.PolicyName="SetWatermark"
-                            Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                            Content="{local:Loc DRAWTEXT}" />
-                        <Button local:Policy.PolicyName="DeskewImage"
-                            Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                            Content="{local:Loc DESKEW}" />
-                        <Button local:Policy.PolicyName="OcrPage"
-                            Command="{Binding OcrPage}"
-                            CommandParameter="{Binding Scanner.CroppedImage}"
-                            Content="{local:Loc OCR}"
-                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}" />
-                        <Button local:Policy.PolicyName="ResetCroppedImage"
-                            Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                            Content="{local:Loc RESET}" />
+                        <UniformGrid Columns="2">
+                            <Button local:Policy.PolicyName="AutoCropImage" Command="{Binding AutoCropImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run Text="{local:Loc Auto}" />
+                                        <Run Text="{local:Loc TRIMIMAGE}" />
+                                    </TextBlock>
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Compstui.dll" />
+                                                <Binding Source="25" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </StackPanel>
+                            </Button>
+                            <Extensions:ContentToggleButton Background="{Binding Scanner.AutoCropColor, Mode=OneWay}">
+                                <TextBlock d:Text="Black" Text="{Binding Scanner.AutoCropColor, Mode=OneWay}" />
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ColorPicker Width="350" Height="250"
+                                        HexCode="{Binding Scanner.AutoCropColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        PredefinedColorVisibility="Visible" />
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
+                        </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{local:Loc FONT}" />
+                            <ComboBox Margin="0,0,-1,0" VerticalContentAlignment="Center"
+                                local:Policy.PolicyName="WatermarkFont"
+                                ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
+                                SelectedValue="{Binding Scanner.WatermarkFont}"
+                                SelectedValuePath="Source">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+                        </UniformGrid>
+                        <Button local:Policy.PolicyName="SetWatermark" Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DRAWTEXT}" />
+                        <Button local:Policy.PolicyName="DeskewImage" Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc DESKEW}" />
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
-                        <Extensions:ContentToggleButton Background="{Binding Scanner.SourceColor, Mode=OneWay}">
+                        <Extensions:ContentToggleButton local:Policy.PolicyName="SourceColor" Background="{Binding Scanner.SourceColor, Mode=OneWay}">
                             <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ColorPicker Width="350" Height="250"
@@ -366,7 +392,7 @@
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc DSTCOLOR}" />
-                        <Extensions:ContentToggleButton Background="{Binding Scanner.TargetColor, Mode=OneWay}">
+                        <Extensions:ContentToggleButton local:Policy.PolicyName="TargetColor" Background="{Binding Scanner.TargetColor, Mode=OneWay}">
                             <TextBlock d:Text="Blue" Text="{Binding Scanner.TargetColor, Mode=OneWay}" />
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ColorPicker Width="350" Height="250"
@@ -374,11 +400,43 @@
                                     PredefinedColorVisibility="Visible" />
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
+                        <TextBlock Text="{local:Loc THRESHOLD}" />
                         <Slider VerticalAlignment="Center"
+                            local:Policy.PolicyName="Threshold"
                             IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
                             Maximum="128" Minimum="0"
-                            Style="{StaticResource Slider}"
                             Value="{Binding Scanner.Threshold, Delay=100}" />
+                        <TextBlock VerticalAlignment="Center" Text="{local:Loc HUE}" />
+                        <Slider local:Policy.PolicyName="Hue"
+                            Background="{DynamicResource Colorfull}"
+                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                            Maximum="1" Minimum="0"
+                            Value="{Binding Scanner.Hue, Delay=100}" />
+                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SATURATION}" />
+                        <Slider local:Policy.PolicyName="Saturation"
+                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                            Maximum="2" Minimum="0"
+                            Value="{Binding Scanner.Saturation, Delay=100}">
+                            <Slider.Background>
+                                <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Offset="0" Color="Gray" />
+                                    <GradientStop Offset="1" Color="White" />
+                                </LinearGradientBrush>
+                            </Slider.Background>
+                        </Slider>
+                        <TextBlock VerticalAlignment="Center" Text="{local:Loc LIGHTNESS}" />
+                        <Slider local:Policy.PolicyName="Lightness"
+                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                            Maximum="1" Minimum="0"
+                            Value="{Binding Scanner.Lightness, Delay=100}">
+                            <Slider.Background>
+                                <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                    <GradientStop Offset="0" Color="Black" />
+                                    <GradientStop Offset="1" Color="White" />
+                                </LinearGradientBrush>
+                            </Slider.Background>
+                        </Slider>
+                        <Button local:Policy.PolicyName="ResetCroppedImage" Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" Content="{local:Loc RESET}" />
                         <Button x:Name="BtnApply"
                             local:Policy.PolicyName="ApplyColorChange"
                             Command="{Binding ApplyColorChange, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"

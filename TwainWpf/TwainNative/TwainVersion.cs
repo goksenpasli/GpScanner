@@ -9,19 +9,12 @@ namespace TwainWpf.TwainNative
     public struct TwainVersion
     {
         public short MajorNum;
-
         public short MinorNum;
-
         public Language Language;
-
         public Country Country;
-
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 34)]
         public string Info;
 
-        public TwainVersion Clone()
-        {
-            return (TwainVersion)MemberwiseClone();
-        }
+        public TwainVersion Clone() => (TwainVersion)MemberwiseClone();
     }
 }

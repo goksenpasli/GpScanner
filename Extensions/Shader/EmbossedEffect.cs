@@ -10,6 +10,15 @@ namespace Extensions;
 /// </summary>
 public class EmbossedEffect : ShaderEffect
 {
+    public static readonly DependencyProperty EmbossedAmountProperty = DependencyProperty.Register(
+        "EmbossedAmount",
+        typeof(double),
+        typeof(EmbossedEffect),
+        new UIPropertyMetadata(0.5D, PixelShaderConstantCallback(0)));
+    public static readonly DependencyProperty InputProperty =
+        RegisterPixelShaderSamplerProperty("Input", typeof(EmbossedEffect), 0);
+    public static readonly DependencyProperty WidthProperty = DependencyProperty.Register("Width", typeof(double), typeof(EmbossedEffect), new UIPropertyMetadata(0.003D, PixelShaderConstantCallback(1)));
+
     public EmbossedEffect()
     {
         PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/EmbossedEffect.ps", UriKind.Relative) };
@@ -30,19 +39,4 @@ public class EmbossedEffect : ShaderEffect
     /// The separation between samples (as a fraction of input size).
     /// </summary>
     public double Width { get => (double)GetValue(WidthProperty); set => SetValue(WidthProperty, value); }
-
-    public static readonly DependencyProperty EmbossedAmountProperty = DependencyProperty.Register(
-                        "EmbossedAmount",
-        typeof(double),
-        typeof(EmbossedEffect),
-        new UIPropertyMetadata(0.5D, PixelShaderConstantCallback(0)));
-
-    public static readonly DependencyProperty InputProperty =
-        RegisterPixelShaderSamplerProperty("Input", typeof(EmbossedEffect), 0);
-
-    public static readonly DependencyProperty WidthProperty = DependencyProperty.Register(
-        "Width",
-        typeof(double),
-        typeof(EmbossedEffect),
-        new UIPropertyMetadata(0.003D, PixelShaderConstantCallback(1)));
 }

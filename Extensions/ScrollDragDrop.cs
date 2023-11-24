@@ -8,11 +8,15 @@ using System.Windows.Media;
 
 namespace Extensions;
 
-public static class DragDropExtension
+public static class ScrollDragDrop
 {
+    public static readonly DependencyProperty ScrollOnDragDropProperty =
+                        DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(ScrollDragDrop), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
+
     public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
     {
         return parent == null ? throw new ArgumentNullException(nameof(parent)) : FindChildren();
+
         IEnumerable<T> FindChildren()
         {
             Queue<DependencyObject> queue = new(new[] { parent });
@@ -59,10 +63,7 @@ public static class DragDropExtension
         return null;
     }
 
-    public static bool GetScrollOnDragDrop(DependencyObject element)
-    {
-        return element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
-    }
+    public static bool GetScrollOnDragDrop(DependencyObject element) => element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
 
     public static void SetScrollOnDragDrop(DependencyObject element, bool value)
     {
@@ -73,9 +74,6 @@ public static class DragDropExtension
 
         element.SetValue(ScrollOnDragDropProperty, value);
     }
-
-    public static readonly DependencyProperty ScrollOnDragDropProperty =
-                        DependencyProperty.RegisterAttached("ScrollOnDragDrop", typeof(bool), typeof(DragDropExtension), new PropertyMetadata(false, HandleScrollOnDragDropChanged));
 
     private static void HandleScrollOnDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -120,13 +118,7 @@ public static class DragDropExtension
         }
     }
 
-    private static void Subscribe(FrameworkElement container)
-    {
-        container.PreviewDragOver += OnContainerPreviewDragOver;
-    }
+    private static void Subscribe(FrameworkElement container) => container.PreviewDragOver += OnContainerPreviewDragOver;
 
-    private static void Unsubscribe(FrameworkElement container)
-    {
-        container.PreviewDragOver -= OnContainerPreviewDragOver;
-    }
+    private static void Unsubscribe(FrameworkElement container) => container.PreviewDragOver -= OnContainerPreviewDragOver;
 }

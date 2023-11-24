@@ -1,14 +1,14 @@
-﻿using System.ComponentModel;
+﻿using CatenaLogic.Windows.Presentation.WebcamPlayer;
+using Extensions;
+using Extensions.Controls;
+using Microsoft.Win32;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CatenaLogic.Windows.Presentation.WebcamPlayer;
-using Extensions;
-using Extensions.Controls;
-using Microsoft.Win32;
 
 namespace TwainControl;
 
@@ -17,19 +17,19 @@ namespace TwainControl;
 /// </summary>
 public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 {
+    private bool detectQRCode;
+    private CapDevice device;
+    private FilterInfo[] liste = CapDevice.DeviceMonikers;
+    private byte[] resimData;
+    private double rotation = 180;
+    private FilterInfo seçiliKamera;
+
     public CameraUserControl()
     {
         InitializeComponent();
         DataContext = this;
         Unloaded += CameraUserControl_Unloaded;
-        KameradanResimYükle = new RelayCommand<object>(
-            parameter =>
-            {
-                using MemoryStream ms = new();
-                EncodeBitmapImage(ms);
-                ResimData = ms.ToArray();
-            },
-            parameter => SeçiliKamera is not null);
+        KameradanResimYükle = new RelayCommand<object>(parameter => ResimData = CameraEncodeBitmapImage().ToArray(), parameter => SeçiliKamera is not null);
 
         VideodanResimYükle = new RelayCommand<object>(
             parameter =>
@@ -51,21 +51,22 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    using FileStream ms = new(saveFileDialog.FileName, FileMode.Create, FileAccess.Write);
-                    EncodeBitmapImage(ms);
+                    File.WriteAllBytes(saveFileDialog.FileName, CameraEncodeBitmapImage().ToArray());
                 }
             },
-            parameter => SeçiliKamera is not null);
+            parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
 
         PropertyChanged += CameraUserControl_PropertyChanged;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public bool DetectQRCode {
+    public bool DetectQRCode
+    {
         get => detectQRCode;
 
-        set {
+        set
+        {
             if (detectQRCode != value)
             {
                 detectQRCode = value;
@@ -74,10 +75,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public CapDevice Device {
+    public CapDevice Device
+    {
         get => device;
 
-        set {
+        set
+        {
             if (device != value)
             {
                 device = value;
@@ -92,10 +95,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public ICommand Kaydet { get; }
 
-    public FilterInfo[] Liste {
+    public FilterInfo[] Liste
+    {
         get => liste;
 
-        set {
+        set
+        {
             if (liste != value)
             {
                 liste = value;
@@ -106,10 +111,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public ICommand Oynat { get; }
 
-    public byte[] ResimData {
+    public byte[] ResimData
+    {
         get => resimData;
 
-        set {
+        set
+        {
             if (resimData != value)
             {
                 resimData = value;
@@ -118,10 +125,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public double Rotation {
+    public double Rotation
+    {
         get => rotation;
 
-        set {
+        set
+        {
             if (rotation != value)
             {
                 rotation = value;
@@ -130,10 +139,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public FilterInfo SeçiliKamera {
+    public FilterInfo SeçiliKamera
+    {
         get => seçiliKamera;
 
-        set {
+        set
+        {
             if (seçiliKamera != value)
             {
                 seçiliKamera = value;
@@ -144,18 +155,17 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> VideodanResimYükle { get; }
 
-    public void EncodeBitmapImage(Stream ms)
+    public MemoryStream CameraEncodeBitmapImage()
     {
+        using MemoryStream stream = new();
         JpegBitmapEncoder encoder = new();
         encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
         encoder.QualityLevel = 90;
-        encoder.Save(ms);
+        encoder.Save(stream);
+        return stream;
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
@@ -170,16 +180,4 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         Device?.Stop();
         DetectQRCode = false;
     }
-
-    private bool detectQRCode;
-
-    private CapDevice device;
-
-    private FilterInfo[] liste = CapDevice.DeviceMonikers;
-
-    private byte[] resimData;
-
-    private double rotation = 180;
-
-    private FilterInfo seçiliKamera;
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Microsoft.Win32;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
@@ -8,20 +8,68 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using static Extensions.ExtensionMethods;
 
 namespace Extensions;
 
 public class GraphControl : FrameworkElement
 {
-    static GraphControl()
-    {
-        DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphControl), new FrameworkPropertyMetadata(typeof(GraphControl)));
-    }
+    public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register(
+        "ContextMenuVisibility",
+        typeof(Visibility),
+        typeof(GraphControl),
+        new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty DotColorProperty = DependencyProperty.Register(
+        "DotColor",
+        typeof(Brush),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
+        "FontSize",
+        typeof(double),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(12.0d, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty GraphContentVisibilityProperty =
+        DependencyProperty.Register("GraphContentVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty IsContextMenuEnabledProperty =
+        DependencyProperty.Register("IsContextMenuEnabled", typeof(bool), typeof(GraphControl), new PropertyMetadata(true));
+    public static readonly DependencyProperty LineColorProperty = DependencyProperty.Register(
+        "LineColor",
+        typeof(Brush),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty LineDotVisibilityProperty =
+        DependencyProperty.Register("LineDotVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty LineGraphVisibilityProperty =
+        DependencyProperty.Register("LineGraphVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register(
+        "LineThickness",
+        typeof(double),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(2.0d, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
+        "Series",
+        typeof(ObservableCollection<Chart>),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(new ObservableCollection<Chart>(), FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty SeriesTextVisibilityProperty =
+        DependencyProperty.Register("SeriesTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
+        "TextColor",
+        typeof(Brush),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty ValueColorProperty = DependencyProperty.Register(
+        "ValueColor",
+        typeof(Brush),
+        typeof(GraphControl),
+        new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.AffectsRender));
+    public static readonly DependencyProperty ValueTextVisibilityProperty =
+        DependencyProperty.Register("ValueTextVisibility", typeof(Visibility), typeof(GraphControl), new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
+    private static ObservableCollection<Chart> MockData;
 
-    public GraphControl()
-    { Kaydet = new RelayCommand<object>(parameter => SaveFile(RenderVisual(this).ToTiffJpegByteArray(Format.Png))); }
+    static GraphControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(GraphControl), new FrameworkPropertyMetadata(typeof(GraphControl))); }
+    public GraphControl() { Kaydet = new RelayCommand<object>(parameter => SaveFile(RenderVisual(this).ToTiffJpegByteArray(Format.Png))); }
 
     [Description("Graph Controls")]
     [Category("Graph")]
@@ -81,107 +129,7 @@ public class GraphControl : FrameworkElement
     [Category("Graph")]
     public Visibility ValueTextVisibility { get => (Visibility)GetValue(ValueTextVisibilityProperty); set => SetValue(ValueTextVisibilityProperty, value); }
 
-    public static readonly DependencyProperty ContextMenuVisibilityProperty =
-                                                                            DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(GraphControl), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty DotColorProperty = DependencyProperty.Register(
-        "DotColor",
-        typeof(Brush),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty FontSizeProperty = DependencyProperty.Register(
-        "FontSize",
-        typeof(double),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(12.0d, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty GraphContentVisibilityProperty =
-        DependencyProperty.Register(
-        "GraphContentVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty IsContextMenuEnabledProperty =
-        DependencyProperty.Register("IsContextMenuEnabled", typeof(bool), typeof(GraphControl), new PropertyMetadata(true));
-
-    public static readonly DependencyProperty LineColorProperty = DependencyProperty.Register(
-        "LineColor",
-        typeof(Brush),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Brushes.Blue, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty LineDotVisibilityProperty =
-        DependencyProperty.Register(
-        "LineDotVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty LineGraphVisibilityProperty =
-        DependencyProperty.Register(
-        "LineGraphVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Collapsed, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty LineThicknessProperty = DependencyProperty.Register(
-        "LineThickness",
-        typeof(double),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(2.0d, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty SeriesProperty = DependencyProperty.Register(
-        "Series",
-        typeof(ObservableCollection<Chart>),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(new ObservableCollection<Chart>(), FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty SeriesTextVisibilityProperty =
-        DependencyProperty.Register(
-        "SeriesTextVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
-        "TextColor",
-        typeof(Brush),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Brushes.Black, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty ValueColorProperty = DependencyProperty.Register(
-        "ValueColor",
-        typeof(Brush),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Brushes.Red, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    public static readonly DependencyProperty ValueTextVisibilityProperty =
-        DependencyProperty.Register(
-        "ValueTextVisibility",
-        typeof(Visibility),
-        typeof(GraphControl),
-        new FrameworkPropertyMetadata(Visibility.Visible, FrameworkPropertyMetadataOptions.AffectsRender));
-
-    protected override void OnRender(DrawingContext drawingContext)
-    {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-        {
-            DrawGraph(drawingContext, Series);
-            return;
-        }
-
-        MockData = new ObservableCollection<Chart>
-        {
-            new Chart { ChartBrush = Brushes.Blue, ChartValue = 100, Description = "Sample Item 1" },
-            new Chart { ChartBrush = Brushes.Red, ChartValue = 40, Description = "Sample Item 2" },
-            new Chart { ChartBrush = Brushes.Yellow, ChartValue = 60, Description = "Sample Item 3" }
-        };
-        DrawGraph(drawingContext, MockData);
-    }
-
-    private void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
+    protected void DrawGraph(DrawingContext drawingContext, ObservableCollection<Chart> Series)
     {
         if (Series?.Any() == true)
         {
@@ -220,6 +168,21 @@ public class GraphControl : FrameworkElement
 
             drawingContext.DrawDrawing(graphgeometrygroup);
         }
+    }
+
+    protected override void OnRender(DrawingContext drawingContext)
+    {
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        {
+            DrawGraph(drawingContext, Series);
+            return;
+        }
+
+        MockData = [
+            new() { ChartBrush = Brushes.Blue, ChartValue = 100, Description = "Sample Item 1" },
+            new() { ChartBrush = Brushes.Red, ChartValue = 40, Description = "Sample Item 2" },
+            new() { ChartBrush = Brushes.Yellow, ChartValue = 60, Description = "Sample Item 3" }];
+        DrawGraph(drawingContext, MockData);
     }
 
     private void DrawLineDot(Pen linepen, Point point1, DrawingContext graph)
@@ -267,21 +230,21 @@ public class GraphControl : FrameworkElement
         }
     }
 
-    private FormattedText GenerateFormattedText(Chart item, Pen pen)
+    private FormattedText GenerateFormattedText(Chart item, Pen pen) => new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor, VisualTreeHelper.GetDpi(this).PixelsPerDip)
     {
-        return new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor)
-        {
-            MaxTextWidth = pen.Thickness
-        };
-    }
+        MaxTextWidth = pen.Thickness
+    };
 
-    private FormattedText GenerateFormattedValueText(Chart item, Pen pen)
+    private FormattedText GenerateFormattedValueText(Chart item, Pen pen) => new(
+        item.ChartValue.ToString(),
+        CultureInfo.CurrentCulture,
+        FlowDirection.LeftToRight,
+        new Typeface("Segoe UI Bold"),
+        FontSize,
+        ValueColor, VisualTreeHelper.GetDpi(this).PixelsPerDip)
     {
-        return new(item.ChartValue.ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI Bold"), FontSize, ValueColor)
-        {
-            MaxTextWidth = pen.Thickness
-        };
-    }
+        MaxTextWidth = pen.Thickness
+    };
 
     private RenderTargetBitmap RenderVisual(FrameworkElement frameworkElement)
     {
@@ -297,9 +260,6 @@ public class GraphControl : FrameworkElement
         if (saveFileDialog.ShowDialog() == true)
         {
             File.WriteAllBytes(saveFileDialog.FileName, imgdata);
-            GC.Collect();
         }
     }
-
-    private static ObservableCollection<Chart> MockData;
 }

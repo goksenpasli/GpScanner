@@ -5,7 +5,7 @@
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
-    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:GpScanner" xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
@@ -14,12 +14,15 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Extensions;component/Themes/Skin.xaml" />
+                <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
                 <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
+                <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+            <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverterEmptyViewerTemplate" IconSize="jumbo" />
+            <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
             <Converter:FilePathCheckConverter x:Key="FilePathCheckConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
             <Converter:LanguageStringConverter x:Key="LanguageStringConverter" />
@@ -31,6 +34,31 @@
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FE00B6E8" />
                 <GradientStop ice:Freeze="True" Color="#FF48F3CA" />
             </LinearGradientBrush>
+            <Style TargetType="MenuItem">
+                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="RepeatButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="ToggleButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="Extensions:ContentToggleButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="Extensions:SplitButton">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="Extensions:ButtonedTextBox">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="PasswordBox">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
             <Style TargetType="{x:Type GroupBox}">
                 <Setter Property="Background" Value="{StaticResource GroupBoxBackGround}" />
                 <Setter Property="BorderBrush" Value="Black" />
@@ -46,8 +74,7 @@
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="1" CornerRadius="3,3,0,0">
-                                    <ContentPresenter Margin="4"
-                                        ContentSource="Header" RecognizesAccessKey="True" />
+                                    <ContentPresenter Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
                                 </Border>
                                 <Border Grid.Row="1"
                                     Background="{StaticResource BorderBackground}"
@@ -60,16 +87,12 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <DrawingBrush x:Key="Dur"
-                ice:Freeze="True" Stretch="Uniform">
+            <DrawingBrush x:Key="Dur" ice:Freeze="True" Stretch="Uniform">
                 <DrawingBrush.Drawing>
                     <DrawingGroup>
-                        <GeometryDrawing ice:Freeze="True" Brush="Black"
-                            Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
-                        <GeometryDrawing ice:Freeze="True" Brush="White"
-                            Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
-                        <GeometryDrawing ice:Freeze="True" Brush="Red"
-                            Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
+                        <GeometryDrawing ice:Freeze="True" Brush="Black" Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
+                        <GeometryDrawing ice:Freeze="True" Brush="White" Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
+                        <GeometryDrawing ice:Freeze="True" Brush="Red" Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
                     </DrawingGroup>
                 </DrawingBrush.Drawing>
             </DrawingBrush>
@@ -85,11 +108,10 @@
                             <TextBlock Foreground="White" Text="{Binding Source='STOP', Mode=OneWay, Converter={StaticResource LanguageStringConverter}}" />
                         </Viewbox>
                         <Canvas.ToolTip>
-                            <ToolTip Background="{x:Null}"
-                                BorderBrush="{x:Null}"
-                                Foreground="{x:Null}">
+                            <ToolTip Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
                                 <Border Padding="4"
-                                    Background="Red" BorderBrush="White" BorderThickness="1">
+                                    Background="Red" BorderBrush="White"
+                                    BorderThickness="1">
                                     <TextBlock Foreground="White" Text="{Binding AdornedElement.(Validation.Errors)/ErrorContent, Mode=OneWay}" />
                                 </Border>
                             </ToolTip>
@@ -97,97 +119,6 @@
                     </Canvas>
                     <AdornedElementPlaceholder x:Name="Adorner" />
                 </Grid>
-            </ControlTemplate>
-            <ControlTemplate x:Key="PdfViewerThumbTemplate" TargetType="{x:Type PdfViewer:PdfViewer}">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
-                    <ScrollViewer HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}" VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}">
-                        <Image RenderTransformOrigin="0.5,0.5" ScrollViewer.CanContentScroll="True"
-                            Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
-                            Stretch="None">
-                            <Image.LayoutTransform>
-                                <TransformGroup>
-                                    <ScaleTransform x:Name="Pdfscale" ScaleX="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" ScaleY="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <RotateTransform x:Name="Pdfrotate" Angle="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
-                                </TransformGroup>
-                            </Image.LayoutTransform>
-                        </Image>
-                    </ScrollViewer>
-                    <ContentControl x:Name="Cnt"
-                        Grid.Row="1"
-                        Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                        <StackPanel IsEnabled="{Binding Source, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                            Orientation="Horizontal"
-                            Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                            <Extensions:ContentToggleButton Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}" CommandParameter="{Binding ElementName=Lb}">
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="19" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <ListBox x:Name="Lb"
-                                        VerticalContentAlignment="Center"
-                                        ItemTemplate="{StaticResource PdfThumbItemTemplate}"
-                                        ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                        ScrollViewer.IsDeferredScrollingEnabled="True"
-                                        SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                        VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
-                                        VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
-                                        <ListBox.ItemContainerStyle>
-                                            <Style TargetType="ListBoxItem">
-                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                                <Setter Property="Margin" Value="1" />
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                        <ListBox.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <Extensions:VirtualizingWrapPanel Width="460" Height="300"
-                                                    CanHorizontallyScroll="False" ItemSize="140,140" StretchItems="False" />
-                                            </ItemsPanelTemplate>
-                                        </ListBox.ItemsPanel>
-                                    </ListBox>
-                                </Extensions:ContentToggleButton.OverContent>
-                            </Extensions:ContentToggleButton>
-                            <Extensions:NumericUpDownControl LargeChange="1"
-                                Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                Minimum="1" Orientation="Horizontal" SmallChange="1"
-                                Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                            <ComboBox ItemStringFormat="{}{0} Dpi"
-                                ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
-                                SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}, StringFormat=Dpi}"
-                                Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <TextBlock VerticalAlignment="Center">
-                                <Hyperlink Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}, Mode=OneWay}"
-                                    CommandParameter="{Binding Mode=OneWay}"
-                                    TextDecorations="None">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="4" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Hyperlink>
-                            </TextBlock>
-                        </StackPanel>
-                    </ContentControl>
-                </Grid>
-                <ControlTemplate.Triggers>
-                    <Trigger Property="IsEnabled" Value="False">
-                        <Setter Property="Opacity" Value="0.56" />
-                    </Trigger>
-                    <DataTrigger Binding="{Binding Visibility, ElementName=Cnt}" Value="Collapsed">
-                        <Setter TargetName="Cnt" Property="Content" Value="{x:Null}" />
-                    </DataTrigger>
-                </ControlTemplate.Triggers>
             </ControlTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateFull">
                 <Grid>
@@ -205,16 +136,24 @@
                         Grid.Column="1"
                         ContextMenuVisibility="Visible" Orientation="Height"
                         PdfFilePath="{Binding Mode=OneWay}"
-                        PrintButtonVisibility="Visible" ScrollBarVisible="Visible" SearchTextContentVisibility="Collapsed"
-                        SeekingLowerPdfDpi="True" SnapTick="True" />
-                    <UniformGrid Grid.Column="2" Rows="2">
-                        <local:TranslateView ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
-                        <TextBox Background="{StaticResource BorderBackground}"
-                            IsReadOnly="True"
-                            Text="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}"
-                            TextWrapping="Wrap" />
-                    </UniformGrid>
+                        PrintButtonVisibility="Visible" ScrollBarVisible="Visible"
+                        SearchTextContentVisibility="Collapsed" SnapTick="True" />
+                    <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                 </Grid>
+            </DataTemplate>
+            <DataTemplate x:Key="PdfViewerDocumentViewerTemplateMini">
+                <Image Width="150" Height="150" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                    <Image.Tag>
+                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                            <Binding Mode="OneWay" />
+                            <Binding Mode="OneWay">
+                                <Binding.Source>
+                                    <System:Int32>1</System:Int32>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </Image.Tag>
+                </Image>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid Margin="2">
@@ -222,9 +161,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <WrapPanel DataContext="{Binding Path=DataContext, ElementName=TwainCtrl}"
-                        IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}"
-                        Orientation="Horizontal">
+                    <WrapPanel DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}" Orientation="Horizontal">
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1" SmallChange="1"
                             Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
@@ -242,8 +179,7 @@
                             </Image>
                         </Button>
                         <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
                         </Button>
                         <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
@@ -255,15 +191,10 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding RotateSelectedPage}"
-                            CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/rotate.png" />
+                        <Button BorderBrush="Cyan" Command="{Binding RotateSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
+                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/rotate.png" />
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding AddAllFileToControlPanel}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan" Command="{Binding AddAllFileToControlPanel}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
                             </Button.Content>
@@ -272,24 +203,29 @@
                             Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
                             IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                            <Button.Content>
-                                <Grid>
-                                    <ProgressBar IsIndeterminate="{Binding DataContext.OcrIsBusy, RelativeSource={RelativeSource AncestorType=Window}}" />
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Text="OCR" />
-                                </Grid>
-                            </Button.Content>
+                            <Canvas Width="16" Height="16">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="70" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock Canvas.Bottom="0"
+                                    FontSize="10" Foreground="Red"
+                                    Text="{Binding DataContext.OcrPdfThumbnailPageNumber, RelativeSource={RelativeSource AncestorType=Window}}" />
+                            </Canvas>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding ReadPdfTag}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
+                        <Button Command="{Binding DataContext.WordOcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+                            <Image Width="16" Height="16" Source="{Binding Source='.docx', Converter={StaticResource FilePathToIconConverter}}" />
+                        </Button>
+                        <Button BorderBrush="Cyan" Command="{Binding ReadPdfTag}" CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
                             <Button.Content>
                                 <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
                             </Button.Content>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding MergeSelectedImagesToPdfFile}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan" Command="{Binding MergeSelectedImagesToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -311,9 +247,7 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding PasteFileToPdfFile}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan" Command="{Binding PasteFileToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -328,8 +262,8 @@
                         <Extensions:NumericUpDownControl IsReadOnly="True"
                             Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="0" SmallChange="1"
-                            Value="{Binding PdfSplitCount, ElementName=TwainCtrl}" />
-                        <Button Command="{Binding SplitPdf, ElementName=TwainCtrl}" CommandParameter="{Binding ElementName=PdfVwr}">
+                            Value="{Binding PdfSplitCount}" />
+                        <Button Command="{Binding SplitPdf}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -347,50 +281,26 @@
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PrintButtonVisibility="Visible" ScrollBarVisible="Hidden" SnapTick="True"
-                        Tag="{Binding ElementName=TwainCtrl, Mode=OneWay}"
-                        Template="{StaticResource PdfViewerThumbTemplate}" />
+                        PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
+                        SliderZoomAngleVisibility="Collapsed" SnapTick="True" />
+                    <Extensions:Magnifier ContentPanel="{Binding ElementName=PdfVwr}" IsActive="{Binding ShowMagnifier, Mode=OneWay, Source={x:Static properties:Settings.Default}}" ZoomFactor="{Binding MagnifyValue, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <ViewModel:CustomArchiveViewer AllowDrop="True" ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" Tag="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
-                <Controls:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Extensions:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
                 <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
             </DataTemplate>
-            <DataTemplate x:Key="EypImgViewerTemplate">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <TextBlock VerticalAlignment="Center">
-                        <Hyperlink BaselineAlignment="Center"
-                            Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            CommandParameter="{Binding Mode=OneWay}"
-                            TextDecorations="None">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
-                        </Hyperlink>
-                    </TextBlock>
-                    <twain:SimpleImageViewer Grid.Row="1"
-                        Width="210" Height="297"
-                        DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=StackPanel}}"
-                        ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
-                        PrintButtonVisibility="Collapsed"
-                        Tag="{Binding RelativeSource={RelativeSource AncestorType=twain:TwainCtrl}}" />
-                </Grid>
-            </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*" />
+                        <ColumnDefinition Width="4*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Extensions:ImageViewer x:Name="ImgVwr"
@@ -401,7 +311,7 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
-                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Slider LargeChange="1"
                             Maximum="{Binding ElementName=ImgVwr, Path=OriginalPixelHeight}"
@@ -417,97 +327,73 @@
                     </Grid>
                 </Grid>
             </DataTemplate>
+            <DataTemplate x:Key="DvdBurnerEmptyViewerTemplate">
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                    FontFamily="Webdings" FontSize="256"
+                    Foreground="Red" Text="N" />
+            </DataTemplate>
+            <DataTemplate x:Key="EmptyViewerTemplate">
+                <Image Width="128" Height="128" Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverterEmptyViewerTemplate}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
+            <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
+                <Extensions:ImageViewer Width="150" Height="150"
+                    DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    IsHitTestVisible="False" OpenButtonVisibility="Collapsed"
+                    OrijinalResimDosyaAçButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Collapsed" TifNavigasyonButtonEtkin="Collapsed"
+                    ToolBarVisibility="Collapsed" />
+            </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="EypViewerTemplate">
+                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" ToolBarVisibility="Collapsed" />
+            </DataTemplate>
+            <DataTemplate x:Key="EypViewerTemplateFull">
+                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
                 <Controls:MediaViewer Width="300" Height="300"
-                    AutoPlay="False" ContextMenuVisibility="Visible" ControlVisible="Collapsed"
+                    AutoPlay="False" ContextMenuVisibility="Visible"
+                    ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateMini">
-                <Controls:MediaViewer AutoPlay="False" ContextMenuVisibility="Visible" ControlVisible="Collapsed"
+                <Controls:MediaViewer AutoPlay="False" ContextMenuVisibility="Visible"
+                    ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateFull">
-                <Controls:MediaViewer AutoPlay="False"
-                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    OsdTextVisibility="Visible" />
-            </DataTemplate>
-            <DataTemplate x:Key="EmptyTemplate">
-                <TextBlock Width="210" TextWrapping="Wrap">
-                    <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        CommandParameter="{Binding Mode=OneWay}"
-                        TextDecorations="None">
-                        <Image Width="32" Height="32"
-                            Source="/TwainControl;component/Icons/delete.png" />
-                    </Hyperlink>
-                    <Image Width="32" Height="32"
-                        Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                    <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                        CommandParameter="{Binding Mode=OneWay}">
-                        <Run Text="{Binding Mode=OneWay}" />
-                    </Hyperlink>
-                </TextBlock>
-            </DataTemplate>
-            <DataTemplate x:Key="EypSimplePdfTemplate">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <TextBlock VerticalAlignment="Center">
-                        <Hyperlink BaselineAlignment="Center"
-                            Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            CommandParameter="{Binding Mode=OneWay}"
-                            TextDecorations="None">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
-                        </Hyperlink>
-                    </TextBlock>
-                    <twain:SimplePdfViewer Grid.Row="1"
-                        Width="210" Height="297"
-                        AutoFitContent="True"
-                        Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
-                        DpiListVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PrintButtonVisibility="Collapsed" ScrollBarVisible="Hidden" SliderZoomAngleVisibility="Collapsed"
-                        SnapTick="True"
-                        Tag="{Binding RelativeSource={RelativeSource AncestorType=twain:TwainCtrl}}"
-                        ToolBarVisibility="Collapsed" />
-                </Grid>
-            </DataTemplate>
-            <DataTemplate x:Key="XmlViewerTemplate">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <TextBlock VerticalAlignment="Center">
-                        <Hyperlink BaselineAlignment="Center"
-                            Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                            CommandParameter="{Binding Mode=OneWay}"
-                            TextDecorations="None">
-                            <Image Width="16" Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
-                        </Hyperlink>
-                    </TextBlock>
-                    <twain:SimpleXmlViewer Grid.Row="1"
-                        Width="210" Height="297"
-                        twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
-                </Grid>
+                <Controls:MediaViewer AutoPlay="False" MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" OsdTextVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="XmlViewerThumbTemplate">
                 <twain:XmlViewerControl Grid.Row="1" twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="SimplePdfTemplate">
+                <Image Grid.Row="1" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                    <Image.Tag>
+                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                            <Binding Mode="OneWay" Path="DataContext" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
+                            <Binding Mode="OneWay">
+                                <Binding.Source>
+                                    <System:Int32>1</System:Int32>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </Image.Tag>
+                </Image>
+            </DataTemplate>
+            <ItemsPanelTemplate x:Key="ListBoxWrapItemsPanel">
+                <Extensions:VirtualizingWrapPanel CanVerticallyScroll="False" ItemSize="100,100" SpacingMode="None" />
+            </ItemsPanelTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Margin" Value="1" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate>
-                            <Border Padding="{TemplateBinding Control.Padding}"
+                            <Border Margin="{TemplateBinding Control.Margin}"
+                                Padding="{TemplateBinding Control.Padding}"
                                 Background="{TemplateBinding Panel.Background}"
                                 BorderBrush="{TemplateBinding Border.BorderBrush}"
                                 BorderThickness="{TemplateBinding Border.BorderThickness}"
@@ -529,28 +415,196 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-            <ViewModel:ViewerTemplateSelector x:Key="DocumentViewerSelector"
+            <DataTemplate x:Key="ContributionTextTemplate">
+                <TextBlock Text="{Binding Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextWrapping="Wrap" />
+            </DataTemplate>
+            <ControlTemplate x:Key="CustomContributionTemplate" TargetType="{x:Type Extensions:ContributionControl}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="0"
+                        VerticalAlignment="Center"
+                        FontSize="9">
+                        <Run Text="{Binding MonthDateTotalContribution, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Run Text="/" />
+                        <Run Text="{Binding MonthTotalContribution, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Hyperlink Command="{Binding ResetDate, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
+                            <Run FontWeight="Bold" Text="X" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <ListBox Grid.Row="1" Grid.Column="0"
+                        FontSize="9"
+                        ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}}"
+                        SelectedItem="{Binding SelectedDay, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="1" Rows="7" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ListBox>
+                    <ListBox Grid.Row="0" Grid.Column="1"
+                        FontSize="9"
+                        ItemsSource="{Binding Months, RelativeSource={RelativeSource TemplatedParent}}"
+                        SelectedItem="{Binding SelectedMonth, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="12" Rows="1" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ListBox>
+                    <ListBox Grid.Row="1" Grid.Column="1"
+                        ItemsSource="{Binding Contributions, RelativeSource={RelativeSource TemplatedParent}}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                        SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                <Setter Property="Padding" Value="0" />
+                                <Setter Property="Margin" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="{Binding ContributionColumnCount, RelativeSource={RelativeSource AncestorType=Extensions:ContributionControl}}" Rows="{Binding ContributionRowCount, RelativeSource={RelativeSource AncestorType=Extensions:ContributionControl}}">
+                                    <UniformGrid.LayoutTransform>
+                                        <TransformGroup>
+                                            <RotateTransform Angle="90" />
+                                            <ScaleTransform ScaleX="-1" />
+                                        </TransformGroup>
+                                    </UniformGrid.LayoutTransform>
+                                </UniformGrid>
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Rectangle Width="10" Height="10"
+                                    Stroke="{Binding Stroke}"
+                                    ToolTipService.InitialShowDelay="100">
+                                    <Rectangle.Fill>
+                                        <MultiBinding Converter="{StaticResource ContributionToColorConverter}">
+                                            <Binding Path="Count" />
+                                            <Binding Path="MaxContribution" RelativeSource="{RelativeSource AncestorType=Extensions:ContributionControl}" />
+                                            <Binding Path="ContributionColor" RelativeSource="{RelativeSource AncestorType=Extensions:ContributionControl}" />
+                                        </MultiBinding>
+                                    </Rectangle.Fill>
+                                    <Rectangle.Style>
+                                        <Style TargetType="Rectangle">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Count}" Value="0">
+                                                    <Setter Property="ToolTipService.IsEnabled" Value="False" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Rectangle.Style>
+                                    <Rectangle.ToolTip>
+                                        <ToolTip>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition />
+                                                </Grid.RowDefinitions>
+                                                <TextBlock>
+                                                    <Run FontWeight="Bold" Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" />
+                                                    <LineBreak />
+                                                    <Run Text="{Binding Count}" />
+                                                </TextBlock>
+                                                <ListBox Grid.Row="1"
+                                                    Width="800" Height="600"
+                                                    ItemsSource="{Binding Name}"
+                                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                                    <ListBox.Style>
+                                                        <Style TargetType="ListBox">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
+                                                                    <Setter Property="ItemTemplateSelector" Value="{DynamicResource DocumentViewerMiniSelector}" />
+                                                                    <Setter Property="ItemsPanel">
+                                                                        <Setter.Value>
+                                                                            <ItemsPanelTemplate>
+                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="155,155" SpacingMode="None" />
+                                                                            </ItemsPanelTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </DataTrigger>
+                                                                <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="false">
+                                                                    <Setter Property="ItemTemplate" Value="{StaticResource ContributionTextTemplate}" />
+                                                                    <Setter Property="ItemsPanel">
+                                                                        <Setter.Value>
+                                                                            <ItemsPanelTemplate>
+                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="250,18" SpacingMode="None" />
+                                                                            </ItemsPanelTemplate>
+                                                                        </Setter.Value>
+                                                                    </Setter>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </ListBox.Style>
+                                                </ListBox>
+                                            </Grid>
+                                        </ToolTip>
+                                    </Rectangle.ToolTip>
+                                </Rectangle>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </ControlTemplate>
+            <twain:ViewerTemplateSelector x:Key="DocumentViewerSelector"
+                Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
-            <ViewModel:ViewerTemplateSelector x:Key="ThumbViewerSelector"
+            <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector"
+                Eyp="{StaticResource EmptyViewerTemplate}"
+                Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
+                Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}"
+                Vid="{StaticResource EmptyViewerTemplate}"
+                Xml="{StaticResource EmptyViewerTemplate}"
+                Xps="{StaticResource EmptyViewerTemplate}"
+                Zip="{StaticResource EmptyViewerTemplate}" />
+            <twain:ViewerTemplateSelector x:Key="ThumbViewerSelector"
+                Eyp="{StaticResource EypViewerTemplate}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
-            <ViewModel:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
-                Empty="{StaticResource EmptyTemplate}"
-                Img="{StaticResource EypImgViewerTemplate}"
-                Pdf="{StaticResource EypSimplePdfTemplate}"
-                Vid="{StaticResource VideoViewerTemplate}"
-                Xml="{StaticResource XmlViewerTemplate}"
+            <twain:ViewerTemplateSelector x:Key="FastPdfThumbViewerSelector"
+                Eyp="{StaticResource EypViewerTemplate}"
+                Img="{StaticResource ImgViewerTemplate}"
+                Pdf="{StaticResource SimplePdfTemplate}"
+                Vid="{StaticResource VideoViewerTemplateMini}"
+                Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
+            <twain:ViewerTemplateSelector x:Key="DvdBurnerDocumentViewerSelector"
+                Empty="{StaticResource DvdBurnerEmptyViewerTemplate}"
+                Eyp="{StaticResource EypViewerTemplate}"
+                Img="{StaticResource ImgViewerTemplate}"
+                Pdf="{StaticResource PdfViewerTemplateFull}"
+                Vid="{StaticResource VideoViewerTemplateFull}"
+                Xml="{StaticResource XmlViewerThumbTemplate}"
+                Xps="{StaticResource XpsViewerTemplate}"
+                Zip="{StaticResource ZipViewerTemplateFull}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

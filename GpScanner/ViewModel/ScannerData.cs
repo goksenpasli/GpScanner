@@ -1,17 +1,22 @@
-﻿using System.Collections.ObjectModel;
+﻿using Extensions;
+using System.Collections.ObjectModel;
 using System.Xml.Serialization;
-using Extensions;
 
 namespace GpScanner.ViewModel;
 
 [XmlRoot(ElementName = "ScannerData")]
 public class ScannerData : InpcBase
 {
+    private ObservableCollection<Data> data = [];
+    private ObservableCollection<ReminderData> reminder = [];
+
     [XmlElement(ElementName = "Data")]
-    public ObservableCollection<Data> Data {
+    public ObservableCollection<Data> Data
+    {
         get => data;
 
-        set {
+        set
+        {
             if (data != value)
             {
                 data = value;
@@ -20,5 +25,17 @@ public class ScannerData : InpcBase
         }
     }
 
-    private ObservableCollection<Data> data = new();
+    [XmlElement(ElementName = "Reminder")]
+    public ObservableCollection<ReminderData> Reminder
+    {
+        get => reminder;
+        set
+        {
+            if (reminder != value)
+            {
+                reminder = value;
+                OnPropertyChanged(nameof(Reminder));
+            }
+        }
+    }
 }

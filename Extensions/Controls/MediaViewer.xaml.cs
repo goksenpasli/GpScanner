@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions.Properties;
+using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -15,12 +17,123 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
-using Microsoft.Win32;
 
 namespace Extensions.Controls;
 
 public partial class MediaViewer : UserControl, INotifyPropertyChanged
 {
+    public static readonly DependencyProperty AngleProperty =
+        DependencyProperty.Register("Angle", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0d));
+    public static readonly DependencyProperty ApplyBwProperty =
+        DependencyProperty.Register("ApplyBw", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty ApplyEmbossProperty =
+        DependencyProperty.Register("ApplyEmboss", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty ApplyGrayscaleProperty =
+        DependencyProperty.Register("ApplyGrayscale", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty ApplyPixelateProperty =
+        DependencyProperty.Register("ApplyPixelate", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty ApplySharpenProperty =
+        DependencyProperty.Register("ApplySharpen", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty AutoLoadSameNameSubtitleFileProperty =
+        DependencyProperty.Register("AutoLoadSameNameSubtitleFile", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty AutoPlayProperty = DependencyProperty.Register(
+        "AutoPlay",
+        typeof(bool),
+        typeof(MediaViewer),
+        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, AutoplayChanged));
+    public static readonly DependencyProperty AutoTranslateProperty =
+        DependencyProperty.Register("AutoTranslate", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty BlurAmountProperty =
+        DependencyProperty.Register("BlurAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(5.0d));
+    public static readonly DependencyProperty BlurColorProperty =
+        DependencyProperty.Register("BlurColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty BwAmountProperty =
+        DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
+    public static readonly DependencyProperty ContextMenuVisibilityProperty =
+        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
+    public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register("ControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register("EndTimeSpan", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero));
+    public static readonly DependencyProperty FlipXProperty =
+        DependencyProperty.Register("FlipX", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
+    public static readonly DependencyProperty FlipYProperty =
+        DependencyProperty.Register("FlipY", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
+    public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(MediaViewer), new PropertyMetadata(95d, FovChanged));
+    public static readonly DependencyProperty InvertColorProperty =
+        DependencyProperty.Register("InvertColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty MediaDataFilePathProperty =
+        DependencyProperty.Register("MediaDataFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, MediaDataFilePathChanged));
+    public static readonly DependencyProperty MediaPositionProperty = DependencyProperty.Register(
+        "MediaPosition",
+        typeof(TimeSpan),
+        typeof(MediaViewer),
+        new PropertyMetadata(TimeSpan.Zero, MediaPositionChanged));
+    public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register(
+        "MediaVolume",
+        typeof(double),
+        typeof(MediaViewer),
+        new PropertyMetadata(Settings.Default.MediaVolume, MediaVolumeChanged));
+    public static readonly DependencyProperty OpenButtonVisibilityProperty =
+        DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
+    public static readonly DependencyProperty OsdDisplayTimeProperty =
+        DependencyProperty.Register("OsdDisplayTime", typeof(int), typeof(MediaViewer), new PropertyMetadata(3));
+    public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register("OsdText", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, OsdTextChanged));
+    public static readonly DependencyProperty OsdTextVisibilityProperty =
+        DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
+    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(MediaViewer), new PropertyMetadata(PanoramaModeChanged));
+    public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register("PixelateSize", typeof(Size), typeof(MediaViewer), new PropertyMetadata(new Size(60, 40)));
+    public static readonly DependencyProperty RotateXProperty =
+        DependencyProperty.Register("RotateX", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0));
+    public static readonly DependencyProperty RotateYProperty =
+        DependencyProperty.Register("RotateY", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0));
+    public static readonly DependencyProperty SharpenAmountProperty =
+        DependencyProperty.Register("SharpenAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
+    public static readonly DependencyProperty SliderControlVisibleProperty =
+        DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register("SubTitleColor", typeof(Brush), typeof(MediaViewer), new PropertyMetadata(Brushes.White));
+    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register("SubtitleFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, SubtitleFilePathChanged));
+    public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty =
+        DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
+    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register("SubTitleMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
+    public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
+    public static readonly DependencyProperty SubTitleSizeProperty =
+        DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
+    public static readonly DependencyProperty SubtitleTooltipEnabledProperty =
+        DependencyProperty.Register("SubtitleTooltipEnabled", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty SubTitleVerticalAlignmentProperty =
+        DependencyProperty.Register("SubTitleVerticalAlignment", typeof(VerticalAlignment), typeof(MediaViewer), new PropertyMetadata(VerticalAlignment.Bottom));
+    public static readonly DependencyProperty SubTitleVisibilityProperty =
+        DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ThumbApplyEffectsProperty =
+        DependencyProperty.Register("ThumbApplyEffects", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty ThumbHeightCountProperty =
+        DependencyProperty.Register("ThumbHeightCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
+    public static readonly DependencyProperty ThumbMarginProperty = DependencyProperty.Register("ThumbMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(5)));
+    public static readonly DependencyProperty ThumbShowTimeProperty =
+        DependencyProperty.Register("ThumbShowTime", typeof(bool), typeof(MediaViewer), new PropertyMetadata(true));
+    public static readonly DependencyProperty ThumbWidthCountProperty =
+        DependencyProperty.Register("ThumbWidthCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
+    public static readonly DependencyProperty TimeDisplayVisibilityProperty =
+        DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty TooltipOriginalSubtitleProperty =
+        DependencyProperty.Register("TooltipOriginalSubtitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(null));
+    public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
+    private const int MillisecondsDelay = 500;
+    private const string VideoFileExtensions =
+        "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv";
+    private static readonly DispatcherTimer osdtimer = new();
+    private static bool sliderdragging;
+    private static DispatcherTimer timer;
+    private bool _isOnDrag;
+    private Point _startPoint;
+    private double _startRotateX;
+    private double _startRotateY;
+    private ObservableCollection<SubtitleContent> parsedSubtitle;
+    private string saveTranslateLanguage;
+    private string searchSubtitle;
+    private int selectedEncodingCodePage = 65001;
+    private bool showOsdInfo;
+    private int translateSaveProgress;
+
     public MediaViewer()
     {
         InitializeComponent();
@@ -43,29 +156,24 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         LoadSubtitle = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Srt Dosyası (*.srt)|*.srt" };
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Altyazı Dosyaları (*.srt;*.vtt)|*.srt;*.vtt" };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     SubtitleFilePath = openFileDialog.FileName;
-                    ParsedSubtitle = ParseSrtFile(SubtitleFilePath);
                 }
             },
-         parameter => true);
+            parameter => true);
 
         OpenFile = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new()
-                {
-                    Multiselect = false,
-                    Filter = VideoFileExtensions
-                };
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = VideoFileExtensions };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     MediaDataFilePath = openFileDialog.FileName;
                 }
             },
-         parameter => true);
+            parameter => true);
 
         CaptureImage = new RelayCommand<object>(
             parameter =>
@@ -76,9 +184,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 File.WriteAllBytes(dosya, data);
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 OsdText = "Görüntü Yakalandı";
-                GC.Collect();
             },
-         parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
+            parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
         CaptureThumbnail = new RelayCommand<object>(
             async parameter =>
@@ -90,7 +197,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
                 Player.Play();
 
-                if (Keyboard.IsKeyDown(Key.LeftAlt) || Keyboard.IsKeyDown(Key.RightAlt))
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     string singlefile = null;
                     for (int i = 1; i <= ThumbHeightCount * ThumbWidthCount; i++)
@@ -103,7 +210,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     }
 
                     ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
-                    GC.Collect();
+
                     return;
                 }
 
@@ -115,8 +222,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     await Task.Delay(MillisecondsDelay);
 
                     imgdata = ThumbApplyEffects
-                        ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
-                        : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                              ? grid.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg)
+                              : Player.ToRenderTargetBitmap().Resize(oran).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
 
                     Grid imagegrid = GenerateImageGrid();
                     Image image = GenerateImage(imgdata, ThumbMargin);
@@ -137,18 +244,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 File.WriteAllBytes(dosya, uniformgrid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 MediaVolume = 1;
-                GC.Collect();
             },
-         parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
+            parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
 
         AddToPlaylist = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new()
-                {
-                    Multiselect = true,
-                    Filter = VideoFileExtensions
-                };
+                OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = VideoFileExtensions };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     foreach (string item in openFileDialog.FileNames)
@@ -160,16 +262,52 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     }
                 }
             },
-         parameter => true);
+            parameter => true);
+
+        SaveTranslatedSubtitle = new RelayCommand<object>(
+            async parameter =>
+            {
+                ObservableCollection<SubtitleContent> translatedsubtitle = [];
+                TranslateSaveProgress = 0;
+                foreach (SubtitleContent item in ParsedSubtitle)
+                {
+                    SubtitleContent srtcontent = new()
+                    {
+                        Text = await TranslateViewModel.DileÇevirAsync(item.Text, "auto", SaveTranslateLanguage),
+                        StartTime = item.StartTime,
+                        EndTime = item.EndTime,
+                        Segment = item.Segment
+                    };
+                    translatedsubtitle.Add(srtcontent);
+                    TranslateSaveProgress++;
+                }
+                SaveFileDialog saveFileDialog = new() { AddExtension = true, Filter = "Srt Dosyası (*.srt)|*.srt|Vtt Dosyası (*.vtt)|*.vtt", FileName = SaveTranslateLanguage };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    StringBuilder sb = new();
+                    foreach (SubtitleContent item in translatedsubtitle)
+                    {
+                        _ = saveFileDialog.FilterIndex == 1
+                            ? sb.Append(item.Segment)
+                              .Append('\n')
+                              .Append(item.StartTime.ToString().Replace('.', ','))
+                              .Append(" --> ")
+                              .Append(item.EndTime.ToString().Replace('.', ','))
+                              .Append("\r\n")
+                              .Append(item.Text)
+                              .Append("\r\n\r\n")
+                            : sb.Append(item.StartTime.ToString()).Append(" --> ").Append(item.EndTime.ToString()).Append("\r\n").Append(item.Text).Append("\r\n\r\n");
+                    }
+                    using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
+                    streamWriter.WriteLine(sb.ToString().Trim());
+                }
+            },
+            parameter => ParsedSubtitle?.Count > 0 && !string.IsNullOrWhiteSpace(SaveTranslateLanguage) && SaveTranslateLanguage != "auto");
 
         SetSubtitleMargin = new RelayCommand<object>(
             parameter =>
             {
-                Thickness defaultsubtitlethickness = new(
-                   SubTitleMargin.Left,
-                   SubTitleMargin.Top,
-                   SubTitleMargin.Right,
-                   SubTitleMargin.Bottom);
+                Thickness defaultsubtitlethickness = new(SubTitleMargin.Left, SubTitleMargin.Top, SubTitleMargin.Right, SubTitleMargin.Bottom);
                 if (parameter is object content)
                 {
                     switch (content)
@@ -199,7 +337,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     SubTitleMargin = defaultsubtitlethickness;
                 }
             },
-         parameter => true);
+            parameter => true);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -273,7 +411,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Translate")]
     [Category("Translate")]
     public string ÇevrilenDil { get; set; } = "en";
-
     [Description("Video Controls")]
     [Category("Controls")]
     public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
@@ -289,7 +426,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Video Controls")]
     [Category("Controls")]
     public int ForwardBackwardSkipSecond { get; set; } = 30;
-
     [Description("Video Controls")]
     [Category("Controls")]
     public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
@@ -317,7 +453,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Translate")]
     [Category("Translate")]
     public string MevcutDil { get; set; } = "auto";
-
     [Description("Video Controls")]
     [Category("Controls")]
     public Visibility OpenButtonVisibility { get => (Visibility)GetValue(OpenButtonVisibilityProperty); set => SetValue(OpenButtonVisibilityProperty, value); }
@@ -344,10 +479,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     [Browsable(false)]
-    public ObservableCollection<SrtContent> ParsedSubtitle {
+    public ObservableCollection<SubtitleContent> ParsedSubtitle
+    {
         get => parsedSubtitle;
 
-        set {
+        set
+        {
             if (parsedSubtitle != value)
             {
                 parsedSubtitle = value;
@@ -363,8 +500,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
-    public ObservableCollection<string> PlayList { get; set; } = new();
-
+    public ObservableCollection<string> PlayList { get; set; } = [];
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
@@ -375,13 +511,44 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Browsable(false)]
     public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
 
-    public string SearchSubtitle {
-        get => searchSubtitle; set {
+    public RelayCommand<object> SaveTranslatedSubtitle { get; }
 
+    public string SaveTranslateLanguage
+    {
+        get => saveTranslateLanguage;
+        set
+        {
+            if (saveTranslateLanguage != value)
+            {
+                saveTranslateLanguage = value;
+                OnPropertyChanged(nameof(SaveTranslateLanguage));
+            }
+        }
+    }
+
+    public string SearchSubtitle
+    {
+        get => searchSubtitle;
+
+        set
+        {
             if (searchSubtitle != value)
             {
                 searchSubtitle = value;
                 OnPropertyChanged(nameof(SearchSubtitle));
+            }
+        }
+    }
+
+    public int SelectedEncodingCodePage
+    {
+        get => selectedEncodingCodePage;
+        set
+        {
+            if (selectedEncodingCodePage != value)
+            {
+                selectedEncodingCodePage = value;
+                OnPropertyChanged(nameof(SelectedEncodingCodePage));
             }
         }
     }
@@ -392,12 +559,24 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Category("Effects")]
     public double SharpenAmount { get => (double)GetValue(SharpenAmountProperty); set => SetValue(SharpenAmountProperty, value); }
 
+    public bool ShowOsdInfo
+    {
+        get => showOsdInfo;
+        set
+        {
+            if (showOsdInfo != value)
+            {
+                showOsdInfo = value;
+                OnPropertyChanged(nameof(ShowOsdInfo));
+            }
+        }
+    }
+
     [Description("Video Controls")]
     [Category("Controls")]
     public Visibility SliderControlVisible { get => (Visibility)GetValue(SliderControlVisibleProperty); set => SetValue(SliderControlVisibleProperty, value); }
 
     public Geometry3D SphereModel { get; set; } = CreateGeometry();
-
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     [Browsable(false)]
@@ -407,16 +586,14 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Category("Subtitle")]
     public Brush SubTitleColor { get => (Brush)GetValue(SubTitleColorProperty); set => SetValue(SubTitleColorProperty, value); }
 
+    public EncodingInfo[] SubtitleEncodings { get; } = Encoding.GetEncodings();
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public string SubtitleFilePath { get => (string)GetValue(SubtitleFilePathProperty); set => SetValue(SubtitleFilePathProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public HorizontalAlignment SubTitleHorizontalAlignment {
-        get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
-        set => SetValue(SubTitleHorizontalAlignmentProperty, value);
-    }
+    public HorizontalAlignment SubTitleHorizontalAlignment { get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty); set => SetValue(SubTitleHorizontalAlignmentProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -432,10 +609,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public VerticalAlignment SubTitleVerticalAlignment {
-        get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty);
-        set => SetValue(SubTitleVerticalAlignmentProperty, value);
-    }
+    public VerticalAlignment SubTitleVerticalAlignment { get => (VerticalAlignment)GetValue(SubTitleVerticalAlignmentProperty); set => SetValue(SubTitleVerticalAlignmentProperty, value); }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
@@ -468,6 +642,19 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public string TooltipOriginalSubtitle { get => (string)GetValue(TooltipOriginalSubtitleProperty); set => SetValue(TooltipOriginalSubtitleProperty, value); }
+
+    public int TranslateSaveProgress
+    {
+        get => translateSaveProgress;
+        set
+        {
+            if (translateSaveProgress != value)
+            {
+                translateSaveProgress = value;
+                OnPropertyChanged(nameof(TranslateSaveProgress));
+            }
+        }
+    }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -516,215 +703,67 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return mesh;
     }
 
-    public ObservableCollection<SrtContent> ParseSrtFile(string filepath)
+    public ObservableCollection<SubtitleContent> ParseSrtFile(string filepath)
     {
         try
         {
-            ObservableCollection<SrtContent> content = new();
+            ObservableCollection<SubtitleContent> content = [];
             const string pattern = "<[/]?[ib]>";
-            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding("UTF-8")).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding(SelectedEncodingCodePage)).Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries))
             {
                 string[] lines = element.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] times = lines[1].Split(new string[] { " --> " }, StringSplitOptions.RemoveEmptyEntries);
                 content.Add(
-                    new SrtContent
+                    new SubtitleContent
                     {
-                        StartTime = TimeSpan.Parse(lines[1].Substring(0, lines[1].LastIndexOf("-->")).Trim()),
-                        EndTime = TimeSpan.Parse(lines[1].Substring(lines[1].LastIndexOf("-->") + 3).Trim()),
+                        StartTime = TimeSpan.Parse(times[0]),
+                        EndTime = TimeSpan.Parse(times[1]),
                         Text = Regex.Replace(string.Concat(lines.Skip(2).Take(lines.Length - 2)), pattern, string.Empty),
                         Segment = lines[0]
                     });
             }
+
             return content;
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(nameof(filepath), ex);
+            throw new ArgumentException(ex.Message);
         }
     }
 
-    public static readonly DependencyProperty AngleProperty =
-                                                                                                                                                                                                                                                                                        DependencyProperty.Register("Angle", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0d));
+    public ObservableCollection<SubtitleContent> ParseVttFile(string filePath)
+    {
+        try
+        {
+            ObservableCollection<SubtitleContent> subtitles = [];
+            Regex timestampRegex = new(@"^(\d{2}:\d{2}:\d{2}.\d{3,})\s*-->\s*(\d{2}:\d{2}:\d{2}.\d{3,})");
+            SubtitleContent currentSubtitle = null;
 
-    public static readonly DependencyProperty ApplyBwProperty =
-        DependencyProperty.Register("ApplyBw", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty ApplyEmbossProperty =
-        DependencyProperty.Register("ApplyEmboss", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty ApplyGrayscaleProperty =
-        DependencyProperty.Register("ApplyGrayscale", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty ApplyPixelateProperty =
-        DependencyProperty.Register("ApplyPixelate", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty ApplySharpenProperty =
-        DependencyProperty.Register("ApplySharpen", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty AutoLoadSameNameSubtitleFileProperty =
-        DependencyProperty.Register("AutoLoadSameNameSubtitleFile", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty AutoPlayProperty = DependencyProperty.Register(
-        "AutoPlay",
-        typeof(bool),
-        typeof(MediaViewer),
-        new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, AutoplayChanged));
-
-    public static readonly DependencyProperty AutoTranslateProperty =
-        DependencyProperty.Register("AutoTranslate", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty BlurAmountProperty =
-        DependencyProperty.Register("BlurAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(5.0d));
-
-    public static readonly DependencyProperty BlurColorProperty =
-        DependencyProperty.Register("BlurColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty BwAmountProperty =
-        DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
-
-    public static readonly DependencyProperty ContextMenuVisibilityProperty =
-        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
-
-    public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register(
-        "ControlVisible",
-        typeof(Visibility),
-        typeof(MediaViewer),
-        new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register(
-        "EndTimeSpan",
-        typeof(TimeSpan),
-        typeof(MediaViewer),
-        new PropertyMetadata(TimeSpan.Zero));
-
-    public static readonly DependencyProperty FlipXProperty =
-        DependencyProperty.Register("FlipX", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
-
-    public static readonly DependencyProperty FlipYProperty =
-        DependencyProperty.Register("FlipY", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
-
-    public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(MediaViewer), new PropertyMetadata(95d, FovChanged));
-
-    public static readonly DependencyProperty InvertColorProperty =
-        DependencyProperty.Register("InvertColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty MediaDataFilePathProperty =
-        DependencyProperty.Register("MediaDataFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, MediaDataFilePathChanged));
-
-    public static readonly DependencyProperty MediaPositionProperty = DependencyProperty.Register(
-        "MediaPosition",
-        typeof(TimeSpan),
-        typeof(MediaViewer),
-        new PropertyMetadata(TimeSpan.Zero, MediaPositionChanged));
-
-    public static readonly DependencyProperty MediaVolumeProperty = DependencyProperty.Register(
-        "MediaVolume",
-        typeof(double),
-        typeof(MediaViewer),
-        new PropertyMetadata(1d, MediaVolumeChanged));
-
-    public static readonly DependencyProperty OpenButtonVisibilityProperty =
-        DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
-
-    public static readonly DependencyProperty OsdDisplayTimeProperty =
-        DependencyProperty.Register("OsdDisplayTime", typeof(int), typeof(MediaViewer), new PropertyMetadata(3));
-
-    public static readonly DependencyProperty OsdTextProperty = DependencyProperty.Register(
-        "OsdText",
-        typeof(string),
-        typeof(MediaViewer),
-        new PropertyMetadata(null, OsdTextChanged));
-
-    public static readonly DependencyProperty OsdTextVisibilityProperty =
-        DependencyProperty.Register("OsdTextVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Collapsed));
-
-    public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register(
-        "PanoramaMode",
-        typeof(bool),
-        typeof(MediaViewer),
-        new PropertyMetadata(PanoramaModeChanged));
-
-    public static readonly DependencyProperty PixelateSizeProperty = DependencyProperty.Register(
-        "PixelateSize",
-        typeof(Size),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Size(60, 40)));
-
-    public static readonly DependencyProperty RotateXProperty =
-        DependencyProperty.Register("RotateX", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0));
-
-    public static readonly DependencyProperty RotateYProperty =
-        DependencyProperty.Register("RotateY", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.0));
-
-    public static readonly DependencyProperty SharpenAmountProperty =
-        DependencyProperty.Register("SharpenAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
-
-    public static readonly DependencyProperty SliderControlVisibleProperty =
-        DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register(
-        "SubTitleColor",
-        typeof(Brush),
-        typeof(MediaViewer),
-        new PropertyMetadata(Brushes.White));
-
-    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register(
-        "SubtitleFilePath",
-        typeof(string),
-        typeof(MediaViewer),
-        new PropertyMetadata(null, SubtitleFilePathChanged));
-
-    public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty =
-        DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
-
-    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register(
-        "SubTitleMargin",
-        typeof(Thickness),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
-
-    public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
-
-    public static readonly DependencyProperty SubTitleSizeProperty =
-        DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
-
-    public static readonly DependencyProperty SubtitleTooltipEnabledProperty =
-        DependencyProperty.Register("SubtitleTooltipEnabled", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty SubTitleVerticalAlignmentProperty =
-        DependencyProperty.Register("SubTitleVerticalAlignment", typeof(VerticalAlignment), typeof(MediaViewer), new PropertyMetadata(VerticalAlignment.Bottom));
-
-    public static readonly DependencyProperty SubTitleVisibilityProperty =
-        DependencyProperty.Register("SubTitleVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty ThumbApplyEffectsProperty =
-        DependencyProperty.Register("ThumbApplyEffects", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
-
-    public static readonly DependencyProperty ThumbHeightCountProperty =
-        DependencyProperty.Register("ThumbHeightCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
-
-    public static readonly DependencyProperty ThumbMarginProperty = DependencyProperty.Register(
-        "ThumbMargin",
-        typeof(Thickness),
-        typeof(MediaViewer),
-        new PropertyMetadata(new Thickness(5)));
-
-    public static readonly DependencyProperty ThumbShowTimeProperty =
-        DependencyProperty.Register("ThumbShowTime", typeof(bool), typeof(MediaViewer), new PropertyMetadata(true));
-
-    public static readonly DependencyProperty ThumbWidthCountProperty =
-        DependencyProperty.Register("ThumbWidthCount", typeof(int), typeof(MediaViewer), new PropertyMetadata(1));
-
-    public static readonly DependencyProperty TimeDisplayVisibilityProperty =
-        DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
-
-    public static readonly DependencyProperty TooltipOriginalSubtitleProperty =
-        DependencyProperty.Register("TooltipOriginalSubtitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(null));
-
-    public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register(
-        "VideoStretch",
-        typeof(Stretch),
-        typeof(MediaViewer),
-        new PropertyMetadata(Stretch.Uniform));
+            foreach (string line in File.ReadAllLines(filePath, Encoding.GetEncoding(SelectedEncodingCodePage)))
+            {
+                if (timestampRegex.IsMatch(line))
+                {
+                    Match match = timestampRegex.Match(line);
+                    currentSubtitle = new SubtitleContent { StartTime = TimeSpan.Parse(match.Groups[1].Value), EndTime = TimeSpan.Parse(match.Groups[2].Value), };
+                }
+                else if (!string.IsNullOrWhiteSpace(line) && currentSubtitle != null)
+                {
+                    currentSubtitle.Text += $"{line.Trim()} ";
+                }
+                else if (string.IsNullOrWhiteSpace(line) && currentSubtitle != null)
+                {
+                    currentSubtitle.Text = currentSubtitle.Text.Trim();
+                    subtitles.Add(currentSubtitle);
+                    currentSubtitle = null;
+                }
+            }
+            return subtitles;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException(ex.Message);
+        }
+    }
 
     internal static Point3D GetPosition(double t, double y)
     {
@@ -734,10 +773,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return new Point3D(x, y, z);
     }
 
-    protected virtual void OnPropertyChanged(string propertyName)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
+    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -777,10 +813,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return File.Exists(autosrtfile) ? autosrtfile : null;
     }
 
-    private static Vector3D GetNormal(double t, double y)
-    {
-        return (Vector3D)GetPosition(t, y);
-    }
+    private static Vector3D GetNormal(double t, double y) => (Vector3D)GetPosition(t, y);
 
     private static Point GetTextureCoordinate(double t, double y)
     {
@@ -823,18 +856,15 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
                     {
                         viewer.EndTimeSpan = mediaelement.NaturalDuration.TimeSpan;
-                        timer = new DispatcherTimer(
-                            TimeSpan.FromSeconds(1),
-                            DispatcherPriority.Normal,
-                            (s, _) => viewer.MediaPosition = mediaelement.Position,
-                            Dispatcher.CurrentDispatcher);
+                        timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
                         timer.Start();
+                        viewer.SetOsdInfo();
                     }
                 }
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(nameof(viewer.Player.Source), ex);
+                throw new ArgumentException(ex.Message);
             }
         }
     }
@@ -858,6 +888,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             viewer.Player.Volume = (double)e.NewValue;
             viewer.OsdText = $"Ses: {(int)(viewer.Player.Volume * 100)}";
+            Settings.Default.MediaVolume = (double)e.NewValue;
+            Settings.Default.Save();
         }
     }
 
@@ -897,7 +929,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void RenderSubtitle(MediaViewer viewer, TimeSpan position)
     {
-        foreach (SrtContent srtcontent in viewer.ParsedSubtitle)
+        foreach (SubtitleContent srtcontent in viewer.ParsedSubtitle)
         {
             if (position > srtcontent.StartTime && position < srtcontent.EndTime)
             {
@@ -912,22 +944,17 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 {
                     viewer.SubTitle = srtcontent.Text;
                 }
+                continue;
             }
-
-            if (position > srtcontent.EndTime)
-            {
-                srtcontent.BackgroundColor = null;
-                viewer.TooltipOriginalSubtitle = string.Empty;
-                viewer.SubTitle = string.Empty;
-            }
+            srtcontent.BackgroundColor = null;
         }
     }
 
     private static void SubtitleFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue is string file)
         {
-            viewer.ParsedSubtitle = viewer.ParseSrtFile((string)e.NewValue);
+            viewer.ParsedSubtitle = viewer.GetParserSubtitleContent(file);
         }
     }
 
@@ -940,15 +967,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void FlipHor_Click(object sender, RoutedEventArgs e)
-    {
-        FlipX = FlipX == 1 ? -1 : 1;
-    }
+    private void FlipHor_Click(object sender, RoutedEventArgs e) => FlipX = FlipX == 1 ? -1 : 1;
 
-    private void FlipVer_Click(object sender, RoutedEventArgs e)
-    {
-        FlipY = FlipY == 1 ? -1 : 1;
-    }
+    private void FlipVer_Click(object sender, RoutedEventArgs e) => FlipY = FlipY == 1 ? -1 : 1;
 
     private void Forward_Click(object sender, RoutedEventArgs e)
     {
@@ -974,23 +995,27 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return image;
     }
 
-    private TextBlock GenerateWhiteTextBlock(string text)
-    {
-        return new() { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center };
-    }
+    private TextBlock GenerateWhiteTextBlock(string text) => new() { Text = text, Foreground = Brushes.White, HorizontalAlignment = HorizontalAlignment.Center };
 
     private MediaState GetMediaState(MediaElement myMedia)
     {
         FieldInfo hlp = typeof(MediaElement).GetField("_helper", BindingFlags.NonPublic | BindingFlags.Instance);
-        object helperObject = hlp.GetValue(myMedia);
-        FieldInfo stateField = helperObject.GetType().GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
-        return (MediaState)stateField.GetValue(helperObject);
+        object helperObject = hlp?.GetValue(myMedia);
+        FieldInfo stateField = helperObject?.GetType().GetField("_currentState", BindingFlags.NonPublic | BindingFlags.Instance);
+        return (MediaState)stateField?.GetValue(helperObject);
     }
 
     private string GetNextPlayListFile()
     {
         int index = PlayList.IndexOf(MediaDataFilePath);
         return index < PlayList.Count - 1 ? PlayList[index + 1] : null;
+    }
+
+    private ObservableCollection<SubtitleContent> GetParserSubtitleContent(string file)
+    {
+        return string.Equals(Path.GetExtension(file), ".srt", StringComparison.OrdinalIgnoreCase)
+               ? ParseSrtFile(file)
+               : string.Equals(Path.GetExtension(file), ".vtt", StringComparison.OrdinalIgnoreCase) ? ParseVttFile(file) : null;
     }
 
     private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
@@ -1006,10 +1031,20 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         if (e.PropertyName is "SearchSubtitle")
         {
             MediaViewerSubtitleControl.cvs.Filter += (s, x) =>
-             {
-                 SrtContent srtContent = x.Item as SrtContent;
-                 x.Accepted = srtContent.Text.Contains(SearchSubtitle);
-             };
+                                                     {
+                                                         SubtitleContent srtContent = x.Item as SubtitleContent;
+                                                         x.Accepted = srtContent.Text.Contains(SearchSubtitle);
+                                                     };
+        }
+
+        if (e.PropertyName is "SelectedEncodingCodePage" && ParsedSubtitle is not null)
+        {
+            ParsedSubtitle = GetParserSubtitleContent(SubtitleFilePath);
+        }
+
+        if (e.PropertyName is "ShowOsdInfo")
+        {
+            SetOsdInfo();
         }
     }
 
@@ -1071,6 +1106,22 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
+    private void SetOsdInfo()
+    {
+        if (ShowOsdInfo && File.Exists(MediaDataFilePath))
+        {
+            OsdTextVisibility = Visibility.Visible;
+            OsdDisplayTime = (int)EndTimeSpan.TotalSeconds;
+            OsdText = $"{MediaDataFilePath}\n{Player.NaturalVideoWidth}x{Player.NaturalVideoHeight}\n{new FileInfo(MediaDataFilePath).Length / EndTimeSpan.TotalSeconds / 1024 * 8:F0} kb/s";
+        }
+        else
+        {
+            OsdTextVisibility = Visibility.Collapsed;
+            OsdDisplayTime = 3;
+            OsdText = null;
+        }
+    }
+
     private void Sld_DragCompleted(object sender, DragCompletedEventArgs e)
     {
         sliderdragging = false;
@@ -1084,15 +1135,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         timer.Stop();
     }
 
-    private void Slider_HeightValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-    {
-        PixelateSize = new Size(PixelateSize.Width, e.NewValue);
-    }
+    private void Slider_HeightValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) => PixelateSize = new Size(PixelateSize.Width, e.NewValue);
 
-    private void Slider_WidthValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-    {
-        PixelateSize = new Size(e.NewValue, PixelateSize.Height);
-    }
+    private void Slider_WidthValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) => PixelateSize = new Size(e.NewValue, PixelateSize.Height);
 
     private void SlowBackward_Click(object sender, RoutedEventArgs e)
     {
@@ -1131,14 +1176,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         _startRotateY = RotateY;
     }
 
-    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-    {
-        _isOnDrag = false;
-    }
+    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => _isOnDrag = false;
 
     private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
     {
-        if (_isOnDrag && e.LeftButton == MouseButtonState.Pressed)
+        if (_isOnDrag && e.RightButton == MouseButtonState.Pressed)
         {
             Vector delta = _startPoint - e.GetPosition(this);
             RotateX = _startRotateX + (delta.X / ActualWidth * 360);
@@ -1146,91 +1188,5 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e)
-    {
-        Fov -= e.Delta / 100d;
-    }
-
-    private const int MillisecondsDelay = 500;
-
-    private const string VideoFileExtensions = "Video Dosyaları (*.*)|*.3g2;*.3gp;*.3gp2;*.3gpp;*.amr;*.amv;*.asf;*.avi;*.bdmv;*.bik;*.d2v;*.divx;*.drc;*.dsa;*.dsm;*.dss;*.dsv;*.evo;*.f4v;*.flc;*.fli;*.flic;*.flv;*.hdmov;*.ifo;*.ivf;*.m1v;*.m2p;*.m2t;*.m2ts;*.m2v;*.m4b;*.m4p;*.m4v;*.mkv;*.mp2v;*.mp4;*.mp4v;*.mpe;*.mpeg;*.mpg;*.mpls;*.mpv2;*.mpv4;*.mov;*.mts;*.ogm;*.ogv;*.pss;*.pva;*.qt;*.ram;*.ratdvd;*.rm;*.rmm;*.rmvb;*.roq;*.rpm;*.smil;*.smk;*.swf;*.tp;*.tpr;*.ts;*.vob;*.vp6;*.webm;*.wm;*.wmp;*.wmv";
-
-    private static readonly DispatcherTimer osdtimer = new();
-
-    private static bool sliderdragging;
-
-    private static DispatcherTimer timer;
-
-    private bool _isOnDrag;
-
-    private Point _startPoint;
-
-    private double _startRotateX;
-
-    private double _startRotateY;
-
-    private ObservableCollection<SrtContent> parsedSubtitle;
-
-    private string searchSubtitle;
-}
-
-public class SrtContent : InpcBase
-{
-    public SolidColorBrush BackgroundColor {
-        get => backgroundColor;
-
-        set {
-            if (backgroundColor != value)
-            {
-                backgroundColor = value;
-                OnPropertyChanged(nameof(BackgroundColor));
-            }
-        }
-    }
-
-    public TimeSpan EndTime {
-        get => endTime;
-
-        set {
-            if (endTime != value)
-            {
-                endTime = value;
-                OnPropertyChanged(nameof(EndTime));
-            }
-        }
-    }
-
-    public string Segment { get; set; }
-
-    public TimeSpan StartTime {
-        get => startTime;
-
-        set {
-            if (startTime != value)
-            {
-                startTime = value;
-                OnPropertyChanged(nameof(StartTime));
-            }
-        }
-    }
-
-    public string Text {
-        get => text;
-
-        set {
-            if (text != value)
-            {
-                text = value;
-                OnPropertyChanged(nameof(Text));
-            }
-        }
-    }
-
-    private SolidColorBrush backgroundColor = null;
-
-    private TimeSpan endTime;
-
-    private TimeSpan startTime;
-
-    private string text;
+    private void Viewport3D_MouseWheel(object sender, MouseWheelEventArgs e) => Fov -= e.Delta / 100d;
 }

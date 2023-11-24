@@ -480,7 +480,6 @@ namespace DvdBurner
         /// No write operation is currently in progress.
         /// </summary>
         public const ulong S_IMAPI_WRITE_NOT_IN_PROGRESS = 0x00AA0302L;
-
         #endregion Constants
 
         #region Constants in Imapi2fserror.h.
@@ -787,7 +786,6 @@ namespace DvdBurner
         /// feature.
         /// </summary>
         public const ulong IMAPI_S_IMAGE_FEATURE_NOT_SUPPORTED = 0x00AAB15FL;
-
-        #endregion Constants in Imapi2fserror.h.
+    #endregion Constants in Imapi2fserror.h.
     }
 }

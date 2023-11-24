@@ -5,12 +5,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
-    d:DesignHeight="480" d:DesignWidth="480" FontFamily="Segoe UI"
-    FontSize="12" UseLayoutRounding="True"
+    d:DesignHeight="480" d:DesignWidth="480"
+    FontFamily="Segoe UI" FontSize="12"
+    UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
         <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
+        <Style TargetType="{x:Type ComboBox}">
+            <Setter Property="Template" Value="{DynamicResource ComboBoxStyle}" />
+        </Style>
     </UserControl.Resources>
     <GroupBox>
         <UniformGrid Columns="2">
@@ -49,22 +53,25 @@
                 </Grid>
                 <UniformGrid Columns="2">
                     <Button Command="{Binding LoadSubtitle}" Content="ALTYAZI YÜKLE" />
-                    <ToggleButton VerticalContentAlignment="Center"
-                        Content="ALTYAZI GÖRÜNÜR"
-                        IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
+                    <ToggleButton VerticalContentAlignment="Center" Content="ALTYAZI GÖRÜNÜR" IsChecked="{Binding SubTitleVisibility, Mode=TwoWay, Converter={StaticResource VisibilityToBooleanConverter}}" />
                 </UniformGrid>
+                <ComboBox ItemsSource="{Binding SubtitleEncodings}" SelectedValue="{Binding SelectedEncodingCodePage}" SelectedValuePath="CodePage">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Run Text="{Binding CodePage, Mode=OneWay}" />
+                                <Run Text="{Binding DisplayName, Mode=OneWay}" />
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
                 <Slider Maximum="128" Minimum="1"
                     Style="{DynamicResource Slider}"
                     Value="{Binding SubTitleSize}" />
-                <local:ColorPicker ColorPickerColumnCount="10"
-                    HexCode="{Binding SubTitleColor, Mode=TwoWay}"
-                    PredefinedColorVisibility="Visible" />
-                <ToggleButton VerticalContentAlignment="Center"
-                    Content="OTOMATİK ALTYAZI ÇEVİRİ"
-                    IsChecked="{Binding AutoTranslate}" />
+                <local:ColorPicker ColorPickerColumnCount="10" HexCode="{Binding SubTitleColor, Mode=TwoWay}" PredefinedColorVisibility="Visible" />
+                <ToggleButton VerticalContentAlignment="Center" Content="OTOMATİK ALTYAZI ÇEVİRİ" IsChecked="{Binding AutoTranslate}" />
                 <Controls:TranslateView IsEnabled="{Binding AutoTranslate}" />
-                <local:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed"
-                    Text="{Binding SearchSubtitle, UpdateSourceTrigger=PropertyChanged}" />
+                <local:ButtonedTextBox CopyButtonVisibility="Collapsed" OpenButtonVisibility="Collapsed" Text="{Binding SearchSubtitle, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <Grid>
                 <Grid.RowDefinitions>
@@ -73,7 +80,7 @@
                 </Grid.RowDefinitions>
                 <ListBox x:Name="LbSubtitle"
                     d:ItemsSource="{d:SampleData ItemCount=5}"
-                    Background="{StaticResource BorderBackground}"
+                    Background="{DynamicResource BorderBackground}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Subtitle}}"
                     VirtualizingPanel.CacheLength="3,3" VirtualizingPanel.CacheLengthUnit="Item"
@@ -96,11 +103,32 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <TextBlock Grid.Row="1"
-                    Margin="0,1,0,0"
-                    Background="{StaticResource BorderBackground}"
-                    Text="{Binding SubTitle}"
-                    TextWrapping="Wrap" />
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Background="{DynamicResource BorderBackground}" Text="{Binding SubTitle}" TextWrapping="Wrap" />
+                    <GroupBox Grid.Row="1">
+                        <UniformGrid Columns="2">
+                            <ComboBox VerticalContentAlignment="Center"
+                                DisplayMemberPath="Key"
+                                ItemsSource="{DynamicResource Diller}"
+                                SelectedValue="{Binding SaveTranslateLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValuePath="Value" />
+                            <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Command="{Binding SaveTranslatedSubtitle}">
+                                <Grid>
+                                    <ProgressBar Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        Maximum="{Binding ElementName=LbSubtitle, Path=Items.Count, Mode=OneWay}"
+                                        Minimum="1"
+                                        Value="{Binding TranslateSaveProgress}" />
+                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="ALTYAZI KAYDET" />
+                                </Grid>
+                            </Button>
+                        </UniformGrid>
+                    </GroupBox>
+                </Grid>
             </Grid>
         </UniformGrid>
     </GroupBox>

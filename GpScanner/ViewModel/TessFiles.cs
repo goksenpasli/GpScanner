@@ -1,13 +1,20 @@
-﻿using InpcBase = Extensions.InpcBase;
+﻿using Extensions;
 
 namespace GpScanner.ViewModel;
 
 public class TessFiles : InpcBase
 {
-    public bool Checked {
+    private bool @checked;
+    private string displayName;
+    private double fileSize;
+    private string name;
+
+    public bool Checked
+    {
         get => @checked;
 
-        set {
+        set
+        {
             if (@checked != value)
             {
                 @checked = value;
@@ -16,10 +23,38 @@ public class TessFiles : InpcBase
         }
     }
 
-    public string Name {
+    public string DisplayName
+    {
+        get => displayName;
+        set
+        {
+            if (displayName != value)
+            {
+                displayName = value;
+                OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+    }
+
+    public double FileSize
+    {
+        get => fileSize;
+        set
+        {
+            if (fileSize != value)
+            {
+                fileSize = value;
+                OnPropertyChanged(nameof(FileSize));
+            }
+        }
+    }
+
+    public string Name
+    {
         get => name;
 
-        set {
+        set
+        {
             if (name != value)
             {
                 name = value;
@@ -27,8 +62,4 @@ public class TessFiles : InpcBase
             }
         }
     }
-
-    private bool @checked;
-
-    private string name;
 }

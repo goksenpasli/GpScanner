@@ -13,8 +13,19 @@ namespace Tesseract
     /// </remarks>
     public class PageIterator : DisposableBase
     {
-        public PolyBlockType BlockType {
-            get {
+        protected readonly HandleRef handle;
+        protected readonly Page page;
+
+        internal PageIterator(Page page, IntPtr handle)
+        {
+            this.page = page;
+            this.handle = new HandleRef(this, handle);
+        }
+
+        public PolyBlockType BlockType
+        {
+            get
+            {
                 VerifyNotDisposed();
 
                 return handle.Handle == IntPtr.Zero ? PolyBlockType.Unknown : TessApi.Native.PageIteratorBlockType(handle);
@@ -64,8 +75,7 @@ namespace Tesseract
                 return new ElementProperties(Orientation.PageUp, TextLineOrder.TopToBottom, WritingDirection.LeftToRight, 0f);
             }
 
-            TessApi.Native
-                .PageIteratorOrientation(handle, out Orientation orientation, out WritingDirection writing_direction, out TextLineOrder textLineOrder, out float deskew_angle);
+            TessApi.Native.PageIteratorOrientation(handle, out Orientation orientation, out WritingDirection writing_direction, out TextLineOrder textLineOrder, out float deskew_angle);
 
             return new ElementProperties(orientation, textLineOrder, writing_direction, deskew_angle);
         }
@@ -173,12 +183,6 @@ namespace Tesseract
             return false;
         }
 
-        internal PageIterator(Page page, IntPtr handle)
-        {
-            this.page = page;
-            this.handle = new HandleRef(this, handle);
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (handle.Handle != IntPtr.Zero)
@@ -186,9 +190,5 @@ namespace Tesseract
                 TessApi.Native.PageIteratorDelete(handle);
             }
         }
-
-        protected readonly HandleRef handle;
-
-        protected readonly Page page;
     }
 }

@@ -9,6 +9,9 @@ namespace Tesseract
     /// </summary>
     public class AggregateResultRenderer : DisposableBase, IResultRenderer
     {
+        private IDisposable _currentDocumentHandle;
+        private List<IResultRenderer> _resultRenderers;
+
         /// <summary>
         /// Create a new aggregate result renderer with the specified child result renderers.
         /// </summary>
@@ -106,13 +109,10 @@ namespace Tesseract
         {
             try
             {
-                if (disposing)
+                if (disposing && _currentDocumentHandle != null)
                 {
-                    if (_currentDocumentHandle != null)
-                    {
-                        _currentDocumentHandle.Dispose();
-                        _currentDocumentHandle = null;
-                    }
+                    _currentDocumentHandle.Dispose();
+                    _currentDocumentHandle = null;
                 }
             }
             finally
@@ -131,6 +131,9 @@ namespace Tesseract
         /// </summary>
         private class EndDocumentOnDispose : DisposableBase
         {
+            private readonly AggregateResultRenderer _renderer;
+            private List<IDisposable> _children;
+
             public EndDocumentOnDispose(AggregateResultRenderer renderer, IEnumerable<IDisposable> children)
             {
                 _renderer = renderer;
@@ -153,14 +156,6 @@ namespace Tesseract
                     _renderer._currentDocumentHandle = null;
                 }
             }
-
-            private readonly AggregateResultRenderer _renderer;
-
-            private List<IDisposable> _children;
         }
-
-        private IDisposable _currentDocumentHandle;
-
-        private List<IResultRenderer> _resultRenderers;
     }
 }

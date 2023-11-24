@@ -1,0 +1,681 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>ODABIR IZVORA</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>POSTAVKE</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>RJEŠENJE</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>ADF</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>CRNO BIJELI</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>SIVA</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>BOJA</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>DVIJE STRANE</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>PRIKAŽI GUI</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>Odvojeno skeniranje</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>PRIKAŽI DATOTEKU NAKON BRZOG SKENIRANJA</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>OSTALE POSTAVKE</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>DESKEW</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>AUTOMATSKO OTKRIVANJE GRANICA</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>POKAŽI NAPREDAK</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>AUTOMATSKO ROTIRANJE</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>NEMA AKCIJE</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>ZATVORI RAČUNALO</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>PONOVO POKRENI RAČUNALO</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>NAZIV DATOTEKE</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>DAN</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>MJESEC</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>GODINA</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>VRIJEME</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>MINUTA</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>DRUGI</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>vodič</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>KORISNIČKO IME</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>SAČUVAJ PROFIL</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>IZBRISATI</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>SKENIRATI</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>BRZO</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>AUTOMATSKO SKENIRANJE</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>SVI</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>NIJEDAN</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>OBRNUTI</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>VELIČINA PREGLEDA SLIKE</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF ZAŠTITI</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>ŠIFRIRANJE</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>OVDJE UČINJENE POSTAVKE UTJEČU NA SVE PDF POSTAVKE.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>DOPUSTI ISPIS</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>DOPUSTI KOPIRANJE</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>DOPUSTI UREĐIVANJE</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>SPREMI ODABRANJE</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>ČISTA LISTA</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>SPOJI PDF</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>OKO</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>DOKUMENT</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>SKREŽI SLIKU</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>RESETIRANJE</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>BROJANJE ŠIRINE</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>BROJANJE VISINE</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>KRIŠKA</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>TEKST</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>VELIČINA TEKSTA</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>KUT TEKSTA</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>FONT</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>NACRTAJ TEKST</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>SPREMI PDF</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>POMOZITE</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>DATOTEKA</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>KALENDAR</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>GRAF</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>POGLEDAJ SVE</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>PREGLED DATOTEKE</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESERAKT</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>SJEDINITI</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>SPOJI ODABRANO</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>ODABERITE NAJMANJE DVIJE PDF DATOTEKE</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>ČITAJ AKTIVNO</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>SADRŽAJ</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>POKAŽI U MAPI</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Budući da su tesseract i leptonica binarne datoteke kompajlirane s Visual Studio 2019, morate biti sigurni da imate instaliran Visual Studio 2019 Runtime</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Također preuzmite druge jezične podatkovne datoteke za tesseract 4.1.0 s tesseract-ocr ako je potrebno.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Studio 2019 x86 i x64 Runtimes</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Ostali podaci o jeziku teseract</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>SKENER</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>LOZINKA</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Postavljeno je isključivanje ili ponovno pokretanje.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Poslije brzog skeniranja</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Postavite mapu za automatsko spremanje</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Promijenjen je put automatskog spremanja.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Svi skenirani dokumenti na donjem popisu bit će obrisani. Želite li nastaviti?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Skenirati</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Primijeni rotaciju</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Aplikacija je već pokrenuta.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>REGISTRACIJA STI</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>PREVEDI</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>IZVORNI JEZIK</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>JEZIK DESTINACIJE</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>ODJAVA SPI UREĐAJA</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Spremite svaku stranicu u zasebnu datoteku Datoteke se spremaju u dolje navedenu mapu.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>SPREMI OCR PDF</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>PRAZAN</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>UKLANI MRLJE</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Preporuča se odabrati odgovarajući format za indeks mape vaše stare aplikacije preglednika.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>PRILAGOĐENA ŠIRINA</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>PRILAGOĐENA VISINA</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Navedite mapu za automatsko spremanje.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Poznati problemi</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Ponekad, iako je datoteka dodana na popis, ne pojavljuje se na popisu.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Prikazuje koliko će sekundi skener čekati prije skeniranja!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>SKENER FILMOVA</value>
+  </data>
+  <data name="LICENSE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Zanemarite Width Height Equal.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>KNJIŽNICA</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Odaberite PDF mapu za spremanje</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Odaberite mapu sa slikama</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Reproduciraj zvuk kada skeniranje završi</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Ako je označeno, više dokumenata se može OCR-ovati u isto vrijeme</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Zatvori datoteku</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>INVERTIRANJE BOJE</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>PREKLOP</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>OGLEDALO</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>MREŠKANJE</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>INSTALIRAN</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Datoteka je u upotrebi.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Pritisnite i držite tipku Esc za poništavanje</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>HUE</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>LAKOĆA</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>ZASIĆENOST</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Jednostavan PDF pregled.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Kada završite uklonite CD</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>VODORAVNO</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Uzmi Prvi i Zadnji Nastavi</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Podijeli i razvrstaj</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>SLUČAJNO</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>NEINDEKSIRANE DATOTEKE</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>DODAJ DOKUMENT</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>DODAJ OCR U BAZU PODATAKA</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Ako je ovo označeno, dolje označeni dokument sprema se u bazu podataka kao tekst aktivnog dokumenta s lijeve strane.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Ova je aplikacija razvijena za olakšavanje skeniranja i praćenja dokumenata.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>PRIJAVITI SE</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>PROMIJENI BOJU</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AUTOMATSKI</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>AUTOMATSKA SLIKA</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>AUTOMATSKI TEKST</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>SERIJA</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Kada se slikovne datoteke dodaju u dolje navedenu mapu, vrši se automatska konverzija u PDF datoteke u istoj mapi sve dok je program otvoren</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>FOTOAPARAT</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Ako kliknete ovo nakon postavljanja vrijednosti praga, možete napraviti drugi odabir boje.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>OBLOG</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>ZADANO</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>BOJA ODREDIŠTA</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>PRESKOČI PRAZNU STRANICU</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Izravno otvorite Eyp datoteke.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>RAVNI</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG KVALITETA</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>LIJEVO</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Ovaj format datoteke ima ograničenu podršku.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>OPTEREĆENJE</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Nije otkriven kod zakrpe</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>NIJE ODABRAN NIJEDAN PROFIL</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf Ocr proces zahtijeva dodatno vrijeme.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>MOJE OSTALE APLIKACIJE</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Izravno prepiši komprimiranu datoteku u skeniranim dokumentima</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>BROJ STRANICE</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Izravno otvorite PDF datoteke.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>GLEDAJTE PROMJENU MAPE PDF</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>DETEKTIRAJ QR</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Brisanje obrađenih datoteka s popisa dokumenata</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Želite li izbrisati odabranu sliku?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Zamijeni stranice</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>PONOVNO POKRENI APLIKACIJU</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>PRAVO</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ZAKRENI ZA 180 STUPNJEVA</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ROTIRAJ 270 STUPNJEVA</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ZAKRENI ZA 90 STUPNJEVA</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>KORISTITI SEPERATOR</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Razdvojen</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Dvaput kliknite za vraćanje, desnim klikom za proširenje</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>IZVORNA BOJA</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Desni klik za odabir izvorne boje.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>POČETAK</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>OZNAČITI</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Neki su zadaci u tijeku. Pričekajte da završi.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Odaberite jezik Tesseract</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>BIBLIOTEKE 3. STRANE KOJE SE KORISTE U APLIKACIJI</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>PRAG</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Proces je u tijeku.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>AŽURIRAJ</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>VODENI ŽIG</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Svaka kontrola cijan boje radi drugačije s jednom ili više tipki Alt Shift Ctrl</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Prikaži informacije o PDF-u</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr Sve Pdf stranice</value>
+  </data>
+</root>

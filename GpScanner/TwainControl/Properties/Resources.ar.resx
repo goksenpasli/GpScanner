@@ -118,30 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ABOUT" xml:space="preserve">
-    <value>حول</value>
+    <value>عن</value>
   </data>
   <data name="ADDDOC" xml:space="preserve">
-    <value>أضف المستند
- إلى الملف</value>
+    <value>إضافة مستند</value>
   </data>
   <data name="ADDOCRTODB" xml:space="preserve">
-    <value>احفظ بيانات التعرف الضوئي على الحروف</value>
+    <value>إضافة التعرف الضوئي على الحروف إلى قاعدة البيانات</value>
   </data>
   <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>إذا تم تحديد هذا الخيار ، فسيتم حفظ المستند المحدد أدناه في قاعدة البيانات كنص المستند النشط على اليسار.</value>
+    <value>إذا تم تحديد ذلك، فسيتم حفظ المستند المحدد أدناه في قاعدة البيانات كنص المستند النشط الموجود على اليسار.</value>
   </data>
   <data name="ADF" xml:space="preserve">
-    <value>وثيقة
-التغذية</value>
+    <value>وحدة التغذية التلقائية للمستندات</value>
   </data>
   <data name="ALL" xml:space="preserve">
-    <value>الكل</value>
+    <value>الجميع</value>
   </data>
   <data name="ALLOWCOPY" xml:space="preserve">
-    <value>السماح بنسخ المحتوى</value>
+    <value>السماح بالنسخ</value>
   </data>
   <data name="ALLOWEDIT" xml:space="preserve">
-    <value>السماح بتحرير المستندات</value>
+    <value>السماح بالتحرير</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
     <value>السماح بالطباعة</value>
@@ -153,23 +151,22 @@
     <value>يتقدم</value>
   </data>
   <data name="APPLYCOLOR" xml:space="preserve">
-    <value>تطبيق اللون</value>
+    <value>غير اللون</value>
   </data>
   <data name="APPRUNNING" xml:space="preserve">
-    <value>التطبيق بالفعل يعمل.</value>
+    <value>التطبيق قيد التشغيل بالفعل.</value>
   </data>
   <data name="Auto" xml:space="preserve">
-    <value>أوتوماتيكي</value>
+    <value>تلقائي</value>
   </data>
   <data name="AUTOFOLDER" xml:space="preserve">
-    <value>حدد مجلد الحفظ التلقائي.</value>
+    <value>ضبط مجلد الحفظ التلقائي</value>
   </data>
   <data name="AUTOFOLDERCHANGE" xml:space="preserve">
-    <value>تم تغيير مسار الحفظ التلقائي. لن يتم نقل الملفات القديمة إلى المجلد المحدد حديثًا.</value>
+    <value>تم تغيير مسار الحفظ التلقائي.</value>
   </data>
   <data name="AUTOPATH" xml:space="preserve">
-    <value>أوتوماتيكي
-سجل</value>
+    <value>التأكد الذاتي</value>
   </data>
   <data name="AutoPicture" xml:space="preserve">
     <value>صورة تلقائية</value>
@@ -178,73 +175,76 @@
     <value>الدوران التلقائي</value>
   </data>
   <data name="AutoText" xml:space="preserve">
-    <value>النص السيارات</value>
+    <value>النص التلقائي</value>
   </data>
   <data name="BATCH" xml:space="preserve">
-    <value>العمل الجماعي</value>
+    <value>حزمة</value>
   </data>
   <data name="BATCHDESC" xml:space="preserve">
-    <value>عند إضافة ملفات الصور إلى المجلد المحدد أدناه ، يتم إجراء التحويل التلقائي إلى ملفات Pdf في نفس المجلد طالما أن البرنامج مفتوح</value>
+    <value>عند إضافة ملفات الصور إلى المجلد المحدد أدناه، يتم التحويل التلقائي إلى ملفات Pdf الموجودة في نفس المجلد طالما أن البرنامج مفتوح</value>
   </data>
   <data name="BORDERDETECT" xml:space="preserve">
-    <value>كشف الحافة الأوتوماتيكي</value>
+    <value>الكشف التلقائي عن الحدود</value>
   </data>
   <data name="BW" xml:space="preserve">
-    <value>أبيض أسود</value>
+    <value>أسود / أبيض</value>
   </data>
   <data name="CALENDAR" xml:space="preserve">
     <value>تقويم</value>
   </data>
   <data name="CAMERA" xml:space="preserve">
-    <value>كاميرا</value>
+    <value>آلة تصوير</value>
   </data>
   <data name="CLEARLIST" xml:space="preserve">
     <value>لائحة خالية</value>
   </data>
   <data name="CLOSECOMP" xml:space="preserve">
-    <value>إيقاف تشغيل الكمبيوتر</value>
+    <value>إغلاق الكمبيوتر</value>
   </data>
   <data name="COLOR" xml:space="preserve">
-    <value>زاهى الألوان</value>
+    <value>لون</value>
   </data>
   <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>إذا قمت بالنقر فوق هذا بعد تعيين قيمة الحد ، يمكنك إجراء تحديد لون ثانٍ.</value>
+    <value>إذا قمت بالنقر فوق هذا بعد تعيين قيمة العتبة، فيمكنك إجراء تحديد لون ثانٍ.</value>
   </data>
   <data name="COMPRESS" xml:space="preserve">
     <value>ضغط</value>
   </data>
   <data name="CONTENT" xml:space="preserve">
-    <value>قراءة المحتوى</value>
+    <value>محتوى</value>
   </data>
   <data name="CRUNTIME" xml:space="preserve">
-    <value>نظرًا لأنه يتم تجميع ثنائيات tesseract و leptonica باستخدام Visual Studio 2019 ، فأنت بحاجة إلى التأكد من تثبيت Visual Studio 2019 Runtime.</value>
+    <value>نظرًا لأنه تم تجميع ثنائيات tesseract وleptonica باستخدام Visual Studio 2019، فأنت بحاجة إلى التأكد من تثبيت Visual Studio 2019 Runtime</value>
   </data>
   <data name="DAY" xml:space="preserve">
-    <value>[يوم]</value>
+    <value>يوم</value>
   </data>
   <data name="Default" xml:space="preserve">
-    <value>إفتراضي</value>
+    <value>تقصير</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
-    <value>يتم المسح</value>
+    <value>مسح</value>
   </data>
   <data name="DELETE" xml:space="preserve">
-    <value>حذف</value>
+    <value>يمسح</value>
   </data>
   <data name="DESKEW" xml:space="preserve">
-    <value>منحنى منحني</value>
+    <value>مكتب</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>تنقيط</value>
   </data>
   <data name="DESTLANG" xml:space="preserve">
-    <value>اللغة المستهدفة</value>
+    <value>لغة الوجهة</value>
   </data>
   <data name="DOCUMENT" xml:space="preserve">
     <value>وثيقة</value>
   </data>
   <data name="DRAWTEXT" xml:space="preserve">
-    <value>نص الرسم</value>
+    <value>رسم النص</value>
   </data>
   <data name="DSTCOLOR" xml:space="preserve">
-    <value>اللون المستهدف</value>
+    <value>لون الوجهة</value>
   </data>
   <data name="EMPTY" xml:space="preserve">
     <value>فارغ</value>
@@ -253,17 +253,16 @@
     <value>تخطي الصفحة الفارغة</value>
   </data>
   <data name="ENCRYPT" xml:space="preserve">
-    <value>التشفير</value>
+    <value>تشفير</value>
   </data>
   <data name="EYPOPEN" xml:space="preserve">
     <value>افتح ملفات Eyp مباشرة.</value>
   </data>
   <data name="FASTSCAN" xml:space="preserve">
-    <value>سريع
-مسح</value>
+    <value>سريع</value>
   </data>
   <data name="FASTSCANAFTER" xml:space="preserve">
-    <value>الإجراء عند انتهاء الفحص السريع</value>
+    <value>بعد مهمة المسح السريع</value>
   </data>
   <data name="FILE" xml:space="preserve">
     <value>ملف</value>
@@ -274,8 +273,11 @@
   <data name="FLATBED" xml:space="preserve">
     <value>مسطحة</value>
   </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>يوصى باختيار التنسيق المناسب لفهرس المجلدات الخاص بتطبيق المتصفح القديم.</value>
+  </data>
   <data name="FONT" xml:space="preserve">
-    <value>خط</value>
+    <value>الخط</value>
   </data>
   <data name="GRAPH" xml:space="preserve">
     <value>رسم بياني</value>
@@ -284,13 +286,13 @@
     <value>رمادي</value>
   </data>
   <data name="GUI" xml:space="preserve">
-    <value>عرض الواجهة</value>
+    <value>إظهار واجهة المستخدم الرسومية</value>
   </data>
   <data name="GUID" xml:space="preserve">
-    <value>[GUID]</value>
+    <value>GUID</value>
   </data>
   <data name="HEIGHTCOUNT" xml:space="preserve">
-    <value>كمية الحجم</value>
+    <value>عدد الارتفاع</value>
   </data>
   <data name="JPEGQUALITY" xml:space="preserve">
     <value>جودة JPEG</value>
@@ -299,29 +301,28 @@
     <value>غادر</value>
   </data>
   <data name="LIMITED" xml:space="preserve">
-    <value>تنسيق الملف هذا له دعم محدود.</value>
+    <value>يتمتع تنسيق الملف هذا بدعم محدود.</value>
   </data>
   <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>سيتم حذف كافة المستندات الممسوحة ضوئيًا في القائمة العلوية هل تريد المتابعة؟</value>
+    <value>سيتم حذف جميع المستندات الممسوحة ضوئيًا الموجودة في القائمة السفلية هل تريد المتابعة؟</value>
   </data>
   <data name="LOAD" xml:space="preserve">
-    <value>حمل</value>
+    <value>حمولة</value>
   </data>
   <data name="MERGE" xml:space="preserve">
-    <value>الاتصال</value>
+    <value>دمج</value>
   </data>
   <data name="MERGEPDF" xml:space="preserve">
-    <value>الانضمام إلى PDF</value>
+    <value>دمج قوات الدفاع الشعبي</value>
   </data>
   <data name="MERGESELECTED" xml:space="preserve">
-    <value>ملفات PDF موقعة
-الاتصال</value>
+    <value>دمج المحدد</value>
   </data>
   <data name="MINUTE" xml:space="preserve">
-    <value>[اللحظة]</value>
+    <value>دقيقة</value>
   </data>
   <data name="MONTH" xml:space="preserve">
-    <value>[قمر]</value>
+    <value>شهر</value>
   </data>
   <data name="NO ACTION" xml:space="preserve">
     <value>لا رد فعل</value>
@@ -330,16 +331,16 @@
     <value>لا أحد</value>
   </data>
   <data name="NOPATCHCODE" xml:space="preserve">
-    <value>لم يتم اكتشاف رمز تصحيح</value>
+    <value>لم يتم اكتشاف رمز التصحيح</value>
   </data>
   <data name="NOPROFILE" xml:space="preserve">
-    <value>لم يتم تحديد ملف شخصي</value>
+    <value>لم يتم تحديد ملف تعريف</value>
   </data>
   <data name="OCR" xml:space="preserve">
     <value>التعرف الضوئي على الحروف</value>
   </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
-    <value>احفظ Ocr Pdf</value>
+    <value>حفظ التعرف الضوئي على الحروف PDF</value>
   </data>
   <data name="OCRTIME" xml:space="preserve">
     <value>تستغرق عملية Pdf Ocr وقتًا إضافيًا.</value>
@@ -351,7 +352,7 @@
     <value>اعدادات اخرى</value>
   </data>
   <data name="OTHERTESSERACT" xml:space="preserve">
-    <value>قم أيضًا بتنزيل ملفات بيانات اللغة الأخرى لـ tesseract 4.1.0 من tesseract-ocr إذا لزم الأمر. ضعه في مجلد tessdata.</value>
+    <value>قم أيضًا بتنزيل ملفات بيانات اللغات الأخرى لـ tesseract 4.1.0 من tesseract-ocr إذا لزم الأمر.</value>
   </data>
   <data name="OTHERTESSERACTLINK" xml:space="preserve">
     <value>بيانات لغة tesseract الأخرى</value>
@@ -363,24 +364,22 @@
     <value>رقم الصفحة</value>
   </data>
   <data name="PASSWORD" xml:space="preserve">
-    <value>كلمه السر</value>
+    <value>كلمة المرور</value>
   </data>
   <data name="PDFOPEN" xml:space="preserve">
-    <value>افتح ملفات Pdf مباشرة.</value>
+    <value>فتح ملفات PDF مباشرة.</value>
   </data>
   <data name="PDFPROTECT" xml:space="preserve">
-    <value>حماية ملفات PDF</value>
+    <value>حماية قوات الدفاع الشعبي</value>
   </data>
   <data name="PDFTRACK" xml:space="preserve">
-    <value>مشاهدة تغيير مجلد PDF</value>
+    <value>شاهد تغيير مجلد PDF</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>تؤثر الإعدادات التي تم إجراؤها هنا على جميع تسجيلات PDF.
-أيضًا ، قد يتم كسر حماية PDF بواسطة تطبيقات الطرف الثالث.</value>
+    <value>الإعدادات التي تم إجراؤها هنا تؤثر على جميع إعدادات PDF.</value>
   </data>
   <data name="PREVIEWFILE" xml:space="preserve">
-    <value>ملف
-معاينة</value>
+    <value>ملف المعاينة</value>
   </data>
   <data name="PREVIEWSIZE" xml:space="preserve">
     <value>حجم معاينة الصورة</value>
@@ -389,30 +388,28 @@
     <value>كشف QR</value>
   </data>
   <data name="READACTIVEPAGE" xml:space="preserve">
-    <value>الصفحة النشطة
-قرأ</value>
+    <value>قراءة نشطة</value>
   </data>
   <data name="REGSTI" xml:space="preserve">
-    <value>إلى قائمة الماسح
-يضيف</value>
+    <value>تسجيل الأمراض المنقولة جنسيا</value>
   </data>
   <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>حذف الملفات المعالجة من القائمة</value>
+    <value>حذف الملفات التي تمت معالجتها من قائمة المستندات</value>
   </data>
   <data name="REMOVESELECTED" xml:space="preserve">
-    <value>هل تريد حذف الصورة المختارة؟</value>
+    <value>هل تريد حذف الصورة المحددة؟</value>
   </data>
   <data name="REPLACEPAGE" xml:space="preserve">
-    <value>تبديل الصفحات.</value>
+    <value>استبدال الصفحات</value>
   </data>
   <data name="RES" xml:space="preserve">
-    <value>الدقة</value>
+    <value>دقة</value>
   </data>
   <data name="RESET" xml:space="preserve">
-    <value>إعادة تعيين</value>
+    <value>إعادة ضبط</value>
   </data>
   <data name="RESTARTAPP" xml:space="preserve">
-    <value>التطبيق يحتاج إلى إعادة التشغيل.</value>
+    <value>إعادة تشغيل التطبيق</value>
   </data>
   <data name="RESTARTCOMP" xml:space="preserve">
     <value>إعادة تشغيل الكمبيوتر</value>
@@ -433,16 +430,16 @@
     <value>تدوير 90 درجة</value>
   </data>
   <data name="ROTSAVE" xml:space="preserve">
-    <value>حفظ بالتناوب؟</value>
+    <value>تطبيق التدوير</value>
   </data>
   <data name="SAVEPDF" xml:space="preserve">
-    <value>حفظ ملفات PDF</value>
+    <value>حفظ قوات الدفاع الشعبي</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
     <value>احفظ الملف</value>
   </data>
   <data name="SAVESELECTED" xml:space="preserve">
-    <value>احفظ ما تم تحديده</value>
+    <value>حفظ المحدد</value>
   </data>
   <data name="SCAN" xml:space="preserve">
     <value>مسح</value>
@@ -451,43 +448,43 @@
     <value>الماسح الضوئي</value>
   </data>
   <data name="SECOND" xml:space="preserve">
-    <value>[ثانيا]</value>
+    <value>ثانية</value>
   </data>
   <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>حدد ملفي PDF على الأقل</value>
+    <value>حدد ملفين PDF على الأقل</value>
   </data>
   <data name="SEPERATESCAN" xml:space="preserve">
-    <value>امسح كل صفحة على حدة</value>
+    <value>فحص منفصل</value>
   </data>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
-    <value>يتم حفظ كل صفحة لفصل ملفات الملفات في المجلد المحدد أدناه.</value>
+    <value>حفظ كل صفحة في ملف منفصل يتم حفظ الملفات في المجلد المحدد أدناه.</value>
   </data>
   <data name="SEPERATOR" xml:space="preserve">
-    <value>فاصل</value>
+    <value>استخدم الفاصل</value>
   </data>
   <data name="SETTİNGS" xml:space="preserve">
-    <value>الإعدادات</value>
+    <value>إعدادات</value>
   </data>
   <data name="SHOWFILE" xml:space="preserve">
-    <value>إظهار الملف بعد المسح السريع</value>
+    <value>عرض الملف بعد الفحص السريع</value>
   </data>
   <data name="SHOWFOLDER" xml:space="preserve">
     <value>أظهر ذلك في الملف</value>
   </data>
   <data name="SHOWPROGRESS" xml:space="preserve">
-    <value>عرض النسبة المئوية</value>
+    <value>إظهار التقدم</value>
   </data>
   <data name="SLICE" xml:space="preserve">
-    <value>اسكت</value>
+    <value>شريحة</value>
   </data>
   <data name="SOURCELANG" xml:space="preserve">
     <value>لغة المصدر</value>
   </data>
   <data name="SPLIT" xml:space="preserve">
-    <value>مكسور</value>
+    <value>انقسمت</value>
   </data>
   <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>انقر نقرًا مزدوجًا للاستعادة ، انقر بزر الماوس الأيمن للتوسيع</value>
+    <value>انقر نقرًا مزدوجًا للاستعادة، وانقر بزر الماوس الأيمن للتوسيع</value>
   </data>
   <data name="SRC" xml:space="preserve">
     <value>اختر مصدر</value>
@@ -496,10 +493,10 @@
     <value>لون المصدر</value>
   </data>
   <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>انقر بزر الماوس الأيمن واختر اللون</value>
+    <value>انقر بزر الماوس الأيمن لتحديد اللون المصدر.</value>
   </data>
   <data name="START" xml:space="preserve">
-    <value>بداية</value>
+    <value>يبدأ</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>قف</value>
@@ -508,10 +505,10 @@
     <value>بطاقة شعار</value>
   </data>
   <data name="TASKSRUNNING" xml:space="preserve">
-    <value>بعض المهام قيد التشغيل ، انتظر حتى تنتهي.</value>
+    <value>بعض المهام قيد التشغيل، انتظر حتى تنتهي.</value>
   </data>
   <data name="TESSERACT" xml:space="preserve">
-    <value>تسيراكت</value>
+    <value>تيسراكت</value>
   </data>
   <data name="TESSLANGSELECT" xml:space="preserve">
     <value>حدد لغة Tesseract</value>
@@ -520,7 +517,7 @@
     <value>نص</value>
   </data>
   <data name="TEXTANGLE" xml:space="preserve">
-    <value>زاوية نصية</value>
+    <value>زاوية النص</value>
   </data>
   <data name="TEXTSIZE" xml:space="preserve">
     <value>حجم الخط</value>
@@ -532,35 +529,34 @@
     <value>عتبة</value>
   </data>
   <data name="TIME" xml:space="preserve">
-    <value>[ساعة]</value>
+    <value>وقت</value>
   </data>
   <data name="TRANSLATE" xml:space="preserve">
-    <value>ترجمة</value>
+    <value>يترجم</value>
   </data>
   <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>العملية جارية. انتظر حتى النهاية.</value>
+    <value>العملية قيد التقدم.</value>
   </data>
   <data name="TRIMIMAGE" xml:space="preserve">
-    <value>الهيكل الرسمي</value>
+    <value>صورة تقليم</value>
   </data>
   <data name="TWOSIDE" xml:space="preserve">
-    <value>وجهان</value>
+    <value>جانبين</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
-    <value>إزالة من قائمة المتصفح</value>
+    <value>إلغاء تسجيل جهاز STI</value>
   </data>
   <data name="UPDATE" xml:space="preserve">
     <value>تحديث</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>[اسم االمستخدم]</value>
+    <value>اسم المستخدم</value>
   </data>
   <data name="VC" xml:space="preserve">
-    <value>أوقات تشغيل Visual Studio 2019 x86 و x64</value>
+    <value>أوقات تشغيل Visual Studio 2019 x86 وx64</value>
   </data>
   <data name="VIEWALL" xml:space="preserve">
-    <value>كل منهم
-نرى</value>
+    <value>عرض الكل</value>
   </data>
   <data name="WARNREBOOT" xml:space="preserve">
     <value>تم ضبط إيقاف التشغيل أو إعادة التشغيل.</value>
@@ -569,9 +565,114 @@
     <value>علامة مائية</value>
   </data>
   <data name="WIDTHCOUNT" xml:space="preserve">
-    <value>أكثر</value>
+    <value>عدد العرض</value>
   </data>
   <data name="YEAR" xml:space="preserve">
-    <value>[عام]</value>
+    <value>سنة</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ارتفاع مخصص</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>عرض مخصص</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>يعمل أي عنصر تحكم باللون السماوي بشكل مختلف مع واحد أو أكثر من مفاتيح Alt Shift Ctrl</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>يساعد</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>تحديد مجلد الحفظ التلقائي.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>المشاكل المعروفة</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>في بعض الأحيان، على الرغم من إضافة ملف إلى القائمة، إلا أنه لا يظهر في القائمة.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>يوضح عدد الثواني التي سينتظرها الماسح الضوئي قبل المسح!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>ماسح ضوئي للأفلام</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>تجاهل العرض والارتفاع يساوي.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>مكتبة</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>حدد مجلد حفظ PDF</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>حدد مجلد الصور</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>تشغيل الصوت عند اكتمال المسح</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>في حالة تحديد عدة مستندات، يمكن التعرف الضوئي على الحروف في نفس الوقت</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>إغلاق الملف</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>عكس اللون</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>يطوى</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>مرآة</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>تموج</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>المثبتة</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>الملف قيد الاستخدام.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>اضغط مع الاستمرار على زر Esc للإلغاء</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>مسحة</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>خفة</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>التشبع</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>معاينة قوات الدفاع الشعبي بسيطة.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>عند الانتهاء قم بإزالة القرص المضغوط</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>أفقي</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>خذ أولا وآخر متابعة</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>تقسيم وفرز</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>عشوائي</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>الملفات غير المفهرسة</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>عرض معلومات قوات الدفاع الشعبي</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr جميع صفحات PDF</value>
   </data>
 </root>

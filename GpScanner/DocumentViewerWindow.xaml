@@ -1,65 +1,79 @@
 ﻿<Window x:Class="GpScanner.DocumentViewerWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:converter="clr-namespace:GpScanner.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     Title="{Binding Title, TargetNullValue=''}"
     Width="800" Height="600"
     d:DataContext="{d:DesignInstance Type=viewmodel:DocumentViewerModel}"
-    Unloaded="Window_Unloaded" UseLayoutRounding="True" WindowStartupLocation="CenterOwner"
-    WindowState="Maximized"
+    Unloaded="Window_Unloaded" UseLayoutRounding="True"
+    WindowStartupLocation="CenterOwner" WindowState="Maximized"
     mc:Ignorable="d">
+    <Window.Resources>
+        <converter:PdfFileNameToInfoConverter x:Key="PdfFileNameToInfoConverter" IsEnabled="{Binding Path=ShowPdfInfo, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="48" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="255" />
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <ListBox x:Name="Lb"
-            Grid.Column="1"
+            Grid.Row="1" Grid.Column="0"
             d:ItemsSource="{d:SampleData ItemCount=15}"
             ItemsSource="{Binding DirectoryAllPdfFiles}"
             SelectedIndex="{Binding Index}"
-            SelectedItem="{Binding PdfFilePath}">
+            SelectedItem="{Binding FilePath}">
             <ListBox.Resources>
                 <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
             </ListBox.Resources>
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="24" Height="24"
-                            d:Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}"
-                            Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                        <TextBlock VerticalAlignment="Center"
-                            d:Text="FileName"
-                            Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                    <StackPanel>
+                        <ContentControl HorizontalAlignment="Left"
+                            d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}"
+                            Content="{Binding IsAsync=True, Mode=OneWay}"
+                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                        <Extensions:ButtonedTextBox HorizontalAlignment="Left"
+                            d:Description="FileName" d:Text="FileName"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            CopyButtonVisibility="Collapsed" Focusable="False"
+                            IsReadOnly="True" PasteButtonVisibility="Collapsed"
+                            ResetButtonVisibility="Collapsed"
+                            Text="{Binding Mode=OneWay}"
+                            TextBoxVisibility="Collapsed">
+                            <Extensions:ButtonedTextBox.Description>
+                                <TextBlock>
+                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource PdfFileNameToInfoConverter}}" />
+                                </TextBlock>
+                            </Extensions:ButtonedTextBox.Description>
+                        </Extensions:ButtonedTextBox>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Command="{Binding Back}"
-            Content="ç" FontFamily="Wingdings" FontSize="16" />
-        <Grid Grid.Row="1" Grid.ColumnSpan="3">
-            <ContentControl x:Name="cnt"
-                d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
-                d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
-                Content="{Binding PdfFilePath, IsAsync=True, Mode=OneWay}"
-                ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
-                PreviewMouseDown="DocumentViewer_MouseDown" PreviewMouseMove="DocumentViewer_MouseMove" />
-            <Canvas x:Name="cnv" />
-        </Grid>
-        <Button Grid.Column="2"
+        <RepeatButton Command="{Binding Back}"
+            Content="ç" FontFamily="Wingdings"
+            FontSize="16" />
+        <ContentControl x:Name="cnt"
+            Grid.RowSpan="3" Grid.Column="1"
+            d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
+            d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
+            Content="{Binding FilePath, IsAsync=True, Mode=OneWay}"
+            ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
+        <RepeatButton Grid.Row="2"
             Command="{Binding Forward}"
-            Content="è" FontFamily="Wingdings" FontSize="16" />
+            Content="è" FontFamily="Wingdings"
+            FontSize="16" />
     </Grid>
 </Window>

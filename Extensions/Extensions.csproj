@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Extensions</RootNamespace>
     <AssemblyName>Extensions</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <LangVersion>preview</LangVersion>
     <Deterministic>true</Deterministic>
@@ -57,6 +57,7 @@
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Printing" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xaml" />
     <Reference Include="Microsoft.CSharp" />
@@ -64,24 +65,41 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\ArchiveData.cs" />
-    <Compile Include="Controls\ArchiveViewer.xaml.cs">
-      <DependentUpon>ArchiveViewer.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Controls\ArchiveViewer.cs" />
     <Compile Include="Controls\ButtonedTextBox.cs" />
+    <Compile Include="Controls\ContributionControl.cs" />
+    <Compile Include="Controls\ContributionData.cs" />
+    <Compile Include="Controls\CRC32.cs" />
+    <Compile Include="Controls\FadedTooltipControl.cs" />
+    <Compile Include="Controls\Helpers.cs" />
     <Compile Include="Controls\Chart.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
+    <Compile Include="Controls\Magnifier.cs" />
     <Compile Include="Controls\MediaViewerSubtitleControl.xaml.cs">
       <DependentUpon>MediaViewerSubtitleControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PageRangeDocumentPaginator.cs" />
+    <Compile Include="Controls\ResizablePanel.cs" />
+    <Compile Include="Controls\ResizeDirections.cs" />
+    <Compile Include="Controls\SelectableTextBlock.cs" />
+    <Compile Include="Controls\SubtitleContent.cs" />
     <Compile Include="Controls\TranslateView.xaml.cs">
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\VirtualizingWrapPanel.cs" />
     <Compile Include="Converters\CloneConverter.cs" />
+    <Compile Include="Converters\ContributionToColorConverter.cs" />
     <Compile Include="Converters\DoubleToThicknessConverter.cs" />
+    <Compile Include="Converters\EnumToIntValueConverter.cs" />
     <Compile Include="Converters\FilePathToFileNameConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
+    <Compile Include="IgnoreMouseWheelBehavior.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="ScrollDragDrop.cs" />
     <Compile Include="PasswordBoxHelper.cs" />
     <Compile Include="Shader\BlackWhiteEffect.cs" />
@@ -120,13 +138,10 @@
     <Compile Include="Shader\InvertColorEffect.cs" />
     <Compile Include="Shader\PixelateEffect.cs" />
     <Compile Include="Shader\SharpenEffect.cs" />
+    <Compile Include="ShellIcon.cs" />
     <Compile Include="TranslateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\ArchiveViewer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Controls\MediaViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -143,11 +158,59 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ArchiveViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContributionControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\GraphControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ColorPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ImageViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\MaskedTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SplitButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ButtonedTextBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\NumericUpDownControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContentToggleButton.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\FadedToolTipControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Skin.xaml">
+    <Page Include="Controls\ResizablePanel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\Skin.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -175,6 +238,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Shader\GrowablePoissonDiskEffect.ps" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

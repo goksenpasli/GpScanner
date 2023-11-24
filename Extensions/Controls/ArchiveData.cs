@@ -4,10 +4,20 @@ namespace Extensions;
 
 public class ArchiveData : InpcBase
 {
-    public long Boyut {
+    private long boyut;
+    private string crc;
+    private string dosyaAdı;
+    private DateTime düzenlenmeZamanı;
+    private float oran;
+    private long sıkıştırılmışBoyut;
+    private string tamYol;
+
+    public long Boyut
+    {
         get => boyut;
 
-        set {
+        set
+        {
             if (boyut != value)
             {
                 boyut = value;
@@ -16,10 +26,25 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public string DosyaAdı {
+    public string Crc
+    {
+        get => crc;
+        set
+        {
+            if (crc != value)
+            {
+                crc = value;
+                OnPropertyChanged(nameof(Crc));
+            }
+        }
+    }
+
+    public string DosyaAdı
+    {
         get => dosyaAdı;
 
-        set {
+        set
+        {
             if (dosyaAdı != value)
             {
                 dosyaAdı = value;
@@ -28,10 +53,12 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public DateTime DüzenlenmeZamanı {
+    public DateTime DüzenlenmeZamanı
+    {
         get => düzenlenmeZamanı;
 
-        set {
+        set
+        {
             if (düzenlenmeZamanı != value)
             {
                 düzenlenmeZamanı = value;
@@ -40,10 +67,12 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public double Oran {
+    public float Oran
+    {
         get => oran;
 
-        set {
+        set
+        {
             if (oran != value)
             {
                 oran = value;
@@ -52,10 +81,12 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public long SıkıştırılmışBoyut {
+    public long SıkıştırılmışBoyut
+    {
         get => sıkıştırılmışBoyut;
 
-        set {
+        set
+        {
             if (sıkıştırılmışBoyut != value)
             {
                 sıkıştırılmışBoyut = value;
@@ -64,10 +95,12 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public string TamYol {
+    public string TamYol
+    {
         get => tamYol;
 
-        set {
+        set
+        {
             if (tamYol != value)
             {
                 tamYol = value;
@@ -75,16 +108,4 @@ public class ArchiveData : InpcBase
             }
         }
     }
-
-    private long boyut;
-
-    private string dosyaAdı;
-
-    private DateTime düzenlenmeZamanı;
-
-    private double oran;
-
-    private long sıkıştırılmışBoyut;
-
-    private string tamYol;
 }

@@ -1,7 +1,6 @@
 ﻿<UserControl x:Class="GpScanner.TranslateView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:Diller="clr-namespace:System.Collections;assembly=mscorlib"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,90 +13,8 @@
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <Diller:ArrayList x:Key="Diller">
-            <Diller:DictionaryEntry Key="Auto" Value="auto" />
-            <Diller:DictionaryEntry Key="Afrikaans" Value="af" />
-            <Diller:DictionaryEntry Key="Shqip" Value="sq" />
-            <Diller:DictionaryEntry Key="عربي" Value="ar" />
-            <Diller:DictionaryEntry Key="Հայերէն" Value="hy" />
-            <Diller:DictionaryEntry Key="آذربایجان دیلی" Value="az" />
-            <Diller:DictionaryEntry Key="Euskara" Value="eu" />
-            <Diller:DictionaryEntry Key="Беларуская" Value="be" />
-            <Diller:DictionaryEntry Key="Български" Value="bg" />
-            <Diller:DictionaryEntry Key="Català" Value="ca" />
-            <Diller:DictionaryEntry Key="中文简体" Value="zh-CN" />
-            <Diller:DictionaryEntry Key="中文繁體" Value="zh-TW" />
-            <Diller:DictionaryEntry Key="Hrvatski" Value="hr" />
-            <Diller:DictionaryEntry Key="Čeština" Value="cs" />
-            <Diller:DictionaryEntry Key="Dansk" Value="da" />
-            <Diller:DictionaryEntry Key="Nederlands" Value="nl" />
-            <Diller:DictionaryEntry Key="English" Value="en" />
-            <Diller:DictionaryEntry Key="Eesti keel" Value="et" />
-            <Diller:DictionaryEntry Key="Filipino" Value="tl" />
-            <Diller:DictionaryEntry Key="Suomi" Value="fi" />
-            <Diller:DictionaryEntry Key="Français" Value="fr" />
-            <Diller:DictionaryEntry Key="Galego" Value="gl" />
-            <Diller:DictionaryEntry Key="ქართული" Value="ka" />
-            <Diller:DictionaryEntry Key="Deutsch" Value="de" />
-            <Diller:DictionaryEntry Key="Ελληνικά" Value="el" />
-            <Diller:DictionaryEntry Key="Kreyòl ayisyen" Value="ht" />
-            <Diller:DictionaryEntry Key="עברית" Value="iw" />
-            <Diller:DictionaryEntry Key="हिन्दी" Value="hi" />
-            <Diller:DictionaryEntry Key="Magyar" Value="hu" />
-            <Diller:DictionaryEntry Key="Íslenska" Value="is" />
-            <Diller:DictionaryEntry Key="Bahasa Indonesia" Value="id" />
-            <Diller:DictionaryEntry Key="Gaeilge" Value="ga" />
-            <Diller:DictionaryEntry Key="Italiano" Value="it" />
-            <Diller:DictionaryEntry Key="日本語" Value="ja" />
-            <Diller:DictionaryEntry Key="한국어" Value="ko" />
-            <Diller:DictionaryEntry Key="Latviešu" Value="lv" />
-            <Diller:DictionaryEntry Key="Lietuvių kalba" Value="lt" />
-            <Diller:DictionaryEntry Key="Македонски" Value="mk" />
-            <Diller:DictionaryEntry Key="Malay" Value="ms" />
-            <Diller:DictionaryEntry Key="Malti" Value="mt" />
-            <Diller:DictionaryEntry Key="Norsk" Value="no" />
-            <Diller:DictionaryEntry Key="فارسی" Value="fa" />
-            <Diller:DictionaryEntry Key="Polski" Value="pl" />
-            <Diller:DictionaryEntry Key="Português" Value="pt" />
-            <Diller:DictionaryEntry Key="Română" Value="ro" />
-            <Diller:DictionaryEntry Key="Русский" Value="ru" />
-            <Diller:DictionaryEntry Key="Српски" Value="sr" />
-            <Diller:DictionaryEntry Key="Slovenčina" Value="sk" />
-            <Diller:DictionaryEntry Key="Slovensko" Value="sl" />
-            <Diller:DictionaryEntry Key="Español" Value="es" />
-            <Diller:DictionaryEntry Key="Kiswahili" Value="sw" />
-            <Diller:DictionaryEntry Key="Svenska" Value="sv" />
-            <Diller:DictionaryEntry Key="ไทย" Value="th" />
-            <Diller:DictionaryEntry Key="Türkçe" Value="tr" />
-            <Diller:DictionaryEntry Key="Українська" Value="uk" />
-            <Diller:DictionaryEntry Key="اردو" Value="ur" />
-            <Diller:DictionaryEntry Key="Tiếng Việt" Value="vi" />
-            <Diller:DictionaryEntry Key="Cymraeg" Value="cy" />
-            <Diller:DictionaryEntry Key="ייִדיש" Value="yi" />
-        </Diller:ArrayList>
-        <Style x:Key="ToggleButtonPlayPauseStyle"
-            x:Shared="False"
-            TargetType="{x:Type ToggleButton}">
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
-                    <Setter Property="Content">
-                        <Setter.Value>
-                            <Viewbox>
-                                <TextBlock FontFamily="Webdings" FontSize="16" Text=";" />
-                            </Viewbox>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
-                    <Setter Property="Content">
-                        <Setter.Value>
-                            <Viewbox>
-                                <TextBlock FontFamily="Webdings" FontSize="16" Text="4" />
-                            </Viewbox>
-                        </Setter.Value>
-                    </Setter>
-                </DataTrigger>
-            </Style.Triggers>
+        <Style TargetType="ComboBox">
+            <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
     </UserControl.Resources>
     <Grid>
@@ -131,8 +48,7 @@
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
         </ComboBox>
-        <Button Grid.Row="1" Grid.Column="1"
-            Command="{Binding Değiştir}">
+        <Button Grid.Row="1" Grid.Column="1" Command="{Binding Değiştir}">
             <Image Width="16" Height="16">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -155,35 +71,111 @@
         </ComboBox>
         <ComboBox Grid.Row="1" Grid.Column="3"
             twainctrl:Policy.PolicyName="OkumaDili"
-            ItemsSource="{Binding TtsDilleri}"
-            SelectedItem="{Binding OkumaDili}" />
+            ItemsSource="{Binding TtsDilleri, Mode=OneWay}"
+            SelectedItem="{Binding OkumaDili}">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
         <Extensions:ButtonedTextBox x:Name="BtnTxtMetin"
             Grid.Row="2" Grid.ColumnSpan="3"
             VerticalContentAlignment="Top"
             AcceptsReturn="True" CharacterCasing="Normal"
+            FontSizeButtonVisibility="Visible"
             IsReadOnly="{Binding MetinBoxIsreadOnly}"
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="Wrap" />
+            TextWrapping="Wrap" TitleCaseMenuVisibility="Visible" />
         <ToggleButton Grid.Row="2" Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
-            CommandParameter="{Binding ElementName=BtnTxtMetin, Path=Text}"
-            Style="{StaticResource ToggleButtonPlayPauseStyle}" />
+            CommandParameter="{Binding ElementName=BtnTxtMetin, Path=Text}">
+            <ToggleButton.Style>
+                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="131" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="137" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
         <Extensions:ButtonedTextBox x:Name="BtnTxtÇeviri"
             Grid.Row="3" Grid.ColumnSpan="3"
             VerticalContentAlignment="Top"
-            AcceptsReturn="True" CharacterCasing="Normal" IsReadOnly="True"
+            AcceptsReturn="True" CharacterCasing="Normal"
+            FontSizeButtonVisibility="Visible" IsReadOnly="True"
             OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
-            Text="{Binding Çeviri}"
-            TextWrapping="Wrap" />
+            Text="{Binding Çeviri, Mode=OneWay}"
+            TextWrapping="Wrap" TitleCaseMenuVisibility="Visible" />
         <ToggleButton Grid.Row="3" Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
-            CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}"
-            Style="{StaticResource ToggleButtonPlayPauseStyle}" />
+            CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}">
+            <ToggleButton.Style>
+                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="131" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="137" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ToggleButton.Style>
+        </ToggleButton>
         <Button Grid.Row="4" Grid.ColumnSpan="3"
             twainctrl:Policy.PolicyName="Sıfırla"
             Command="{Binding Sıfırla}">
@@ -212,7 +204,7 @@
                 <GroupBox>
                     <ItemsControl Width="300" Height="400"
                         HorizontalContentAlignment="Stretch"
-                        ItemsSource="{Binding TaramaGeçmiş}">
+                        ItemsSource="{Binding TaramaGeçmiş, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel />
@@ -220,8 +212,7 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.Template>
                             <ControlTemplate>
-                                <ScrollViewer Padding="{TemplateBinding Padding}"
-                                    CanContentScroll="True" VerticalScrollBarVisibility="Visible">
+                                <ScrollViewer Padding="{TemplateBinding Padding}" CanContentScroll="True" VerticalScrollBarVisibility="Visible">
                                     <ItemsPresenter />
                                 </ScrollViewer>
                             </ControlTemplate>
@@ -229,7 +220,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Extensions:ButtonedTextBox Height="80"
-                                    IsReadOnly="True" OpenButtonVisibility="Collapsed" ResetButtonVisibility="Collapsed"
+                                    IsReadOnly="True" OpenButtonVisibility="Collapsed"
+                                    ResetButtonVisibility="Collapsed"
                                     Text="{Binding Mode=OneWay}"
                                     TextWrapping="Wrap" />
                             </DataTemplate>

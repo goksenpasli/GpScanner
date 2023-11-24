@@ -16,7 +16,7 @@ internal static class DataSerialize
         {
             XmlSerializer serializer = new(typeof(T));
             using StreamReader stream = new(xmldatapath);
-            return serializer.Deserialize(stream) as T;
+            return serializer?.Deserialize(stream) as T;
         }
         catch (Exception ex)
         {
@@ -29,29 +29,26 @@ internal static class DataSerialize
     internal static T DeSerialize<T>(this XElement xElement) where T : class, new()
     {
         XmlSerializer serializer = new(typeof(T));
-        return serializer.Deserialize(xElement.CreateReader()) as T;
+        return serializer?.Deserialize(xElement?.CreateReader()) as T;
     }
 
     internal static ObservableCollection<T> DeSerialize<T>(this IEnumerable<XElement> xElement) where T : class, new()
     {
-        ObservableCollection<T> list = new();
+        ObservableCollection<T> list = [];
         foreach (XElement element in xElement)
         {
-            list.Add(element.DeSerialize<T>());
+            list.Add(element?.DeSerialize<T>());
         }
 
         return list;
     }
 
-    internal static int RandomNumber()
-    {
-        return new Random(Guid.NewGuid().GetHashCode()).Next(1, int.MaxValue);
-    }
+    internal static int RandomNumber() => new Random(Guid.NewGuid().GetHashCode()).Next(1, int.MaxValue);
 
     internal static void Serialize<T>(this T dataToSerialize) where T : class
     {
         XmlSerializer serializer = new(typeof(T));
         using TextWriter stream = new StreamWriter(GpScannerViewModel.XmlDataPath);
-        serializer.Serialize(stream, dataToSerialize);
+        serializer?.Serialize(stream, dataToSerialize);
     }
 }

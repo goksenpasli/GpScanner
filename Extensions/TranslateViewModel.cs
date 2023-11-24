@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Script.Serialization;
@@ -23,10 +22,9 @@ public class TranslateViewModel : InpcBase
             object parsedObj = JSS.DeserializeObject(page);
             string çeviri = string.Empty;
             object[] data = parsedObj as object[];
-            object firstnode = data.FirstOrDefault();
-            for (int i = 0; i < (firstnode as object[])?.Length; i++)
+            foreach (object firstnodeItem in data[0] as object[])
             {
-                çeviri += ((data.FirstOrDefault() as object[])?[i] as object[])?.ElementAtOrDefault(0).ToString();
+                çeviri += (firstnodeItem as object[])?[0].ToString();
             }
 
             return çeviri;

@@ -1,0 +1,197 @@
+﻿<UserControl x:Class="GpScanner.DvdBurnerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dvd="clr-namespace:DvdBurner;assembly=DvdBurner" xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
+    d:DesignHeight="450" d:DesignWidth="800"
+    twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Extensions:EnumToIntValueConverter x:Key="EnumToIntValueConverter" />
+        <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
+        <ObjectDataProvider x:Key="DiscSizes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dvd:DiscSizes" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ControlTemplate x:Key="DvdBurner" TargetType="{x:Type dvd:Burner}">
+            <Grid IsEnabled="{Binding IsCdWriterAvailable, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <UniformGrid Columns="4">
+                    <Button Command="{Binding SelectBurnDir, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                        <Image Width="32" Height="32">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="3" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                    <Button Command="{Binding BurnDvd, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                        <Image Width="32" Height="32">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="78" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                    <Button Command="{Binding EraseDvd, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                        <Canvas Width="32" Height="32">
+                            <Image Width="32" Height="32">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="151" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <Image Canvas.Left="16" Canvas.Top="16"
+                                Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="131" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Canvas>
+                    </Button>
+                    <Button Command="{Binding GetSupportedDiscFormats, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                        <Image Width="32" Height="32">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="179" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                </UniformGrid>
+                <ComboBox Grid.Row="1"
+                    ItemsSource="{Binding Drives, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    SelectedValue="{Binding SelectedDrive, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    SelectedValuePath="Value">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="188" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Key, Mode=OneWay}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="3" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <ListBox x:Name="Lb"
+                        d:ItemsSource="{d:SampleData ItemCount=3}"
+                        AllowDrop="True"
+                        Background="{DynamicResource BorderBackground}"
+                        BorderBrush="{x:Null}"
+                        ContextMenuService.IsEnabled="{Binding HasItems, RelativeSource={RelativeSource Mode=Self}}"
+                        ItemsSource="{Binding Files, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                        <ListBox.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Command="{Binding RemoveAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="TÜMÜNÜ SİL" />
+                            </ContextMenu>
+                        </ListBox.ContextMenu>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock VerticalAlignment="Center"><Hyperlink BaselineAlignment="Center"
+                                        Command="{Binding RemoveFile, RelativeSource={RelativeSource AncestorType={x:Type dvd:Burner}}}"
+                                        CommandParameter="{Binding Mode=OneWay}"
+                                        TextDecorations="None">
+                                        <InlineUIContainer>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="131" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </InlineUIContainer>
+                                    </Hyperlink><InlineUIContainer>
+                                        <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                    </InlineUIContainer><Run d:Text="FileName" BaselineAlignment="Center" Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" /></TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <GridSplitter Grid.Column="1"
+                        Width="3"
+                        HorizontalAlignment="Stretch"
+                        Background="{DynamicResource GroupBoxBackGround}" />
+                    <ContentControl Grid.Column="2" Content="{Binding SelectedItem, ElementName=Lb, IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
+                </Grid>
+                <Grid Grid.Row="3">
+                    <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource Mode=TemplatedParent}}" Maximum="1" Value="{Binding ProgressValue, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Foreground="{Binding ActionTextForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        Text="{Binding ActionText, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        TextWrapping="Wrap" />
+                </Grid>
+                <UniformGrid Grid.Row="4" Columns="2">
+                    <Grid>
+                        <ProgressBar Foreground="{Binding ProgressForegroundBrush, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Maximum="{Binding DiscMaxSize, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Minimum="0"
+                            Value="{Binding TotalFileSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                            Text="{Binding TotalFileSize, RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat=\{0\} MB}"
+                            TextWrapping="Wrap" />
+                    </Grid>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource DiscSizes}}" SelectedItem="{Binding SelectedDiscSize, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <Run Text="{Binding Mode=OneWay}" />
+                                    <Run Text="{Binding Converter={StaticResource EnumToIntValueConverter}, Mode=OneWay, StringFormat=\{0\} MB}" />
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                </UniformGrid>
+                <Extensions:ButtonedTextBox Grid.Row="5"
+                    CopyButtonVisibility="Visible"
+                    Description="{twainctrl:Loc TAG}"
+                    OpenButtonVisibility="Collapsed" PasteButtonVisibility="Visible"
+                    ResetButtonVisibility="Collapsed"
+                    Text="{Binding CdLabel, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                <CheckBox Grid.Row="6" Content="{twainctrl:Loc REMOVECD}" IsChecked="{Binding Eject, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </Grid>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <dvd:Burner Files="{Binding BurnFiles}" Template="{StaticResource DvdBurner}" />
+    </Grid>
+</UserControl>

@@ -1,11 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Windows;
-using Extensions;
+﻿using Extensions;
 using Microsoft.Win32;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
+using System;
+using System.IO;
+using System.Linq;
+using System.Windows;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -15,6 +15,8 @@ namespace TwainControl;
 /// </summary>
 public class EypPdfViewer : PdfViewer.PdfViewer
 {
+    public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register("EypFilePath", typeof(string), typeof(EypPdfViewer), new PropertyMetadata(null, Changed));
+
     public EypPdfViewer()
     {
         DosyaAç = new RelayCommand<object>(
@@ -31,22 +33,28 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         {
                             return;
                         }
+
                         PdfFilePath = eypfile;
+                        AddToHistoryList(PdfFilePath);
                     }
+
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
                     {
                         if (PdfReader.TestPdfFile(openFileDialog.FileName) == 0)
                         {
                             return;
                         }
+
                         PdfFilePath = openFileDialog.FileName;
+                        AddToHistoryList(PdfFilePath);
                     }
-                    AddToHistoryList(PdfFilePath);
                 }
             });
     }
 
     public new RelayCommand<object> DosyaAç { get; }
+
+    public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
 
     public void AddToHistoryList(string pdffilepath)
     {
@@ -68,23 +76,39 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     protected override void OnDrop(DragEventArgs e)
     {
-        string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if (droppedfiles?.Length > 0)
+        if (e.Data.GetData(typeof(Scanner)) is Scanner droppedData && IsValidPdfFile(droppedData.FileName))
         {
-            if (Path.GetExtension(droppedfiles[0]) == ".eyp")
+            PdfFilePath = droppedData.FileName;
+            AddToHistoryList(PdfFilePath);
+
+            return;
+        }
+
+        if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+        {
+            if (string.Equals(Path.GetExtension(droppedfiles[0]), ".eyp", StringComparison.OrdinalIgnoreCase))
             {
-                string eyppath = ExtractEypFilesToPdf(droppedfiles[0]);
-                if (PdfReader.TestPdfFile(eyppath) != 0)
-                {
-                    PdfFilePath = eyppath;
-                }
+                PdfFilePath = ExtractEypFilesToPdf(droppedfiles[0]);
+                AddToHistoryList(PdfFilePath);
 
                 return;
             }
-
-            if (PdfReader.TestPdfFile(droppedfiles[0]) != 0)
+            if (IsValidPdfFile(droppedfiles[0]))
             {
                 PdfFilePath = droppedfiles[0];
+                AddToHistoryList(PdfFilePath);
+            }
+        }
+    }
+
+    private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is EypPdfViewer eypPdfViewer && e.NewValue is not null)
+        {
+            string eypfile = eypPdfViewer.ExtractEypFilesToPdf((string)e.NewValue);
+            if (PdfReader.TestPdfFile(eypfile) != 0)
+            {
+                eypPdfViewer.PdfFilePath = eypfile;
             }
         }
     }

@@ -101,17 +101,16 @@ namespace Tesseract.Interop
         IntPtr BaseApiGetWordStrBoxTextInternal(HandleRef handle, int pageNum);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIInit4")]
-        int BaseApiInit(
-            HandleRef handle,
-            string datapath,
-            string language,
-            int mode,
-            string[] configs,
-            int configs_size,
-            string[] vars_vec,
-            string[] vars_values,
-            UIntPtr vars_vec_size,
-            bool set_only_non_debug_params);
+        int BaseApiInit(HandleRef handle,
+                        string datapath,
+                        string language,
+                        int mode,
+                        string[] configs,
+                        int configs_size,
+                        string[] vars_vec,
+                        string[] vars_values,
+                        UIntPtr vars_vec_size,
+                        bool set_only_non_debug_params);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessBaseAPIPrintVariablesToFile")]
         int BaseApiPrintVariablesToFile(HandleRef handle, string filename);
@@ -207,16 +206,15 @@ namespace Tesseract.Interop
         bool ResultIteratorSymbolIsSuperscript(HandleRef handle);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorWordFontAttributes")]
-        IntPtr ResultIteratorWordFontAttributes(
-            HandleRef handle,
-            out bool isBold,
-            out bool isItalic,
-            out bool isUnderlined,
-            out bool isMonospace,
-            out bool isSerif,
-            out bool isSmallCaps,
-            out int pointSize,
-            out int fontId);
+        IntPtr ResultIteratorWordFontAttributes(HandleRef handle,
+                                                out bool isBold,
+                                                out bool isItalic,
+                                                out bool isUnderlined,
+                                                out bool isMonospace,
+                                                out bool isSerif,
+                                                out bool isSmallCaps,
+                                                out int pointSize,
+                                                out int fontId);
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorWordIsFromDictionary")]
         bool ResultIteratorWordIsFromDictionary(HandleRef handle);
@@ -270,11 +268,9 @@ namespace Tesseract.Interop
         /// <returns></returns>
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessResultIteratorGetChoiceIterator")]
         IntPtr ResultIteratorGetChoiceIterator(HandleRef handle);
-
         #endregion Choice Iterator
 
         #region Renderer API
-
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessAltoRendererCreate")]
         IntPtr AltoRendererCreate(string outputbase);
 
@@ -331,14 +327,39 @@ namespace Tesseract.Interop
 
         [RuntimeDllImport(Constants.TesseractDllName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "TessWordStrBoxRendererCreate")]
         IntPtr WordStrBoxRendererCreate(string outputbase);
-
-        #endregion Renderer API
+    #endregion Renderer API
     }
 
     internal static class TessApi
     {
-        public static ITessApiSignatures Native {
-            get {
+        public const string htmlBeginTag =
+                                                                                                                                                            "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"" +
+            " \"http://www.w3.org/TR/html4/loose.dtd\">\n" +
+            "<html>\n<head>\n<title></title>\n" +
+            "<meta http-equiv=\"Content-Type\" content=\"text/html;" +
+            "charset=utf-8\" />\n<meta name='ocr-system' content='tesseract'/>\n" +
+            "</head>\n<body>\n";
+        public const string htmlEndTag = "</body>\n</html>\n";
+        public const string xhtmlBeginTag =
+            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
+            "    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
+            "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" " +
+            "lang=\"en\">\n <head>\n  <title></title>\n" +
+            "<meta http-equiv=\"Content-Type\" content=\"text/html;" +
+            "charset=utf-8\" />\n" +
+            "  <meta name='ocr-system' content='tesseract' />\n" +
+            "  <meta name='ocr-capabilities' content='ocr_page ocr_carea ocr_par" +
+            " ocr_line ocrx_word" +
+            "'/>\n" +
+            "</head>\n<body>\n";
+        public const string xhtmlEndTag = " </body>\n</html>\n";
+        private static ITessApiSignatures native;
+
+        public static ITessApiSignatures Native
+        {
+            get
+            {
                 if (native == null)
                 {
                     Initialize();
@@ -477,14 +498,7 @@ namespace Tesseract.Interop
             return versionHandle != IntPtr.Zero ? MarshalHelper.PtrToString(versionHandle, Encoding.UTF8) : null;
         }
 
-        public static int BaseApiInit(
-                    HandleRef handle,
-                    string datapath,
-                    string language,
-                    int mode,
-                    IEnumerable<string> configFiles,
-                    IDictionary<string, object> initialValues,
-                    bool setOnlyNonDebugParams)
+        public static int BaseApiInit(HandleRef handle, string datapath, string language, int mode, IEnumerable<string> configFiles, IDictionary<string, object> initialValues, bool setOnlyNonDebugParams)
         {
             Guard.Require(nameof(handle), handle.Handle != IntPtr.Zero, "Handle for BaseApi, created through BaseApiCreate is required.");
             Guard.RequireNotNullOrEmpty(nameof(language), language);
@@ -503,22 +517,12 @@ namespace Tesseract.Interop
                 Guard.Require(nameof(initialValues), pair.Value != null, "Variable '{0}': The type '{1}' is not supported.", pair.Key, pair.Value.GetType());
                 varNames[i] = pair.Key;
                 varValues[i] = TessConvert.TryToString(pair.Value, out string varValue)
-                    ? varValue
-                    : throw new ArgumentException($"Variable '{pair.Key}': The type '{pair.Value.GetType()}' is not supported.", nameof(initialValues));
+                               ? varValue
+                               : throw new ArgumentException($"Variable '{pair.Key}': The type '{pair.Value.GetType()}' is not supported.", nameof(initialValues));
                 i++;
             }
 
-            return Native.BaseApiInit(
-                handle,
-                datapath,
-                language,
-                mode,
-                configFilesArray,
-                configFilesArray.Length,
-                varNames,
-                varValues,
-                new UIntPtr((uint)varNames.Length),
-                setOnlyNonDebugParams);
+            return Native.BaseApiInit(handle, datapath, language, mode, configFilesArray, configFilesArray.Length, varNames, varValues, new UIntPtr((uint)varNames.Length), setOnlyNonDebugParams);
         }
 
         public static int BaseApiSetDebugVariable(HandleRef handle, string name, string value)
@@ -585,32 +589,6 @@ namespace Tesseract.Interop
             return txtHandle != IntPtr.Zero ? MarshalHelper.PtrToString(txtHandle, Encoding.UTF8) : null;
         }
 
-        public const string htmlBeginTag =
-                                                                                                                                                            "<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\"" +
-            " \"http://www.w3.org/TR/html4/loose.dtd\">\n" +
-            "<html>\n<head>\n<title></title>\n" +
-            "<meta http-equiv=\"Content-Type\" content=\"text/html;" +
-            "charset=utf-8\" />\n<meta name='ocr-system' content='tesseract'/>\n" +
-            "</head>\n<body>\n";
-
-        public const string htmlEndTag = "</body>\n</html>\n";
-
-        public const string xhtmlBeginTag =
-            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-            "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"\n" +
-            "    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n" +
-            "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" " +
-            "lang=\"en\">\n <head>\n  <title></title>\n" +
-            "<meta http-equiv=\"Content-Type\" content=\"text/html;" +
-            "charset=utf-8\" />\n" +
-            "  <meta name='ocr-system' content='tesseract' />\n" +
-            "  <meta name='ocr-capabilities' content='ocr_page ocr_carea ocr_par" +
-            " ocr_line ocrx_word" +
-            "'/>\n" +
-            "</head>\n<body>\n";
-
-        public const string xhtmlEndTag = " </body>\n</html>\n";
-
         /// <summary>
         /// Returns the null terminated UTF-8 encoded text string for the current choice
         /// </summary>
@@ -626,7 +604,5 @@ namespace Tesseract.Interop
             IntPtr txtChoiceHandle = Native.ChoiceIteratorGetUTF8TextInternal(choiceIteratorHandle);
             return MarshalHelper.PtrToString(txtChoiceHandle, Encoding.UTF8);
         }
-
-        private static ITessApiSignatures native;
     }
 }

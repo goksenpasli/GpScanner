@@ -1,20 +1,24 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Ocr;
 using WebPWrapper;
 using static Extensions.ExtensionMethods;
+using static TwainControl.DrawControl;
 using Brush = System.Windows.Media.Brush;
 using Color = System.Windows.Media.Color;
+using Image = System.Drawing.Image;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
@@ -23,54 +27,108 @@ namespace TwainControl;
 
 public static class BitmapMethods
 {
-    public static WriteableBitmap AdjustBrightness(this BitmapSource bitmap, int brightness)
+    public static WriteableBitmap ApplyHueSaturationLightness(this BitmapSource source, double hue, double saturation, double lightness)
     {
-        int width = bitmap.PixelWidth;
-        int height = bitmap.PixelHeight;
-        int stride = ((width * bitmap.Format.BitsPerPixel) + 7) / 8;
-        int bytesPerPixel = bitmap.Format.BitsPerPixel / 8;
-        int totalBytes = height * stride;
-
-        byte[] pixelData = new byte[totalBytes];
-        bitmap.CopyPixels(pixelData, stride, 0);
+        int width = source.PixelWidth;
+        int height = source.PixelHeight;
+        int stride = ((width * source.Format.BitsPerPixel) + 7) / 8;
+        int bytesPerPixel = source.Format.BitsPerPixel / 8;
+        byte[] pixelData = new byte[height * stride];
+        source.CopyPixels(pixelData, stride, 0);
 
         _ = Parallel.For(
             0,
-            height,
+            pixelData.Length / bytesPerPixel,
+            i =>
+            {
+                int offset = i * bytesPerPixel;
+
+                byte r = pixelData[offset + 2];
+                byte g = pixelData[offset + 1];
+                byte b = pixelData[offset];
+
+                RgbToHsv(r, g, b, out double h, out double s, out double v);
+
+                h = (h + hue) % 1.0;
+                s *= saturation;
+                v *= lightness;
+
+                HsvToRgb(h, s, v, out byte newR, out byte newG, out byte newB);
+
+                pixelData[offset + 2] = newR;
+                pixelData[offset + 1] = newG;
+                pixelData[offset] = newB;
+            });
+
+        WriteableBitmap modifiedBitmap = new(width, height, source.DpiX, source.DpiY, source.Format, source.Palette);
+        modifiedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, width * bytesPerPixel, 0);
+        modifiedBitmap.Freeze();
+        pixelData = null;
+        source = null;
+        return modifiedBitmap;
+    }
+
+    public static CroppedBitmap AutoCropImage(this BitmapSource bitmapSource, Color color)
+    {
+        int maxX = 0;
+        int maxY = 0;
+
+        int minX = bitmapSource.PixelWidth;
+        int minY = bitmapSource.PixelHeight;
+
+        int bytesPerPixel = (bitmapSource.Format.BitsPerPixel + 7) / 8;
+        int stride = bytesPerPixel * bitmapSource.PixelWidth;
+        byte[] pixelData = new byte[bitmapSource.PixelHeight * stride];
+        bitmapSource.CopyPixels(pixelData, stride, 0);
+        bitmapSource.Freeze();
+        _ = Parallel.For(
+            0,
+            bitmapSource.PixelHeight,
             y =>
             {
-                int rowOffset = y * stride;
-
-                for (int x = 0; x < width; x++)
+                for (int x = 0; x < bitmapSource.PixelWidth; x++)
                 {
-                    int offset = rowOffset + (x * bytesPerPixel);
-
-                    for (int i = 0; i < bytesPerPixel; i++)
+                    int offset = (y * stride) + (x * bytesPerPixel);
+                    Color pixelColor = Color.FromArgb(bytesPerPixel == 4 ? pixelData[offset + 3] : (byte)255, pixelData[offset + 2], pixelData[offset + 1], pixelData[offset]);
+                    if (pixelColor != color)
                     {
-                        int value = pixelData[offset + i] + brightness;
-
-                        if (value < 0)
+                        if (x > maxX)
                         {
-                            value = 0;
-                        }
-                        else if (value > 255)
-                        {
-                            value = 255;
+                            maxX = x;
                         }
 
-                        pixelData[offset + i] = (byte)value;
+                        if (x < minX)
+                        {
+                            minX = x;
+                        }
+
+                        if (y > maxY)
+                        {
+                            maxY = y;
+                        }
+
+                        if (y < minY)
+                        {
+                            minY = y;
+                        }
                     }
                 }
             });
-
-        WriteableBitmap adjustedBitmap = new(width, height, bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette);
-        adjustedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, stride, 0);
-        adjustedBitmap.Freeze();
-        return adjustedBitmap;
+        maxX += 2;
+        CroppedBitmap croppedimage = new(bitmapSource, new Int32Rect(minX, minY, maxX - minX - 1, maxY - minY - 1));
+        croppedimage.Freeze();
+        bitmapSource = null;
+        pixelData = null;
+        return croppedimage;
     }
 
     public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource)
     {
+        if (bitmapsource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapsource));
+        }
+
         FormatConvertedBitmap src = new();
         src.BeginInit();
         src.Source = bitmapsource;
@@ -79,8 +137,12 @@ public static class BitmapMethods
         src.Freeze();
         Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
         BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-        src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-        bitmap.UnlockBits(data);
+        if (data != null)
+        {
+            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+        }
+
         return bitmap;
     }
 
@@ -88,12 +150,16 @@ public static class BitmapMethods
     {
         try
         {
-            coordx += scrollviewer.HorizontalOffset;
-            coordy += scrollviewer.VerticalOffset;
-
-            double widthmultiply = bitmapFrame.PixelWidth / (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth ? scrollviewer.ViewportWidth : scrollviewer.ExtentWidth);
-            double heightmultiply = bitmapFrame.PixelHeight / (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight ? scrollviewer.ViewportHeight : scrollviewer.ExtentHeight);
-
+            if (scrollviewer.ExtentWidth < scrollviewer.ViewportWidth)
+            {
+                coordx -= (scrollviewer.ViewportWidth - scrollviewer.ExtentWidth) / 2;
+            }
+            if (scrollviewer.ExtentHeight < scrollviewer.ViewportHeight)
+            {
+                coordy -= (scrollviewer.ViewportHeight - scrollviewer.ExtentHeight) / 2;
+            }
+            double widthmultiply = bitmapFrame.PixelWidth / scrollviewer.ExtentWidth;
+            double heightmultiply = bitmapFrame.PixelHeight / scrollviewer.ExtentHeight;
             Int32Rect ınt32Rect = new((int)(coordx * widthmultiply), (int)(coordy * heightmultiply), (int)(selectionwidth * widthmultiply), (int)(selectionheight * heightmultiply));
             CroppedBitmap cb = new(bitmapFrame, ınt32Rect);
             bitmapFrame = null;
@@ -151,6 +217,20 @@ public static class BitmapMethods
         return renderTargetBitmap;
     }
 
+    public static Cursor CreateCursor(FrameworkElement element)
+    {
+        RenderTargetBitmap renderTargetBitmap = new((int)element.ActualWidth, (int)element.ActualHeight, 96, 96, PixelFormats.Default);
+        renderTargetBitmap.Render(element);
+        PngBitmapEncoder encoder = new();
+        BitmapFrame item = BitmapFrame.Create(renderTargetBitmap);
+        item.Freeze();
+        encoder.Frames.Add(item);
+        using MemoryStream ms = new();
+        encoder.Save(ms);
+        using Bitmap bmp = new(ms);
+        return InternalCreateCursor(bmp);
+    }
+
     public static async Task<BitmapFrame> FlipImageAsync(this BitmapFrame bitmapFrame, double angle)
     {
         TransformedBitmap transformedBitmap = null;
@@ -189,34 +269,12 @@ public static class BitmapMethods
         RenderTargetBitmap skewedimage = null;
         if (deskew)
         {
-            double deskewAngle = ToolBox.GetDeskewAngle(image, true);
+            double deskewAngle = Deskew.GetDeskewAngle(image);
             skewedimage = await image.RotateImageAsync(deskewAngle);
             skewedimage.Freeze();
         }
 
         return deskew ? BitmapFrame.Create(skewedimage) : BitmapFrame.Create(image);
-    }
-
-    public static ObservableCollection<Paper> GetPapers()
-    {
-        return new()
-    {
-            new() { Height = 118.9, PaperType = "A0", Width = 84.1 },
-            new() { Height = 84.1, PaperType = "A1", Width = 59.4 },
-            new() { Height = 59.4, PaperType = "A2", Width = 42 },
-            new() { Height = 42, PaperType = "A3", Width = 29.7 },
-            new() { Height = 29.7, PaperType = "A4", Width = 21 },
-            new() { Height = 21, PaperType = "A5", Width = 14.8 },
-            new() { Height = 141.4, PaperType = "B0", Width = 100 },
-            new() { Height = 100, PaperType = "B1", Width = 70.7 },
-            new() { Height = 70.7, PaperType = "B2", Width = 50 },
-            new() { Height = 50, PaperType = "B3", Width = 35.3 },
-            new() { Height = 35.3, PaperType = "B4", Width = 25 },
-            new() { Height = 25, PaperType = "B5", Width = 17.6 },
-            new() { Height = 27.94, PaperType = "Letter", Width = 21.59 },
-            new() { Height = 35.56, PaperType = "Legal", Width = 21.59 },
-            new() { Height = 26.67, PaperType = "Executive", Width = 18.415 }
-        };
     }
 
     public static WriteableBitmap InvertBitmap(this BitmapSource bitmap)
@@ -246,6 +304,8 @@ public static class BitmapMethods
         WriteableBitmap invertedBitmap = new(width, height, bitmap.DpiX, bitmap.DpiY, bitmap.Format, bitmap.Palette);
         invertedBitmap.WritePixels(new Int32Rect(0, 0, width, height), pixelData, stride, 0);
         invertedBitmap.Freeze();
+        bitmap = null;
+        pixelData = null;
         return invertedBitmap;
     }
 
@@ -272,7 +332,7 @@ public static class BitmapMethods
                     int minY = Math.Max(y - (threshold / 2), 0);
                     int maxY = Math.Min(y + (threshold / 2), height - 1);
 
-                    List<byte> values = new();
+                    List<byte> values = [];
                     for (int wy = minY; wy <= maxY; wy++)
                     {
                         for (int wx = minX; wx <= maxX; wx++)
@@ -298,6 +358,8 @@ public static class BitmapMethods
 
         outputBitmap.WritePixels(new Int32Rect(0, 0, width, height), outputPixels, stride, 0);
         outputBitmap.Freeze();
+        inputPixels = null;
+        outputPixels = null;
         return outputBitmap;
     }
 
@@ -343,6 +405,8 @@ public static class BitmapMethods
         WriteableBitmap target = new(width, height, source.DpiX, source.DpiY, source.Format, null);
         target.WritePixels(new Int32Rect(0, 0, width, height), targetPixels, stride, 0);
         target.Freeze();
+        sourcePixels = null;
+        targetPixels = null;
         return target;
     }
 
@@ -357,7 +421,7 @@ public static class BitmapMethods
                     DrawingVisual dv = new();
                     using (DrawingContext dc = dv.RenderOpen())
                     {
-                        dc.PushTransform(new RotateTransform(angle));
+                        dc.PushTransform(new RotateTransform(angle, bitmapSource.PixelWidth / 2, bitmapSource.PixelHeight / 2));
                         dc.DrawImage(Source, new Rect(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight));
                         dc.Pop();
                     }
@@ -365,6 +429,7 @@ public static class BitmapMethods
                     RenderTargetBitmap rtb = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, 96, 96, PixelFormats.Default);
                     rtb.Render(dv);
                     rtb.Freeze();
+                    bitmapSource = null;
                     Source = null;
                     dv = null;
                     return rtb;
@@ -373,7 +438,7 @@ public static class BitmapMethods
         catch (Exception ex)
         {
             Source = null;
-            throw new ArgumentException(nameof(Source), ex);
+            throw new ArgumentException(ex.Message);
         }
     }
 
@@ -386,6 +451,7 @@ public static class BitmapMethods
 
         TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
         transformedBitmap.Freeze();
+        bitmapFrame = null;
         return await Task.Run(
             () =>
             {
@@ -403,16 +469,9 @@ public static class BitmapMethods
         }
     }
 
-    public static RenderTargetBitmap ÜstüneResimÇiz(
-        this ImageSource Source,
-        Point konum,
-        Brush brushes,
-        double emSize = 64,
-        string metin = null,
-        double angle = 315,
-        string font = "Arial")
+    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
     {
-        FlowDirection flowDirection = (CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR")) ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
+        FlowDirection flowDirection = CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR") ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         FormattedText formattedText =
             new(metin, CultureInfo.CurrentCulture, flowDirection, new Typeface(font), emSize, brushes) { TextAlignment = TextAlignment.Center };
         DrawingVisual dv = new();
@@ -433,10 +492,10 @@ public static class BitmapMethods
     {
         using WebP webp = new();
         WebPDecoderOptions options = new() { use_threads = 1, bypass_filtering = 0, no_fancy_upsampling = 1 };
-        using Bitmap bmp = webp.Load(webpresimyolu, options);
+        using Bitmap bmp = webp?.Load(webpresimyolu, options);
         BitmapImage bitmapimage = bmp.PixelFormat == PixelFormat.Format32bppArgb
-            ? fullresolution ? bmp.ToBitmapImage(ImageFormat.Png) : bmp.ToBitmapImage(ImageFormat.Png, decodeheight)
-            : fullresolution ? bmp.ToBitmapImage(ImageFormat.Jpeg) : bmp.ToBitmapImage(ImageFormat.Jpeg, decodeheight);
+                                  ? fullresolution ? bmp.ToBitmapImage(ImageFormat.Png) : bmp.ToBitmapImage(ImageFormat.Png, decodeheight)
+                                  : fullresolution ? bmp.ToBitmapImage(ImageFormat.Jpeg) : bmp.ToBitmapImage(ImageFormat.Jpeg, decodeheight);
         bitmapimage.Freeze();
         return bitmapimage;
     }
@@ -447,14 +506,123 @@ public static class BitmapMethods
         {
             using WebP webp = new();
             using MemoryStream ms = new(resim);
-            using Bitmap bmp = System.Drawing.Image.FromStream(ms) as Bitmap;
-            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb
-                ? webp.EncodeLossy(bmp, kalite)
-                : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
+            using Bitmap bmp = Image.FromStream(ms) as Bitmap;
+            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb ? webp.EncodeLossy(bmp, kalite) : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
         }
         catch (Exception)
         {
             return null;
+        }
+    }
+
+    private static void HsvToRgb(double h, double s, double v, out byte r, out byte g, out byte b)
+    {
+        if (s == 0)
+        {
+            r = (byte)(v * 255);
+            g = (byte)(v * 255);
+            b = (byte)(v * 255);
+            return;
+        }
+
+        double c = v * s;
+        double x = c * (1 - Math.Abs((h * 6 % 2) - 1));
+        double m = v - c;
+
+        double rf, gf, bf;
+        if (h < 1.0 / 6.0)
+        {
+            rf = c;
+            gf = x;
+            bf = 0;
+        }
+        else if (h < 2.0 / 6.0)
+        {
+            rf = x;
+            gf = c;
+            bf = 0;
+        }
+        else if (h < 3.0 / 6.0)
+        {
+            rf = 0;
+            gf = c;
+            bf = x;
+        }
+        else if (h < 4.0 / 6.0)
+        {
+            rf = 0;
+            gf = x;
+            bf = c;
+        }
+        else if (h < 5.0 / 6.0)
+        {
+            rf = x;
+            gf = 0;
+            bf = c;
+        }
+        else
+        {
+            rf = c;
+            gf = 0;
+            bf = x;
+        }
+
+        r = (byte)((rf + m) * 255);
+        g = (byte)((gf + m) * 255);
+        b = (byte)((bf + m) * 255);
+    }
+
+    private static Cursor InternalCreateCursor(Bitmap bmp)
+    {
+        NativeMethods.IconInfo iconInfo = new();
+        _ = NativeMethods.GetIconInfo(bmp.GetHicon(), ref iconInfo);
+
+        iconInfo.xHotspot = 0;
+        iconInfo.yHotspot = 0;
+        iconInfo.fIcon = false;
+
+        SafeIconHandle cursorHandle = NativeMethods.CreateIconIndirect(ref iconInfo);
+        return CursorInteropHelper.Create(cursorHandle);
+    }
+
+    private static void RgbToHsv(byte r, byte g, byte b, out double h, out double s, out double v)
+    {
+        double rf = r / 255.0;
+        double gf = g / 255.0;
+        double bf = b / 255.0;
+
+        double max = Math.Max(rf, Math.Max(gf, bf));
+        double min = Math.Min(rf, Math.Min(gf, bf));
+        double delta = max - min;
+
+        h = delta == 0 ? 0 : max == rf ? (gf - bf) / delta % 6.0 : max == gf ? ((bf - rf) / delta) + 2.0 : ((rf - gf) / delta) + 4.0;
+
+        h /= 6.0;
+
+        s = max == 0 ? 0 : delta / max;
+
+        v = max;
+    }
+
+    private static class NativeMethods
+    {
+        [DllImport("user32.dll")]
+        public static extern SafeIconHandle CreateIconIndirect(ref IconInfo icon);
+
+        [DllImport("user32.dll")]
+        public static extern bool DestroyIcon(IntPtr hIcon);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool GetIconInfo(IntPtr hIcon, ref IconInfo pIconInfo);
+
+        public struct IconInfo
+        {
+            public bool fIcon;
+            public int xHotspot;
+            public int yHotspot;
+            public IntPtr hbmMask;
+            public IntPtr hbmColor;
         }
     }
 }

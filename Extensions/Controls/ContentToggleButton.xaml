@@ -1,0 +1,76 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:local="clr-namespace:Extensions">
+    <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="local:ContentToggleButton">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush ice:Freeze="true" StartPoint="0,0" EndPoint="0,1">
+                    <LinearGradientBrush.GradientStops>
+                        <GradientStop Offset="0" Color="#F0F0F0" />
+                        <GradientStop Offset="1" Color="#E5E5E5" />
+                    </LinearGradientBrush.GradientStops>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="BorderBrush" Value="#ACACAC" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ContentToggleButton">
+                    <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        SnapsToDevicePixels="True">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <ContentPresenter Grid.Column="0"
+                                Margin="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                Focusable="False" RecognizesAccessKey="True"
+                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            <Path x:Name="path"
+                                Grid.Column="1"
+                                Margin="2" HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Data="{DynamicResource ArrowGeometry}"
+                                Fill="#606060" Focusable="False"
+                                Visibility="{Binding ArrowVisibility, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />
+                            <Popup Grid.ColumnSpan="2"
+                                local:ContentToggleButton.AlwaysOnTop="{Binding TopMost, RelativeSource={RelativeSource AncestorType={x:Type local:ContentToggleButton}}}"
+                                AllowsTransparency="True"
+                                HorizontalOffset="{Binding ContentHorizontalOffset, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+                                IsOpen="{Binding IsChecked, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+                                Placement="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+                                PlacementTarget="{Binding RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+                                PopupAnimation="{Binding PopupAnimation, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+                                StaysOpen="{Binding StaysOpen, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}"
+                                VerticalOffset="{Binding ContentVerticalOffset, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}">
+                                <ContentPresenter Content="{TemplateBinding OverContent}" />
+                            </Popup>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="UIElement.IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Border.BorderBrush" Value="#3C7FB1" />
+                            <Setter TargetName="border" Property="Panel.Background" Value="#BEE6FD" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Background" Value="#F4F4F4" />
+                            <Setter Property="Foreground" Value="#ADADAD" />
+                            <Setter Property="TextElement.Foreground" Value="#838383" />
+                            <Setter TargetName="path" Property="Fill" Value="#BFBFBF" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

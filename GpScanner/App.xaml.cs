@@ -1,10 +1,13 @@
-﻿using System;
+﻿using GpScanner.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Markup;
 using System.Windows.Threading;
-using GpScanner.ViewModel;
 
 namespace GpScanner;
 
@@ -18,11 +21,12 @@ public partial class App : Application
 #if !DEBUG
         Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 #endif
+        FrameworkElement.LanguageProperty.OverrideMetadata(typeof(Run), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
         foreach (string arg in e.Args)
         {
             if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
             {
-                IEnumerable<Process> processes = StillImageHelper.GetAllGPScannerProcess();
+                List<Process> processes = [.. StillImageHelper.GetAllGPScannerProcess()];
                 if (!processes.Any())
                 {
                     StillImageHelper.FirstLanuchScan = true;

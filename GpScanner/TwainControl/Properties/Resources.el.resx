@@ -1,0 +1,678 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>ΕΠΙΛΕΞΤΕ ΠΗΓΗ</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>ΡΥΘΜΙΣΕΙΣ</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>ΑΝΑΛΥΣΗ</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>ADF</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>ΜΑΥΡΟ ΑΣΠΡΟ</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>ΓΚΡΙ</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>ΧΡΩΜΑ</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>ΔΙΠΛΕΥΡΕΣ</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>ΕΜΦΑΝΙΣΗ GUI</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>ΞΕΧΩΡΙΣΤΗ ΣΑΡΩΣΗ</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>ΕΜΦΑΝΙΣΗ ΑΡΧΕΙΟΥ ΜΕΤΑ ΓΡΗΓΟΡΗ ΣΑΡΩΣΗ</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>ΑΛΛΕΣ ΡΥΘΜΙΣΕΙΣ</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>DESKEW</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>ΑΥΤΟΜΑΤΗ ΑΝΙΧΝΕΥΣΗ ΣΥΝΟΡΙΩΝ</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>ΔΕΙΞΤΕ ΠΡΟΟΔΟ</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>ΑΥΤΟΜΑΤΗ ΠΕΡΙΣΤΡΟΦΗ</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>ΚΑΜΙΑ ΕΝΕΡΓΕΙΑ</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>ΚΛΕΙΣΙΜΟ ΥΠΟΛΟΓΙΣΤΗ</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>ΕΠΑΝΕΚΚΙΝΗΣΗ ΥΠΟΛΟΓΙΣΤΗ</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>ΟΝΟΜΑ ΑΡΧΕΙΟΥ</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>ΗΜΕΡΑ</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>ΜΗΝΑΣ</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>ΕΤΟΣ</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>ΧΡΟΝΟΣ</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>ΛΕΠΤΟ</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>ΔΕΥΤΕΡΟΣ</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>ΟΔΗΓΟΣ</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>ΟΝΟΜΑ ΧΡΗΣΤΗ</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>ΑΠΟΘΗΚΕΥΣΗ ΠΡΟΦΙΛ</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>ΔΙΑΓΡΑΦΩ</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>ΣΑΡΩΣΗ</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>ΓΡΗΓΟΡΑ</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>ΑΥΤΟΜΑΤΗ ΣΑΡΩΣΗ</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>ΟΛΑ</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>ΚΑΝΕΝΑΣ</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>ΑΝΤΙΣΤΡΟΦΗ</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>ΜΕΓΕΘΟΣ ΠΡΟΕΠΙΣΚΟΠΗΣΗΣ ΕΙΚΟΝΑΣ</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF PROTECT</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>ΚΡΥΠΤΟ</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>ΟΙ ΡΥΘΜΙΣΕΙΣ ΠΟΥ ΓΙΝΟΝΤΑΙ ΕΔΩ ΕΠΗΡΕΑΖΟΥΝ ΟΛΕΣ ΤΙΣ ΡΥΘΜΙΣΕΙΣ PDF.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>ΕΠΙΤΡΕΠΕΤΑΙ ΕΚΤΥΠΩΣΗ</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>ΕΠΙΤΡΕΠΕΙ ΤΟ ΑΝΤΙΓΡΑΦΟ</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>ΕΠΙΤΡΕΠΕΙ ΤΗΝ ΕΠΕΞΕΡΓΑΣΙΑ</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>ΑΠΟΘΗΚΕΥΣΗ ΕΠΙΛΕΓΜΕΝΩΝ</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>ΣΑΦΗ ΚΑΤΑΛΟΓΟ</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>MERGE PDF</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>ΣΧΕΤΙΚΑ ΜΕ</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>ΕΓΓΡΑΦΟ</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>ΠΕΡΙΠΤΩΣΗ ΕΙΚΟΝΑΣ</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>ΕΠΑΝΑΦΟΡΑ</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>ΜΕΤΡΗΣΗ ΠΛΑΤΟΣ</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>ΑΡΘΡΟ ΥΨΟΣ</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>ΦΕΤΑ</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>ΚΕΙΜΕΝΟ</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>ΜΕΓΕΘΟΣ ΚΕΙΜΕΝΟΥ</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>ΚΕΙΜΕΝΟ ΓΩΝΙΑ</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>ΓΡΑΜΜΑΤΟΣΕΙΡΑ</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>ΣΧΕΔΙΑΣΗ ΚΕΙΜΕΝΟΥ</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>ΑΠΟΘΗΚΕΥΣΗ PDF</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>ΒΟΗΘΕΙΑ</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>ΑΡΧΕΙΟ</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>ΗΜΕΡΟΛΟΓΙΟ</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>ΓΡΑΦΙΚΗ ΠΑΡΑΣΤΑΣΗ</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>ΔΕΙΤΕ ΟΛΑ</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>ΠΡΟΕΠΙΣΚΟΠΗΣΗ ΑΡΧΕΙΟΥ</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESSERACT</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>ΣΥΓΧΩΝΕΥΣΗ</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>ΣΥΓΧΩΝΕΥΣΗ ΕΠΙΛΕΓΜΕΝΩΝ</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>ΕΠΙΛΕΞΤΕ ΤΟΥΛΑΧΙΣΤΟΝ ΔΥΟ ΑΡΧΕΙΑ PDF</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>ΔΙΑΒΑΣΤΕ ΕΝΕΡΓΗ</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>ΠΕΡΙΕΧΟΜΕΝΟ</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>ΕΜΦΑΝΙΣΗ ΣΕ ΦΑΚΕΛΟ</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Δεδομένου ότι τα δυαδικά αρχεία tesseract και leptonica έχουν μεταγλωττιστεί με το Visual Studio 2019, πρέπει να βεβαιωθείτε ότι έχετε εγκαταστήσει το Visual Studio 2019 Runtime</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Επίσης, κατεβάστε αρχεία δεδομένων άλλων γλωσσών για το tesseract 4.1.0 από το tesseract-ocr εάν χρειάζεται.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Studio 2019 x86 και x64 Runtimes</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Άλλα δεδομένα γλώσσας tesseract</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>ΕΡΕΥΝΗΤΗΣ</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>ΚΩΔΙΚΟΣ ΠΡΟΣΒΑΣΗΣ</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Έχει ρυθμιστεί ο τερματισμός λειτουργίας ή η επανεκκίνηση.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Μετά την εργασία γρήγορης σάρωσης</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Ορισμός φακέλου αυτόματης αποθήκευσης</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Η διαδρομή αυτόματης αποθήκευσης άλλαξε.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Όλα τα σαρωμένα έγγραφα στην κάτω λίστα θα διαγραφούν Θέλετε να συνεχίσετε;</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Σάρωση</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Εφαρμογή περιστροφής</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Η εφαρμογή εκτελείται ήδη.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>ΕΓΓΡΑΦΕΙΤΕ STI</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>ΜΕΤΑΦΡΑΖΩ</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>ΓΛΩΣΣΑ ΠΗΓΗΣ</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>ΓΛΩΣΣΑ ΠΡΟΟΡΙΣΜΟΥ</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>ΚΑΤΑΓΡΑΦΗ ΣΥΣΚΕΥΗΣ STI</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Αποθήκευση κάθε σελίδας σε ξεχωριστό αρχείο Τα αρχεία αποθηκεύονται στον φάκελο που καθορίζεται παρακάτω.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>ΑΠΟΘΗΚΕΥΣΗ OCR PDF</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Να σταματήσει</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>ΑΔΕΙΑΖΩ</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>ΔΕΣΠΕΚΛΕ</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Συνιστάται να επιλέξετε την κατάλληλη μορφή για το ευρετήριο φακέλων της παλιάς εφαρμογής του προγράμματος περιήγησής σας.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>ΠΡΟΣΑΡΜΟΣΜΕΝΟ ΠΛΑΤΟΣ</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ΠΡΟΣΑΡΜΟΣΜΕΝΟ ΥΨΟΣ</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>ΠΡΟΣΘΗΚΗ ΕΓΓΡΑΦΟΥ</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>ΠΡΟΣΘΗΚΗ OCR ΣΤΗ ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Εάν αυτό είναι επιλεγμένο, το έγγραφο που επισημαίνεται παρακάτω αποθηκεύεται στη βάση δεδομένων ως το κείμενο του ενεργού εγγράφου στα αριστερά.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Αυτή η εφαρμογή έχει αναπτυχθεί για να διευκολύνει τη σάρωση και την παρακολούθηση εγγράφων.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>ΙΣΧΥΟΥΝ</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>ΑΛΛΑΞΕ ΧΡΩΜΑ</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>ΑΥΤΟΜΑΤΟ</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>ΑΥΤΟΜΑΤΗ ΕΙΚΟΝΑ</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>ΑΥΤΟΜΑΤΟ ΚΕΙΜΕΝΟ</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>ΣΥΝΟΛΟ ΠΑΡΑΓΩΓΗΣ</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Όταν τα αρχεία εικόνας προστίθενται στον φάκελο που καθορίζεται παρακάτω, η αυτόματη μετατροπή σε αρχεία Pdf στον ίδιο φάκελο πραγματοποιείται όσο το πρόγραμμα είναι ανοιχτό</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>ΦΩΤΟΓΡΑΦΙΚΗ ΜΗΧΑΝΗ</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Εάν κάνετε κλικ σε αυτό αφού ορίσετε την τιμή κατωφλίου, μπορείτε να κάνετε μια δεύτερη επιλογή χρώματος.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>ΣΥΜΠΙΕΖΩ</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>ΠΡΟΚΑΘΟΡΙΣΜΕΝΟ</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>ΧΡΩΜΑ ΠΡΟΟΡΙΣΜΟΥ</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>ΠΑΡΑΒΕΙΨΗ ΚΕΝΗΣ ΣΕΛΙΔΑΣ</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Ανοίξτε απευθείας τα αρχεία Eyp.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>ΕΠΙΠΕΔΟ ΚΡΕΒΑΤΙ</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>ΠΟΙΟΤΗΤΑ JPEG</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>ΑΡΙΣΤΕΡΑ</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Αυτή η μορφή αρχείου έχει περιορισμένη υποστήριξη.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>ΦΟΡΤΩΝΩ</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Δεν εντοπίστηκε κώδικας ενημέρωσης κώδικα</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>ΔΕΝ ΕΠΙΛΕΓΕ ΠΡΟΦΙΛ</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Η διαδικασία Pdf Ocr απαιτεί επιπλέον χρόνο.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>ΟΙ ΑΛΛΕΣ ΕΦΑΡΜΟΓΕΣ ΜΟΥ</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Απευθείας αντικατάσταση συμπιεσμένου αρχείου σε σαρωμένα έγγραφα</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>ΑΡΙΘΜΟΣ ΣΕΛΙΔΑΣ</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Ανοίξτε απευθείας αρχεία Pdf.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>ΠΑΡΑΚΟΛΟΥΘΗΣΤΕ ΑΛΛΑΓΗ ΦΑΚΕΛΟΥ PDF</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>ΑΝΙΧΝΕΥΣΗ QR</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Διαγραφή επεξεργασμένων αρχείων από τη λίστα εγγράφων</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Θέλετε να διαγράψετε την επιλεγμένη εικόνα;</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Αντικατάσταση σελίδων</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>ΕΠΑΝΕΚΚΙΝΗΣΗ ΕΦΑΡΜΟΓΗΣ</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>ΣΩΣΤΑ</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ΠΕΡΙΣΤΡΟΦΗ 180 ΜΟΙΡΩΝ</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ΠΕΡΙΣΤΡΟΦΗ 270 ΜΟΙΡΩΝ</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ΠΕΡΙΣΤΡΟΦΗ 90 ΜΟΙΡΩΝ</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>ΧΡΗΣΗ ΔΙΑΧΩΡΙΣΤΗ</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Χωρισμένος</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Κάντε διπλό κλικ για επαναφορά, δεξί κλικ για επέκταση</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>ΠΗΓΗ ΧΡΩΜΑ</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Κάντε δεξί κλικ για να επιλέξετε το χρώμα πηγής.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>ΑΡΧΗ</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ΕΤΙΚΕΤΑ</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Ορισμένες εργασίες εκτελούνται Περιμένετε να τελειώσει.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Επιλέξτε Tesseract Language</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>ΒΙΒΛΙΟΘΗΚΕΣ ΤΡΙΤΩΝ ΠΟΥ ΧΡΗΣΙΜΟΠΟΙΟΥΝΤΑΙ ΣΤΗΝ ΕΦΑΡΜΟΓΗ</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>ΚΑΤΩΦΛΙ</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Η Διαδικασία βρίσκεται σε εξέλιξη.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>ΕΚΣΥΓΧΡΟΝΙΖΩ</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>ΑΦΑΝΗΣ ΣΦΡΑΓΙΔΑ ΧΑΡΤΟΥ</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Οποιοδήποτε στοιχείο ελέγχου κυανού χρώματος λειτουργεί διαφορετικά με ένα ή περισσότερα από τα πλήκτρα Alt Shift Ctrl</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Καθορίστε τον φάκελο Αυτόματη αποθήκευση.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Γνωστά Προβλήματα</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Μερικές φορές, αν και ένα αρχείο προστίθεται στη λίστα, δεν εμφανίζεται στη λίστα.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Δείχνει πόσα δευτερόλεπτα θα περιμένει ο σαρωτής πριν από τη σάρωση!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>FILM SCANNER</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Αγνοήστε το πλάτος Ύψος ίσο.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>ΒΙΒΛΙΟΘΗΚΗ</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Επιλέξτε Pdf Save Folder</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Επιλέξτε Φάκελο εικόνων</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Αναπαραγωγή ήχου όταν ολοκληρωθεί η σάρωση</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Εάν επιλεγεί, πολλαπλά έγγραφα μπορούν να υποβληθούν σε OCR την ίδια ώρα</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Κλείσιμο αρχείου</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>ΑΝΤΙΣΤΡΟΦΟ ΧΡΩΜΑ</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>ΠΤΥΧΗ</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>ΚΑΘΡΕΦΤΗΣ</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>ΚΥΜΑΤΙΣΜΟΣ</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>ΕΓΚΑΤΑΣΤΑΘΗΚΕ</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Το αρχείο είναι σε χρήση.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Πατήστε και κρατήστε πατημένο το κουμπί Esc για ακύρωση</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>ΑΠΟΧΡΩΣΗ</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>ΕΛΑΦΡΟΤΗΤΑ</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>ΚΟΡΕΣΜΟΣ</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Απλή προεπισκόπηση Pdf.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Όταν τελειώσει Αφαιρέστε το CD</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>ΟΡΙΖΟΝΤΙΟΣ</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Πάρτε πρώτος και τελευταίος Συνέχεια</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Διαίρεση και ταξινόμηση</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>ΤΥΧΑΙΟΣ</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>ΑΡΧΕΙΑ ΜΗ ΑΝΤΙΚΕΙΜΕΝΟΥ</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Εμφάνιση πληροφοριών PDF</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr Όλες οι σελίδες Pdf</value>
+  </data>
+</root>

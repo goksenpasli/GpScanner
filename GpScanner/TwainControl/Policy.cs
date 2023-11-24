@@ -8,7 +8,9 @@ namespace TwainControl;
 
 public class Policy : DependencyObject
 {
-    public static bool CheckPolicy(string searchvalue, RegistryKey registryKey)
+    public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty, Changed));
+
+    public static bool CheckKeyPolicy(string searchvalue, RegistryKey registryKey)
     {
         try
         {
@@ -33,31 +35,12 @@ public class Policy : DependencyObject
         return true;
     }
 
-    public static bool GetPolicyEnabled(DependencyObject obj)
-    {
-        return (bool)obj.GetValue(PolicyEnabledProperty);
-    }
+    public static bool CheckPolicy(string policyname) => CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
+    CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
 
-    public static string GetPolicyName(DependencyObject obj)
-    {
-        return (string)obj.GetValue(PolicyNameProperty);
-    }
+    public static string GetPolicyName(DependencyObject obj) => (string)obj.GetValue(PolicyNameProperty);
 
-    public static void SetPolicyEnabled(DependencyObject obj, bool value)
-    {
-        obj.SetValue(PolicyEnabledProperty, value);
-    }
-
-    public static void SetPolicyName(DependencyObject obj, string value)
-    {
-        obj.SetValue(PolicyNameProperty, value);
-    }
-
-    public static readonly DependencyProperty PolicyEnabledProperty =
-                            DependencyProperty.RegisterAttached("PolicyEnabled", typeof(bool), typeof(Policy), new PropertyMetadata(false, Changed));
-
-    public static readonly DependencyProperty PolicyNameProperty =
-        DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty));
+    public static void SetPolicyName(DependencyObject obj, string value) => obj.SetValue(PolicyNameProperty, value);
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -66,16 +49,14 @@ public class Policy : DependencyObject
             return;
         }
 
-        if (d is UIElement uIElement && (bool)e.NewValue)
+        if (d is UIElement uIElement)
         {
-            uIElement.IsEnabled = CheckPolicy(GetPolicyName(uIElement), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-                CheckPolicy(GetPolicyName(uIElement), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
+            uIElement.IsEnabled = CheckPolicy((string)e.NewValue);
         }
 
-        if (d is Hyperlink hyperlink && (bool)e.NewValue)
+        if (d is Hyperlink hyperlink)
         {
-            hyperlink.IsEnabled = CheckPolicy(GetPolicyName(hyperlink), Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-                CheckPolicy(GetPolicyName(hyperlink), Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
+            hyperlink.IsEnabled = CheckPolicy((string)e.NewValue);
         }
     }
 }

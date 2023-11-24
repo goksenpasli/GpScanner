@@ -10,6 +10,15 @@ namespace Extensions;
 /// </summary>
 public class PixelateEffect : ShaderEffect
 {
+    public static readonly DependencyProperty BrickOffsetProperty = DependencyProperty.Register("BrickOffset", typeof(double), typeof(PixelateEffect), new UIPropertyMetadata(0D, PixelShaderConstantCallback(1)));
+    public static readonly DependencyProperty InputProperty =
+        RegisterPixelShaderSamplerProperty("Input", typeof(PixelateEffect), 0);
+    public static readonly DependencyProperty PixelCountsProperty = DependencyProperty.Register(
+        "PixelCounts",
+        typeof(Size),
+        typeof(PixelateEffect),
+        new UIPropertyMetadata(new Size(60D, 40D), PixelShaderConstantCallback(0)));
+
     public PixelateEffect()
     {
         PixelShader = new PixelShader { UriSource = new Uri("/Extensions;component/Shader/PixelateEffect.ps", UriKind.Relative) };
@@ -30,19 +39,4 @@ public class PixelateEffect : ShaderEffect
     /// The number of horizontal and vertical pixel blocks.
     /// </summary>
     public Size PixelCounts { get => (Size)GetValue(PixelCountsProperty); set => SetValue(PixelCountsProperty, value); }
-
-    public static readonly DependencyProperty BrickOffsetProperty = DependencyProperty.Register(
-                        "BrickOffset",
-        typeof(double),
-        typeof(PixelateEffect),
-        new UIPropertyMetadata(0D, PixelShaderConstantCallback(1)));
-
-    public static readonly DependencyProperty InputProperty =
-        RegisterPixelShaderSamplerProperty("Input", typeof(PixelateEffect), 0);
-
-    public static readonly DependencyProperty PixelCountsProperty = DependencyProperty.Register(
-        "PixelCounts",
-        typeof(Size),
-        typeof(PixelateEffect),
-        new UIPropertyMetadata(new Size(60D, 40D), PixelShaderConstantCallback(0)));
 }

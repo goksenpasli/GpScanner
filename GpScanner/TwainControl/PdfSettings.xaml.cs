@@ -8,8 +8,7 @@ namespace TwainControl;
 /// </summary>
 public partial class PdfSettings : UserControl
 {
-    public PdfSettings()
-    { InitializeComponent(); }
+    public PdfSettings() { InitializeComponent(); }
 
     private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
     {

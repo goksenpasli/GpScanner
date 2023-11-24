@@ -1,0 +1,678 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>MƏNBƏ SEÇİN</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>AYARLAR</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>GÖRÜNTÜ İMKANI</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>SƏNƏD</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>QARA AĞ</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>BOZ</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>RƏNGLİ</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>İKİ TƏRƏFLİ</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>İNTERFEYSİ GÖSTƏRİN</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>HƏR SƏHİFƏYİ AYRICA SKANI KEÇİRİN</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>TEZ Skandan SONRA FAYI GÖSTƏRİN</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>DİGƏR AYARLAR</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>DOĞRU ƏYRILIK</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>KƏNƏRİN AVTOMAT ALINMASI</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>FAİZİ GÖSTƏRİN</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>AVTO DÖNDÜRMƏ</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>HEÇ BİR FƏALİYYƏT</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>KOMPUTERİ BAĞLAYIN</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>KOMPUTERİ YENİDEN BAŞLADIN</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>FAYL ADI</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>GÜN</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>AY</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>İL</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>HOUR</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>DƏQİQƏ</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>İKİNCİ</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>GUID</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>İSTİFADƏÇİ ADI</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>PROFİLİ YAXŞ EDİN</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>SİLİN</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>SCAN</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>SÜRƏTLİ</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>AVTOMATİK</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>HAMISI</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>YOX</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>TERS</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>ŞƏKİLLƏRİN ÖLÇÜSÜ</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF mühafizə</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>ŞİFRƏLƏMƏ</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>BURADA EDİLƏN PARAMETRELƏR BÜTÜN PDF YAXŞI SAHİBƏLƏRƏ TƏSİR EDİR.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>Çap etməyə icazə verin</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>MƏZMUNUN KOPYALANMASINA İCAZƏ VERİN</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>SƏNƏDLƏRİN RƏDƏT EDİLMƏSİNƏ İCAZƏ VERİN</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>SEÇİLMİŞİ SAXLA</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>SİYAHINI TƏMİZLƏ</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>PDF birləşdirin</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>HAQQINDA</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>SƏNƏD</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>ŞƏKİLİ KƏSİN</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>RESET</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>ƏN SAYI</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>ÖLÇÜ NÖMRƏSİ</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>PAYLAŞIN</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>MƏTN</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>MƏTN ÖLÇÜSÜ</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>Mətn bucağı</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>Şrift</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>MƏTNİ ÇƏK</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>PDF SAXLA</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>YARDIM</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR EDİN</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>FAYL</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>TƏQVİM</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>QRAFİKA</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>ONLARIN HAMISI</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>FAYL</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESSERACT</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>BİRLEŞTİRİN</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>MARKED PDF</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>EN AZ İKİ PDF</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>AKTİV SƏHİFƏ</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>MƏZMUNİ OXUYUN</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>QOVLANDA GÖSTƏRİN</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Tesseract və leptonika ikili faylları Visual Studio 2019 ilə tərtib edildiyi üçün Visual Studio 2019 Runtime proqramının quraşdırıldığından əmin olmalısınız.</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Lazım gələrsə, tesseract-ocr-dan tesseract 4.1.0 üçün digər dil məlumat fayllarını da endirin.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Studio 2019 x86 və x64 Runtimes</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Digər tesseract dil məlumatları</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>SKANNER</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>ŞİFRƏ</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Söndürmə və ya Yenidən Başlatma Set.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Sürətli Skanlama Tamamlandıqda Görüləcək Tədbirlər</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Avtomatik Saxla Qovluğu təyin edin.</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Avtomatik Qeydiyyat Yolu Dəyişildi.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Aşağıdakı Siyahıdakı Bütün Skan edilmiş Sənədlər Silinəcək. Davam etmək istəyirsiniz?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Skan olunur</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Rotasiya Tətbiq edilməklə yadda saxlansın?</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Tətbiq Artıq İşləyir.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>BRAUZER MEYYUSUNA</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>TƏRCÜMƏ</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>MƏNBƏ DİLİ</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>HƏDƏF DİL</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>BRAUZER MEYYUSUNDAN</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Hər Səhifəni Ayrı Faylda Saxlayın.Fayllar Aşağıda Göstərilən Qovluqda Saxlanır.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>OCR PDF SAXLAMA</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>BOŞ</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>NÖQTƏNİ SİLİN</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Köhnə brauzer proqramınızın qovluq kataloqu üçün uyğun formatı seçməyiniz tövsiyə olunur.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>XÜSUSİ ENI</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>XÜSUSİ Hündürlük</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Avtomatik Saxla Qovluğu təyin edin.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Məlum məsələlər</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Bəzən siyahıya fayl əlavə olunsa da, siyahıda görünmür.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Skanerin Skandan əvvəl neçə saniyə gözləyəcəyini göstərir.</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>FİLM SKANERİ</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Eni Hündürlük Bərabərliyinə məhəl qoymayın.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>KİTABXANA</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>PDF-i saxlamaq üçün qovluğu seçin</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Şəkillər Qovluğunu seçin</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Skan tamamlandıqda səsi çalın</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Yoxlanılıbsa, Eyni zamanda bir neçə sənəd OCR edilə bilər</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>FAYI BAĞLA</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>TERS RƏNG</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>QATLAMA</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>GÜZGÜ</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>DALĞA</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>YÜKLƏNİB</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>İstifadədə olan Fayl.</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>SƏNƏDLƏŞDİRMƏK</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>OCR MƏLUMATLARINI YAXŞIN</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Əgər bu işarələnərsə, solda aktiv sənədi ehtiva edən mətn aşağıda qeyd olunan sənədin məzmunu kimi verilənlər bazasında saxlanacaq.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Bu proqram sənədlərin skan edilməsini və izlənilməsini asanlaşdırmaq üçün hazırlanmışdır.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>MÜRACİƏT EDİN</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>RƏNG TƏTBİQ EDİN</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AVTOMATİK</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>AVTOMAT ŞƏKİL</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>AVTOMƏTN</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>KOLLEKTİV İŞ</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Şəkil Faylları Aşağıda Göstərilən Qovluğa Əlavə olunduqda, Proqram Açıq olduğu müddətdə PDF Fayllarına Avtomatik Konvertasiya Eyni Qovluqda həyata keçirilir.</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>KAMERA</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Eşik dəyərini təyin etdikdən sonra bunu klikləsəniz, ikinci rəng seçimi edə bilərsiniz.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>KOMPRESS</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>DEFAULT</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>HEDEF RƏNG</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>BOŞ SƏHİFƏLƏRİ KEÇİN</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Eyp Fayllarını birbaşa açın</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>DÜŞƏK</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG KEYFİYYƏT NİSƏTİ</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>SOL</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Bu Fayl Formatının Məhdud Dəstəyi var.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>YÜKLƏ</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Yamaq Kodu Aşkarlanmadı</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>PROFİL SEÇİLMƏYİB</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf Ocr Prosesi əlavə vaxt aparır.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>DİGƏR TƏTBİQLƏRİM</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Skan edilmiş sənədlərdə sıxılmış faylın üzərinə birbaşa yazın</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>SƏHİFƏ NO.</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Pdf faylları birbaşa açın</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>PDF QOVLUĞUN DƏYİŞMƏSİNƏ BAXIN</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>QR ANLAŞIN</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Sənəd siyahısından işlənmiş faylları silin</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Seçilmiş Şəkli Silmək İstəyirsiniz?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Səhifələri dəyişdirin</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>Yenidən Başlamaq üçün Tətbiq Tələb olunur.</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>SAĞ</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>180 DƏRƏCƏ DÖNDÜR</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>270 DƏRƏCƏ DÖNDÜR</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>90 DƏRƏCƏ DÖNDÜR</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>SEPARATOR</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Qırıq</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Bərpa etmək üçün iki dəfə, genişləndirmək üçün sağ klikləyin</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>MƏNBƏ RƏNG</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Sağ klikləyin və Rəng seçin</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>BAŞLAMAQ</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>BİLET</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Bəzi Tapşırıqlar İcra olunur, Tamamlanmasını Gözləyin.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Tesseract dilini seçin</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>TƏTBİQDƏ İSTİFADƏ EDİLƏN ÜÇÜNCÜ ŞƏXS KİTABXANALARI</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>EŞYA</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Proses Davam Edir.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>YENİLƏNİB</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>FILIMARK</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>İstənilən Mavi Rəngə Nəzarət Alt Shift Ctrl Düymələrindən Bir və ya Bir neçəsi ilə Fərqli Çalışır!</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Ləğv etmək üçün Esc düyməsini basıb saxlayın</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>RƏNG TONU</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>AÇIQLIQ</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>DOYMA</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Sadə pdf önizləmə.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Bitirdikdən sonra CD-ni çıxarın</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>Üfüqi</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Birinci və Son Səhifələri seçin və çeşidləyin</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Bölün və çeşidləyin</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>Təsadüfi</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>QEYRİ İNDEKSİYON FAYLLAR</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Pdf məlumat göstərin</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr bütün pdf səhifələr</value>
+  </data>
+</root>
