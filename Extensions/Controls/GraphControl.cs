@@ -230,7 +230,7 @@ public class GraphControl : FrameworkElement
         }
     }
 
-    private FormattedText GenerateFormattedText(Chart item, Pen pen) => new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor)
+    private FormattedText GenerateFormattedText(Chart item, Pen pen) => new(item.Description, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("Segoe UI"), FontSize, TextColor, VisualTreeHelper.GetDpi(this).PixelsPerDip)
     {
         MaxTextWidth = pen.Thickness
     };
@@ -241,7 +241,7 @@ public class GraphControl : FrameworkElement
         FlowDirection.LeftToRight,
         new Typeface("Segoe UI Bold"),
         FontSize,
-        ValueColor)
+        ValueColor, VisualTreeHelper.GetDpi(this).PixelsPerDip)
     {
         MaxTextWidth = pen.Thickness
     };
