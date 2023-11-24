@@ -44,7 +44,7 @@ using System.Windows;
 
 [assembly: Guid("143762b8-772a-47af-bae6-08e0a1d0ca89")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("4.1.3.<#= RevisionNumber #>")]
+[assembly: AssemblyFileVersion("5.0.3.<#= RevisionNumber #>")]
 <#+
     private readonly int RevisionNumber = (int)(DateTime.UtcNow - new DateTime(1984, 3, 9)).TotalDays;
     private static int Year = DateTime.Today.Year;
