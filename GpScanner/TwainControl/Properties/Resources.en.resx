@@ -679,4 +679,7 @@ TO FILE</value>
   <data name="PDFINFO" xml:space="preserve">
     <value>Show Pdf Information</value>
   </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr All Pdf Pages</value>
+  </data>
 </root>

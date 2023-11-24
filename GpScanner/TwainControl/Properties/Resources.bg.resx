@@ -675,4 +675,7 @@
   <data name="PDFINFO" xml:space="preserve">
     <value>Показване на информация за PDF</value>
   </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr всички pdf страници</value>
+  </data>
 </root>

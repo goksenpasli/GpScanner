@@ -19,4 +19,4 @@ using System.Windows;
 
 [assembly: Guid("143762b8-772a-47af-bae6-08e0a1d0ca89")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("4.1.3.14503")]
+[assembly: AssemblyFileVersion("4.1.3.14504")]

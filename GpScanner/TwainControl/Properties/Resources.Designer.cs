@@ -725,6 +725,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string OCRALL {
+            get {
+                return ResourceManager.GetString("OCRALL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string OCRPDFSAVE {
             get {
                 return ResourceManager.GetString("OCRPDFSAVE", resourceCulture);

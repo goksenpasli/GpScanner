@@ -672,4 +672,7 @@
   <data name="PDFINFO" xml:space="preserve">
     <value>Pdf-informatie weergeven</value>
   </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr Alle pdf-pagina's</value>
+  </data>
 </root>

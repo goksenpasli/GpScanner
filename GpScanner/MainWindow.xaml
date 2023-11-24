@@ -1496,33 +1496,47 @@
                         </Grid>
                         <Extensions:ContentToggleButton.OverContent>
                             <StackPanel>
-                                <ToggleButton IsChecked="{Binding Shutdown}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Canvas Width="32" Height="32">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="27" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <Image Canvas.Right="0" Canvas.Bottom="0"
-                                                Width="16" Height="16"
-                                                Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Comres.dll" />
-                                                        <Binding Source="8" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Canvas>
-                                        <TextBlock VerticalAlignment="Center"
-                                            FontWeight="Bold" Foreground="Red"
-                                            Text="{twainctrl:Loc CLOSECOMP}" />
-                                    </StackPanel>
-                                </ToggleButton>
+                                <UniformGrid Columns="2">
+                                    <ToggleButton IsChecked="{Binding Shutdown}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="27" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Canvas.Right="0" Canvas.Bottom="0"
+                                                    Width="16" Height="16"
+                                                    Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Comres.dll" />
+                                                            <Binding Source="8" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Canvas>
+                                            <TextBlock VerticalAlignment="Center"
+                                                FontWeight="Bold" Foreground="Red"
+                                                Text="{twainctrl:Loc CLOSECOMP}" />
+                                        </StackPanel>
+                                    </ToggleButton>
+                                    <ToggleButton IsChecked="{Binding OcrAllPdfPages}" ToolTip="{twainctrl:Loc OCRALL}">
+                                        <ToggleButton.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Run Text="{twainctrl:Loc ALL}" />
+                                                    <Run Text="PDF" />
+                                                    <Run Text="{twainctrl:Loc OCR}" />
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </ToggleButton.Content>
+                                    </ToggleButton>
+                                </UniformGrid>
                                 <UniformGrid Width="800" Height="400" Columns="2">
                                     <GroupBox>
                                         <Grid>
@@ -1533,23 +1547,29 @@
                                             <ListBox x:Name="LbUnindexed" d:ItemsSource="{d:SampleData ItemCount=5}" ItemsSource="{Binding UnIndexedFiles}">
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
-                                                        <TextBlock VerticalAlignment="Center">
-                                                            <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
-                                                            <Run Text="{Binding Mode=OneWay}" />
-                                                            <Hyperlink BaselineAlignment="Center"
-                                                                Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                                                                CommandParameter="{Binding Mode=OneWay}"
-                                                                TextDecorations="None">
-                                                                <Image Width="16" Height="16">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="171" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
-                                                            </Hyperlink>
-                                                        </TextBlock>
+                                                        <Grid>
+                                                            <ProgressBar Background="{x:Null}"
+                                                                BorderBrush="{x:Null}"
+                                                                Maximum="1"
+                                                                Value="{Binding DataContext.OcrAllPdfPagesProgress, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" />
+                                                            <TextBlock VerticalAlignment="Center">
+                                                                <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                                                <Run Text="{Binding Mode=OneWay}" />
+                                                                <Hyperlink BaselineAlignment="Center"
+                                                                    Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    TextDecorations="None">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Shell32.dll" />
+                                                                                <Binding Source="171" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                </Hyperlink>
+                                                            </TextBlock>
+                                                        </Grid>
                                                     </DataTemplate>
                                                 </ListBox.ItemTemplate>
                                             </ListBox>

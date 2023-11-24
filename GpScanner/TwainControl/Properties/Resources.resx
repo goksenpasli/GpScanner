@@ -710,4 +710,7 @@
   <data name="PDFINFO" xml:space="preserve">
     <value />
   </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -675,4 +675,7 @@
   <data name="PDFINFO" xml:space="preserve">
     <value>Vis pdf-information</value>
   </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr alle pdf-sider</value>
+  </data>
 </root>

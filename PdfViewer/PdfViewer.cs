@@ -123,10 +123,17 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = "Dosya" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                    int selectedpage = (int)parameter - 1;
-                    pdfDocument.DeletePage(selectedpage);
-                    pdfDocument.Save(saveFileDialog.FileName);
+                    try
+                    {
+                        using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                        int selectedpage = (int)parameter - 1;
+                        pdfDocument.DeletePage(selectedpage);
+                        pdfDocument.Save(saveFileDialog.FileName);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException(ex.Message);
+                    }
                 }
             },
             parameter => PdfFilePath is not null && Pages?.Count() > 1);

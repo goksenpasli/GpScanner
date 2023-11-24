@@ -685,4 +685,7 @@ BELGE EKLE</value>
   <data name="PDFINFO" xml:space="preserve">
     <value>Pdf Bilgilerini Göster</value>
   </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Tüm Pdf Sayfalarını Ocr Yap</value>
+  </data>
 </root>

@@ -672,4 +672,7 @@
   <data name="PDFINFO" xml:space="preserve">
     <value>显示 PDF 信息</value>
   </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr 所有 PDF 页面</value>
+  </data>
 </root>
