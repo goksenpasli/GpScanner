@@ -90,6 +90,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             .ÜstüneResimÇiz(
                 new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2),
                 Scanner.WatermarkColor,
+                VisualTreeHelper.GetDpi(this),
                 Scanner.WatermarkTextSize,
                 Scanner.Watermark,
                 Scanner.WatermarkAngle,
