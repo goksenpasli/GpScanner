@@ -2,25 +2,63 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Diller="clr-namespace:System.Collections;assembly=mscorlib"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options">
-    <SolidColorBrush x:Key="ListBox.Static.Background" ice:Freeze="True" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ListBox.Static.Border" ice:Freeze="True" Color="#FFABADB3" />
-    <SolidColorBrush x:Key="ListBox.Disabled.Background" ice:Freeze="True" Color="#FFFFFFFF" />
-    <SolidColorBrush x:Key="ListBox.Disabled.Border" ice:Freeze="True" Color="#FFD9D9D9" />
-    <SolidColorBrush x:Key="ScrollBar.Static.Background" ice:Freeze="True" Color="#F0F0F0" />
-    <SolidColorBrush x:Key="ScrollBar.Static.Border" ice:Freeze="True" Color="#F0F0F0" />
-    <SolidColorBrush x:Key="ScrollBar.Pressed.Glyph" ice:Freeze="True" Color="#FFFFFF" />
-    <SolidColorBrush x:Key="ScrollBar.MouseOver.Glyph" ice:Freeze="True" Color="#000000" />
-    <SolidColorBrush x:Key="ScrollBar.Disabled.Glyph" ice:Freeze="True" Color="#BFBFBF" />
-    <SolidColorBrush x:Key="ScrollBar.Static.Glyph" ice:Freeze="True" Color="#606060" />
-    <SolidColorBrush x:Key="ScrollBar.MouseOver.Background" ice:Freeze="True" Color="#DADADA" />
-    <SolidColorBrush x:Key="ScrollBar.MouseOver.Border" ice:Freeze="True" Color="#DADADA" />
-    <SolidColorBrush x:Key="ScrollBar.Pressed.Background" ice:Freeze="True" Color="#606060" />
-    <SolidColorBrush x:Key="ScrollBar.Pressed.Border" ice:Freeze="True" Color="#606060" />
-    <SolidColorBrush x:Key="ScrollBar.Disabled.Background" ice:Freeze="True" Color="#F0F0F0" />
-    <SolidColorBrush x:Key="ScrollBar.Disabled.Border" ice:Freeze="True" Color="#F0F0F0" />
-    <SolidColorBrush x:Key="ScrollBar.MouseOver.Thumb" ice:Freeze="True" Color="#A6A6A6" />
-    <SolidColorBrush x:Key="ScrollBar.Pressed.Thumb" ice:Freeze="True" Color="#606060" />
-    <SolidColorBrush x:Key="ScrollBar.Static.Thumb" ice:Freeze="True" Color="#CDCDCD" />
+    <SolidColorBrush x:Key="ListBox.Static.Background"
+        ice:Freeze="True"
+        Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="ListBox.Static.Border"
+        ice:Freeze="True"
+        Color="#FFABADB3" />
+    <SolidColorBrush x:Key="ListBox.Disabled.Background"
+        ice:Freeze="True"
+        Color="#FFFFFFFF" />
+    <SolidColorBrush x:Key="ListBox.Disabled.Border"
+        ice:Freeze="True"
+        Color="#FFD9D9D9" />
+    <SolidColorBrush x:Key="ScrollBar.Static.Background"
+        ice:Freeze="True"
+        Color="#F0F0F0" />
+    <SolidColorBrush x:Key="ScrollBar.Static.Border"
+        ice:Freeze="True"
+        Color="#F0F0F0" />
+    <SolidColorBrush x:Key="ScrollBar.Pressed.Glyph"
+        ice:Freeze="True"
+        Color="#FFFFFF" />
+    <SolidColorBrush x:Key="ScrollBar.MouseOver.Glyph"
+        ice:Freeze="True"
+        Color="#000000" />
+    <SolidColorBrush x:Key="ScrollBar.Disabled.Glyph"
+        ice:Freeze="True"
+        Color="#BFBFBF" />
+    <SolidColorBrush x:Key="ScrollBar.Static.Glyph"
+        ice:Freeze="True"
+        Color="#606060" />
+    <SolidColorBrush x:Key="ScrollBar.MouseOver.Background"
+        ice:Freeze="True"
+        Color="#DADADA" />
+    <SolidColorBrush x:Key="ScrollBar.MouseOver.Border"
+        ice:Freeze="True"
+        Color="#DADADA" />
+    <SolidColorBrush x:Key="ScrollBar.Pressed.Background"
+        ice:Freeze="True"
+        Color="#606060" />
+    <SolidColorBrush x:Key="ScrollBar.Pressed.Border"
+        ice:Freeze="True"
+        Color="#606060" />
+    <SolidColorBrush x:Key="ScrollBar.Disabled.Background"
+        ice:Freeze="True"
+        Color="#F0F0F0" />
+    <SolidColorBrush x:Key="ScrollBar.Disabled.Border"
+        ice:Freeze="True"
+        Color="#F0F0F0" />
+    <SolidColorBrush x:Key="ScrollBar.MouseOver.Thumb"
+        ice:Freeze="True"
+        Color="#A6A6A6" />
+    <SolidColorBrush x:Key="ScrollBar.Pressed.Thumb"
+        ice:Freeze="True"
+        Color="#606060" />
+    <SolidColorBrush x:Key="ScrollBar.Static.Thumb"
+        ice:Freeze="True"
+        Color="#CDCDCD" />
     <Diller:ArrayList x:Key="Diller">
         <Diller:DictionaryEntry Key="Auto" Value="auto" />
         <Diller:DictionaryEntry Key="Afrikaans" Value="af" />
@@ -100,8 +138,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
                     <Border Height="5"
-                        Background="Red" BorderBrush="Gray"
-                        BorderThickness="0,1,1,1" CornerRadius="0.5" />
+                        Background="Red"
+                        BorderBrush="Gray"
+                        BorderThickness="0,1,1,1"
+                        CornerRadius="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -115,8 +155,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
                     <Border Width="5"
-                        Background="Red" BorderBrush="Gray"
-                        BorderThickness="0,1,1,1" CornerRadius="0.5" />
+                        Background="Red"
+                        BorderBrush="Gray"
+                        BorderThickness="0,1,1,1"
+                        CornerRadius="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -130,8 +172,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
                     <Border Height="5"
-                        Background="Red" BorderBrush="Gray"
-                        BorderThickness="1,1,0,1" CornerRadius="0.5" />
+                        Background="Red"
+                        BorderBrush="Gray"
+                        BorderThickness="1,1,0,1"
+                        CornerRadius="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -145,8 +189,10 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RepeatButton">
                     <Border Width="5"
-                        Background="Red" BorderBrush="Gray"
-                        BorderThickness="1,1,0,1" CornerRadius="0.5" />
+                        Background="Red"
+                        BorderBrush="Gray"
+                        BorderThickness="1,1,0,1"
+                        CornerRadius="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -157,8 +203,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Thumb">
-                    <Ellipse Width="16" Height="16"
-                        Fill="Blue" Stroke="Gray"
+                    <Ellipse Width="16"
+                        Height="16"
+                        Fill="Blue"
+                        Stroke="Gray"
                         StrokeThickness="1" />
                 </ControlTemplate>
             </Setter.Value>
@@ -246,9 +294,11 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        ClipToBounds="True" CornerRadius="2">
+                        ClipToBounds="True"
+                        CornerRadius="2">
                         <Border x:Name="PART_Indicator"
-                            Margin="1" HorizontalAlignment="Left"
+                            Margin="1"
+                            HorizontalAlignment="Left"
                             Background="{TemplateBinding Foreground}"
                             BorderBrush="{x:Null}"
                             CornerRadius="1" />
@@ -266,9 +316,12 @@
                             <Trigger.EnterActions>
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <ThicknessAnimation AutoReverse="False" RepeatBehavior="Forever"
-                                            Storyboard.TargetName="PART_Indicator" Storyboard.TargetProperty="Margin"
-                                            From="-40,1,1,1" To="40,1,1,1"
+                                        <ThicknessAnimation AutoReverse="False"
+                                            RepeatBehavior="Forever"
+                                            Storyboard.TargetName="PART_Indicator"
+                                            Storyboard.TargetProperty="Margin"
+                                            From="-40,1,1,1"
+                                            To="40,1,1,1"
                                             Duration="0:0:2" />
                                     </Storyboard>
                                 </BeginStoryboard>

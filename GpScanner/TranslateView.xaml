@@ -8,7 +8,8 @@
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     d:DataContext="{d:DesignInstance Type=viewmodel:TranslateViewModel}"
-    d:DesignHeight="450" d:DesignWidth="800"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -31,14 +32,18 @@
             <ColumnDefinition />
             <ColumnDefinition Width="72" />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0"
+        <TextBlock Grid.Row="0"
+            Grid.Column="0"
             HorizontalAlignment="Center"
             Text="{twainctrl:Loc SOURCELANG}" />
-        <TextBlock Grid.Row="0" Grid.Column="2"
+        <TextBlock Grid.Row="0"
+            Grid.Column="2"
             HorizontalAlignment="Center"
             Text="{twainctrl:Loc DESTLANG}" />
-        <ComboBox Grid.Row="1" Grid.Column="0"
-            twainctrl:Policy.PolicyName="MevcutDil" DisplayMemberPath="Key"
+        <ComboBox Grid.Row="1"
+            Grid.Column="0"
+            twainctrl:Policy.PolicyName="MevcutDil"
+            DisplayMemberPath="Key"
             ItemsSource="{StaticResource Diller}"
             SelectedValue="{Binding MevcutDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedValuePath="Value">
@@ -48,7 +53,9 @@
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
         </ComboBox>
-        <Button Grid.Row="1" Grid.Column="1" Command="{Binding Değiştir}">
+        <Button Grid.Row="1"
+            Grid.Column="1"
+            Command="{Binding Değiştir}">
             <Image Width="16" Height="16">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -58,8 +65,10 @@
                 </Image.Source>
             </Image>
         </Button>
-        <ComboBox Grid.Row="1" Grid.Column="2"
-            twainctrl:Policy.PolicyName="ÇevrilenDil" DisplayMemberPath="Key"
+        <ComboBox Grid.Row="1"
+            Grid.Column="2"
+            twainctrl:Policy.PolicyName="ÇevrilenDil"
+            DisplayMemberPath="Key"
             ItemsSource="{StaticResource Diller}"
             SelectedValue="{Binding ÇevrilenDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedValuePath="Value">
@@ -69,7 +78,8 @@
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
         </ComboBox>
-        <ComboBox Grid.Row="1" Grid.Column="3"
+        <ComboBox Grid.Row="1"
+            Grid.Column="3"
             twainctrl:Policy.PolicyName="OkumaDili"
             ItemsSource="{Binding TtsDilleri, Mode=OneWay}"
             SelectedItem="{Binding OkumaDili}">
@@ -80,16 +90,21 @@
             </ComboBox.ItemsPanel>
         </ComboBox>
         <Extensions:ButtonedTextBox x:Name="BtnTxtMetin"
-            Grid.Row="2" Grid.ColumnSpan="3"
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
             VerticalContentAlignment="Top"
-            AcceptsReturn="True" CharacterCasing="Normal"
+            AcceptsReturn="True"
+            CharacterCasing="Normal"
             FontSizeButtonVisibility="Visible"
             IsReadOnly="{Binding MetinBoxIsreadOnly}"
-            OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
+            OpenButtonVisibility="Collapsed"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            TextWrapping="Wrap" TitleCaseMenuVisibility="Visible" />
-        <ToggleButton Grid.Row="2" Grid.Column="3"
+            TextWrapping="Wrap"
+            TitleCaseMenuVisibility="Visible" />
+        <ToggleButton Grid.Row="2"
+            Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
             CommandParameter="{Binding ElementName=BtnTxtMetin, Path=Text}">
@@ -129,15 +144,21 @@
             </ToggleButton.Style>
         </ToggleButton>
         <Extensions:ButtonedTextBox x:Name="BtnTxtÇeviri"
-            Grid.Row="3" Grid.ColumnSpan="3"
+            Grid.Row="3"
+            Grid.ColumnSpan="3"
             VerticalContentAlignment="Top"
-            AcceptsReturn="True" CharacterCasing="Normal"
-            FontSizeButtonVisibility="Visible" IsReadOnly="True"
-            OpenButtonVisibility="Collapsed" ScrollViewer.VerticalScrollBarVisibility="Auto"
+            AcceptsReturn="True"
+            CharacterCasing="Normal"
+            FontSizeButtonVisibility="Visible"
+            IsReadOnly="True"
+            OpenButtonVisibility="Collapsed"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
             Text="{Binding Çeviri, Mode=OneWay}"
-            TextWrapping="Wrap" TitleCaseMenuVisibility="Visible" />
-        <ToggleButton Grid.Row="3" Grid.Column="3"
+            TextWrapping="Wrap"
+            TitleCaseMenuVisibility="Visible" />
+        <ToggleButton Grid.Row="3"
+            Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
             CommandParameter="{Binding ElementName=BtnTxtÇeviri, Path=Text}">
@@ -176,7 +197,8 @@
                 </Style>
             </ToggleButton.Style>
         </ToggleButton>
-        <Button Grid.Row="4" Grid.ColumnSpan="3"
+        <Button Grid.Row="4"
+            Grid.ColumnSpan="3"
             twainctrl:Policy.PolicyName="Sıfırla"
             Command="{Binding Sıfırla}">
             <StackPanel Orientation="Horizontal">
@@ -202,7 +224,8 @@
             </Image>
             <Extensions:ContentToggleButton.OverContent>
                 <GroupBox>
-                    <ItemsControl Width="300" Height="400"
+                    <ItemsControl Width="300"
+                        Height="400"
                         HorizontalContentAlignment="Stretch"
                         ItemsSource="{Binding TaramaGeçmiş, Mode=OneWay}">
                         <ItemsControl.ItemsPanel>
@@ -212,7 +235,9 @@
                         </ItemsControl.ItemsPanel>
                         <ItemsControl.Template>
                             <ControlTemplate>
-                                <ScrollViewer Padding="{TemplateBinding Padding}" CanContentScroll="True" VerticalScrollBarVisibility="Visible">
+                                <ScrollViewer Padding="{TemplateBinding Padding}"
+                                    CanContentScroll="True"
+                                    VerticalScrollBarVisibility="Visible">
                                     <ItemsPresenter />
                                 </ScrollViewer>
                             </ControlTemplate>
@@ -220,7 +245,8 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Extensions:ButtonedTextBox Height="80"
-                                    IsReadOnly="True" OpenButtonVisibility="Collapsed"
+                                    IsReadOnly="True"
+                                    OpenButtonVisibility="Collapsed"
                                     ResetButtonVisibility="Collapsed"
                                     Text="{Binding Mode=OneWay}"
                                     TextWrapping="Wrap" />

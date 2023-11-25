@@ -4,11 +4,13 @@
     xmlns:Control="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:WebcamPlayer="clr-namespace:CatenaLogic.Windows.Presentation.WebcamPlayer;assembly=WpfCap"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:TwainControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:CameraUserControl}"
-    d:DesignHeight="450" d:DesignWidth="680"
+    d:DesignHeight="450"
+    d:DesignWidth="680"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -17,10 +19,13 @@
         <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     </UserControl.Resources>
     <Grid>
-        <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"
+        <ToggleButton HorizontalAlignment="Right"
+            VerticalAlignment="Top"
             Background="{x:Null}"
             BorderBrush="{x:Null}">
-            <Image Width="24" Height="24" Source="/TwainControl;component/Icons/delete.png" />
+            <Image Width="24"
+                Height="24"
+                Source="/TwainControl;component/Icons/delete.png" />
         </ToggleButton>
         <TabControl>
             <TabItem>
@@ -39,35 +44,47 @@
                         <RowDefinition />
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
-                    <WebcamPlayer:CapPlayer Grid.Row="0" Device="{Binding Device}" Rotation="{Binding Rotation}" />
+                    <WebcamPlayer:CapPlayer Grid.Row="0"
+                        Device="{Binding Device}"
+                        Rotation="{Binding Rotation}" />
                     <StackPanel Grid.Row="1">
-                        <ComboBox local:Policy.PolicyName="SeçiliKamera" DisplayMemberPath="Name"
+                        <ComboBox local:Policy.PolicyName="SeçiliKamera"
+                            DisplayMemberPath="Name"
                             ItemsSource="{Binding Liste}"
                             SelectedItem="{Binding SeçiliKamera}" />
                         <UniformGrid Columns="6" IsEnabled="{Binding SeçiliKamera, Converter={StaticResource NullableToBooleanConverter}}">
                             <RepeatButton local:Policy.PolicyName="KameradanResimYükle"
                                 Command="{Binding KameradanResimYükle}"
                                 CommandParameter="{Binding Parent.DataContext, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}}"
-                                Content="ç" FontFamily="Wingdings"
+                                Content="ç"
+                                FontFamily="Wingdings"
                                 FontSize="16" />
                             <Button local:Policy.PolicyName="Durdur"
                                 Command="{Binding Durdur}"
-                                Content="&lt;" FontFamily="Webdings"
+                                Content="&lt;"
+                                FontFamily="Webdings"
                                 FontSize="18" />
                             <Button local:Policy.PolicyName="Oynat"
                                 Command="{Binding Oynat}"
-                                Content="4" FontFamily="Webdings"
+                                Content="4"
+                                FontFamily="Webdings"
                                 FontSize="18" />
                             <Button local:Policy.PolicyName="Kaydet" Command="{Binding Kaydet}">
-                                <Image Width="16" Height="16" Source="/TwainControl;component/Icons/save.png" />
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="/TwainControl;component/Icons/save.png" />
                             </Button>
-                            <Slider AutoToolTipPlacement="TopLeft" IsSnapToTickEnabled="True"
-                                Maximum="360" Minimum="0"
+                            <Slider AutoToolTipPlacement="TopLeft"
+                                IsSnapToTickEnabled="True"
+                                Maximum="360"
+                                Minimum="0"
                                 SmallChange="1"
                                 Style="{DynamicResource Slider}"
                                 Ticks="0,90,180,270,360"
                                 Value="{Binding Rotation}" />
-                            <CheckBox VerticalAlignment="Center" Content="{local:Loc QRDETECT}" IsChecked="{Binding DetectQRCode}" />
+                            <CheckBox VerticalAlignment="Center"
+                                Content="{local:Loc QRDETECT}"
+                                IsChecked="{Binding DetectQRCode}" />
                         </UniformGrid>
                     </StackPanel>
                 </Grid>
@@ -91,11 +108,13 @@
                     <RepeatButton local:Policy.PolicyName="VideodanResimYükle"
                         Command="{Binding VideodanResimYükle}"
                         CommandParameter="{Binding ElementName=mediaViewer, Mode=OneWay}"
-                        Content="ç" FontFamily="Wingdings"
+                        Content="ç"
+                        FontFamily="Wingdings"
                         FontSize="16" />
                     <Control:MediaViewer x:Name="mediaViewer"
                         Grid.Column="1"
-                        AutoPlay="True" OpenButtonVisibility="Visible" />
+                        AutoPlay="True"
+                        OpenButtonVisibility="Visible" />
                 </Grid>
             </TabItem>
         </TabControl>

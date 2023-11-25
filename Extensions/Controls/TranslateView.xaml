@@ -1,10 +1,12 @@
 ﻿<UserControl x:Class="Extensions.Controls.TranslateView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Extensions.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Extensions.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=local:MediaViewer}"
-    d:DesignHeight="100" d:DesignWidth="200"
+    d:DesignHeight="100"
+    d:DesignWidth="200"
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <Grid>
@@ -16,13 +18,16 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0"
+        <TextBlock Grid.Row="0"
+            Grid.Column="0"
             HorizontalAlignment="Center"
             Text="Kaynak" />
-        <TextBlock Grid.Row="0" Grid.Column="1"
+        <TextBlock Grid.Row="0"
+            Grid.Column="1"
             HorizontalAlignment="Center"
             Text="Hedef" />
-        <ComboBox Grid.Row="1" Grid.Column="0"
+        <ComboBox Grid.Row="1"
+            Grid.Column="0"
             DisplayMemberPath="Key"
             ItemsSource="{DynamicResource Diller}"
             SelectedValue="{Binding MevcutDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -33,7 +38,8 @@
                 </ItemsPanelTemplate>
             </ComboBox.ItemsPanel>
         </ComboBox>
-        <ComboBox Grid.Row="1" Grid.Column="1"
+        <ComboBox Grid.Row="1"
+            Grid.Column="1"
             DisplayMemberPath="Key"
             ItemsSource="{DynamicResource Diller}"
             SelectedValue="{Binding ÇevrilenDil, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

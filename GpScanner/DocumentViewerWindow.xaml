@@ -5,12 +5,16 @@
     xmlns:converter="clr-namespace:GpScanner.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:properties="clr-namespace:GpScanner.Properties" xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     Title="{Binding Title, TargetNullValue=''}"
-    Width="800" Height="600"
+    Width="800"
+    Height="600"
     d:DataContext="{d:DesignInstance Type=viewmodel:DocumentViewerModel}"
-    Unloaded="Window_Unloaded" UseLayoutRounding="True"
-    WindowStartupLocation="CenterOwner" WindowState="Maximized"
+    Unloaded="Window_Unloaded"
+    UseLayoutRounding="True"
+    WindowStartupLocation="CenterOwner"
+    WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
         <converter:PdfFileNameToInfoConverter x:Key="PdfFileNameToInfoConverter" IsEnabled="{Binding Path=ShowPdfInfo, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
@@ -26,8 +30,20 @@
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
+        <RepeatButton Command="{Binding Back}"
+            Content="ç"
+            FontFamily="Wingdings"
+            FontSize="16" />
+        <ContentControl x:Name="cnt"
+            Grid.RowSpan="3"
+            Grid.Column="1"
+            d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
+            d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
+            Content="{Binding FilePath, IsAsync=True, Mode=OneWay}"
+            ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
         <ListBox x:Name="Lb"
-            Grid.Row="1" Grid.Column="0"
+            Grid.Row="1"
+            Grid.Column="0"
             d:ItemsSource="{d:SampleData ItemCount=15}"
             ItemsSource="{Binding DirectoryAllPdfFiles}"
             SelectedIndex="{Binding Index}"
@@ -43,11 +59,14 @@
                             Content="{Binding IsAsync=True, Mode=OneWay}"
                             ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
                         <Extensions:ButtonedTextBox HorizontalAlignment="Left"
-                            d:Description="FileName" d:Text="FileName"
+                            d:Description="FileName"
+                            d:Text="FileName"
                             Background="{x:Null}"
                             BorderBrush="{x:Null}"
-                            CopyButtonVisibility="Collapsed" Focusable="False"
-                            IsReadOnly="True" PasteButtonVisibility="Collapsed"
+                            CopyButtonVisibility="Collapsed"
+                            Focusable="False"
+                            IsReadOnly="True"
+                            PasteButtonVisibility="Collapsed"
                             ResetButtonVisibility="Collapsed"
                             Text="{Binding Mode=OneWay}"
                             TextBoxVisibility="Collapsed">
@@ -62,18 +81,10 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <RepeatButton Command="{Binding Back}"
-            Content="ç" FontFamily="Wingdings"
-            FontSize="16" />
-        <ContentControl x:Name="cnt"
-            Grid.RowSpan="3" Grid.Column="1"
-            d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
-            d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
-            Content="{Binding FilePath, IsAsync=True, Mode=OneWay}"
-            ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
         <RepeatButton Grid.Row="2"
             Command="{Binding Forward}"
-            Content="è" FontFamily="Wingdings"
+            Content="è"
+            FontFamily="Wingdings"
             FontSize="16" />
     </Grid>
 </Window>

@@ -3,11 +3,13 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:TwainControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="525" d:DesignWidth="300"
+    d:DesignHeight="525"
+    d:DesignWidth="300"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -19,7 +21,8 @@
     <GroupBox>
         <GroupBox.Header>
             <StackPanel>
-                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
+                <CheckBox VerticalAlignment="Center"
+                    VerticalContentAlignment="Center"
                     local:Policy.PolicyName="CropScan"
                     IsChecked="{Binding Path=CropScan, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                     <StackPanel Orientation="Horizontal">
@@ -37,7 +40,9 @@
                         </TextBlock>
                     </StackPanel>
                 </CheckBox>
-                <CheckBox VerticalContentAlignment="Center" local:Policy.PolicyName="AutoCropImage" IsChecked="{Binding AutoCropImage, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                <CheckBox VerticalContentAlignment="Center"
+                    local:Policy.PolicyName="AutoCropImage"
+                    IsChecked="{Binding AutoCropImage, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                     <StackPanel IsEnabled="{Binding AutoCropImage, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Orientation="Horizontal">
                         <Image Width="16" Height="16">
                             <Image.Source>
@@ -53,7 +58,8 @@
                         </TextBlock>
                         <Extensions:ContentToggleButton Background="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                             <Extensions:ContentToggleButton.OverContent>
-                                <Extensions:ColorPicker Width="350" Height="250"
+                                <Extensions:ColorPicker Width="350"
+                                    Height="250"
                                     HexCode="{Binding AutoCropColor, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                                     PredefinedColorVisibility="Visible" />
                             </Extensions:ContentToggleButton.OverContent>
@@ -65,7 +71,9 @@
                 <UniformGrid Columns="2">
                     <Button local:Policy.PolicyName="PrepareCropCurrentImage" Command="{Binding PrepareCropCurrentImage}">
                         <StackPanel Orientation="Horizontal">
-                            <Image Width="32" Height="32" VerticalAlignment="Center">
+                            <Image Width="32"
+                                Height="32"
+                                VerticalAlignment="Center">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                         <Binding Source="Shell32.dll" />
@@ -85,7 +93,9 @@
                     <UniformGrid Rows="2">
                         <Button local:Policy.PolicyName="ApplyCropCurrentImage" Command="{Binding ApplyCropCurrentImage}">
                             <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32" VerticalAlignment="Center">
+                                <Image Width="32"
+                                    Height="32"
+                                    VerticalAlignment="Center">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
@@ -106,16 +116,8 @@
                             ToolTipService.ShowOnDisabled="True">
                             <StackPanel Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32" VerticalAlignment="Center">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="245" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Canvas.Left="4" Canvas.Top="4"
-                                        Width="24" Height="24"
+                                    <Image Width="32"
+                                        Height="32"
                                         VerticalAlignment="Center">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -124,9 +126,24 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock Canvas.Left="6" Canvas.Top="7"
-                                        d:Text="0" FontSize="11"
-                                        FontWeight="Bold" Foreground="Red"
+                                    <Image Canvas.Left="4"
+                                        Canvas.Top="4"
+                                        Width="24"
+                                        Height="24"
+                                        VerticalAlignment="Center">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="245" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock Canvas.Left="6"
+                                        Canvas.Top="7"
+                                        d:Text="0"
+                                        FontSize="11"
+                                        FontWeight="Bold"
+                                        Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
                                 </Canvas>
                                 <TextBlock VerticalAlignment="Center">
@@ -150,11 +167,15 @@
                                             </Style.Triggers>
                                         </Style>
                                     </StackPanel.Style>
-                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" Foreground="Red">
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Foreground="Red">
                                         <Run Text="{local:Loc STOP}" />
                                         <Run Text="{local:Loc GRAPH}" />
                                     </TextBlock>
-                                    <Image Width="32" Height="32" VerticalAlignment="Center">
+                                    <Image Width="32"
+                                        Height="32"
+                                        VerticalAlignment="Center">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -162,8 +183,12 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock FontSize="20" Foreground="Red" Text="≠" />
-                                    <Image Width="24" Height="24" VerticalAlignment="Center">
+                                    <TextBlock FontSize="20"
+                                        Foreground="Red"
+                                        Text="≠" />
+                                    <Image Width="24"
+                                        Height="24"
+                                        VerticalAlignment="Center">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -171,8 +196,12 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock FontSize="20" Foreground="Red" Text="≠" />
-                                    <Image Width="28" Height="28" VerticalAlignment="Center">
+                                    <TextBlock FontSize="20"
+                                        Foreground="Red"
+                                        Text="≠" />
+                                    <Image Width="28"
+                                        Height="28"
+                                        VerticalAlignment="Center">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -217,7 +246,8 @@
                     <Slider x:Name="TopCrop"
                         Grid.Column="1"
                         Margin="1"
-                        AutoToolTipPlacement="TopLeft" BorderBrush="Green"
+                        AutoToolTipPlacement="TopLeft"
+                        BorderBrush="Green"
                         BorderThickness="2"
                         Maximum="{Binding ElementName=BottomCrop, Path=Value}"
                         Style="{DynamicResource Slider}"
@@ -225,36 +255,23 @@
                     <Slider x:Name="LeftCrop"
                         Grid.Row="1"
                         Margin="1"
-                        AutoToolTipPlacement="TopLeft" BorderBrush="Red"
-                        BorderThickness="2" IsDirectionReversed="True"
+                        AutoToolTipPlacement="TopLeft"
+                        BorderBrush="Red"
+                        BorderThickness="2"
+                        IsDirectionReversed="True"
                         Maximum="{Binding ElementName=RightCrop, Path=Value}"
                         Orientation="Vertical"
                         Style="{DynamicResource Slider}"
                         Value="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                    <Slider x:Name="BottomCrop"
-                        Grid.Row="2" Grid.Column="1"
-                        Margin="1"
-                        AutoToolTipPlacement="TopLeft" BorderBrush="Orange"
-                        BorderThickness="2" IsDirectionReversed="True"
-                        Maximum="{Binding PageHeight}"
-                        Style="{DynamicResource Slider}"
-                        Value="{Binding Bottom, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                    <Slider x:Name="RightCrop"
-                        Grid.Row="1" Grid.Column="2"
-                        Margin="1"
-                        AutoToolTipPlacement="TopLeft" BorderBrush="Cyan"
-                        BorderThickness="2"
-                        Maximum="{Binding PageWidth}"
-                        Orientation="Vertical"
-                        Style="{DynamicResource Slider}"
-                        Value="{Binding Right, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                    <Canvas Grid.Row="1" Grid.Column="1"
+                    <Canvas Grid.Row="1"
+                        Grid.Column="1"
                         Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Margin="3">
                         <Border Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                             Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
-                            d:Height="295" d:Width="242"
+                            d:Height="295"
+                            d:Width="242"
                             BorderThickness="5">
                             <Border.Style>
                                 <Style TargetType="Border">
@@ -270,40 +287,77 @@
                         <Image x:Name="Img"
                             Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                             Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
-                            d:Height="295" d:Width="242"
+                            d:Height="295"
+                            d:Width="242"
                             Source="{Binding SeçiliResim.ResimThumb}" />
                         <Extensions:Magnifier ContentPanel="{Binding ElementName=Img}" />
                         <Line Canvas.Left="{Binding Value, ElementName=LeftCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
-                            d:Canvas.Left="20" d:Y2="295"
-                            Stroke="Red" StrokeDashArray="2 2"
-                            X1="0" X2="0"
+                            d:Canvas.Left="20"
+                            d:Y2="295"
+                            Stroke="Red"
+                            StrokeDashArray="2 2"
+                            X1="0"
+                            X2="0"
                             Y1="0"
                             Y2="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}" />
                         <Line Canvas.Left="{Binding Value, ElementName=RightCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
-                            d:Canvas.Left="220" d:Y2="295"
-                            Stroke="Cyan" StrokeDashArray="2 2"
-                            X1="0" X2="0"
+                            d:Canvas.Left="220"
+                            d:Y2="295"
+                            Stroke="Cyan"
+                            StrokeDashArray="2 2"
+                            X1="0"
+                            X2="0"
                             Y1="0"
                             Y2="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}" />
                         <Line Canvas.Top="{Binding Value, ElementName=TopCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
-                            d:Canvas.Top="20" d:X2="242"
-                            Stroke="Green" StrokeDashArray="2 2"
+                            d:Canvas.Top="20"
+                            d:X2="242"
+                            Stroke="Green"
+                            StrokeDashArray="2 2"
                             X1="0"
                             X2="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
-                            Y1="0" Y2="0" />
+                            Y1="0"
+                            Y2="0" />
                         <Line Canvas.Top="{Binding Value, ElementName=BottomCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
-                            d:Canvas.Top="280" d:X2="242"
-                            Stroke="Orange" StrokeDashArray="2 2"
+                            d:Canvas.Top="280"
+                            d:X2="242"
+                            Stroke="Orange"
+                            StrokeDashArray="2 2"
                             X1="0"
                             X2="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
-                            Y1="0" Y2="0" />
+                            Y1="0"
+                            Y2="0" />
                     </Canvas>
+                    <Slider x:Name="RightCrop"
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        Margin="1"
+                        AutoToolTipPlacement="TopLeft"
+                        BorderBrush="Cyan"
+                        BorderThickness="2"
+                        Maximum="{Binding PageWidth}"
+                        Orientation="Vertical"
+                        Style="{DynamicResource Slider}"
+                        Value="{Binding Right, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                    <Slider x:Name="BottomCrop"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="1"
+                        AutoToolTipPlacement="TopLeft"
+                        BorderBrush="Orange"
+                        BorderThickness="2"
+                        IsDirectionReversed="True"
+                        Maximum="{Binding PageHeight}"
+                        Style="{DynamicResource Slider}"
+                        Value="{Binding Bottom, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                 </Grid>
             </ScrollViewer>
             <UniformGrid Grid.Row="1" Columns="2">
                 <Button local:Policy.PolicyName="ResetCrop" Command="{Binding ResetCrop}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="32" Height="32" VerticalAlignment="Bottom">
+                        <Image Width="32"
+                            Height="32"
+                            VerticalAlignment="Bottom">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                     <Binding Source="Shell32.dll" />
@@ -329,22 +383,15 @@
                                 </Image.Source>
                             </Image>
                             <TextBlock VerticalAlignment="Center"
-                                FontWeight="Bold" Foreground="Red"
+                                FontWeight="Bold"
+                                Foreground="Red"
                                 Text="{local:Loc IGNOREWIDTHHEIGHTEQUAL}" />
                         </StackPanel>
                     </ToggleButton.ToolTip>
                     <StackPanel Orientation="Horizontal">
                         <Canvas Width="32" Height="32">
-                            <Image Width="32" Height="32" VerticalAlignment="Center">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="245" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <Image Canvas.Left="4" Canvas.Top="4"
-                                Width="24" Height="24"
+                            <Image Width="32"
+                                Height="32"
                                 VerticalAlignment="Center">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -353,8 +400,22 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <Image Canvas.Left="8" Canvas.Top="8"
-                                Width="16" Height="16"
+                            <Image Canvas.Left="4"
+                                Canvas.Top="4"
+                                Width="24"
+                                Height="24"
+                                VerticalAlignment="Center">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="245" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <Image Canvas.Left="8"
+                                Canvas.Top="8"
+                                Width="16"
+                                Height="16"
                                 VerticalAlignment="Bottom">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

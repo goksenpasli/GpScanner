@@ -1,4 +1,6 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Extensions">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Extensions">
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Style TargetType="local:ImageViewer">
@@ -11,7 +13,8 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
-                            <Image RenderTransformOrigin="0.5,0.5" ScrollViewer.CanContentScroll="True"
+                            <Image RenderTransformOrigin="0.5,0.5"
+                                ScrollViewer.CanContentScroll="True"
                                 Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
                                 Stretch="None">
                                 <Image.LayoutTransform>
@@ -22,10 +25,13 @@
                                 </Image.LayoutTransform>
                             </Image>
                         </ScrollViewer>
-                        <Viewport3D x:Name="PanoramaViewPort" Cursor="ScrollAll" Visibility="Collapsed">
+                        <Viewport3D x:Name="PanoramaViewPort"
+                            Cursor="ScrollAll"
+                            Visibility="Collapsed">
                             <Viewport3D.Camera>
                                 <PerspectiveCamera FieldOfView="{Binding Fov, RelativeSource={RelativeSource TemplatedParent}}"
-                                    LookDirection="0,0,1" Position="0,0,0"
+                                    LookDirection="0,0,1"
+                                    Position="0,0,0"
                                     UpDirection="0,1,0" />
                             </Viewport3D.Camera>
                             <ModelVisual3D>
@@ -45,7 +51,9 @@
                                 </ModelVisual3D.Content>
                                 <ModelVisual3D.Transform>
                                     <Transform3DGroup>
-                                        <ScaleTransform3D ScaleX="1" ScaleY="1.5" ScaleZ="1" />
+                                        <ScaleTransform3D ScaleX="1"
+                                            ScaleY="1.5"
+                                            ScaleZ="1" />
                                         <RotateTransform3D>
                                             <RotateTransform3D.Rotation>
                                                 <AxisAngleRotation3D Angle="{Binding RotateX, RelativeSource={RelativeSource TemplatedParent}}" Axis="0,1,0" />
@@ -71,7 +79,9 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0" Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Button Grid.Column="0"
+                                    Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Content>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
@@ -83,26 +93,36 @@
                                         </Image>
                                     </Button.Content>
                                 </Button>
-                                <ListBox Grid.Column="1" SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}" SelectedValuePath="Tag">
+                                <ListBox Grid.Column="1"
+                                    SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
+                                    SelectedValuePath="Tag">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <VirtualizingStackPanel Orientation="Horizontal" />
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                     <ListBoxItem Tag="None">
-                                        <TextBlock FontFamily="Webdings" FontSize="16"
-                                            FontWeight="Bold" Text="1" />
+                                        <TextBlock FontFamily="Webdings"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="1" />
                                     </ListBoxItem>
                                     <ListBoxItem Tag="Width">
-                                        <TextBlock FontFamily="Wingdings 3" FontSize="16"
-                                            FontWeight="Bold" Text="F" />
+                                        <TextBlock FontFamily="Wingdings 3"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="F" />
                                     </ListBoxItem>
                                     <ListBoxItem Tag="Height">
-                                        <TextBlock FontFamily="Wingdings 3" FontSize="16"
-                                            FontWeight="Bold" Text="G" />
+                                        <TextBlock FontFamily="Wingdings 3"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Text="G" />
                                     </ListBoxItem>
                                 </ListBox>
-                                <StackPanel Grid.Column="2" Orientation="Horizontal" Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                                <StackPanel Grid.Column="2"
+                                    Orientation="Horizontal"
+                                    Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                                     <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
@@ -131,7 +151,9 @@
                                         </Image>
                                     </RepeatButton>
                                 </StackPanel>
-                                <Button Grid.Column="3" Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                <Button Grid.Column="3"
+                                    Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Button.Content>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
@@ -147,7 +169,8 @@
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft"
                                     IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
-                                    Minimum="0.01" SmallChange="1"
+                                    Minimum="0.01"
+                                    SmallChange="1"
                                     Style="{DynamicResource Slider}"
                                     Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Slider Grid.Column="5"
@@ -155,7 +178,8 @@
                                     AutoToolTipPlacement="TopLeft"
                                     IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
                                     IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Maximum="360" SmallChange="1"
+                                    Maximum="360"
+                                    SmallChange="1"
                                     Style="{DynamicResource Slider}"
                                     Ticks="0, 90, 180, 270, 360"
                                     Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />

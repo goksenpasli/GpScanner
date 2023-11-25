@@ -3,12 +3,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:TwainControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
-    xmlns:properties="clr-namespace:TwainControl.Properties" xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
+    xmlns:properties="clr-namespace:TwainControl.Properties"
+    xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="440" d:DesignWidth="500"
+    d:DesignHeight="440"
+    d:DesignWidth="500"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -40,7 +43,8 @@
                 </Image>
                 <TextBlock Width="370"
                     VerticalAlignment="Center"
-                    FontSize="14" FontStyle="Italic"
+                    FontSize="14"
+                    FontStyle="Italic"
                     Foreground="Red"
                     Text="{local:Loc PDFWARN}"
                     TextWrapping="Wrap" />
@@ -48,19 +52,28 @@
         </GroupBox.Header>
         <StackPanel>
             <HeaderedContentControl Header="{local:Loc PASSWORD}">
-                <PasswordBox local:Policy.PolicyName="PasswordProtect" IsEnabled="{Binding Scanner.PasswordProtect}" PasswordChanged="PasswordBox_PasswordChanged" />
+                <PasswordBox local:Policy.PolicyName="PasswordProtect"
+                    IsEnabled="{Binding Scanner.PasswordProtect}"
+                    PasswordChanged="PasswordBox_PasswordChanged" />
             </HeaderedContentControl>
             <UniformGrid Columns="2">
                 <GroupBox>
                     <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
-                        <CheckBox local:Policy.PolicyName="AllowPrint" Content="{local:Loc ALLOWPRINT}" IsChecked="{Binding Scanner.AllowPrint}" />
-                        <CheckBox local:Policy.PolicyName="AllowCopy" Content="{local:Loc ALLOWCOPY}" IsChecked="{Binding Scanner.AllowCopy}" />
-                        <CheckBox local:Policy.PolicyName="AllowEdit" Content="{local:Loc ALLOWEDIT}" IsChecked="{Binding Scanner.AllowEdit}" />
+                        <CheckBox local:Policy.PolicyName="AllowPrint"
+                            Content="{local:Loc ALLOWPRINT}"
+                            IsChecked="{Binding Scanner.AllowPrint}" />
+                        <CheckBox local:Policy.PolicyName="AllowCopy"
+                            Content="{local:Loc ALLOWCOPY}"
+                            IsChecked="{Binding Scanner.AllowCopy}" />
+                        <CheckBox local:Policy.PolicyName="AllowEdit"
+                            Content="{local:Loc ALLOWEDIT}"
+                            IsChecked="{Binding Scanner.AllowEdit}" />
                     </StackPanel>
                 </GroupBox>
                 <GroupBox>
                     <StackPanel>
-                        <Extensions:ButtonedTextBox local:Policy.PolicyName="UserName" CopyButtonVisibility="Collapsed"
+                        <Extensions:ButtonedTextBox local:Policy.PolicyName="UserName"
+                            CopyButtonVisibility="Collapsed"
                             OpenButtonVisibility="Collapsed"
                             Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Image Width="16" Height="16">
@@ -72,7 +85,8 @@
                                 </Image.Source>
                             </Image>
                         </Extensions:ButtonedTextBox>
-                        <Extensions:ButtonedTextBox local:Policy.PolicyName="CreatorAppName" CopyButtonVisibility="Collapsed"
+                        <Extensions:ButtonedTextBox local:Policy.PolicyName="CreatorAppName"
+                            CopyButtonVisibility="Collapsed"
                             OpenButtonVisibility="Collapsed"
                             Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                             <Image Width="16" Height="16">
@@ -113,7 +127,8 @@
                                 <Run Text="{Binding Path=JpegQuality, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}%{0}}" />
                             </TextBlock>
                         </HeaderedContentControl.Header>
-                        <Slider Maximum="95" Minimum="10"
+                        <Slider Maximum="95"
+                            Minimum="10"
                             SmallChange="1"
                             Style="{DynamicResource Slider}"
                             Value="{Binding Path=JpegQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
@@ -126,11 +141,48 @@
                             <Run Text="{Binding Path=WebpQuality, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}%{0}}" />
                         </TextBlock>
                     </HeaderedContentControl.Header>
-                    <Slider Maximum="95" Minimum="10"
+                    <Slider Maximum="95"
+                        Minimum="10"
                         SmallChange="1"
                         Style="{DynamicResource Slider}"
                         Value="{Binding Path=WebpQuality, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
+                <Canvas Grid.RowSpan="2"
+                    Grid.Column="3"
+                    Width="44"
+                    Height="32">
+                    <Image Canvas.Left="6"
+                        Width="32"
+                        Height="32">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="12" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <Image Canvas.Left="14"
+                        Canvas.Bottom="-2"
+                        Width="16"
+                        Height="16">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="5" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <Extensions:NumericUpDownControl Canvas.Top="4"
+                        Width="44"
+                        FontWeight="Bold"
+                        IsReadOnly="True"
+                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
+                        Minimum="1"
+                        Orientation="Horizontal"
+                        SmallChange="1"
+                        TextBlock.TextAlignment="Center"
+                        Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                </Canvas>
                 <Border Grid.Row="1" Padding="1">
                     <HeaderedContentControl>
                         <HeaderedContentControl.Header>
@@ -139,8 +191,10 @@
                                 <Run Text="{Binding Path=ImgLoadResolution, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
                             </TextBlock>
                         </HeaderedContentControl.Header>
-                        <Slider IsSnapToTickEnabled="True" Maximum="1200"
-                            Minimum="72" SmallChange="1"
+                        <Slider IsSnapToTickEnabled="True"
+                            Maximum="1200"
+                            Minimum="72"
+                            SmallChange="1"
                             Style="{StaticResource Slider}"
                             Ticks="{Binding ScanResolutionList, Mode=OneWay}"
                             Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
@@ -155,71 +209,62 @@
                             <Run Text="{Binding Path=BwThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0}}" />
                         </TextBlock>
                     </HeaderedContentControl.Header>
-                    <Slider IsSnapToTickEnabled="True" Maximum="255"
-                        Minimum="1" SmallChange="1"
+                    <Slider IsSnapToTickEnabled="True"
+                        Maximum="255"
+                        Minimum="1"
+                        SmallChange="1"
                         Style="{DynamicResource Slider}"
                         Value="{Binding Path=BwThreshold, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
-                <Canvas Grid.RowSpan="2" Grid.Column="3"
-                    Width="44" Height="32">
-                    <Image Canvas.Left="6" Width="32" Height="32">
-                        <Image.Source>
-                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                <Binding Source="Shell32.dll" />
-                                <Binding Source="12" />
-                            </MultiBinding>
-                        </Image.Source>
-                    </Image>
-                    <Image Canvas.Left="14" Canvas.Bottom="-2"
-                        Width="16" Height="16">
-                        <Image.Source>
-                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                <Binding Source="Shell32.dll" />
-                                <Binding Source="5" />
-                            </MultiBinding>
-                        </Image.Source>
-                    </Image>
-                    <Extensions:NumericUpDownControl Canvas.Top="4"
-                        Width="44"
-                        FontWeight="Bold" IsReadOnly="True"
-                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                        Minimum="1" Orientation="Horizontal"
-                        SmallChange="1" TextBlock.TextAlignment="Center"
-                        Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                </Canvas>
             </Grid>
             <Separator />
             <CheckBox local:Policy.PolicyName="Deskew" IsChecked="{Binding Scanner.Deskew}">
                 <CheckBox.Content>
                     <StackPanel Orientation="Horizontal">
-                        <Image Width="16" Height="16" Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Image Width="16"
+                            Height="16"
+                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                         <TextBlock Text="{local:Loc DESKEW}" />
                     </StackPanel>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox local:Policy.PolicyName="ApplyPdfSaveOcr" IsChecked="{Binding Scanner.ApplyPdfSaveOcr}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+            <CheckBox local:Policy.PolicyName="ApplyPdfSaveOcr"
+                IsChecked="{Binding Scanner.ApplyPdfSaveOcr}"
+                IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                 <CheckBox.Content>
                     <TextBlock TextWrapping="Wrap">
                         <Run Text="{local:Loc FILE}" />
                         <Run Text="{local:Loc OCR}" />
-                        <Run FontWeight="Bold" Foreground="Red" Text="{local:Loc OCRTIME}" />
+                        <Run FontWeight="Bold"
+                            Foreground="Red"
+                            Text="{local:Loc OCRTIME}" />
                     </TextBlock>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox local:Policy.PolicyName="ApplyDataBaseOcr" IsChecked="{Binding Scanner.ApplyDataBaseOcr}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+            <CheckBox local:Policy.PolicyName="ApplyDataBaseOcr"
+                IsChecked="{Binding Scanner.ApplyDataBaseOcr}"
+                IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                 <CheckBox.Content>
                     <TextBlock TextWrapping="Wrap">
                         <Run Text="{local:Loc ADDOCRTODB}" />
-                        <Run FontWeight="Bold" Foreground="Red" Text="{local:Loc ADDOCRTOOLTIP}" />
+                        <Run FontWeight="Bold"
+                            Foreground="Red"
+                            Text="{local:Loc ADDOCRTOOLTIP}" />
                     </TextBlock>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox local:Policy.PolicyName="UseMozJpegEncoding" IsChecked="{Binding Scanner.UseMozJpegEncoding}" IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}">
+            <CheckBox local:Policy.PolicyName="UseMozJpegEncoding"
+                IsChecked="{Binding Scanner.UseMozJpegEncoding}"
+                IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}">
                 <CheckBox.Content>
-                    <TextBlock FontWeight="Bold" Foreground="{StaticResource Colorfull}" Text="MOZJPEG" />
+                    <TextBlock FontWeight="Bold"
+                        Foreground="{StaticResource Colorfull}"
+                        Text="MOZJPEG" />
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox VerticalContentAlignment="Center" local:Policy.PolicyName="PdfPageNumberDraw" IsChecked="{Binding Scanner.PdfPageNumberDraw}">
+            <CheckBox VerticalContentAlignment="Center"
+                local:Policy.PolicyName="PdfPageNumberDraw"
+                IsChecked="{Binding Scanner.PdfPageNumberDraw}">
                 <CheckBox.Content>
                     <StackPanel IsEnabled="{Binding Scanner.PdfPageNumberDraw}" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc PAGENUMBER}" />
@@ -245,8 +290,12 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Rectangle Width="16" Height="16" Fill="{Binding ElementName=Tb, Path=Text}" />
-                                        <TextBlock x:Name="Tb" VerticalAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                        <Rectangle Width="16"
+                                            Height="16"
+                                            Fill="{Binding ElementName=Tb, Path=Text}" />
+                                        <TextBlock x:Name="Tb"
+                                            VerticalAlignment="Center"
+                                            Text="{Binding Mode=OneWay}" />
                                     </StackPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -254,7 +303,9 @@
                     </StackPanel>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox VerticalContentAlignment="Center" local:Policy.PolicyName="PdfPageTextDraw" IsChecked="{Binding Scanner.PdfPageTextDraw}">
+            <CheckBox VerticalContentAlignment="Center"
+                local:Policy.PolicyName="PdfPageTextDraw"
+                IsChecked="{Binding Scanner.PdfPageTextDraw}">
                 <StackPanel IsEnabled="{Binding Scanner.PdfPageTextDraw}" Orientation="Horizontal">
                     <Extensions:ButtonedTextBox Width="150"
                         VerticalAlignment="Center"
@@ -266,18 +317,23 @@
                         <Extensions:ContentToggleButton.OverContent>
                             <Extensions:ColorPicker Height="250"
                                 HexCode="{Binding Scanner.PdfPageTextColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                PredefinedColorVisibility="Visible" SelectorLength="0"
+                                PredefinedColorVisibility="Visible"
+                                SelectorLength="0"
                                 SliderVisibility="Collapsed" />
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
-                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="144"
-                        Minimum="1" Orientation="Horizontal"
+                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                        Maximum="144"
+                        Minimum="1"
+                        Orientation="Horizontal"
                         SmallChange="1"
                         Value="{Binding Scanner.PdfPageTextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
-                    <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="360"
-                        Minimum="0" Orientation="Horizontal"
+                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                        Maximum="360"
+                        Minimum="0"
+                        Orientation="Horizontal"
                         SmallChange="1"
                         Value="{Binding Scanner.PdfPageTextAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>

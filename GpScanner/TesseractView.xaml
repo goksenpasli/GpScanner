@@ -9,20 +9,25 @@
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     d:DataContext="{d:DesignInstance Type=viewmodel:TesseractViewModel}"
-    d:DesignHeight="350" d:DesignWidth="500"
+    d:DesignHeight="350"
+    d:DesignWidth="500"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Extension:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
-        <Converter:NumberRangeToColorConverter x:Key="ListBoxNumberRangeToColorConverter" MaxNumber="6" MinNumber="1" />
+        <Converter:NumberRangeToColorConverter x:Key="ListBoxNumberRangeToColorConverter"
+            MaxNumber="6"
+            MinNumber="1" />
         <CollectionViewSource x:Key="Files" Source="{Binding OcrDatas}" />
     </UserControl.Resources>
     <GroupBox>
         <GroupBox.Header>
             <Button Command="{Binding ResetTesseractFilter}">
                 <StackPanel Orientation="Horizontal">
-                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                    <Image Width="16"
+                        Height="16"
+                        Source="/TwainControl;component/Icons/delete.png" />
                     <TextBlock Text="{twainctrl:Loc RESET}" />
                 </StackPanel>
             </Button>
@@ -38,7 +43,9 @@
                 Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                 <ItemsControl.Template>
                     <ControlTemplate>
-                        <ScrollViewer Padding="{TemplateBinding Padding}" CanContentScroll="True" VerticalScrollBarVisibility="Auto">
+                        <ScrollViewer Padding="{TemplateBinding Padding}"
+                            CanContentScroll="True"
+                            VerticalScrollBarVisibility="Auto">
                             <ItemsPresenter />
                         </ScrollViewer>
                     </ControlTemplate>
@@ -56,10 +63,6 @@
                                         <ColumnDefinition Width="16" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <ProgressBar Grid.Column="1"
-                                        Background="{x:Null}"
-                                        Maximum="100" Minimum="0"
-                                        Value="{Binding ProgressValue}" />
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -68,6 +71,11 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
+                                    <ProgressBar Grid.Column="1"
+                                        Background="{x:Null}"
+                                        Maximum="100"
+                                        Minimum="0"
+                                        Value="{Binding ProgressValue}" />
                                     <TextBlock Grid.Column="1" Text="{Binding OcrLangName}" />
                                 </Grid>
                             </Button.Content>
@@ -80,6 +88,35 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
+            <Extension:FadedToolTipControl d:IsHidden="True"
+                Background="{StaticResource BorderBackground}"
+                BorderBrush="{StaticResource GroupBoxBackGround}"
+                PopupParent="{Binding ElementName=LbTessFiles}"
+                Show="{Binding ShowHelpDesc}"
+                ShowCloseButton="Visible"
+                TimeToClose="10000"
+                TimeToShow="2500">
+                <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <FlowDocument IsOptimalParagraphEnabled="True">
+                        <Paragraph>
+                            <Span>
+                                <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">
+                                    <Run Text="{twainctrl:Loc VC}" />
+                                </Hyperlink>
+                            </Span>
+                            <Run Text="{twainctrl:Loc CRUNTIME}" />
+                        </Paragraph>
+                        <Paragraph>
+                            <Span>
+                                <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata_best">
+                                    <Run Text="{twainctrl:Loc OTHERTESSERACTLINK}" />
+                                </Hyperlink>
+                            </Span>
+                            <Run Text="{twainctrl:Loc OTHERTESSERACT}" />
+                        </Paragraph>
+                    </FlowDocument>
+                </FlowDocumentScrollViewer>
+            </Extension:FadedToolTipControl>
             <GroupBox Grid.Column="1">
                 <GroupBox.Header>
                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -117,7 +154,9 @@
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
                                             <CheckBox.Content>
                                                 <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                    <Run d:Text="DisplayName" BaselineAlignment="Center" Text="{Binding Path=DisplayName, Mode=OneWay}" />
+                                                    <Run d:Text="DisplayName"
+                                                        BaselineAlignment="Center"
+                                                        Text="{Binding Path=DisplayName, Mode=OneWay}" />
                                                     <Hyperlink BaselineAlignment="Center"
                                                         Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                         CommandParameter="{Binding Mode=OneWay}"
@@ -125,7 +164,9 @@
                                                         IsEnabled="{Binding DataContext.IsFolderWritable, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                         TextDecorations="None">
                                                         <InlineUIContainer>
-                                                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                            <Image Width="16"
+                                                                Height="16"
+                                                                Source="/TwainControl;component/Icons/delete.png" />
                                                         </InlineUIContainer>
                                                     </Hyperlink>
                                                 </TextBlock>
@@ -138,34 +179,6 @@
                     </ListBox.ItemContainerStyle>
                 </ListBox>
             </GroupBox>
-            <Extension:FadedToolTipControl d:IsHidden="True"
-                Background="{StaticResource BorderBackground}"
-                BorderBrush="{StaticResource GroupBoxBackGround}"
-                PopupParent="{Binding ElementName=LbTessFiles}"
-                Show="{Binding ShowHelpDesc}"
-                ShowCloseButton="Visible" TimeToClose="10000"
-                TimeToShow="2500">
-                <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                    <FlowDocument IsOptimalParagraphEnabled="True">
-                        <Paragraph>
-                            <Span>
-                                <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">
-                                    <Run Text="{twainctrl:Loc VC}" />
-                                </Hyperlink>
-                            </Span>
-                            <Run Text="{twainctrl:Loc CRUNTIME}" />
-                        </Paragraph>
-                        <Paragraph>
-                            <Span>
-                                <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata_best">
-                                    <Run Text="{twainctrl:Loc OTHERTESSERACTLINK}" />
-                                </Hyperlink>
-                            </Span>
-                            <Run Text="{twainctrl:Loc OTHERTESSERACT}" />
-                        </Paragraph>
-                    </FlowDocument>
-                </FlowDocumentScrollViewer>
-            </Extension:FadedToolTipControl>
         </Grid>
     </GroupBox>
 </UserControl>

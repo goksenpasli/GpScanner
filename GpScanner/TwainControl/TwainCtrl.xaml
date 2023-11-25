@@ -15,9 +15,11 @@
     xmlns:properties="clr-namespace:TwainControl.Properties"
     x:Name="UserControl"
     d:DataContext="{d:DesignInstance Type={x:Type local:TwainCtrl}}"
-    d:DesignHeight="800" d:DesignWidth="1024"
+    d:DesignHeight="800"
+    d:DesignWidth="1024"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
-    Loaded="UserControl_Loaded" UseLayoutRounding="True"
+    Loaded="UserControl_Loaded"
+    UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -36,7 +38,8 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Image x:Key="TimeIcon"
-                Width="16" Height="16"
+                Width="16"
+                Height="16"
                 x:Shared="false">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -45,12 +48,20 @@
                     </MultiBinding>
                 </Image.Source>
             </Image>
-            <DrawingBrush x:Key="Dur" ice:Freeze="True" Stretch="Uniform">
+            <DrawingBrush x:Key="Dur"
+                ice:Freeze="True"
+                Stretch="Uniform">
                 <DrawingBrush.Drawing>
                     <DrawingGroup>
-                        <GeometryDrawing ice:Freeze="True" Brush="Black" Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
-                        <GeometryDrawing ice:Freeze="True" Brush="White" Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
-                        <GeometryDrawing ice:Freeze="True" Brush="Red" Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
+                        <GeometryDrawing ice:Freeze="True"
+                            Brush="Black"
+                            Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
+                        <GeometryDrawing ice:Freeze="True"
+                            Brush="White"
+                            Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
+                        <GeometryDrawing ice:Freeze="True"
+                            Brush="Red"
+                            Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
                     </DrawingGroup>
                 </DrawingBrush.Drawing>
             </DrawingBrush>
@@ -67,7 +78,8 @@
                     </Image.Source>
                 </Image>
                 <TextBlock VerticalAlignment="Center"
-                    FontWeight="Bold" RenderTransformOrigin="0.5,0.5"
+                    FontWeight="Bold"
+                    RenderTransformOrigin="0.5,0.5"
                     Text="{local:Loc BW}">
                     <TextBlock.LayoutTransform>
                         <TransformGroup>
@@ -91,8 +103,10 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                    FontWeight="Bold" Foreground="Gray"
+                <TextBlock HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontWeight="Bold"
+                    Foreground="Gray"
                     Text="{local:Loc GRAY}">
                     <TextBlock.LayoutTransform>
                         <TransformGroup>
@@ -113,7 +127,8 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                <TextBlock HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     FontWeight="Bold"
                     Foreground="{StaticResource Colorfull}"
                     Text="{local:Loc COLOR}">
@@ -130,15 +145,21 @@
             <ControlTemplate x:Key="ValidationErrorTemplate">
                 <Grid Focusable="False">
                     <Canvas x:Name="Cnv"
-                        Width="18" Height="18"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Width="18"
+                        Height="18"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
                         Background="{StaticResource Dur}"
                         DataContext="{Binding ElementName=Adorner, Mode=OneWay}"
-                        RenderTransformOrigin="0.5,0.5" UseLayoutRounding="True">
+                        RenderTransformOrigin="0.5,0.5"
+                        UseLayoutRounding="True">
                         <Canvas.ToolTip>
-                            <ToolTip Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                            <ToolTip Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                Foreground="{x:Null}">
                                 <Border Padding="4"
-                                    Background="Red" BorderBrush="White"
+                                    Background="Red"
+                                    BorderBrush="White"
                                     BorderThickness="1">
                                     <TextBlock Foreground="White" Text="{Binding AdornedElement.(Validation.Errors)/ErrorContent, Mode=OneWay}" />
                                 </Border>
@@ -219,13 +240,17 @@
                                 <Border Grid.Row="0"
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="1" CornerRadius="3,3,0,0">
-                                    <ContentPresenter Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
+                                    BorderThickness="1"
+                                    CornerRadius="3,3,0,0">
+                                    <ContentPresenter Margin="4"
+                                        ContentSource="Header"
+                                        RecognizesAccessKey="True" />
                                 </Border>
                                 <Border Grid.Row="1"
                                     Background="{StaticResource BorderBackground}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="1,0,1,1" CornerRadius="0,0,1,1">
+                                    BorderThickness="1,0,1,1"
+                                    CornerRadius="0,0,1,1">
                                     <ContentPresenter Margin="1" />
                                 </Border>
                             </Grid>
@@ -233,17 +258,23 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <ObjectDataProvider x:Key="PageOrientation" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider x:Key="PageOrientation"
+                MethodName="GetValues"
+                ObjectType="{x:Type System:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="TwainNative:Orientation" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <ObjectDataProvider x:Key="PageRotations" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider x:Key="PageRotations"
+                MethodName="GetValues"
+                ObjectType="{x:Type System:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="local:PageRotation" />
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <ObjectDataProvider x:Key="PageFlips" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider x:Key="PageFlips"
+                MethodName="GetValues"
+                ObjectType="{x:Type System:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="local:PageFlip" />
                 </ObjectDataProvider.MethodParameters>
@@ -310,9 +341,13 @@
             <GroupBox.Header>
                 <UniformGrid Columns="3">
                     <TextBlock Text="{local:Loc SRC}" />
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                        d:Text="AutoFolder" FontWeight="Bold">
-                        <Hyperlink local:Policy.PolicyName="WebAdreseGit" Command="{Binding WebAdreseGit}" CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        d:Text="AutoFolder"
+                        FontWeight="Bold">
+                        <Hyperlink local:Policy.PolicyName="WebAdreseGit"
+                            Command="{Binding WebAdreseGit}"
+                            CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                             <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
                         </Hyperlink>
                     </TextBlock>
@@ -330,11 +365,15 @@
                             </Image.Source>
                         </Image>
                         <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox Width="450" Height="400" Header="{local:Loc HELP}">
+                            <GroupBox Width="450"
+                                Height="400"
+                                Header="{local:Loc HELP}">
                                 <FlowDocumentScrollViewer IsSelectionEnabled="False" VerticalScrollBarVisibility="Auto">
                                     <FlowDocument IsOptimalParagraphEnabled="True">
                                         <Paragraph>
-                                            <Rectangle Width="120" Height="35" Stroke="Cyan" />
+                                            <Rectangle Width="120"
+                                                Height="35"
+                                                Stroke="Cyan" />
                                             <Run Text="{local:Loc CYANCONTROL}" />
                                             <LineBreak />
                                             <Rectangle Width="120" Height="35">
@@ -393,7 +432,9 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <ComboBox local:Policy.PolicyName="SeçiliTarayıcı" ItemsSource="{Binding Scanner.Tarayıcılar}" SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
+                                    ItemsSource="{Binding Scanner.Tarayıcılar}"
+                                    SelectedItem="{Binding SeçiliTarayıcı, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                     <ComboBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -405,12 +446,16 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{Binding Mode=OneWay}" />
+                                                <TextBlock VerticalAlignment="Center"
+                                                    FontWeight="Bold"
+                                                    Text="{Binding Mode=OneWay}" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <StackPanel x:Name="SpDelay" Grid.Column="1" Orientation="Horizontal">
+                                <StackPanel x:Name="SpDelay"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -419,8 +464,10 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanDelay" IsReadOnly="True"
-                                        Maximum="120" Minimum="0"
+                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanDelay"
+                                        IsReadOnly="True"
+                                        Maximum="120"
+                                        Minimum="0"
                                         SmallChange="1"
                                         Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <Image Width="16" Height="16">
@@ -431,18 +478,26 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanBetweenDelay" IsReadOnly="True"
-                                        Maximum="120" Minimum="0"
+                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanBetweenDelay"
+                                        IsReadOnly="True"
+                                        Maximum="120"
+                                        Minimum="0"
                                         SmallChange="1"
                                         Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SECOND}" />
                                 </StackPanel>
-                                <UniformGrid Grid.Row="1" Grid.ColumnSpan="2" Columns="4">
-                                    <Extensions:ContentToggleButton local:Policy.PolicyName="Camera" ArrowVisibility="Collapsed"
-                                        StaysOpen="True" TopMost="False">
+                                <UniformGrid Grid.Row="1"
+                                    Grid.ColumnSpan="2"
+                                    Columns="4">
+                                    <Extensions:ContentToggleButton local:Policy.PolicyName="Camera"
+                                        ArrowVisibility="Collapsed"
+                                        StaysOpen="True"
+                                        TopMost="False">
                                         <Extensions:ContentToggleButton.OverContent>
-                                            <Extensions:ResizablePanel Width="680" Height="480"
-                                                MinWidth="480" MinHeight="360">
+                                            <Extensions:ResizablePanel Width="680"
+                                                Height="480"
+                                                MinWidth="480"
+                                                MinHeight="360">
                                                 <local:CameraUserControl x:Name="Camera" />
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
@@ -482,19 +537,27 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <Image Canvas.Left="0" Canvas.Bottom="0"
-                                                    Width="20" Height="20"
+                                                <Image Canvas.Left="0"
+                                                    Canvas.Bottom="0"
+                                                    Width="20"
+                                                    Height="20"
                                                     Source="/TwainControl;component/Icons/save.png" />
                                             </Canvas>
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
                                         </StackPanel>
                                         <Extensions:SplitButton.InternalContent>
-                                            <Border Background="{StaticResource BorderBackground}" BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
-                                                <MenuItem Header="{local:Loc SHOWFILE}" IsCheckable="True" IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
+                                            <Border Background="{StaticResource BorderBackground}"
+                                                BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                BorderThickness="1">
+                                                <MenuItem Header="{local:Loc SHOWFILE}"
+                                                    IsCheckable="True"
+                                                    IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
-                                    <Button x:Name="AutoScanPathBtn" local:Policy.PolicyName="KayıtYoluBelirle" Command="{Binding KayıtYoluBelirle}">
+                                    <Button x:Name="AutoScanPathBtn"
+                                        local:Policy.PolicyName="KayıtYoluBelirle"
+                                        Command="{Binding KayıtYoluBelirle}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="32" Height="32">
                                                 <Image Width="32" Height="32">
@@ -505,8 +568,10 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <Image Canvas.Left="0" Canvas.Bottom="0"
-                                                    Width="20" Height="20"
+                                                <Image Canvas.Left="0"
+                                                    Canvas.Bottom="0"
+                                                    Width="20"
+                                                    Height="20"
                                                     Source="/TwainControl;component/Icons/save.png" />
                                             </Canvas>
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc AUTOPATH}" />
@@ -566,7 +631,8 @@
                                 </ComboBox>
                                 <ComboBox Grid.Column="1"
                                     VerticalContentAlignment="Center"
-                                    local:Policy.PolicyName="Çözünürlük" FontWeight="Bold"
+                                    local:Policy.PolicyName="Çözünürlük"
+                                    FontWeight="Bold"
                                     ItemStringFormat="{}{0} Dpi"
                                     ItemsSource="{Binding ScanResolutionList, Mode=OneWay}"
                                     SelectedItem="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
@@ -602,7 +668,9 @@
                                             </Image>
                                         </ListBoxItem>
                                         <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageFlips}}">
-                                            <Image Width="16" Height="16" RenderTransformOrigin="0.5,0.5">
+                                            <Image Width="16"
+                                                Height="16"
+                                                RenderTransformOrigin="0.5,0.5">
                                                 <Image.RenderTransform>
                                                     <TransformGroup>
                                                         <RotateTransform Angle="-90" />
@@ -660,11 +728,13 @@
                                                         <Setter Property="Content">
                                                             <Setter.Value>
                                                                 <Grid>
-                                                                    <Image Width="68" Height="32"
+                                                                    <Image Width="68"
+                                                                        Height="32"
                                                                         Source="/TwainControl;component/Icons/adf.png"
                                                                         Visibility="{Binding Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock VerticalAlignment="Center"
-                                                                        FontWeight="Bold" Foreground="White"
+                                                                        FontWeight="Bold"
+                                                                        Foreground="White"
                                                                         Text="{local:Loc ADF}"
                                                                         TextWrapping="Wrap" />
                                                                 </Grid>
@@ -675,7 +745,9 @@
                                                         <Setter Property="Content">
                                                             <Setter.Value>
                                                                 <Grid>
-                                                                    <Image Width="68" Height="32" Source="/TwainControl;component/Icons/flatbed.png" />
+                                                                    <Image Width="68"
+                                                                        Height="32"
+                                                                        Source="/TwainControl;component/Icons/flatbed.png" />
                                                                     <TextBlock VerticalAlignment="Center"
                                                                         FontWeight="Bold"
                                                                         Text="{local:Loc FLATBED}"
@@ -688,7 +760,9 @@
                                             </Style>
                                         </ToggleButton.Style>
                                     </ToggleButton>
-                                    <ListBox local:Policy.PolicyName="Mode" Background="{x:Null}" SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListBox local:Policy.PolicyName="Mode"
+                                        Background="{x:Null}"
+                                        SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ListBox.ItemContainerStyle>
                                             <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
                                         </ListBox.ItemContainerStyle>
@@ -697,13 +771,16 @@
                                                 <VirtualizingStackPanel Orientation="Horizontal" />
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
-                                        <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        <ListBoxItem HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             Content="{DynamicResource bw}" />
-                                        <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        <ListBoxItem HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             Content="{DynamicResource grey}" />
-                                        <ListBoxItem HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        <ListBoxItem HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             Content="{DynamicResource color}" />
                                     </ListBox>
@@ -716,7 +793,8 @@
                                             <Extensions:ContentToggleButton.OverContent>
                                                 <GroupBox>
                                                     <StackPanel>
-                                                        <ListBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Center"
+                                                        <ListBox HorizontalContentAlignment="Stretch"
+                                                            VerticalContentAlignment="Center"
                                                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource CompProfiles}}"
                                                             SelectedItem="{Binding SelectedCompressionProfile}">
                                                             <ListBox.ItemContainerStyle>
@@ -743,7 +821,8 @@
                                                                     <GroupStyle.HeaderTemplate>
                                                                         <DataTemplate>
                                                                             <TextBlock HorizontalAlignment="Center"
-                                                                                FontStyle="Italic" FontWeight="Bold"
+                                                                                FontStyle="Italic"
+                                                                                FontWeight="Bold"
                                                                                 Foreground="Black"
                                                                                 Text="{Binding Name}" />
                                                                         </DataTemplate>
@@ -760,8 +839,10 @@
                                                                                     <LineBreak />
                                                                                     <Run Text="{Binding Item3, Mode=OneTime, StringFormat=\{0\} Dpi}" />
                                                                                 </TextBlock>
-                                                                                <CheckBox VerticalAlignment="Center" VerticalContentAlignment="Center"
-                                                                                    Content="MOZJPEG" FontWeight="Bold"
+                                                                                <CheckBox VerticalAlignment="Center"
+                                                                                    VerticalContentAlignment="Center"
+                                                                                    Content="MOZJPEG"
+                                                                                    FontWeight="Bold"
                                                                                     IsChecked="{Binding Item4, Mode=OneTime}"
                                                                                     IsHitTestVisible="False" />
                                                                             </StackPanel>
@@ -776,7 +857,9 @@
                                                                     <TextBox VerticalContentAlignment="Center" Text="{Binding Scanner.ProfileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <Button local:Policy.PolicyName="SaveProfile" Command="{Binding SaveProfile}">
                                                                         <StackPanel Orientation="Horizontal">
-                                                                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/save.png" />
+                                                                            <Image Width="16"
+                                                                                Height="16"
+                                                                                Source="/TwainControl;component/Icons/save.png" />
                                                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPROFILE}" />
                                                                         </StackPanel>
                                                                     </Button>
@@ -791,12 +874,16 @@
                                                                             <DataTemplate>
                                                                                 <UniformGrid Columns="2">
                                                                                     <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
-                                                                                    <Button local:Policy.PolicyName="RemoveProfile" Background="Transparent"
+                                                                                    <Button local:Policy.PolicyName="RemoveProfile"
+                                                                                        Background="Transparent"
                                                                                         BorderBrush="Transparent"
                                                                                         Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
                                                                                         CommandParameter="{Binding Mode=OneWay}"
-                                                                                        FontWeight="Bold" Foreground="Red">
-                                                                                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                                                        FontWeight="Bold"
+                                                                                        Foreground="Red">
+                                                                                        <Image Width="16"
+                                                                                            Height="16"
+                                                                                            Source="/TwainControl;component/Icons/delete.png" />
                                                                                     </Button>
                                                                                 </UniformGrid>
                                                                             </DataTemplate>
@@ -854,7 +941,8 @@
                                                     <GroupStyle.HeaderTemplate>
                                                         <DataTemplate>
                                                             <TextBlock HorizontalAlignment="Center"
-                                                                FontStyle="Italic" FontWeight="Bold"
+                                                                FontStyle="Italic"
+                                                                FontWeight="Bold"
                                                                 Foreground="Black"
                                                                 Text="{Binding Name}" />
                                                         </DataTemplate>
@@ -870,7 +958,8 @@
                                                             <ColumnDefinition />
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock VerticalAlignment="Center"
-                                                            FontStyle="Italic" FontWeight="Bold"
+                                                            FontStyle="Italic"
+                                                            FontWeight="Bold"
                                                             Text="{Binding PaperType}" />
                                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -878,25 +967,32 @@
                                                         <Viewbox Grid.Column="2">
                                                             <DockPanel LastChildFill="True">
                                                                 <TextBlock HorizontalAlignment="Right"
-                                                                    DockPanel.Dock="Top" FontSize="9"
+                                                                    DockPanel.Dock="Top"
+                                                                    FontSize="9"
                                                                     Foreground="Red"
                                                                     Text="{Binding Width, StringFormat=\{0\}cm}"
                                                                     TextWrapping="Wrap" />
                                                                 <TextBlock VerticalAlignment="Center"
-                                                                    DockPanel.Dock="Left" FontSize="9"
-                                                                    Foreground="Red" RenderTransformOrigin="0.5,0.5"
+                                                                    DockPanel.Dock="Left"
+                                                                    FontSize="9"
+                                                                    Foreground="Red"
+                                                                    RenderTransformOrigin="0.5,0.5"
                                                                     SnapsToDevicePixels="True"
                                                                     Text="{Binding Height, StringFormat=\{0\}cm}"
-                                                                    TextWrapping="Wrap" UseLayoutRounding="True">
+                                                                    TextWrapping="Wrap"
+                                                                    UseLayoutRounding="True">
                                                                     <TextBlock.LayoutTransform>
                                                                         <RotateTransform Angle="-90" />
                                                                     </TextBlock.LayoutTransform>
                                                                 </TextBlock>
                                                                 <Rectangle Width="{Binding Width}"
                                                                     Height="{Binding Height}"
-                                                                    Stroke="#7F000000" StrokeThickness="2">
+                                                                    Stroke="#7F000000"
+                                                                    StrokeThickness="2">
                                                                     <Rectangle.Effect>
-                                                                        <DropShadowEffect BlurRadius="3" Opacity="0.33" ShadowDepth="3" />
+                                                                        <DropShadowEffect BlurRadius="3"
+                                                                            Opacity="0.33"
+                                                                            ShadowDepth="3" />
                                                                     </Rectangle.Effect>
                                                                 </Rectangle>
                                                             </DockPanel>
@@ -924,7 +1020,9 @@
                                         Content="{local:Loc TWOSIDE}"
                                         IsChecked="{Binding Scanner.Duplex}"
                                         IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <CheckBox Grid.Column="1" IsChecked="{Binding Scanner.PaperBackScan}" IsEnabled="{Binding Scanner.Duplex}">
+                                    <CheckBox Grid.Column="1"
+                                        IsChecked="{Binding Scanner.PaperBackScan}"
+                                        IsEnabled="{Binding Scanner.Duplex}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
                                             <ComboBox IsEnabled="{Binding Scanner.PaperBackScan}" SelectedIndex="{Binding BackMode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
@@ -947,50 +1045,71 @@
                                             <DataTemplate>
                                                 <TextBlock>
                                                     <Run Text="{Binding Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}, Mode=OneWay}" />
-                                                    <Run FontStyle="Italic" Foreground="Red" Text="{Binding Converter={StaticResource EnumOrientationToTwainVersionConverter}, Mode=OneWay}" />
+                                                    <Run FontStyle="Italic"
+                                                        Foreground="Red"
+                                                        Text="{Binding Converter={StaticResource EnumOrientationToTwainVersionConverter}, Mode=OneWay}" />
                                                 </TextBlock>
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-                                    <CheckBox Grid.Row="1" Content="{local:Loc GUI}" IsChecked="{Binding Scanner.ShowUi}" />
-                                    <CheckBox Grid.Row="1" Grid.Column="1"
+                                    <CheckBox Grid.Row="1"
+                                        Content="{local:Loc GUI}"
+                                        IsChecked="{Binding Scanner.ShowUi}" />
+                                    <CheckBox Grid.Row="1"
+                                        Grid.Column="1"
                                         Content="{local:Loc FILMSCANNER}"
                                         IsChecked="{Binding Scanner.UseFilmScanner}" />
-                                    <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Horizontal">
+                                    <StackPanel Grid.Row="1"
+                                        Grid.Column="2"
+                                        Orientation="Horizontal">
                                         <CheckBox Content="{local:Loc INVERTCOLOR}" IsChecked="{Binding Scanner.InvertImage}" />
                                         <CheckBox Content="{local:Loc SEPERATOR}" IsChecked="{Binding Scanner.UsePageSeperator}" />
                                     </StackPanel>
-                                    <CheckBox Grid.Row="2" Content="{local:Loc SHOWPROGRESS}" IsChecked="{Binding Scanner.ShowProgress}" />
-                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal">
+                                    <CheckBox Grid.Row="2"
+                                        Content="{local:Loc SHOWPROGRESS}"
+                                        IsChecked="{Binding Scanner.ShowProgress}" />
+                                    <StackPanel Grid.Row="2"
+                                        Grid.Column="1"
+                                        Orientation="Horizontal">
                                         <CheckBox VerticalContentAlignment="Center"
                                             Content="{local:Loc EMPTYPAGE}"
                                             IsChecked="{Binding Scanner.DetectEmptyPage}"
                                             IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Extensions:NumericUpDownControl IsReadOnly="True" Maximum="100"
-                                            Minimum="1" Orientation="Horizontal"
+                                        <Extensions:NumericUpDownControl IsReadOnly="True"
+                                            Maximum="100"
+                                            Minimum="1"
+                                            Orientation="Horizontal"
                                             SmallChange="1"
                                             ToolTip="{local:Loc THRESHOLD}"
                                             Value="{Binding EmptyThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
-                                    <CheckBox Grid.Row="2" Grid.Column="2" IsChecked="{Binding Scanner.ApplyMedian}">
+                                    <CheckBox Grid.Row="2"
+                                        Grid.Column="2"
+                                        IsChecked="{Binding Scanner.ApplyMedian}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
                                             <Extensions:NumericUpDownControl Background="{StaticResource Despeckle}"
-                                                FontWeight="Bold" Foreground="Magenta"
+                                                FontWeight="Bold"
+                                                Foreground="Magenta"
                                                 IsEnabled="{Binding Scanner.ApplyMedian}"
-                                                Maximum="10" Minimum="0"
-                                                Orientation="Horizontal" SmallChange="1"
+                                                Maximum="10"
+                                                Minimum="0"
+                                                Orientation="Horizontal"
+                                                SmallChange="1"
                                                 Value="{Binding MedianValue, Source={x:Static properties:Settings.Default}}" />
                                         </StackPanel>
                                     </CheckBox>
                                 </Grid>
                                 <Separator />
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                    d:Description="SaveFileName" d:Text="FileName"
+                                    d:Description="SaveFileName"
+                                    d:Text="FileName"
                                     local:Policy.PolicyName="SaveFileName"
                                     Description="{Binding Scanner.SaveFileName}"
-                                    GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus" MaxLength="255"
-                                    OpenButtonVisibility="Collapsed" RemainingLengthVisibility="Collapsed"
+                                    GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus"
+                                    MaxLength="255"
+                                    OpenButtonVisibility="Collapsed"
+                                    RemainingLengthVisibility="Collapsed"
                                     ResetButtonVisibility="Collapsed"
                                     Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                                     TitleCaseMenuVisibility="Visible"
@@ -1003,12 +1122,24 @@
                                                     <Setter Property="ToolTip" Value="{Binding CommandParameter, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FileDateContextMenuConverter}}" />
                                                 </Style>
                                             </ContextMenu.Resources>
-                                            <MenuItem CommandParameter="[DATE]" Header="{local:Loc DAY}" Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[MONTH]" Header="{local:Loc MONTH}" Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[YEAR]" Header="{local:Loc YEAR}" Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[HOUR]" Header="{local:Loc TIME}" Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[MINUTE]" Header="{local:Loc MINUTE}" Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[SECOND]" Header="{local:Loc SECOND}" Icon="{StaticResource TimeIcon}" />
+                                            <MenuItem CommandParameter="[DATE]"
+                                                Header="{local:Loc DAY}"
+                                                Icon="{StaticResource TimeIcon}" />
+                                            <MenuItem CommandParameter="[MONTH]"
+                                                Header="{local:Loc MONTH}"
+                                                Icon="{StaticResource TimeIcon}" />
+                                            <MenuItem CommandParameter="[YEAR]"
+                                                Header="{local:Loc YEAR}"
+                                                Icon="{StaticResource TimeIcon}" />
+                                            <MenuItem CommandParameter="[HOUR]"
+                                                Header="{local:Loc TIME}"
+                                                Icon="{StaticResource TimeIcon}" />
+                                            <MenuItem CommandParameter="[MINUTE]"
+                                                Header="{local:Loc MINUTE}"
+                                                Icon="{StaticResource TimeIcon}" />
+                                            <MenuItem CommandParameter="[SECOND]"
+                                                Header="{local:Loc SECOND}"
+                                                Icon="{StaticResource TimeIcon}" />
                                             <MenuItem CommandParameter="[GUID]" Header="{local:Loc GUID}">
                                                 <MenuItem.Icon>
                                                     <Image Width="16" Height="16">
@@ -1071,10 +1202,14 @@
                                     </Image.Source>
                                 </Image>
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <Border Background="{StaticResource BorderBackground}" BorderBrush="Gray" BorderThickness="1">
+                                    <Border Background="{StaticResource BorderBackground}"
+                                        BorderBrush="Gray"
+                                        BorderThickness="1">
                                         <Slider Height="96"
-                                            AutoToolTipPlacement="TopLeft" Maximum="400"
-                                            Minimum="85" Orientation="Vertical"
+                                            AutoToolTipPlacement="TopLeft"
+                                            Maximum="400"
+                                            Minimum="85"
+                                            Orientation="Vertical"
                                             SmallChange="1"
                                             Style="{StaticResource Slider}"
                                             ToolTip="{local:Loc PREVIEWSIZE}"
@@ -1082,7 +1217,9 @@
                                     </Border>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
-                            <Extensions:ContentToggleButton Grid.Column="1" local:Policy.PolicyName="PdfSettingsPage" ArrowVisibility="Collapsed">
+                            <Extensions:ContentToggleButton Grid.Column="1"
+                                local:Policy.PolicyName="PdfSettingsPage"
+                                ArrowVisibility="Collapsed">
                                 <Extensions:ContentToggleButton.OverContent>
                                     <local:PdfSettings Width="500" />
                                 </Extensions:ContentToggleButton.OverContent>
@@ -1101,17 +1238,22 @@
                             <ScrollViewer Grid.Column="2"
                                 MaxHeight="55"
                                 Margin="2,0,2,0"
-                                HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                HorizontalScrollBarVisibility="Disabled"
+                                VerticalScrollBarVisibility="Auto">
                                 <WrapPanel>
                                     <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
-                                        <Image Width="24" Height="24" Source="/TwainControl;component/Icons/undo.png" />
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/undo.png" />
                                     </Button>
                                     <Extensions:ContentToggleButton local:Policy.PolicyName="RemoveFiles" ArrowVisibility="Collapsed">
                                         <Extensions:ContentToggleButton.OverContent>
                                             <StackPanel Background="{StaticResource GroupBoxBackGround}">
                                                 <MenuItem BorderBrush="{StaticResource GroupBoxBackGround}" Command="{Binding ListeTemizle}">
                                                     <MenuItem.Icon>
-                                                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                        <Image Width="16"
+                                                            Height="16"
+                                                            Source="/TwainControl;component/Icons/delete.png" />
                                                     </MenuItem.Icon>
                                                     <MenuItem.Header>
                                                         <TextBlock VerticalAlignment="Center">
@@ -1122,7 +1264,9 @@
                                                 </MenuItem>
                                                 <MenuItem BorderBrush="{StaticResource GroupBoxBackGround}" Command="{Binding SeçiliListeTemizle}">
                                                     <MenuItem.Icon>
-                                                        <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                                        <Image Width="16"
+                                                            Height="16"
+                                                            Source="/TwainControl;component/Icons/delete.png" />
                                                     </MenuItem.Icon>
                                                     <MenuItem.Header>
                                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
@@ -1137,13 +1281,16 @@
                                                         </TextBlock>
                                                     </MenuItem.Header>
                                                 </MenuItem>
-                                                <MenuItem FontWeight="Bold" Foreground="Red"
+                                                <MenuItem FontWeight="Bold"
+                                                    Foreground="Red"
                                                     Header="{local:Loc REMOVEPROCESSEDIMAGE}"
                                                     IsCheckable="True"
                                                     IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
                                             </StackPanel>
                                         </Extensions:ContentToggleButton.OverContent>
-                                        <Image Width="24" Height="24" Source="/TwainControl;component/Icons/delete.png" />
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/delete.png" />
                                     </Extensions:ContentToggleButton>
                                     <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
                                         <Button.ToolTip>
@@ -1163,10 +1310,13 @@
                                                 </Image.Source>
                                             </Image>
                                             <TextBlock Canvas.Left="4"
-                                                d:Text="0" FontSize="9"
+                                                d:Text="0"
+                                                FontSize="9"
                                                 Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                            <Image Canvas.Left="4" Canvas.Top="8"
-                                                Width="16" Height="16">
+                                            <Image Canvas.Left="4"
+                                                Canvas.Top="8"
+                                                Width="16"
+                                                Height="16">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
@@ -1176,36 +1326,50 @@
                                             </Image>
                                         </Canvas>
                                     </Button>
-                                    <Extensions:SplitButton local:Policy.PolicyName="Tümünüİşaretle" BorderBrush="Cyan" Command="{Binding Tümünüİşaretle}">
+                                    <Extensions:SplitButton local:Policy.PolicyName="Tümünüİşaretle"
+                                        BorderBrush="Cyan"
+                                        Command="{Binding Tümünüİşaretle}">
                                         <Extensions:SplitButton.InternalContent>
                                             <StackPanel Orientation="Horizontal">
                                                 <Button local:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır}">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Image Width="32" Height="32" Source="/TwainControl;component/Icons/none.png" />
+                                                        <Image Width="32"
+                                                            Height="32"
+                                                            Source="/TwainControl;component/Icons/none.png" />
                                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc NONE}" />
                                                     </StackPanel>
                                                 </Button>
                                                 <Button local:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle}">
                                                     <StackPanel Orientation="Horizontal">
-                                                        <Image Width="32" Height="32" Source="/TwainControl;component/Icons/inverse.png" />
+                                                        <Image Width="32"
+                                                            Height="32"
+                                                            Source="/TwainControl;component/Icons/inverse.png" />
                                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
                                                     </StackPanel>
                                                 </Button>
                                                 <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
-                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/portrait.png" />
+                                                    <Image Width="32"
+                                                        Height="32"
+                                                        Source="/TwainControl;component/Icons/portrait.png" />
                                                 </Button>
                                                 <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
-                                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/landscape.png" />
+                                                    <Image Width="32"
+                                                        Height="32"
+                                                        Source="/TwainControl;component/Icons/landscape.png" />
                                                 </Button>
                                             </StackPanel>
                                         </Extensions:SplitButton.InternalContent>
                                         <StackPanel Orientation="Horizontal">
-                                            <Image Width="24" Height="24" Source="/TwainControl;component/Icons/selectall.png" />
+                                            <Image Width="24"
+                                                Height="24"
+                                                Source="/TwainControl;component/Icons/selectall.png" />
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
                                         </StackPanel>
                                     </Extensions:SplitButton>
                                     <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
-                                        <Image Width="24" Height="24" Source="/TwainControl;component/Icons/save.png" />
+                                        <Image Width="24"
+                                            Height="24"
+                                            Source="/TwainControl;component/Icons/save.png" />
                                     </Button>
                                     <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
                                         <Image Width="24" Height="24">
@@ -1217,7 +1381,9 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
-                                    <Button local:Policy.PolicyName="CycleSelectedDocuments" Command="{Binding CycleSelectedDocuments}" CommandParameter="{Binding ElementName=Lb}">
+                                    <Button local:Policy.PolicyName="CycleSelectedDocuments"
+                                        Command="{Binding CycleSelectedDocuments}"
+                                        CommandParameter="{Binding ElementName=Lb}">
                                         <Image Width="24" Height="24">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1231,17 +1397,24 @@
                             </ScrollViewer>
                             <StackPanel Grid.Column="3" Orientation="Horizontal">
                                 <StackPanel>
-                                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Top" Text="{local:Loc ALL}" />
+                                    <TextBlock HorizontalAlignment="Center"
+                                        VerticalAlignment="Top"
+                                        Text="{local:Loc ALL}" />
                                     <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                                        BorderBrush="Cyan" LargeChange="1"
-                                        Maximum="1" Minimum="-1"
-                                        NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal"
+                                        BorderBrush="Cyan"
+                                        LargeChange="1"
+                                        Maximum="1"
+                                        Minimum="-1"
+                                        NumericUpdownTextBoxVisibility="Collapsed"
+                                        Orientation="Horizontal"
                                         SmallChange="1"
                                         Value="{Binding AllImageRotationAngle}" />
                                 </StackPanel>
-                                <Button local:Policy.PolicyName="InvertSelectedImage" BorderBrush="Cyan"
+                                <Button local:Policy.PolicyName="InvertSelectedImage"
+                                    BorderBrush="Cyan"
                                     Command="{Binding InvertSelectedImage}"
-                                    Content="[" FontFamily="Wingdings"
+                                    Content="["
+                                    FontFamily="Wingdings"
                                     FontSize="23" />
                             </StackPanel>
                         </Grid>
@@ -1250,7 +1423,9 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="16" Height="16" VerticalAlignment="Bottom">
+                                    <Image Width="16"
+                                        Height="16"
+                                        VerticalAlignment="Bottom">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -1258,52 +1433,74 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" TextAlignment="Center">
-                                        <Run d:Text="0" BaselineAlignment="Center" Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                        <Run d:Text="/" BaselineAlignment="Center" Text="/" />
-                                        <Run d:Text="0" BaselineAlignment="Center" Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        TextAlignment="Center">
+                                        <Run d:Text="0"
+                                            BaselineAlignment="Center"
+                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                        <Run d:Text="/"
+                                            BaselineAlignment="Center"
+                                            Text="/" />
+                                        <Run d:Text="0"
+                                            BaselineAlignment="Center"
+                                            Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
                                         <Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ReverseData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc REVERSE}">
-                                            <Run FontFamily="Wingdings 3" FontSize="16" Text="E" />
+                                            <Run FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                Text="E" />
                                         </Hyperlink>
                                         <Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ReverseDataHorizontal}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc HORIZONTAL}">
-                                            <Run FontFamily="Wingdings 3" FontSize="16" Text="D" />
+                                            <Run FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                Text="D" />
                                         </Hyperlink>
                                         <Hyperlink BaselineAlignment="Center"
                                             Command="{Binding FirstLastSortSequenceData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc FIRSTLAST}">
-                                            <Run FontFamily="Wingdings 3" FontSize="16" Text="G" />
+                                            <Run FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                Text="G" />
                                         </Hyperlink>
                                         <Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ShuffleData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc RANDOM}">
-                                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/dice.png" />
+                                            <Image Width="16"
+                                                Height="16"
+                                                Source="/TwainControl;component/Icons/dice.png" />
                                         </Hyperlink>
-                                        <Run BaselineAlignment="Top" FontSize="13" Text="1" /><Hyperlink BaselineAlignment="Center"
+                                        <Run BaselineAlignment="Top"
+                                            FontSize="13"
+                                            Text="1" /><Hyperlink BaselineAlignment="Center"
                                             Command="{Binding FirstLastGroup}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc SPLITSORT}">
-                                            <Run BaselineAlignment="Center" FontFamily="Wingdings 3"
-                                                FontSize="18" Text="F" />
+                                            <Run BaselineAlignment="Center"
+                                                FontFamily="Wingdings 3"
+                                                FontSize="18"
+                                                Text="F" />
                                         </Hyperlink>
                                         <Extensions:NumericUpDownControl VerticalAlignment="Center"
                                             IsReadOnly="True"
                                             Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
-                                            Minimum="2" Orientation="Horizontal"
+                                            Minimum="2"
+                                            Orientation="Horizontal"
                                             SmallChange="1"
                                             Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     </TextBlock>
                                 </StackPanel>
                             </TabItem.Header>
                             <ListBox x:Name="Lb"
-                                Extensions:ScrollDragDrop.ScrollOnDragDrop="True" local:Policy.PolicyName="LoadImage"
+                                Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
+                                local:Policy.PolicyName="LoadImage"
                                 AllowDrop="True"
                                 Background="{StaticResource BorderBackground}"
                                 Drop="ListBox_DropAsync"
@@ -1311,26 +1508,37 @@
                                 PreviewMouseWheel="ListBox_PreviewMouseWheel"
                                 SelectedIndex="{Binding SeekIndex}"
                                 SelectedItem="{Binding SeçiliResim}"
-                                SelectionMode="Extended" VirtualizingPanel.CacheLength="3,3"
-                                VirtualizingPanel.CacheLengthUnit="Item" VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                VirtualizingPanel.ScrollUnit="Pixel" VirtualizingPanel.VirtualizationMode="Standard">
+                                SelectionMode="Extended"
+                                VirtualizingPanel.CacheLength="3,3"
+                                VirtualizingPanel.CacheLengthUnit="Item"
+                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                VirtualizingPanel.ScrollUnit="Pixel"
+                                VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="{x:Type ListBoxItem}">
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate>
-                                                    <StackPanel Background="{TemplateBinding Background}" Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
+                                                    <StackPanel Background="{TemplateBinding Background}"
+                                                        Drop="StackPanel_Drop"
+                                                        GiveFeedback="StackPanel_GiveFeedback">
                                                         <TextBlock HorizontalAlignment="Center">
                                                             <InlineUIContainer>
                                                                 <Extensions:NumericUpDownControl Height="20"
-                                                                    BorderBrush="Cyan" LargeChange="1"
-                                                                    Maximum="1" Minimum="-1"
-                                                                    NumericUpdownTextBoxVisibility="Collapsed" Orientation="Horizontal"
+                                                                    BorderBrush="Cyan"
+                                                                    LargeChange="1"
+                                                                    Maximum="1"
+                                                                    Minimum="-1"
+                                                                    NumericUpdownTextBoxVisibility="Collapsed"
+                                                                    Orientation="Horizontal"
                                                                     SmallChange="1"
                                                                     Value="{Binding RotationAngle}" />
-                                                            </InlineUIContainer><Run Cursor="SizeAll" FontFamily="Wingdings"
-                                                                FontSize="24" FontWeight="Bold"
-                                                                MouseLeftButtonDown="Run_MouseLeftButtonDown" Text="B" /><InlineUIContainer BaselineAlignment="Center">
+                                                            </InlineUIContainer><Run Cursor="SizeAll"
+                                                                FontFamily="Wingdings"
+                                                                FontSize="24"
+                                                                FontWeight="Bold"
+                                                                MouseLeftButtonDown="Run_MouseLeftButtonDown"
+                                                                Text="B" /><InlineUIContainer BaselineAlignment="Center">
                                                                 <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                                                     Background="{x:Null}"
                                                                     BorderBrush="{x:Null}"
@@ -1351,33 +1559,44 @@
                                                                             </Style.Triggers>
                                                                         </Style>
                                                                     </Extensions:ContentToggleButton.Style>
-                                                                    <Image Width="24" Height="24" Source="/TwainControl;component/Icons/save.png" />
+                                                                    <Image Width="24"
+                                                                        Height="24"
+                                                                        Source="/TwainControl;component/Icons/save.png" />
                                                                 </Extensions:ContentToggleButton>
                                                             </InlineUIContainer><Hyperlink local:Policy.PolicyName="InvertImage"
                                                                 Command="{Binding DataContext.InvertImage, ElementName=UserControl}"
                                                                 CommandParameter="{Binding Mode=OneWay}"
                                                                 TextDecorations="None">
-                                                                <Run FontFamily="Wingdings" FontSize="26"
-                                                                    Foreground="Black" Text="[" />
+                                                                <Run FontFamily="Wingdings"
+                                                                    FontSize="26"
+                                                                    Foreground="Black"
+                                                                    Text="[" />
                                                             </Hyperlink><Hyperlink local:Policy.PolicyName="AutoDeskewImage"
                                                                 Command="{Binding DataContext.AutoDeskewImage, ElementName=UserControl}"
                                                                 CommandParameter="{Binding Mode=OneWay}"
                                                                 TextDecorations="None">
-                                                                <Run FontFamily="Wingdings 3" FontSize="26"
-                                                                    Foreground="Black" Text="R" />
-                                                            </Hyperlink><Hyperlink local:Policy.PolicyName="ResimSil" BaselineAlignment="Center"
+                                                                <Run FontFamily="Wingdings 3"
+                                                                    FontSize="26"
+                                                                    Foreground="Black"
+                                                                    Text="R" />
+                                                            </Hyperlink><Hyperlink local:Policy.PolicyName="ResimSil"
+                                                                BaselineAlignment="Center"
                                                                 Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
                                                                 CommandParameter="{Binding Mode=OneWay}"
-                                                                FontFamily="Segoe UI Black" TextDecorations="None">
+                                                                FontFamily="Segoe UI Black"
+                                                                TextDecorations="None">
                                                                 <InlineUIContainer>
-                                                                    <Image Width="24" Height="24" Source="/TwainControl;component/Icons/delete.png" />
+                                                                    <Image Width="24"
+                                                                        Height="24"
+                                                                        Source="/TwainControl;component/Icons/delete.png" />
                                                                 </InlineUIContainer>
                                                             </Hyperlink>
                                                         </TextBlock>
                                                         <Canvas Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
                                                             <ToggleButton Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                                 Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                                                VerticalAlignment="Center"
+                                                                VerticalContentAlignment="Center"
                                                                 Background="{x:Null}"
                                                                 BorderBrush="{x:Null}"
                                                                 IsChecked="{Binding Seçili}"
@@ -1399,14 +1618,17 @@
                                                                         d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
                                                                         <PdfViewer:PdfShadowedImage.Source>
                                                                             <PriorityBinding>
-                                                                                <Binding IsAsync="True" Mode="OneWay" Path="ResimThumb" />
+                                                                                <Binding IsAsync="True"
+                                                                                    Mode="OneWay"
+                                                                                    Path="ResimThumb" />
                                                                                 <Binding Converter="{StaticResource ListFilePathToIconConverter}" Path="FilePath" />
                                                                             </PriorityBinding>
                                                                         </PdfViewer:PdfShadowedImage.Source>
                                                                     </PdfViewer:PdfShadowedImage>
                                                                 </Viewbox>
                                                             </ToggleButton>
-                                                            <TextBlock Canvas.Left="0" Canvas.Bottom="0"
+                                                            <TextBlock Canvas.Left="0"
+                                                                Canvas.Bottom="0"
                                                                 FontWeight="Bold"
                                                                 Text="{Binding Index, Mode=OneWay}" />
                                                         </Canvas>
@@ -1432,8 +1654,11 @@
 
                     </TabControl>
                 </GroupBox>
-                <UniformGrid Grid.Row="2" Columns="2" Rows="2">
-                    <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                <UniformGrid Grid.Row="2"
+                    Columns="2"
+                    Rows="2">
+                    <Button HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
                         local:Policy.PolicyName="LoadImage"
                         Command="{Binding LoadImage}">
                         <Grid>
@@ -1450,12 +1675,17 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{local:Loc FILE}" />
+                                <Image Width="32"
+                                    Height="32"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{local:Loc FILE}" />
                             </StackPanel>
                         </Grid>
                     </Button>
-                    <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                    <Button HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
                         local:Policy.PolicyName="SeçiliKaydet"
                         Command="{Binding SeçiliKaydet}">
                         <Grid>
@@ -1468,16 +1698,23 @@
                                 Value="{Binding Scanner.PdfSaveProgressValue}" />
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32" Source="/TwainControl;component/Icons/save.png" />
-                                    <TextBlock d:Text="0" FontSize="11"
-                                        FontWeight="Bold" Foreground="Red"
+                                    <Image Width="32"
+                                        Height="32"
+                                        Source="/TwainControl;component/Icons/save.png" />
+                                    <TextBlock d:Text="0"
+                                        FontSize="11"
+                                        FontWeight="Bold"
+                                        Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
                                 </Canvas>
-                                <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{local:Loc SAVESELECTED}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{local:Loc SAVESELECTED}" />
                             </StackPanel>
                         </Grid>
                     </Button>
-                    <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                    <Button HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
                         local:Policy.PolicyName="SeçiliDirektPdfKaydet"
                         Command="{Binding SeçiliDirektPdfKaydet}">
                         <Grid>
@@ -1497,11 +1734,15 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock d:Text="0" FontSize="11"
-                                        FontWeight="Bold" Foreground="Red"
+                                    <TextBlock d:Text="0"
+                                        FontSize="11"
+                                        FontWeight="Bold"
+                                        Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
                                 </Canvas>
-                                <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{local:Loc AUTOPATH}">
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{local:Loc AUTOPATH}">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Style.Triggers>
@@ -1531,7 +1772,9 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{local:Loc ABOUT}" />
+                            <TextBlock VerticalAlignment="Center"
+                                FontWeight="Bold"
+                                Text="{local:Loc ABOUT}" />
                         </StackPanel>
                     </Extensions:SplitButton>
                 </UniformGrid>
@@ -1560,7 +1803,9 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <Expander VerticalAlignment="Center" VerticalContentAlignment="Center" ExpandDirection="Right">
+                            <Expander VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                ExpandDirection="Right">
                                 <StackPanel Orientation="Horizontal">
                                     <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
                                         <Image Width="16" Height="16">
@@ -1572,7 +1817,9 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
-                                    <Button local:Policy.PolicyName="InsertClipBoardImage" BorderBrush="Cyan" Command="{Binding InsertClipBoardImage}">
+                                    <Button local:Policy.PolicyName="InsertClipBoardImage"
+                                        BorderBrush="Cyan"
+                                        Command="{Binding InsertClipBoardImage}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1585,7 +1832,8 @@
                                     <Extensions:NumericUpDownControl IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}"
                                         IsReadOnly="True"
                                         Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
-                                        Minimum="0" NumericUpdownTextBoxVisibility="Collapsed"
+                                        Minimum="0"
+                                        NumericUpdownTextBoxVisibility="Collapsed"
                                         SmallChange="1"
                                         Value="{Binding SeekIndex}" />
                                     <TextBlock VerticalAlignment="Center" Text="{Binding SeekIndex, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
@@ -1595,24 +1843,32 @@
                     </TabItem.Header>
                     <Grid Background="{StaticResource BorderBackground}" IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
                         <Extensions:ImageViewer x:Name="ImgViewer"
-                            d:Source="/GpScanner;component/splash.png" d:Zoom="1"
+                            d:Source="/GpScanner;component/splash.png"
+                            d:Zoom="1"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            OpenButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
-                            PreviewMouseDown="ImgViewer_MouseDown" PreviewMouseMove="ImgViewer_MouseMoveAsync"
-                            PreviewMouseWheel="ImgViewer_PreviewMouseWheel" PrintButtonVisibility="Visible"
+                            OpenButtonVisibility="Collapsed"
+                            PanoramaButtonVisibility="Collapsed"
+                            PreviewMouseDown="ImgViewer_MouseDown"
+                            PreviewMouseMove="ImgViewer_MouseMoveAsync"
+                            PreviewMouseWheel="ImgViewer_PreviewMouseWheel"
+                            PrintButtonVisibility="Visible"
                             SnapTick="True"
                             Source="{Binding SeçiliResim.Resim, Mode=OneWay}" />
                         <Canvas x:Name="cnv" />
-                        <Expander HorizontalAlignment="Left" VerticalAlignment="Top"
+                        <Expander HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
                             ExpandDirection="Right"
                             IsExpanded="{Binding Scanner.CropDialogExpanded}">
                             <Grid>
                                 <local:ToolBox />
-                                <ToggleButton HorizontalAlignment="Right" VerticalAlignment="Top"
+                                <ToggleButton HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
                                     Background="{x:Null}"
                                     BorderBrush="{x:Null}"
                                     IsChecked="{Binding Scanner.CropDialogExpanded}">
-                                    <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                                    <Image Width="16"
+                                        Height="16"
+                                        Source="/TwainControl;component/Icons/delete.png" />
                                 </ToggleButton>
                             </Grid>
                         </Expander>
@@ -1650,12 +1906,15 @@
                         <ListBox x:Name="LbEypContent"
                             Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
                             d:ItemsSource="{d:SampleData ItemCount=5}"
-                            local:Policy.PolicyName="EypPdfDosyaEkle" AllowDrop="True"
+                            local:Policy.PolicyName="EypPdfDosyaEkle"
+                            AllowDrop="True"
                             Background="{StaticResource BorderBackground}"
                             Drop="LbEypContent_Drop"
                             ItemsSource="{Binding Scanner.UnsupportedFiles}"
-                            VirtualizingPanel.CacheLength="2,2" VirtualizingPanel.CacheLengthUnit="Item"
-                            VirtualizingPanel.IsVirtualizingWhenGrouping="True" VirtualizingPanel.ScrollUnit="Pixel"
+                            VirtualizingPanel.CacheLength="2,2"
+                            VirtualizingPanel.CacheLengthUnit="Item"
+                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                            VirtualizingPanel.ScrollUnit="Pixel"
                             VirtualizingPanel.VirtualizationMode="Standard">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}">
@@ -1664,13 +1923,18 @@
                                             <ControlTemplate>
                                                 <StackPanel Drop="StackPanel_EypDrop" Orientation="Horizontal">
                                                     <TextBlock VerticalAlignment="Center">
-                                                        <Run AllowDrop="True" BaselineAlignment="Center"
-                                                            Cursor="SizeAll" FontFamily="Wingdings"
-                                                            FontSize="24" FontWeight="Bold"
-                                                            PreviewMouseMove="Run_EypPreviewMouseMove" Text="B" />
+                                                        <Run AllowDrop="True"
+                                                            BaselineAlignment="Center"
+                                                            Cursor="SizeAll"
+                                                            FontFamily="Wingdings"
+                                                            FontSize="24"
+                                                            FontWeight="Bold"
+                                                            PreviewMouseMove="Run_EypPreviewMouseMove"
+                                                            Text="B" />
                                                     </TextBlock>
                                                     <ContentPresenter d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
-                                                        d:Height="315" d:Width="315"
+                                                        d:Height="315"
+                                                        d:Width="315"
                                                         Content="{Binding Mode=OneWay}"
                                                         ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
                                                 </StackPanel>
@@ -1681,22 +1945,29 @@
                             </ListBox.ItemContainerStyle>
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="315,315" SpacingMode="None" />
+                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                        ItemSize="315,315"
+                                        SpacingMode="None" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
                         </ListBox>
                         <UniformGrid Grid.Row="1" Columns="2">
                             <Button local:Policy.PolicyName="EypPdfDosyaEkle" Command="{Binding EypPdfDosyaEkle}">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                    <Image Width="32"
+                                        Height="32"
+                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                                 </StackPanel>
                             </Button>
-                            <Button HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                            <Button HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
                                 local:Policy.PolicyName="EypPdfİçerikBirleştir"
                                 Command="{Binding EypPdfİçerikBirleştir}">
                                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                    <Image Width="32"
+                                        Height="32"
+                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text="{local:Loc ALL}" />
                                         <Run Text="{local:Loc MERGE}" />
@@ -1708,7 +1979,9 @@
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
-                        <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
+                        <Image Width="32"
+                            Height="32"
+                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -1717,22 +1990,32 @@
                         </Grid.RowDefinitions>
                         <Button Command="{Binding LoadArchiveFile}" CommandParameter="{Binding ElementName=ArchiveVwr, Mode=OneWay}">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
-                                <TextBlock VerticalAlignment="Center" FontWeight="Bold" Text="{local:Loc FILE}" />
+                                <Image Width="32"
+                                    Height="32"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{local:Loc FILE}" />
                             </StackPanel>
                         </Button>
-                        <local:SimpleArchiveViewer x:Name="ArchiveVwr" Grid.Row="1" AllowDrop="True" />
+                        <local:SimpleArchiveViewer x:Name="ArchiveVwr"
+                            Grid.Row="1"
+                            AllowDrop="True" />
                     </Grid>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
-                        <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                        <Image Width="32"
+                            Height="32"
+                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                     </TabItem.Header>
                     <local:PdfImportViewerControl x:Name="PdfImportViewer" x:FieldModifier="public" />
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
-                        <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.udf}" />
+                        <Image Width="32"
+                            Height="32"
+                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.udf}" />
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -1741,14 +2024,19 @@
                         </Grid.RowDefinitions>
                         <Controls:XpsViewer x:Name="xpsViewer" x:FieldModifier="public" />
                         <UniformGrid Grid.Row="1" Columns="2">
-                            <Button local:Policy.PolicyName="LoadSingleUdfFile" Command="{Binding LoadSingleUdfFile}" CommandParameter="{Binding ElementName=xpsViewer}">
+                            <Button local:Policy.PolicyName="LoadSingleUdfFile"
+                                Command="{Binding LoadSingleUdfFile}"
+                                CommandParameter="{Binding ElementName=xpsViewer}">
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="32" Height="32" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.udf}" />
+                                    <Image Width="32"
+                                        Height="32"
+                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.udf}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                                 </StackPanel>
                             </Button>
                             <TextBlock VerticalAlignment="Center"
-                                FontSize="16" Foreground="Red"
+                                FontSize="16"
+                                Foreground="Red"
                                 Text="{local:Loc LIMITED}"
                                 TextWrapping="Wrap" />
                         </UniformGrid>

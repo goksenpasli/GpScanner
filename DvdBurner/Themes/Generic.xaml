@@ -2,8 +2,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
-    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:local="clr-namespace:DvdBurner">
-    <ObjectDataProvider x:Key="DiscSizes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:local="clr-namespace:DvdBurner">
+    <ObjectDataProvider x:Key="DiscSizes"
+        MethodName="GetValues"
+        ObjectType="{x:Type System:Enum}">
         <ObjectDataProvider.MethodParameters>
             <x:Type TypeName="local:DiscSizes" />
         </ObjectDataProvider.MethodParameters>
@@ -13,9 +16,12 @@
     <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
     <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
     <DataTemplate x:Key="EmptyViewerTemplate">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-            FontFamily="Webdings" FontSize="256"
-            Foreground="Red" Text="N" />
+        <TextBlock HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontFamily="Webdings"
+            FontSize="256"
+            Foreground="Red"
+            Text="N" />
     </DataTemplate>
     <DataTemplate x:Key="ZipViewerTemplateFull">
         <Extensions:ArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -26,7 +32,8 @@
     <DataTemplate x:Key="ImgViewerTemplate">
         <Extensions:ImageViewer DecodeHeight="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Grid}}"
             ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-            PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Collapsed" />
+            PanoramaButtonVisibility="Collapsed"
+            PrintButtonVisibility="Collapsed" />
     </DataTemplate>
     <local:ViewerTemplateSelector x:Key="DvdBurnerDocumentViewerSelector"
         Empty="{StaticResource EmptyViewerTemplate}"
@@ -78,8 +85,10 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Image Canvas.Left="16" Canvas.Top="16"
-                                        Width="16" Height="16">
+                                    <Image Canvas.Left="16"
+                                        Canvas.Top="16"
+                                        Width="16"
+                                        Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -153,7 +162,9 @@
                                                     </Image.Source>
                                                 </Image>
                                             </Hyperlink>
-                                            <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                            <Image Width="16"
+                                                Height="16"
+                                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
                                             <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}}" />
                                         </TextBlock>
                                     </DataTemplate>
@@ -163,11 +174,16 @@
                                 Width="3"
                                 HorizontalAlignment="Stretch"
                                 Background="{DynamicResource GroupBoxBackGround}" />
-                            <ContentControl Grid.Column="2" Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=Lb}" ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}" />
+                            <ContentControl Grid.Column="2"
+                                Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=Lb}"
+                                ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}" />
                         </Grid>
                         <Grid Grid.Row="3">
-                            <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}" Maximum="1" Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}}" />
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                            <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}"
+                                Maximum="1"
+                                Value="{Binding ProgressValue, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <TextBlock HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 FontWeight="Bold"
                                 Foreground="{Binding ActionTextForeground, RelativeSource={RelativeSource TemplatedParent}}"
                                 Text="{Binding ActionText, RelativeSource={RelativeSource TemplatedParent}}"
@@ -179,7 +195,8 @@
                                     Maximum="{Binding DiscMaxSize, RelativeSource={RelativeSource TemplatedParent}}"
                                     Minimum="0"
                                     Value="{Binding TotalFileSize, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                <TextBlock HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
                                     Text="{Binding TotalFileSize, RelativeSource={RelativeSource TemplatedParent}, StringFormat={}{0} MB}"
                                     TextWrapping="Wrap" />
                             </Grid>
@@ -195,11 +212,15 @@
                             </ComboBox>
                         </UniformGrid>
                         <Extensions:ButtonedTextBox Grid.Row="5"
-                            CopyButtonVisibility="Visible" Description="ETİKET"
-                            OpenButtonVisibility="Collapsed" PasteButtonVisibility="Visible"
+                            CopyButtonVisibility="Visible"
+                            Description="ETİKET"
+                            OpenButtonVisibility="Collapsed"
+                            PasteButtonVisibility="Visible"
                             ResetButtonVisibility="Collapsed"
                             Text="{Binding CdLabel, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
-                        <CheckBox Grid.Row="6" Content="BİTİNCE CDYİ ÇIKAR" IsChecked="{Binding Eject, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <CheckBox Grid.Row="6"
+                            Content="BİTİNCE CDYİ ÇIKAR"
+                            IsChecked="{Binding Eject, RelativeSource={RelativeSource TemplatedParent}}" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

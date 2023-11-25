@@ -7,17 +7,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xmlstack="clr-namespace:System.Xml;assembly=System.Xml"
     d:DataContext="{d:DesignInstance Type=local:XmlViewerControlModel}"
-    d:DesignHeight="450" d:DesignWidth="800"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="xmlValueBrush" ice:Freeze="true" Color="Blue" />
-        <SolidColorBrush x:Key="xmAttributeBrush" ice:Freeze="true" Color="Red" />
-        <SolidColorBrush x:Key="xmlTagBrush" ice:Freeze="true" Color="DarkMagenta" />
-        <SolidColorBrush x:Key="xmlMarkBrush" ice:Freeze="true" Color="Blue" />
+        <SolidColorBrush x:Key="xmlValueBrush"
+            ice:Freeze="true"
+            Color="Blue" />
+        <SolidColorBrush x:Key="xmAttributeBrush"
+            ice:Freeze="true"
+            Color="Red" />
+        <SolidColorBrush x:Key="xmlTagBrush"
+            ice:Freeze="true"
+            Color="DarkMagenta" />
+        <SolidColorBrush x:Key="xmlMarkBrush"
+            ice:Freeze="true"
+            Color="Blue" />
         <DataTemplate x:Key="attributeTemplate">
             <TextBlock Margin="3,0,0,0" VerticalAlignment="Center">
-                <Run BaselineAlignment="Center" Foreground="{StaticResource xmAttributeBrush}" Text="{Binding Path=Name, Mode=OneWay}" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlMarkBrush}" Text="=&quot;" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlValueBrush}" Text="{Binding Path=Value, Mode=OneWay}" /><Run BaselineAlignment="Center" Foreground="{StaticResource xmlMarkBrush}" Text="&quot;" />
+                <Run BaselineAlignment="Center"
+                    Foreground="{StaticResource xmAttributeBrush}"
+                    Text="{Binding Path=Name, Mode=OneWay}" /><Run BaselineAlignment="Center"
+                    Foreground="{StaticResource xmlMarkBrush}"
+                    Text="=&quot;" /><Run BaselineAlignment="Center"
+                    Foreground="{StaticResource xmlValueBrush}"
+                    Text="{Binding Path=Value, Mode=OneWay}" /><Run BaselineAlignment="Center"
+                    Foreground="{StaticResource xmlMarkBrush}"
+                    Text="&quot;" />
             </TextBlock>
         </DataTemplate>
         <Style TargetType="{x:Type TreeViewItem}">
@@ -32,15 +49,20 @@
                     BaselineAlignment="Center"
                     Foreground="{StaticResource xmlTagBrush}"
                     Text="{Binding Path=Name, Mode=OneWay}" /><InlineUIContainer>
-                    <ItemsControl HorizontalAlignment="Center" VerticalAlignment="Center"
+                    <ItemsControl HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
                         ItemTemplate="{StaticResource attributeTemplate}"
                         ItemsSource="{Binding Path=Attributes}">
                         <ItemsControl.Template>
                             <ControlTemplate TargetType="ItemsControl">
-                                <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                    <ScrollViewer CanContentScroll="True" Focusable="False"
-                                        HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden">
+                                <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                    <ScrollViewer CanContentScroll="True"
+                                        Focusable="False"
+                                        HorizontalScrollBarVisibility="Hidden"
+                                        VerticalScrollBarVisibility="Hidden">
                                         <ItemsPresenter />
                                     </ScrollViewer>
                                 </Border>
@@ -62,9 +84,9 @@
                     <DataTrigger.Value>
                         <xmlstack:XmlNodeType>Text</xmlstack:XmlNodeType>
                     </DataTrigger.Value>
+                    <Setter TargetName="xmlTag" Property="Foreground" Value="Blue" />
                     <Setter TargetName="endTag" Property="Text" Value="" />
                     <Setter TargetName="startTag" Property="Text" Value="" />
-                    <Setter TargetName="xmlTag" Property="Foreground" Value="Blue" />
                     <Setter TargetName="xmlTag" Property="Text" Value="{Binding InnerText}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding HasChildNodes}" Value="False">
@@ -80,15 +102,19 @@
         </Grid.RowDefinitions>
         <ToggleButton x:Name="Tb"
             Margin="1"
-            local:Policy.PolicyName="ExpandXml" IsChecked="True">
-            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/portrait.png" />
+            local:Policy.PolicyName="ExpandXml"
+            IsChecked="True">
+            <Image Width="16"
+                Height="16"
+                Source="/TwainControl;component/Icons/portrait.png" />
         </ToggleButton>
         <TreeView Name="xmlTree"
             Grid.Row="1"
             Margin="1"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             ItemTemplate="{StaticResource treeViewTemplate}"
-            VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Standard">
+            VirtualizingStackPanel.IsVirtualizing="True"
+            VirtualizingStackPanel.VirtualizationMode="Standard">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding ElementName=Tb, Path=IsChecked}" />

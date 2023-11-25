@@ -4,20 +4,24 @@
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:dvd="clr-namespace:DvdBurner;assembly=DvdBurner" xmlns:local="clr-namespace:GpScanner"
+    xmlns:dvd="clr-namespace:DvdBurner;assembly=DvdBurner"
+    xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
-    d:DesignHeight="450" d:DesignWidth="800"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
         <Extensions:EnumToIntValueConverter x:Key="EnumToIntValueConverter" />
         <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
-        <ObjectDataProvider x:Key="DiscSizes" MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+        <ObjectDataProvider x:Key="DiscSizes"
+            MethodName="GetValues"
+            ObjectType="{x:Type System:Enum}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="dvd:DiscSizes" />
             </ObjectDataProvider.MethodParameters>
@@ -64,8 +68,10 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <Image Canvas.Left="16" Canvas.Top="16"
-                                Width="16" Height="16">
+                            <Image Canvas.Left="16"
+                                Canvas.Top="16"
+                                Width="16"
+                                Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                         <Binding Source="Shell32.dll" />
@@ -141,8 +147,12 @@
                                             </Image>
                                         </InlineUIContainer>
                                     </Hyperlink><InlineUIContainer>
-                                        <Image Width="16" Height="16" Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
-                                    </InlineUIContainer><Run d:Text="FileName" BaselineAlignment="Center" Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" /></TextBlock>
+                                        <Image Width="16"
+                                            Height="16"
+                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                    </InlineUIContainer><Run d:Text="FileName"
+                                        BaselineAlignment="Center"
+                                        Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" /></TextBlock>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -150,11 +160,16 @@
                         Width="3"
                         HorizontalAlignment="Stretch"
                         Background="{DynamicResource GroupBoxBackGround}" />
-                    <ContentControl Grid.Column="2" Content="{Binding SelectedItem, ElementName=Lb, IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
+                    <ContentControl Grid.Column="2"
+                        Content="{Binding SelectedItem, ElementName=Lb, IsAsync=True, Mode=OneWay}"
+                        ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
                 </Grid>
                 <Grid Grid.Row="3">
-                    <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource Mode=TemplatedParent}}" Maximum="1" Value="{Binding ProgressValue, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                    <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        Maximum="1"
+                        Value="{Binding ProgressValue, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
                         FontWeight="Bold"
                         Foreground="{Binding ActionTextForeground, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         Text="{Binding ActionText, RelativeSource={RelativeSource Mode=TemplatedParent}}"
@@ -166,7 +181,8 @@
                             Maximum="{Binding DiscMaxSize, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                             Minimum="0"
                             Value="{Binding TotalFileSize, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                        <TextBlock HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             Text="{Binding TotalFileSize, RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat=\{0\} MB}"
                             TextWrapping="Wrap" />
                     </Grid>
@@ -184,10 +200,13 @@
                 <Extensions:ButtonedTextBox Grid.Row="5"
                     CopyButtonVisibility="Visible"
                     Description="{twainctrl:Loc TAG}"
-                    OpenButtonVisibility="Collapsed" PasteButtonVisibility="Visible"
+                    OpenButtonVisibility="Collapsed"
+                    PasteButtonVisibility="Visible"
                     ResetButtonVisibility="Collapsed"
                     Text="{Binding CdLabel, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                <CheckBox Grid.Row="6" Content="{twainctrl:Loc REMOVECD}" IsChecked="{Binding Eject, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <CheckBox Grid.Row="6"
+                    Content="{twainctrl:Loc REMOVECD}"
+                    IsChecked="{Binding Eject, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </Grid>
         </ControlTemplate>
     </UserControl.Resources>

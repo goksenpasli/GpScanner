@@ -1,4 +1,6 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:Extensions">
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Extensions">
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Style TargetType="local:ButtonedTextBox">
         <Setter Property="Border.BorderBrush" Value="#ABADB3" />
@@ -27,14 +29,22 @@
                                 <Setter Property="SnapsToDevicePixels" Value="True" />
                             </Style>
                         </Grid.Resources>
-                        <ContentPresenter Name="contentPresenter" VerticalAlignment="Center" Content="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
-                        <Border Name="border" Grid.Column="1" Visibility="{Binding TextBoxVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ContentPresenter Name="contentPresenter"
+                            VerticalAlignment="Center"
+                            Content="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
+                        <Border Name="border"
+                            Grid.Column="1"
+                            Visibility="{Binding TextBoxVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <ScrollViewer Name="PART_ContentHost"
-                                Focusable="False" HorizontalScrollBarVisibility="Hidden"
+                                Focusable="False"
+                                HorizontalScrollBarVisibility="Hidden"
                                 VerticalScrollBarVisibility="Hidden" />
                         </Border>
-                        <Border Name="remaintext" Grid.Column="2" Visibility="{Binding RemainingLengthVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                        <Border Name="remaintext"
+                            Grid.Column="2"
+                            Visibility="{Binding RemainingLengthVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <TextBlock HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 FontSize="12"
                                 Text="{Binding RemainingTextLength, RelativeSource={RelativeSource TemplatedParent}}" />
                         </Border>
@@ -42,9 +52,13 @@
                             Grid.Column="3"
                             Width="16"
                             Visibility="{Binding CopyButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
+                            <TextBlock HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="14">
                                 <Hyperlink Command="{Binding Copy, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
-                                    <Run FontFamily="Wingdings 2" FontWeight="Bold" Text="1" />
+                                    <Run FontFamily="Wingdings 2"
+                                        FontWeight="Bold"
+                                        Text="1" />
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
@@ -52,9 +66,13 @@
                             Grid.Column="4"
                             Width="16"
                             Visibility="{Binding PasteButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
+                            <TextBlock HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="14">
                                 <Hyperlink Command="{Binding Paste, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
-                                    <Run FontFamily="Wingdings 2" FontWeight="Bold" Text="2" />
+                                    <Run FontFamily="Wingdings 2"
+                                        FontWeight="Bold"
+                                        Text="2" />
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
@@ -62,7 +80,9 @@
                             Grid.Column="5"
                             Width="16"
                             Visibility="{Binding ResetButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
+                            <TextBlock HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="14">
                                 <Hyperlink Command="{Binding Reset, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
                                     <Run FontWeight="Bold" Text="X" />
                                 </Hyperlink>
@@ -72,10 +92,14 @@
                             Grid.Column="6"
                             Width="16"
                             Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14">
+                            <TextBlock HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="14">
                                 <Hyperlink Command="{Binding Open, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
-                                    <Run FontFamily="Wingdings" FontSize="14"
-                                        FontWeight="Bold" Text="8" />
+                                    <Run FontFamily="Wingdings"
+                                        FontSize="14"
+                                        FontWeight="Bold"
+                                        Text="8" />
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
@@ -83,13 +107,19 @@
                             Grid.Column="7"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            IsReadOnly="True" LargeChange="1"
-                            Minimum="1" NumericUpdownTextBoxVisibility="Collapsed"
-                            SmallChange="1" SnapsToDevicePixels="True"
+                            IsReadOnly="True"
+                            LargeChange="1"
+                            Minimum="1"
+                            NumericUpdownTextBoxVisibility="Collapsed"
+                            SmallChange="1"
+                            SnapsToDevicePixels="True"
                             Visibility="{Binding FontSizeButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                             Value="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}" />
-                        <Border Name="title" Grid.Column="8" Visibility="{Binding TitleCaseMenuVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <Menu VerticalAlignment="Center" VerticalContentAlignment="Center"
+                        <Border Name="title"
+                            Grid.Column="8"
+                            Visibility="{Binding TitleCaseMenuVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <Menu VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
                                 Background="{x:Null}"
                                 BorderBrush="{x:Null}"
                                 IsMainMenu="False">

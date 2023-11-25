@@ -5,12 +5,15 @@
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
-    xmlns:System="clr-namespace:System;assembly=mscorlib" xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
-    xmlns:local="clr-namespace:GpScanner" xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:local="clr-namespace:GpScanner"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     xmlns:twain="clr-namespace:TwainControl;assembly=TwainControl"
-    Startup="Application_Startup" StartupUri="MainWindow.xaml">
+    Startup="Application_Startup"
+    StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -73,13 +76,17 @@
                                 <Border Grid.Row="0"
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="1" CornerRadius="3,3,0,0">
-                                    <ContentPresenter Margin="4" ContentSource="Header" RecognizesAccessKey="True" />
+                                    BorderThickness="1"
+                                    CornerRadius="3,3,0,0">
+                                    <ContentPresenter Margin="4"
+                                        ContentSource="Header"
+                                        RecognizesAccessKey="True" />
                                 </Border>
                                 <Border Grid.Row="1"
                                     Background="{StaticResource BorderBackground}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="1,0,1,1" CornerRadius="0,0,1,1">
+                                    BorderThickness="1,0,1,1"
+                                    CornerRadius="0,0,1,1">
                                     <ContentPresenter Margin="1" />
                                 </Border>
                             </Grid>
@@ -87,30 +94,44 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <DrawingBrush x:Key="Dur" ice:Freeze="True" Stretch="Uniform">
+            <DrawingBrush x:Key="Dur"
+                ice:Freeze="True"
+                Stretch="Uniform">
                 <DrawingBrush.Drawing>
                     <DrawingGroup>
-                        <GeometryDrawing ice:Freeze="True" Brush="Black" Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
-                        <GeometryDrawing ice:Freeze="True" Brush="White" Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
-                        <GeometryDrawing ice:Freeze="True" Brush="Red" Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
+                        <GeometryDrawing ice:Freeze="True"
+                            Brush="Black"
+                            Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
+                        <GeometryDrawing ice:Freeze="True"
+                            Brush="White"
+                            Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
+                        <GeometryDrawing ice:Freeze="True"
+                            Brush="Red"
+                            Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
                     </DrawingGroup>
                 </DrawingBrush.Drawing>
             </DrawingBrush>
             <ControlTemplate x:Key="ValidationErrorTemplate">
                 <Grid Focusable="False">
                     <Canvas x:Name="Cnv"
-                        Width="18" Height="18"
-                        HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Width="18"
+                        Height="18"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
                         Background="{StaticResource Dur}"
                         DataContext="{Binding ElementName=Adorner, Mode=OneWay}"
-                        RenderTransformOrigin="0.5,0.5" UseLayoutRounding="True">
+                        RenderTransformOrigin="0.5,0.5"
+                        UseLayoutRounding="True">
                         <Viewbox Width="18" Height="18">
                             <TextBlock Foreground="White" Text="{Binding Source='STOP', Mode=OneWay, Converter={StaticResource LanguageStringConverter}}" />
                         </Viewbox>
                         <Canvas.ToolTip>
-                            <ToolTip Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                            <ToolTip Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                Foreground="{x:Null}">
                                 <Border Padding="4"
-                                    Background="Red" BorderBrush="White"
+                                    Background="Red"
+                                    BorderBrush="White"
                                     BorderThickness="1">
                                     <TextBlock Foreground="White" Text="{Binding AdornedElement.(Validation.Errors)/ErrorContent, Mode=OneWay}" />
                                 </Border>
@@ -129,20 +150,27 @@
                     </Grid.ColumnDefinitions>
                     <Button Command="{Binding DataContext.AddFileToControlPanel, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" CommandParameter="{Binding ElementName=PdfVwr, Path=Source}">
                         <Button.Content>
-                            <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
+                            <TextBlock FontFamily="Wingdings"
+                                FontSize="16"
+                                Text="ç" />
                         </Button.Content>
                     </Button>
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Column="1"
-                        ContextMenuVisibility="Visible" Orientation="Height"
+                        ContextMenuVisibility="Visible"
+                        Orientation="Height"
                         PdfFilePath="{Binding Mode=OneWay}"
-                        PrintButtonVisibility="Visible" ScrollBarVisible="Visible"
-                        SearchTextContentVisibility="Collapsed" SnapTick="True" />
+                        PrintButtonVisibility="Visible"
+                        ScrollBarVisible="Visible"
+                        SearchTextContentVisibility="Collapsed"
+                        SnapTick="True" />
                     <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateMini">
-                <Image Width="150" Height="150" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                <Image Width="150"
+                    Height="150"
+                    Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
                     <Image.Tag>
                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
@@ -161,12 +189,16 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <WrapPanel DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}" Orientation="Horizontal">
+                    <WrapPanel DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                        IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}"
+                        Orientation="Horizontal">
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
-                            Minimum="1" SmallChange="1"
+                            Minimum="1"
+                            SmallChange="1"
                             Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
                         <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
-                            Minimum="1" SmallChange="1"
+                            Minimum="1"
+                            SmallChange="1"
                             Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
                         <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}">
                             <Image Width="16" Height="16">
@@ -179,7 +211,9 @@
                             </Image>
                         </Button>
                         <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/delete.png" />
+                            <Image Width="16"
+                                Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
                         </Button>
                         <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
@@ -191,12 +225,20 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button BorderBrush="Cyan" Command="{Binding RotateSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16" Source="/TwainControl;component/Icons/rotate.png" />
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding RotateSelectedPage}"
+                            CommandParameter="{Binding ElementName=PdfVwr}">
+                            <Image Width="16"
+                                Height="16"
+                                Source="/TwainControl;component/Icons/rotate.png" />
                         </Button>
-                        <Button BorderBrush="Cyan" Command="{Binding AddAllFileToControlPanel}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding AddAllFileToControlPanel}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
-                                <TextBlock FontFamily="Wingdings" FontSize="16" Text="ç" />
+                                <TextBlock FontFamily="Wingdings"
+                                    FontSize="16"
+                                    Text="ç" />
                             </Button.Content>
                         </Button>
                         <Button BorderBrush="Cyan"
@@ -213,19 +255,30 @@
                                     </Image.Source>
                                 </Image>
                                 <TextBlock Canvas.Bottom="0"
-                                    FontSize="10" Foreground="Red"
+                                    FontSize="10"
+                                    Foreground="Red"
                                     Text="{Binding DataContext.OcrPdfThumbnailPageNumber, RelativeSource={RelativeSource AncestorType=Window}}" />
                             </Canvas>
                         </Button>
-                        <Button Command="{Binding DataContext.WordOcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}" IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                            <Image Width="16" Height="16" Source="{Binding Source='.docx', Converter={StaticResource FilePathToIconConverter}}" />
+                        <Button Command="{Binding DataContext.WordOcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
+                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+                            <Image Width="16"
+                                Height="16"
+                                Source="{Binding Source='.docx', Converter={StaticResource FilePathToIconConverter}}" />
                         </Button>
-                        <Button BorderBrush="Cyan" Command="{Binding ReadPdfTag}" CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding ReadPdfTag}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
                             <Button.Content>
-                                <TextBlock FontFamily="Wingdings 2" FontSize="16" Text="-" />
+                                <TextBlock FontFamily="Wingdings 2"
+                                    FontSize="16"
+                                    Text="-" />
                             </Button.Content>
                         </Button>
-                        <Button BorderBrush="Cyan" Command="{Binding MergeSelectedImagesToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding MergeSelectedImagesToPdfFile}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -247,7 +300,9 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button BorderBrush="Cyan" Command="{Binding PasteFileToPdfFile}" CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding PasteFileToPdfFile}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -261,7 +316,8 @@
                         </Button>
                         <Extensions:NumericUpDownControl IsReadOnly="True"
                             Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
-                            Minimum="0" SmallChange="1"
+                            Minimum="0"
+                            SmallChange="1"
                             Value="{Binding PdfSplitCount}" />
                         <Button Command="{Binding SplitPdf}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
@@ -274,20 +330,27 @@
                             </Image>
                         </Button>
                     </WrapPanel>
+                    <Extensions:Magnifier ContentPanel="{Binding ElementName=PdfVwr}"
+                        IsActive="{Binding ShowMagnifier, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                        ZoomFactor="{Binding MagnifyValue, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
                         ViewModel:AllPdfViewerControl.AllPageNumber="{Binding DataContext.AllPdfPage, RelativeSource={RelativeSource AncestorType=Window}}"
-                        AllowDrop="True" AutoFitContent="True"
+                        AllowDrop="True"
+                        AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
                         PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PrintButtonVisibility="Visible" ScrollBarVisible="Hidden"
-                        SliderZoomAngleVisibility="Collapsed" SnapTick="True" />
-                    <Extensions:Magnifier ContentPanel="{Binding ElementName=PdfVwr}" IsActive="{Binding ShowMagnifier, Mode=OneWay, Source={x:Static properties:Settings.Default}}" ZoomFactor="{Binding MagnifyValue, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                        PrintButtonVisibility="Visible"
+                        ScrollBarVisible="Hidden"
+                        SliderZoomAngleVisibility="Collapsed"
+                        SnapTick="True" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <ViewModel:CustomArchiveViewer AllowDrop="True" ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" Tag="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
+                <ViewModel:CustomArchiveViewer AllowDrop="True"
+                    ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    Tag="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
                 <Extensions:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -295,7 +358,8 @@
             <DataTemplate x:Key="ImgViewerTemplate">
                 <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
+                    PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
@@ -306,7 +370,8 @@
                     <Extensions:ImageViewer x:Name="ImgVwr"
                         DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
                         ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PanoramaButtonVisibility="Collapsed" PrintButtonVisibility="Visible" />
+                        PanoramaButtonVisibility="Collapsed"
+                        PrintButtonVisibility="Visible" />
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -315,7 +380,8 @@
                         </Grid.RowDefinitions>
                         <Slider LargeChange="1"
                             Maximum="{Binding ElementName=ImgVwr, Path=OriginalPixelHeight}"
-                            Minimum="96" SmallChange="1"
+                            Minimum="96"
+                            SmallChange="1"
                             Style="{StaticResource Slider}"
                             Value="{Binding ElementName=ImgVwr, Path=DecodeHeight, Delay=100}" />
                         <local:TranslateView Grid.Row="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}" />
@@ -328,44 +394,60 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="DvdBurnerEmptyViewerTemplate">
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
-                    FontFamily="Webdings" FontSize="256"
-                    Foreground="Red" Text="N" />
+                <TextBlock HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    FontFamily="Webdings"
+                    FontSize="256"
+                    Foreground="Red"
+                    Text="N" />
             </DataTemplate>
             <DataTemplate x:Key="EmptyViewerTemplate">
-                <Image Width="128" Height="128" Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverterEmptyViewerTemplate}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Image Width="128"
+                    Height="128"
+                    Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverterEmptyViewerTemplate}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
-                <Extensions:ImageViewer Width="150" Height="150"
+                <Extensions:ImageViewer Width="150"
+                    Height="150"
                     DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    IsHitTestVisible="False" OpenButtonVisibility="Collapsed"
-                    OrijinalResimDosyaAçButtonVisibility="Collapsed" PanoramaButtonVisibility="Collapsed"
-                    PrintButtonVisibility="Collapsed" TifNavigasyonButtonEtkin="Collapsed"
+                    IsHitTestVisible="False"
+                    OpenButtonVisibility="Collapsed"
+                    OrijinalResimDosyaAçButtonVisibility="Collapsed"
+                    PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Collapsed"
+                    TifNavigasyonButtonEtkin="Collapsed"
                     ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplate">
-                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" ToolBarVisibility="Collapsed" />
+                <twain:EypPdfViewer AutoFitContent="True"
+                    EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplateFull">
                 <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
-                <Controls:MediaViewer Width="300" Height="300"
-                    AutoPlay="False" ContextMenuVisibility="Visible"
+                <Controls:MediaViewer Width="300"
+                    Height="300"
+                    AutoPlay="False"
+                    ContextMenuVisibility="Visible"
                     ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateMini">
-                <Controls:MediaViewer AutoPlay="False" ContextMenuVisibility="Visible"
+                <Controls:MediaViewer AutoPlay="False"
+                    ContextMenuVisibility="Visible"
                     ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateFull">
-                <Controls:MediaViewer AutoPlay="False" MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" OsdTextVisibility="Visible" />
+                <Controls:MediaViewer AutoPlay="False"
+                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    OsdTextVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="XmlViewerThumbTemplate">
                 <twain:XmlViewerControl Grid.Row="1" twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -374,7 +456,9 @@
                 <Image Grid.Row="1" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
                     <Image.Tag>
                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
-                            <Binding Mode="OneWay" Path="DataContext" RelativeSource="{RelativeSource Mode=TemplatedParent}" />
+                            <Binding Mode="OneWay"
+                                Path="DataContext"
+                                RelativeSource="{RelativeSource Mode=TemplatedParent}" />
                             <Binding Mode="OneWay">
                                 <Binding.Source>
                                     <System:Int32>1</System:Int32>
@@ -385,7 +469,9 @@
                 </Image>
             </DataTemplate>
             <ItemsPanelTemplate x:Key="ListBoxWrapItemsPanel">
-                <Extensions:VirtualizingWrapPanel CanVerticallyScroll="False" ItemSize="100,100" SpacingMode="None" />
+                <Extensions:VirtualizingWrapPanel CanVerticallyScroll="False"
+                    ItemSize="100,100"
+                    SpacingMode="None" />
             </ItemsPanelTemplate>
             <Style x:Key="ListBoxItemTemplate" TargetType="{x:Type ListBoxItem}">
                 <Setter Property="Margin" Value="1" />
@@ -428,7 +514,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="0"
+                    <TextBlock Grid.Row="0"
+                        Grid.Column="0"
                         VerticalAlignment="Center"
                         FontSize="9">
                         <Run Text="{Binding MonthDateTotalContribution, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -438,22 +525,8 @@
                             <Run FontWeight="Bold" Text="X" />
                         </Hyperlink>
                     </TextBlock>
-                    <ListBox Grid.Row="1" Grid.Column="0"
-                        FontSize="9"
-                        ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}}"
-                        SelectedItem="{Binding SelectedDay, RelativeSource={RelativeSource TemplatedParent}}">
-                        <ListBox.ItemContainerStyle>
-                            <Style TargetType="ListBoxItem">
-                                <Setter Property="Padding" Value="0" />
-                            </Style>
-                        </ListBox.ItemContainerStyle>
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <UniformGrid Columns="1" Rows="7" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                    </ListBox>
-                    <ListBox Grid.Row="0" Grid.Column="1"
+                    <ListBox Grid.Row="0"
+                        Grid.Column="1"
                         FontSize="9"
                         ItemsSource="{Binding Months, RelativeSource={RelativeSource TemplatedParent}}"
                         SelectedItem="{Binding SelectedMonth, RelativeSource={RelativeSource TemplatedParent}}">
@@ -468,15 +541,33 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ListBox>
-                    <ListBox Grid.Row="1" Grid.Column="1"
+                    <ListBox Grid.Row="1"
+                        Grid.Column="0"
+                        FontSize="9"
+                        ItemsSource="{Binding Days, RelativeSource={RelativeSource TemplatedParent}}"
+                        SelectedItem="{Binding SelectedDay, RelativeSource={RelativeSource TemplatedParent}}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="1" Rows="7" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ListBox>
+                    <ListBox Grid.Row="1"
+                        Grid.Column="1"
                         ItemsSource="{Binding Contributions, RelativeSource={RelativeSource TemplatedParent}}"
-                        ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                        ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                        ScrollViewer.VerticalScrollBarVisibility="Hidden"
                         SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                <Setter Property="Padding" Value="0" />
                                 <Setter Property="Margin" Value="0" />
+                                <Setter Property="Padding" Value="0" />
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemsPanel>
@@ -493,7 +584,8 @@
                         </ListBox.ItemsPanel>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Rectangle Width="10" Height="10"
+                                <Rectangle Width="10"
+                                    Height="10"
                                     Stroke="{Binding Stroke}"
                                     ToolTipService.InitialShowDelay="100">
                                     <Rectangle.Fill>
@@ -525,9 +617,11 @@
                                                     <Run Text="{Binding Count}" />
                                                 </TextBlock>
                                                 <ListBox Grid.Row="1"
-                                                    Width="800" Height="600"
+                                                    Width="800"
+                                                    Height="600"
                                                     ItemsSource="{Binding Name}"
-                                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
                                                     <ListBox.Style>
                                                         <Style TargetType="ListBox">
                                                             <Style.Triggers>
@@ -536,7 +630,9 @@
                                                                     <Setter Property="ItemsPanel">
                                                                         <Setter.Value>
                                                                             <ItemsPanelTemplate>
-                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="155,155" SpacingMode="None" />
+                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                                                    ItemSize="155,155"
+                                                                                    SpacingMode="None" />
                                                                             </ItemsPanelTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
@@ -546,7 +642,9 @@
                                                                     <Setter Property="ItemsPanel">
                                                                         <Setter.Value>
                                                                             <ItemsPanelTemplate>
-                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" ItemSize="250,18" SpacingMode="None" />
+                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                                                    ItemSize="250,18"
+                                                                                    SpacingMode="None" />
                                                                             </ItemsPanelTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
