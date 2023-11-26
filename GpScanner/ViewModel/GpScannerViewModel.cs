@@ -403,7 +403,7 @@ public class GpScannerViewModel : InpcBase
                         OcrIsBusy = true;
                         ObservableCollection<OcrData> ocrdata;
                         using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
-                        ocrdata = await ms.ToArray().WordFileOcrAsync(Settings.Default.DefaultTtsLang);
+                        ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang, true);
                         OcrIsBusy = false;
                         filedata = null;
                         SaveFileDialog saveFileDialog = new() { Filter = "Docx Dosyası(*.docx)|*.docx", FileName = Translation.GetResStringValue("FILE") };

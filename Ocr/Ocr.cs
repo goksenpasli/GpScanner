@@ -51,27 +51,6 @@ public static class Ocr
         return null;
     }
 
-    public static async Task<ObservableCollection<OcrData>> OcrAsync(this byte[] dosya, string tesseractlanguage)
-    {
-        if (dosya is null)
-        {
-            throw new ArgumentNullException(nameof(dosya));
-        }
-
-        if (string.IsNullOrWhiteSpace(tesseractlanguage))
-        {
-            throw new ArgumentNullException(nameof(tesseractlanguage));
-        }
-
-        if (!Directory.Exists(TesseractPath))
-        {
-            throw new ArgumentNullException(nameof(TesseractPath));
-        }
-
-        ocrcancellationToken = new CancellationTokenSource();
-        return await Task.Run(() => dosya.GetOcrData(tesseractlanguage), ocrcancellationToken.Token);
-    }
-
     public static async Task<ObservableCollection<OcrData>> OcrAsync(this string dosya, string tesseractlanguage)
     {
         if (!File.Exists(dosya))
@@ -92,7 +71,7 @@ public static class Ocr
         return await Task.Run(() => dosya.GetOcrData(tesseractlanguage), ocrcancellationToken.Token);
     }
 
-    public static async Task<ObservableCollection<OcrData>> WordFileOcrAsync(this byte[] dosya, string tesseractlanguage)
+    public static async Task<ObservableCollection<OcrData>> OcrAsync(this byte[] dosya, string tesseractlanguage, bool paragraphblock = false)
     {
         if (dosya is null)
         {
@@ -110,7 +89,9 @@ public static class Ocr
         }
 
         ocrcancellationToken = new CancellationTokenSource();
-        return await Task.Run(() => dosya.GetOcrData(tesseractlanguage, PageIteratorLevel.Para), ocrcancellationToken.Token);
+        return paragraphblock
+               ? await Task.Run(() => dosya.GetOcrData(tesseractlanguage, PageIteratorLevel.Para), ocrcancellationToken.Token)
+               : await Task.Run(() => dosya.GetOcrData(tesseractlanguage), ocrcancellationToken.Token);
     }
 
     private static TesseractEngine CreateTesseractEngine(string tesseractLanguage) => new(TesseractPath, tesseractLanguage, EngineMode.LstmOnly);
