@@ -129,11 +129,7 @@
                         <ContentControl x:Name="Cnt"
                             Grid.Row="1"
                             Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
+                            <WrapPanel Grid.Column="1" Orientation="Horizontal">
                                 <Button Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -144,20 +140,8 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <Grid Grid.Column="1" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="Auto" />
-                                    </Grid.ColumnDefinitions>
-                                    <ListBox Grid.Column="0"
-                                        VerticalContentAlignment="Center"
+                                <WrapPanel IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}" Orientation="Horizontal">
+                                    <ListBox VerticalContentAlignment="Center"
                                         SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedValuePath="Tag">
                                         <ListBox.ItemsPanel>
@@ -178,9 +162,7 @@
                                                 Text="G" />
                                         </ListBoxItem>
                                     </ListBox>
-                                    <StackPanel Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <StackPanel Orientation="Horizontal" Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                             Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}"
                                             CommandParameter="{Binding OverContent, RelativeSource={RelativeSource Mode=Self}}">
@@ -240,8 +222,7 @@
                                             SmallChange="1"
                                             Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
-                                    <Extensions:SplitButton Grid.Column="2"
-                                        Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    <Extensions:SplitButton Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                         SplitContentPartIsEnabled="{Binding PrintDpiSettingsListEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
@@ -258,15 +239,13 @@
                                                 SelectedItem="{Binding PrintDpi, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
-                                    <ComboBox Grid.Column="3"
-                                        VerticalContentAlignment="Center"
+                                    <ComboBox VerticalContentAlignment="Center"
                                         ItemStringFormat="{}{0} Dpi"
                                         ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}}"
                                         Template="{StaticResource ComboBoxStyle}"
                                         Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-                                    <Extensions:ContentToggleButton Grid.Column="4"
-                                        ArrowVisibility="Collapsed"
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                         Command="{Binding ReadPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding PdfTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
@@ -292,9 +271,7 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="5"
-                                        ArrowVisibility="Collapsed"
-                                        Visibility="{Binding SearchTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" Visibility="{Binding SearchTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -354,8 +331,7 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="6"
-                                        ArrowVisibility="Collapsed"
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                         Command="{Binding ReadPdfBookmarks, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding BookmarkContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
@@ -391,8 +367,7 @@
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="7"
-                                        ArrowVisibility="Collapsed"
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                         IsEnabled="{Binding ZoomEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                         PlacementMode="Top"
                                         Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}">
@@ -418,8 +393,7 @@
                                             </Border>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="8"
-                                        ArrowVisibility="Collapsed"
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                         PlacementMode="Top"
                                         Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Image Width="16" Height="16">
@@ -446,8 +420,8 @@
                                             </Border>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
-                                </Grid>
-                            </Grid>
+                                </WrapPanel>
+                            </WrapPanel>
                         </ContentControl>
                     </Grid>
                     <ControlTemplate.Triggers>
