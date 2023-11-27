@@ -124,6 +124,7 @@ public partial class MainWindow : Window
     private void MW_ContentRendered(object sender, EventArgs e)
     {
         this.SystemMenu();
+        string[] commandLineArgs = Environment.GetCommandLineArgs();
         if (DataContext is GpScannerViewModel ViewModel)
         {
             if (Keyboard.IsKeyDown(Key.F8))
@@ -149,10 +150,10 @@ public partial class MainWindow : Window
                 {
                     ViewModel.OpenSettings.Execute(null);
                 }
+                twainCtrl.CreateBuiltInScanProfiles();
             }
         }
 
-        string[] commandLineArgs = Environment.GetCommandLineArgs();
         if (commandLineArgs.Length > 1)
         {
             string filePath = commandLineArgs[1];

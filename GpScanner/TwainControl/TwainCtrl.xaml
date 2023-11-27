@@ -872,20 +872,18 @@
                                                                     <ComboBox ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding Scanner.SelectedProfile}">
                                                                         <ComboBox.ItemTemplate>
                                                                             <DataTemplate>
-                                                                                <UniformGrid Columns="2">
-                                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
-                                                                                    <Button local:Policy.PolicyName="RemoveProfile"
-                                                                                        Background="Transparent"
-                                                                                        BorderBrush="Transparent"
+                                                                                <TextBlock VerticalAlignment="Center">
+                                                                                    <Run BaselineAlignment="Center" Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
+                                                                                    <Hyperlink local:Policy.PolicyName="RemoveProfile"
+                                                                                        BaselineAlignment="Center"
                                                                                         Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
                                                                                         CommandParameter="{Binding Mode=OneWay}"
-                                                                                        FontWeight="Bold"
-                                                                                        Foreground="Red">
+                                                                                        TextDecorations="None">
                                                                                         <Image Width="16"
                                                                                             Height="16"
                                                                                             Source="/TwainControl;component/Icons/delete.png" />
-                                                                                    </Button>
-                                                                                </UniformGrid>
+                                                                                    </Hyperlink>
+                                                                                </TextBlock>
                                                                             </DataTemplate>
                                                                         </ComboBox.ItemTemplate>
                                                                     </ComboBox>
