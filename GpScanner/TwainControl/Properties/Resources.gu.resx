@@ -675,4 +675,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr બધા પીડીએફ પૃષ્ઠો</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>ફાઇલનું નામ અમાન્ય છે</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>ફોલ્ડર ઍક્સેસ નકારી.</value>
+  </data>
 </root>

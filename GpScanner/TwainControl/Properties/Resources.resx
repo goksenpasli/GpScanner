@@ -713,4 +713,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value />
   </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value />
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value />
+  </data>
 </root>

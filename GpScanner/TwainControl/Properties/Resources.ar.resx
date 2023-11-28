@@ -675,4 +675,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr جميع صفحات PDF</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>اسم الملف غير صالح</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>تم رفض الوصول إلى المجلد.</value>
+  </data>
 </root>

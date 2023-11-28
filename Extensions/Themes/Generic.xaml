@@ -16,5 +16,6 @@
         <ResourceDictionary Source="/Extensions;component/Controls/ColorPicker.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/ButtonedTextBox.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/ArchiveViewer.xaml" />
+        <ResourceDictionary Source="/Extensions;component/Controls/FileBreadcrumbControl.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

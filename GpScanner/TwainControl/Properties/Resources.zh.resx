@@ -675,4 +675,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr 所有 PDF 页面</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>文件名无效</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>文件夹访问被拒绝。</value>
+  </data>
 </root>

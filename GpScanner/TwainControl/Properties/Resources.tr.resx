@@ -688,4 +688,10 @@ BELGE EKLE</value>
   <data name="OCRALL" xml:space="preserve">
     <value>Tüm Pdf Sayfalarını Ocr Yap</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Dosya Adı Geçersiz</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Erişim Reddedildi. Yönetici Oturumu Olduğundan Emin Olun</value>
+  </data>
 </root>

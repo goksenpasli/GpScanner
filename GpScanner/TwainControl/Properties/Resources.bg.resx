@@ -678,4 +678,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr всички pdf страници</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Името на файла е невалидно</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Достъпът до папката е отказан.</value>
+  </data>
 </root>

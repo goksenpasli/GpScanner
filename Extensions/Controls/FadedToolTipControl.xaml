@@ -17,7 +17,8 @@
                         PopupAnimation="{TemplateBinding PopupAnimation}">
                         <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Opacity="{TemplateBinding Opacity}">
                             <Grid>
                                 <ContentPresenter Content="{Binding TooltipContent, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <ToggleButton HorizontalAlignment="Right"

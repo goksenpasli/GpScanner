@@ -296,12 +296,7 @@
                                     <ColumnDefinition Width="80" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-                                <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                    IsReadOnly="True"
-                                    IsReadOnlyCaretVisible="True"
-                                    PasteButtonVisibility="Collapsed"
-                                    ResetButtonVisibility="Collapsed"
-                                    Text="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                <Extensions:FileBreadcrumbControl FilePath="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                                 <Button Grid.Column="1"
                                     twainctrl:Policy.PolicyName="ChangeDataFolder"
                                     Command="{Binding ChangeDataFolder}">

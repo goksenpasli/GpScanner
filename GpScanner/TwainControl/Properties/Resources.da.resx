@@ -678,4 +678,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr alle pdf-sider</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Filnavnet er ugyldigt</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Mappeadgang nægtet.</value>
+  </data>
 </root>

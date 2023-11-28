@@ -675,4 +675,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>OCR Všechny stránky Pdf</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Název souboru je neplatný</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Přístup ke složce odepřen.</value>
+  </data>
 </root>

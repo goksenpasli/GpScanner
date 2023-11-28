@@ -675,4 +675,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr bütün pdf səhifələr</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Fayl Adı Yanlışdır</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Qovluğa giriş rədd edildi.</value>
+  </data>
 </root>

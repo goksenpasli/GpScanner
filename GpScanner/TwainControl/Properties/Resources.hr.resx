@@ -678,4 +678,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr Sve Pdf stranice</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Naziv datoteke nije valjan</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Pristup mapi odbijen.</value>
+  </data>
 </root>

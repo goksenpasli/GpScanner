@@ -459,6 +459,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string FOLDERACCESS {
+            get {
+                return ResourceManager.GetString("FOLDERACCESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string FOLDERFORMAT {
             get {
                 return ResourceManager.GetString("FOLDERFORMAT", resourceCulture);
@@ -570,6 +579,15 @@ namespace TwainControl.Properties {
         public static string INSTALLED {
             get {
                 return ResourceManager.GetString("INSTALLED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string INVALIDFILENAME {
+            get {
+                return ResourceManager.GetString("INVALIDFILENAME", resourceCulture);
             }
         }
         

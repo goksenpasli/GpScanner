@@ -682,4 +682,10 @@ TO FILE</value>
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr All Pdf Pages</value>
   </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Access Denied. Check Admin Rights</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>File Name Is Invalid</value>
+  </data>
 </root>

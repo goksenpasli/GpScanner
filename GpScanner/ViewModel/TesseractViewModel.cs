@@ -234,7 +234,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     public string this[string columnName] => columnName switch
     {
         "TesseractFiles" when TesseractFiles?.Count(z => z.Checked) == 0 || string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) => $"{Translation.GetResStringValue("TESSLANGSELECT")}",
-        "IsFolderWritable" when !IsFolderWritable => $"{Translation.GetResStringValue("NO ACTION")}",
+        "IsFolderWritable" when !IsFolderWritable => $"{Translation.GetResStringValue("FOLDERACCESS")}",
         _ => null
     };
 

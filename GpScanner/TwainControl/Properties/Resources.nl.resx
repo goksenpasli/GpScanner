@@ -675,4 +675,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr Alle pdf-pagina's</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Bestandsnaam is ongeldig</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Maptoegang geweigerd.</value>
+  </data>
 </root>

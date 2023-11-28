@@ -675,4 +675,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr すべての PDF ページ</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>ファイル名が無効です</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>フォルダーへのアクセスが拒否されました。</value>
+  </data>
 </root>

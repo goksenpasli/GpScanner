@@ -675,4 +675,10 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr всі сторінки PDF</value>
   </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Ім'я файлу недійсне</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Доступ до папки заборонено.</value>
+  </data>
 </root>

@@ -11,7 +11,7 @@ public sealed class FilePathToFileNameConverter : IValueConverter
     {
         try
         {
-            return Path.GetFileNameWithoutExtension(value as string);
+            return parameter == null ? Path.GetFileNameWithoutExtension(value as string) : Path.GetFileName(value as string);
         }
         catch (Exception)
         {
