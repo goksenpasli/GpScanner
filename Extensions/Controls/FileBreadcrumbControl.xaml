@@ -6,68 +6,92 @@
     <local:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
     <ControlTemplate x:Key="ItemsControlTemplate" TargetType="{x:Type ItemsControl}">
         <ScrollViewer CanContentScroll="True"
-            HorizontalScrollBarVisibility="Disabled"
+            HorizontalScrollBarVisibility="Auto"
             VerticalScrollBarVisibility="Auto">
             <ItemsPresenter />
         </ScrollViewer>
     </ControlTemplate>
     <Style TargetType="local:FileBreadcrumbControl">
+        <Setter Property="Background" Value="{DynamicResource BorderBackground}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:FileBreadcrumbControl}">
-                    <ItemsControl VerticalAlignment="Center"
-                        VerticalContentAlignment="Center"
-                        ItemsSource="{TemplateBinding PathSegments}"
-                        Template="{StaticResource ItemsControlTemplate}">
-                        <ItemsControl.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <VirtualizingStackPanel Orientation="Horizontal" />
-                            </ItemsPanelTemplate>
-                        </ItemsControl.ItemsPanel>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <local:SplitButton BorderBrush="{x:Null}"
-                                    Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
-                                    CommandParameter="{Binding Mode=OneWay, Path=FullPath}"
-                                    Content="{Binding Mode=OneWay, Path=Path}"
-                                    TopMost="False">
-                                    <local:SplitButton.InternalContent>
-                                        <ItemsControl MaxHeight="250"
-                                            ItemsSource="{Binding FullPath, Converter={StaticResource GetDirectoriesConverter}}"
-                                            Template="{StaticResource ItemsControlTemplate}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <Image Width="16" Height="16">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="3" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                        <Hyperlink BaselineAlignment="Center"
-                                                            Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
-                                                            CommandParameter="{Binding Mode=OneWay}"
-                                                            TextDecorations="None">
-                                                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}, ConverterParameter='withdot'}" />
-                                                        </Hyperlink>
-                                                    </TextBlock>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <VirtualizingStackPanel Background="{DynamicResource BorderBackground}" />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                        </ItemsControl>
-                                    </local:SplitButton.InternalContent>
-                                </local:SplitButton>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                        ScrollViewer.CanContentScroll="True"
+                        VerticalScrollBarVisibility="Hidden">
+                        <Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                IsIndeterminate="{Binding IsIndeterminate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                Maximum="1"
+                                Minimum="0"
+                                Value="{Binding ProgressValue, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}" />
+                            <ItemsControl Grid.Column="0"
+                                VerticalAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                ItemsSource="{TemplateBinding PathSegments}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <local:SplitButton BorderBrush="{x:Null}"
+                                            Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                            CommandParameter="{Binding Mode=OneWay, Path=FullPath}"
+                                            Content="{Binding Mode=OneWay, Path=Path}"
+                                            Opacity="0.8"
+                                            TopMost="False">
+                                            <local:SplitButton.InternalContent>
+                                                <ItemsControl MaxHeight="250"
+                                                    ItemsSource="{Binding FullPath, Converter={StaticResource GetDirectoriesConverter}}"
+                                                    Template="{StaticResource ItemsControlTemplate}">
+                                                    <ItemsControl.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock VerticalAlignment="Center">
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="3" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                                <Hyperlink BaselineAlignment="Center"
+                                                                    Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    TextDecorations="None">
+                                                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}, ConverterParameter='withdot'}" />
+                                                                </Hyperlink>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ItemsControl.ItemTemplate>
+                                                    <ItemsControl.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <VirtualizingStackPanel Background="{DynamicResource BorderBackground}" />
+                                                        </ItemsPanelTemplate>
+                                                    </ItemsControl.ItemsPanel>
+                                                </ItemsControl>
+                                            </local:SplitButton.InternalContent>
+                                        </local:SplitButton>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Text="{Binding FileName, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                Visibility="{Binding ShowFileName, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}" />
+                        </Grid>
+                    </ScrollViewer>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="UseLayoutRounding" Value="True" />
     </Style>
 </ResourceDictionary>

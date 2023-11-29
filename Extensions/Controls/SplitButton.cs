@@ -5,6 +5,8 @@ using System.Windows.Interop;
 
 namespace Extensions;
 
+[TemplatePart(Name = "_toggleButton", Type = typeof(ToggleButton))]
+[TemplatePart(Name = "_PART_Popup", Type = typeof(Popup))]
 public class SplitButton : ButtonBase
 {
     public static readonly DependencyProperty AlwaysOnTopProperty = DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(SplitButton), new PropertyMetadata(true, OnTopChanged));
@@ -17,6 +19,8 @@ public class SplitButton : ButtonBase
     public static readonly DependencyProperty SplitContentPartIsEnabledProperty = DependencyProperty.Register("SplitContentPartIsEnabled", typeof(bool), typeof(SplitButton), new PropertyMetadata(true));
     public static readonly DependencyProperty StayOpenProperty = DependencyProperty.Register("StayOpen", typeof(bool), typeof(SplitButton), new PropertyMetadata(false));
     public static readonly DependencyProperty TopMostProperty = DependencyProperty.Register("TopMost", typeof(bool), typeof(SplitButton), new PropertyMetadata(true));
+    private Popup _PART_Popup;
+    private ToggleButton _toggleButton;
 
     static SplitButton() { DefaultStyleKeyProperty.OverrideMetadata(typeof(SplitButton), new FrameworkPropertyMetadata(typeof(SplitButton))); }
 
@@ -42,6 +46,17 @@ public class SplitButton : ButtonBase
 
     public static void SetAlwaysOnTop(DependencyObject obj, bool value) => obj.SetValue(AlwaysOnTopProperty, value);
 
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        _toggleButton = GetTemplateChild("Tb") as ToggleButton;
+        _PART_Popup = GetTemplateChild("PART_Popup") as Popup;
+        if (_PART_Popup is not null && _toggleButton is not null)
+        {
+            _PART_Popup.Closed += PART_Popup_Closed;
+        }
+    }
+
     private static void OnTopChanged(DependencyObject d, DependencyPropertyChangedEventArgs f)
     {
         if (d is Popup popup)
@@ -57,4 +72,6 @@ public class SplitButton : ButtonBase
                             };
         }
     }
+
+    private void PART_Popup_Closed(object sender, EventArgs e) => _toggleButton.IsChecked = false;
 }

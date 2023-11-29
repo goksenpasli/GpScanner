@@ -22,7 +22,6 @@
                             BorderThickness="{TemplateBinding Border.BorderThickness}"
                             SnapsToDevicePixels="True">
                             <ContentPresenter Name="contentPresenter"
-                                Margin="{TemplateBinding Control.Padding}"
                                 HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
                                 Content="{TemplateBinding ContentControl.Content}"
@@ -52,10 +51,10 @@
                             Grid.Column="1"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
-                            IsChecked="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=IsSplitPartOpen}"
                             IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=SplitContentPartIsEnabled}"
                             IsTabStop="{TemplateBinding IsTabStop}">
                             <Path x:Name="path"
+                                Margin="0,2,0,0"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Data="{DynamicResource ArrowGeometry}"

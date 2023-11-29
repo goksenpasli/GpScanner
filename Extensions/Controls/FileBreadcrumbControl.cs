@@ -12,8 +12,13 @@ namespace Extensions
     {
         public static readonly DependencyProperty FilePathProperty =
             DependencyProperty.Register("FilePath", typeof(string), typeof(FileBreadcrumbControl), new PropertyMetadata(string.Empty, OnFilePathChanged));
+        public static readonly DependencyProperty IsIndeterminateProperty =
+            DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(FileBreadcrumbControl), new PropertyMetadata(false));
         public static readonly DependencyProperty PathSegmentsProperty =
             DependencyProperty.Register("PathSegments", typeof(ObservableCollection<Data>), typeof(FileBreadcrumbControl), new PropertyMetadata(new ObservableCollection<Data>()));
+        public static readonly DependencyProperty ProgressValueProperty = DependencyProperty.Register("ProgressValue", typeof(double), typeof(FileBreadcrumbControl), new PropertyMetadata(0d));
+        public static readonly DependencyProperty ShowFileNameProperty =
+            DependencyProperty.Register("ShowFileName", typeof(Visibility), typeof(FileBreadcrumbControl), new PropertyMetadata(Visibility.Collapsed, VisibilityChanged));
 
         static FileBreadcrumbControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FileBreadcrumbControl), new FrameworkPropertyMetadata(typeof(FileBreadcrumbControl))); }
 
@@ -34,16 +39,35 @@ namespace Extensions
                 parameter => !string.IsNullOrWhiteSpace(parameter as string));
         }
 
+        public string FileName { get; private set; }
+
         public string FilePath { get => (string)GetValue(FilePathProperty); set => SetValue(FilePathProperty, value); }
+
+        public bool IsIndeterminate { get => (bool)GetValue(IsIndeterminateProperty); set => SetValue(IsIndeterminateProperty, value); }
 
         public RelayCommand<object> Navigate { get; }
 
         public ObservableCollection<Data> PathSegments { get => (ObservableCollection<Data>)GetValue(PathSegmentsProperty); set => SetValue(PathSegmentsProperty, value); }
 
+        public double ProgressValue { get => (double)GetValue(ProgressValueProperty); set => SetValue(ProgressValueProperty, value); }
+
+        public Visibility ShowFileName { get => (Visibility)GetValue(ShowFileNameProperty); set => SetValue(ShowFileNameProperty, value); }
+
         private static void OnFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            FileBreadcrumbControl control = (FileBreadcrumbControl)d;
-            control?.UpdatePathSegments();
+            if (d is FileBreadcrumbControl breadcrumbControl)
+            {
+                breadcrumbControl.UpdatePathSegments();
+                breadcrumbControl.FileName = Path.GetFileName(breadcrumbControl.FilePath);
+            }
+        }
+
+        private static void VisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is FileBreadcrumbControl breadcrumbControl)
+            {
+                breadcrumbControl.FileName = e.NewValue is Visibility.Visible ? Path.GetFileName(breadcrumbControl.FilePath) : null;
+            }
         }
 
         private List<string> SplitFolderPath(string path)
@@ -53,9 +77,8 @@ namespace Extensions
 
             for (int i = 1; i < folders.Length; i++)
             {
-                string[] temp = new string[i];
-                Array.Copy(folders, temp, i);
-                combinations.Add(string.Join("\\", temp));
+                string folderPath = string.Join("\\", folders, 0, i);
+                combinations.Add(folderPath);
             }
 
             return combinations;
