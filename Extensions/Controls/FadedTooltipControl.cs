@@ -21,7 +21,11 @@ namespace Extensions
             typeof(FadedToolTipControl),
             new PropertyMetadata(PopupAnimation.Fade));
         public static readonly DependencyProperty PopupParentProperty = DependencyProperty.Register("PopupParent", typeof(FrameworkElement), typeof(FadedToolTipControl));
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(PlacementMode), typeof(FadedToolTipControl), new PropertyMetadata(PlacementMode.Center));
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
+            "Position",
+            typeof(PlacementMode),
+            typeof(FadedToolTipControl),
+            new PropertyMetadata(PlacementMode.Center));
         public static readonly DependencyProperty ShowCloseButtonProperty = DependencyProperty.Register(
             "ShowCloseButton",
             typeof(Visibility),

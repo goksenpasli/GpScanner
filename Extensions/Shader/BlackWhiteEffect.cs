@@ -12,7 +12,11 @@ public class BlackWhiteEffect : ShaderEffect
 {
     public static readonly DependencyProperty InputProperty =
                     RegisterPixelShaderSamplerProperty("Input", typeof(BlackWhiteEffect), 0);
-    public static readonly DependencyProperty ThresholdProperty = DependencyProperty.Register("Threshold", typeof(double), typeof(BlackWhiteEffect), new UIPropertyMetadata(0.6D, PixelShaderConstantCallback(1)));
+    public static readonly DependencyProperty ThresholdProperty = DependencyProperty.Register(
+        "Threshold",
+        typeof(double),
+        typeof(BlackWhiteEffect),
+        new UIPropertyMetadata(0.6D, PixelShaderConstantCallback(1)));
 
     public BlackWhiteEffect()
     {

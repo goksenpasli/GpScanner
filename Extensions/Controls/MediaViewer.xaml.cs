@@ -51,7 +51,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
     public static readonly DependencyProperty ContextMenuVisibilityProperty =
         DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
-    public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register("ControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register(
+        "ControlVisible",
+        typeof(Visibility),
+        typeof(MediaViewer),
+        new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register("EndTimeSpan", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero));
     public static readonly DependencyProperty FlipXProperty =
         DependencyProperty.Register("FlipX", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
@@ -90,10 +94,18 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public static readonly DependencyProperty SliderControlVisibleProperty =
         DependencyProperty.Register("SliderControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty SubTitleColorProperty = DependencyProperty.Register("SubTitleColor", typeof(Brush), typeof(MediaViewer), new PropertyMetadata(Brushes.White));
-    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register("SubtitleFilePath", typeof(string), typeof(MediaViewer), new PropertyMetadata(null, SubtitleFilePathChanged));
+    public static readonly DependencyProperty SubtitleFilePathProperty = DependencyProperty.Register(
+        "SubtitleFilePath",
+        typeof(string),
+        typeof(MediaViewer),
+        new PropertyMetadata(null, SubtitleFilePathChanged));
     public static readonly DependencyProperty SubTitleHorizontalAlignmentProperty =
         DependencyProperty.Register("SubTitleHorizontalAlignment", typeof(HorizontalAlignment), typeof(MediaViewer), new PropertyMetadata(HorizontalAlignment.Center));
-    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register("SubTitleMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
+    public static readonly DependencyProperty SubTitleMarginProperty = DependencyProperty.Register(
+        "SubTitleMargin",
+        typeof(Thickness),
+        typeof(MediaViewer),
+        new PropertyMetadata(new Thickness(0d, 0d, 0d, 10d)));
     public static readonly DependencyProperty SubTitleProperty = DependencyProperty.Register("SubTitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty SubTitleSizeProperty =
         DependencyProperty.Register("SubTitleSize", typeof(double), typeof(MediaViewer), new PropertyMetadata(32.0d));
@@ -289,13 +301,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     {
                         _ = saveFileDialog.FilterIndex == 1
                             ? sb.Append(item.Segment)
-                              .Append('\n')
-                              .Append(item.StartTime.ToString().Replace('.', ','))
-                              .Append(" --> ")
-                              .Append(item.EndTime.ToString().Replace('.', ','))
-                              .Append("\r\n")
-                              .Append(item.Text)
-                              .Append("\r\n\r\n")
+                        .Append('\n')
+                        .Append(item.StartTime.ToString().Replace('.', ','))
+                        .Append(" --> ")
+                        .Append(item.EndTime.ToString().Replace('.', ','))
+                        .Append("\r\n")
+                        .Append(item.Text)
+                        .Append("\r\n\r\n")
                             : sb.Append(item.StartTime.ToString()).Append(" --> ").Append(item.EndTime.ToString()).Append("\r\n").Append(item.Text).Append("\r\n\r\n");
                     }
                     using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
@@ -593,7 +605,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public HorizontalAlignment SubTitleHorizontalAlignment { get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty); set => SetValue(SubTitleHorizontalAlignmentProperty, value); }
+    public HorizontalAlignment SubTitleHorizontalAlignment
+    {
+        get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty);
+        set => SetValue(SubTitleHorizontalAlignmentProperty, value);
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]

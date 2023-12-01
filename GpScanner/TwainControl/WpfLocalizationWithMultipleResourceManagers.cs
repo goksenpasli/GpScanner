@@ -62,7 +62,11 @@ public class LocExtension(string stringName) : MarkupExtension
 
 public class Translation : DependencyObject
 {
-    public static readonly DependencyProperty DesignCultureProperty = DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
+    public static readonly DependencyProperty DesignCultureProperty = DependencyProperty.RegisterAttached(
+        "DesignCulture",
+        typeof(string),
+        typeof(Translation),
+        new PropertyMetadata("en-EN", CultureChanged));
     public static readonly DependencyProperty ResourceManagerProperty = DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 
     public static string GetDesignCulture(DependencyObject obj) => (string)obj.GetValue(DesignCultureProperty);

@@ -1,7 +1,6 @@
 ﻿using Extensions;
 using Microsoft.Win32;
 using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
 using System;
 using System.IO;
 using System.Linq;
@@ -29,7 +28,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
                     {
                         string eypfile = ExtractEypFilesToPdf(openFileDialog.FileName);
-                        if (PdfReader.TestPdfFile(eypfile) == 0)
+                        if (IsValidPdfFile(eypfile))
                         {
                             return;
                         }
@@ -40,7 +39,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
                     {
-                        if (PdfReader.TestPdfFile(openFileDialog.FileName) == 0)
+                        if (IsValidPdfFile(openFileDialog.FileName))
                         {
                             return;
                         }
@@ -106,7 +105,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         if (d is EypPdfViewer eypPdfViewer && e.NewValue is not null)
         {
             string eypfile = eypPdfViewer.ExtractEypFilesToPdf((string)e.NewValue);
-            if (PdfReader.TestPdfFile(eypfile) != 0)
+            if (IsValidPdfFile(eypfile))
             {
                 eypPdfViewer.PdfFilePath = eypfile;
             }

@@ -93,6 +93,8 @@
     <Compile Include="Converters\DoubleToThicknessConverter.cs" />
     <Compile Include="Converters\EnumToIntValueConverter.cs" />
     <Compile Include="Converters\FilePathToFileNameConverter.cs" />
+    <Compile Include="Converters\FolderPathToIconConverter.cs" />
+    <Compile Include="Converters\FolderPathToLocalizedNameConverter.cs" />
     <Compile Include="Converters\GetDirectoriesConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />

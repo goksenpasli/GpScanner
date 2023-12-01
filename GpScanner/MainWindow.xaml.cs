@@ -169,7 +169,7 @@ public partial class MainWindow : Window
                     return;
                 }
 
-                if (Settings.Default.DirectOpenPdfFile && extension == ".pdf")
+                if (Settings.Default.DirectOpenPdfFile && extension == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(filePath))
                 {
                     EypPdfViewer eypPdfViewer = twainCtrl.PdfImportViewer.PdfViewer;
                     eypPdfViewer.PdfFilePath = filePath;

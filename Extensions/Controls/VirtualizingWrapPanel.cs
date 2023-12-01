@@ -150,7 +150,8 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
         get
         {
-            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, [typeof(DependencyObject)], null).Invoke(null, [this]);
+            _itemsOwner ??= (DependencyObject)typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, [typeof(DependencyObject)], null)
+            .Invoke(null, [this]);
             return _itemsOwner;
         }
     }
@@ -416,7 +417,10 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
 
                     if (child is IHierarchicalVirtualizationAndScrollInfo groupItem)
                     {
-                        groupItem.Constraints = new HierarchicalVirtualizationConstraints(new VirtualizationCacheLength(0), VirtualizationCacheLengthUnit.Item, new Rect(0, 0, ViewportWidth, ViewportHeight));
+                        groupItem.Constraints = new HierarchicalVirtualizationConstraints(
+                            new VirtualizationCacheLength(0),
+                            VirtualizationCacheLengthUnit.Item,
+                            new Rect(0, 0, ViewportWidth, ViewportHeight));
                         child.Measure(new Size(ViewportWidth, ViewportHeight));
                     }
                 }
@@ -619,7 +623,9 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     [Obsolete]
     protected override Size CalculateExtent(Size availableSize)
     {
-        double extentWidth = IsSpacingEnabled && SpacingMode != SpacingMode.None && !double.IsInfinity(GetWidth(availableSize)) ? GetWidth(availableSize) : GetWidth(childSize) * itemsPerRowCount;
+        double extentWidth = IsSpacingEnabled && SpacingMode != SpacingMode.None && !double.IsInfinity(GetWidth(availableSize))
+                             ? GetWidth(availableSize)
+                             : GetWidth(childSize) * itemsPerRowCount;
         if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
         {
             extentWidth = Orientation == Orientation.Vertical ? Math.Max(extentWidth - (Margin.Left + Margin.Right), 0) : Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
@@ -752,7 +758,8 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
                 double cacheAfterInPixel = Math.Min(CacheLength.CacheAfterViewport, GetHeight(Extent) - viewportHeight - offsetInPixel);
                 int rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(childSize));
                 int rowCountInCacheAfter =
-                    (int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(childSize)) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize));
+                    (int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(childSize)) -
+                    (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(childSize));
                 startIndex = Math.Max(startIndex - (rowCountInCacheBefore * itemsPerRowCount), 0);
                 endIndex = Math.Min(endIndex + (rowCountInCacheAfter * itemsPerRowCount), Items.Count - 1);
             }
@@ -880,7 +887,11 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
 
     [Obsolete("Use SpacingMode")]
     public static readonly DependencyProperty IsSpacingEnabledProperty =
-        DependencyProperty.Register(nameof(IsSpacingEnabled), typeof(bool), typeof(VirtualizingWrapPanel), new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
+        DependencyProperty.Register(
+        nameof(IsSpacingEnabled),
+        typeof(bool),
+        typeof(VirtualizingWrapPanel),
+        new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.AffectsMeasure));
 
     [Obsolete("Use IsSpacingEnabledProperty")]
     public static readonly DependencyProperty SpacingEnabledProperty = IsSpacingEnabledProperty;

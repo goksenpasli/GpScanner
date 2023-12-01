@@ -5,7 +5,7 @@ using System.Windows.Data;
 
 namespace Extensions;
 
-public sealed class FilePathToIconConverter : DependencyObject, IValueConverter
+public class FilePathToIconConverter : DependencyObject, IValueConverter
 {
     public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register(
         "IconSize",

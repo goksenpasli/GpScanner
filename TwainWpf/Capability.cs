@@ -23,7 +23,9 @@ namespace TwainWpf
             Capability c = new Capability(capability, TwainType.Int16, applicationId, sourceId);
             BasicCapabilityResult capResult = c.GetBasicValue();
 
-            return capResult.ConditionCode != ConditionCode.Success ? throw new TwainException($"Unsupported capability {capability}", capResult.ErrorCode, capResult.ConditionCode) : capResult.BoolValue;
+            return capResult.ConditionCode != ConditionCode.Success
+                   ? throw new TwainException($"Unsupported capability {capability}", capResult.ErrorCode, capResult.ConditionCode)
+                   : capResult.BoolValue;
         }
 
         public static int SetBasicCapability(Capabilities capability, int rawValue, TwainType twainType, Identity applicationId, Identity sourceId)

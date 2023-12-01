@@ -14,7 +14,11 @@ public class NumericUpDownControl : ScrollBar
         DependencyProperty.Register("NumericUpDownButtonsVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty =
         DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDownControl), new PropertyMetadata(Visibility.Visible));
-    public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register("ShowMode", typeof(Mode), typeof(NumericUpDownControl), new PropertyMetadata(Mode.NumberMode, ModeChanged));
+    public static readonly DependencyProperty ShowModeProperty = DependencyProperty.Register(
+        "ShowMode",
+        typeof(Mode),
+        typeof(NumericUpDownControl),
+        new PropertyMetadata(Mode.NumberMode, ModeChanged));
     [Browsable(false)]
     public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
         "Text",

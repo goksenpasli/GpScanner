@@ -3,7 +3,8 @@
     xmlns:local="clr-namespace:Extensions">
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:GetDirectoriesConverter x:Key="GetDirectoriesConverter" />
-    <local:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
+    <local:FolderPathToIconConverter x:Key="FolderPathToIconConverter" />
+    <local:FolderPathToLocalizedNameConverter x:Key="FolderPathToLocalizedNameConverter" />
     <ControlTemplate x:Key="ItemsControlTemplate" TargetType="{x:Type ItemsControl}">
         <ScrollViewer CanContentScroll="True"
             HorizontalScrollBarVisibility="Auto"
@@ -55,19 +56,14 @@
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <TextBlock VerticalAlignment="Center">
-                                                                <Image Width="16" Height="16">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="3" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
+                                                                <Image Width="16"
+                                                                    Height="16"
+                                                                    Source="{Binding Mode=OneWay, Converter={StaticResource FolderPathToIconConverter}}" />
                                                                 <Hyperlink BaselineAlignment="Center"
                                                                     Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
                                                                     CommandParameter="{Binding Mode=OneWay}"
                                                                     TextDecorations="None">
-                                                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}, ConverterParameter='withdot'}" />
+                                                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FolderPathToLocalizedNameConverter}}" />
                                                                 </Hyperlink>
                                                             </TextBlock>
                                                         </DataTemplate>

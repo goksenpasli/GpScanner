@@ -45,7 +45,9 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
     }
 
     private void GenerateImage() => PreviewImage =
-    twainCtrl.SaveIndex == 3 ? twainCtrl?.SeçiliResim?.Resim?.Resize(512, 512).BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Jpeg) : null;
+    twainCtrl.SaveIndex == 3
+    ? twainCtrl?.SeçiliResim?.Resim?.Resize(512, 512).BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Jpeg)
+    : null;
 
     private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e) => GenerateImage();
 

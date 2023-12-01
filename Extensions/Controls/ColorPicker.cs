@@ -95,7 +95,11 @@ public class ColorPicker : Control
     public static readonly DependencyProperty MiddleStopColorProperty = DependencyProperty.Register("MiddleStopColor", typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Gray));
     public static readonly DependencyProperty PredefinedColorVisibilityProperty =
         DependencyProperty.Register("PredefinedColorVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Collapsed));
-    public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register("SliderVisibility", typeof(Visibility), typeof(ColorPicker), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty SliderVisibilityProperty = DependencyProperty.Register(
+        "SliderVisibility",
+        typeof(Visibility),
+        typeof(ColorPicker),
+        new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty SpectrumGridBackgroundProperty =
         DependencyProperty.Register("SpectrumGridBackground", typeof(Brush), typeof(ColorPicker), new PropertyMetadata(Brushes.Transparent));
     public RGB Selected = new();

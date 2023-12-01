@@ -1,14 +1,18 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Documents;
-using Microsoft.Win32;
 
 namespace TwainControl;
 
 public class Policy : DependencyObject
 {
-    public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty, Changed));
+    public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached(
+        "PolicyName",
+        typeof(string),
+        typeof(Policy),
+        new PropertyMetadata(string.Empty, Changed));
 
     public static bool CheckKeyPolicy(string searchvalue, RegistryKey registryKey)
     {

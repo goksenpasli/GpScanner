@@ -43,7 +43,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         typeof(FitImageOrientation),
         typeof(PdfViewer),
         new PropertyMetadata(FitImageOrientation.Width, Changed));
-    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
+    public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register(
+        "PdfFilePath",
+        typeof(string),
+        typeof(PdfViewer),
+        new PropertyMetadata(null, PdfFilePathChanged));
     public static readonly DependencyProperty PrintDpiProperty = DependencyProperty.Register("PrintDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(300));
     public static readonly DependencyProperty SayfaProperty =
         DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
@@ -856,7 +860,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void PrintPdf(PdfDocument document, int startPage, int endPage, int Dpi = 300)
     {
-        PrintDialog pd = new() { CurrentPageEnabled = true, PageRangeSelection = PageRangeSelection.CurrentPage, UserPageRangeEnabled = false, MaxPage = (uint)document.PageCount, MinPage = 1 };
+        PrintDialog pd = new()
+        {
+            CurrentPageEnabled = true,
+            PageRangeSelection = PageRangeSelection.CurrentPage,
+            UserPageRangeEnabled = false,
+            MaxPage = (uint)document.PageCount,
+            MinPage = 1
+        };
         if (pd.ShowDialog() == true)
         {
             pd.PageRange = new PageRange(startPage, endPage);
