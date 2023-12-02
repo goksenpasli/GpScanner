@@ -697,4 +697,7 @@ BELGE EKLE</value>
   <data name="BACKUPDB" xml:space="preserve">
     <value>VERİTABANI DOSYASINI YEDEKLE</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>DOSYA İLİŞKİLENDİR</value>
+  </data>
 </root>

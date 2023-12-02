@@ -687,4 +687,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>РЭЗЕРВОВАЯ КАПІЯ ФАЙЛА БАЗЫ ДАДЗЕНЫХ</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ФАЙЛ АСАСЦЫЯВАЦЬ</value>
+  </data>
 </root>

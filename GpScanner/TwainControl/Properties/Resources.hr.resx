@@ -687,4 +687,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>SIGURNOSNA KOPIJA DATOTEKE BAZE PODATAKA</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>FILE SURADNIK</value>
+  </data>
 </root>

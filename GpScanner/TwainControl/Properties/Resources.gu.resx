@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>બેકઅપ ડેટાબેઝ ફાઇલ</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ફાઇલ એસોસિયેટ</value>
+  </data>
 </root>

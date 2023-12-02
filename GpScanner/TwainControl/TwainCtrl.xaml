@@ -37,6 +37,7 @@
             <Extensions:FilePathToIconConverter x:Key="ListFilePathToIconConverter" IconSize="extraLarge" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+            <Extensions:FolderPathToIconConverter x:Key="FolderPathToIconConverter" />
             <Image x:Key="TimeIcon"
                 Width="16"
                 Height="16"
@@ -345,10 +346,17 @@
                         VerticalAlignment="Center"
                         d:Text="AutoFolder"
                         FontWeight="Bold">
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Image Width="16"
+                                Height="16"
+                                Source="{Binding AutoFolder, Source={x:Static properties:Settings.Default}, Mode=OneWay, Converter={StaticResource FolderPathToIconConverter}}" />
+                        </InlineUIContainer>
                         <Hyperlink local:Policy.PolicyName="WebAdreseGit"
+                            BaselineAlignment="Center"
                             Command="{Binding WebAdreseGit}"
-                            CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
-                            <Run Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
+                            CommandParameter="{Binding AutoFolder, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                            TextDecorations="None">
+                            <Run BaselineAlignment="Center" Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
                         </Hyperlink>
                     </TextBlock>
                     <Extensions:ContentToggleButton HorizontalAlignment="Right"

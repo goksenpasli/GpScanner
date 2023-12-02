@@ -691,4 +691,7 @@ TO FILE</value>
   <data name="BACKUPDB" xml:space="preserve">
     <value>BACKUP DATABASE FILE</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ASSOCIATE FILE EXTENSION</value>
+  </data>
 </root>

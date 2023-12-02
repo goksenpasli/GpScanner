@@ -629,7 +629,11 @@
                                                     <Image Width="32"
                                                         Height="32"
                                                         Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc EYPOPEN}" />
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <Hyperlink Command="{Binding AssociateExtension}">
+                                                            <Run Text="{twainctrl:Loc EYPOPEN}" />
+                                                        </Hyperlink>
+                                                    </TextBlock>
                                                 </StackPanel>
                                             </CheckBox.Content>
                                         </CheckBox>

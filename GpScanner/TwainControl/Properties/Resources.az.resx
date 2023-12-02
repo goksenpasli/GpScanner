@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>MƏLUMAT BAZASI FAYININ YEDEK KOMPLESİ</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>FILE ASSOCIATE</value>
+  </data>
 </root>

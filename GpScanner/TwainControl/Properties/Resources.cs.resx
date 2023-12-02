@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>ZÁLOHA DATABÁZOVÉHO SOUBORU</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>SPOLEČNÝ SOUBOR</value>
+  </data>
 </root>

@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>ملف قاعدة البيانات الاحتياطية</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>شريك الملف</value>
+  </data>
 </root>

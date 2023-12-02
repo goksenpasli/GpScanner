@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>BACK-UP DATABASEBESTAND</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>BESTANDSASSOCIAAT</value>
+  </data>
 </root>

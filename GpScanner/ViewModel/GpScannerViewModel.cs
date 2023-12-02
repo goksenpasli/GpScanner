@@ -1,6 +1,7 @@
 ﻿using Extensions;
 using GpScanner.Properties;
 using Microsoft.SharePoint.Client;
+using Microsoft.Win32;
 using Ocr;
 using PdfCompressor;
 using PdfSharp.Pdf;
@@ -942,6 +943,16 @@ public partial class GpScannerViewModel : InpcBase
 
         LoadContributionData = new RelayCommand<object>(parameter => ContributionData = GetContributionData(), parameter => true);
 
+        AssociateExtension = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show(Translation.GetResStringValue("ASSOCIATE"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    CreateFileAssociationCurrentUser(".eyp", "Elektronik Yazışma Paketi", Process.GetCurrentProcess()?.MainModule?.FileName);
+                }
+            },
+            parameter => true);
+
         OpenSettings = new RelayCommand<object>(
             parameter =>
             {
@@ -994,6 +1005,8 @@ public partial class GpScannerViewModel : InpcBase
             }
         }
     }
+
+    public ICommand AssociateExtension { get; }
 
     public IEnumerable<string> AudioFiles
     {
@@ -1994,6 +2007,17 @@ public partial class GpScannerViewModel : InpcBase
                 """);
             Settings.Default.Save();
         }
+    }
+
+    private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription, string applicationPath, int iconindex = 0)
+    {
+        using RegistryKey extensionKey = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{extension}");
+        extensionKey?.SetValue(string.Empty, fileTypeDescription);
+        using RegistryKey fileTypeKey = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{fileTypeDescription}");
+        using RegistryKey iconKey = fileTypeKey?.CreateSubKey("DefaultIcon");
+        iconKey?.SetValue(string.Empty, $"{applicationPath},{iconindex}");
+        using RegistryKey commandKey = fileTypeKey?.CreateSubKey(@"shell\open\command");
+        commandKey?.SetValue(string.Empty, $"\"{applicationPath}\" \"%1\"");
     }
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)

@@ -85,7 +85,8 @@
                                 </Image.Source>
                             </Image>
                         </Extensions:ButtonedTextBox>
-                        <Extensions:ButtonedTextBox local:Policy.PolicyName="CreatorAppName"
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            local:Policy.PolicyName="CreatorAppName"
                             CopyButtonVisibility="Collapsed"
                             OpenButtonVisibility="Collapsed"
                             Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">

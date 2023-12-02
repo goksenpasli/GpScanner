@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>РЕЗЕРВНА КОПІЯ ФАЙЛУ БАЗИ ДАНИХ</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ФАЙЛОВИЙ СПОРТИВНИК</value>
+  </data>
 </root>

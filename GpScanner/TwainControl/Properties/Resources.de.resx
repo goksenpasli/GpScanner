@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>BACKUP-DATENBANKDATEI</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>Aktenmitarbeiter</value>
+  </data>
 </root>

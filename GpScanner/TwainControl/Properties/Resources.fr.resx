@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>FICHIER DE BASE DE DONNÉES DE SAUVEGARDE</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>FICHIER ASSOCIÉ</value>
+  </data>
 </root>

@@ -126,6 +126,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ASSOCIATE {
+            get {
+                return ResourceManager.GetString("ASSOCIATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string AUTOFOLDER {
             get {
                 return ResourceManager.GetString("AUTOFOLDER", resourceCulture);

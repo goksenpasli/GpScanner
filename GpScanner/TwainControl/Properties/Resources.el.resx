@@ -684,4 +684,7 @@
   <data name="BACKUPDB" xml:space="preserve">
     <value>ΑΡΧΕΙΟ ΒΑΣΗΣ ΔΕΔΟΜΕΝΩΝ ΑΝΤΙΓΡΑΦΩΝ</value>
   </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ΣΥΝΕΡΓΑΤΗΣ ΑΡΧΕΙΟΥ</value>
+  </data>
 </root>
