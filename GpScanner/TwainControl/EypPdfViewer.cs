@@ -28,7 +28,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
                     {
                         string eypfile = ExtractEypFilesToPdf(openFileDialog.FileName);
-                        if (IsValidPdfFile(eypfile))
+                        if (!IsValidPdfFile(eypfile))
                         {
                             return;
                         }
@@ -39,7 +39,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
                     {
-                        if (IsValidPdfFile(openFileDialog.FileName))
+                        if (!IsValidPdfFile(openFileDialog.FileName))
                         {
                             return;
                         }

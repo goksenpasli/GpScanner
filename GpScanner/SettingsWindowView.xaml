@@ -61,7 +61,7 @@
                             <RowDefinition Height="160" />
                             <RowDefinition Height="47.2" />
                             <RowDefinition Height="89.6" />
-                            <RowDefinition Height="88.8" />
+                            <RowDefinition Height="90" />
                             <RowDefinition Height="48" />
                             <RowDefinition Height="48" />
                         </Grid.RowDefinitions>
@@ -575,7 +575,8 @@
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox VerticalContentAlignment="Center"
+                                        <CheckBox VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="NotifyCalendar"
                                             IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <Canvas Width="32"
@@ -603,7 +604,8 @@
                                 <Separator />
                                 <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox VerticalContentAlignment="Center"
+                                        <CheckBox VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DirectOpenPdfFile"
                                             IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <CheckBox.Content>
@@ -618,7 +620,8 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         </StackPanel>
-                                        <CheckBox VerticalContentAlignment="Center"
+                                        <CheckBox VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DirectOpenEypFile"
                                             IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <CheckBox.Content>
@@ -633,7 +636,8 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         </StackPanel>
-                                        <CheckBox VerticalContentAlignment="Center"
+                                        <CheckBox VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="ContributionIsImageMode"
                                             IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <CheckBox.Content>
@@ -682,7 +686,7 @@
                                                 </Image>
                                             </Canvas>
                                         </ToggleButton>
-                                        <CheckBox Margin="1"
+                                        <CheckBox VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="PlayNotificationAudio"
                                             IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
