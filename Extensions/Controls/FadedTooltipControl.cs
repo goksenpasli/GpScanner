@@ -15,22 +15,10 @@ namespace Extensions
     {
         public static readonly DependencyProperty AlwaysOnTopProperty =
             DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(FadedToolTipControl), new PropertyMetadata(true, OnTopChanged));
-        public static readonly DependencyProperty PopupAnimationProperty = DependencyProperty.Register(
-            "PopupAnimation",
-            typeof(PopupAnimation),
-            typeof(FadedToolTipControl),
-            new PropertyMetadata(PopupAnimation.Fade));
+        public static readonly DependencyProperty PopupAnimationProperty = DependencyProperty.Register("PopupAnimation", typeof(PopupAnimation), typeof(FadedToolTipControl), new PropertyMetadata(PopupAnimation.Fade));
         public static readonly DependencyProperty PopupParentProperty = DependencyProperty.Register("PopupParent", typeof(FrameworkElement), typeof(FadedToolTipControl));
-        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register(
-            "Position",
-            typeof(PlacementMode),
-            typeof(FadedToolTipControl),
-            new PropertyMetadata(PlacementMode.Center));
-        public static readonly DependencyProperty ShowCloseButtonProperty = DependencyProperty.Register(
-            "ShowCloseButton",
-            typeof(Visibility),
-            typeof(FadedToolTipControl),
-            new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(PlacementMode), typeof(FadedToolTipControl), new PropertyMetadata(PlacementMode.Center));
+        public static readonly DependencyProperty ShowCloseButtonProperty = DependencyProperty.Register("ShowCloseButton", typeof(Visibility), typeof(FadedToolTipControl), new PropertyMetadata(Visibility.Collapsed));
         public static readonly DependencyProperty ShowProperty = DependencyProperty.Register("Show", typeof(bool), typeof(FadedToolTipControl), new PropertyMetadata(false, ShowChanged));
         public static readonly DependencyProperty TimeToCloseProperty = DependencyProperty.Register("TimeToClose", typeof(int), typeof(FadedToolTipControl), new PropertyMetadata(3000));
         public static readonly DependencyProperty TimeToShowProperty = DependencyProperty.Register("TimeToShow", typeof(int), typeof(FadedToolTipControl), new PropertyMetadata(1000));

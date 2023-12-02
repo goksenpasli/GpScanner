@@ -4,9 +4,9 @@ using System.Windows.Data;
 
 namespace Extensions
 {
-    public sealed class FolderPathToLocalizedNameConverter :  IValueConverter
+    public sealed class FolderPathToLocalizedNameConverter : IValueConverter
     {
-        public  object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             try
             {
@@ -18,6 +18,6 @@ namespace Extensions
             }
         }
 
-        public  object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 }

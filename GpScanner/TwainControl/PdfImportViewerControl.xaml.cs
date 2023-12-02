@@ -33,30 +33,10 @@ namespace TwainControl;
 public partial class PdfImportViewerControl : UserControl, INotifyPropertyChanged
 {
     private readonly string AppName = Application.Current?.MainWindow?.Title;
-    private readonly Ellipse ellipseselectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 }),
-    };
-    private readonly Line linebox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-    private readonly Rectangle rectangleselectionbox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
-    private readonly Line reverselinebox = new()
-    {
-        Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)),
-        Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)),
-        StrokeDashArray = new DoubleCollection(new double[] { 1 })
-    };
+    private readonly Ellipse ellipseselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }), };
+    private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
+    private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
+    private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
     private PdfAnnotations annotations;
     private string annotationText = string.Empty;
     private bool applyLandscape = true;
@@ -105,8 +85,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     OpenFileDialog openFileDialog = new()
                     {
-                        Filter =
-                        "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
+                        Filter = "Resim Dosyası (*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle)|*.pdf;*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle",
                         Multiselect = false
                     };
                     if (openFileDialog.ShowDialog() == true)
@@ -797,8 +776,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 mousedowncoord = e.GetPosition(scrollviewer);
             }
 
-            if (Keyboard.Modifiers == ModifierKeys.Shift &&
-            (DrawLines || DrawBeziers || DrawCurve || DrawPolygon || DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
+            if (Keyboard.Modifiers == ModifierKeys.Shift && (DrawLines || DrawBeziers || DrawCurve || DrawPolygon || DrawAnnotation || DrawString || DrawImage || DrawEllipse || DrawRect || DrawLine || DrawReverseLine || DrawRoundedRect))
 
             {
                 isDrawMouseDown = true;

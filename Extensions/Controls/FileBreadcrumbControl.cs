@@ -16,11 +16,7 @@ namespace Extensions
             DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(FileBreadcrumbControl), new PropertyMetadata(false));
         public static readonly DependencyProperty PathSegmentsProperty =
             DependencyProperty.Register("PathSegments", typeof(ObservableCollection<Data>), typeof(FileBreadcrumbControl), new PropertyMetadata(new ObservableCollection<Data>()));
-        public static readonly DependencyProperty ProgressValueProperty = DependencyProperty.Register(
-            "ProgressValue",
-            typeof(double),
-            typeof(FileBreadcrumbControl),
-            new PropertyMetadata(0d));
+        public static readonly DependencyProperty ProgressValueProperty = DependencyProperty.Register("ProgressValue", typeof(double), typeof(FileBreadcrumbControl), new PropertyMetadata(0d));
         public static readonly DependencyProperty ShowFileNameProperty =
             DependencyProperty.Register("ShowFileName", typeof(Visibility), typeof(FileBreadcrumbControl), new PropertyMetadata(Visibility.Collapsed, VisibilityChanged));
 

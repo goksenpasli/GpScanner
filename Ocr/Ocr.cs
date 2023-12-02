@@ -89,9 +89,7 @@ public static class Ocr
         }
 
         ocrcancellationToken = new CancellationTokenSource();
-        return paragraphblock
-               ? await Task.Run(() => dosya.GetOcrData(tesseractlanguage, PageIteratorLevel.Para), ocrcancellationToken.Token)
-               : await Task.Run(() => dosya.GetOcrData(tesseractlanguage), ocrcancellationToken.Token);
+        return paragraphblock ? await Task.Run(() => dosya.GetOcrData(tesseractlanguage, PageIteratorLevel.Para), ocrcancellationToken.Token) : await Task.Run(() => dosya.GetOcrData(tesseractlanguage), ocrcancellationToken.Token);
     }
 
     private static TesseractEngine CreateTesseractEngine(string tesseractLanguage) => new(TesseractPath, tesseractLanguage, EngineMode.LstmOnly);

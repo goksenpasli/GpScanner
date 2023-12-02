@@ -949,7 +949,14 @@
                                 <GroupBox.Resources>
                                     <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="48" />
                                 </GroupBox.Resources>
-                                <ListBox ItemsSource="{Binding Source={StaticResource Reminder}}" VirtualizingPanel.ScrollUnit="Pixel">
+                                <ListBox ItemsSource="{Binding Source={StaticResource Reminder}}"
+                                    SelectedItem="{Binding SelectedReminder}"
+                                    VirtualizingPanel.ScrollUnit="Pixel">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="IsSelected" Value="{Binding Seen}" />
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <StackPanel>

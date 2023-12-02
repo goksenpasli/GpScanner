@@ -157,16 +157,7 @@ namespace TwainWpf
 
             int pos = User32Native.GetMessagePos();
 
-            WindowsMessage message = new WindowsMessage
-            {
-                hwnd = hwnd,
-                message = msg,
-                wParam = wParam,
-                lParam = lParam,
-                time = User32Native.GetMessageTime(),
-                x = (short)pos,
-                y = (short)(pos >> 16)
-            };
+            WindowsMessage message = new WindowsMessage { hwnd = hwnd, message = msg, wParam = wParam, lParam = lParam, time = User32Native.GetMessageTime(), x = (short)pos, y = (short)(pos >> 16) };
 
             Marshal.StructureToPtr(message, _eventMessage.EventPtr, false);
             _eventMessage.Message = 0;

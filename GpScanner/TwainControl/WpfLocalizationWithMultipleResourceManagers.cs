@@ -62,11 +62,7 @@ public class LocExtension(string stringName) : MarkupExtension
 
 public class Translation : DependencyObject
 {
-    public static readonly DependencyProperty DesignCultureProperty = DependencyProperty.RegisterAttached(
-        "DesignCulture",
-        typeof(string),
-        typeof(Translation),
-        new PropertyMetadata("en-EN", CultureChanged));
+    public static readonly DependencyProperty DesignCultureProperty = DependencyProperty.RegisterAttached("DesignCulture", typeof(string), typeof(Translation), new PropertyMetadata("en-EN", CultureChanged));
     public static readonly DependencyProperty ResourceManagerProperty = DependencyProperty.RegisterAttached("ResourceManager", typeof(ResourceManager), typeof(Translation));
 
     public static string GetDesignCulture(DependencyObject obj) => (string)obj.GetValue(DesignCultureProperty);
@@ -74,11 +70,7 @@ public class Translation : DependencyObject
     public static ResourceManager GetResourceManager(DependencyObject dependencyObject) => (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
 
     public static string GetResStringValue(string resdata)
-    {
-        return string.IsNullOrEmpty(resdata)
-               ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata))
-               : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
-    }
+    { return string.IsNullOrEmpty(resdata) ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata)) : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture); }
     public static void SetDesignCulture(DependencyObject obj, string value) => obj.SetValue(DesignCultureProperty, value);
 
     public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) => dependencyObject.SetValue(ResourceManagerProperty, value);

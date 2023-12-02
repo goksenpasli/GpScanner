@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -45,12 +46,12 @@ namespace GpScanner.ViewModel;
 
 public class BatchFiles : TessFiles;
 
-public class GpScannerViewModel : InpcBase
+public partial class GpScannerViewModel : InpcBase
 {
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
+    private static readonly string AppName = Application.Current?.MainWindow?.Title;
     private static DispatcherTimer timer;
-    private readonly string AppName = Application.Current?.MainWindow?.Title;
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
@@ -102,6 +103,7 @@ public class GpScannerViewModel : InpcBase
     private BatchFiles selectedBatchFile;
     private ContributionData selectedContribution;
     private string selectedFtp;
+    private ReminderData selectedReminder;
     private Size selectedSize;
     private bool shutdown;
     private bool sıralama;
@@ -112,12 +114,7 @@ public class GpScannerViewModel : InpcBase
 
     public GpScannerViewModel()
     {
-        if (string.IsNullOrWhiteSpace(Settings.Default.DatabaseFile))
-        {
-            XmlDataPath = Settings.Default.DatabaseFile =
-            $@"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}\Data.xml";
-            Settings.Default.Save();
-        }
+        CreateEmptySqliteDatabase();
         RegisterSimplePdfFileWatcher();
         TesseractViewModel = new TesseractViewModel();
         TranslateViewModel = new TranslateViewModel();
@@ -150,9 +147,7 @@ public class GpScannerViewModel : InpcBase
                     await Task.Run(
                         async () =>
                         {
-                            List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase))
-                            .Select(z => z.FileName)
-                            .ToList();
+                            List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
                             pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
                             await Application.Current?.Dispatcher?.InvokeAsync(() => ReloadFileDatas());
                         });
@@ -167,9 +162,7 @@ public class GpScannerViewModel : InpcBase
                         await Task.Run(
                             () =>
                             {
-                                List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase))
-                                .Select(z => z.FileName)
-                                .ToList();
+                                List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
                                 pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
                             });
                     }
@@ -196,9 +189,7 @@ public class GpScannerViewModel : InpcBase
                         Task task = Task.Run(
                             () =>
                             {
-                                List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase))
-                                .Select(z => z.FileName)
-                                .ToList();
+                                List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
                                 using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
                                 for (int i = 0; i < pdffilelist.Count; i++)
                                 {
@@ -274,8 +265,11 @@ public class GpScannerViewModel : InpcBase
                             {
                                 using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Twainsettings.Settings.Default.ImgLoadResolution);
                                 ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
-                                ScannerData.Data
-                                .Add(new Data { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                                using (AppDbContext context = new())
+                                {
+                                    _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                                    _ = context.SaveChanges();
+                                }
                                 OcrPdfThumbnailPageNumber = i;
                             }
                             OcrPdfThumbnailPageNumber = null;
@@ -284,11 +278,10 @@ public class GpScannerViewModel : InpcBase
                         {
                             using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
                             ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
-                            ScannerData.Data
-                            .Add(new Data { Id = DataSerialize.RandomNumber(), FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                            using AppDbContext context = new();
+                            _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                            _ = context.SaveChanges();
                         }
-
-                        DatabaseSave.Execute(null);
                         filedata = null;
                         ocrdata = null;
                         OcrIsBusy = false;
@@ -335,8 +328,13 @@ public class GpScannerViewModel : InpcBase
                     {
                         ocrtext = " ";
                     }
-                    ScannerData.Data.Add(new Data { Id = DataSerialize.RandomNumber(), FileName = unIndexedFile, FileContent = ocrtext });
-                    DatabaseSave.Execute(null);
+
+                    using (AppDbContext context = new())
+                    {
+                        _ = context.Data.Add(new Data { FileName = unIndexedFile, FileContent = ocrtext });
+                        _ = context.SaveChanges();
+                    }
+
                     ocrdata = null;
                     ocrtext = null;
                     OcrIsBusy = false;
@@ -384,8 +382,13 @@ public class GpScannerViewModel : InpcBase
                     {
                         ocrtext = " ";
                     }
-                    ScannerData.Data.Add(new Data { Id = DataSerialize.RandomNumber(), FileName = unIndexedFile, FileContent = ocrtext });
-                    DatabaseSave.Execute(null);
+
+                    using (AppDbContext context = new())
+                    {
+                        _ = context.Data.Add(new Data { FileName = unIndexedFile, FileContent = ocrtext });
+                        _ = context.SaveChanges();
+                    }
+
                     ocrdata = null;
                     ocrtext = null;
                     OcrIsBusy = false;
@@ -448,10 +451,10 @@ public class GpScannerViewModel : InpcBase
         ChangeDataFolder = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Filter = "Xml Dosyası(*.xml)|*.xml", FileName = "Data.xml" };
+                OpenFileDialog openFileDialog = new() { Filter = "SqLite Database(*.db)|*.db", FileName = "Data.db" };
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    XmlDataPath = Settings.Default.DatabaseFile = openFileDialog.FileName;
+                    Settings.Default.DatabaseFile = openFileDialog.FileName;
                     Settings.Default.Save();
                 }
             },
@@ -542,9 +545,7 @@ public class GpScannerViewModel : InpcBase
             parameter =>
             {
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
-                _ = Process.Start(
-                    "twux32.exe",
-                    $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                _ = Process.Start("twux32.exe", $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -558,10 +559,7 @@ public class GpScannerViewModel : InpcBase
                 Settings.Default.Save();
                 Settings.Default.Reload();
             },
-            parameter => !string.IsNullOrWhiteSpace(PatchFileName) &&
-            !string.IsNullOrWhiteSpace(PatchTag) &&
-            !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchFileName) &&
-            TwainCtrl.FileNameValid(PatchTag));
+            parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchFileName) && TwainCtrl.FileNameValid(PatchTag));
 
         AddFtpSites = new RelayCommand<object>(
             parameter =>
@@ -744,17 +742,13 @@ public class GpScannerViewModel : InpcBase
                                     if (ocrcancellationToken?.IsCancellationRequested == false)
                                     {
                                         string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                        ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true
-                                                                                    ? item.ElementAtOrDefault(i).GetOcrData(Settings.Default.DefaultTtsLang)
-                                                                                    : null;
+                                        ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true ? item.ElementAtOrDefault(i).GetOcrData(Settings.Default.DefaultTtsLang) : null;
 
                                         batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
                                         batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
                                         if (Settings.Default.PdfBatchCompress)
                                         {
-                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i)))
-                                            .GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution)
-                                            .Save(pdffile);
+                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution).Save(pdffile);
                                         }
                                         else
                                         {
@@ -803,13 +797,7 @@ public class GpScannerViewModel : InpcBase
         CancelBatchOcr = new RelayCommand<object>(
             parameter =>
             {
-                if (MessageBox.Show(
-                    $"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}",
-                    AppName,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.No) ==
-                MessageBoxResult.Yes)
+                if (MessageBox.Show($"{Translation.GetResStringValue("TRANSLATEPENDING")}\n{Translation.GetResStringValue("RESET")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     ocrcancellationToken?.Cancel();
                     BatchTxtOcrs = null;
@@ -867,18 +855,10 @@ public class GpScannerViewModel : InpcBase
             },
             parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
-        DatabaseSave = new RelayCommand<object>(parameter => ScannerData.Serialize());
-
         ResetSettings = new RelayCommand<object>(
             parameter =>
             {
-                if (MessageBox.Show(
-                    $"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}",
-                    AppName,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.No) ==
-                MessageBoxResult.Yes)
+                if (MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")} {Translation.GetResStringValue("RESET")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Twainsettings.Settings.Default.Reset();
                     Settings.Default.Reset();
@@ -937,9 +917,13 @@ public class GpScannerViewModel : InpcBase
         AddToCalendar = new RelayCommand<object>(
             parameter =>
             {
-                ReminderData reminderData = new() { Açıklama = CalendarDesc, Tarih = NotifyDate, FileName = (parameter as Scanner)?.FileName, Id = DataSerialize.RandomNumber() };
-                ScannerData.Reminder.Add(reminderData);
-                DatabaseSave.Execute(null);
+                using (AppDbContext context = new())
+                {
+                    ReminderData reminderData = new() { Açıklama = CalendarDesc, Tarih = NotifyDate, FileName = (parameter as Scanner)?.FileName };
+                    _ = context.ReminderData.Add(reminderData);
+                    _ = context.SaveChanges();
+                    ScannerData.Reminder.Add(reminderData);
+                }
                 CalendarDesc = null;
             },
             parameter => parameter is Scanner scanner && File.Exists(scanner?.FileName) && !string.IsNullOrWhiteSpace(CalendarDesc));
@@ -947,10 +931,14 @@ public class GpScannerViewModel : InpcBase
         ApplyCalendarData = new RelayCommand<object>(
             parameter =>
             {
-                DatabaseSave.Execute(null);
+                using (AppDbContext context = new())
+                {
+                    context.Entry(SelectedReminder).State = EntityState.Modified;
+                    _ = context.SaveChanges();
+                }
                 ScannerData.Reminder = ReminderYükle();
             },
-            parameter => ScannerData?.Reminder?.Any() == true);
+            parameter => SelectedReminder is not null);
 
         LoadContributionData = new RelayCommand<object>(parameter => ContributionData = GetContributionData(), parameter => true);
 
@@ -972,8 +960,6 @@ public class GpScannerViewModel : InpcBase
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
     }
-
-    public static string XmlDataPath { get; set; } = Settings.Default.DatabaseFile;
 
     public ICommand AddFtpSites { get; }
 
@@ -1200,8 +1186,6 @@ public class GpScannerViewModel : InpcBase
     }
 
     public ICommand CycleSelectedDocuments { get; }
-
-    public ICommand DatabaseSave { get; }
 
     public ICommand DateBack { get; }
 
@@ -1705,6 +1689,19 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
+    public ReminderData SelectedReminder
+    {
+        get => selectedReminder;
+        set
+        {
+            if (selectedReminder != value)
+            {
+                selectedReminder = value;
+                OnPropertyChanged(nameof(SelectedReminder));
+            }
+        }
+    }
+
     public Size SelectedSize
     {
         get => selectedSize;
@@ -1833,7 +1830,7 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
-    public static void BackupDataXmlFile()
+    public static void BackupDatabaseFile()
     {
         if (File.Exists(Settings.Default.DatabaseFile))
         {
@@ -1853,18 +1850,12 @@ public class GpScannerViewModel : InpcBase
             {
                 return null;
             }
-
-            if (File.Exists(XmlDataPath))
-            {
-                return XmlDataPath.DeSerialize<ScannerData>()?.Data;
-            }
-
-            _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
-            return [];
+            using AppDbContext context = new();
+            return new ObservableCollection<Data>([.. context.Data]);
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
     }
@@ -1972,6 +1963,39 @@ public class GpScannerViewModel : InpcBase
         }
     }
 
+    private void CreateEmptySqliteDatabase()
+    {
+        if (!File.Exists(Settings.Default.DatabaseFile))
+        {
+            Settings.Default.DatabaseFile = $@"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}\Data.db";
+            using AppDbContext context = new();
+            _ = context.Database
+            .ExecuteSqlCommand(
+                """
+                CREATE TABLE "Data" (
+                	"FileName"	TEXT,
+                	"Id"	INTEGER UNIQUE,
+                	"QrData"	TEXT,
+                	"FileContent"	TEXT,
+                	PRIMARY KEY("Id")
+                )
+                """);
+            _ = context.Database
+            .ExecuteSqlCommand(
+                """
+                CREATE TABLE "ReminderDatas" (
+                	"Açıklama"	TEXT,
+                	"Id"	INTEGER UNIQUE,
+                	"Seen"	INTEGER,
+                	"Tarih"	INTEGER,
+                	"FileName"	TEXT,
+                	PRIMARY KEY("Id")
+                )
+                """);
+            Settings.Default.Save();
+        }
+    }
+
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
@@ -2017,8 +2041,7 @@ public class GpScannerViewModel : InpcBase
             {
                 PdfBatchRunning = true;
                 using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress
-                                                 ? BitmapFrame.Create(new Uri(currentfilepath))
-                .GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution)
+                                                 ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution)
                                                  : currentfilepath.GeneratePdf(paper, scannedText))
                 {
                     string pdfFileName = Path.ChangeExtension(currentfilename, ".pdf");
@@ -2050,13 +2073,7 @@ public class GpScannerViewModel : InpcBase
                 Arguments = $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt",
                 Title = Translation.GetResStringValue("UPDATE")
             };
-            JumpTask scan = new()
-            {
-                Arguments = "/StiDevice:",
-                Description = Translation.GetResStringValue("SCAN"),
-                ApplicationPath = fileName,
-                Title = Translation.GetResStringValue("SCAN")
-            };
+            JumpTask scan = new() { Arguments = "/StiDevice:", Description = Translation.GetResStringValue("SCAN"), ApplicationPath = fileName, Title = Translation.GetResStringValue("SCAN") };
             JumpList list = JumpList.GetJumpList(Application.Current);
             list ??= new JumpList();
             list.ShowRecentCategory = true;
@@ -2097,8 +2114,7 @@ public class GpScannerViewModel : InpcBase
                 {
                     contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
                 }
-                return new ObservableCollection<ContributionData>(
-                    contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate));
+                return new ObservableCollection<ContributionData>(contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate));
             }
         }
         catch (Exception)
@@ -2114,9 +2130,7 @@ public class GpScannerViewModel : InpcBase
             ObservableCollection<Scanner> list = [];
             try
             {
-                List<string> files = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories)
-                .Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower()))
-                .ToList();
+                List<string> files = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower())).ToList();
                 files.Sort(new StrCmpLogicalComparer());
                 foreach (string dosya in files)
                 {
@@ -2197,8 +2211,8 @@ public class GpScannerViewModel : InpcBase
             MainWindow.cvs.Filter += (s, x) =>
                                      {
                                          Scanner scanner = x.Item as Scanner;
-                                         x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) ||
-                                         ScannerData.Data.Any(z => z.FileName == scanner?.FileName && z.FileContent?.Contains(AramaMetni, StringComparison.OrdinalIgnoreCase) == true);
+                                         x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0 ||
+                                         DataYükle().Any(z => z.FileName == scanner?.FileName && z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0);
                                      };
         }
 
@@ -2422,8 +2436,7 @@ public class GpScannerViewModel : InpcBase
         return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
     }
 
-    private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(
-        batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
+    private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
 
     private void RegisterSimplePdfFileWatcher()
     {
@@ -2433,12 +2446,14 @@ public class GpScannerViewModel : InpcBase
             FileSystemWatcher watcher = new(autoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
             watcher.Renamed += (s, e) =>
                                {
-                                   foreach (Data item in ScannerData?.Data?.Where(z => z.FileName == e.OldFullPath))
+                                   using (AppDbContext context = new())
                                    {
-                                       item.FileName = e.FullPath;
+                                       foreach (Data item in context?.Data?.Where(z => z.FileName == e.OldFullPath))
+                                       {
+                                           item.FileName = e.FullPath;
+                                       }
+                                       _ = context.SaveChanges();
                                    }
-
-                                   DatabaseSave.Execute(null);
                                    Dosyalar = GetScannerFileData();
                                };
         }
@@ -2452,14 +2467,8 @@ public class GpScannerViewModel : InpcBase
             {
                 return null;
             }
-
-            if (File.Exists(XmlDataPath))
-            {
-                return new ObservableCollection<ReminderData>(XmlDataPath.DeSerialize<ScannerData>()?.Reminder?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih));
-            }
-
-            _ = Directory.CreateDirectory(Path.GetDirectoryName(XmlDataPath));
-            return [];
+            using AppDbContext context = new();
+            return new ObservableCollection<ReminderData>([.. context.ReminderData?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih)]);
         }
         catch (Exception ex)
         {

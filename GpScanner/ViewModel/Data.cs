@@ -1,9 +1,9 @@
 ﻿using Extensions;
-using System.Xml.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GpScanner.ViewModel;
 
-[XmlRoot(ElementName = "Data")]
 public class Data : InpcBase
 {
     private string fileContent;
@@ -11,7 +11,6 @@ public class Data : InpcBase
     private int ıd;
     private string qrData;
 
-    [XmlAttribute(AttributeName = "FileContent")]
     public string FileContent
     {
         get => fileContent;
@@ -26,7 +25,6 @@ public class Data : InpcBase
         }
     }
 
-    [XmlAttribute(AttributeName = "FileName")]
     public string FileName
     {
         get => fileName;
@@ -41,7 +39,8 @@ public class Data : InpcBase
         }
     }
 
-    [XmlAttribute(AttributeName = "Id")]
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id
     {
         get => ıd;
@@ -56,7 +55,6 @@ public class Data : InpcBase
         }
     }
 
-    [XmlAttribute(AttributeName = "QrData")]
     public string QrData
     {
         get => qrData;

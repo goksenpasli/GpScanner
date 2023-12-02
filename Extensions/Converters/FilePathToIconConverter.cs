@@ -7,11 +7,7 @@ namespace Extensions;
 
 public class FilePathToIconConverter : DependencyObject, IValueConverter
 {
-    public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register(
-        "IconSize",
-        typeof(ShellIcon.SizeType),
-        typeof(FilePathToIconConverter),
-        new PropertyMetadata(ShellIcon.SizeType.large));
+    public static readonly DependencyProperty IconSizeProperty = DependencyProperty.Register("IconSize", typeof(ShellIcon.SizeType), typeof(FilePathToIconConverter), new PropertyMetadata(ShellIcon.SizeType.large));
 
     public ShellIcon.SizeType IconSize { get => (ShellIcon.SizeType)GetValue(IconSizeProperty); set => SetValue(IconSizeProperty, value); }
 

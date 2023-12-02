@@ -469,20 +469,10 @@ public static class BitmapMethods
         }
     }
 
-    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source,
-                                                    Point konum,
-                                                    Brush brushes,
-                                                    DpiScale dpiScale,
-                                                    double emSize = 64,
-                                                    string metin = null,
-                                                    double angle = 315,
-                                                    string font = "Arial")
+    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, DpiScale dpiScale, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
     {
         FlowDirection flowDirection = CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR") ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
-        FormattedText formattedText = new(metin, CultureInfo.CurrentCulture, flowDirection, new Typeface(font), emSize, brushes, dpiScale.PixelsPerDip)
-        {
-            TextAlignment = TextAlignment.Center
-        };
+        FormattedText formattedText = new(metin, CultureInfo.CurrentCulture, flowDirection, new Typeface(font), emSize, brushes, dpiScale.PixelsPerDip) { TextAlignment = TextAlignment.Center };
         DrawingVisual dv = new();
         using (DrawingContext dc = dv.RenderOpen())
         {
@@ -516,9 +506,7 @@ public static class BitmapMethods
             using WebP webp = new();
             using MemoryStream ms = new(resim);
             using Bitmap bmp = Image.FromStream(ms) as Bitmap;
-            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb
-                   ? webp.EncodeLossy(bmp, kalite)
-                   : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
+            return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb ? webp.EncodeLossy(bmp, kalite) : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
         }
         catch (Exception)
         {

@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -9,11 +8,7 @@ namespace TwainControl;
 
 public class XmlViewerControlModel
 {
-    public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached(
-        "XmlContent",
-        typeof(string),
-        typeof(XmlViewerControlModel),
-        new PropertyMetadata(null, Changed));
+    public static readonly DependencyProperty XmlContentProperty = DependencyProperty.RegisterAttached("XmlContent", typeof(string), typeof(XmlViewerControlModel), new PropertyMetadata(null, Changed));
 
     public static string GetXmlContent(DependencyObject obj) => (string)obj.GetValue(XmlContentProperty);
 
@@ -32,7 +27,7 @@ public class XmlViewerControlModel
             }
             catch (XmlException ex)
             {
-                MessageBox.Show(ex.Message);
+                _ = MessageBox.Show(ex.Message);
             }
         }
     }

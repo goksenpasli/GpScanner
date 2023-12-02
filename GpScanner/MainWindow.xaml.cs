@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using TwainControl;
 using static Extensions.ExtensionMethods;
+using static GpScanner.ViewModel.GpScannerViewModel;
 using static TwainControl.DrawControl;
 using Twainsettings = TwainControl.Properties;
 
@@ -290,15 +291,11 @@ public partial class MainWindow : Window
             if (e.PropertyName is "DataBaseTextData" && twainCtrl?.DataBaseTextData is not null)
             {
                 ViewModel.ScannedText = twainCtrl.DataBaseTextData;
-                ViewModel.ScannerData?.Data?.Add(
-                new Data
+                using (AppDbContext context = new())
                 {
-                    Id = DataSerialize.RandomNumber(),
-                    FileName = twainCtrl?.Scanner?.PdfFilePath,
-                    FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)),
-                    QrData = twainCtrl?.Scanner?.BarcodeContent
-                });
-                ViewModel.DatabaseSave.Execute(null);
+                    _ = context.Data.Add(new Data { FileName = twainCtrl?.Scanner?.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)), QrData = twainCtrl?.Scanner?.BarcodeContent });
+                    _ = context.SaveChanges();
+                }
                 ViewModel.ScannedText = null;
             }
 
@@ -360,7 +357,7 @@ public partial class MainWindow : Window
             e.Cancel = true;
         }
 
-        GpScannerViewModel.BackupDataXmlFile();
+        BackupDatabaseFile();
         StillImageHelper.KillServer();
     }
 }

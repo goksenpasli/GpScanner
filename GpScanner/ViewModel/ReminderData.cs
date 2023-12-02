@@ -1,11 +1,10 @@
 ﻿using Extensions;
 using System;
-using System.Xml.Serialization;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GpScanner.ViewModel
 {
-    [XmlRoot(ElementName = "ReminderData")]
-
     public class ReminderData : InpcBase
     {
         private string açıklama;
@@ -14,7 +13,6 @@ namespace GpScanner.ViewModel
         private bool seen;
         private DateTime tarih;
 
-        [XmlAttribute(AttributeName = "Açıklama")]
         public string Açıklama
         {
             get => açıklama;
@@ -28,7 +26,6 @@ namespace GpScanner.ViewModel
             }
         }
 
-        [XmlAttribute(AttributeName = "FileName")]
         public string FileName
         {
             get => fileName;
@@ -42,7 +39,8 @@ namespace GpScanner.ViewModel
             }
         }
 
-        [XmlAttribute(AttributeName = "Id")]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id
         {
             get => ıd;
@@ -56,7 +54,6 @@ namespace GpScanner.ViewModel
             }
         }
 
-        [XmlAttribute(AttributeName = "Seen")]
         public bool Seen
         {
             get => seen;
@@ -70,7 +67,6 @@ namespace GpScanner.ViewModel
             }
         }
 
-        [XmlAttribute(AttributeName = "Tarih")]
         public DateTime Tarih
         {
             get => tarih;

@@ -26,28 +26,12 @@ namespace PdfCompressor;
 [TemplatePart(Name = "ListBox", Type = typeof(ListBox))]
 public class Compressor : Control, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty BatchPdfListProperty = DependencyProperty.Register(
-        "BatchPdfList",
-        typeof(ObservableCollection<BatchPdfData>),
-        typeof(Compressor),
-        new PropertyMetadata(new ObservableCollection<BatchPdfData>()));
-    public static readonly DependencyProperty BatchProcessIsEnabledProperty = DependencyProperty.Register(
-        "BatchProcessIsEnabled",
-        typeof(bool),
-        typeof(Compressor),
-        new PropertyMetadata(true));
-    public static readonly DependencyProperty BlackAndWhiteProperty = DependencyProperty.Register(
-        "BlackAndWhite",
-        typeof(bool),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Bw, BwChanged));
+    public static readonly DependencyProperty BatchPdfListProperty = DependencyProperty.Register("BatchPdfList", typeof(ObservableCollection<BatchPdfData>), typeof(Compressor), new PropertyMetadata(new ObservableCollection<BatchPdfData>()));
+    public static readonly DependencyProperty BatchProcessIsEnabledProperty = DependencyProperty.Register("BatchProcessIsEnabled", typeof(bool), typeof(Compressor), new PropertyMetadata(true));
+    public static readonly DependencyProperty BlackAndWhiteProperty = DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
     public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
-    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register(
-        "Quality",
-        typeof(int),
-        typeof(Compressor),
-        new PropertyMetadata(Settings.Default.Quality, QualityChanged));
+    public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
     public readonly List<string> imagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private double compressionProgress;
@@ -117,12 +101,7 @@ public class Compressor : Control, INotifyPropertyChanged
         OpenBatchPdfFolder = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new()
-                {
-                    Multiselect = true,
-                    Filter =
-                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf"
-                };
+                OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf" };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     foreach (string item in openFileDialog.FileNames)
@@ -339,12 +318,7 @@ public class Compressor : Control, INotifyPropertyChanged
         return bitmap;
     }
 
-    private async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames,
-                                                     bool UseMozJpegEncoding,
-                                                     bool bw,
-                                                     int jpegquality = 80,
-                                                     int dpi = 200,
-                                                     Action<double> progresscallback = null)
+    private async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200, Action<double> progresscallback = null)
     {
         if (bitmapFrames?.Count == 0)
         {
@@ -388,10 +362,7 @@ public class Compressor : Control, INotifyPropertyChanged
                         {
                             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                             BitmapSource resizedimage = bw
-                                                        ? BitmapSourceToBitmap(pdfimage)
-                            .ConvertBlackAndWhite()
-                            .ToBitmapImage(ImageFormat.Tiff)
-                            .Resize(page.Height * ratio, page.Height, 0, dpi, dpi)
+                                                        ? BitmapSourceToBitmap(pdfimage).ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Tiff).Resize(page.Height * ratio, page.Height, 0, dpi, dpi)
                                                         : pdfimage.Resize(page.Height * ratio, page.Height, 0, dpi, dpi);
                             using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
                             using XImage xImage = XImage.FromStream(ms);

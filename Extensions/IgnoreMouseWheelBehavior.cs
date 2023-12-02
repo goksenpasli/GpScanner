@@ -5,11 +5,7 @@ namespace Extensions;
 
 public static class IgnoreMouseWheelBehavior
 {
-    public static readonly DependencyProperty IgnoreMouseWheelProperty = DependencyProperty.RegisterAttached(
-        "IgnoreMouseWheel",
-        typeof(bool),
-        typeof(IgnoreMouseWheelBehavior),
-        new PropertyMetadata(false, OnIgnoreMouseWheelChanged));
+    public static readonly DependencyProperty IgnoreMouseWheelProperty = DependencyProperty.RegisterAttached("IgnoreMouseWheel", typeof(bool), typeof(IgnoreMouseWheelBehavior), new PropertyMetadata(false, OnIgnoreMouseWheelChanged));
 
     public static bool GetIgnoreMouseWheel(UIElement element) => (bool)element.GetValue(IgnoreMouseWheelProperty);
 

@@ -22,11 +22,7 @@ public static class UdfParser
         PrintDialog pd = new();
         PageFormat pageformat = content.Properties.PageFormat;
         flowdocumentscrollviewer.Document = flowdocument;
-        flowdocumentscrollviewer.Document.PagePadding = new Thickness(
-            pageformat.LeftMargin * 4 / 3,
-            pageformat.TopMargin * 4 / 3,
-            pageformat.RightMargin * 4 / 3,
-            pageformat.BottomMargin * 4 / 3);
+        flowdocumentscrollviewer.Document.PagePadding = new Thickness(pageformat.LeftMargin * 4 / 3, pageformat.TopMargin * 4 / 3, pageformat.RightMargin * 4 / 3, pageformat.BottomMargin * 4 / 3);
         flowdocumentscrollviewer.Document.ColumnWidth = pd.PrintableAreaWidth;
         return flowdocumentscrollviewer.Document;
     }
@@ -42,11 +38,7 @@ public static class UdfParser
             bi.StreamSource = new MemoryStream(binaryData);
             bi.EndInit();
             bi.Freeze();
-            System.Windows.Controls.Image v = new()
-            {
-                Source = bi,
-                Margin = new Thickness(bgimage.BgImageLeftMargin * 4 / 3, bgimage.BgImageUpMargin * 4 / 3, bgimage.BgImageRigtMargin * 4 / 3, bgimage.BgImageBottomMargin * 4 / 3)
-            };
+            System.Windows.Controls.Image v = new() { Source = bi, Margin = new Thickness(bgimage.BgImageLeftMargin * 4 / 3, bgimage.BgImageUpMargin * 4 / 3, bgimage.BgImageRigtMargin * 4 / 3, bgimage.BgImageBottomMargin * 4 / 3) };
             flowdocument.Blocks.Add(new BlockUIContainer(v));
         }
     }

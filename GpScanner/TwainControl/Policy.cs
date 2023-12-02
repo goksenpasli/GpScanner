@@ -8,11 +8,7 @@ namespace TwainControl;
 
 public class Policy : DependencyObject
 {
-    public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached(
-        "PolicyName",
-        typeof(string),
-        typeof(Policy),
-        new PropertyMetadata(string.Empty, Changed));
+    public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty, Changed));
 
     public static bool CheckKeyPolicy(string searchvalue, RegistryKey registryKey)
     {
@@ -39,8 +35,7 @@ public class Policy : DependencyObject
         return true;
     }
 
-    public static bool CheckPolicy(string policyname) => CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) &&
-    CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
+    public static bool CheckPolicy(string policyname) => CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
 
     public static string GetPolicyName(DependencyObject obj) => (string)obj.GetValue(PolicyNameProperty);
 

@@ -244,13 +244,11 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
 
-    private void TitleCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text =
-    Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, CultureInfo.CurrentUICulture.TextInfo.ToTitleCase(SelectedText.ToLower()));
+    private void TitleCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, CultureInfo.CurrentUICulture.TextInfo.ToTitleCase(SelectedText.ToLower()));
 
     private string ToggleTextCase(string text) => new(text.Select(z => char.IsLower(z) ? char.ToUpper(z) : char.IsUpper(z) ? char.ToLower(z) : z).ToArray());
 
     private void UpperCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, SelectedText.ToUpper());
 
-    private void UpperLowerCaseCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text =
-    Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, ToggleTextCase(SelectedText));
+    private void UpperLowerCaseCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, ToggleTextCase(SelectedText));
 }

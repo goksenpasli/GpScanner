@@ -20,9 +20,7 @@ namespace Extensions
             {
                 if (value is string path)
                 {
-                    return ShowHiddenFolders
-                           ? Directory.GetDirectories(path)
-                           : Directory.GetDirectories(path).Where(z => !new DirectoryInfo(z).Attributes.HasFlag(FileAttributes.Hidden));
+                    return ShowHiddenFolders ? Directory.GetDirectories(path) : Directory.GetDirectories(path).Where(z => !new DirectoryInfo(z).Attributes.HasFlag(FileAttributes.Hidden));
                 }
             }
             catch (Exception)

@@ -1,16 +1,13 @@
 ﻿using Extensions;
 using System.Collections.ObjectModel;
-using System.Xml.Serialization;
 
 namespace GpScanner.ViewModel;
 
-[XmlRoot(ElementName = "ScannerData")]
 public class ScannerData : InpcBase
 {
     private ObservableCollection<Data> data = [];
     private ObservableCollection<ReminderData> reminder = [];
 
-    [XmlElement(ElementName = "Data")]
     public ObservableCollection<Data> Data
     {
         get => data;
@@ -25,7 +22,6 @@ public class ScannerData : InpcBase
         }
     }
 
-    [XmlElement(ElementName = "Reminder")]
     public ObservableCollection<ReminderData> Reminder
     {
         get => reminder;

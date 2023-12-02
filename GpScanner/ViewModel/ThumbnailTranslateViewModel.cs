@@ -4,11 +4,7 @@ namespace GpScanner.ViewModel;
 
 public class ThumbnailTranslateViewModel : TranslateViewModel
 {
-    public static readonly DependencyProperty AttachedTextProperty = DependencyProperty.RegisterAttached(
-        "AttachedText",
-        typeof(string),
-        typeof(ThumbnailTranslateViewModel),
-        new PropertyMetadata(null, AttachedTextChanged));
+    public static readonly DependencyProperty AttachedTextProperty = DependencyProperty.RegisterAttached("AttachedText", typeof(string), typeof(ThumbnailTranslateViewModel), new PropertyMetadata(null, AttachedTextChanged));
 
     public static string GetAttachedText(DependencyObject obj) => (string)obj.GetValue(AttachedTextProperty);
 
