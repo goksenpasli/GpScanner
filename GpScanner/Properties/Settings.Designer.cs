@@ -467,5 +467,17 @@ namespace GpScanner.Properties {
                 this["ShowPdfInfo"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool BackUpDatabase {
+            get {
+                return ((bool)(this["BackUpDatabase"]));
+            }
+            set {
+                this["BackUpDatabase"] = value;
+            }
+        }
     }
 }

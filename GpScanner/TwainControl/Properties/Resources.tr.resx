@@ -694,4 +694,7 @@ BELGE EKLE</value>
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Erişim Reddedildi. Yönetici Oturumu Olduğundan Emin Olun</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>VERİTABANI DOSYASINI YEDEKLE</value>
+  </data>
 </root>

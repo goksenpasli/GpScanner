@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>フォルダーへのアクセスが拒否されました。</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>バックアップデータベースファイル</value>
+  </data>
 </root>

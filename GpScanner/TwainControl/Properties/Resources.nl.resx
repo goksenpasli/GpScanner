@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Maptoegang geweigerd.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>BACK-UP DATABASEBESTAND</value>
+  </data>
 </root>

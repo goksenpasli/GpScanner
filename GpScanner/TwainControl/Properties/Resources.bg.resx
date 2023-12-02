@@ -684,4 +684,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Достъпът до папката е отказан.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>РЕЗЕРВЕН ФАЙЛ НА БАЗАТА ДАННИ</value>
+  </data>
 </root>

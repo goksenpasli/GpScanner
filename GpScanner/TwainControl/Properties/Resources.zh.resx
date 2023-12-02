@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>文件夹访问被拒绝。</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>备份数据库文件</value>
+  </data>
 </root>

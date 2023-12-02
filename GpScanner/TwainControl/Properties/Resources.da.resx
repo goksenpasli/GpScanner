@@ -684,4 +684,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Mappeadgang nægtet.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>BACKUP DATABASE-FIL</value>
+  </data>
 </root>

@@ -684,4 +684,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Доступ да папкі забаронены.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>РЭЗЕРВОВАЯ КАПІЯ ФАЙЛА БАЗЫ ДАДЗЕНЫХ</value>
+  </data>
 </root>

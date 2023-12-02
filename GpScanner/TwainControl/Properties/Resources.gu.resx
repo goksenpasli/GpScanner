@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>ફોલ્ડર ઍક્સેસ નકારી.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>બેકઅપ ડેટાબેઝ ફાઇલ</value>
+  </data>
 </root>

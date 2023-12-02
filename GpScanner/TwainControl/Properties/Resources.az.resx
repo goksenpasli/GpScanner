@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Qovluğa giriş rədd edildi.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>MƏLUMAT BAZASI FAYININ YEDEK KOMPLESİ</value>
+  </data>
 </root>

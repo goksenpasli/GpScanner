@@ -1832,12 +1832,12 @@ public partial class GpScannerViewModel : InpcBase
 
     public static void BackupDatabaseFile()
     {
-        if (File.Exists(Settings.Default.DatabaseFile))
+        if (File.Exists(Settings.Default.DatabaseFile) && Settings.Default.BackUpDatabase)
         {
             FileInfo fi = new(Settings.Default.DatabaseFile);
             if (fi.Length > 0)
             {
-                File.Copy(fi.FullName, $"{fi.FullName}{DateTime.Today.DayOfWeek}.bak", true);
+                File.Copy(fi.FullName, $"{fi.DirectoryName}\\{DateTime.Today.DayOfWeek}.db", true);
             }
         }
     }
@@ -1973,8 +1973,8 @@ public partial class GpScannerViewModel : InpcBase
             .ExecuteSqlCommand(
                 """
                 CREATE TABLE "Data" (
-                	"FileName"	TEXT,
                 	"Id"	INTEGER UNIQUE,
+                	"FileName"	TEXT,
                 	"QrData"	TEXT,
                 	"FileContent"	TEXT,
                 	PRIMARY KEY("Id")
@@ -1984,8 +1984,8 @@ public partial class GpScannerViewModel : InpcBase
             .ExecuteSqlCommand(
                 """
                 CREATE TABLE "ReminderDatas" (
-                	"Açıklama"	TEXT,
                 	"Id"	INTEGER UNIQUE,
+                	"Açıklama"	TEXT,
                 	"Seen"	INTEGER,
                 	"Tarih"	INTEGER,
                 	"FileName"	TEXT,

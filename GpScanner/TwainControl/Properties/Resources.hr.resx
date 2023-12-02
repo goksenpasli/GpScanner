@@ -684,4 +684,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Pristup mapi odbijen.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>SIGURNOSNA KOPIJA DATOTEKE BAZE PODATAKA</value>
+  </data>
 </root>

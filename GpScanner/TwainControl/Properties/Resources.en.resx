@@ -688,4 +688,7 @@ TO FILE</value>
   <data name="INVALIDFILENAME" xml:space="preserve">
     <value>File Name Is Invalid</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>BACKUP DATABASE FILE</value>
+  </data>
 </root>

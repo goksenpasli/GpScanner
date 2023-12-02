@@ -58,11 +58,11 @@
                     </TabItem.Header>
                     <Grid Background="{StaticResource BorderBackground}">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="162.4" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="160" />
+                            <RowDefinition Height="47.2" />
                             <RowDefinition Height="89.6" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="88.8" />
+                            <RowDefinition Height="48" />
                             <RowDefinition Height="48" />
                         </Grid.RowDefinitions>
                         <GroupBox>
@@ -894,6 +894,26 @@
                                             Value="{Binding Path=UpdateInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
                                     </StackPanel>
+                                </CheckBox>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding Path=BackUpDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                    <CheckBox.Content>
+                                        <TextBlock>
+                                            <Run BaselineAlignment="Center" Text="{twainctrl:Loc BACKUPDB}" />
+                                            <Hyperlink BaselineAlignment="Center"
+                                                Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                                                TextDecorations="None">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="4" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Hyperlink>
+                                        </TextBlock>
+                                    </CheckBox.Content>
                                 </CheckBox>
                             </StackPanel>
                         </GroupBox>

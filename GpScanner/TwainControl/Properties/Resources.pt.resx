@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Acesso à pasta negado.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>ARQUIVO DE BACKUP DE DADOS</value>
+  </data>
 </root>

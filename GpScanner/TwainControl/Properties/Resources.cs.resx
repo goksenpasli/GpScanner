@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Přístup ke složce odepřen.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>ZÁLOHA DATABÁZOVÉHO SOUBORU</value>
+  </data>
 </root>

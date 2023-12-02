@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>تم رفض الوصول إلى المجلد.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>ملف قاعدة البيانات الاحتياطية</value>
+  </data>
 </root>

@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Δεν επιτρέπεται η πρόσβαση σε φάκελο.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>ΑΡΧΕΙΟ ΒΑΣΗΣ ΔΕΔΟΜΕΝΩΝ ΑΝΤΙΓΡΑΦΩΝ</value>
+  </data>
 </root>

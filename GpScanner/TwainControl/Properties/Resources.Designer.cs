@@ -171,6 +171,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string BACKUPDB {
+            get {
+                return ResourceManager.GetString("BACKUPDB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string BORDERDETECT {
             get {
                 return ResourceManager.GetString("BORDERDETECT", resourceCulture);

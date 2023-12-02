@@ -719,4 +719,7 @@
   <data name="INVALIDFILENAME" xml:space="preserve">
     <value />
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value />
+  </data>
 </root>

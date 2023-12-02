@@ -681,4 +681,7 @@
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Ordnerzugriff verweigert.</value>
   </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>BACKUP-DATENBANKDATEI</value>
+  </data>
 </root>
