@@ -530,7 +530,7 @@
                                 CopyButtonVisibility="Collapsed"
                                 OpenButtonVisibility="Collapsed"
                                 PasteButtonVisibility="Collapsed"
-                                Text="{Binding AramaMetni, Mode=TwoWay, Delay=350, UpdateSourceTrigger=PropertyChanged}" />
+                                Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <ComboBox VerticalContentAlignment="Center"
                                     twainctrl:Policy.PolicyName="SelectedSize"
@@ -1699,10 +1699,11 @@
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-                    <Extensions:ContentToggleButton Command="{Binding LoadUnindexedFiles}" HorizontalContentAlignment="Stretch"
+                    <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         Background="{x:Null}"
-                        BorderBrush="{x:Null}">
+                        BorderBrush="{x:Null}"
+                        Command="{Binding LoadUnindexedFiles}">
                         <Grid>
                             <ProgressBar Background="{x:Null}"
                                 BorderBrush="{x:Null}"

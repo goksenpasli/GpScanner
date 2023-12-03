@@ -68,30 +68,28 @@ public class Compressor : Control, INotifyPropertyChanged
                     ApplyDefaultPdfCompression(pdfDocument);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(LoadedPdfPath) && IsValidPdfFile(LoadedPdfPath));
+            parameter => true);
 
         BatchCompressFile = new RelayCommand<object>(
             async parameter =>
             {
                 foreach (BatchPdfData file in BatchPdfList)
                 {
+                    string outputFile = $"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf";
                     if (Path.GetExtension(file.Filename.ToLower()) == ".pdf" && IsValidPdfFile(file.Filename))
                     {
-                        using (PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename))
-                        {
-                            pdfDocument.Save($"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf");
-                            ApplyDefaultPdfCompression(pdfDocument);
-                        }
+                        using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
+                        pdfDocument.Save(outputFile);
+                        ApplyDefaultPdfCompression(pdfDocument);
+                        file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
                         file.Completed = true;
                     }
                     else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLower())))
                     {
-                        using (PdfDocument pdfDocument = await GeneratePdf(file.Filename))
-                        {
-                            pdfDocument.Save($"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf");
-                            ApplyDefaultPdfCompression(pdfDocument);
-                        }
-
+                        using PdfDocument pdfDocument = await GeneratePdf(file.Filename);
+                        pdfDocument.Save(outputFile);
+                        ApplyDefaultPdfCompression(pdfDocument);
+                        file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
                         file.Completed = true;
                     }
                 }

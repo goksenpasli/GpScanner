@@ -2012,6 +2012,14 @@ public partial class GpScannerViewModel : InpcBase
             _ = context.Database
             .ExecuteSqlCommand(
                 """
+                CREATE INDEX "index" ON "Data" (
+                	"FileContent",
+                	"FileName"	ASC
+                );
+                """);
+            _ = context.Database
+            .ExecuteSqlCommand(
+                """
                 CREATE TABLE "ReminderDatas" (
                 	"Id"	INTEGER UNIQUE,
                 	"Açıklama"	TEXT,
@@ -2192,21 +2200,24 @@ public partial class GpScannerViewModel : InpcBase
     {
         try
         {
-            if (Dosyalar == null)
+            if (Dosyalar is not null)
             {
-                return null;
+                List<string> unindexedfiles = Dosyalar.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLower()))).Select(z => z.FileName).ToList();
+
+                List<string> scannedFiles = (await DataYükle())?.Where(x => !string.IsNullOrEmpty(x.FileContent)).Select(x => x.FileName).ToList();
+
+                if (unindexedfiles != null && scannedFiles != null)
+                {
+                    return new ObservableCollection<string>(unindexedfiles.Except(scannedFiles));
+                }
             }
-
-            IEnumerable<string> unindexedfiles = Dosyalar.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLower()))).Select(z => z.FileName);
-
-            IEnumerable<string> scannedFiles = (await DataYükle())?.Where(x => !string.IsNullOrEmpty(x.FileContent)).Select(x => x.FileName);
-
-            return unindexedfiles == null || scannedFiles == null ? null : new ObservableCollection<string>(unindexedfiles.Except(scannedFiles));
         }
         catch (Exception)
         {
             return null;
         }
+
+        return null;
     }
 
     private async void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -2220,7 +2231,7 @@ public partial class GpScannerViewModel : InpcBase
 
             MainWindow.cvs.Filter += (s, x) =>
                                      {
-                                         Scanner scanner = x.Item as Scanner;
+                                         Scanner scanner = (Scanner)x.Item;
                                          if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
                                          {
                                              string seçiligün = SeçiliGün.ToString(Twainsettings.Settings.Default.FolderDateFormat);
@@ -2253,10 +2264,10 @@ public partial class GpScannerViewModel : InpcBase
                 return;
             }
             using AppDbContext context = new();
-            ObservableCollection<Data> datas = new([.. await context.Data.ToListAsync()]);
+            List<Data> datas = await context.Data.AsNoTracking().ToListAsync();
             MainWindow.cvs.Filter += (s, x) =>
                                      {
-                                         Scanner scanner = x.Item as Scanner;
+                                         Scanner scanner = (Scanner)x.Item;
                                          x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0 ||
                                          datas?.Any(z => z.FileName == scanner?.FileName && z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;
                                      };

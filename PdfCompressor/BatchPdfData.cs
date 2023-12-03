@@ -6,6 +6,7 @@ public class BatchPdfData : InpcBase
 {
     private bool completed;
     private string filename;
+    private double compressionRatio;
 
     public bool Completed
     {
@@ -29,6 +30,19 @@ public class BatchPdfData : InpcBase
             {
                 filename = value;
                 OnPropertyChanged(nameof(Filename));
+            }
+        }
+    }
+
+    public double CompressionRatio
+    {
+        get => compressionRatio;
+        set
+        {
+            if (compressionRatio != value)
+            {
+                compressionRatio = value;
+                OnPropertyChanged(nameof(CompressionRatio));
             }
         }
     }

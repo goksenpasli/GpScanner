@@ -111,14 +111,20 @@
                                                             CommandParameter="{Binding Mode=OneWay}"
                                                             TextDecorations="None">
                                                             <InlineUIContainer>
-                                                                <Image Width="16" Height="16">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="131" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
+                                                                <StackPanel Margin="1" Orientation="Horizontal">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Shell32.dll" />
+                                                                                <Binding Source="131" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                    <ProgressBar Width="32"
+                                                                        Background="{x:Null}"
+                                                                        Maximum="100"
+                                                                        Value="{Binding CompressionRatio, Mode=OneWay}" />
+                                                                </StackPanel>
                                                             </InlineUIContainer>
                                                         </Hyperlink>
                                                         <Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" />
