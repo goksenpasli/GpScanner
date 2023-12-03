@@ -110,6 +110,7 @@ public partial class GpScannerViewModel : InpcBase
     private bool sıralama;
     private TesseractViewModel tesseractViewModel;
     private TranslateViewModel translateViewModel;
+    private ObservableCollection<string> unIndexedFiles;
     private double zipProgress;
     private bool zipProgressIndeterminate;
 
@@ -129,7 +130,6 @@ public partial class GpScannerViewModel : InpcBase
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         _ = LoadDatas();
-        UnIndexedFiles = GetUnindexedFileData();
 
         if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
         {
@@ -460,6 +460,8 @@ public partial class GpScannerViewModel : InpcBase
                 }
             },
             parameter => true);
+
+        LoadUnindexedFiles = new RelayCommand<object>(async parameter => UnIndexedFiles = await GetUnindexedFileData(), parameter => true);
 
         Tümünüİşaretle = new RelayCommand<object>(
             parameter =>
@@ -1382,6 +1384,8 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> LoadContributionData { get; }
 
+    public RelayCommand<object> LoadUnindexedFiles { get; }
+
     public GridLength MainWindowDocumentGuiControlLength
     {
         get => mainWindowDocumentGuiControlLength;
@@ -1805,7 +1809,18 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand TümününİşaretiniKaldır { get; }
 
-    public ObservableCollection<string> UnIndexedFiles { get; set; }
+    public ObservableCollection<string> UnIndexedFiles
+    {
+        get => unIndexedFiles;
+        set
+        {
+            if (unIndexedFiles != value)
+            {
+                unIndexedFiles = value;
+                OnPropertyChanged(nameof(UnIndexedFiles));
+            }
+        }
+    }
 
     public RelayCommand<object> UnindexedAllFilesOcr { get; }
 
@@ -2172,18 +2187,18 @@ public partial class GpScannerViewModel : InpcBase
         return null;
     }
 
-    private ObservableCollection<string> GetUnindexedFileData()
+    private async Task<ObservableCollection<string>> GetUnindexedFileData()
     {
         try
         {
-            if (Dosyalar == null || ScannerData == null)
+            if (Dosyalar == null)
             {
                 return null;
             }
 
             IEnumerable<string> unindexedfiles = Dosyalar.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLower()))).Select(z => z.FileName);
 
-            IEnumerable<string> scannedFiles = ScannerData.Data?.Where(x => !string.IsNullOrEmpty(x.FileContent)).Select(x => x.FileName);
+            IEnumerable<string> scannedFiles = (await DataYükle())?.Where(x => !string.IsNullOrEmpty(x.FileContent)).Select(x => x.FileName);
 
             return unindexedfiles == null || scannedFiles == null ? null : new ObservableCollection<string>(unindexedfiles.Except(scannedFiles));
         }
@@ -2466,7 +2481,7 @@ public partial class GpScannerViewModel : InpcBase
         return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
     }
 
-    private async Task LoadDatas() => ScannerData = new ScannerData { Data = await DataYükle(), Reminder = await ReminderYükle() };
+    private async Task LoadDatas() => ScannerData = new ScannerData { Reminder = await ReminderYükle() };
 
     private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
 

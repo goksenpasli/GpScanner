@@ -1699,7 +1699,7 @@
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-                    <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch"
+                    <Extensions:ContentToggleButton Command="{Binding LoadUnindexedFiles}" HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         Background="{x:Null}"
                         BorderBrush="{x:Null}">
