@@ -1863,9 +1863,10 @@ public partial class GpScannerViewModel : InpcBase
         if (File.Exists(Settings.Default.DatabaseFile) && Settings.Default.BackUpDatabase)
         {
             FileInfo fi = new(Settings.Default.DatabaseFile);
+            string backupfile = $"{fi.DirectoryName}\\{DateTime.Today.DayOfWeek}.db";
             if (fi.Length > 0)
             {
-                File.Copy(fi.FullName, $"{fi.DirectoryName}\\{DateTime.Today.DayOfWeek}.db", true);
+                File.Copy(fi.FullName, backupfile, true);
             }
         }
     }
@@ -2259,6 +2260,7 @@ public partial class GpScannerViewModel : InpcBase
                                          x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0 ||
                                          datas?.Any(z => z.FileName == scanner?.FileName && z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;
                                      };
+            datas = null;
         }
 
         if (e.PropertyName is "SeçiliDil")
