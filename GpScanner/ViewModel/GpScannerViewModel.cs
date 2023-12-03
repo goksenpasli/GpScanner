@@ -1,11 +1,4 @@
-﻿using Extensions;
-using GpScanner.Properties;
-using Microsoft.SharePoint.Client;
-using Microsoft.Win32;
-using Ocr;
-using PdfCompressor;
-using PdfSharp.Pdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -30,6 +23,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using System.Windows.Threading;
+using Extensions;
+using GpScanner.Properties;
+using Microsoft.SharePoint.Client;
+using Microsoft.Win32;
+using Ocr;
+using PdfCompressor;
+using PdfSharp.Pdf;
 using TwainControl;
 using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
@@ -964,10 +964,8 @@ public partial class GpScannerViewModel : InpcBase
             parameter => Policy.CheckPolicy("OpenSettings"));
     }
 
-    public static bool IsAdministrator
-    {
-        get
-        {
+    public static bool IsAdministrator {
+        get {
             using WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
@@ -978,12 +976,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand AddToCalendar { get; }
 
-    public int AllPdfPage
-    {
+    public int AllPdfPage {
         get => allPdfPage;
 
-        set
-        {
+        set {
             if (allPdfPage != value)
             {
                 allPdfPage = value;
@@ -994,12 +990,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> ApplyCalendarData { get; }
 
-    public string AramaMetni
-    {
+    public string AramaMetni {
         get => aramaMetni;
 
-        set
-        {
+        set {
             if (aramaMetni != value)
             {
                 aramaMetni = value;
@@ -1010,21 +1004,17 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand AssociateExtension { get; }
 
-    public IEnumerable<string> AudioFiles
-    {
-        get
-        {
+    public IEnumerable<string> AudioFiles {
+        get {
             string folder = $"{Environment.GetFolderPath(Environment.SpecialFolder.Windows)}\\Media";
             return Directory.Exists(folder) ? Directory.EnumerateFiles(folder, "*.wav", SearchOption.TopDirectoryOnly) : null;
         }
     }
 
-    public ObservableCollection<string> BarcodeList
-    {
+    public ObservableCollection<string> BarcodeList {
         get => barcodeList;
 
-        set
-        {
+        set {
             if (barcodeList != value)
             {
                 barcodeList = value;
@@ -1033,12 +1023,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool BatchDialogOpen
-    {
+    public bool BatchDialogOpen {
         get => batchDialogOpen;
 
-        set
-        {
+        set {
             if (batchDialogOpen != value)
             {
                 batchDialogOpen = value;
@@ -1047,12 +1035,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string BatchFolder
-    {
+    public string BatchFolder {
         get => batchFolder;
 
-        set
-        {
+        set {
             if (batchFolder != value)
             {
                 batchFolder = value;
@@ -1061,11 +1047,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<BatchFiles> BatchFolderProcessedFileList
-    {
+    public ObservableCollection<BatchFiles> BatchFolderProcessedFileList {
         get => batchFolderProcessedFileList;
-        set
-        {
+        set {
             if (batchFolderProcessedFileList != value)
             {
                 batchFolderProcessedFileList = value;
@@ -1084,12 +1068,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> BatchMergeSelectedFiles { get; }
 
-    public ObservableCollection<BatchTxtOcr> BatchTxtOcrs
-    {
+    public ObservableCollection<BatchTxtOcr> BatchTxtOcrs {
         get => batchTxtOcrs;
 
-        set
-        {
+        set {
             if (batchTxtOcrs != value)
             {
                 batchTxtOcrs = value;
@@ -1098,11 +1080,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<string> BurnFiles
-    {
+    public ObservableCollection<string> BurnFiles {
         get => burnFiles;
-        set
-        {
+        set {
             if (burnFiles != value)
             {
                 burnFiles = value;
@@ -1111,11 +1091,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string CalendarDesc
-    {
+    public string CalendarDesc {
         get => calendarDesc;
-        set
-        {
+        set {
             if (calendarDesc != value)
             {
                 calendarDesc = value;
@@ -1124,12 +1102,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public XmlLanguage CalendarLang
-    {
+    public XmlLanguage CalendarLang {
         get => calendarLang;
 
-        set
-        {
+        set {
             if (calendarLang != value)
             {
                 calendarLang = value;
@@ -1138,11 +1114,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool CalendarPanelIsExpanded
-    {
+    public bool CalendarPanelIsExpanded {
         get => calendarPanelIsExpanded;
-        set
-        {
+        set {
             if (calendarPanelIsExpanded != value)
             {
                 calendarPanelIsExpanded = value;
@@ -1157,12 +1131,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand ChangeDataFolder { get; }
 
-    public int CheckedPdfCount
-    {
+    public int CheckedPdfCount {
         get => checkedPdfCount;
 
-        set
-        {
+        set {
             if (checkedPdfCount != value)
             {
                 checkedPdfCount = value;
@@ -1173,12 +1145,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand CheckUpdate { get; }
 
-    public ObservableCollection<BatchPdfData> CompressedFiles
-    {
+    public ObservableCollection<BatchPdfData> CompressedFiles {
         get => compressedFiles;
 
-        set
-        {
+        set {
             if (compressedFiles != value)
             {
                 compressedFiles = value;
@@ -1187,11 +1157,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<ContributionData> ContributionData
-    {
+    public ObservableCollection<ContributionData> ContributionData {
         get => contributionData;
-        set
-        {
+        set {
             if (contributionData != value)
             {
                 contributionData = value;
@@ -1206,12 +1174,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand DateForward { get; }
 
-    public bool DetectBarCode
-    {
+    public bool DetectBarCode {
         get => detectBarCode;
 
-        set
-        {
+        set {
             if (detectBarCode != value)
             {
                 detectBarCode = value;
@@ -1220,12 +1186,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool DetectPageSeperator
-    {
+    public bool DetectPageSeperator {
         get => detectPageSeperator;
 
-        set
-        {
+        set {
             if (detectPageSeperator != value)
             {
                 detectPageSeperator = value;
@@ -1234,12 +1198,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool DocumentPanelIsExpanded
-    {
+    public bool DocumentPanelIsExpanded {
         get => documentPanelIsExpanded;
 
-        set
-        {
+        set {
             if (documentPanelIsExpanded != value)
             {
                 documentPanelIsExpanded = value;
@@ -1248,12 +1210,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<Scanner> Dosyalar
-    {
+    public ObservableCollection<Scanner> Dosyalar {
         get => dosyalar;
 
-        set
-        {
+        set {
             if (dosyalar != value)
             {
                 dosyalar = value;
@@ -1264,11 +1224,9 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand ExploreFile { get; }
 
-    public ObservableCollection<string> FileSystemWatcherProcessedFileList
-    {
+    public ObservableCollection<string> FileSystemWatcherProcessedFileList {
         get => fileSystemWatcherProcessedFileList;
-        set
-        {
+        set {
             if (fileSystemWatcherProcessedFileList != value)
             {
                 fileSystemWatcherProcessedFileList = value;
@@ -1279,12 +1237,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> FocusControl { get; }
 
-    public double Fold
-    {
+    public double Fold {
         get => fold;
 
-        set
-        {
+        set {
             if (fold != value)
             {
                 fold = value;
@@ -1293,12 +1249,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string FtpPassword
-    {
+    public string FtpPassword {
         get => ftpPassword;
 
-        set
-        {
+        set {
             if (ftpPassword != value)
             {
                 ftpPassword = value;
@@ -1307,12 +1261,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string FtpSite
-    {
+    public string FtpSite {
         get => ftpSite;
 
-        set
-        {
+        set {
             if (ftpSite != value)
             {
                 ftpSite = value;
@@ -1321,12 +1273,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string FtpUserName
-    {
+    public string FtpUserName {
         get => ftpUserName;
 
-        set
-        {
+        set {
             if (ftpUserName != value)
             {
                 ftpUserName = value;
@@ -1341,12 +1291,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
 
-    public int IndexedFileCount
-    {
+    public int IndexedFileCount {
         get => ındexedFileCount;
 
-        set
-        {
+        set {
             if (ındexedFileCount != value)
             {
                 ındexedFileCount = value;
@@ -1355,11 +1303,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public FlowDirection LangFlowDirection
-    {
+    public FlowDirection LangFlowDirection {
         get => langFlowDirection;
-        set
-        {
+        set {
             if (langFlowDirection != value)
             {
                 langFlowDirection = value;
@@ -1368,12 +1314,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool ListBoxBorderAnimation
-    {
+    public bool ListBoxBorderAnimation {
         get => listBoxBorderAnimation;
 
-        set
-        {
+        set {
             if (listBoxBorderAnimation != value)
             {
                 listBoxBorderAnimation = value;
@@ -1386,12 +1330,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> LoadUnindexedFiles { get; }
 
-    public GridLength MainWindowDocumentGuiControlLength
-    {
+    public GridLength MainWindowDocumentGuiControlLength {
         get => mainWindowDocumentGuiControlLength;
 
-        set
-        {
+        set {
             if (mainWindowDocumentGuiControlLength != value)
             {
                 mainWindowDocumentGuiControlLength = value;
@@ -1400,12 +1342,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public GridLength MainWindowGuiControlLength
-    {
+    public GridLength MainWindowGuiControlLength {
         get => mainWindowGuiControlLength;
 
-        set
-        {
+        set {
             if (mainWindowGuiControlLength != value)
             {
                 mainWindowGuiControlLength = value;
@@ -1414,11 +1354,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public double Mirror
-    {
+    public double Mirror {
         get => mirror;
-        set
-        {
+        set {
             if (mirror != value)
             {
                 mirror = value;
@@ -1429,11 +1367,9 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand ModifyGridWidth { get; }
 
-    public DateTime NotifyDate
-    {
+    public DateTime NotifyDate {
         get => notifyDate;
-        set
-        {
+        set {
             if (notifyDate != value)
             {
                 notifyDate = value;
@@ -1442,11 +1378,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool OcrAllPdfPages
-    {
+    public bool OcrAllPdfPages {
         get => ocrAllPdfPages;
-        set
-        {
+        set {
             if (ocrAllPdfPages != value)
             {
                 ocrAllPdfPages = value;
@@ -1455,11 +1389,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public double OcrAllPdfPagesProgress
-    {
+    public double OcrAllPdfPagesProgress {
         get => ocrAllPdfPagesProgress;
-        set
-        {
+        set {
             if (ocrAllPdfPagesProgress != value)
             {
                 ocrAllPdfPagesProgress = value;
@@ -1468,12 +1400,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool OcrIsBusy
-    {
+    public bool OcrIsBusy {
         get => ocrısBusy;
 
-        set
-        {
+        set {
             if (ocrısBusy != value)
             {
                 ocrısBusy = value;
@@ -1486,11 +1416,9 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand OcrPdfThumbnailPage { get; }
 
-    public int? OcrPdfThumbnailPageNumber
-    {
+    public int? OcrPdfThumbnailPageNumber {
         get => ocrPdfThumbnailPageNumber;
-        set
-        {
+        set {
             if (ocrPdfThumbnailPageNumber != value)
             {
                 ocrPdfThumbnailPageNumber = value;
@@ -1503,12 +1431,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> OpenSettings { get; }
 
-    public string PatchFileName
-    {
+    public string PatchFileName {
         get => patchFileName;
 
-        set
-        {
+        set {
             if (patchFileName != value)
             {
                 patchFileName = value;
@@ -1517,12 +1443,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string PatchProfileName
-    {
+    public string PatchProfileName {
         get => patchProfileName;
 
-        set
-        {
+        set {
             if (patchProfileName != value)
             {
                 patchProfileName = value;
@@ -1531,12 +1455,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string PatchTag
-    {
+    public string PatchTag {
         get => patchTag;
 
-        set
-        {
+        set {
             if (patchTag != value)
             {
                 patchTag = value;
@@ -1545,12 +1467,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool PdfBatchRunning
-    {
+    public bool PdfBatchRunning {
         get => pdfBatchRunning;
 
-        set
-        {
+        set {
             if (pdfBatchRunning != value)
             {
                 pdfBatchRunning = value;
@@ -1561,12 +1481,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand PdfBirleştir { get; }
 
-    public double PdfMergeProgressValue
-    {
+    public double PdfMergeProgressValue {
         get => pdfMergeProgressValue;
 
-        set
-        {
+        set {
             if (pdfMergeProgressValue != value)
             {
                 pdfMergeProgressValue = value;
@@ -1583,12 +1501,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand PrintImage { get; }
 
-    public Brush ProgressBarForegroundBrush
-    {
+    public Brush ProgressBarForegroundBrush {
         get => progressBarForegroundBrush;
 
-        set
-        {
+        set {
             if (progressBarForegroundBrush != value)
             {
                 progressBarForegroundBrush = value;
@@ -1605,11 +1521,9 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand ResetSettings { get; }
 
-    public double Ripple
-    {
+    public double Ripple {
         get => ripple;
-        set
-        {
+        set {
             if (ripple != value)
             {
                 ripple = value;
@@ -1622,12 +1536,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand SaveQrImage { get; }
 
-    public ObservableCollection<OcrData> ScannedText
-    {
+    public ObservableCollection<OcrData> ScannedText {
         get => scannedText;
 
-        set
-        {
+        set {
             if (scannedText != value)
             {
                 scannedText = value;
@@ -1638,12 +1550,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ScannerData ScannerData { get; set; }
 
-    public string SeçiliDil
-    {
+    public string SeçiliDil {
         get => seçiliDil;
 
-        set
-        {
+        set {
             if (seçiliDil != value)
             {
                 seçiliDil = value;
@@ -1652,12 +1562,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public DateTime SeçiliGün
-    {
+    public DateTime SeçiliGün {
         get => seçiliGün;
 
-        set
-        {
+        set {
             if (seçiliGün != value)
             {
                 seçiliGün = value;
@@ -1666,11 +1574,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public BatchFiles SelectedBatchFile
-    {
+    public BatchFiles SelectedBatchFile {
         get => selectedBatchFile;
-        set
-        {
+        set {
             if (selectedBatchFile != value)
             {
                 selectedBatchFile = value;
@@ -1679,11 +1585,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public ContributionData SelectedContribution
-    {
+    public ContributionData SelectedContribution {
         get => selectedContribution;
-        set
-        {
+        set {
             if (selectedContribution != value)
             {
                 selectedContribution = value;
@@ -1692,12 +1596,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string SelectedFtp
-    {
+    public string SelectedFtp {
         get => selectedFtp;
 
-        set
-        {
+        set {
             if (selectedFtp != value)
             {
                 selectedFtp = value;
@@ -1706,11 +1608,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public ReminderData SelectedReminder
-    {
+    public ReminderData SelectedReminder {
         get => selectedReminder;
-        set
-        {
+        set {
             if (selectedReminder != value)
             {
                 selectedReminder = value;
@@ -1719,12 +1619,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public Size SelectedSize
-    {
+    public Size SelectedSize {
         get => selectedSize;
 
-        set
-        {
+        set {
             if (selectedSize != value)
             {
                 selectedSize = value;
@@ -1743,12 +1641,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public int[] SettingsPagePictureResizeList { get; } = Enumerable.Range(5, 100).Where(z => z % 5 == 0).ToArray();
 
-    public bool Shutdown
-    {
+    public bool Shutdown {
         get => shutdown;
 
-        set
-        {
+        set {
             if (shutdown != value)
             {
                 shutdown = value;
@@ -1757,12 +1653,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool Sıralama
-    {
+    public bool Sıralama {
         get => sıralama;
 
-        set
-        {
+        set {
             if (sıralama != value)
             {
                 sıralama = value;
@@ -1777,12 +1671,10 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand Tersiniİşaretle { get; }
 
-    public TesseractViewModel TesseractViewModel
-    {
+    public TesseractViewModel TesseractViewModel {
         get => tesseractViewModel;
 
-        set
-        {
+        set {
             if (tesseractViewModel != value)
             {
                 tesseractViewModel = value;
@@ -1791,12 +1683,10 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public TranslateViewModel TranslateViewModel
-    {
+    public TranslateViewModel TranslateViewModel {
         get => translateViewModel;
 
-        set
-        {
+        set {
             if (translateViewModel != value)
             {
                 translateViewModel = value;
@@ -1809,11 +1699,9 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand TümününİşaretiniKaldır { get; }
 
-    public ObservableCollection<string> UnIndexedFiles
-    {
+    public ObservableCollection<string> UnIndexedFiles {
         get => unIndexedFiles;
-        set
-        {
+        set {
             if (unIndexedFiles != value)
             {
                 unIndexedFiles = value;
@@ -1832,11 +1720,9 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
 
-    public double ZipProgress
-    {
+    public double ZipProgress {
         get => zipProgress;
-        set
-        {
+        set {
             if (zipProgress != value)
             {
                 zipProgress = value;
@@ -1845,11 +1731,9 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool ZipProgressIndeterminate
-    {
+    public bool ZipProgressIndeterminate {
         get => zipProgressIndeterminate;
-        set
-        {
+        set {
             if (zipProgressIndeterminate != value)
             {
                 zipProgressIndeterminate = value;
@@ -2263,14 +2147,21 @@ public partial class GpScannerViewModel : InpcBase
                 OnPropertyChanged(nameof(SeçiliGün));
                 return;
             }
-            using AppDbContext context = new();
-            List<Data> datas = await context.Data.AsNoTracking().ToListAsync();
+
+            List<Data> datas = await Task.Run(async () =>
+            {
+                ZipProgressIndeterminate = true;
+                using AppDbContext context = new();
+                return (await context.Data.ToListAsync())?.Where(z => z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
+            });
+
             MainWindow.cvs.Filter += (s, x) =>
                                      {
                                          Scanner scanner = (Scanner)x.Item;
                                          x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0 ||
-                                         datas?.Any(z => z.FileName == scanner?.FileName && z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;
+                                         datas?.Any(z => z.FileName == scanner?.FileName) == true;
                                      };
+            ZipProgressIndeterminate=false;
             datas = null;
         }
 
