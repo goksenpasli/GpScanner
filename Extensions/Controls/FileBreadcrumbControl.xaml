@@ -56,9 +56,11 @@
                                                     <ItemsControl.ItemTemplate>
                                                         <DataTemplate>
                                                             <TextBlock VerticalAlignment="Center">
-                                                                <Image Width="16"
-                                                                    Height="16"
-                                                                    Source="{Binding Mode=OneWay, Converter={StaticResource FolderPathToIconConverter}}" />
+                                                                <InlineUIContainer BaselineAlignment="Center">
+                                                                    <Image Width="16"
+                                                                        Height="16"
+                                                                        Source="{Binding Mode=OneWay, Converter={StaticResource FolderPathToIconConverter}}" />
+                                                                </InlineUIContainer>
                                                                 <Hyperlink BaselineAlignment="Center"
                                                                     Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
                                                                     CommandParameter="{Binding Mode=OneWay}"

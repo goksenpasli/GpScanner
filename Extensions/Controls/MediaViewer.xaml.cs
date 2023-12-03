@@ -893,7 +893,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    private static void RenderSubtitle(MediaViewer viewer, TimeSpan position)
+    private static async void RenderSubtitle(MediaViewer viewer, TimeSpan position)
     {
         foreach (SubtitleContent srtcontent in viewer.ParsedSubtitle)
         {
@@ -904,7 +904,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 if (viewer.AutoTranslate)
                 {
                     viewer.TooltipOriginalSubtitle = srtcontent.Text;
-                    viewer.SubTitle = TranslateViewModel.DileÇevirAsync(srtcontent.Text, viewer.MevcutDil, viewer.ÇevrilenDil).ConfigureAwait(false).GetAwaiter().GetResult();
+                    viewer.SubTitle = await TranslateViewModel.DileÇevirAsync(srtcontent.Text, viewer.MevcutDil, viewer.ÇevrilenDil);
                 }
                 else
                 {
@@ -977,8 +977,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         return index < PlayList.Count - 1 ? PlayList[index + 1] : null;
     }
 
-    private ObservableCollection<SubtitleContent> GetParserSubtitleContent(string file)
-    { return string.Equals(Path.GetExtension(file), ".srt", StringComparison.OrdinalIgnoreCase) ? ParseSrtFile(file) : string.Equals(Path.GetExtension(file), ".vtt", StringComparison.OrdinalIgnoreCase) ? ParseVttFile(file) : null; }
+    private ObservableCollection<SubtitleContent> GetParserSubtitleContent(string file) => string.Equals(Path.GetExtension(file), ".srt", StringComparison.OrdinalIgnoreCase)
+                                                                                           ? ParseSrtFile(file)
+                                                                                           : string.Equals(Path.GetExtension(file), ".vtt", StringComparison.OrdinalIgnoreCase) ? ParseVttFile(file) : null;
 
     private void MediaElement_MediaEnded(object sender, RoutedEventArgs e)
     {

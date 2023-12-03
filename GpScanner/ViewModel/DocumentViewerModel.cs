@@ -121,7 +121,7 @@ public class DocumentViewerModel : InpcBase
 
     public string PdfFileContent
     {
-        get => string.Join(" ", GpScannerViewModel.DataYükle()?.Where(z => z.FileName == FilePath).Select(z => z.FileContent));
+        get => string.Join(" ", GpScannerViewModel.DataYükle()?.Result?.Where(z => z.FileName == FilePath).Select(z => z.FileContent));
 
         set
         {

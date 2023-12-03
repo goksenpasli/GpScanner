@@ -128,7 +128,7 @@ public partial class GpScannerViewModel : InpcBase
         GenerateJumpList();
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
-        ScannerData = new ScannerData { Data = DataYükle(), Reminder = ReminderYükle() };
+        _ = LoadDatas();
         UnIndexedFiles = GetUnindexedFileData();
 
         if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
@@ -930,14 +930,14 @@ public partial class GpScannerViewModel : InpcBase
             parameter => parameter is Scanner scanner && File.Exists(scanner?.FileName) && !string.IsNullOrWhiteSpace(CalendarDesc));
 
         ApplyCalendarData = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 using (AppDbContext context = new())
                 {
                     context.Entry(SelectedReminder).State = EntityState.Modified;
                     _ = context.SaveChanges();
                 }
-                ScannerData.Reminder = ReminderYükle();
+                ScannerData.Reminder = await ReminderYükle();
             },
             parameter => SelectedReminder is not null);
 
@@ -1855,7 +1855,7 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public static ObservableCollection<Data> DataYükle()
+    public static async Task<ObservableCollection<Data>> DataYükle()
     {
         try
         {
@@ -1864,7 +1864,7 @@ public partial class GpScannerViewModel : InpcBase
                 return null;
             }
             using AppDbContext context = new();
-            return new ObservableCollection<Data>([.. context.Data]);
+            return new ObservableCollection<Data>([.. await context.Data.ToListAsync()]);
         }
         catch (Exception ex)
         {
@@ -2193,10 +2193,15 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    private void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "SeçiliGün")
         {
+            if (!string.IsNullOrWhiteSpace(AramaMetni))
+            {
+                AramaMetni = string.Empty;
+            }
+
             MainWindow.cvs.Filter += (s, x) =>
                                      {
                                          Scanner scanner = x.Item as Scanner;
@@ -2231,12 +2236,13 @@ public partial class GpScannerViewModel : InpcBase
                 OnPropertyChanged(nameof(SeçiliGün));
                 return;
             }
-
+            using AppDbContext context = new();
+            ObservableCollection<Data> datas = new([.. await context.Data.ToListAsync()]);
             MainWindow.cvs.Filter += (s, x) =>
                                      {
                                          Scanner scanner = x.Item as Scanner;
                                          x.Accepted = Path.GetFileNameWithoutExtension(scanner?.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0 ||
-                                         DataYükle().Any(z => z.FileName == scanner?.FileName && z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0);
+                                         datas?.Any(z => z.FileName == scanner?.FileName && z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;
                                      };
         }
 
@@ -2460,6 +2466,8 @@ public partial class GpScannerViewModel : InpcBase
         return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
     }
 
+    private async Task LoadDatas() => ScannerData = new ScannerData { Data = await DataYükle(), Reminder = await ReminderYükle() };
+
     private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
 
     private void RegisterSimplePdfFileWatcher()
@@ -2483,7 +2491,7 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    private ObservableCollection<ReminderData> ReminderYükle()
+    private async Task<ObservableCollection<ReminderData>> ReminderYükle()
     {
         try
         {
@@ -2492,7 +2500,7 @@ public partial class GpScannerViewModel : InpcBase
                 return null;
             }
             using AppDbContext context = new();
-            return new ObservableCollection<ReminderData>([.. context.ReminderData?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih)]);
+            return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.ToListAsync())?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih)]);
         }
         catch (Exception ex)
         {

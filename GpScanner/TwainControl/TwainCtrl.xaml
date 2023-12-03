@@ -568,14 +568,9 @@
                                         Command="{Binding KayıtYoluBelirle}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="32" Height="32">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="4" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
+                                                <Image Width="32"
+                                                    Height="32"
+                                                    Source="{Binding AutoFolder, Source={x:Static properties:Settings.Default}, Mode=OneWay, Converter={StaticResource FolderPathToIconConverter}}" />
                                                 <Image Canvas.Left="0"
                                                     Canvas.Bottom="0"
                                                     Width="20"
