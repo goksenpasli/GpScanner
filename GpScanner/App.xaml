@@ -164,7 +164,10 @@
                         ScrollBarVisible="Visible"
                         SearchTextContentVisibility="Collapsed"
                         SnapTick="True" />
-                    <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
+                    <TextBox Grid.Column="2"
+                        HorizontalScrollBarVisibility="Visible"
+                        Text="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}"
+                        VerticalScrollBarVisibility="Visible" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateMini">
