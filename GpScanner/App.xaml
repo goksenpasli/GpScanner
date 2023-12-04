@@ -167,6 +167,7 @@
                     <TextBox Grid.Column="2"
                         HorizontalScrollBarVisibility="Visible"
                         Text="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}"
+                        TextWrapping="Wrap"
                         VerticalScrollBarVisibility="Visible" />
                 </Grid>
             </DataTemplate>
