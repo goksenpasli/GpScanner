@@ -1906,24 +1906,6 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public static async Task<ObservableCollection<Data>> DataYükle()
-    {
-        try
-        {
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                return null;
-            }
-            using AppDbContext context = new();
-            return new ObservableCollection<Data>([.. await context.Data.ToListAsync()]);
-        }
-        catch (Exception ex)
-        {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
-            return null;
-        }
-    }
-
     public void AddBarcodeToList(string barcodecontent)
     {
         if (!string.IsNullOrWhiteSpace(barcodecontent))
@@ -2238,8 +2220,8 @@ public partial class GpScannerViewModel : InpcBase
             if (Dosyalar is not null)
             {
                 List<string> unindexedfiles = Dosyalar.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLower()))).Select(z => z.FileName).ToList();
-
-                List<string> scannedFiles = (await DataYükle())?.Where(x => !string.IsNullOrEmpty(x.FileContent)).Select(x => x.FileName).ToList();
+                using AppDbContext context = new();
+                List<string> scannedFiles = (await context.Data.AsNoTracking().ToListAsync())?.Where(x => !string.IsNullOrEmpty(x.FileContent)).Select(x => x.FileName).ToList();
 
                 if (unindexedfiles != null && scannedFiles != null)
                 {
@@ -2304,7 +2286,7 @@ public partial class GpScannerViewModel : InpcBase
                 {
                     ZipProgressIndeterminate = true;
                     using AppDbContext context = new();
-                    return (await context.Data.ToListAsync())?.Where(z => z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
+                    return (await context.Data.AsNoTracking().ToListAsync())?.Where(z => z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0).ToList();
                 });
 
             MainWindow.cvs.Filter += (s, x) =>
@@ -2570,7 +2552,7 @@ public partial class GpScannerViewModel : InpcBase
                 return null;
             }
             using AppDbContext context = new();
-            return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.ToListAsync())?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih)]);
+            return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.AsNoTracking().ToListAsync())?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih)]);
         }
         catch (Exception ex)
         {

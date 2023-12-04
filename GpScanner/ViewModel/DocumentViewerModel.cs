@@ -1,11 +1,15 @@
 ﻿using Extensions;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl;
+using static GpScanner.ViewModel.GpScannerViewModel;
 
 namespace GpScanner.ViewModel;
 
@@ -21,6 +25,7 @@ public class DocumentViewerModel : InpcBase
 
     public DocumentViewerModel()
     {
+        PropertyChanged += DocumentViewerModel_PropertyChanged;
         Back = new RelayCommand<object>(
             parameter =>
             {
@@ -84,7 +89,6 @@ public class DocumentViewerModel : InpcBase
                 filePath = value;
                 OnPropertyChanged(nameof(FilePath));
                 OnPropertyChanged(nameof(Title));
-                OnPropertyChanged(nameof(PdfFileContent));
             }
         }
     }
@@ -121,7 +125,7 @@ public class DocumentViewerModel : InpcBase
 
     public string PdfFileContent
     {
-        get => string.Join(" ", GpScannerViewModel.DataYükle()?.Result?.Where(z => z.FileName == FilePath).Select(z => z.FileContent));
+        get => pdfFileContent;
 
         set
         {
@@ -158,6 +162,19 @@ public class DocumentViewerModel : InpcBase
                 title = value;
                 OnPropertyChanged(nameof(Title));
             }
+        }
+    }
+
+    private async void DocumentViewerModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "FilePath")
+        {
+            PdfFileContent = await Task.Run(
+                async () =>
+                {
+                    using AppDbContext context = new();
+                    return string.Join(" ", (await context.Data.AsNoTracking().ToListAsync())?.Where(z => z.FileName == FilePath)?.Select(z => z.FileContent));
+                });
         }
     }
 }

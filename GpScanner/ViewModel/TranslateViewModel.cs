@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Speech.Synthesis;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace GpScanner.ViewModel;
@@ -106,15 +105,7 @@ public class TranslateViewModel : InpcBase
 
     public string Metin
     {
-        get
-        {
-            if (!string.IsNullOrEmpty(metin))
-            {
-                _ = Task.Run(async () => Çeviri = await Extensions.TranslateViewModel.DileÇevirAsync(metin, MevcutDil, ÇevrilenDil));
-            }
-
-            return metin;
-        }
+        get => metin;
 
         set
         {
@@ -122,7 +113,6 @@ public class TranslateViewModel : InpcBase
             {
                 metin = value;
                 OnPropertyChanged(nameof(Metin));
-                OnPropertyChanged(nameof(Çeviri));
             }
         }
     }
@@ -188,8 +178,12 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    private void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
+        if (e.PropertyName is "Metin")
+        {
+            Çeviri = await Extensions.TranslateViewModel.DileÇevirAsync(Metin, MevcutDil, ÇevrilenDil);
+        }
         if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
         {
             speechSynthesizer ??= new SpeechSynthesizer();
