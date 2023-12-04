@@ -968,20 +968,12 @@
                                                         <Run Text="{Binding Açıklama}" />
                                                     </Hyperlink>
                                                 </CheckBox>
-                                                <Image Width="384"
+                                                <ContentPresenter Width="384"
                                                     Height="384"
-                                                    Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
-                                                    <Image.Tag>
-                                                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
-                                                            <Binding Mode="OneWay" Path="FileName" />
-                                                            <Binding Mode="OneWay">
-                                                                <Binding.Source>
-                                                                    <sys:Int32>1</sys:Int32>
-                                                                </Binding.Source>
-                                                            </Binding>
-                                                        </MultiBinding>
-                                                    </Image.Tag>
-                                                </Image>
+                                                    d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
+                                                    Content="{Binding Mode=OneWay, Path=FileName}"
+                                                    ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}"
+                                                    IsHitTestVisible="False" />
                                             </StackPanel>
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
@@ -1785,10 +1777,12 @@
                                                 <ListBox.ItemTemplate>
                                                     <DataTemplate>
                                                         <TextBlock VerticalAlignment="Center">
-                                                            <Image Width="16"
-                                                                Height="16"
-                                                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
-                                                            <Run Text="{Binding Mode=OneWay}" />
+                                                            <InlineUIContainer BaselineAlignment="Center">
+                                                                <Image Width="16"
+                                                                    Height="16"
+                                                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                                            </InlineUIContainer>
+                                                            <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
                                                             <Hyperlink BaselineAlignment="Center"
                                                                 Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
                                                                 CommandParameter="{Binding Mode=OneWay}"

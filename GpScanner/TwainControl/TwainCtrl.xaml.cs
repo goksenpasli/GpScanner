@@ -2360,7 +2360,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static List<List<T>> ChunkBy<T>(List<T> source, int chunkSize)
+    public static List<List<T>> ChunkBy<T>(IEnumerable<T> source, int chunkSize)
     {
         return source
             .Select((x, i) => new { Index = i, Value = x })
@@ -2478,9 +2478,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         fileloadtask = Task.Run(
             async () =>
             {
-                try
+                foreach (string filename in filenames)
                 {
-                    foreach (string filename in filenames)
+                    try
                     {
                         switch (Path.GetExtension(filename.ToLower()))
                         {
@@ -2605,12 +2605,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
                         }
                     }
+                    catch (UnauthorizedAccessException)
+                    {
+                    }
+                    finally
+                    {
+                        filenames = null;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    _ = MessageBox.Show(ex.Message, AppName);
-                    filenames = null;
-                }
+
             });
         return Task.CompletedTask;
     }
