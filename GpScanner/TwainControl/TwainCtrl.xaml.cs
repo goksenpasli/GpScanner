@@ -116,7 +116,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         new Paper { Height = 35.56, PaperType = "Legal", Width = 21.59 },
         new Paper { Height = 26.67, PaperType = "Executive", Width = 18.415 },
         new Paper { Category = string.Empty, Height = 0, PaperType = "Original", Width = 0 },
-        new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth }];
+        new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth },
+    ];
     private double pdfLoadProgressValue;
     private int pdfMedianValue;
     private ObservableCollection<PdfData> pdfPages;
@@ -2362,8 +2363,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static List<List<T>> ChunkBy<T>(IEnumerable<T> source, int chunkSize)
     {
-        return source
-            .Select((x, i) => new { Index = i, Value = x })
+        return source.Select((x, i) => new { Index = i, Value = x })
         .GroupBy(x => x.Index / chunkSize)
         .Select(x => x.Select(v => v.Value).ToList())
         .ToList();
@@ -2485,22 +2485,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         switch (Path.GetExtension(filename.ToLower()))
                         {
                             case ".pdf":
-                                if (PdfViewer.PdfViewer.IsValidPdfFile(filename))
-                                {
-                                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
-                                    if (filedata != null)
-                                    {
-                                        await AddPdfFileAsync(filedata, filename);
-                                        filedata = null;
-                                    }
-                                }
+                                await AddPdfFiles(filename);
 
                                 break;
 
                             case ".eyp":
-                                List<string> files = EypFileExtract(filename);
-                                await Dispatcher.InvokeAsync(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
-                                await AddFiles([.. files], DecodeHeight);
+                                await AddEypFiles(filename);
                                 break;
 
                             case ".jpg":
@@ -2533,75 +2523,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
 
                             case ".webp":
-                            {
-                                BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-                                BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
-                                bitmapFrame.Freeze();
-                                ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
-                                main = null;
-                                bitmapFrame = null;
+                                await AddWebpFiles(decodeheight, filename);
                                 break;
-                            }
 
                             case ".tıf" or ".tiff" or ".tıff" or ".tif":
-                                TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
-                                int tiffpagecount = decoder.Frames.Count;
-                                decoder = null;
-                                for (int i = 0; i < tiffpagecount; i++)
-                                {
-                                    BitmapFrame bitmapFrame = await Task.Run(
-                                        () =>
-                                        {
-                                            TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
-                                            BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
-                                            image.Freeze();
-                                            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
-                                            bitmapFrame.Freeze();
-                                            decoder = null;
-                                            return bitmapFrame;
-                                        });
-
-                                    ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-                                    await Dispatcher.InvokeAsync(
-                                        () =>
-                                        {
-                                            Scanner?.Resimler.Add(img);
-                                            double progressvalue = (i + 1) / (double)tiffpagecount;
-                                            PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
-                                        });
-                                }
+                                await AddTiffFiles(filename);
 
                                 break;
 
                             case ".xps":
-                                FixedDocumentSequence docSeq = null;
-                                await Dispatcher.InvokeAsync(
-                                    () =>
-                                    {
-                                        using XpsDocument xpsDoc = new(filename, FileAccess.Read);
-                                        docSeq = xpsDoc.GetFixedDocumentSequence();
-                                    });
-                                int pagecount = docSeq.DocumentPaginator.PageCount;
-                                for (int i = 0; i < pagecount; i++)
-                                {
-                                    await Dispatcher.InvokeAsync(
-                                        () =>
-                                        {
-                                            using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
-                                            RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
-                                            rtb.Render(docPage.Visual);
-                                            BitmapFrame bitmapframe = BitmapFrame.Create(rtb);
-                                            bitmapframe.Freeze();
-                                            ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
-                                            Scanner?.Resimler.Add(img);
-                                            double progressvalue = (i + 1) / (double)pagecount;
-                                            PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
-                                            img = null;
-                                            bitmapframe = null;
-                                        });
-                                }
-                                docSeq = null;
+                                await AddXpsFiles(filename);
                                 break;
                         }
                     }
@@ -2772,6 +2703,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
+    private async Task AddEypFiles(string filename)
+    {
+        List<string> files = EypFileExtract(filename);
+        await Dispatcher.InvokeAsync(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
+        await AddFiles([.. files], DecodeHeight);
+    }
+
     private async Task AddImageFiles(string filename)
     {
         BitmapImage main = await ImageViewer.LoadImageAsync(filename);
@@ -2783,27 +2721,34 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         bitmapFrame = null;
     }
 
-    private async Task AddPdfFileAsync(byte[] filedata, string filepath = null)
+    private async Task AddPdfFiles(string filename)
     {
-        double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
-        MemoryStream ms;
-        for (int i = 1; i <= totalpagecount; i++)
+        if (PdfViewer.PdfViewer.IsValidPdfFile(filename))
         {
-            ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
-            BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, Scanner.Deskew);
-            bitmapFrame.Freeze();
-            await Dispatcher.InvokeAsync(
-                () =>
+            byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
+            if (filedata != null)
+            {
+                double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
+                MemoryStream ms;
+                for (int i = 1; i <= totalpagecount; i++)
                 {
-                    Scanner?.Resimler.Add(new ScannedImage { Resim = bitmapFrame, FilePath = filepath });
-                    PdfLoadProgressValue = i / totalpagecount;
-                });
-            bitmapFrame = null;
-        }
+                    ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, Scanner.Deskew);
+                    bitmapFrame.Freeze();
+                    await Dispatcher.InvokeAsync(
+                        () =>
+                        {
+                            Scanner?.Resimler.Add(new ScannedImage { Resim = bitmapFrame, FilePath = filename });
+                            PdfLoadProgressValue = i / totalpagecount;
+                        });
+                    bitmapFrame = null;
+                }
 
-        _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
-        filedata = null;
-        ms = null;
+                _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
+                filedata = null;
+                ms = null;
+            }
+        }
     }
 
     private void AddPdfFilesToUnsupportedDocs(string[] droppedfiles)
@@ -2812,6 +2757,78 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             Scanner?.UnsupportedFiles?.Add(file);
         }
+    }
+
+    private async Task AddTiffFiles(string filename)
+    {
+        TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
+        int tiffpagecount = decoder.Frames.Count;
+        decoder = null;
+        for (int i = 0; i < tiffpagecount; i++)
+        {
+            BitmapFrame bitmapFrame = await Task.Run(
+                () =>
+                {
+                    TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
+                    BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
+                    image.Freeze();
+                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
+                    bitmapFrame.Freeze();
+                    decoder = null;
+                    return bitmapFrame;
+                });
+
+            ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+            await Dispatcher.InvokeAsync(
+                () =>
+                {
+                    Scanner?.Resimler.Add(img);
+                    double progressvalue = (i + 1) / (double)tiffpagecount;
+                    PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                });
+        }
+    }
+
+    private async Task AddWebpFiles(int decodeheight, string filename)
+    {
+        BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
+        BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+        bitmapFrame.Freeze();
+        ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+        await Dispatcher.InvokeAsync(() => Scanner?.Resimler.Add(img));
+        main = null;
+        bitmapFrame = null;
+    }
+
+    private async Task AddXpsFiles(string filename)
+    {
+        FixedDocumentSequence docSeq = null;
+        await Dispatcher.InvokeAsync(
+            () =>
+            {
+                using XpsDocument xpsDoc = new(filename, FileAccess.Read);
+                docSeq = xpsDoc.GetFixedDocumentSequence();
+            });
+        int pagecount = docSeq.DocumentPaginator.PageCount;
+        for (int i = 0; i < pagecount; i++)
+        {
+            await Dispatcher.InvokeAsync(
+                () =>
+                {
+                    using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
+                    RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                    rtb.Render(docPage.Visual);
+                    BitmapFrame bitmapframe = BitmapFrame.Create(rtb);
+                    bitmapframe.Freeze();
+                    ScannedImage img = new() { Resim = bitmapframe, FilePath = filename };
+                    Scanner?.Resimler.Add(img);
+                    double progressvalue = (i + 1) / (double)pagecount;
+                    PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                    img = null;
+                    bitmapframe = null;
+                });
+        }
+        docSeq = null;
     }
 
     private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) => Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;

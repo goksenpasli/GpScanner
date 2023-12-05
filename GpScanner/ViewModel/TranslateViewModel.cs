@@ -32,10 +32,11 @@ public class TranslateViewModel : InpcBase
         Sıfırla = new RelayCommand<object>(
             parameter =>
             {
+                TaramaGeçmiş?.Add(Metin);
                 Metin = string.Empty;
                 Çeviri = string.Empty;
             },
-            parameter => true);
+            parameter => !string.IsNullOrWhiteSpace(Metin));
 
         Değiştir = new RelayCommand<object>(
             parameter =>

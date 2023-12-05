@@ -318,7 +318,6 @@ public partial class MainWindow : Window
                 if (ViewModel.ScannedText != null)
                 {
                     ViewModel.TranslateViewModel.Metin = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text));
-                    ViewModel.TranslateViewModel.TaramaGeçmiş.Add(ViewModel.TranslateViewModel?.Metin);
                     ViewModel.OcrIsBusy = false;
                 }
 

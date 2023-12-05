@@ -529,7 +529,6 @@
                                 twainctrl:Policy.PolicyName="AramaMetni"
                                 CopyButtonVisibility="Collapsed"
                                 OpenButtonVisibility="Collapsed"
-                                PasteButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <ComboBox VerticalContentAlignment="Center"
@@ -916,6 +915,14 @@
             </StatusBarItem>
             <StatusBarItem HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Foreground="Red"
+                        Text="{twainctrl:Loc WARNREBOOT}"
+                        Visibility="{Binding Shutdown, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
                     <Image Width="16"
                         Height="16"
                         Visibility="{Binding PdfBatchRunning, Converter={StaticResource BooleanToVisibilityConverter}}">

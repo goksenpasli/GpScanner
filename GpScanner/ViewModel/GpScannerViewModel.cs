@@ -231,7 +231,6 @@ public partial class GpScannerViewModel : InpcBase
                     if (ScannedText != null)
                     {
                         TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
-                        TranslateViewModel.TaramaGeçmiş.Add(TranslateViewModel.Metin);
                     }
 
                     if (DetectBarCode)
@@ -2245,14 +2244,14 @@ public partial class GpScannerViewModel : InpcBase
             {
                 AramaMetni = string.Empty;
             }
-
+            string format = Twainsettings.Settings.Default.FolderDateFormat;
             MainWindow.cvs.Filter += (s, x) =>
                                      {
                                          Scanner scanner = (Scanner)x.Item;
                                          if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
                                          {
-                                             string seçiligün = SeçiliGün.ToString(Twainsettings.Settings.Default.FolderDateFormat);
-                                             x.Accepted = result.ToString(Twainsettings.Settings.Default.FolderDateFormat).StartsWith(seçiligün);
+                                             string seçiligün = SeçiliGün.ToString(format);
+                                             x.Accepted = result.ToString(format).StartsWith(seçiligün);
                                          }
                                          else
                                          {

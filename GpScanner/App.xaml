@@ -168,10 +168,10 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateMini">
-                <Image Width="150"
+                <PdfViewer:PdfShadowedImage Width="150"
                     Height="150"
                     Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
-                    <Image.Tag>
+                    <PdfViewer:PdfShadowedImage.Tag>
                         <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
                             <Binding Mode="OneWay">
@@ -180,8 +180,8 @@
                                 </Binding.Source>
                             </Binding>
                         </MultiBinding>
-                    </Image.Tag>
-                </Image>
+                    </PdfViewer:PdfShadowedImage.Tag>
+                </PdfViewer:PdfShadowedImage>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid Margin="2">

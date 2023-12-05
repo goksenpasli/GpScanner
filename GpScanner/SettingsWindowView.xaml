@@ -60,8 +60,8 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="160" />
                             <RowDefinition Height="47.2" />
-                            <RowDefinition Height="89.6" />
-                            <RowDefinition Height="90" />
+                            <RowDefinition Height="94.4" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="48" />
                             <RowDefinition Height="48" />
                         </Grid.RowDefinitions>
@@ -382,7 +382,7 @@
                                                 </StackPanel>
                                             </Button>
                                         </UniformGrid>
-                                        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                                        <ListBox d:ItemsSource="{d:SampleData ItemCount=3}"
                                             twainctrl:Policy.PolicyName="PatchProfileName"
                                             Background="{StaticResource BorderBackground}"
                                             IsEnabled="{Binding DetectPageSeperator}"
@@ -601,158 +601,157 @@
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
                                     </StackPanel>
                                 </UniformGrid>
-                                <Separator />
-                                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                                <Separator Margin="0,1,0,1" />
+                                <StackPanel Orientation="Horizontal">
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="DirectOpenPdfFile"
+                                        IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32"
+                                                    Height="32"
+                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PDFOPEN}" />
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
                                     <StackPanel Orientation="Horizontal">
-                                        <CheckBox VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            twainctrl:Policy.PolicyName="DirectOpenPdfFile"
-                                            IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <CheckBox.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32"
-                                                        Height="32"
-                                                        Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PDFOPEN}" />
-                                                </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        </StackPanel>
-                                        <CheckBox VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            twainctrl:Policy.PolicyName="DirectOpenEypFile"
-                                            IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <CheckBox.Content>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Image Width="32"
-                                                        Height="32"
-                                                        Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <Hyperlink Command="{Binding AssociateExtension}">
-                                                            <Run Text="{twainctrl:Loc EYPOPEN}" />
-                                                        </Hyperlink>
-                                                    </TextBlock>
-                                                </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        </StackPanel>
-                                        <CheckBox VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            twainctrl:Policy.PolicyName="ContributionIsImageMode"
-                                            IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <CheckBox.Content>
-                                                <Canvas Width="32" Height="32">
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="19" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <TextBlock Canvas.Bottom="2"
-                                                        FontFamily="Webdings"
-                                                        FontSize="26"
-                                                        FontWeight="Bold"
-                                                        Foreground="GreenYellow"
-                                                        Text="" />
-                                                </Canvas>
-                                            </CheckBox.Content>
-                                        </CheckBox>
-                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
-                                        <Extensions:NumericUpDownControl FontWeight="Bold"
-                                            IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                            Maximum="10"
-                                            Minimum="1"
-                                            SmallChange="1"
-                                            Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                        <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier" IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="DirectOpenEypFile"
+                                        IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32"
+                                                    Height="32"
+                                                    Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Hyperlink Command="{Binding AssociateExtension}">
+                                                        <Run Text="{twainctrl:Loc EYPOPEN}" />
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="ContributionIsImageMode"
+                                        IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox.Content>
                                             <Canvas Width="32" Height="32">
                                                 <Image Width="32" Height="32">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
-                                                            <Binding Source="1" />
+                                                            <Binding Source="19" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
+                                                <TextBlock Canvas.Bottom="2"
+                                                    FontFamily="Webdings"
+                                                    FontSize="26"
+                                                    FontWeight="Bold"
+                                                    Foreground="GreenYellow"
+                                                    Text="" />
+                                            </Canvas>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                    <Extensions:NumericUpDownControl FontWeight="Bold"
+                                        IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                        Maximum="10"
+                                        Minimum="1"
+                                        Orientation="Horizontal"
+                                        SmallChange="1"
+                                        Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                    <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier" IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="1" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="22" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
+                                    </ToggleButton>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="PlayNotificationAudio"
+                                        IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                        <CheckBox.ToolTip>
+                                            <TextBlock FontWeight="Bold"
+                                                Foreground="Red"
+                                                Text="{twainctrl:Loc PLAYSOUND}" />
+                                        </CheckBox.ToolTip>
+                                        <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PlayNotificationAudio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}">
+                                            <Canvas Width="32" Height="32">
                                                 <Image Width="32" Height="32">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
-                                                            <Binding Source="22" />
+                                                            <Binding Source="201" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Canvas.Right="0"
+                                                    Canvas.Bottom="0"
+                                                    Width="16"
+                                                    Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="168" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
                                             </Canvas>
-                                        </ToggleButton>
-                                        <CheckBox VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            twainctrl:Policy.PolicyName="PlayNotificationAudio"
-                                            IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                            <CheckBox.ToolTip>
-                                                <TextBlock FontWeight="Bold"
-                                                    Foreground="Red"
-                                                    Text="{twainctrl:Loc PLAYSOUND}" />
-                                            </CheckBox.ToolTip>
-                                            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PlayNotificationAudio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}">
-                                                <Canvas Width="32" Height="32">
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="201" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <Image Canvas.Right="0"
-                                                        Canvas.Bottom="0"
-                                                        Width="16"
-                                                        Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="168" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </Canvas>
-                                                <Extensions:ContentToggleButton.OverContent>
-                                                    <ListBox Height="200"
-                                                        VerticalContentAlignment="Center"
-                                                        ItemsSource="{Binding AudioFiles, Mode=OneWay}"
-                                                        SelectedItem="{Binding AudioFilePath, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <TextBlock VerticalAlignment="Center">
-                                                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
-                                                                    <Hyperlink BaselineAlignment="Center"
-                                                                        Command="{Binding DataContext.PlayAudio, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                                                        CommandParameter="{Binding Mode=OneWay}"
-                                                                        TextDecorations="None">
-                                                                        <Image Width="16" Height="16">
-                                                                            <Image.Source>
-                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                    <Binding Source="Shell32.dll" />
-                                                                                    <Binding Source="137" />
-                                                                                </MultiBinding>
-                                                                            </Image.Source>
-                                                                        </Image>
-                                                                    </Hyperlink>
-                                                                </TextBlock>
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
-                                                </Extensions:ContentToggleButton.OverContent>
-                                            </Extensions:ContentToggleButton>
-                                        </CheckBox>
+                                            <Extensions:ContentToggleButton.OverContent>
+                                                <ListBox Height="200"
+                                                    VerticalContentAlignment="Center"
+                                                    ItemsSource="{Binding AudioFiles, Mode=OneWay}"
+                                                    SelectedItem="{Binding AudioFilePath, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <TextBlock VerticalAlignment="Center">
+                                                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                                                                <Hyperlink BaselineAlignment="Center"
+                                                                    Command="{Binding DataContext.PlayAudio, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    TextDecorations="None">
+                                                                    <Image Width="16" Height="16">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Shell32.dll" />
+                                                                                <Binding Source="137" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                </Hyperlink>
+                                                            </TextBlock>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                            </Extensions:ContentToggleButton.OverContent>
+                                        </Extensions:ContentToggleButton>
+                                    </CheckBox>
 
-                                    </StackPanel>
-                                </ScrollViewer>
+                                </StackPanel>
                             </StackPanel>
                         </GroupBox>
                         <GroupBox Grid.Row="4" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">

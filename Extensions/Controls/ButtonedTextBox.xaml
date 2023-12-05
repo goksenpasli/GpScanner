@@ -68,7 +68,7 @@
                             Visibility="{Binding PasteButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                FontSize="14">
+                                FontSize="18">
                                 <Hyperlink Command="{Binding Paste, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
                                     <Run FontFamily="Wingdings 2"
                                         FontWeight="Bold"
