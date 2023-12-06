@@ -1,7 +1,6 @@
 ﻿<Window x:Class="GpScanner.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
     xmlns:Converter="clr-namespace:GpScanner.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
@@ -83,11 +82,8 @@
             MaxNumber="1200"
             MinNumber="12" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
-        <CollectionViewSource x:Key="Reminder" Source="{Binding ScannerData.Reminder}">
-            <CollectionViewSource.SortDescriptions>
-                <ComponentModel:SortDescription PropertyName="Tarih" />
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
+        <CollectionViewSource x:Key="Reminder" Source="{Binding ScannerData.Reminder}" />
+        <CollectionViewSource x:Key="GörülenReminder" Source="{Binding ScannerData.GörülenReminder}" />
         <Style x:Key="ListBoxAnimationStyle" TargetType="{x:Type ListBox}">
             <Setter Property="BorderBrush" Value="Transparent" />
             <Style.Triggers>
@@ -938,53 +934,85 @@
                         IsChecked="{Binding CalendarPanelIsExpanded, Mode=OneWay}">
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox Width="420" Height="480">
-                                <GroupBox.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
-                                        <Button Command="{Binding ApplyCalendarData}">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="144" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                    </StackPanel>
-                                </GroupBox.Header>
                                 <GroupBox.Resources>
                                     <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="48" />
                                 </GroupBox.Resources>
-                                <ListBox ItemsSource="{Binding Source={StaticResource Reminder}}"
-                                    SelectedItem="{Binding SelectedReminder}"
-                                    VirtualizingPanel.ScrollUnit="Pixel">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem">
-                                            <Setter Property="IsSelected" Value="{Binding Seen}" />
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel>
-                                                <CheckBox HorizontalAlignment="Center"
-                                                    FontWeight="Bold"
-                                                    IsChecked="{Binding Seen}">
-                                                    <Hyperlink Command="{Binding DataContext.WebAdreseGit, Source={x:Reference twainCtrl}}" CommandParameter="{Binding FileName, Mode=OneWay}">
-                                                        <Run Text="{Binding Tarih}" />
-                                                        <Run Text="{Binding Açıklama}" />
-                                                    </Hyperlink>
-                                                </CheckBox>
-                                                <ContentPresenter Width="384"
-                                                    Height="384"
-                                                    d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
-                                                    Content="{Binding Mode=OneWay, Path=FileName}"
-                                                    ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}"
-                                                    IsHitTestVisible="False" />
+                                <TabControl>
+                                    <TabItem>
+                                        <TabItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
+                                                <Button Command="{Binding ApplyCalendarData}">
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="144" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Button>
                                             </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
+                                        </TabItem.Header>
+                                        <ListBox ItemsSource="{Binding Source={StaticResource Reminder}}"
+                                            SelectedItem="{Binding SelectedReminder}"
+                                            VirtualizingPanel.ScrollUnit="Pixel">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="IsSelected" Value="{Binding Seen}" />
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel>
+                                                        <CheckBox HorizontalAlignment="Center"
+                                                            FontWeight="Bold"
+                                                            IsChecked="{Binding Seen}">
+                                                            <Hyperlink Command="{Binding DataContext.WebAdreseGit, Source={x:Reference twainCtrl}}" CommandParameter="{Binding FileName, Mode=OneWay}">
+                                                                <Run Text="{Binding Tarih}" />
+                                                                <Run Text="{Binding Açıklama}" />
+                                                            </Hyperlink>
+                                                        </CheckBox>
+                                                        <ContentPresenter Width="384"
+                                                            Height="384"
+                                                            d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
+                                                            Content="{Binding Mode=OneWay, Path=FileName}"
+                                                            ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}"
+                                                            IsHitTestVisible="False" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </TabItem>
+                                    <TabItem>
+                                        <TabItem.Header>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
+                                                <Button Command="{Binding UndoApplyCalendarData}">
+                                                    <Image Width="16"
+                                                        Height="16"
+                                                        Source="/TwainControl;component/Icons/undo.png" />
+                                                </Button>
+                                            </StackPanel>
+                                        </TabItem.Header>
+                                        <ListBox ItemsSource="{Binding Source={StaticResource GörülenReminder}}" SelectedItem="{Binding SelectedReminder}">
+                                            <ListBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Açıklama}" />
+                                                        <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding Tarih}">
+                                                            <DatePicker.Resources>
+                                                                <Style TargetType="DatePickerTextBox">
+                                                                    <Setter Property="IsReadOnly" Value="True" />
+                                                                </Style>
+                                                            </DatePicker.Resources>
+                                                        </DatePicker>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ListBox.ItemTemplate>
+                                        </ListBox>
+                                    </TabItem>
+                                </TabControl>
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                         <Image Width="16" Height="16">

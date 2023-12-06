@@ -974,8 +974,20 @@ public partial class GpScannerViewModel : InpcBase
                     _ = context.SaveChanges();
                 }
                 ScannerData.Reminder = await ReminderYükle();
+                ScannerData.GörülenReminder = await GörülenReminderYükle();
             },
             parameter => SelectedReminder is not null);
+
+        UndoApplyCalendarData = new RelayCommand<object>(
+            parameter =>
+            {
+                SelectedReminder.Seen = false;
+                if (ApplyCalendarData.CanExecute(SelectedReminder))
+                {
+                    ApplyCalendarData.Execute(SelectedReminder);
+                }
+            },
+            parameter => SelectedReminder is not null && SelectedReminder.Tarih > DateTime.Today);
 
         LoadContributionData = new RelayCommand<object>(parameter => ContributionData = GetContributionData(), parameter => true);
 
@@ -1843,6 +1855,8 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand TümününİşaretiniKaldır { get; }
 
+    public RelayCommand<object> UndoApplyCalendarData { get; }
+
     public ObservableCollection<string> UnIndexedFiles
     {
         get => unIndexedFiles;
@@ -2236,6 +2250,20 @@ public partial class GpScannerViewModel : InpcBase
         return null;
     }
 
+    private async Task<ObservableCollection<ReminderData>> GörülenReminderYükle()
+    {
+        try
+        {
+            using AppDbContext context = new();
+            return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.AsNoTracking().ToListAsync())?.Where(z => z.Seen)?.OrderBy(z => z.Tarih)]);
+        }
+        catch (Exception ex)
+        {
+            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            return null;
+        }
+    }
+
     private async void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "SeçiliGün")
@@ -2517,7 +2545,7 @@ public partial class GpScannerViewModel : InpcBase
         return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
     }
 
-    private async Task LoadDatas() => ScannerData = new ScannerData { Reminder = await ReminderYükle() };
+    private async Task LoadDatas() => ScannerData = new ScannerData { Reminder = await ReminderYükle(), GörülenReminder = await GörülenReminderYükle() };
 
     private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
 
@@ -2546,10 +2574,6 @@ public partial class GpScannerViewModel : InpcBase
     {
         try
         {
-            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
-            {
-                return null;
-            }
             using AppDbContext context = new();
             return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.AsNoTracking().ToListAsync())?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih)]);
         }
