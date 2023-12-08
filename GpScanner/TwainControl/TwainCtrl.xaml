@@ -1270,7 +1270,11 @@
                                                             Source="/TwainControl;component/Icons/delete.png" />
                                                     </MenuItem.Icon>
                                                     <MenuItem.Header>
-                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc CLEARLIST}" />
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Run Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                                            <Run Text="{local:Loc FILE}" />
+                                                            <Run Text="{local:Loc CLEARLIST}" />
+                                                        </TextBlock>
                                                     </MenuItem.Header>
                                                 </MenuItem>
                                                 <Separator />

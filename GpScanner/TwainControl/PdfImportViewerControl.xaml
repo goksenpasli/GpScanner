@@ -1171,7 +1171,7 @@
                 PreviewMouseDown="PdfImportViewerControl_MouseDown"
                 PreviewMouseMove="PdfImportViewerControl_MouseMove"
                 PrintButtonVisibility="Visible" />
-            <Canvas x:Name="cnv" />
+            <Canvas x:Name="cnv" d:IsHidden="True" />
         </Grid>
     </Grid>
 </UserControl>
