@@ -127,6 +127,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private double pdfWatermarkFontAngle = 315d;
     private double pdfWatermarkFontSize = 72d;
     private string pdfWaterMarkText;
+    private bool refreshDocumentList;
     private int saveIndex = 2;
     private int sayfaBaşlangıç = 1;
     private int sayfaBitiş = 1;
@@ -734,7 +735,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         MaximizePdfControl = new RelayCommand<object>(
             parameter =>
             {
-                SelectedTabIndex = 0;
                 maximizedWindow = new()
                 {
                     Owner = Application.Current?.MainWindow,
@@ -745,13 +745,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     WindowStartupLocation = WindowStartupLocation.CenterOwner,
                     DataContext = this
                 };
-                _ = maximizedWindow.ShowDialog();
-
                 maximizedWindow.Closed += (s, e) =>
                                           {
+                                              SelectedTabIndex = 0;
                                               SelectedTabIndex = 4;
                                               (TbCtrl.Items[SelectedTabIndex] as TabItem).Content = PdfImportViewer;
+                                              RefreshDocumentList = true;
                                           };
+                _ = maximizedWindow.ShowDialog();
             },
             parameter => !IsWindowOpen(maximizedWindow));
 
@@ -1204,6 +1205,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfviewer.ToplamSayfa = 0;
                     SayfaBaşlangıç = 1;
                     SayfaBitiş = 1;
+                    RefreshDocumentList = true;
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1534,6 +1536,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                               pdfImportViewerControl?.PdfViewer?.Dispose();
                                               pdfImportViewerControl.PdfViewer.PdfFilePath = null;
                                               Scanner.UnsupportedFiles = new ObservableCollection<string>(Scanner.UnsupportedFiles);
+                                              RefreshDocumentList = true;
                                           };
                 maximizedWindow.Content = pdfImportViewerControl;
                 _ = maximizedWindow.ShowDialog();
@@ -2072,6 +2075,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ReadPdfTag { get; }
 
+    public bool RefreshDocumentList
+    {
+        get => refreshDocumentList;
+        set
+        {
+            if (refreshDocumentList != value)
+            {
+                refreshDocumentList = value;
+                OnPropertyChanged(nameof(RefreshDocumentList));
+            }
+        }
+    }
+
     public ICommand RemoveProfile { get; }
 
     public ICommand RemoveSelectedPage { get; }
@@ -2361,13 +2377,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static List<List<T>> ChunkBy<T>(IEnumerable<T> source, int chunkSize)
-    {
-        return source.Select((x, i) => new { Index = i, Value = x })
-        .GroupBy(x => x.Index / chunkSize)
-        .Select(x => x.Select(v => v.Value).ToList())
-        .ToList();
-    }
+    public static List<List<T>> ChunkBy<T>(IEnumerable<T> source, int chunkSize) => source.Select((x, i) => new { Index = i, Value = x }).GroupBy(x => x.Index / chunkSize).Select(x => x.Select(v => v.Value).ToList()).ToList();
 
     public static List<string> EypFileExtract(string eypfilepath)
     {

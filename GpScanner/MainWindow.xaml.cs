@@ -345,6 +345,13 @@ public partial class MainWindow : Window
 
                 ViewModel.DetectPageSeperator = twainCtrl.Scanner.UsePageSeperator;
             }
+            if (e.PropertyName is "RefreshDocumentList" && twainCtrl?.RefreshDocumentList == true)
+            {
+                DateTime tempdate = ViewModel.SeçiliGün;
+                ViewModel.ReloadFileDatas(false);
+                ViewModel.SeçiliGün = tempdate;
+                twainCtrl.RefreshDocumentList = false;
+            }
         }
     }
 

@@ -1973,10 +1973,13 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public void ReloadFileDatas()
+    public void ReloadFileDatas(bool dateapplytoday=true)
     {
         Dosyalar = GetScannerFileData();
+        if (dateapplytoday)
+        {
         SeçiliGün = DateTime.Today;
+        }
     }
 
     private void AnimationOnTick(object sender, EventArgs e)
