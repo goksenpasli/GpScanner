@@ -99,13 +99,14 @@
             HorizontalScrollBarVisibility="Visible"
             IsReadOnly="{Binding MetinBoxIsreadOnly}"
             OpenButtonVisibility="Collapsed"
+            PrintButtonVisibility="Visible"
             ResetButtonVisibility="Collapsed"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap"
             TitleCaseMenuVisibility="Visible"
-            VerticalScrollBarVisibility="Visible" PrintButtonVisibility="Visible" />
+            VerticalScrollBarVisibility="Visible" />
         <ToggleButton Grid.Row="2"
             Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
@@ -156,13 +157,14 @@
             HorizontalScrollBarVisibility="Visible"
             IsReadOnly="True"
             OpenButtonVisibility="Collapsed"
+            PrintButtonVisibility="Visible"
             ResetButtonVisibility="Collapsed"
             ScrollViewer.VerticalScrollBarVisibility="Auto"
             SpellCheck.IsEnabled="True"
             Text="{Binding Çeviri, Mode=OneWay}"
             TextWrapping="Wrap"
             TitleCaseMenuVisibility="Visible"
-            VerticalScrollBarVisibility="Visible" PrintButtonVisibility="Visible" />
+            VerticalScrollBarVisibility="Visible" />
         <ToggleButton Grid.Row="3"
             Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
@@ -251,11 +253,20 @@
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Extensions:ButtonedTextBox Height="80"
+                                    VerticalContentAlignment="Stretch"
                                     IsReadOnly="True"
                                     OpenButtonVisibility="Collapsed"
                                     ResetButtonVisibility="Collapsed"
                                     Text="{Binding Mode=OneWay}"
-                                    TextWrapping="Wrap" />
+                                    TextWrapping="Wrap">
+                                    <Extensions:ButtonedTextBox.Description>
+                                        <Button Command="{Binding DataContext.Aktar, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                                            CommandParameter="{Binding Mode=OneWay}"
+                                            Content="ç"
+                                            FontFamily="Wingdings"
+                                            FontSize="16" />
+                                    </Extensions:ButtonedTextBox.Description>
+                                </Extensions:ButtonedTextBox>
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>

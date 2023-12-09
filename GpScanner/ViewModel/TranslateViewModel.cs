@@ -48,6 +48,8 @@ public class TranslateViewModel : InpcBase
             },
             parameter => ÇevrilenDil != MevcutDil);
 
+        Aktar = new RelayCommand<object>(parameter => Metin = parameter as string, parameter => parameter is string oldtext && !string.IsNullOrWhiteSpace(oldtext));
+
         Oku = new RelayCommand<object>(
             parameter =>
             {
@@ -72,6 +74,8 @@ public class TranslateViewModel : InpcBase
     }
 
     public static List<string> TtsDilleri { get; set; }
+
+    public RelayCommand<object> Aktar { get; }
 
     public string Çeviri
     {

@@ -31,7 +31,7 @@
                             </Style>
                         </Grid.Resources>
                         <ContentPresenter Name="contentPresenter"
-                            VerticalAlignment="Center"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Content="{Binding Description, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Border Name="border"
                             Grid.Column="1"
@@ -69,7 +69,7 @@
                             Visibility="{Binding PasteButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <TextBlock HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                FontSize="18">
+                                FontSize="16">
                                 <Hyperlink Command="{Binding Paste, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
                                     <Run FontFamily="Wingdings 2"
                                         FontWeight="Bold"

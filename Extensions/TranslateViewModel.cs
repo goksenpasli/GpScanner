@@ -7,7 +7,7 @@ namespace Extensions;
 
 public class TranslateViewModel : InpcBase
 {
-    private const int maxLengthAllowed = 65519;
+    private const int maxLengthAllowed = 12000;
 
     public static async Task<string> DileÇevirAsync(string text, string from = "auto", string to = "en")
     {
