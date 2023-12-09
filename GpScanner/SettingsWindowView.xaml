@@ -449,7 +449,7 @@
                                     </TextBlock>
                                     <ComboBox VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="DefaultPictureResizeRatio"
-                                        ItemStringFormat="%{0}"
+                                        ItemStringFormat="{}{0}%"
                                         ItemsSource="{Binding SettingsPagePictureResizeList}"
                                         SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ComboBox.ItemContainerStyle>
@@ -463,7 +463,7 @@
                                         TextWrapping="Wrap" />
                                     <ComboBox VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="DefaultThumbPictureResizeRatio"
-                                        ItemStringFormat="%{0}"
+                                        ItemStringFormat="{}{0}%"
                                         ItemsSource="{Binding SettingsPagePictureResizeList}"
                                         SelectedItem="{Binding DefaultThumbPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ComboBox.ItemContainerStyle>

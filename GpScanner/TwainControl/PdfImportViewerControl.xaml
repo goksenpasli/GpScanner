@@ -674,6 +674,20 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <ComboBox ItemsSource="{Binding OpacityList, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" SelectedItem="{Binding Path=TransparentLevel, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, StringFormat=\{0:P0\}}" />
+                                    <Rectangle Width="16" Height="16">
+                                        <Rectangle.Fill>
+                                            <SolidColorBrush Opacity="{Binding Mode=OneWay}" Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                     <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <TextBlock FontFamily="Wingdings"
                             FontSize="16"

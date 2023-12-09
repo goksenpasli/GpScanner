@@ -73,6 +73,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private bool singlePage = true;
     private string text = string.Empty;
     private double textSize = 12d;
+    private double transparentLevel = 1;
 
     public PdfImportViewerControl()
     {
@@ -563,6 +564,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public DoubleCollection OpacityList { get; } = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0];
+
     public RelayCommand<object> OpenPdfHistoryFile { get; }
 
     public XDashStyle PenDash
@@ -713,10 +716,28 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public double TransparentLevel
+    {
+        get => transparentLevel;
+        set
+        {
+            if (transparentLevel != value)
+            {
+                transparentLevel = value;
+                OnPropertyChanged(nameof(TransparentLevel));
+            }
+        }
+    }
+
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private Rect CalculateRect(ScrollViewer scrollviewer, double x1, double x2, double y1, double y2, PdfPage page)
     {
+        if (scrollviewer == null)
+        {
+            return Rect.Empty;
+        }
+
         double width = Math.Abs(x2 - x1);
         double height = Math.Abs(y2 - y1);
         double coordx = x1 + scrollviewer.HorizontalOffset;
@@ -874,7 +895,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         using XGraphics gfx = XGraphics.FromPdfPage(page);
                         Rect rect = CalculateRect(scrollviewer, x1, x2, y1, y2, page);
                         XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
-                        XBrush brush = new XSolidBrush(XColor.FromKnownColor(GraphObjectFillColor));
+                        XColor color = XColor.FromKnownColor(GraphObjectFillColor);
+                        color.A = TransparentLevel;
+                        XBrush brush = new XSolidBrush(color);
 
                         if (DrawRect)
                         {
