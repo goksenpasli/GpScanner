@@ -105,7 +105,7 @@
             Text="{Binding Metin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             TextWrapping="Wrap"
             TitleCaseMenuVisibility="Visible"
-            VerticalScrollBarVisibility="Visible" />
+            VerticalScrollBarVisibility="Visible" PrintButtonVisibility="Visible" />
         <ToggleButton Grid.Row="2"
             Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
@@ -162,7 +162,7 @@
             Text="{Binding Çeviri, Mode=OneWay}"
             TextWrapping="Wrap"
             TitleCaseMenuVisibility="Visible"
-            VerticalScrollBarVisibility="Visible" />
+            VerticalScrollBarVisibility="Visible" PrintButtonVisibility="Visible" />
         <ToggleButton Grid.Row="3"
             Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"

@@ -263,6 +263,7 @@
                                                 MinHeight="240">
                                                 <Extensions:ButtonedTextBox IsReadOnly="True"
                                                     OpenButtonVisibility="Collapsed"
+                                                    PrintButtonVisibility="Visible"
                                                     ResetButtonVisibility="Collapsed"
                                                     Text="{Binding PdfTextContent, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                                     TextWrapping="Wrap"

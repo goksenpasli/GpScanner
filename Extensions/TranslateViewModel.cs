@@ -7,10 +7,16 @@ namespace Extensions;
 
 public class TranslateViewModel : InpcBase
 {
+    private const int maxLengthAllowed = 65519;
+
     public static async Task<string> DileÇevirAsync(string text, string from = "auto", string to = "en")
     {
         try
         {
+            if (text.Length > maxLengthAllowed)
+            {
+                return null;
+            }
             using HttpClient client = new();
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
             client.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");

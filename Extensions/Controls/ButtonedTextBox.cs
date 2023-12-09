@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 
@@ -19,6 +20,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
     private Visibility openButtonVisibility = Visibility.Visible;
     private Visibility pasteButtonVisibility = Visibility.Visible;
+    private Visibility printButtonVisibility = Visibility.Collapsed;
     private Visibility remainingLengthVisibility = Visibility.Collapsed;
     private int remainingTextLength;
     private Visibility resetButtonVisibility = Visibility.Visible;
@@ -31,6 +33,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     {
         _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, ResetCanExecute));
         _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Print, PrintCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanCaseExecute));
         _ = CommandBindings.Add(new CommandBinding(TitleCase, TitleCaseCommand, CanCaseExecute));
@@ -102,6 +105,21 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
             {
                 pasteButtonVisibility = value;
                 OnPropertyChanged(nameof(PasteButtonVisibility));
+            }
+        }
+    }
+
+    public ICommand Print { get; } = new RoutedCommand();
+
+    public Visibility PrintButtonVisibility
+    {
+        get => printButtonVisibility;
+        set
+        {
+            if (printButtonVisibility != value)
+            {
+                printButtonVisibility = value;
+                OnPropertyChanged(nameof(PrintButtonVisibility));
             }
         }
     }
@@ -233,6 +251,20 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     }
 
     private void PasteCommand(object sender, ExecutedRoutedEventArgs e) => Text = Clipboard.GetText();
+
+    private void PrintCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        PrintDialog printDialog = new();
+
+        if (printDialog.ShowDialog() == true)
+        {
+            FlowDocument fd = new(new Paragraph(new Run(Text)));
+            IDocumentPaginatorSource idocument = fd;
+            fd.IsOptimalParagraphEnabled = true;
+            fd.ColumnWidth = printDialog.PrintableAreaWidth;
+            printDialog.PrintDocument(idocument.DocumentPaginator, "Print");
+        }
+    }
 
     private void ResetCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {

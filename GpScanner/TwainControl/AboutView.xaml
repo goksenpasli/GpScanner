@@ -114,6 +114,7 @@
                 IsReadOnly="True"
                 OpenButtonVisibility="Collapsed"
                 PasteButtonVisibility="Collapsed"
+                PrintButtonVisibility="Visible"
                 ResetButtonVisibility="Collapsed"
                 Text="{local:Loc LICENSE}"
                 VerticalScrollBarVisibility="Auto" />

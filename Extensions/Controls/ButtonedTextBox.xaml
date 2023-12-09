@@ -20,6 +20,7 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.Resources>
                             <Style TargetType="Border">
@@ -141,6 +142,21 @@
                                 </MenuItem>
                             </Menu>
                         </Border>
+                        <Border Name="printborder"
+                            Grid.Column="9"
+                            Width="16"
+                            Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <TextBlock HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="14">
+                                <Hyperlink Command="{Binding Print, RelativeSource={RelativeSource TemplatedParent}}" TextDecorations="None">
+                                    <Run FontFamily="Wingdings 2"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Text="7" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="UIElement.IsEnabled" Value="False">
@@ -153,6 +169,7 @@
                             <Setter TargetName="fontsize" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="remaintext" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="title" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="printborder" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#7EB4EA" />
@@ -163,6 +180,7 @@
                             <Setter TargetName="fontsize" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="remaintext" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="title" Property="Border.BorderBrush" Value="#7EB4EA" />
+                            <Setter TargetName="printborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                         </Trigger>
                         <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#569DE5" />
@@ -173,6 +191,7 @@
                             <Setter TargetName="fontsize" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="remaintext" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="title" Property="Border.BorderBrush" Value="#569DE5" />
+                            <Setter TargetName="printborder" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
