@@ -757,6 +757,14 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
     }
 
+    private PdfTextAnnotation GeneratePdfTextAnnotation(XGraphics gfx, Rect rect, string content)
+    {
+        PdfTextAnnotation pdftextannotation = new() { Contents = content, Icon = PdfTextAnnotationIcon.Note };
+        XRect annotrect = gfx.Transformer.WorldToDefaultPage(rect);
+        pdftextannotation.Rectangle = new PdfRectangle(annotrect);
+        return pdftextannotation;
+    }
+
     private async Task<string> GetOcrData(string tesseractlanguage, byte[] imgdata)
     {
         if (string.IsNullOrWhiteSpace(tesseractlanguage))
@@ -895,9 +903,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         using XGraphics gfx = XGraphics.FromPdfPage(page);
                         Rect rect = CalculateRect(scrollviewer, x1, x2, y1, y2, page);
                         XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
-                        XColor color = XColor.FromKnownColor(GraphObjectFillColor);
-                        color.A = TransparentLevel;
-                        XBrush brush = new XSolidBrush(color);
+                        XBrush brush = SetBrush(GraphObjectFillColor, TransparentLevel);
 
                         if (DrawRect)
                         {
@@ -1027,9 +1033,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                         if (DrawAnnotation && !string.IsNullOrWhiteSpace(AnnotationText))
                         {
-                            PdfTextAnnotation pdftextannotation = new() { Contents = AnnotationText, Icon = PdfTextAnnotationIcon.Note };
-                            XRect annotrect = gfx.Transformer.WorldToDefaultPage(rect);
-                            pdftextannotation.Rectangle = new PdfRectangle(annotrect);
+                            PdfTextAnnotation pdftextannotation = GeneratePdfTextAnnotation(gfx, rect, AnnotationText);
                             page.Annotations.Add(pdftextannotation);
                         }
 
@@ -1117,6 +1121,17 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) => Cursor = Cursors.Arrow;
+
+    private XBrush SetBrush(XKnownColor xKnownColor, double transparent = 1)
+    {
+        if (transparent > 1)
+        {
+            transparent = 1;
+        }
+        XColor color = XColor.FromKnownColor(xKnownColor);
+        color.A = transparent;
+        return new XSolidBrush(color);
+    }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e) => EscToolTip = new() { Content = Translation.GetResStringValue("ESCTOCANCEL") };
 }

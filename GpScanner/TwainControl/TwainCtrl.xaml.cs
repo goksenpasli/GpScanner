@@ -140,7 +140,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private Orientation selectedOrientation = Orientation.Default;
     private Paper selectedPaper;
     private PageRotation selectedRotation = PageRotation.NONE;
-    private int selectedTabIndex;
+    private int selectedTabIndex = 0;
     private Twain twain;
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
     private ScannedImage undoImage;
@@ -158,7 +158,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += TwainCtrl_PropertyChangedAsync;
         Camera.PropertyChanged += CameraUserControl_PropertyChangedAsync;
-        SelectedTabIndex = 0;
         SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
         if (Settings.Default.UseSelectedProfile)
@@ -801,12 +800,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     AddFromClipBoard.Execute(null);
                 }
 
-                if (Keyboard.Modifiers == ModifierKeys.Alt)
+                if (Keyboard.Modifiers == ModifierKeys.Alt && SeçiliDirektPdfKaydet.CanExecute(null))
                 {
-                    if (SeçiliDirektPdfKaydet.CanExecute(null))
-                    {
-                        SeçiliDirektPdfKaydet.Execute(null);
-                    }
+                    SeçiliDirektPdfKaydet.Execute(null);
                 }
             },
             parameter => true);
@@ -2527,8 +2523,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {
-                                        ArchiveVwr.ArchivePath = filename;
                                         SelectedTabIndex = 3;
+                                        ArchiveVwr.ArchivePath = filename;
                                     });
                                 break;
 
@@ -3170,16 +3166,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     double coordy = y1 + scrollviewer.VerticalOffset;
                     ImgData = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
 
-                    if (Keyboard.Modifiers == ModifierKeys.Shift)
+                    if (Keyboard.Modifiers == ModifierKeys.Shift && ImgData is not null)
                     {
-                        if (ImgData is not null)
-                        {
-                            MemoryStream ms = new(ImgData);
-                            BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
-                            bitmapframe.Freeze();
-                            ScannedImage item = new() { Resim = bitmapframe };
-                            Scanner.Resimler.Add(item);
-                        }
+                        MemoryStream ms = new(ImgData);
+                        BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                        bitmapframe.Freeze();
+                        ScannedImage item = new() { Resim = bitmapframe };
+                        Scanner.Resimler.Add(item);
                     }
 
                     mousedowncoord.X = mousedowncoord.Y = 0;
