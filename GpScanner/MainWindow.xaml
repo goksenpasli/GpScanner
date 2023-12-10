@@ -235,68 +235,160 @@
         </GridSplitter>
         <GroupBox Grid.Column="2" twainctrl:Policy.PolicyName="DocumentPanel">
             <GroupBox.Header>
-                <UniformGrid Columns="2">
-                    <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding OpenSettings}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="21" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
-                        </StackPanel>
-                    </Button>
-                    <ToggleButton x:Name="TbExpandDocument"
-                        Command="{Binding ModifyGridWidth}"
-                        IsChecked="{Binding DocumentPanelIsExpanded}">
-                        <ToggleButton.Style>
-                            <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
-                                <Style.Triggers>
-                                    <Trigger Property="IsChecked" Value="True">
-                                        <Setter Property="CommandParameter" Value="1" />
-                                        <Setter Property="Content">
-                                            <Setter.Value>
-                                                <Image Width="16"
-                                                    Height="16"
-                                                    RenderTransformOrigin="0.5,0.5">
-                                                    <Image.RenderTransform>
-                                                        <TransformGroup>
-                                                            <RotateTransform Angle="180" />
-                                                        </TransformGroup>
-                                                    </Image.RenderTransform>
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="252" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                    <Trigger Property="IsChecked" Value="False">
-                                        <Setter Property="CommandParameter" Value="0" />
-                                        <Setter Property="Content">
-                                            <Setter.Value>
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="252" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ToggleButton.Style>
-                    </ToggleButton>
-                </UniformGrid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <UniformGrid Columns="2">
+                        <Button twainctrl:Policy.PolicyName="OpenSettings" Command="{Binding OpenSettings}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="21" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SETTİNGS}" />
+                            </StackPanel>
+                        </Button>
+                        <ToggleButton x:Name="TbExpandDocument"
+                            Command="{Binding ModifyGridWidth}"
+                            IsChecked="{Binding DocumentPanelIsExpanded}">
+                            <ToggleButton.Style>
+                                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsChecked" Value="True">
+                                            <Setter Property="CommandParameter" Value="1" />
+                                            <Setter Property="Content">
+                                                <Setter.Value>
+                                                    <Image Width="16"
+                                                        Height="16"
+                                                        RenderTransformOrigin="0.5,0.5">
+                                                        <Image.RenderTransform>
+                                                            <TransformGroup>
+                                                                <RotateTransform Angle="180" />
+                                                            </TransformGroup>
+                                                        </Image.RenderTransform>
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="252" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                        <Trigger Property="IsChecked" Value="False">
+                                            <Setter Property="CommandParameter" Value="0" />
+                                            <Setter Property="Content">
+                                                <Setter.Value>
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="252" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
+                    </UniformGrid>
+                    <Extensions:ContentToggleButton Grid.Column="1"
+                        HorizontalAlignment="Right"
+                        ArrowVisibility="Collapsed"
+                        Background="{x:Null}"
+                        BorderBrush="{x:Null}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Comres.dll" />
+                                    <Binding Source="11" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <Extensions:ContentToggleButton.OverContent>
+                            <GroupBox>
+                                <FlowDocumentScrollViewer Width="250" VerticalScrollBarVisibility="Disabled">
+                                    <FlowDocument>
+                                        <Paragraph>
+                                            <TextBlock>
+                                                <Run BaselineAlignment="Center" Text=".NET Framework 4.7.2" />
+                                                <InlineUIContainer BaselineAlignment="Center">
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Style>
+                                                            <Style TargetType="Image">
+                                                                <Setter Property="Source">
+                                                                    <Setter.Value>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Comres.dll" />
+                                                                            <Binding Source="10" />
+                                                                        </MultiBinding>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding NetFxVersionSupported}" Value="true">
+                                                                        <Setter Property="Source">
+                                                                            <Setter.Value>
+                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                    <Binding Source="Comres.dll" />
+                                                                                    <Binding Source="8" />
+                                                                                </MultiBinding>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Image.Style>
+                                                    </Image>
+                                                </InlineUIContainer>
+                                            </TextBlock>
+                                            <TextBlock>
+                                                <Run BaselineAlignment="Center" Text="Visual C++ 2019 Runtime" />
+                                                <InlineUIContainer BaselineAlignment="Center">
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Style>
+                                                            <Style TargetType="Image">
+                                                                <Setter Property="Source">
+                                                                    <Setter.Value>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Comres.dll" />
+                                                                            <Binding Source="10" />
+                                                                        </MultiBinding>
+                                                                    </Setter.Value>
+                                                                </Setter>
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding TesseractVisualCRuntimeInstalled}" Value="true">
+                                                                        <Setter Property="Source">
+                                                                            <Setter.Value>
+                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                    <Binding Source="Comres.dll" />
+                                                                                    <Binding Source="8" />
+                                                                                </MultiBinding>
+                                                                            </Setter.Value>
+                                                                        </Setter>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </Image.Style>
+                                                    </Image>
+                                                </InlineUIContainer>
+                                            </TextBlock>
+                                        </Paragraph>
+                                    </FlowDocument>
+                                </FlowDocumentScrollViewer>
+                            </GroupBox>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
+                </Grid>
             </GroupBox.Header>
             <TabControl Background="{StaticResource BorderBackground}">
                 <TabItem>

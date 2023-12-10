@@ -51,6 +51,8 @@ public partial class GpScannerViewModel : InpcBase
 {
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
+    private const string MinimumVcVersion = "14.21.27702";
+    private const int NetFxMinVersion = 461808;
     private static readonly string AppName = Application.Current?.MainWindow?.Title;
     private static DispatcherTimer timer;
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
@@ -1475,6 +1477,15 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand ModifyGridWidth { get; }
 
+    public bool NetFxVersionSupported
+    {
+        get
+        {
+            using RegistryKey ndpKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full");
+            return (int?)(ndpKey?.GetValue("Release")) > NetFxMinVersion;
+        }
+    }
+
     public DateTime NotifyDate
     {
         get => notifyDate;
@@ -1837,6 +1848,8 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
+    public bool TesseractVisualCRuntimeInstalled => CheckFileVersion($@"{Environment.SystemDirectory}\msvcp140.dll") > new Version(MinimumVcVersion);
+
     public TranslateViewModel TranslateViewModel
     {
         get => translateViewModel;
@@ -1973,12 +1986,12 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public void ReloadFileDatas(bool dateapplytoday=true)
+    public void ReloadFileDatas(bool dateapplytoday = true)
     {
         Dosyalar = GetScannerFileData();
         if (dateapplytoday)
         {
-        SeçiliGün = DateTime.Today;
+            SeçiliGün = DateTime.Today;
         }
     }
 
@@ -2024,6 +2037,8 @@ public partial class GpScannerViewModel : InpcBase
             timer.Tick -= AnimationOnTick;
         }
     }
+
+    private Version CheckFileVersion(string filepath) => File.Exists(filepath) ? new Version(FileVersionInfo.GetVersionInfo(filepath).FileVersion) : null;
 
     private void CreateEmptySqliteDatabase()
     {
