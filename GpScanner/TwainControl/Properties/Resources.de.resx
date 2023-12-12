@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>Aktenmitarbeiter</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>In die Taskleiste minimieren</value>
+  </data>
 </root>

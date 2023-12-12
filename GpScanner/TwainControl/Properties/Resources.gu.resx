@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>ફાઇલ એસોસિયેટ</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>સિસ્ટમ ટ્રેમાં નાનું કરો</value>
+  </data>
 </root>

@@ -39,6 +39,15 @@ public partial class MainWindow : Window
 
     public TwainCtrl TwainCtrl { get; set; }
 
+    protected override void OnStateChanged(EventArgs e)
+    {
+        if (Settings.Default.MinimizeTray && WindowState == WindowState.Minimized)
+        {
+            Hide();
+        }
+        base.OnStateChanged(e);
+    }
+
     private async void ContentControl_DropAsync(object sender, DragEventArgs e)
     {
         if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)

@@ -690,4 +690,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>ФАЙЛ АСАСЦЫЯВАЦЬ</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Згарнуць у сістэмны трэй</value>
+  </data>
 </root>

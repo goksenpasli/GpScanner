@@ -690,4 +690,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>ФАЙЛОВ СЪТРУДНИК</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Минимизиране в системната област</value>
+  </data>
 </root>

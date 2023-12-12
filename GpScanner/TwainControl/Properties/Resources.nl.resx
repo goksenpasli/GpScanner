@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>BESTANDSASSOCIAAT</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimaliseren naar het systeemvak</value>
+  </data>
 </root>

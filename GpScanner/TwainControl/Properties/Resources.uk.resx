@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>ФАЙЛОВИЙ СПОРТИВНИК</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Згорнути в системний трей</value>
+  </data>
 </root>

@@ -1409,6 +1409,7 @@
                                                             CopyButtonVisibility="Collapsed"
                                                             IsReadOnly="True"
                                                             PasteButtonVisibility="Collapsed"
+                                                            ResetButtonVisibility="Visible"
                                                             Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged}" />
                                                         <Button Grid.RowSpan="2"
                                                             Grid.Column="1"
@@ -1657,7 +1658,7 @@
                                                                 CopyButtonVisibility="Collapsed"
                                                                 IsReadOnly="True"
                                                                 PasteButtonVisibility="Collapsed"
-                                                                ResetButtonVisibility="Collapsed"
+                                                                ResetButtonVisibility="Visible"
                                                                 Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                             <UniformGrid Columns="3">
                                                                 <Button twainctrl:Policy.PolicyName="SetBatchWatchFolder" Command="{Binding SetBatchWatchFolder}">
@@ -1731,7 +1732,7 @@
                                                                 CopyButtonVisibility="Collapsed"
                                                                 IsReadOnly="True"
                                                                 PasteButtonVisibility="Collapsed"
-                                                                ResetButtonVisibility="Collapsed"
+                                                                ResetButtonVisibility="Visible"
                                                                 Text="{Binding BatchSaveFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                             <Button Grid.Column="1" Command="{Binding SetBatchSaveFolder}">
                                                                 <StackPanel Orientation="Horizontal">

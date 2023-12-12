@@ -707,6 +707,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string MINTOTRAY {
+            get {
+                return ResourceManager.GetString("MINTOTRAY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MINUTE {
             get {
                 return ResourceManager.GetString("MINUTE", resourceCulture);

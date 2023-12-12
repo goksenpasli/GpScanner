@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>FILE ASSOCIATO</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Riduci a icona nel vassoio di sistema</value>
+  </data>
 </root>

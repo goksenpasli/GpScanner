@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>ΣΥΝΕΡΓΑΤΗΣ ΑΡΧΕΙΟΥ</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Ελαχιστοποίηση στο δίσκο συστήματος</value>
+  </data>
 </root>

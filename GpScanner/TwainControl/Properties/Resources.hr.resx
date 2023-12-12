@@ -690,4 +690,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>FILE SURADNIK</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimiziraj na traku sustava</value>
+  </data>
 </root>

@@ -725,4 +725,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value />
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value />
+  </data>
 </root>

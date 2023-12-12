@@ -479,5 +479,17 @@ namespace GpScanner.Properties {
                 this["BackUpDatabase"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MinimizeTray {
+            get {
+                return ((bool)(this["MinimizeTray"]));
+            }
+            set {
+                this["MinimizeTray"] = value;
+            }
+        }
     }
 }

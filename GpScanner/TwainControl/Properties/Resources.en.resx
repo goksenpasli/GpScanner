@@ -694,4 +694,7 @@ TO FILE</value>
   <data name="ASSOCIATE" xml:space="preserve">
     <value>ASSOCIATE FILE EXTENSION</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimize To System Tray</value>
+  </data>
 </root>

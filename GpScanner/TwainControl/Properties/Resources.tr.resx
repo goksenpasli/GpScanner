@@ -700,4 +700,7 @@ BELGE EKLE</value>
   <data name="ASSOCIATE" xml:space="preserve">
     <value>DOSYA İLİŞKİLENDİR</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Sistem Tepsisine Küçült</value>
+  </data>
 </root>

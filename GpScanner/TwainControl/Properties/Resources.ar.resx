@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>شريك الملف</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>يخفض الى قاع النظام</value>
+  </data>
 </root>

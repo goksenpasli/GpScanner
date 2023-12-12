@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>SPOLEČNÝ SOUBOR</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimalizovat do systémové lišty</value>
+  </data>
 </root>

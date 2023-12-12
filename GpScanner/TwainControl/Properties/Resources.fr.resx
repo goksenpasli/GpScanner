@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>FICHIER ASSOCIÉ</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Réduire dans la barre d'état système</value>
+  </data>
 </root>

@@ -54,6 +54,7 @@ public partial class GpScannerViewModel : InpcBase
     private const string MinimumVcVersion = "14.21.27702";
     private const int NetFxMinVersion = 461808;
     private static readonly string AppName = Application.Current?.MainWindow?.Title;
+    private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"];
@@ -78,6 +79,7 @@ public partial class GpScannerViewModel : InpcBase
     private bool documentPanelIsExpanded;
     private ObservableCollection<Scanner> dosyalar;
     private ObservableCollection<string> fileSystemWatcherProcessedFileList;
+    private int flagProgress;
     private double fold = 0.3;
     private string ftpPassword = string.Empty;
     private string ftpSite = string.Empty;
@@ -126,13 +128,14 @@ public partial class GpScannerViewModel : InpcBase
         PropertyChanged += GpScannerViewModel_PropertyChanged;
 
         GenerateAnimationTimer();
+        GenerateFlagAnimation();
+        GenerateSystemTrayMenu();
         Dosyalar = GetScannerFileData();
         SeçiliDil = Settings.Default.DefaultLang;
         GenerateJumpList();
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         _ = LoadDatas();
-
         if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
         {
             CalendarPanelIsExpanded = true;
@@ -953,6 +956,14 @@ public partial class GpScannerViewModel : InpcBase
             },
             parameter => true);
 
+        StopFlagAnimation = new RelayCommand<object>(
+            parameter =>
+            {
+                flaganimationtimer?.Stop();
+                FlagProgress = 0;
+            },
+            parameter => true);
+
         AddToCalendar = new RelayCommand<object>(
             parameter =>
             {
@@ -1321,6 +1332,19 @@ public partial class GpScannerViewModel : InpcBase
             {
                 fileSystemWatcherProcessedFileList = value;
                 OnPropertyChanged(nameof(FileSystemWatcherProcessedFileList));
+            }
+        }
+    }
+
+    public int FlagProgress
+    {
+        get => flagProgress;
+        set
+        {
+            if (flagProgress != value)
+            {
+                flagProgress = value;
+                OnPropertyChanged(nameof(FlagProgress));
             }
         }
     }
@@ -1832,6 +1856,8 @@ public partial class GpScannerViewModel : InpcBase
 
     public ICommand StartTxtBatch { get; }
 
+    public RelayCommand<object> StopFlagAnimation { get; }
+
     public ICommand Tersiniİşaretle { get; }
 
     public TesseractViewModel TesseractViewModel
@@ -2155,6 +2181,28 @@ public partial class GpScannerViewModel : InpcBase
         timer.Start();
     }
 
+    private void GenerateFlagAnimation()
+    {
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+        {
+            int direction = 1;
+            flaganimationtimer = new(DispatcherPriority.SystemIdle) { Interval = TimeSpan.FromMilliseconds(25) };
+            flaganimationtimer.Tick += (sender, e) =>
+                                       {
+                                           if (FlagProgress >= 85)
+                                           {
+                                               direction = -1;
+                                           }
+                                           if (FlagProgress <= 15)
+                                           {
+                                               direction = 1;
+                                           }
+                                           FlagProgress += direction;
+                                       };
+            flaganimationtimer.Start();
+        }
+    }
+
     private void GenerateJumpList()
     {
         if (IsWin7OrAbove())
@@ -2179,6 +2227,24 @@ public partial class GpScannerViewModel : InpcBase
             list.JumpItems.Add(scan);
             list.Apply();
         }
+    }
+
+    private void GenerateSystemTrayMenu()
+    {
+        NotifyIcon AppNotifyIcon = new()
+        {
+            BalloonTipText = $"{AppName} Sistem Tepsisine Gönderildi.",
+            BalloonTipTitle = AppName,
+            Text = AppName,
+            Visible = true,
+            Icon = new System.Drawing.Icon(Application.GetResourceStream(new Uri("pack://application:,,,/GpScanner;component/scanner.ico")).Stream),
+        };
+
+        AppNotifyIcon.MouseClick += (s, e) =>
+                                    {
+                                        Application.Current?.MainWindow?.Show();
+                                        Application.Current.MainWindow.WindowState = WindowState.Maximized;
+                                    };
     }
 
     private ObservableCollection<ContributionData> GetContributionData()

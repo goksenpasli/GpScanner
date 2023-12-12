@@ -687,4 +687,7 @@
   <data name="ASSOCIATE" xml:space="preserve">
     <value>ファイルアソシエイト</value>
   </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>システムトレイに最小化</value>
+  </data>
 </root>
