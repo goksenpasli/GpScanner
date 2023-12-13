@@ -371,7 +371,7 @@ public partial class MainWindow : Window
             _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), Title);
             e.Cancel = true;
         }
-
+        AppNotifyIcon?.Dispose();
         BackupDatabaseFile();
         StillImageHelper.KillServer();
     }

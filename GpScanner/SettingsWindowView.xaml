@@ -673,13 +673,6 @@
                                 </CheckBox.Content>
                             </CheckBox>
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
-                            <Extensions:NumericUpDownControl FontWeight="Bold"
-                                IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                Maximum="10"
-                                Minimum="1"
-                                Orientation="Horizontal"
-                                SmallChange="1"
-                                Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                             <ToggleButton twainctrl:Policy.PolicyName="MinimizeTray"
                                 IsChecked="{Binding MinimizeTray, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                                 ToolTip="{twainctrl:Loc MINTOTRAY}">
@@ -702,6 +695,13 @@
                                     </Image>
                                 </Grid>
                             </ToggleButton>
+                            <Extensions:NumericUpDownControl FontWeight="Bold"
+                                IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                Maximum="10"
+                                Minimum="1"
+                                Orientation="Horizontal"
+                                SmallChange="1"
+                                Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                             <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier" IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                 <Canvas Width="32" Height="32">
                                     <Image Width="32" Height="32">

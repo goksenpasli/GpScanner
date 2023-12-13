@@ -49,6 +49,7 @@ public class BatchFiles : TessFiles;
 
 public partial class GpScannerViewModel : InpcBase
 {
+    public static NotifyIcon AppNotifyIcon;
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
     private const string MinimumVcVersion = "14.21.27702";
@@ -2231,20 +2232,26 @@ public partial class GpScannerViewModel : InpcBase
 
     private void GenerateSystemTrayMenu()
     {
-        NotifyIcon AppNotifyIcon = new()
+        try
         {
-            BalloonTipText = $"{AppName} Sistem Tepsisine Gönderildi.",
-            BalloonTipTitle = AppName,
-            Text = AppName,
-            Visible = true,
-            Icon = new System.Drawing.Icon(Application.GetResourceStream(new Uri("pack://application:,,,/GpScanner;component/scanner.ico")).Stream),
-        };
+            AppNotifyIcon = new()
+            {
+                BalloonTipText = $"{AppName} Sistem Tepsisine Gönderildi.",
+                BalloonTipTitle = AppName,
+                Text = AppName,
+                Visible = true,
+                Icon = new System.Drawing.Icon(Application.GetResourceStream(new Uri("pack://application:,,,/GpScanner;component/scanner.ico")).Stream),
+            };
 
-        AppNotifyIcon.MouseClick += (s, e) =>
-                                    {
-                                        Application.Current?.MainWindow?.Show();
-                                        Application.Current.MainWindow.WindowState = WindowState.Maximized;
-                                    };
+            AppNotifyIcon.MouseClick += (s, e) =>
+                                        {
+                                            Application.Current.MainWindow.Show();
+                                            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+                                        };
+        }
+        catch (Exception)
+        {
+        }
     }
 
     private ObservableCollection<ContributionData> GetContributionData()
