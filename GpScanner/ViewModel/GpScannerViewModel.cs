@@ -2110,13 +2110,13 @@ public partial class GpScannerViewModel : InpcBase
 
     private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription, string applicationPath, int iconindex = 0)
     {
-        using RegistryKey extensionKey = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{extension}");
+        using RegistryKey extensionKey = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{extension}");
         extensionKey?.SetValue(string.Empty, fileTypeDescription);
-        using RegistryKey fileTypeKey = Registry.CurrentUser.CreateSubKey($"Software\\Classes\\{fileTypeDescription}");
+        using RegistryKey fileTypeKey = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{fileTypeDescription}");
         using RegistryKey iconKey = fileTypeKey?.CreateSubKey("DefaultIcon");
         iconKey?.SetValue(string.Empty, $"{applicationPath},{iconindex}");
         using RegistryKey commandKey = fileTypeKey?.CreateSubKey(@"shell\open\command");
-        commandKey?.SetValue(string.Empty, $"\"{applicationPath}\" \"%1\"");
+        commandKey?.SetValue(string.Empty, $@"""{applicationPath}"" ""%1""");
     }
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)

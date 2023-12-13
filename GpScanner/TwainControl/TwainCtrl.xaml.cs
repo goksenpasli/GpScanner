@@ -17,6 +17,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Media;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -886,6 +887,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
+                    int currentpage = pdfViewer.Sayfa;
                     string oldpdfpath = pdfViewer.PdfFilePath;
                     using (PdfDocument reader = PdfReader.Open(oldpdfpath))
                     {
@@ -903,9 +905,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             document.Save(oldpdfpath);
                         }
                     }
-
                     pdfViewer.PdfFilePath = null;
                     pdfViewer.PdfFilePath = oldpdfpath;
+                    pdfViewer.Sayfa = currentpage;
+                    Thread.Sleep(500);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath) && !string.IsNullOrWhiteSpace(PdfWaterMarkText));
@@ -1120,8 +1123,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                     SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
                     pdfviewer.PdfFilePath = null;
-                    pdfviewer.Sayfa = currentpage;
                     pdfviewer.PdfFilePath = path;
+                    pdfviewer.Sayfa = currentpage;
+                    Thread.Sleep(500);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1168,10 +1172,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     OpenFileDialog openFileDialog = new() { Filter = "Tüm Dosyalar (*.*)|*.*", Multiselect = true };
                     if (openFileDialog.ShowDialog() == true)
                     {
+                        int currentpage = pdfviewer.Sayfa;
                         string oldpdfpath = pdfviewer.PdfFilePath;
                         await AddAttachmentFileAsync(openFileDialog.FileNames, pdfviewer.PdfFilePath, pdfviewer.PdfFilePath);
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = oldpdfpath;
+                        pdfviewer.Sayfa = currentpage;
+                        Thread.Sleep(500);
                     }
                 }
             },
@@ -1408,6 +1415,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = oldpdfpath;
                     pdfviewer.Sayfa = currentpage;
+                    Thread.Sleep(500);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));

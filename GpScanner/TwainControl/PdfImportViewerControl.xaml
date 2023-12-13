@@ -99,10 +99,19 @@
                                             </MultiBinding>
                                         </Image.Tag>
                                     </Pdfviewer:PdfShadowedImage>
-                                    <TextBlock Width="100"
+                                    <Extensions:ButtonedTextBox Width="100"
                                         VerticalAlignment="Center"
+                                        Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        CopyButtonVisibility="Collapsed"
+                                        IsReadOnly="True"
+                                        PasteButtonVisibility="Collapsed"
+                                        PrintButtonVisibility="Collapsed"
+                                        RemainingLengthVisibility="Collapsed"
+                                        ResetButtonVisibility="Collapsed"
                                         Text="{Binding Mode=OneWay}"
-                                        TextWrapping="Wrap" />
+                                        TextWrapping="Wrap"
+                                        TitleCaseMenuVisibility="Collapsed" />
                                 </StackPanel>
                             </DataTemplate>
                         </MenuItem.ItemTemplate>
