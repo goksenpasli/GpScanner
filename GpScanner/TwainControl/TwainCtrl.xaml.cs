@@ -1172,13 +1172,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     OpenFileDialog openFileDialog = new() { Filter = "Tüm Dosyalar (*.*)|*.*", Multiselect = true };
                     if (openFileDialog.ShowDialog() == true)
                     {
-                        int currentpage = pdfviewer.Sayfa;
                         string oldpdfpath = pdfviewer.PdfFilePath;
                         await AddAttachmentFileAsync(openFileDialog.FileNames, pdfviewer.PdfFilePath, pdfviewer.PdfFilePath);
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = oldpdfpath;
-                        pdfviewer.Sayfa = currentpage;
-                        Thread.Sleep(500);
                     }
                 }
             },
@@ -1275,15 +1272,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string path = pdfviewer.PdfFilePath;
-                    if (MessageBox.Show($"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
-                    MessageBoxResult.Yes)
+                    int currentpage = pdfviewer.Sayfa;
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
-                        await RemovePdfPageAsync(path, SayfaBaşlangıç, SayfaBitiş);
-                        pdfviewer.Sayfa = 1;
-                        pdfviewer.PdfFilePath = null;
-                        pdfviewer.PdfFilePath = path;
-                        SayfaBaşlangıç = SayfaBitiş = 1;
+                        if (MessageBox.Show($"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
+                        MessageBoxResult.Yes)
+                        {
+                            await RemovePdfPageAsync(path, SayfaBaşlangıç, SayfaBitiş);
+                            pdfviewer.Sayfa = 1;
+                            pdfviewer.PdfFilePath = null;
+                            pdfviewer.PdfFilePath = path;
+                            SayfaBaşlangıç = SayfaBitiş = 1;
+                        }
+                        return;
                     }
+
+                    await RemovePdfPageAsync(path, currentpage, currentpage);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = path;
+                    pdfviewer.Sayfa = currentpage - 1;
+                    Thread.Sleep(500);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && pdfviewer.ToplamSayfa > 1 && SayfaBaşlangıç <= SayfaBitiş && SayfaBitiş - SayfaBaşlangıç + 1 < pdfviewer.ToplamSayfa);

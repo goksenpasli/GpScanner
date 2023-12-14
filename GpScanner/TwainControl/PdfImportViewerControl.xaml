@@ -161,6 +161,7 @@
                 </Image>
             </Button>
             <Button local:Policy.PolicyName="RemoveSelectedPage"
+                BorderBrush="Cyan"
                 Command="{Binding RemoveSelectedPage}"
                 CommandParameter="{Binding ElementName=PdfViewer}">
                 <Image Width="16"

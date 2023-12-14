@@ -210,11 +210,6 @@
                                 </Image.Source>
                             </Image>
                         </Button>
-                        <Button Command="{Binding RemoveSelectedPage}" CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16"
-                                Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
-                        </Button>
                         <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">
                                 <Image.Source>
