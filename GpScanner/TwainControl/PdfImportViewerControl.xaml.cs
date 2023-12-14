@@ -1076,12 +1076,15 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     double coordx = x1 + scrollviewer.HorizontalOffset;
                     double coordy = y1 + scrollviewer.VerticalOffset;
                     byte[] imgdata = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+                    if (imgdata is not null)
+                    {
+                        OcrText = await GetOcrData(twainCtrl.Scanner?.SelectedTtsLanguage, imgdata);
+                        QrCode.QrCode qrCode = new();
+                        QrText = qrCode.GetImageBarcodeResult(imgdata);
+                    }
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;
                     Cursor = Cursors.Arrow;
-                    OcrText = await GetOcrData(twainCtrl.Scanner?.SelectedTtsLanguage, imgdata);
-                    QrCode.QrCode qrCode = new();
-                    QrText = qrCode.GetImageBarcodeResult(imgdata);
                 }
             }
         }
