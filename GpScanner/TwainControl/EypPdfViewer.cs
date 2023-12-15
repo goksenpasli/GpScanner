@@ -1,10 +1,15 @@
 ﻿using Extensions;
 using Microsoft.Win32;
 using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
+using System.Windows.Input;
+using System.Windows.Media.Imaging;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -49,11 +54,77 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     }
                 }
             });
+
+        RotateSelectedPage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is int sayfa)
+                {
+                    string path = PdfFilePath;
+                    using PdfDocument inputDocument = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Import);
+                    TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
+                    PdfFilePath = null;
+                    PdfFilePath = path;
+                    Thread.Sleep(1000);
+                }
+            },
+            parameter => true);
+
+        RemoveSelectedPage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is int sayfa)
+                {
+                    string path = PdfFilePath;
+                    await TwainCtrl.RemovePdfPageAsync(path, sayfa, sayfa);
+                    PdfFilePath = null;
+                    PdfFilePath = path;
+                    Thread.Sleep(1000);
+                }
+            },
+            parameter => ToplamSayfa > 1);
+
+        AddAllFileToControlPanel = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is int sayfa && DataContext is TwainCtrl twainCtrl)
+                {
+                    byte[] filedata = await ReadAllFileAsync(PdfFilePath);
+                    MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                    bitmapFrame.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                    twainCtrl?.Scanner?.Resimler.Add(scannedImage);
+                    ms = null;
+                }
+            },
+            parameter => true);
+
+        CopyPdfBitmapFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is int sayfa)
+                {
+                    byte[] filedata = await ReadAllFileAsync(PdfFilePath);
+                    using MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
+                    using Image image = Image.FromStream(ms);
+                    System.Windows.Forms.Clipboard.SetImage(image);
+                }
+            },
+            parameter => true);
     }
+
+    public RelayCommand<object> AddAllFileToControlPanel { get; }
+
+    public RelayCommand<object> CopyPdfBitmapFile { get; }
 
     public new RelayCommand<object> DosyaAç { get; }
 
     public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
+
+    public RelayCommand<object> RemoveSelectedPage { get; }
+
+    public RelayCommand<object> RotateSelectedPage { get; }
 
     public void AddToHistoryList(string pdffilepath)
     {

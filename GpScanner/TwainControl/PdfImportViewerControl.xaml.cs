@@ -226,7 +226,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     PdfViewer.PdfFilePath = null;
                     PdfViewer.PdfFilePath = oldpdfpath;
                     PdfViewer.Sayfa = currentpage;
-                    Thread.Sleep(500);
+                    Thread.Sleep(1000);
                 }
             },
             parameter => true);
