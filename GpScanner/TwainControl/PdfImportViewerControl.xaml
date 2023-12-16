@@ -110,7 +110,7 @@
                                                         IsEnabled="{Binding ZoomEnabled, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                         Minimum="0.01"
                                                         SmallChange="1"
-                                                        Style="{StaticResource Slider}"
+                                                        Style="{DynamicResource Slider}"
                                                         Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                         Value="{Binding Zoom, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                     <Slider Width="50"
@@ -119,7 +119,7 @@
                                                         IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                         Maximum="360"
                                                         SmallChange="1"
-                                                        Style="{StaticResource Slider}"
+                                                        Style="{DynamicResource Slider}"
                                                         Ticks="0, 90, 180, 270, 360"
                                                         Value="{Binding Angle, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                 </StackPanel>
@@ -491,7 +491,7 @@
                                                             Minimum="0.01"
                                                             Orientation="Vertical"
                                                             SmallChange="1"
-                                                            Style="{StaticResource Slider}"
+                                                            Style="{DynamicResource Slider}"
                                                             Value="{Binding Zoom, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                     </Border>
                                                 </Extensions:ContentToggleButton.OverContent>
@@ -517,7 +517,7 @@
                                                             Maximum="360"
                                                             Orientation="Vertical"
                                                             SmallChange="1"
-                                                            Style="{StaticResource Slider}"
+                                                            Style="{DynamicResource Slider}"
                                                             Ticks="0, 90, 180, 270, 360"
                                                             Value="{Binding Angle, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                                     </Border>
