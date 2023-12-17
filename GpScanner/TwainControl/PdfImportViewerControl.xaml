@@ -251,6 +251,21 @@
                                                                                             Height="16"
                                                                                             Source="/TwainControl;component/Icons/rotate.png" />
                                                                                     </InlineUIContainer>
+                                                                                </Hyperlink><Hyperlink local:Policy.PolicyName="FlipPdfPage"
+                                                                                    BaselineAlignment="Center"
+                                                                                    Command="{Binding FlipPdfPage, RelativeSource={RelativeSource AncestorType={x:Type local:EypPdfViewer}}}"
+                                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                                    TextDecorations="None">
+                                                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                                                        <Image Width="16" Height="16">
+                                                                                            <Image.Source>
+                                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                    <Binding Source="Shell32.dll" />
+                                                                                                    <Binding Source="252" />
+                                                                                                </MultiBinding>
+                                                                                            </Image.Source>
+                                                                                        </Image>
+                                                                                    </InlineUIContainer>
                                                                                 </Hyperlink><Hyperlink local:Policy.PolicyName="CopyPdfBitmapFile"
                                                                                     BaselineAlignment="Center"
                                                                                     Command="{Binding CopyPdfBitmapFile, RelativeSource={RelativeSource AncestorType={x:Type local:EypPdfViewer}}}"
@@ -627,6 +642,17 @@
                                         Text="{Binding Mode=OneWay}"
                                         TextWrapping="Wrap"
                                         TitleCaseMenuVisibility="Collapsed" />
+                                    <TextBlock>
+                                        <Hyperlink Command="{Binding RemovePdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
+                                            CommandParameter="{Binding Mode=OneWay}"
+                                            TextDecorations="None">
+                                            <InlineUIContainer BaselineAlignment="Center">
+                                                <Image Width="16"
+                                                    Height="16"
+                                                    Source="/TwainControl;component/Icons/delete.png" />
+                                            </InlineUIContainer>
+                                        </Hyperlink>
+                                    </TextBlock>
                                 </StackPanel>
                             </DataTemplate>
                         </MenuItem.ItemTemplate>

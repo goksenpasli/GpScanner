@@ -13,7 +13,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -207,26 +206,34 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     }
                     else
                     {
-                        Settings.Default.PdfLoadHistory.Remove(filepath);
-                        Settings.Default.Save();
-                        Settings.Default.Reload();
+                        RemovePdfFromHistoryList(filepath);
                     }
                 }
             },
             parameter => true);
 
-        SaveRefreshPdfPage = new RelayCommand<object>(
+        RemovePdfHistoryFile = new RelayCommand<object>(
             parameter =>
+            {
+                if (parameter is string filepath)
+                {
+                    RemovePdfFromHistoryList(filepath);
+                }
+            },
+            parameter => true);
+
+        SaveRefreshPdfPage = new RelayCommand<object>(
+            async parameter =>
             {
                 if (parameter is PdfDocument pdfDocument && pdfDocument is not null)
                 {
                     int currentpage = PdfViewer.Sayfa;
                     string oldpdfpath = PdfViewer.PdfFilePath;
                     pdfDocument.Save(PdfViewer.PdfFilePath);
+                    await Task.Delay(1000);
                     PdfViewer.PdfFilePath = null;
                     PdfViewer.PdfFilePath = oldpdfpath;
                     PdfViewer.Sayfa = currentpage;
-                    Thread.Sleep(1000);
                 }
             },
             parameter => true);
@@ -657,6 +664,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public RelayCommand<object> ReadAnnotation { get; }
 
     public RelayCommand<object> RemoveAnnotation { get; }
+
+    public RelayCommand<object> RemovePdfHistoryFile { get; }
 
     public RelayCommand<object> SaveInkDrawImage { get; }
 
@@ -1124,6 +1133,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) => Cursor = Cursors.Arrow;
+
+    private void RemovePdfFromHistoryList(string filepath)
+    {
+        Settings.Default.PdfLoadHistory.Remove(filepath);
+        Settings.Default.Save();
+        Settings.Default.Reload();
+    }
 
     private XBrush SetBrush(XKnownColor xKnownColor, double transparent = 1)
     {

@@ -1,12 +1,13 @@
 ﻿using Extensions;
 using Microsoft.Win32;
+using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -56,16 +57,16 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             });
 
         RotateSelectedPage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if (parameter is int sayfa)
                 {
                     string path = PdfFilePath;
                     using PdfDocument inputDocument = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Import);
                     TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
+                    await Task.Delay(1000);
                     PdfFilePath = null;
                     PdfFilePath = path;
-                    Thread.Sleep(1000);
                 }
             },
             parameter => true);
@@ -77,9 +78,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 {
                     string path = PdfFilePath;
                     await TwainCtrl.RemovePdfPageAsync(path, sayfa, sayfa);
+                    await Task.Delay(1000);
                     PdfFilePath = null;
                     PdfFilePath = path;
-                    Thread.Sleep(1000);
                 }
             },
             parameter => ToplamSayfa > 1);
@@ -112,6 +113,31 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 }
             },
             parameter => true);
+
+        FlipPdfPage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is int currentpage)
+                {
+                    string oldpdfpath = PdfFilePath;
+                    using PdfDocument document = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify);
+                    PdfPage page = document.Pages[currentpage - 1];
+                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
+                    XPoint center = new(page.Width / 2, page.Height / 2);
+                    gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
+                    BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage);
+                    XImage image = XImage.FromBitmapSource(bitmapImage);
+                    gfx.DrawImage(image, 0, 0);
+                    document.Save(PdfFilePath);
+                    image = null;
+                    bitmapImage = null;
+                    await Task.Delay(1000);
+                    PdfFilePath = null;
+                    PdfFilePath = oldpdfpath;
+                    Sayfa = currentpage;
+                }
+            },
+            parameter => true);
     }
 
     public RelayCommand<object> AddAllFileToControlPanel { get; }
@@ -121,6 +147,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     public new RelayCommand<object> DosyaAç { get; }
 
     public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
+
+    public RelayCommand<object> FlipPdfPage { get; }
 
     public RelayCommand<object> RemoveSelectedPage { get; }
 

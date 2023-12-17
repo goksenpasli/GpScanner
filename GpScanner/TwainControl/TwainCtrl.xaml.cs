@@ -17,7 +17,6 @@ using System.IO.Compression;
 using System.Linq;
 using System.Media;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -883,7 +882,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
         PdfWaterMark = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
@@ -905,10 +904,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             document.Save(oldpdfpath);
                         }
                     }
+                    await Task.Delay(1000);
                     pdfViewer.PdfFilePath = null;
                     pdfViewer.PdfFilePath = oldpdfpath;
                     pdfViewer.Sayfa = currentpage;
-                    Thread.Sleep(1000);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath) && !string.IsNullOrWhiteSpace(PdfWaterMarkText));
@@ -1098,7 +1097,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         RotateSelectedPage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
@@ -1122,10 +1121,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
 
                     SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
+                    await Task.Delay(1000);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = path;
                     pdfviewer.Sayfa = currentpage;
-                    Thread.Sleep(1000);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1288,10 +1287,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
 
                     await RemovePdfPageAsync(path, currentpage, currentpage);
+                    await Task.Delay(1000);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = path;
                     pdfviewer.Sayfa = currentpage;
-                    Thread.Sleep(1000);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && pdfviewer.ToplamSayfa > 1 && SayfaBaşlangıç <= SayfaBitiş && SayfaBitiş - SayfaBaşlangıç + 1 < pdfviewer.ToplamSayfa);
@@ -1393,7 +1392,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => PdfPages?.Any(z => z.Selected) == true);
 
         AddPageNumber = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if (parameter is PdfViewer.PdfViewer pdfviewer)
                 {
@@ -1420,10 +1419,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                     gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), pdfviewer.Sayfa.ToString(), PdfGeneration.GetPdfTextLayout(page)[0], PdfGeneration.GetPdfTextLayout(page)[1]);
                     document.Save(pdfviewer.PdfFilePath);
+                    await Task.Delay(1000);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = oldpdfpath;
                     pdfviewer.Sayfa = currentpage;
-                    Thread.Sleep(1000);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
@@ -1446,10 +1445,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     document.Save(pdfviewer.PdfFilePath);
                     image = null;
                     bitmapImage = null;
+                    await Task.Delay(1000);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = oldpdfpath;
                     pdfviewer.Sayfa = currentpage;
-                    Thread.Sleep(1000);
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
@@ -2517,8 +2516,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         inputDocument.Pages.RemoveAt(i - 1);
                     }
-
-                    inputDocument.Save(pdffilepath);
+                    if (inputDocument.PageCount > 1)
+                    {
+                        inputDocument.Save(pdffilepath);
+                    }
                 }
             });
     }
