@@ -1375,7 +1375,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     List<PdfData> currentpages = PdfPages?.Where(currentpage => currentpage.Selected).ToList();
                     foreach (PdfData currentpage in currentpages)
                     {
-                        string savefilename = $"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
+                        string savefilename = $@"{savefolder}\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
                         await PdfPageRangeSaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
                         files.Add(savefilename);
                     }
@@ -1383,7 +1383,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (currentpages.Count > 1 && MessageBox.Show($"{Translation.GetResStringValue("MERGEPDF")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
                         using PdfDocument mergedPdf = files.ToArray().MergePdf();
-                        mergedPdf.Save($"{savefolder}\\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {Translation.GetResStringValue("MERGE")}.pdf");
+                        mergedPdf.Save($@"{savefolder}\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {Translation.GetResStringValue("MERGE")}.pdf");
                     }
 
                     WebAdreseGit.Execute(savefolder);
@@ -1437,12 +1437,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     int currentpage = pdfviewer.Sayfa;
                     using PdfDocument document = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify);
                     PdfPage page = document.Pages[currentpage - 1];
-                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
                     XPoint center = new(page.Width / 2, page.Height / 2);
-                    gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ?  1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
+                    gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
                     BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage);
-                    gfx.DrawImage(XImage.FromBitmapSource(bitmapImage), 0, 0);
+                    XImage image = XImage.FromBitmapSource(bitmapImage);
+                    gfx.DrawImage(image, 0, 0);
                     document.Save(pdfviewer.PdfFilePath);
+                    image = null;
+                    bitmapImage = null;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = oldpdfpath;
                     pdfviewer.Sayfa = currentpage;
