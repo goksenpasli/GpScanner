@@ -1290,7 +1290,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     await RemovePdfPageAsync(path, currentpage, currentpage);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = path;
-                    pdfviewer.Sayfa = currentpage - 1;
+                    pdfviewer.Sayfa = currentpage;
                     Thread.Sleep(1000);
                 }
             },
@@ -1419,6 +1419,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     PdfPage page = document.Pages[pdfviewer.Sayfa - 1];
                     using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                     gfx.DrawText(new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)), pdfviewer.Sayfa.ToString(), PdfGeneration.GetPdfTextLayout(page)[0], PdfGeneration.GetPdfTextLayout(page)[1]);
+                    document.Save(pdfviewer.PdfFilePath);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = oldpdfpath;
+                    pdfviewer.Sayfa = currentpage;
+                    Thread.Sleep(1000);
+                }
+            },
+            parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+
+        FlipPdfPage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer)
+                {
+                    string oldpdfpath = pdfviewer.PdfFilePath;
+                    int currentpage = pdfviewer.Sayfa;
+                    using PdfDocument document = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+                    PdfPage page = document.Pages[currentpage - 1];
+                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                    XPoint center = new(page.Width / 2, page.Height / 2);
+                    gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ?  1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
+                    BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage);
+                    gfx.DrawImage(XImage.FromBitmapSource(bitmapImage), 0, 0);
                     document.Save(pdfviewer.PdfFilePath);
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = oldpdfpath;
@@ -1815,6 +1838,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> FirstLastGroup { get; }
 
     public RelayCommand<object> FirstLastSortSequenceData { get; }
+
+    public RelayCommand<object> FlipPdfPage { get; }
 
     public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
 

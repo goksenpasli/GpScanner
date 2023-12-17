@@ -608,6 +608,9 @@
                                                         <System:Int32>1</System:Int32>
                                                     </Binding.Source>
                                                 </Binding>
+                                                <Binding ElementName="PdfViewer"
+                                                    Mode="OneWay"
+                                                    Path="PdfFilePath" />
                                             </MultiBinding>
                                         </Image.Tag>
                                     </Pdfviewer:PdfShadowedImage>
@@ -615,7 +618,7 @@
                                         VerticalAlignment="Center"
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
-                                        CopyButtonVisibility="Collapsed"
+                                        CopyButtonVisibility="Visible"
                                         IsReadOnly="True"
                                         PasteButtonVisibility="Collapsed"
                                         PrintButtonVisibility="Collapsed"
@@ -847,6 +850,19 @@
                 <Image Width="16"
                     Height="16"
                     Source="/TwainControl;component/Icons/rotate.png" />
+            </Button>
+            <Button local:Policy.PolicyName="FlipPdfPage"
+                BorderBrush="Cyan"
+                Command="{Binding FlipPdfPage}"
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="252" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
             </Button>
             <Button local:Policy.PolicyName="AddAllFileToControlPanel"
                 BorderBrush="Cyan"

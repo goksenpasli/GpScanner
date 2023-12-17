@@ -1428,9 +1428,29 @@
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <Image Width="16"
-                                        Height="16"
-                                        VerticalAlignment="Bottom">
+                                    <Button local:Policy.PolicyName="InsertClipBoardImage"
+                                        BorderBrush="Cyan"
+                                        Command="{Binding InsertClipBoardImage}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="260" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="245" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Image Width="16" Height="16">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
@@ -1482,9 +1502,7 @@
                                                 Height="16"
                                                 Source="/TwainControl;component/Icons/dice.png" />
                                         </Hyperlink>
-                                        <Run BaselineAlignment="Top"
-                                            FontSize="13"
-                                            Text="1" /><Hyperlink BaselineAlignment="Center"
+                                        <Run BaselineAlignment="Center" Text="1" /><Hyperlink BaselineAlignment="Center"
                                             Command="{Binding FirstLastGroup}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc SPLITSORT}">
@@ -1493,13 +1511,14 @@
                                                 FontSize="18"
                                                 Text="F" />
                                         </Hyperlink>
-                                        <Extensions:NumericUpDownControl VerticalAlignment="Center"
-                                            IsReadOnly="True"
-                                            Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
-                                            Minimum="2"
-                                            Orientation="Horizontal"
-                                            SmallChange="1"
-                                            Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <InlineUIContainer BaselineAlignment="Center">
+                                            <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
+                                                Minimum="2"
+                                                Orientation="Horizontal"
+                                                SmallChange="1"
+                                                Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </InlineUIContainer>
                                     </TextBlock>
                                 </StackPanel>
                             </TabItem.Header>
@@ -1808,42 +1827,14 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <Expander VerticalAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                ExpandDirection="Right">
-                                <StackPanel Orientation="Horizontal">
-                                    <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="245" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button>
-                                    <Button local:Policy.PolicyName="InsertClipBoardImage"
-                                        BorderBrush="Cyan"
-                                        Command="{Binding InsertClipBoardImage}">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="260" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button>
-                                    <Extensions:NumericUpDownControl IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}"
-                                        IsReadOnly="True"
-                                        Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
-                                        Minimum="0"
-                                        NumericUpdownTextBoxVisibility="Collapsed"
-                                        SmallChange="1"
-                                        Value="{Binding SeekIndex}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding SeekIndex, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
-                                </StackPanel>
-                            </Expander>
+                            <Extensions:NumericUpDownControl IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}"
+                                IsReadOnly="True"
+                                Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
+                                Minimum="0"
+                                NumericUpdownTextBoxVisibility="Collapsed"
+                                SmallChange="1"
+                                Value="{Binding SeekIndex}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding SeekIndex, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
                         </StackPanel>
                     </TabItem.Header>
                     <Grid Background="{StaticResource BorderBackground}" IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
