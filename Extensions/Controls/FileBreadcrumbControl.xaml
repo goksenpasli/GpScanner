@@ -81,9 +81,18 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <TextBlock Grid.Column="1"
+                            <local:ButtonedTextBox Grid.Column="1"
                                 VerticalAlignment="Center"
-                                Text="{Binding FileName, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                CopyButtonVisibility="Visible"
+                                Description="{Binding FileName, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                FontSizeButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
+                                PrintButtonVisibility="Collapsed"
+                                RemainingLengthVisibility="Collapsed"
+                                ResetButtonVisibility="Collapsed"
+                                Text="{Binding FilePath, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                TextBoxVisibility="Collapsed"
+                                TitleCaseMenuVisibility="Collapsed"
                                 Visibility="{Binding ShowFileName, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}" />
                         </Grid>
                     </ScrollViewer>
