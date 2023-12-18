@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>システムトレイに最小化</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>起動メッセージ</value>
+  </data>
 </root>

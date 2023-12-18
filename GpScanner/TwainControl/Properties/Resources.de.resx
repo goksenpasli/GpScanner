@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>In die Taskleiste minimieren</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Startmeldung</value>
+  </data>
 </root>

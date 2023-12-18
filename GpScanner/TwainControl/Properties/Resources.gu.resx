@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>સિસ્ટમ ટ્રેમાં નાનું કરો</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>સ્ટાર્ટઅપ સંદેશ</value>
+  </data>
 </root>

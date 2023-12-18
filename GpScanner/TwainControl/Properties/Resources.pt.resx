@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Minimizar para a bandeja do sistema</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Mensagem de inicialização</value>
+  </data>
 </root>

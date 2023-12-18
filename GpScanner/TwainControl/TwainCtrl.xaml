@@ -31,7 +31,6 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
             <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
-            <Converter:EnumOrientationToTwainVersionConverter x:Key="EnumOrientationToTwainVersionConverter" />
             <Converter:FileDateContextMenuConverter x:Key="FileDateContextMenuConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="ListFilePathToIconConverter" IconSize="extraLarge" />
@@ -1045,10 +1044,16 @@
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock>
-                                                    <Run Text="{Binding Converter={StaticResource EnumOrientationToConvertedLanguageTextConverter}, Mode=OneWay}" />
-                                                    <Run FontStyle="Italic"
-                                                        Foreground="Red"
-                                                        Text="{Binding Converter={StaticResource EnumOrientationToTwainVersionConverter}, Mode=OneWay}" />
+                                                    <Run>
+                                                        <Run.Text>
+                                                            <MultiBinding Converter="{StaticResource EnumOrientationToConvertedLanguageTextConverter}">
+                                                                <Binding Mode="OneWay" />
+                                                                <Binding Mode="OneWay"
+                                                                    Path="Scanner.FileName"
+                                                                    RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
+                                                            </MultiBinding>
+                                                        </Run.Text>
+                                                    </Run>
                                                 </TextBlock>
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>

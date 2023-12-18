@@ -697,4 +697,7 @@ TO FILE</value>
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Minimize To System Tray</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Startup Message</value>
+  </data>
 </root>

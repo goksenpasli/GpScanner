@@ -792,7 +792,7 @@
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <UniformGrid Columns="2" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
+                        <UniformGrid Columns="3" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
                             <Button twainctrl:Policy.PolicyName="RegisterSti" Command="{Binding RegisterSti, Mode=OneWay}">
                                 <StackPanel Orientation="Horizontal">
                                     <Canvas Width="32" Height="32">
@@ -815,7 +815,10 @@
                                             </Image.Source>
                                         </Image>
                                     </Canvas>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REGSTI}" />
+                                    <TextBlock Width="155"
+                                        VerticalAlignment="Center"
+                                        Text="{twainctrl:Loc REGSTI}"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </Button>
                             <Button twainctrl:Policy.PolicyName="UnRegisterSti" Command="{Binding UnRegisterSti, Mode=OneWay}">
@@ -843,9 +846,18 @@
                                             </Image.Source>
                                         </Image>
                                     </Canvas>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc UNREGSTI}" />
+                                    <TextBlock Width="155"
+                                        VerticalAlignment="Center"
+                                        Text="{twainctrl:Loc UNREGSTI}"
+                                        TextWrapping="Wrap" />
                                 </StackPanel>
                             </Button>
+                            <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                CopyButtonVisibility="Collapsed"
+                                Description="{twainctrl:Loc STARTUPMSG}"
+                                OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
+                                Text="{Binding StartupMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                         </UniformGrid>
                         <ListBox Grid.Column="1"
                             Background="{x:Null}"
@@ -889,7 +901,7 @@
                             Command="{Binding ResetSettings}"
                             FontWeight="Bold">
                             <Button.Content>
-                                <TextBlock>
+                                <TextBlock Width="100" TextWrapping="Wrap">
                                     <Run Text="{twainctrl:Loc SETTİNGS}" />
                                     <Run Text="{twainctrl:Loc RESET}" />
                                 </TextBlock>
@@ -909,7 +921,9 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock VerticalAlignment="Center">
+                                    <TextBlock Width="128"
+                                        VerticalAlignment="Center"
+                                        TextWrapping="Wrap">
                                         <Run Text="{Binding Path=Title, RelativeSource={RelativeSource AncestorType=Window}}" />
                                         <Run Text="{twainctrl:Loc UPDATE}" />
                                     </TextBlock>

@@ -491,5 +491,17 @@ namespace GpScanner.Properties {
                 this["MinimizeTray"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string StartupMessage {
+            get {
+                return ((string)(this["StartupMessage"]));
+            }
+            set {
+                this["StartupMessage"] = value;
+            }
+        }
     }
 }

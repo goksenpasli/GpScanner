@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Riduci a icona nel vassoio di sistema</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Messaggio di avvio</value>
+  </data>
 </root>

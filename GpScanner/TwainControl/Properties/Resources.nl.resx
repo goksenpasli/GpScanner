@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Minimaliseren naar het systeemvak</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Opstartbericht</value>
+  </data>
 </root>

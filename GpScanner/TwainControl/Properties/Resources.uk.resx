@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Згорнути в системний трей</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Повідомлення про запуск</value>
+  </data>
 </root>

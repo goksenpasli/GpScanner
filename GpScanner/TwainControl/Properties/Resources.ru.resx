@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Минимизировать в системный трей</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Сообщение при запуске</value>
+  </data>
 </root>

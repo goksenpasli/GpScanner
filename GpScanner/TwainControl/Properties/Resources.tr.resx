@@ -703,4 +703,7 @@ BELGE EKLE</value>
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Sistem Tepsisine Küçült</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Başlangıç ​​Mesajı</value>
+  </data>
 </root>

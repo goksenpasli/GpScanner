@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Minimalizovat do systémové lišty</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Spouštěcí zpráva</value>
+  </data>
 </root>

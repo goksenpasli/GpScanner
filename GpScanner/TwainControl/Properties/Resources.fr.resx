@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Réduire dans la barre d'état système</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Message de démarrage</value>
+  </data>
 </root>

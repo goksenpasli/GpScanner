@@ -693,4 +693,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Minimer til systembakken</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Opstartsmeddelelse</value>
+  </data>
 </root>

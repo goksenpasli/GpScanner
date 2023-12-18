@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Ελαχιστοποίηση στο δίσκο συστήματος</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Μήνυμα εκκίνησης</value>
+  </data>
 </root>

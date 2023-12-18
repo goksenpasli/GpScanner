@@ -693,4 +693,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Згарнуць у сістэмны трэй</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Паведамленне аб запуску</value>
+  </data>
 </root>

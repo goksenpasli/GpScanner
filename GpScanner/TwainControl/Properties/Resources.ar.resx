@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>يخفض الى قاع النظام</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>رسالة بدء التشغيل</value>
+  </data>
 </root>

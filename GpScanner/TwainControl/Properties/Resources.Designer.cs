@@ -1148,6 +1148,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string STARTUPMSG {
+            get {
+                return ResourceManager.GetString("STARTUPMSG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string STOP {
             get {
                 return ResourceManager.GetString("STOP", resourceCulture);

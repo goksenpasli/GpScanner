@@ -693,4 +693,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Minimiziraj na traku sustava</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Poruka pri pokretanju</value>
+  </data>
 </root>

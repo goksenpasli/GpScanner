@@ -690,4 +690,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>最小化到系统托盘</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>启动信息</value>
+  </data>
 </root>

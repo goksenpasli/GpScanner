@@ -693,4 +693,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value>Минимизиране в системната област</value>
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Съобщение при стартиране</value>
+  </data>
 </root>

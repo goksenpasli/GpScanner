@@ -158,6 +158,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += TwainCtrl_PropertyChangedAsync;
         Camera.PropertyChanged += CameraUserControl_PropertyChangedAsync;
+        TranslationSource.Instance.PropertyChanged += Language_PropertyChanged;
         SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
         if (Settings.Default.UseSelectedProfile)
@@ -3263,6 +3264,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private bool IsBlackAndWhiteMode() => Settings.Default.BackMode == (int)ColourSetting.BlackAndWhite && Settings.Default.Mode == (int)ColourSetting.BlackAndWhite;
 
+    private void Language_PropertyChanged(object sender, PropertyChangedEventArgs e) => Scanner.FileName = Translation.GetResStringValue("DEFAULTSCANNAME");
+
     private void LbEypContent_Drop(object sender, DragEventArgs e)
     {
         if (e.Data.GetData(typeof(Scanner)) is Scanner scanner && File.Exists(scanner.FileName))
@@ -3822,7 +3825,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         Settings.Default.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
                         break;
                 }
-                Scanner.FileName = Translation.GetResStringValue("DEFAULTSCANNAME");
             }
             catch (Exception)
             {

@@ -728,4 +728,7 @@
   <data name="MINTOTRAY" xml:space="preserve">
     <value />
   </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value />
+  </data>
 </root>
