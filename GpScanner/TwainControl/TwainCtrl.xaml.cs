@@ -161,11 +161,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         TranslationSource.Instance.PropertyChanged += Language_PropertyChanged;
         SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
 
-        if (Settings.Default.UseSelectedProfile)
-        {
-            Scanner.SelectedProfile = Settings.Default.DefaultProfile;
-        }
-
         ScanImage = new RelayCommand<object>(
             async parameter =>
             {
@@ -2992,6 +2987,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             SetCropPageResolution();
         }
 
+        if (Settings.Default.UseSelectedProfile)
+        {
+            Scanner.SelectedProfile = Settings.Default.DefaultProfile;
+        }
+
         Settings.Default.Save();
     }
 
@@ -3264,7 +3264,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private bool IsBlackAndWhiteMode() => Settings.Default.BackMode == (int)ColourSetting.BlackAndWhite && Settings.Default.Mode == (int)ColourSetting.BlackAndWhite;
 
-    private void Language_PropertyChanged(object sender, PropertyChangedEventArgs e) => Scanner.FileName = Translation.GetResStringValue("DEFAULTSCANNAME");
+    private void Language_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (!Settings.Default.UseSelectedProfile)
+        {
+            Scanner.FileName = Translation.GetResStringValue("DEFAULTSCANNAME");
+        }
+    }
 
     private void LbEypContent_Drop(object sender, DragEventArgs e)
     {

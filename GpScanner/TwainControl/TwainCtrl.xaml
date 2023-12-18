@@ -869,7 +869,7 @@
                                                                 <StackPanel>
                                                                     <CheckBox HorizontalContentAlignment="Stretch"
                                                                         Content="{local:Loc LOAD}"
-                                                                        IsChecked="{Binding UseSelectedProfile, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                                                        IsChecked="{Binding UseSelectedProfile, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                                                                         IsEnabled="{Binding Scanner.SelectedProfile, Converter={StaticResource NullableToBooleanConverter}}" />
                                                                     <ComboBox ItemsSource="{Binding Profile, Source={x:Static properties:Settings.Default}}" SelectedItem="{Binding Scanner.SelectedProfile}">
                                                                         <ComboBox.ItemTemplate>
