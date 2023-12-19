@@ -1203,7 +1203,7 @@
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />
-                                            <Binding Source="140" />
+                                            <Binding Source="55" />
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
@@ -1211,15 +1211,22 @@
                                     <Border Background="{StaticResource BorderBackground}"
                                         BorderBrush="Gray"
                                         BorderThickness="1">
-                                        <Slider Height="96"
-                                            AutoToolTipPlacement="TopLeft"
-                                            Maximum="400"
-                                            Minimum="85"
-                                            Orientation="Vertical"
-                                            SmallChange="1"
-                                            Style="{StaticResource Slider}"
-                                            ToolTip="{local:Loc PREVIEWSIZE}"
-                                            Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
+                                        <StackPanel>
+                                            <Slider Height="96"
+                                                AutoToolTipPlacement="TopLeft"
+                                                Maximum="400"
+                                                Minimum="85"
+                                                Orientation="Vertical"
+                                                SmallChange="1"
+                                                Style="{StaticResource Slider}"
+                                                ToolTip="{local:Loc PREVIEWSIZE}"
+                                                Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
+                                            <Button Command="{Binding ResetPreviewSize}">
+                                                <Image Width="16"
+                                                    Height="16"
+                                                    Source="/TwainControl;component/Icons/delete.png" />
+                                            </Button>
+                                        </StackPanel>
                                     </Border>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
@@ -1398,7 +1405,7 @@
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="55" />
+                                                    <Binding Source="22" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>

@@ -29,6 +29,7 @@
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
+            <Pdfviewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
             <Style TargetType="ComboBox">
                 <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
             </Style>
@@ -37,9 +38,6 @@
                 Height="16"
                 x:Shared="false"
                 Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-            <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter1" />
-            <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter1" />
-            <Pdfviewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
@@ -48,7 +46,7 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type local:EypPdfViewer}">
-                            <Grid ContextMenuService.IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter1}, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                            <Grid ContextMenuService.IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                 <Grid.ContextMenu>
                                     <ContextMenu Visibility="{Binding ContextMenuVisibility, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <MenuItem Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
@@ -57,7 +55,7 @@
                                             <MenuItem.Icon>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="3" />
                                                         </MultiBinding>
@@ -71,7 +69,7 @@
                                             <MenuItem.Icon>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="16" />
                                                         </MultiBinding>
@@ -93,7 +91,7 @@
                                             <MenuItem.Icon>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="19" />
                                                         </MultiBinding>
@@ -127,7 +125,7 @@
                                             <MenuItem.Icon>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="22" />
                                                         </MultiBinding>
@@ -165,14 +163,14 @@
                                         <Button Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                             <Image Width="16" Height="16">
                                                 <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
                                                         <Binding Source="3" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
                                         </Button>
-                                        <WrapPanel IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter1}, RelativeSource={RelativeSource Mode=TemplatedParent}}" Orientation="Horizontal">
+                                        <WrapPanel IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" Orientation="Horizontal">
                                             <ListBox VerticalContentAlignment="Center"
                                                 SelectedValue="{Binding Orientation, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                 SelectedValuePath="Tag">
@@ -329,7 +327,7 @@
                                                             Width="16"
                                                             Height="16">
                                                             <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                     <Binding Source="Shell32.dll" />
                                                                     <Binding Source="19" />
                                                                 </MultiBinding>
@@ -361,7 +359,7 @@
                                                 </Extensions:SplitButton.InternalContent>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="16" />
                                                         </MultiBinding>
@@ -394,7 +392,7 @@
                                                 </Extensions:ContentToggleButton.OverContent>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="1" />
                                                         </MultiBinding>
@@ -439,7 +437,7 @@
                                                                 IsDefault="True">
                                                                 <Image Width="16" Height="16">
                                                                     <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                             <Binding Source="Shell32.dll" />
                                                                             <Binding Source="55" />
                                                                         </MultiBinding>
@@ -451,7 +449,7 @@
                                                 </Extensions:ContentToggleButton.OverContent>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="55" />
                                                         </MultiBinding>
@@ -486,7 +484,7 @@
                                                 </Extensions:ContentToggleButton.OverContent>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="39" />
                                                         </MultiBinding>
@@ -512,7 +510,7 @@
                                                 </Extensions:ContentToggleButton.OverContent>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="22" />
                                                         </MultiBinding>
@@ -539,7 +537,7 @@
                                                 </Extensions:ContentToggleButton.OverContent>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter1}">
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
                                                             <Binding Source="238" />
                                                         </MultiBinding>
