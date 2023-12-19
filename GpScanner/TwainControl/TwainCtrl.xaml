@@ -1049,7 +1049,7 @@
                                                             <MultiBinding Converter="{StaticResource EnumOrientationToConvertedLanguageTextConverter}">
                                                                 <Binding Mode="OneWay" />
                                                                 <Binding Mode="OneWay"
-                                                                    Path="Scanner.FileName"
+                                                                    Path="Scanner.UiLanguageChanged"
                                                                     RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
                                                             </MultiBinding>
                                                         </Run.Text>

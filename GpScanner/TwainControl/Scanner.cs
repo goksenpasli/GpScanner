@@ -105,6 +105,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string targetColor = "Transparent";
     private double threshold;
     private int toolBarBwThreshold = 160;
+    private bool uiLanguageChanged;
     private ObservableCollection<string> unsupportedFiles = [];
     private bool useFilmScanner;
     private bool useMozJpegEncoding;
@@ -1225,6 +1226,20 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 toolBarBwThreshold = value;
                 OnPropertyChanged(nameof(ToolBarBwThreshold));
+            }
+        }
+    }
+
+    public bool UiLanguageChanged
+    {
+        get => uiLanguageChanged;
+
+        set
+        {
+            if (uiLanguageChanged != value)
+            {
+                uiLanguageChanged = value;
+                OnPropertyChanged(nameof(UiLanguageChanged));
             }
         }
     }

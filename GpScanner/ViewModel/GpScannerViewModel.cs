@@ -137,10 +137,6 @@ public partial class GpScannerViewModel : InpcBase
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         _ = LoadDatas();
-        if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
-        {
-            CalendarPanelIsExpanded = true;
-        }
 
         RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => IsAdministrator);
 
@@ -2597,6 +2593,11 @@ public partial class GpScannerViewModel : InpcBase
             }
             BurnFiles = burnfiles;
             CompressedFiles = compressedfiles;
+        }
+
+        if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
+        {
+            CalendarPanelIsExpanded = true;
         }
     }
 

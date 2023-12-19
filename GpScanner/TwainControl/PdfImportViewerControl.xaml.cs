@@ -40,6 +40,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private string annotationText = string.Empty;
     private bool applyLandscape = true;
     private bool applyPortrait = true;
+    private string çeviri;
+    private string çevrilenDil = "en";
     private bool drawAnnotation;
     private bool drawBeziers;
     private bool drawCurve;
@@ -59,6 +61,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private BitmapSource ınkSource;
     private bool isDrawMouseDown;
     private bool isMouseDown;
+    private string mevcutDil = "auto";
     private Point mousedowncoord;
     private bool ocrDialogOpen;
     private string ocrText;
@@ -300,6 +303,33 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public RelayCommand<object> ClearInkDrawImage { get; }
 
     public RelayCommand<object> ClearLines { get; }
+
+    public string Çeviri
+    {
+        get => çeviri;
+
+        set
+        {
+            if (çeviri != value)
+            {
+                çeviri = value;
+                OnPropertyChanged(nameof(Çeviri));
+            }
+        }
+    }
+
+    public string ÇevrilenDil
+    {
+        get => çevrilenDil;
+        set
+        {
+            if (çevrilenDil != value)
+            {
+                çevrilenDil = value;
+                OnPropertyChanged(nameof(ÇevrilenDil));
+            }
+        }
+    }
 
     public bool DrawAnnotation
     {
@@ -544,6 +574,19 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public RelayCommand<object> LoadDrawImage { get; }
 
     public RelayCommand<object> LoadInkDrawImage { get; }
+
+    public string MevcutDil
+    {
+        get => mevcutDil;
+        set
+        {
+            if (mevcutDil != value)
+            {
+                mevcutDil = value;
+                OnPropertyChanged(nameof(MevcutDil));
+            }
+        }
+    }
 
     public bool OcrDialogOpen
     {
@@ -1099,7 +1142,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private void PdfImportViewerControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void PdfImportViewerControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "InkDrawColor")
         {
@@ -1121,6 +1164,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         {
             Ink.Strokes.Clear();
             Ink.Strokes.Add((StrokeCollection)new Base64StringToStrokeCollectionConverter().Convert(SelectedInk, null, null, CultureInfo.CurrentCulture));
+        }
+        if (e.PropertyName is "OcrText" or "ÇevrilenDil" && !string.IsNullOrWhiteSpace(OcrText))
+        {
+            Çeviri = await TranslateViewModel.DileÇevirAsync(OcrText, MevcutDil, ÇevrilenDil);
         }
     }
 

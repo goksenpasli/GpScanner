@@ -5,6 +5,7 @@
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:Pdfviewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:controls="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:TwainControl"
@@ -1139,13 +1140,15 @@
                     </Image.Source>
                 </Image>
                 <Extensions:ContentToggleButton.OverContent>
-                    <Extensions:ResizablePanel Width="320"
-                        Height="240"
-                        MinWidth="320"
-                        MinHeight="240">
+                    <Extensions:ResizablePanel Width="360"
+                        Height="360"
+                        MinWidth="360"
+                        MinHeight="360">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="125" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Extensions:ButtonedTextBox FontSizeButtonVisibility="Visible"
@@ -1156,7 +1159,17 @@
                                 ResetButtonVisibility="Collapsed"
                                 Text="{Binding OcrText, Mode=OneWay}"
                                 TextWrapping="Wrap" />
-                            <Extensions:ButtonedTextBox Grid.Row="1"
+                            <controls:TranslateView Grid.Row="1" />
+                            <Extensions:ButtonedTextBox Grid.Row="2"
+                                FontSizeButtonVisibility="Collapsed"
+                                IsReadOnly="True"
+                                OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
+                                RemainingLengthVisibility="Collapsed"
+                                ResetButtonVisibility="Collapsed"
+                                Text="{Binding Çeviri, Mode=OneWay}"
+                                TextWrapping="Wrap" />
+                            <Extensions:ButtonedTextBox Grid.Row="3"
                                 FontSizeButtonVisibility="Collapsed"
                                 IsReadOnly="True"
                                 PasteButtonVisibility="Collapsed"
