@@ -1014,7 +1014,8 @@ public partial class GpScannerViewModel : InpcBase
         OpenSettings = new RelayCommand<object>(
             parameter =>
             {
-                SettingsWindowView settingswindow = new() { Owner = Application.Current?.MainWindow, DataContext = Application.Current?.MainWindow?.DataContext };
+                MainWindow mainWindow = Application.Current?.Windows?.OfType<MainWindow>()?.FirstOrDefault();
+                SettingsWindowView settingswindow = new() { Owner = mainWindow, DataContext = mainWindow.DataContext };
                 _ = settingswindow.ShowDialog();
             },
             parameter => Policy.CheckPolicy("OpenSettings"));
@@ -2360,19 +2361,22 @@ public partial class GpScannerViewModel : InpcBase
                 AramaMetni = string.Empty;
             }
             string format = Twainsettings.Settings.Default.FolderDateFormat;
-            MainWindow.cvs.Filter += (s, x) =>
-                                     {
-                                         Scanner scanner = (Scanner)x.Item;
-                                         if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
+            if (MainWindow.cvs is not null)
+            {
+                MainWindow.cvs.Filter += (s, x) =>
                                          {
-                                             string seçiligün = SeçiliGün.ToString(format);
-                                             x.Accepted = result.ToString(format).StartsWith(seçiligün);
-                                         }
-                                         else
-                                         {
-                                             x.Accepted = false;
-                                         }
-                                     };
+                                             Scanner scanner = (Scanner)x.Item;
+                                             if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
+                                             {
+                                                 string seçiligün = SeçiliGün.ToString(format);
+                                                 x.Accepted = result.ToString(format).StartsWith(seçiligün);
+                                             }
+                                             else
+                                             {
+                                                 x.Accepted = false;
+                                             }
+                                         };
+            }
         }
 
         if (e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
@@ -2424,8 +2428,8 @@ public partial class GpScannerViewModel : InpcBase
                     break;
 
                 case "ENGLISH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-EN");
-                    CalendarLang = XmlLanguage.GetLanguage("en-EN");
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+                    CalendarLang = XmlLanguage.GetLanguage("en-US");
                     TesseractViewModel.SeçiliDil = "English";
 
                     break;

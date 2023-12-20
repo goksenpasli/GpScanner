@@ -139,6 +139,7 @@
     <Compile Include="Converter\PageSizePreviewWidthConverter.cs" />
     <Compile Include="Converter\PdfFileNameToInfoConverter.cs" />
     <Compile Include="Converter\SelectedSizeToCacheLengthConverter.cs" />
+    <Compile Include="Converter\StringToCountryFlagImageConverter.cs" />
     <Compile Include="Converter\StringToQrBitmapImageConverter.cs" />
     <Compile Include="DocumentViewerWindow.xaml.cs">
       <DependentUpon>DocumentViewerWindow.xaml</DependentUpon>
@@ -159,6 +160,9 @@
     </Compile>
     <Compile Include="SettingsWindowView.xaml.cs">
       <DependentUpon>SettingsWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SplashWindow.xaml.cs">
+      <DependentUpon>SplashWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="TesseractView.xaml.cs">
       <DependentUpon>TesseractView.xaml</DependentUpon>
@@ -186,6 +190,7 @@
     <Compile Include="ViewModel\RippleEffect.cs" />
     <Compile Include="ViewModel\ScannerData.cs" />
     <Compile Include="ViewModel\Shutdown.cs" />
+    <Compile Include="ViewModel\SplashViewModel.cs" />
     <Compile Include="ViewModel\StillImageHelper.cs" />
     <Compile Include="ViewModel\StrCmpLogicalComparer.cs" />
     <Compile Include="ViewModel\TesseractViewModel.cs" />
@@ -222,6 +227,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SettingsWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SplashWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -306,7 +315,7 @@
     <Resource Include="scanner.ico" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="splash.png" />
+    <Resource Include="splash.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\flag-of-Turkey.png" />

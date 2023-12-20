@@ -16,12 +16,22 @@ namespace GpScanner;
 /// </summary>
 public partial class App : Application
 {
+    private MainWindow mainwindow;
+    private SplashWindow splashWindow;
+
     private void Application_Startup(object sender, StartupEventArgs e)
     {
 #if !DEBUG
         Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 #endif
         FrameworkElement.LanguageProperty.OverrideMetadata(typeof(Run), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
+
+        splashWindow = new SplashWindow();
+        splashWindow.Show();
+        mainwindow = new MainWindow();
+        mainwindow.Loaded += Window_Loaded;
+        mainwindow.Show();
+
         foreach (string arg in e.Args)
         {
             if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
@@ -54,4 +64,6 @@ public partial class App : Application
         _ = MessageBox.Show(e.Exception.Message);
         e.Handled = true;
     }
+
+    private void Window_Loaded(object sender, RoutedEventArgs e) => splashWindow?.Close();
 }
