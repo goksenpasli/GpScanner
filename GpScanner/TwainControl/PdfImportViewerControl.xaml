@@ -803,14 +803,23 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
                                     </StackPanel>
                                 </Button>
-                                <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Image Width="24"
-                                            Height="24"
-                                            VerticalAlignment="Bottom"
-                                            Source="/TwainControl;component/Icons/save.png" />
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
-                                    </StackPanel>
+                                <Button HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Command="{Binding ExtractMultiplePdfFile}"
+                                    CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                    <Grid>
+                                        <ProgressBar Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Maximum="1"
+                                            Value="{Binding Scanner.PdfSaveProgressValue}" />
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Image Width="24"
+                                                Height="24"
+                                                VerticalAlignment="Bottom"
+                                                Source="/TwainControl;component/Icons/save.png" />
+                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
+                                        </StackPanel>
+                                    </Grid>
                                 </Button>
                             </UniformGrid>
                         </Grid>

@@ -1352,11 +1352,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     List<string> files = [];
                     List<PdfData> currentpages = PdfPages?.Where(currentpage => currentpage.Selected).ToList();
-                    foreach (PdfData currentpage in currentpages)
+                    double pagecount = currentpages.Count;
+                    for (int i = 0; i < pagecount; i++)
                     {
+                        PdfData currentpage = currentpages[i];
                         string savefilename = $@"{savefolder}\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
                         await PdfPageRangeSaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
                         files.Add(savefilename);
+                        Scanner.PdfSaveProgressValue=(i+1)/ pagecount;
                     }
 
                     if (currentpages.Count > 1 && MessageBox.Show($"{Translation.GetResStringValue("MERGEPDF")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
@@ -1364,7 +1367,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         using PdfDocument mergedPdf = files.ToArray().MergePdf();
                         mergedPdf.Save($@"{savefolder}\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {Translation.GetResStringValue("MERGE")}.pdf");
                     }
-
+                    Scanner.PdfSaveProgressValue = 0;
                     WebAdreseGit.Execute(savefolder);
                     files = null;
                 }
