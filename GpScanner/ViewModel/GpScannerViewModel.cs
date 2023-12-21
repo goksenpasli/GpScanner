@@ -459,7 +459,7 @@ public partial class GpScannerViewModel : InpcBase
                     DocumentViewerWindow documentViewerWindow = new();
                     if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
-                        documentViewerWindow.Owner = Application.Current?.MainWindow;
+                        documentViewerWindow.Owner = Application.Current?.Windows?.OfType<MainWindow>()?.FirstOrDefault();
                         documentViewerModel.Scanner = ToolBox.Scanner;
                         documentViewerModel.FilePath = filepath;
                         List<string> files = MainWindow.cvs?.View?.OfType<Scanner>()?.Select(z => z.FileName)?.ToList();

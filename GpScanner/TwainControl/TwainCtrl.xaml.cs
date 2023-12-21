@@ -727,30 +727,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Policy.CheckPolicy("LoadImage"));
 
-        MaximizePdfControl = new RelayCommand<object>(
-            parameter =>
-            {
-                maximizedWindow = new()
-                {
-                    Owner = Application.Current?.MainWindow,
-                    Content = PdfImportViewer,
-                    WindowState = WindowState.Maximized,
-                    ShowInTaskbar = false,
-                    Title = AppName,
-                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
-                    DataContext = this
-                };
-                maximizedWindow.Closed += (s, e) =>
-                                          {
-                                              SelectedTabIndex = 0;
-                                              SelectedTabIndex = 4;
-                                              (TbCtrl.Items[SelectedTabIndex] as TabItem).Content = PdfImportViewer;
-                                              RefreshDocumentList = true;
-                                          };
-                _ = maximizedWindow.ShowDialog();
-            },
-            parameter => !IsWindowOpen(maximizedWindow));
-
         LoadSingleUdfFile = new RelayCommand<object>(
             parameter =>
             {

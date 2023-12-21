@@ -1189,18 +1189,6 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Button local:Policy.PolicyName="MaximizePdfControl"
-                Command="{Binding MaximizePdfControl}"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
-                <Image Width="16" Height="16">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="15" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-            </Button>
             <Button local:Policy.PolicyName="ClosePdfFile"
                 Command="{Binding ClosePdfFile}"
                 CommandParameter="{Binding ElementName=PdfViewer}">
