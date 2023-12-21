@@ -1148,7 +1148,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition />
                                 <RowDefinition Height="Auto" />
-                                <RowDefinition Height="125" />
+                                <RowDefinition />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
                             <Extensions:ButtonedTextBox FontSizeButtonVisibility="Visible"
@@ -1161,7 +1161,7 @@
                                 TextWrapping="Wrap" />
                             <controls:TranslateView Grid.Row="1" />
                             <Extensions:ButtonedTextBox Grid.Row="2"
-                                FontSizeButtonVisibility="Collapsed"
+                                FontSizeButtonVisibility="Visible"
                                 IsReadOnly="True"
                                 OpenButtonVisibility="Collapsed"
                                 PasteButtonVisibility="Collapsed"
@@ -1170,7 +1170,6 @@
                                 Text="{Binding Çeviri, Mode=OneWay}"
                                 TextWrapping="Wrap" />
                             <Extensions:ButtonedTextBox Grid.Row="3"
-                                FontSizeButtonVisibility="Collapsed"
                                 IsReadOnly="True"
                                 PasteButtonVisibility="Collapsed"
                                 RemainingLengthVisibility="Collapsed"

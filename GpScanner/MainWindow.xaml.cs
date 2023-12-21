@@ -172,24 +172,25 @@ public partial class MainWindow : Window
             {
                 if (Settings.Default.DirectOpenEypFile && extension == ".eyp")
                 {
+                    twainCtrl.SelectedTabIndex = 4;
                     EypPdfViewer eypPdfViewer = twainCtrl.PdfImportViewer.PdfViewer;
                     eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
                     eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
-                    twainCtrl.MaximizePdfControl.Execute(null);
                     return;
                 }
 
                 if (Settings.Default.DirectOpenPdfFile && extension == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(filePath))
                 {
+                    twainCtrl.SelectedTabIndex = 4;
                     EypPdfViewer eypPdfViewer = twainCtrl.PdfImportViewer.PdfViewer;
                     eypPdfViewer.PdfFilePath = filePath;
                     eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
-                    twainCtrl.MaximizePdfControl.Execute(null);
                     return;
                 }
 
                 if (Settings.Default.DirectOpenUdfFile && extension == ".udf")
                 {
+                    twainCtrl.SelectedTabIndex = 5;
                     twainCtrl.xpsViewer.XpsDataFilePath = twainCtrl.LoadUdfFile(filePath);
                     return;
                 }
