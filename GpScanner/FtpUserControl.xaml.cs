@@ -21,7 +21,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 {
     private double copyProgressValue;
     private DriveInfo selectedRemovableDrive;
-
+    private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     public FtpUserControl()
     {
         InitializeComponent();
@@ -38,7 +38,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
                         return;
                     }
 
-                    if (MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("UPDATE")}", Application.Current?.MainWindow?.Title, MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No) ==
+                    if (MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("UPDATE")}",AppName, MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No) ==
                     MessageBoxResult.Yes)
                     {
                         await CopyFileAsync(scanner.FileName, path, true, progress => CopyProgressValue = progress);
@@ -117,7 +117,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -133,7 +133,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }

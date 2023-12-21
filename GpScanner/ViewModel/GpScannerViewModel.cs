@@ -54,7 +54,7 @@ public partial class GpScannerViewModel : InpcBase
     public CancellationTokenSource ocrcancellationToken;
     private const string MinimumVcVersion = "14.21.27702";
     private const int NetFxMinVersion = 461808;
-    private static readonly string AppName = Application.Current?.MainWindow?.Title;
+    private static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
@@ -459,7 +459,7 @@ public partial class GpScannerViewModel : InpcBase
                     DocumentViewerWindow documentViewerWindow = new();
                     if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
-                        documentViewerWindow.Owner = Application.Current?.Windows?.OfType<MainWindow>()?.FirstOrDefault();
+                        documentViewerWindow.Owner = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault();
                         documentViewerModel.Scanner = ToolBox.Scanner;
                         documentViewerModel.FilePath = filepath;
                         List<string> files = MainWindow.cvs?.View?.OfType<Scanner>()?.Select(z => z.FileName)?.ToList();
@@ -572,7 +572,7 @@ public partial class GpScannerViewModel : InpcBase
             parameter =>
             {
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
-                _ = Process.Start("twux32.exe", $"/w:{new WindowInteropHelper(Application.Current.MainWindow).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                _ = Process.Start("twux32.exe", $"/w:{new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -1014,7 +1014,7 @@ public partial class GpScannerViewModel : InpcBase
         OpenSettings = new RelayCommand<object>(
             parameter =>
             {
-                MainWindow mainWindow = Application.Current?.Windows?.OfType<MainWindow>()?.FirstOrDefault();
+                Window mainWindow = Application.Current?.Windows?.OfType<Window>()?.FirstOrDefault();
                 SettingsWindowView settingswindow = new() { Owner = mainWindow, DataContext = mainWindow.DataContext };
                 _ = settingswindow.ShowDialog();
             },
@@ -2242,8 +2242,8 @@ public partial class GpScannerViewModel : InpcBase
 
             AppNotifyIcon.MouseClick += (s, e) =>
                                         {
-                                            Application.Current.MainWindow.Show();
-                                            Application.Current.MainWindow.WindowState = WindowState.Maximized;
+                                            Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Show();
+                                            Application.Current.Windows.Cast<Window>().FirstOrDefault().WindowState = WindowState.Maximized;
                                         };
         }
         catch (Exception)

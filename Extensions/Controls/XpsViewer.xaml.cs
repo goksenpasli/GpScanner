@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -74,7 +75,7 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
                 paginator = new PageRangeDocumentPaginator(xpsViewer.Document.DocumentPaginator, dlg.PageRange);
             }
 
-            dlg.PrintDocument(paginator, Application.Current?.MainWindow?.Title);
+            dlg.PrintDocument(paginator, "");
         }
     }
 }

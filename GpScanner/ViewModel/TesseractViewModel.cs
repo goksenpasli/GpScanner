@@ -20,7 +20,7 @@ namespace GpScanner.ViewModel;
 public class TesseractViewModel : InpcBase, IDataErrorInfo
 
 {
-    private readonly string AppName = Application.Current?.MainWindow?.Title;
+    private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private List<TessFiles> checkedFiles;
     private bool ısFolderWritable;
     private string seçiliDil;

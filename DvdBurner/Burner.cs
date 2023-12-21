@@ -25,7 +25,7 @@ namespace DvdBurner
         private const string WarnText = "İşlem Sürüyor. Bitmesini Bekleyin.";
         private static Task Burntask;
         private static Task Erasetask;
-        private readonly string AppName = Application.Current?.MainWindow?.Title;
+        private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
         private string actionText;
         private SolidColorBrush actionTextForeground = Brushes.Black;
         private string cdLabel = DateTime.Now.ToString();

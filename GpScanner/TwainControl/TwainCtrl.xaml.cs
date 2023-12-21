@@ -67,7 +67,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public const double Inch = 2.54d;
     public static DispatcherTimer CameraQrCodeTimer;
     public static Task Filesavetask;
-    private static readonly string AppName = Application.Current?.MainWindow?.Title;
+    private static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private readonly object _lockObject = new();
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
@@ -263,7 +263,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 if (parameter is ScannedImage item &&
-                MessageBox.Show(Application.Current.MainWindow, $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                MessageBox.Show(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(), $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
                     item.Resim = BitmapFrame.Create(await ((BitmapSource)item.Resim).RotateImageAsync(deskewAngle));
@@ -591,11 +591,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    _ = MessageBox.Show(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
 
-                if (MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("LISTREMOVEWARN"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(), Translation.GetResStringValue("LISTREMOVEWARN"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
                     UndoImage = null;
@@ -2652,7 +2652,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (fileloadtask?.IsCompleted == false)
         {
-            _ = MessageBox.Show(Application.Current.MainWindow, Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
+            _ = MessageBox.Show(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(), Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
             return;
         }
 

@@ -32,7 +32,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.MainWindow?.Title);
+                    _ = MessageBox.Show(ex.Message, Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(ArchivePath));
