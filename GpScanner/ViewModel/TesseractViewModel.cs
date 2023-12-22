@@ -240,24 +240,30 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> GetTesseractFiles(string tesseractfolder)
     {
-        if (Directory.Exists(tesseractfolder))
+        try
         {
-            string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
-            ObservableCollection<TessFiles> tesseractfiles = new(
-                Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
-                .Select(
-                    filePath =>
-                    {
-                        string tessFileName = Path.GetFileNameWithoutExtension(filePath);
-                        string displayName = TesseractDownloadData()?.FirstOrDefault(z => z.OcrName == Path.GetFileName(filePath))?.OcrLangName;
-                        TessFiles tessfiles = new() { DisplayName = displayName, Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName), FileSize = new FileInfo(filePath).Length / 1_048_576d };
-                        tessfiles.PropertyChanged += Tess_PropertyChanged;
-                        return tessfiles;
-                    }));
-            CheckedFiles = tesseractfiles?.Where(item => item.Checked).ToList();
-            return tesseractfiles;
+            if (Directory.Exists(tesseractfolder))
+            {
+                string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
+                ObservableCollection<TessFiles> tesseractfiles = new(
+                    Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
+                    .Select(
+                        filePath =>
+                        {
+                            string tessFileName = Path.GetFileNameWithoutExtension(filePath);
+                            string displayName = TesseractDownloadData()?.FirstOrDefault(z => z.OcrName == Path.GetFileName(filePath))?.OcrLangName;
+                            TessFiles tessfiles = new() { DisplayName = displayName, Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName), FileSize = new FileInfo(filePath).Length / 1_048_576d };
+                            tessfiles.PropertyChanged += Tess_PropertyChanged;
+                            return tessfiles;
+                        }));
+                CheckedFiles = tesseractfiles?.Where(item => item.Checked).ToList();
+                return tesseractfiles;
+            }
         }
-
+        catch (Exception)
+        {
+            return null;
+        }
         return null;
     }
 

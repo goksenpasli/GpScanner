@@ -17,7 +17,14 @@ public static class Ocr
     static Ocr()
     {
         TesseractPath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\tessdata";
-        TesseractDataExists = Directory.Exists(TesseractPath) && Directory.EnumerateFiles(TesseractPath, "*.traineddata")?.Any() == true;
+        try
+        {
+            TesseractDataExists = Directory.Exists(TesseractPath) && Directory.EnumerateFiles(TesseractPath, "*.traineddata")?.Any() == true;
+        }
+        catch (Exception)
+        {
+            TesseractDataExists = false;
+        }
     }
 
     public static bool TesseractDataExists { get; }

@@ -122,7 +122,16 @@
                         RenderTransformOrigin="0.5,0.5"
                         UseLayoutRounding="True">
                         <Viewbox Width="18" Height="18">
-                            <TextBlock Foreground="White" Text="{Binding Source='STOP', Mode=OneWay, Converter={StaticResource LanguageStringConverter}}" />
+                            <TextBlock Foreground="White">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource LanguageStringConverter}">
+                                        <Binding Mode="OneWay" Source="STOP" />
+                                        <Binding Mode="OneWay"
+                                            Path="DefaultLang"
+                                            Source="{x:Static properties:Settings.Default}" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
                         </Viewbox>
                         <Canvas.ToolTip>
                             <ToolTip Background="{x:Null}"
@@ -132,7 +141,16 @@
                                     Background="Red"
                                     BorderBrush="White"
                                     BorderThickness="1">
-                                    <TextBlock Foreground="White" Text="{Binding AdornedElement.(Validation.Errors)/ErrorContent, Mode=OneWay}" />
+                                    <TextBlock Foreground="White">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource LanguageStringConverter}">
+                                                <Binding Mode="OneWay" Source="FOLDERACCESS" />
+                                                <Binding Mode="OneWay"
+                                                    Path="DefaultLang"
+                                                    Source="{x:Static properties:Settings.Default}" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                 </Border>
                             </ToolTip>
                         </Canvas.ToolTip>

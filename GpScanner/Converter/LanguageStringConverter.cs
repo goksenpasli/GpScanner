@@ -7,9 +7,11 @@ using TwainControl;
 
 namespace GpScanner.Converter;
 
-public sealed class LanguageStringConverter : IValueConverter
+public sealed class LanguageStringConverter : IMultiValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && value is string langresource ? Translation.GetResStringValue(langresource) : string.Empty;
+    public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture) => !DesignerProperties.GetIsInDesignMode(new DependencyObject()) && values[0] is string langresource
+                                                                                                      ? Translation.GetResStringValue(langresource)
+                                                                                                      : string.Empty;
 
-    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
+    public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }
