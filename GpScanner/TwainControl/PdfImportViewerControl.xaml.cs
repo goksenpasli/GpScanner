@@ -64,6 +64,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private string mevcutDil = "auto";
     private Point mousedowncoord;
     private bool ocrDialogOpen;
+    private bool ocrProgressIndeterminate;
     private string ocrText;
     private XDashStyle penDash = XDashStyle.Solid;
     private XLineCap penLineCap = XLineCap.Flat;
@@ -237,6 +238,18 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     PdfViewer.PdfFilePath = null;
                     PdfViewer.PdfFilePath = oldpdfpath;
                     PdfViewer.Sayfa = currentpage;
+                }
+            },
+            parameter => true);
+
+        OcrCurrentPdfPage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is TwainCtrl twainCtrl && PdfViewer.Source is not null)
+                {
+                    OcrProgressIndeterminate = true;
+                    OcrText = await GetOcrData(twainCtrl.Scanner?.SelectedTtsLanguage, PdfViewer.Source.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                    OcrProgressIndeterminate = false;
                 }
             },
             parameter => true);
@@ -588,6 +601,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public RelayCommand<object> OcrCurrentPdfPage { get; }
+
     public bool OcrDialogOpen
     {
         get => ocrDialogOpen;
@@ -597,6 +612,20 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 ocrDialogOpen = value;
                 OnPropertyChanged(nameof(OcrDialogOpen));
+            }
+        }
+    }
+
+    public bool OcrProgressIndeterminate
+    {
+        get => ocrProgressIndeterminate;
+
+        set
+        {
+            if (ocrProgressIndeterminate != value)
+            {
+                ocrProgressIndeterminate = value;
+                OnPropertyChanged(nameof(OcrProgressIndeterminate));
             }
         }
     }
@@ -1130,9 +1159,11 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     byte[] imgdata = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
                     if (imgdata is not null)
                     {
+                        OcrProgressIndeterminate = true;
                         OcrText = await GetOcrData(twainCtrl.Scanner?.SelectedTtsLanguage, imgdata);
                         QrCode.QrCode qrCode = new();
                         QrText = qrCode.GetImageBarcodeResult(imgdata);
+                        OcrProgressIndeterminate = false;
                     }
                     mousedowncoord.X = mousedowncoord.Y = 0;
                     isMouseDown = false;

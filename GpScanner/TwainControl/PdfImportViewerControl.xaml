@@ -1137,9 +1137,10 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
+            <Extensions:SplitButton Command="{Binding OcrCurrentPdfPage}"
+                CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
                 DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
-                IsChecked="{Binding OcrDialogOpen}">
+                IsSplitPartOpen="{Binding OcrDialogOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1148,7 +1149,7 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-                <Extensions:ContentToggleButton.OverContent>
+                <Extensions:SplitButton.InternalContent>
                     <Extensions:ResizablePanel Width="360"
                         Height="360"
                         MinWidth="360"
@@ -1159,6 +1160,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="16" />
                             </Grid.RowDefinitions>
                             <Extensions:ButtonedTextBox FontSizeButtonVisibility="Visible"
                                 IsReadOnly="True"
@@ -1190,10 +1192,11 @@
                                         Background="{DynamicResource Qr}" />
                                 </Extensions:ButtonedTextBox.Description>
                             </Extensions:ButtonedTextBox>
+                            <ProgressBar Grid.Row="4" IsIndeterminate="{Binding OcrProgressIndeterminate}" />
                         </Grid>
                     </Extensions:ResizablePanel>
-                </Extensions:ContentToggleButton.OverContent>
-            </Extensions:ContentToggleButton>
+                </Extensions:SplitButton.InternalContent>
+            </Extensions:SplitButton>
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>

@@ -403,12 +403,6 @@
                                                 </Rectangle.Fill>
                                             </Rectangle>
                                             <Run Text="{local:Loc SCANDELAYHELP}" />
-                                            <LineBreak />
-                                            <TextBlock TextWrapping="Wrap">
-                                                <Run Foreground="Red" Text="{local:Loc KNOWNPROBLEMS}" />
-                                                <LineBreak />
-                                                <Run Text="{local:Loc ERROR1}" />
-                                            </TextBlock>
                                         </Paragraph>
                                     </FlowDocument>
                                 </FlowDocumentScrollViewer>
@@ -550,7 +544,9 @@
                                                     Height="20"
                                                     Source="/TwainControl;component/Icons/save.png" />
                                             </Canvas>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc FASTSCAN}" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                Text="{local:Loc FASTSCAN}"
+                                                TextWrapping="Wrap" />
                                         </StackPanel>
                                         <Extensions:SplitButton.InternalContent>
                                             <Border Background="{StaticResource BorderBackground}"
@@ -576,7 +572,10 @@
                                                     Height="20"
                                                     Source="/TwainControl;component/Icons/save.png" />
                                             </Canvas>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc AUTOPATH}" />
+                                            <TextBlock Width="80"
+                                                VerticalAlignment="Center"
+                                                Text="{local:Loc AUTOPATH}"
+                                                TextWrapping="Wrap" />
                                         </StackPanel>
                                     </Button>
                                 </UniformGrid>
