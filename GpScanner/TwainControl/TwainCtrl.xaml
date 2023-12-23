@@ -373,7 +373,6 @@
                         </Image>
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox Width="450"
-                                Height="400"
                                 Header="{local:Loc HELP}">
                                 <FlowDocumentScrollViewer IsSelectionEnabled="False" VerticalScrollBarVisibility="Auto">
                                     <FlowDocument IsOptimalParagraphEnabled="True">
