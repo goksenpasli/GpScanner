@@ -1256,6 +1256,7 @@
                                         <RowDefinition />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
                                     <UniformGrid Columns="2" Rows="2">
                                         <TextBlock>
@@ -1300,8 +1301,12 @@
                                         SelectedItem="{Binding SelectedGradientMode}" />
                                     <CheckBox Grid.Row="2"
                                         VerticalContentAlignment="Center"
-                                        Content="{local:Loc LINEARFILL}"
+                                        Content="{local:Loc APPLYCOLOR}"
                                         IsChecked="{Binding IsLinearDraw}" />
+                                    <Rectangle Grid.Row="3"
+                                        Width="{Binding Width, RelativeSource={RelativeSource AncestorType=Grid}}"
+                                        Height="32"
+                                        Fill="{Binding CombinedLinearBrush}" />
                                 </Grid>
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>

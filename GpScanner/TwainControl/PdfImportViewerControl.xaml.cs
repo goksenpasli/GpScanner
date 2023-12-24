@@ -41,6 +41,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private string annotationText = string.Empty;
     private bool applyLandscape = true;
     private bool applyPortrait = true;
+    private Brush combinedLinearBrush;
     private string çeviri;
     private string çevrilenDil = "en";
     private bool drawAnnotation;
@@ -242,7 +243,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     PdfViewer.PdfFilePath = null;
                     PdfViewer.PdfFilePath = oldpdfpath;
                     PdfViewer.Sayfa = currentpage;
-                    Thread.Sleep(1000);
+                    Thread.Sleep(1500);
                 }
             },
             parameter => true);
@@ -321,6 +322,31 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     public RelayCommand<object> ClearInkDrawImage { get; }
 
     public RelayCommand<object> ClearLines { get; }
+
+    public Brush CombinedLinearBrush
+    {
+        get => SelectedGradientMode == XLinearGradientMode.Horizontal
+               ? new LinearGradientBrush((Color)ColorConverter.ConvertFromString(GraphObjectFirstGradientColor.ToString()), (Color)ColorConverter.ConvertFromString(GraphObjectSecondGradientColor.ToString()), new Point(0, 0.5), new Point(1, 0.5))
+               : SelectedGradientMode == XLinearGradientMode.Vertical
+                 ? new LinearGradientBrush((Color)ColorConverter.ConvertFromString(GraphObjectFirstGradientColor.ToString()), (Color)ColorConverter.ConvertFromString(GraphObjectSecondGradientColor.ToString()), new Point(0.5, 0), new Point(0.5, 1))
+                 : SelectedGradientMode == XLinearGradientMode.ForwardDiagonal
+                   ? new LinearGradientBrush((Color)ColorConverter.ConvertFromString(GraphObjectFirstGradientColor.ToString()), (Color)ColorConverter.ConvertFromString(GraphObjectSecondGradientColor.ToString()), new Point(0, 0), new Point(1, 1))
+                   : SelectedGradientMode == XLinearGradientMode.BackwardDiagonal
+                     ? new LinearGradientBrush((Color)ColorConverter.ConvertFromString(GraphObjectFirstGradientColor.ToString()), (Color)ColorConverter.ConvertFromString(GraphObjectSecondGradientColor.ToString()), new Point(1, 1), new Point(0, 0))
+                     : (Brush)new LinearGradientBrush(
+            (Color)ColorConverter.ConvertFromString(GraphObjectFirstGradientColor.ToString()),
+            (Color)ColorConverter.ConvertFromString(GraphObjectSecondGradientColor.ToString()),
+            new Point(0, 0.5),
+            new Point(1, 0.5));
+        set
+        {
+            if (combinedLinearBrush != value)
+            {
+                combinedLinearBrush = value;
+                OnPropertyChanged(nameof(CombinedLinearBrush));
+            }
+        }
+    }
 
     public string Çeviri
     {
@@ -571,6 +597,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 graphObjectFirstGradientColor = value;
                 OnPropertyChanged(nameof(GraphObjectFirstGradientColor));
+                OnPropertyChanged(nameof(CombinedLinearBrush));
                 OnPropertyChanged(nameof(IsLinearDraw));
             }
         }
@@ -585,6 +612,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 graphObjectSecondGradientColor = value;
                 OnPropertyChanged(nameof(GraphObjectSecondGradientColor));
+                OnPropertyChanged(nameof(CombinedLinearBrush));
                 OnPropertyChanged(nameof(IsLinearDraw));
             }
         }
@@ -800,6 +828,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 selectedGradientMode = value;
                 OnPropertyChanged(nameof(SelectedGradientMode));
+                OnPropertyChanged(nameof(CombinedLinearBrush));
             }
         }
     }
@@ -897,6 +926,110 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         return page.Orientation == PageOrientation.Portrait
                ? new Rect(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)
                : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
+    }
+
+    private void DrawAnnotations(PdfPage page, XGraphics gfx, Rect rect)
+    {
+        if (DrawAnnotation && !string.IsNullOrWhiteSpace(AnnotationText))
+        {
+            PdfTextAnnotation pdftextannotation = GeneratePdfTextAnnotation(gfx, rect, AnnotationText);
+            page.Annotations.Add(pdftextannotation);
+        }
+    }
+
+    private void DrawImages(XGraphics gfx, Rect rect)
+    {
+        if (DrawImage && DrawnImage is not null)
+        {
+            gfx.DrawImage(DrawnImage, rect);
+        }
+    }
+
+    private void DrawLinesAndCurves(PdfPage page, XGraphics gfx, Rect rect, XPen pen, XBrush brush)
+    {
+        if (DrawLines && Points?.Count > 1)
+        {
+            gfx.DrawLines(pen, Points.ToArray());
+        }
+
+        if (DrawBeziers && (Points?.Count - 1) % 3 == 0)
+        {
+            gfx.DrawBeziers(pen, Points.ToArray());
+        }
+
+        if ((DrawCurve || DrawPolygon) && Points?.Count == PolygonCount)
+        {
+            if (DrawCurve)
+            {
+                gfx.DrawCurve(pen, Points.ToArray());
+            }
+
+            if (DrawPolygon)
+            {
+                gfx.DrawPolygon(pen, brush, Points.ToArray(), XFillMode.Winding);
+            }
+            Points.Clear();
+        }
+
+        if (DrawReverseLine)
+        {
+            if (page.Orientation == PageOrientation.Portrait)
+            {
+                gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
+            }
+            else
+            {
+                gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
+            }
+        }
+    }
+
+    private void DrawShapes(PdfPage page, XGraphics gfx, Rect rect, XPen pen, XBrush brush)
+    {
+        if (DrawRect)
+        {
+            gfx.DrawRectangle(pen, brush, rect);
+        }
+
+        if (DrawRoundedRect)
+        {
+            gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
+        }
+
+        if (DrawEllipse)
+        {
+            gfx.DrawEllipse(pen, brush, rect);
+        }
+
+        if (DrawLine)
+        {
+            if (page.Orientation == PageOrientation.Portrait)
+            {
+                gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
+            }
+            else
+            {
+                gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
+            }
+        }
+    }
+
+    private void DrawTexts(PdfPage page, XGraphics gfx, Rect rect, XBrush brush)
+    {
+        if (DrawString && brush is not null && !string.IsNullOrWhiteSpace(Text))
+        {
+            XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
+            rect.Height = 0;
+            if (page.Orientation == PageOrientation.Portrait)
+            {
+                gfx.DrawString(Text, font, brush, rect, XStringFormats.Default);
+            }
+            else
+            {
+                gfx.RotateAtTransform(-90, rect.Location);
+                gfx.DrawString(Text, font, brush, rect, XStringFormats.Default);
+            }
+        }
     }
 
     private PdfTextAnnotation GeneratePdfTextAnnotation(XGraphics gfx, Rect rect, string content)
@@ -1047,94 +1180,11 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
                         XBrush brush = SetBrush(GraphObjectFillColor, GraphObjectFirstGradientColor, GraphObjectSecondGradientColor, TransparentLevel, rect, IsLinearDraw);
 
-                        if (DrawRect)
-                        {
-                            gfx.DrawRectangle(pen, brush, rect);
-                        }
-
-                        if (DrawRoundedRect)
-                        {
-                            gfx.DrawRoundedRectangle(pen, brush, rect, new Size(2, 2));
-                        }
-
-                        if (DrawEllipse)
-                        {
-                            gfx.DrawEllipse(pen, brush, rect);
-                        }
-
-                        if (DrawLine)
-                        {
-                            if (page.Orientation == PageOrientation.Portrait)
-                            {
-                                gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
-                            }
-                            else
-                            {
-                                gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
-                            }
-                        }
-
-                        if (DrawLines && Points?.Count > 1)
-                        {
-                            gfx.DrawLines(pen, Points.ToArray());
-                        }
-
-                        if (DrawBeziers && (Points?.Count - 1) % 3 == 0)
-                        {
-                            gfx.DrawBeziers(pen, Points.ToArray());
-                        }
-
-                        if ((DrawCurve || DrawPolygon) && Points?.Count == PolygonCount)
-                        {
-                            if (DrawCurve)
-                            {
-                                gfx.DrawCurve(pen, Points.ToArray());
-                            }
-
-                            if (DrawPolygon)
-                            {
-                                gfx.DrawPolygon(pen, brush, Points.ToArray(), XFillMode.Winding);
-                            }
-                            Points.Clear();
-                        }
-
-                        if (DrawReverseLine)
-                        {
-                            if (page.Orientation == PageOrientation.Portrait)
-                            {
-                                gfx.DrawLine(pen, rect.TopRight, rect.BottomLeft);
-                            }
-                            else
-                            {
-                                gfx.DrawLine(pen, rect.TopLeft, rect.BottomRight);
-                            }
-                        }
-
-                        if (DrawImage && DrawnImage is not null)
-                        {
-                            gfx.DrawImage(DrawnImage, rect);
-                        }
-
-                        if (DrawString && brush is not null && !string.IsNullOrWhiteSpace(Text))
-                        {
-                            XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
-                            rect.Height = 0;
-                            if (page.Orientation == PageOrientation.Portrait)
-                            {
-                                gfx.DrawString(Text, font, brush, rect, XStringFormats.Default);
-                            }
-                            else
-                            {
-                                gfx.RotateAtTransform(-90, rect.Location);
-                                gfx.DrawString(Text, font, brush, rect, XStringFormats.Default);
-                            }
-                        }
-
-                        if (DrawAnnotation && !string.IsNullOrWhiteSpace(AnnotationText))
-                        {
-                            PdfTextAnnotation pdftextannotation = GeneratePdfTextAnnotation(gfx, rect, AnnotationText);
-                            page.Annotations.Add(pdftextannotation);
-                        }
+                        DrawShapes(page, gfx, rect, pen, brush);
+                        DrawLinesAndCurves(page, gfx, rect, pen, brush);
+                        DrawImages(gfx, rect);
+                        DrawTexts(page, gfx, rect, brush);
+                        DrawAnnotations(page, gfx, rect);
 
                         if (SinglePage)
                         {
@@ -1142,11 +1192,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         }
                     }
 
-                    mousedowncoord.X = mousedowncoord.Y = 0;
-                    isDrawMouseDown = false;
-                    Cursor = Cursors.Arrow;
                     pdfpages = null;
-                    DrawnImage = null;
+                    ResetMouse();
 
                     if (!Keyboard.IsKeyDown(Key.Escape) && SaveRefreshPdfPage.CanExecute(null))
                     {
@@ -1218,12 +1265,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         {
             Çeviri = await TranslateViewModel.DileÇevirAsync(OcrText, MevcutDil, ÇevrilenDil);
         }
-        if (e.PropertyName is "IsLinearDraw")
+        if (e.PropertyName is "IsLinearDraw" && GraphObjectFirstGradientColor == XKnownColor.Transparent && GraphObjectSecondGradientColor == XKnownColor.Transparent)
         {
-            if (GraphObjectFirstGradientColor == XKnownColor.Transparent || GraphObjectSecondGradientColor == XKnownColor.Transparent)
-            {
-                IsLinearDraw = false;
-            }
+            IsLinearDraw = false;
         }
         if (e.PropertyName is "DrawString" && GraphObjectFillColor == XKnownColor.Transparent)
         {
@@ -1248,6 +1292,14 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         Settings.Default.Reload();
     }
 
+    private void ResetMouse()
+    {
+        mousedowncoord.X = mousedowncoord.Y = 0;
+        isDrawMouseDown = false;
+        Cursor = Cursors.Arrow;
+        DrawnImage = null;
+    }
+
     private XBrush SetBrush(XKnownColor fillColor, XKnownColor firstgradient, XKnownColor secondgradient, double transparentlevel = 1, Rect rect = default, bool isLinearColor = false)
     {
         if (transparentlevel > 1)
@@ -1257,7 +1309,11 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
         if (isLinearColor && !DrawPolygon)
         {
-            return (XLinearGradientBrush)new(rect, XColor.FromKnownColor(firstgradient), XColor.FromKnownColor(secondgradient), SelectedGradientMode);
+            XColor color1 = XColor.FromKnownColor(firstgradient);
+            XColor color2 = XColor.FromKnownColor(secondgradient);
+            color1.A = transparentlevel;
+            color2.A = transparentlevel;
+            return (XLinearGradientBrush)new(rect, color1, color2, SelectedGradientMode);
         }
 
         if (fillColor == XKnownColor.Transparent)

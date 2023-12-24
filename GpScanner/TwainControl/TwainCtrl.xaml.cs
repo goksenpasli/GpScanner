@@ -263,7 +263,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 if (parameter is ScannedImage item &&
-                MessageBox.Show(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(), $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                MessageBox.Show(
+                    Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(),
+                    $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}",
+                    AppName,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.No) ==
+                MessageBoxResult.Yes)
                 {
                     double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
                     item.Resim = BitmapFrame.Create(await ((BitmapSource)item.Resim).RotateImageAsync(deskewAngle));
@@ -1007,6 +1014,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is string filepath && File.Exists(filepath))
                 {
+                    if (Keyboard.Modifiers == ModifierKeys.Shift)
+                    {
+                        WebAdreseGit.Execute(filepath);
+                        return;
+                    }
+
                     if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
                         ExploreFile.Execute(filepath);
@@ -1359,7 +1372,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         string savefilename = $@"{savefolder}\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
                         await PdfPageRangeSaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
                         files.Add(savefilename);
-                        Scanner.PdfSaveProgressValue=(i+1)/ pagecount;
+                        Scanner.PdfSaveProgressValue = (i + 1) / pagecount;
                     }
 
                     if (currentpages.Count > 1 && MessageBox.Show($"{Translation.GetResStringValue("MERGEPDF")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
