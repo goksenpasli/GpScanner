@@ -556,6 +556,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 graphObjectFillColor = value;
                 OnPropertyChanged(nameof(GraphObjectFillColor));
+                OnPropertyChanged(nameof(DrawString));
             }
         }
     }
@@ -1113,7 +1114,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                             gfx.DrawImage(DrawnImage, rect);
                         }
 
-                        if (DrawString && !string.IsNullOrWhiteSpace(Text))
+                        if (DrawString && brush is not null && !string.IsNullOrWhiteSpace(Text))
                         {
                             XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
                             rect.Height = 0;
@@ -1223,6 +1224,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 IsLinearDraw = false;
             }
         }
+        if (e.PropertyName is "DrawString" && GraphObjectFillColor == XKnownColor.Transparent)
+        {
+            DrawString = false;
+        }
     }
 
     private void PdfViewer_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -1249,7 +1254,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             transparentlevel = 1;
         }
 
-        if (isLinearColor)
+        if (isLinearColor && !rect.IsEmpty)
         {
             XColor firstcolor = XColor.FromKnownColor(firstgradient);
             XColor secondcolor = XColor.FromKnownColor(secondgradient);
