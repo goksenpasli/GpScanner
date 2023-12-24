@@ -13,6 +13,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -231,17 +232,17 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             parameter => true);
 
         SaveRefreshPdfPage = new RelayCommand<object>(
-            async parameter =>
+            parameter =>
             {
                 if (parameter is PdfDocument pdfDocument && pdfDocument is not null)
                 {
                     int currentpage = PdfViewer.Sayfa;
                     string oldpdfpath = PdfViewer.PdfFilePath;
                     pdfDocument.Save(PdfViewer.PdfFilePath);
-                    await Task.Delay(1000);
                     PdfViewer.PdfFilePath = null;
                     PdfViewer.PdfFilePath = oldpdfpath;
                     PdfViewer.Sayfa = currentpage;
+                    Thread.Sleep(1000);
                 }
             },
             parameter => true);
@@ -1254,13 +1255,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             transparentlevel = 1;
         }
 
-        if (isLinearColor && !rect.IsEmpty)
+        if (isLinearColor && !DrawPolygon)
         {
-            XColor firstcolor = XColor.FromKnownColor(firstgradient);
-            XColor secondcolor = XColor.FromKnownColor(secondgradient);
-            firstcolor.A = transparentlevel;
-            secondcolor.A = transparentlevel;
-            return (XLinearGradientBrush)new(rect, firstcolor, secondcolor, SelectedGradientMode);
+            return (XLinearGradientBrush)new(rect, XColor.FromKnownColor(firstgradient), XColor.FromKnownColor(secondgradient), SelectedGradientMode);
         }
 
         if (fillColor == XKnownColor.Transparent)
