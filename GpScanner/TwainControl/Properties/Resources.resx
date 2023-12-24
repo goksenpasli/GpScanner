@@ -731,4 +731,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value />
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value />
+  </data>
 </root>

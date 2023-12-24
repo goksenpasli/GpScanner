@@ -693,4 +693,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Mensagem de inicialização</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>PREENCHIMENTO LINEAR</value>
+  </data>
 </root>

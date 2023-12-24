@@ -696,4 +696,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Opstartsmeddelelse</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>LINEÆR FYLDNING</value>
+  </data>
 </root>

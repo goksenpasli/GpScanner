@@ -700,4 +700,7 @@ TO FILE</value>
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Startup Message</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>LINEAR FILL</value>
+  </data>
 </root>

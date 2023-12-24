@@ -1248,6 +1248,64 @@
                             </DataTemplate>
                         </ComboBox.ItemTemplate>
                     </ComboBox>
+                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                        <Extensions:ContentToggleButton.OverContent>
+                            <GroupBox Header="{local:Loc LINEARFILL}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <UniformGrid Columns="2" Rows="2">
+                                        <TextBlock>
+                                            <Run Text="{local:Loc HUE}" />
+                                            <System:String>1</System:String>
+                                        </TextBlock>
+                                        <TextBlock>
+                                            <Run Text="{local:Loc HUE}" />
+                                            <System:String>2</System:String>
+                                        </TextBlock>
+                                        <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding GraphObjectFirstGradientColor}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Rectangle Width="12"
+                                                            Height="12"
+                                                            Fill="{Binding ElementName=Tb, Path=Text}" />
+                                                        <TextBlock x:Name="Tb"
+                                                            VerticalAlignment="Center"
+                                                            Text="{Binding Mode=OneWay}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding GraphObjectSecondGradientColor}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Rectangle Width="12"
+                                                            Height="12"
+                                                            Fill="{Binding ElementName=Tb, Path=Text}" />
+                                                        <TextBlock x:Name="Tb"
+                                                            VerticalAlignment="Center"
+                                                            Text="{Binding Mode=OneWay}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </UniformGrid>
+                                    <ComboBox Grid.Row="1"
+                                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource LinearFillMode}}"
+                                        SelectedItem="{Binding SelectedGradientMode}" />
+                                    <CheckBox Grid.Row="2"
+                                        VerticalContentAlignment="Center"
+                                        Content="{local:Loc LINEARFILL}"
+                                        IsChecked="{Binding IsLinearDraw}" />
+                                </Grid>
+                            </GroupBox>
+                        </Extensions:ContentToggleButton.OverContent>
+                    </Extensions:ContentToggleButton>
                     <ComboBox ItemsSource="{Binding OpacityList, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" SelectedItem="{Binding Path=TransparentLevel, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>

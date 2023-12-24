@@ -63,7 +63,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="190.4" />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="94.4" />
+                    <RowDefinition Height="80.8" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="48" />
                     <RowDefinition Height="48" />
@@ -350,25 +350,44 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
                             <ColumnDefinition Width="3" />
-                            <ColumnDefinition Width="160" />
+                            <ColumnDefinition Width="129.6" />
                         </Grid.ColumnDefinitions>
                         <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="15.2" />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <StackPanel Orientation="Horizontal">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel>
                                 <CheckBox VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
                                     twainctrl:Policy.PolicyName="DetectBarCode"
-                                    Content="{twainctrl:Loc QRDETECT}"
-                                    IsChecked="{Binding DetectBarCode}" />
+                                    IsChecked="{Binding DetectBarCode}">
+                                    <CheckBox.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="48"
+                                                Height="48"
+                                                Source="{Binding Source='GPSCANNER', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc QRDETECT}" />
+                                        </StackPanel>
+                                    </CheckBox.Content>
+                                </CheckBox>
+                                <Separator />
                                 <CheckBox VerticalAlignment="Center"
                                     twainctrl:Policy.PolicyName="DetectPageSeperator"
-                                    Content="{twainctrl:Loc SEPERATOR}"
                                     IsChecked="{Binding DetectPageSeperator}"
-                                    IsEnabled="{Binding DetectBarCode}" />
+                                    IsEnabled="{Binding DetectBarCode}">
+                                    <CheckBox.Content>
+                                        <StackPanel>
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SEPERATOR}" />
+                                        </StackPanel>
+                                    </CheckBox.Content>
+                                </CheckBox>
                             </StackPanel>
-                            <UniformGrid Grid.Row="1" Columns="2">
+                            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
+                            <UniformGrid Grid.Column="2" Columns="2">
                                 <UniformGrid Rows="3">
                                     <Extensions:ButtonedTextBox x:Name="Tb"
                                         VerticalContentAlignment="Center"
@@ -424,8 +443,8 @@
                             Margin="1"
                             Columns="2">
                             <Image x:Name="Img"
-                                Width="80"
-                                Height="80"
+                                Width="64"
+                                Height="64"
                                 d:Source="{Binding Source='Gok$en', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
                                 Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
                             <UniformGrid Rows="2">

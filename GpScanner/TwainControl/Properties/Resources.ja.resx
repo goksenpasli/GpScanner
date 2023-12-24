@@ -693,4 +693,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>起動メッセージ</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>リニアフィル</value>
+  </data>
 </root>

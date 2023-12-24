@@ -696,4 +696,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Съобщение при стартиране</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>ЛИНЕЙНО ПЪЛНЕНЕ</value>
+  </data>
 </root>

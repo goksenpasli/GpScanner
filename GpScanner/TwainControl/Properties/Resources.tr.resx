@@ -706,4 +706,7 @@ BELGE EKLE</value>
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Başlangıç ​​Mesajı</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>DOĞRUSAL DOLGU</value>
+  </data>
 </root>

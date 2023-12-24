@@ -693,4 +693,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Spouštěcí zpráva</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>LINEÁRNÍ VÝPLŇ</value>
+  </data>
 </root>

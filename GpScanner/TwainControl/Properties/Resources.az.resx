@@ -693,4 +693,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Başlanğıc Mesajı</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>XƏTİ DOLDURMA</value>
+  </data>
 </root>

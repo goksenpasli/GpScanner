@@ -693,4 +693,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Повідомлення про запуск</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>ЛІНІЙНЕ ЗАЛИВЛЕННЯ</value>
+  </data>
 </root>

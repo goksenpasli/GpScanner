@@ -693,4 +693,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>Opstartbericht</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>LINEAIR VULLEN</value>
+  </data>
 </root>

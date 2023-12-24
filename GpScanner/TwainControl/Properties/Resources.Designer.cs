@@ -671,6 +671,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string LINEARFILL {
+            get {
+                return ResourceManager.GetString("LINEARFILL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string LISTREMOVEWARN {
             get {
                 return ResourceManager.GetString("LISTREMOVEWARN", resourceCulture);

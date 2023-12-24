@@ -113,6 +113,13 @@
             <x:Type TypeName="StylusTip" />
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+    <ObjectDataProvider x:Key="LinearFillMode"
+        MethodName="GetValues"
+        ObjectType="{x:Type System:Enum}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="pdfsharpdrawing:XLinearGradientMode" />
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
     <DrawingBrush x:Key="Despeckle"
         PresentationOptions:Freeze="true"
         Stretch="Fill">

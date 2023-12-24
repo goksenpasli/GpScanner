@@ -693,4 +693,7 @@
   <data name="STARTUPMSG" xml:space="preserve">
     <value>启动信息</value>
   </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>线性填充</value>
+  </data>
 </root>
