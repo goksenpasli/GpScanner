@@ -1570,7 +1570,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                               maximizedWindow = null;
                                               pdfImportViewerControl?.PdfViewer?.Dispose();
                                               pdfImportViewerControl.PdfViewer.PdfFilePath = null;
-                                              Scanner.UnsupportedFiles = new ObservableCollection<string>(Scanner.UnsupportedFiles);
                                               RefreshDocumentList = true;
                                           };
                 maximizedWindow.Content = pdfImportViewerControl;

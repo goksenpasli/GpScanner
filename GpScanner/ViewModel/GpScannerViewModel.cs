@@ -108,6 +108,7 @@ public partial class GpScannerViewModel : InpcBase
     private DateTime seçiliGün;
     private BatchFiles selectedBatchFile;
     private ContributionData selectedContribution;
+    private int selectedContributionYear = DateTime.Now.Year;
     private string selectedFtp;
     private ReminderData selectedReminder;
     private Size selectedSize;
@@ -572,7 +573,9 @@ public partial class GpScannerViewModel : InpcBase
             parameter =>
             {
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
-                _ = Process.Start("twux32.exe", $"/w:{new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                _ = Process.Start(
+                    "twux32.exe",
+                    $"/w:{new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -999,7 +1002,7 @@ public partial class GpScannerViewModel : InpcBase
             },
             parameter => SelectedReminder is not null && SelectedReminder.Tarih > DateTime.Today);
 
-        LoadContributionData = new RelayCommand<object>(parameter => ContributionData = GetContributionData(), parameter => true);
+        LoadContributionData = new RelayCommand<object>(parameter => OnPropertyChanged(nameof(SelectedContributionYear)), parameter => true);
 
         AssociateExtension = new RelayCommand<object>(
             parameter =>
@@ -1771,6 +1774,19 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
+    public int SelectedContributionYear
+    {
+        get => selectedContributionYear;
+        set
+        {
+            if (selectedContributionYear != value)
+            {
+                selectedContributionYear = value;
+                OnPropertyChanged(nameof(SelectedContributionYear));
+            }
+        }
+    }
+
     public string SelectedFtp
     {
         get => selectedFtp;
@@ -1916,6 +1932,8 @@ public partial class GpScannerViewModel : InpcBase
     public RelayCommand<object> UploadSharePoint { get; }
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
+
+    public IEnumerable<int> Years { get; } = Enumerable.Range(DateTime.Now.Year - 10, 11);
 
     public double ZipProgress
     {
@@ -2251,42 +2269,43 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    private ObservableCollection<ContributionData> GetContributionData()
+    private ObservableCollection<ContributionData> GetContributionData(List<ScannerFileDatas> files, DateTime first, DateTime last)
     {
         try
         {
             ObservableCollection<ContributionData> contributiondata = [];
-            var files = Dosyalar?.Select(
-                scanner =>
-                {
-                    string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
-                    _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
-                    return new { Scanner = scanner, ParentDate = parsedDateTime };
-                })
-            .ToList();
-            if (files?.Any() == true)
+            for (DateTime? date = first; date <= last; date = date.Value.AddDays(1))
             {
-                DateTime first = files.Where(z => z.ParentDate > DateTime.MinValue).Min(z => z.ParentDate);
-                DateTime last = files.Max(z => z.ParentDate);
-                for (DateTime? date = first; date <= last; date = date.Value.AddDays(1))
+                if (!files.Select(z => z.ParentDate).Contains(date.Value))
                 {
-                    if (!files.Select(z => z.ParentDate).Contains(date.Value))
-                    {
-                        contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
-                    }
+                    contributiondata.Add(new ExtendedContributionData { ContrubutionDate = date, Count = 0 });
                 }
-
-                foreach (IGrouping<DateTime, Scanner> file in files.GroupBy(item => item.ParentDate, item => item.Scanner))
-                {
-                    contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
-                }
-                return new ObservableCollection<ContributionData>(contributiondata.Where(z => z.ContrubutionDate >= DateTime.Today.AddYears(-1)).Take(53 * 7).OrderBy(z => z.ContrubutionDate));
             }
+
+            foreach (IGrouping<DateTime, Scanner> file in files.GroupBy(item => item.ParentDate, item => item.Scanner))
+            {
+                contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
+            }
+
+            IEnumerable<ContributionData> collection = contributiondata.Where(z => z.ContrubutionDate >= first && z.ContrubutionDate <= last).OrderBy(z => z.ContrubutionDate);
+            return new ObservableCollection<ContributionData>(collection);
         }
         catch (Exception)
         {
         }
         return null;
+    }
+
+    private List<ScannerFileDatas> GetContributionFiles()
+    {
+        return Dosyalar?.Select(
+            scanner =>
+            {
+                string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
+                _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
+                return new ScannerFileDatas() { Scanner = scanner, ParentDate = parsedDateTime };
+            })
+        .ToList();
     }
 
     private ObservableCollection<Scanner> GetScannerFileData()
@@ -2599,6 +2618,17 @@ public partial class GpScannerViewModel : InpcBase
             CompressedFiles = compressedfiles;
         }
 
+        if (e.PropertyName is "SelectedContributionYear")
+        {
+            List<ScannerFileDatas> files = GetContributionFiles();
+            if (files?.Any() == true)
+            {
+                DateTime firstdate = new(SelectedContributionYear, 1, 1);
+                DateTime lastdate = new(SelectedContributionYear, 12, 31);
+                ContributionData = GetContributionData(files, firstdate, lastdate);
+            }
+        }
+
         if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
         {
             CalendarPanelIsExpanded = true;
@@ -2691,5 +2721,12 @@ public partial class GpScannerViewModel : InpcBase
             paragraph.IndentationFirstLine = (float)(1.25 / TwainCtrl.Inch * 72);
         }
         return document;
+    }
+
+    internal class ScannerFileDatas()
+    {
+        public DateTime ParentDate { get; set; }
+
+        public Scanner Scanner { get; set; }
     }
 }

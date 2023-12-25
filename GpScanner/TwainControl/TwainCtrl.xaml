@@ -358,63 +358,79 @@
                             <Run BaselineAlignment="Center" Text="{Binding Scanner.LocalizedPath, Mode=OneWay}" />
                         </Hyperlink>
                     </TextBlock>
-                    <Extensions:ContentToggleButton HorizontalAlignment="Right"
-                        ArrowVisibility="Collapsed"
-                        Background="{x:Null}"
-                        BorderBrush="{x:Null}"
-                        IsChecked="{Binding HelpIsOpened}">
-                        <Image Width="16" Height="16">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="23" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                        <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox Width="450"
-                                Header="{local:Loc HELP}">
-                                <FlowDocumentScrollViewer IsSelectionEnabled="False" VerticalScrollBarVisibility="Auto">
-                                    <FlowDocument IsOptimalParagraphEnabled="True">
-                                        <Paragraph>
-                                            <Rectangle Width="120"
-                                                Height="35"
-                                                Stroke="Cyan" />
-                                            <Run Text="{local:Loc CYANCONTROL}" />
-                                            <LineBreak />
-                                            <Rectangle Width="120" Height="35">
-                                                <Rectangle.Fill>
-                                                    <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference CbFolderFormat}}" />
-                                                </Rectangle.Fill>
-                                            </Rectangle>
-                                            <Run Text="{local:Loc FOLDERFORMAT}" />
-                                            <LineBreak />
-                                            <Rectangle Width="120" Height="35">
-                                                <Rectangle.Fill>
-                                                    <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference AutoScanPathBtn}}" />
-                                                </Rectangle.Fill>
-                                            </Rectangle>
-                                            <Run Text="{local:Loc AUTOFOLDERHELP}" />
-                                            <LineBreak />
-                                            <Rectangle Width="120" Height="35">
-                                                <Rectangle.Fill>
-                                                    <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference SpDelay}}" />
-                                                </Rectangle.Fill>
-                                            </Rectangle>
-                                            <Run Text="{local:Loc SCANDELAYHELP}" />
-                                        </Paragraph>
-                                    </FlowDocument>
-                                </FlowDocumentScrollViewer>
-                            </GroupBox>
-                        </Extensions:ContentToggleButton.OverContent>
-                    </Extensions:ContentToggleButton>
+                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                        <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            IsChecked="{Binding HelpIsOpened}">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="23" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <Extensions:ContentToggleButton.OverContent>
+                                <GroupBox Width="450" Header="{local:Loc HELP}">
+                                    <FlowDocumentScrollViewer IsSelectionEnabled="False" VerticalScrollBarVisibility="Auto">
+                                        <FlowDocument IsOptimalParagraphEnabled="True">
+                                            <Paragraph>
+                                                <Rectangle Width="120"
+                                                    Height="35"
+                                                    Stroke="Cyan" />
+                                                <Run Text="{local:Loc CYANCONTROL}" />
+                                                <LineBreak />
+                                                <Rectangle Width="120" Height="35">
+                                                    <Rectangle.Fill>
+                                                        <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference CbFolderFormat}}" />
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <Run Text="{local:Loc FOLDERFORMAT}" />
+                                                <LineBreak />
+                                                <Rectangle Width="120" Height="35">
+                                                    <Rectangle.Fill>
+                                                        <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference AutoScanPathBtn}}" />
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <Run Text="{local:Loc AUTOFOLDERHELP}" />
+                                                <LineBreak />
+                                                <Rectangle Width="120" Height="35">
+                                                    <Rectangle.Fill>
+                                                        <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference SpDelay}}" />
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                                <Run Text="{local:Loc SCANDELAYHELP}" />
+                                            </Paragraph>
+                                        </FlowDocument>
+                                    </FlowDocumentScrollViewer>
+                                </GroupBox>
+                            </Extensions:ContentToggleButton.OverContent>
+                        </Extensions:ContentToggleButton>
+                        <Extensions:SplitButton Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding WebAdreseGit}"
+                            CommandParameter="https://github.com/goksenpasli">
+                            <Extensions:SplitButton.InternalContent>
+                                <local:AboutView />
+                            </Extensions:SplitButton.InternalContent>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="14" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Extensions:SplitButton>
+                    </StackPanel>
                 </UniformGrid>
             </GroupBox.Header>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="73.6" />
+                    <RowDefinition Height="35.2" />
                 </Grid.RowDefinitions>
                 <Expander Grid.Row="0"
                     Background="{StaticResource GroupBoxBackGround}"
@@ -1484,7 +1500,8 @@
                                             Command="{Binding ReverseData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc REVERSE}">
-                                            <Run FontFamily="Wingdings 3"
+                                            <Run BaselineAlignment="Center"
+                                                FontFamily="Wingdings 3"
                                                 FontSize="16"
                                                 Text="E" />
                                         </Hyperlink>
@@ -1492,7 +1509,8 @@
                                             Command="{Binding ReverseDataHorizontal}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc HORIZONTAL}">
-                                            <Run FontFamily="Wingdings 3"
+                                            <Run BaselineAlignment="Center"
+                                                FontFamily="Wingdings 3"
                                                 FontSize="16"
                                                 Text="D" />
                                         </Hyperlink>
@@ -1500,19 +1518,18 @@
                                             Command="{Binding FirstLastSortSequenceData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc FIRSTLAST}">
-                                            <Run FontFamily="Wingdings 3"
+                                            <Run BaselineAlignment="Center"
+                                                FontFamily="Wingdings 3"
                                                 FontSize="16"
                                                 Text="G" />
-                                        </Hyperlink>
-                                        <Hyperlink BaselineAlignment="Center"
+                                        </Hyperlink><Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ShuffleData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc RANDOM}">
                                             <Image Width="16"
                                                 Height="16"
                                                 Source="/TwainControl;component/Icons/dice.png" />
-                                        </Hyperlink>
-                                        <Run BaselineAlignment="Center" Text="1" /><Hyperlink BaselineAlignment="Center"
+                                        </Hyperlink><Run BaselineAlignment="Center" Text="1" /><Hyperlink BaselineAlignment="Center"
                                             Command="{Binding FirstLastGroup}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc SPLITSORT}">
@@ -1520,8 +1537,7 @@
                                                 FontFamily="Wingdings 3"
                                                 FontSize="18"
                                                 Text="F" />
-                                        </Hyperlink>
-                                        <InlineUIContainer BaselineAlignment="Center">
+                                        </Hyperlink><InlineUIContainer BaselineAlignment="Center">
                                             <Extensions:NumericUpDownControl IsReadOnly="True"
                                                 Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
                                                 Minimum="2"
@@ -1688,9 +1704,7 @@
 
                     </TabControl>
                 </GroupBox>
-                <UniformGrid Grid.Row="2"
-                    Columns="2"
-                    Rows="2">
+                <UniformGrid Grid.Row="2" Columns="3">
                     <Button HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         local:Policy.PolicyName="LoadImage"
@@ -1743,7 +1757,8 @@
                                 </Canvas>
                                 <TextBlock VerticalAlignment="Center"
                                     FontWeight="Bold"
-                                    Text="{local:Loc SAVESELECTED}" />
+                                    Text="{local:Loc SAVESELECTED}"
+                                    TextWrapping="Wrap" />
                             </StackPanel>
                         </Grid>
                     </Button>
@@ -1793,7 +1808,7 @@
                             </StackPanel>
                         </Grid>
                     </Button>
-                    <Extensions:SplitButton Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">
+                    <!--<Extensions:SplitButton Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">
                         <Extensions:SplitButton.InternalContent>
                             <local:AboutView />
                         </Extensions:SplitButton.InternalContent>
@@ -1810,7 +1825,7 @@
                                 FontWeight="Bold"
                                 Text="{local:Loc ABOUT}" />
                         </StackPanel>
-                    </Extensions:SplitButton>
+                    </Extensions:SplitButton>-->
                 </UniformGrid>
             </Grid>
         </GroupBox>

@@ -408,179 +408,188 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="4.8" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="4.8" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <StackPanel Background="{StaticResource BorderBackground}" Orientation="Horizontal">
-                            <Extensions:SplitButton twainctrl:Policy.PolicyName="Tümünüİşaretle"
-                                BorderBrush="Cyan"
-                                Command="{Binding Tümünüİşaretle}">
-                                <Extensions:SplitButton.InternalContent>
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                            <StackPanel Background="{StaticResource BorderBackground}" Orientation="Horizontal">
+                                <Extensions:SplitButton twainctrl:Policy.PolicyName="Tümünüİşaretle"
+                                    BorderBrush="Cyan"
+                                    Command="{Binding Tümünüİşaretle}">
+                                    <Extensions:SplitButton.InternalContent>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır"
+                                                BorderBrush="Cyan"
+                                                Command="{Binding TümününİşaretiniKaldır}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="32"
+                                                        Height="32"
+                                                        Source="/TwainControl;component/Icons/none.png" />
+                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
+                                                </StackPanel>
+                                            </Button>
+                                            <Button twainctrl:Policy.PolicyName="Tersiniİşaretle"
+                                                BorderBrush="Cyan"
+                                                Command="{Binding Tersiniİşaretle}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="32"
+                                                        Height="32"
+                                                        Source="/TwainControl;component/Icons/inverse.png" />
+                                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
+                                                </StackPanel>
+                                            </Button>
+                                        </StackPanel>
+                                    </Extensions:SplitButton.InternalContent>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır"
-                                            BorderBrush="Cyan"
-                                            Command="{Binding TümününİşaretiniKaldır}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32"
-                                                    Height="32"
-                                                    Source="/TwainControl;component/Icons/none.png" />
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc NONE}" />
-                                            </StackPanel>
-                                        </Button>
-                                        <Button twainctrl:Policy.PolicyName="Tersiniİşaretle"
-                                            BorderBrush="Cyan"
-                                            Command="{Binding Tersiniİşaretle}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32"
-                                                    Height="32"
-                                                    Source="/TwainControl;component/Icons/inverse.png" />
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc REVERSE}" />
-                                            </StackPanel>
-                                        </Button>
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32"
+                                                Height="32"
+                                                Source="/TwainControl;component/Icons/selectall.png" />
+                                            <TextBlock Canvas.Top="7"
+                                                Width="32"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                d:Text="0"
+                                                FontWeight="Bold"
+                                                Foreground="Red"
+                                                Text="{Binding CheckedPdfCount}"
+                                                TextAlignment="Center" />
+                                        </Canvas>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                     </StackPanel>
-                                </Extensions:SplitButton.InternalContent>
-                                <StackPanel Orientation="Horizontal">
+                                </Extensions:SplitButton>
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="PDF" />
+                                    <Run Text="{twainctrl:Loc ALL}" />
+                                    <LineBreak />
+                                    <Run Text="{twainctrl:Loc PAGENUMBER}" />
+                                </TextBlock>
+                                <Extensions:NumericUpDownControl twainctrl:Policy.PolicyName="AllPdfPage"
+                                    Minimum="1"
+                                    SmallChange="1"
+                                    Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <Button HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    twainctrl:Policy.PolicyName="PdfBirleştir"
+                                    BorderBrush="Cyan"
+                                    Command="{Binding PdfBirleştir}">
+                                    <Image Width="32"
+                                        Height="32"
+                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                </Button>
+                                <Button HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    twainctrl:Policy.PolicyName="PdfZipBirleştir"
+                                    Command="{Binding PdfZipBirleştir}">
                                     <Canvas Width="32" Height="32">
-                                        <Image Width="32"
-                                            Height="32"
-                                            Source="/TwainControl;component/Icons/selectall.png" />
-                                        <TextBlock Canvas.Top="7"
-                                            Width="32"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            d:Text="0"
-                                            FontWeight="Bold"
-                                            Foreground="Red"
-                                            Text="{Binding CheckedPdfCount}"
-                                            TextAlignment="Center" />
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="zipfldr.dll" />
+                                                    <Binding Source="0" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Canvas.Top="3"
+                                            Canvas.Right="3"
+                                            Text="ZIP" />
                                     </Canvas>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
-                                </StackPanel>
-                            </Extensions:SplitButton>
-                            <TextBlock VerticalAlignment="Center">
-                                <Run Text="PDF" />
-                                <Run Text="{twainctrl:Loc ALL}" />
-                                <LineBreak />
-                                <Run Text="{twainctrl:Loc PAGENUMBER}" />
-                            </TextBlock>
-                            <Extensions:NumericUpDownControl twainctrl:Policy.PolicyName="AllPdfPage"
-                                Minimum="1"
-                                SmallChange="1"
-                                Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button HorizontalContentAlignment="Stretch"
-                                VerticalContentAlignment="Stretch"
-                                twainctrl:Policy.PolicyName="PdfBirleştir"
-                                BorderBrush="Cyan"
-                                Command="{Binding PdfBirleştir}">
-                                <Image Width="32"
-                                    Height="32"
-                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                            </Button>
-                            <Button HorizontalContentAlignment="Stretch"
-                                VerticalContentAlignment="Stretch"
-                                twainctrl:Policy.PolicyName="PdfZipBirleştir"
-                                Command="{Binding PdfZipBirleştir}">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="zipfldr.dll" />
-                                                <Binding Source="0" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock Canvas.Top="3"
-                                        Canvas.Right="3"
-                                        Text="ZIP" />
-                                </Canvas>
-                            </Button>
-                            <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="70" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Canvas.Left="2"
-                                        Canvas.Top="2"
-                                        Width="32"
-                                        Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="70" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Canvas>
-                                <ToggleButton.ToolTip>
-                                    <StackPanel Orientation="Horizontal">
+                                </Button>
+                                <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <Canvas Width="32" Height="32">
                                         <Image Width="32" Height="32">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                     <Binding Source="Shell32.dll" />
-                                                    <Binding Source="77" />
+                                                    <Binding Source="70" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock VerticalAlignment="Center"
-                                            FontWeight="Bold"
-                                            Foreground="Red"
-                                            Text="{twainctrl:Loc THUMBMULTIPLEOCR}" />
-                                    </StackPanel>
-                                </ToggleButton.ToolTip>
-                            </ToggleButton>
-                            <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="DvdBurnerControl" ArrowVisibility="Collapsed">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="113" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <Extensions:ResizablePanel Width="640"
-                                        Height="640"
-                                        MinWidth="320"
-                                        MinHeight="240">
-                                        <local:DvdBurnerControl />
-                                    </Extensions:ResizablePanel>
-                                </Extensions:ContentToggleButton.OverContent>
-                            </Extensions:ContentToggleButton>
-                            <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="PdfCompressorControl" ArrowVisibility="Collapsed">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32"
-                                        Height="32"
-                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                    <Image Canvas.Right="0"
-                                        Canvas.Bottom="0"
-                                        Width="16"
-                                        Height="16">
+                                        <Image Canvas.Left="2"
+                                            Canvas.Top="2"
+                                            Width="32"
+                                            Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="70" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                    <ToggleButton.ToolTip>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="77" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Foreground="Red"
+                                                Text="{twainctrl:Loc THUMBMULTIPLEOCR}" />
+                                        </StackPanel>
+                                    </ToggleButton.ToolTip>
+                                </ToggleButton>
+                                <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="DvdBurnerControl" ArrowVisibility="Collapsed">
+                                    <Image Width="32" Height="32">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="zipfldr.dll" />
-                                                <Binding Source="0" />
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="113" />
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                </Canvas>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <Extensions:ResizablePanel Width="720"
-                                        Height="640"
-                                        MinWidth="320"
-                                        MinHeight="240">
-                                        <local:PdfCompressorControl />
-                                    </Extensions:ResizablePanel>
-                                </Extensions:ContentToggleButton.OverContent>
-                            </Extensions:ContentToggleButton>
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <Extensions:ResizablePanel Width="640"
+                                            Height="640"
+                                            MinWidth="320"
+                                            MinHeight="240">
+                                            <local:DvdBurnerControl />
+                                        </Extensions:ResizablePanel>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                </Extensions:ContentToggleButton>
+                                <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="PdfCompressorControl" ArrowVisibility="Collapsed">
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32"
+                                            Height="32"
+                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                        <Image Canvas.Right="0"
+                                            Canvas.Bottom="0"
+                                            Width="16"
+                                            Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="zipfldr.dll" />
+                                                    <Binding Source="0" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <Extensions:ResizablePanel Width="720"
+                                            Height="640"
+                                            MinWidth="320"
+                                            MinHeight="240">
+                                            <local:PdfCompressorControl />
+                                        </Extensions:ResizablePanel>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                </Extensions:ContentToggleButton>
+                            </StackPanel>
+                        </ScrollViewer>
+                        <StackPanel Grid.Row="1">
+                            <ProgressBar Height="3"
+                                Background="{StaticResource BorderBackground}"
+                                BorderBrush="{StaticResource BorderBackground}"
+                                Foreground="{StaticResource GroupBoxBackGround}"
+                                IsIndeterminate="{Binding ZipProgressIndeterminate}"
+                                Maximum="1"
+                                Value="{Binding ZipProgress}" />
                         </StackPanel>
-                        <Separator Grid.Row="1" />
                         <Grid Grid.Row="2" Background="{StaticResource BorderBackground}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition />
@@ -661,18 +670,8 @@
                                 </Button>
                             </StackPanel>
                         </Grid>
-                        <StackPanel Grid.Row="3">
-                            <ProgressBar Height="3"
-                                Background="{StaticResource BorderBackground}"
-                                BorderBrush="{StaticResource BorderBackground}"
-                                Foreground="{StaticResource GroupBoxBackGround}"
-                                IsIndeterminate="{Binding ZipProgressIndeterminate}"
-                                Maximum="1"
-                                Value="{Binding ZipProgress}" />
-                            <Separator />
-                        </StackPanel>
                         <ListBox x:Name="LbDoc"
-                            Grid.Row="4"
+                            Grid.Row="3"
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             d:ItemsSource="{d:SampleData ItemCount=5}"
@@ -1006,8 +1005,18 @@
                     <TextBlock VerticalAlignment="Center"
                         FontWeight="Bold"
                         Foreground="Red"
-                        Text="{twainctrl:Loc WARNREBOOT}"
-                        Visibility="{Binding Shutdown, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                        Visibility="{Binding Shutdown, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Run Text="{twainctrl:Loc WARNREBOOT}" />
+                    </TextBlock>
+                    <StackPanel Orientation="Horizontal">
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    </StackPanel>
+                    <TextBlock VerticalAlignment="Center"
+                        FontWeight="Bold"
+                        Foreground="Red">
+                        <Run Text="{Binding Mode=OneWay, ElementName=LbDoc, Path=Items.Count}" />
+                        <Run Text="{twainctrl:Loc DOCUMENT}" />
+                    </TextBlock>
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
@@ -1121,6 +1130,18 @@
                         Command="{Binding LoadContributionData}">
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
+                                <GroupBox.Header>
+                                    <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedContributionYear}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{twainctrl:Loc YEAR}" />
+                                                    <Run Text="{Binding Mode=OneWay}" />
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                </GroupBox.Header>
                                 <Extensions:ContributionControl Width="700"
                                     Height="120"
                                     Contributions="{Binding ContributionData}"

@@ -657,6 +657,7 @@
                                 <System:Int32>1</System:Int32>
                             </Binding.Source>
                         </Binding>
+                        <Binding Mode="OneWay" Path="RefreshDocumentList" />
                     </MultiBinding>
                 </Image.Tag>
             </Image>
