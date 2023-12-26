@@ -1131,16 +1131,22 @@
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
                                 <GroupBox.Header>
-                                    <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedContributionYear}">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock>
-                                                    <Run Text="{twainctrl:Loc YEAR}" />
-                                                    <Run Text="{Binding Mode=OneWay}" />
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
-                                    </ComboBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedContributionYear}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock>
+                                                        <Run Text="{twainctrl:Loc YEAR}" />
+                                                        <Run Text="{Binding Mode=OneWay}" />
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run Text="{Binding Mode=OneWay, Path=ContributionDocumentCount}" />
+                                            <Run Text="{twainctrl:Loc DOCUMENT}" />
+                                        </TextBlock>
+                                    </StackPanel>
                                 </GroupBox.Header>
                                 <Extensions:ContributionControl Width="700"
                                     Height="120"

@@ -100,6 +100,7 @@
                                                 <Binding Path="Count" />
                                                 <Binding Path="MaxContribution" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
                                                 <Binding Path="ContributionColor" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
+                                                <Binding Path="ZeroContributionColor" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
                                             </MultiBinding>
                                         </Rectangle.Fill>
                                         <Rectangle.ToolTip>

@@ -74,6 +74,7 @@ public partial class GpScannerViewModel : InpcBase
     private int checkedPdfCount = 0;
     private ObservableCollection<BatchPdfData> compressedFiles = [];
     private ObservableCollection<ContributionData> contributionData;
+    private int contributionDocumentCount;
     private int cycleIndex;
     private bool detectBarCode = true;
     private bool detectPageSeperator;
@@ -1256,6 +1257,20 @@ public partial class GpScannerViewModel : InpcBase
             {
                 contributionData = value;
                 OnPropertyChanged(nameof(ContributionData));
+            }
+        }
+    }
+
+    public int ContributionDocumentCount
+    {
+        get => contributionDocumentCount;
+
+        set
+        {
+            if (contributionDocumentCount != value)
+            {
+                contributionDocumentCount = value;
+                OnPropertyChanged(nameof(ContributionDocumentCount));
             }
         }
     }
@@ -2626,6 +2641,7 @@ public partial class GpScannerViewModel : InpcBase
                 DateTime firstdate = new(SelectedContributionYear, 1, 1);
                 DateTime lastdate = new(SelectedContributionYear, 12, 31);
                 ContributionData = GetContributionData(files, firstdate, lastdate);
+                ContributionDocumentCount = ContributionData.Sum(z => z.Count);
             }
         }
 

@@ -16,6 +16,7 @@ namespace Extensions
         public static readonly DependencyProperty ContributionRowCountProperty = DependencyProperty.Register("ContributionRowCount", typeof(int), typeof(ContributionControl), new PropertyMetadata(53));
         public static readonly DependencyProperty ContributionsProperty = DependencyProperty.Register("Contributions", typeof(ObservableCollection<ContributionData>), typeof(ContributionControl), new PropertyMetadata(null, Changed));
         public static readonly DependencyProperty SelectedContributionProperty = DependencyProperty.Register("SelectedContribution", typeof(ContributionData), typeof(ContributionControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty ZeroContributionColorProperty = DependencyProperty.Register("ZeroContributionColor", typeof(Color), typeof(ContributionControl), new PropertyMetadata(Colors.Gray));
         private IEnumerable<string> days;
         private int maxContribution;
         private int? monthDateTotalContribution;
@@ -165,6 +166,8 @@ namespace Extensions
                 }
             }
         }
+
+        public Color ZeroContributionColor { get => (Color)GetValue(ZeroContributionColorProperty); set => SetValue(ZeroContributionColorProperty, value); }
 
         protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 

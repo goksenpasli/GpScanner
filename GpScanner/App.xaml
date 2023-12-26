@@ -605,6 +605,7 @@
                                             <Binding Path="Count" />
                                             <Binding Path="MaxContribution" RelativeSource="{RelativeSource AncestorType=Extensions:ContributionControl}" />
                                             <Binding Path="ContributionColor" RelativeSource="{RelativeSource AncestorType=Extensions:ContributionControl}" />
+                                            <Binding Path="ZeroContributionColor" RelativeSource="{RelativeSource AncestorType=Extensions:ContributionControl}" />
                                         </MultiBinding>
                                     </Rectangle.Fill>
                                     <Rectangle.Style>

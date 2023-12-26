@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -50,39 +51,60 @@ public partial class MainWindow : Window
 
     private async void ContentControl_DropAsync(object sender, DragEventArgs e)
     {
-        if (e.OriginalSource is Image image && e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
+        if (e.OriginalSource is Image image && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
         {
-            try
+            string pdfFilePath = (string)pdfviewer.DataContext;
+            string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+            if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
             {
-                string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-                string pdfFilePath = (string)pdfviewer.DataContext;
-                int curpage = pdfviewer.Sayfa;
-                droppedData.Resim.GeneratePdf(null, Format.Jpg, twainCtrl.SelectedPaper).Save(temporarypdf);
-                string[] processedfiles = [temporarypdf, pdfFilePath];
-                if (Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Shift))
+                try
                 {
-                    await TwainCtrl.RemovePdfPageAsync(pdfFilePath, curpage, curpage);
-                    processedfiles.MergePdf().Save(pdfFilePath);
-                    await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
+                    int curpage = pdfviewer.Sayfa;
+                    droppedData.Resim.GeneratePdf(null, Format.Jpg, twainCtrl.SelectedPaper).Save(temporarypdf);
+                    string[] processedfiles = [temporarypdf, pdfFilePath];
+                    if (Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Shift))
+                    {
+                        await TwainCtrl.RemovePdfPageAsync(pdfFilePath, curpage, curpage);
+                        processedfiles.MergePdf().Save(pdfFilePath);
+                        await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
+                        TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                        return;
+                    }
+
+                    if (Keyboard.Modifiers == ModifierKeys.Shift)
+                    {
+                        processedfiles.MergePdf().Save(pdfFilePath);
+                        await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
+                        TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                        return;
+                    }
+
+                    string[] pdffiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporarypdf] : [temporarypdf, pdfFilePath];
+                    pdffiles.MergePdf().Save(pdfFilePath);
                     TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                     return;
                 }
-
-                if (Keyboard.Modifiers == ModifierKeys.Shift)
+                catch (Exception ex)
                 {
-                    processedfiles.MergePdf().Save(pdfFilePath);
-                    await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
-                    TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                    return;
+                    _ = MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
-                string[] pdffiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporarypdf] : [temporarypdf, pdfFilePath];
-                pdffiles.MergePdf().Save(pdfFilePath);
-                TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
             }
-            catch (Exception ex)
+            if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)
             {
-                _ = MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                List<string> DroppedPdfFiles = files.Where(PdfViewer.PdfViewer.IsValidPdfFile).ToList();
+                await Task.Run(
+                    () =>
+                    {
+                        if (DroppedPdfFiles.Any())
+                        {
+                            DroppedPdfFiles.Add(pdfFilePath);
+                            DroppedPdfFiles.ToArray().MergePdf().Save(pdfFilePath);
+                        }
+                    });
+
+                pdfviewer.Sayfa = 1;
+                TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                DroppedPdfFiles = null;
             }
         }
     }
