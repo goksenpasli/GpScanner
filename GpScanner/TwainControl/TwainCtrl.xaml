@@ -13,6 +13,8 @@
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
+    xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
+    xmlns:webp="clr-namespace:WebPWrapper;assembly=WebPWrapper"
     x:Name="UserControl"
     d:DataContext="{d:DesignInstance Type={x:Type local:TwainCtrl}}"
     d:DesignHeight="800"
@@ -37,6 +39,7 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FolderPathToIconConverter x:Key="FolderPathToIconConverter" />
+            <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
             <Image x:Key="TimeIcon"
                 Width="16"
                 Height="16"
@@ -1583,38 +1586,75 @@
                                                                     Orientation="Horizontal"
                                                                     SmallChange="1"
                                                                     Value="{Binding RotationAngle}" />
+                                                            </InlineUIContainer><InlineUIContainer BaselineAlignment="Center">
+                                                                <Extensions:SplitButton local:Policy.PolicyName="Kaydet"
+                                                                    Background="{x:Null}"
+                                                                    BorderBrush="Cyan"
+                                                                    Command="{Binding SaveSinglePdfFile, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
+                                                                    CommandParameter="{Binding Resim}">
+                                                                    <Image Width="24"
+                                                                        Height="24"
+                                                                        Source="/TwainControl;component/Icons/save.png" />
+                                                                    <Extensions:SplitButton.InternalContent>
+                                                                        <Border Background="{StaticResource BorderBackground}"
+                                                                            BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                                            BorderThickness="1">
+                                                                            <StackPanel>
+                                                                                <StackPanel.Resources>
+                                                                                    <Style TargetType="MenuItem">
+                                                                                        <Setter Property="CommandParameter" Value="{Binding Resim}" />
+                                                                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                                                                        <Setter Property="VerticalContentAlignment" Value="Center" />
+                                                                                    </Style>
+                                                                                    <Style TargetType="Image">
+                                                                                        <Setter Property="Height" Value="16" />
+                                                                                        <Setter Property="Width" Value="16" />
+                                                                                    </Style>
+                                                                                </StackPanel.Resources>
+                                                                                <MenuItem Command="{Binding SaveSinglePdfFile, Source={x:Reference UserControl}}" Header="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Command="{Binding SaveSingleJpgFile, Source={x:Reference UserControl}}" Header="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Command="{Binding SaveSingleTifFile, Source={x:Reference UserControl}}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Command="{Binding SaveSingleXpsFile, Source={x:Reference UserControl}}" Header="{Binding Source='.xps', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Command="{Binding SaveSingleWebpFile, Source={x:Reference UserControl}}"
+                                                                                    Header="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                                                                    IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Command="{Binding SaveSingleTxtFile, Source={x:Reference UserControl}}"
+                                                                                    Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                                                                    IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                            </StackPanel>
+                                                                        </Border>
+                                                                    </Extensions:SplitButton.InternalContent>
+                                                                </Extensions:SplitButton>
                                                             </InlineUIContainer><Run Cursor="SizeAll"
                                                                 FontFamily="Wingdings"
                                                                 FontSize="24"
                                                                 FontWeight="Bold"
                                                                 MouseLeftButtonDown="Run_MouseLeftButtonDown"
-                                                                Text="B" /><InlineUIContainer BaselineAlignment="Center">
-                                                                <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
-                                                                    Background="{x:Null}"
-                                                                    BorderBrush="{x:Null}"
-                                                                    DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
-                                                                    IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
-                                                                    <Extensions:ContentToggleButton.Style>
-                                                                        <Style TargetType="{x:Type Extensions:ContentToggleButton}">
-                                                                            <Style.Triggers>
-                                                                                <Trigger Property="IsChecked" Value="True">
-                                                                                    <Setter Property="OverContent">
-                                                                                        <Setter.Value>
-                                                                                            <local:SaveDialogUserControl />
-                                                                                        </Setter.Value>
-                                                                                    </Setter>
-                                                                                </Trigger>
-                                                                                <Trigger Property="IsChecked" Value="False">
-                                                                                    <Setter Property="OverContent" Value="{x:Null}" />
-                                                                                </Trigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </Extensions:ContentToggleButton.Style>
-                                                                    <Image Width="24"
-                                                                        Height="24"
-                                                                        Source="/TwainControl;component/Icons/save.png" />
-                                                                </Extensions:ContentToggleButton>
-                                                            </InlineUIContainer><Hyperlink local:Policy.PolicyName="InvertImage"
+                                                                Text="B" /><Hyperlink local:Policy.PolicyName="InvertImage"
                                                                 Command="{Binding DataContext.InvertImage, ElementName=UserControl}"
                                                                 CommandParameter="{Binding Mode=OneWay}"
                                                                 TextDecorations="None">

@@ -217,9 +217,6 @@
     <Compile Include="Quality.cs" />
     <Compile Include="Resolution.cs" />
     <Compile Include="SafeIconHandle.cs" />
-    <Compile Include="SaveDialogUserControl.xaml.cs">
-      <DependentUpon>SaveDialogUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ScannedImage.cs" />
     <Compile Include="SimpleArchiveViewer.cs" />
     <Compile Include="ToolBox.xaml.cs">
@@ -257,10 +254,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PdfSettings.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="SaveDialogUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

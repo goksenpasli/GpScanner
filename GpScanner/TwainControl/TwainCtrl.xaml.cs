@@ -128,7 +128,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private double pdfWatermarkFontSize = 72d;
     private string pdfWaterMarkText;
     private bool refreshDocumentList;
-    private int saveIndex = 2;
     private int sayfaBaşlangıç = 1;
     private int sayfaBitiş = 1;
     private Scanner scanner;
@@ -308,61 +307,74 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         OpenHelpDialog = new RelayCommand<object>(parameter => HelpIsOpened = !HelpIsOpened, parameter => true);
 
-        Kaydet = new RelayCommand<object>(
-            parameter =>
+        SaveSinglePdfFile = new RelayCommand<object>(
+            async parameter =>
             {
-                if (parameter is BitmapFrame bitmapFrame)
+                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
+                bool bw = Keyboard.Modifiers == ModifierKeys.Alt;
+                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
                 {
-                    if (Filesavetask?.IsCompleted == false)
+                    if (bw)
                     {
-                        _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                        await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
                         return;
                     }
+                    await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
 
-                    SaveFileDialog saveFileDialog = new()
-                    {
-                        Filter = "Tif Resmi (*.tif)|*.tif|Jpg Resmi (*.jpg)|*.jpg|Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Txt Dosyası (*.txt)|*.txt|Webp Dosyası (*.webp)|*.webp",
-                        FileName = Scanner.SaveFileName,
-                        FilterIndex = SaveIndex + 1
-                    };
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        Filesavetask = Task.Run(
-                            async () =>
-                            {
-                                string fileName = saveFileDialog.FileName;
-                                switch (saveFileDialog.FilterIndex)
-                                {
-                                    case 1:
-                                        SaveTifImage(bitmapFrame, fileName);
-                                        break;
+        SaveSingleJpgFile = new RelayCommand<object>(
+            parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                {
+                    SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
 
-                                    case 2:
-                                        SaveJpgImage(bitmapFrame, fileName);
-                                        break;
+        SaveSingleXpsFile = new RelayCommand<object>(
+            parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Xps Dosyası (*.xps)|*.xps", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                {
+                    SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
 
-                                    case 3:
-                                        await SavePdfImageAsync(bitmapFrame, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
-                                        break;
+        SaveSingleTifFile = new RelayCommand<object>(
+            parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Tif Dosyası (*.tif)|*.tif", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                {
+                    SaveTifImage(bitmapFrame, saveFileDialog.FileName);
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
 
-                                    case 4:
-                                        await SavePdfImageAsync(bitmapFrame, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
-                                        break;
+        SaveSingleWebpFile = new RelayCommand<object>(
+            parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Webp Dosyası (*.webp)|*.webp", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                {
+                    SaveWebpImage(bitmapFrame, saveFileDialog.FileName);
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
 
-                                    case 5:
-                                        SaveXpsImage(bitmapFrame, fileName);
-                                        break;
-
-                                    case 6:
-                                        await SaveTxtFileAsync(bitmapFrame, fileName);
-                                        break;
-
-                                    case 7:
-                                        SaveWebpImage(bitmapFrame, fileName);
-                                        break;
-                                }
-                            });
-                    }
+        SaveSingleTxtFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                {
+                    await SaveTxtFileAsync(bitmapFrame, saveFileDialog.FileName);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
@@ -1907,8 +1919,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> InvertSelectedImage { get; }
 
-    public ICommand Kaydet { get; }
-
     public ICommand KayıtYoluBelirle { get; }
 
     public ICommand ListeTemizle { get; }
@@ -2144,21 +2154,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SaveFileList { get; }
 
-    public int SaveIndex
-    {
-        get => saveIndex;
-
-        set
-        {
-            if (saveIndex != value)
-            {
-                saveIndex = value;
-                OnPropertyChanged(nameof(SaveIndex));
-            }
-        }
-    }
-
     public ICommand SaveProfile { get; }
+
+    public RelayCommand<object> SaveSingleJpgFile { get; }
+
+    public RelayCommand<object> SaveSinglePdfFile { get; }
+
+    public RelayCommand<object> SaveSingleTifFile { get; }
+
+    public RelayCommand<object> SaveSingleTxtFile { get; }
+
+    public RelayCommand<object> SaveSingleWebpFile { get; }
+
+    public RelayCommand<object> SaveSingleXpsFile { get; }
 
     public int SayfaBaşlangıç
     {

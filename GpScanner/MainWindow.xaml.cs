@@ -256,7 +256,6 @@ public partial class MainWindow : Window
         {
             _ = MessageBox.Show(this, Settings.Default.StartupMessage, Title, MessageBoxButton.OK, MessageBoxImage.Information);
         }
-
     }
 
     private void QrListBox_Drop(object sender, DragEventArgs e)

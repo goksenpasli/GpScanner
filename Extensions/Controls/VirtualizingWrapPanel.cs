@@ -992,10 +992,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// This virtual method is called when <see cref="Orientation"/> is changed.
     /// </summary>
-    protected virtual void OnOrientationChanged()
-    {
-        MouseWheelScrollDirection =Orientation == Orientation.Vertical ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
-    }
+    protected virtual void OnOrientationChanged() => MouseWheelScrollDirection =Orientation == Orientation.Vertical ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
 
     /// <inheritdoc/>
     protected override ItemRange UpdateItemRange()
