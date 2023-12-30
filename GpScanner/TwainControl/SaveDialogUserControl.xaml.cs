@@ -1,5 +1,6 @@
 ﻿using Extensions;
 using System.ComponentModel;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,7 +45,11 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    private void GenerateImage() => PreviewImage = twainCtrl.SaveIndex == 3 ? twainCtrl?.SeçiliResim?.Resim?.Resize(512, 512).BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Jpeg) : null;
+    private void GenerateImage()
+    {
+        using Bitmap bitmap = twainCtrl?.SeçiliResim?.ResimThumb?.BitmapSourceToBitmap();
+        PreviewImage = twainCtrl.SaveIndex == 3 ? bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Jpeg) : (BitmapSource)bitmap.ToBitmapImage(ImageFormat.Jpeg);
+    }
 
     private void TwainCtrl_PropertyChanged(object sender, PropertyChangedEventArgs e) => GenerateImage();
 
@@ -55,6 +60,7 @@ public partial class SaveDialogUserControl : UserControl, INotifyPropertyChanged
         {
             twainCtrl.PropertyChanged += TwainCtrl_PropertyChanged;
             Settings.Default.PropertyChanged += Default_PropertyChanged;
+            GenerateImage();
         }
     }
 

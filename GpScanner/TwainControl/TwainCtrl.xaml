@@ -1592,6 +1592,7 @@
                                                                 <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                                                     Background="{x:Null}"
                                                                     BorderBrush="{x:Null}"
+                                                                    DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
                                                                     IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}">
                                                                     <Extensions:ContentToggleButton.Style>
                                                                         <Style TargetType="{x:Type Extensions:ContentToggleButton}">
@@ -1599,7 +1600,7 @@
                                                                                 <Trigger Property="IsChecked" Value="True">
                                                                                     <Setter Property="OverContent">
                                                                                         <Setter.Value>
-                                                                                            <local:SaveDialogUserControl DataContext="{Binding DataContext, Source={x:Reference UserControl}}" />
+                                                                                            <local:SaveDialogUserControl />
                                                                                         </Setter.Value>
                                                                                     </Setter>
                                                                                 </Trigger>
