@@ -34,10 +34,12 @@ using TwainControl;
 using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
 using Application = System.Windows.Application;
+using ContextMenu = System.Windows.Forms.ContextMenu;
 using File = System.IO.File;
 using FlowDirection = System.Windows.FlowDirection;
 using InpcBase = Extensions.InpcBase;
 using ListBox = System.Windows.Controls.ListBox;
+using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -130,14 +132,14 @@ public partial class GpScannerViewModel : InpcBase
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
 
+        Dosyalar = GetScannerFileData();
+        SeçiliDil = Settings.Default.DefaultLang;
+        SeçiliGün = DateTime.Today;
+        SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         GenerateAnimationTimer();
         GenerateFlagAnimation();
         GenerateSystemTrayMenu();
-        Dosyalar = GetScannerFileData();
-        SeçiliDil = Settings.Default.DefaultLang;
         GenerateJumpList();
-        SeçiliGün = DateTime.Today;
-        SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         _ = LoadDatas();
 
         RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => IsAdministrator);
@@ -2264,12 +2266,36 @@ public partial class GpScannerViewModel : InpcBase
     {
         try
         {
+            MenuItem closeMenuItem = new(Translation.GetResStringValue("EXIT"));
+            MenuItem settingsMenuItem = new(Translation.GetResStringValue("SETTİNGS"));
+            MenuItem updateMenuItem = new(Translation.GetResStringValue("UPDATE"));
+            closeMenuItem.Click += (s, e) => Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault().Close();
+            settingsMenuItem.Click += (s, e) =>
+                                      {
+                                          if (OpenSettings.CanExecute(null))
+                                          {
+                                              OpenSettings.Execute(null);
+                                          }
+                                      }; 
+            updateMenuItem.Click += (s, e) =>
+                                      {
+                                          if (CheckUpdate.CanExecute(null))
+                                          {
+                                              CheckUpdate.Execute(null);
+                                          }
+                                      };
+            ContextMenu menu = new();
+            _ = menu.MenuItems.Add(settingsMenuItem);
+            _ = menu.MenuItems.Add(updateMenuItem);
+            _ = menu.MenuItems.Add("-");
+            _ = menu.MenuItems.Add(closeMenuItem);
             AppNotifyIcon = new()
             {
                 BalloonTipText = $"{AppName} Sistem Tepsisine Gönderildi.",
                 BalloonTipTitle = AppName,
                 Text = AppName,
                 Visible = true,
+                ContextMenu = menu,
                 Icon = new System.Drawing.Icon(Application.GetResourceStream(new Uri("pack://application:,,,/GpScanner;component/scanner.ico")).Stream),
             };
 

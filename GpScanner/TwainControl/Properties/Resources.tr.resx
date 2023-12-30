@@ -709,4 +709,7 @@ BELGE EKLE</value>
   <data name="LINEARFILL" xml:space="preserve">
     <value>DOĞRUSAL DOLGU</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>ÇIKIŞ</value>
+  </data>
 </root>

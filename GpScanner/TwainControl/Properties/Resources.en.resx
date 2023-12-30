@@ -703,4 +703,7 @@ TO FILE</value>
   <data name="LINEARFILL" xml:space="preserve">
     <value>LINEAR FILL</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>EXIT</value>
+  </data>
 </root>

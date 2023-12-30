@@ -696,4 +696,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>LINEAIR VULLEN</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>UITGANG</value>
+  </data>
 </root>

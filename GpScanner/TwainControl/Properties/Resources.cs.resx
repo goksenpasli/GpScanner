@@ -696,4 +696,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>LINEÁRNÍ VÝPLŇ</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>VÝSTUP</value>
+  </data>
 </root>

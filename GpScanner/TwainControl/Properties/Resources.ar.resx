@@ -696,4 +696,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>تعبئة خطية</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>مخرج</value>
+  </data>
 </root>

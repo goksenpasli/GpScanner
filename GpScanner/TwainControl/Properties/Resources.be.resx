@@ -699,4 +699,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>ЛІНЕЙНАЯ ЗАЛІНКА</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>ВЫХОД</value>
+  </data>
 </root>

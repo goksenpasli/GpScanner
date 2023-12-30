@@ -699,4 +699,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>LINEÆR FYLDNING</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>AFSLUT</value>
+  </data>
 </root>

@@ -696,4 +696,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>ЛИНЕЙНАЯ ЗАПОЛНЕНИЕ</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>ВЫХОД</value>
+  </data>
 </root>

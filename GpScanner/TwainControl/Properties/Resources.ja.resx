@@ -696,4 +696,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>リニアフィル</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>出口</value>
+  </data>
 </root>

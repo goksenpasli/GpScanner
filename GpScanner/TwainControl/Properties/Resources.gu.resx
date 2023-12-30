@@ -696,4 +696,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>લીનિયર ફિલ</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>બહાર નીકળો</value>
+  </data>
 </root>

@@ -696,4 +696,7 @@
   <data name="LINEARFILL" xml:space="preserve">
     <value>RIEMPIMENTO LINEARE</value>
   </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>USCITA</value>
+  </data>
 </root>
