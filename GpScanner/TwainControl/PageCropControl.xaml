@@ -139,12 +139,14 @@
                                         </Image.Source>
                                     </Image>
                                     <TextBlock Canvas.Left="6"
-                                        Canvas.Top="7"
+                                        Canvas.Top="9"
+                                        Width="19"
                                         d:Text="0"
                                         FontSize="11"
                                         FontWeight="Bold"
                                         Foreground="Red"
-                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
+                                        Text="{Binding Scanner.SeçiliResimSayısı}"
+                                        TextAlignment="Center" />
                                 </Canvas>
                                 <TextBlock VerticalAlignment="Center">
                                     <Run Text="{local:Loc TRIMIMAGE}" />

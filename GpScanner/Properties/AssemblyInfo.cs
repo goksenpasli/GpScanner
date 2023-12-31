@@ -7,7 +7,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Goksen")]
 [assembly: AssemblyProduct("GpScanner")]
-[assembly: AssemblyCopyright("Copyright © 2023")]
+[assembly: AssemblyCopyright("Copyright © 2024")]
 [assembly: AssemblyTrademark("Gok$en")]
 [assembly: AssemblyCulture("")]
 
@@ -19,4 +19,4 @@ using System.Windows;
 
 [assembly: Guid("143762b8-772a-47af-bae6-08e0a1d0ca89")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("5.0.3.14540")]
+[assembly: AssemblyFileVersion("5.0.3.14541")]
