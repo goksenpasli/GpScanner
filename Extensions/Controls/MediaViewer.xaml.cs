@@ -104,6 +104,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("TimeDisplayVisibility", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty TooltipOriginalSubtitleProperty =
         DependencyProperty.Register("TooltipOriginalSubtitle", typeof(string), typeof(MediaViewer), new PropertyMetadata(null));
+    public static readonly DependencyProperty VideoMarginProperty = DependencyProperty.Register("VideoMargin", typeof(Thickness), typeof(MediaViewer), new PropertyMetadata(new Thickness(0d, 0d, 0d, 0d)));
     public static readonly DependencyProperty VideoStretchProperty = DependencyProperty.Register("VideoStretch", typeof(Stretch), typeof(MediaViewer), new PropertyMetadata(Stretch.Uniform));
     private const int MillisecondsDelay = 500;
     private const string VideoFileExtensions =
@@ -308,6 +309,43 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     }
 
                     SubTitleMargin = defaultsubtitlethickness;
+                }
+            },
+            parameter => true);
+
+        SetVideoMargin = new RelayCommand<object>(
+            parameter =>
+            {
+                Thickness defaultvideothickness = new(VideoMargin.Left, VideoMargin.Top, VideoMargin.Right, VideoMargin.Bottom);
+                if (parameter is object content)
+                {
+                    switch (content)
+                    {
+                        case "6":
+                            defaultvideothickness.Bottom -= 5;
+                            break;
+
+                        case "5":
+                            defaultvideothickness.Top -= 5;
+                            break;
+
+                        case "4":
+                            defaultvideothickness.Right -= 5;
+                            break;
+
+                        case "3":
+                            defaultvideothickness.Left -= 5;
+                            break;
+
+                        case "=":
+                            defaultvideothickness.Left = 0;
+                            defaultvideothickness.Bottom = 0;
+                            defaultvideothickness.Right = 0;
+                            defaultvideothickness.Top = 0;
+                            break;
+                    }
+
+                    VideoMargin = defaultvideothickness;
                 }
             },
             parameter => true);
@@ -528,6 +566,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> SetSubtitleMargin { get; }
 
+    public RelayCommand<object> SetVideoMargin { get; }
+
     [Description("Video Effects")]
     [Category("Effects")]
     public double SharpenAmount { get => (double)GetValue(SharpenAmountProperty); set => SetValue(SharpenAmountProperty, value); }
@@ -628,6 +668,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             }
         }
     }
+
+    [Description("Video Controls")]
+    [Category("Controls")]
+    public Thickness VideoMargin { get => (Thickness)GetValue(VideoMarginProperty); set => SetValue(VideoMarginProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]

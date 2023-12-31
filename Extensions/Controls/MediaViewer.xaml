@@ -38,7 +38,9 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid x:Name="grid" Background="Black">
+        <Grid x:Name="grid"
+            Background="Black"
+            ClipToBounds="True">
             <Grid.ContextMenu>
                 <ContextMenu Visibility="{Binding ContextMenuVisibility}">
                     <MenuItem Command="{Binding OpenFile}"
@@ -125,7 +127,7 @@
                     </MenuItem>
                 </ContextMenu>
             </Grid.ContextMenu>
-            <Grid>
+            <Grid Margin="{Binding VideoMargin}">
                 <Grid.Style>
                     <Style TargetType="Grid">
                         <Style.Triggers>
@@ -647,6 +649,46 @@
                                                 </Slider.BorderBrush>
                                             </Slider>
                                         </StackPanel>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+                                            <RepeatButton Grid.Column="1"
+                                                Command="{Binding SetVideoMargin}"
+                                                CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                                                Content="5"
+                                                FontFamily="Webdings" />
+                                            <RepeatButton Grid.Row="1"
+                                                Command="{Binding SetVideoMargin}"
+                                                CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                                                Content="3"
+                                                FontFamily="Webdings" />
+                                            <Button Grid.Row="1"
+                                                Grid.Column="1"
+                                                Command="{Binding SetVideoMargin}"
+                                                CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                                                Content="="
+                                                FontFamily="Webdings" />
+                                            <RepeatButton Grid.Row="1"
+                                                Grid.Column="2"
+                                                Command="{Binding SetVideoMargin}"
+                                                CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                                                Content="4"
+                                                FontFamily="Webdings" />
+                                            <RepeatButton Grid.Row="2"
+                                                Grid.Column="1"
+                                                Command="{Binding SetVideoMargin}"
+                                                CommandParameter="{Binding Content, RelativeSource={RelativeSource Mode=Self}}"
+                                                Content="6"
+                                                FontFamily="Webdings" />
+                                        </Grid>
                                         <UniformGrid Columns="4" Rows="2">
                                             <ToggleButton Content="T"
                                                 FontFamily="Segoe UI"
