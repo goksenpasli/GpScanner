@@ -1129,31 +1129,34 @@
                         BorderBrush="{x:Null}"
                         Command="{Binding LoadContributionData}">
                         <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox>
-                                <GroupBox.Header>
-                                    <StackPanel Orientation="Horizontal">
-                                        <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedContributionYear}">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock>
-                                                        <Run Text="{twainctrl:Loc YEAR}" />
-                                                        <Run Text="{Binding Mode=OneWay}" />
-                                                    </TextBlock>
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Run Text="{Binding Mode=OneWay, Path=ContributionDocumentCount}" />
-                                            <Run Text="{twainctrl:Loc DOCUMENT}" />
-                                        </TextBlock>
-                                    </StackPanel>
-                                </GroupBox.Header>
-                                <Extensions:ContributionControl Width="700"
-                                    Height="120"
-                                    Contributions="{Binding ContributionData}"
-                                    SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}"
-                                    Template="{StaticResource CustomContributionTemplate}" />
-                            </GroupBox>
+                            <Extensions:ResizablePanel Width="700"
+                                Height="165"
+                                MinWidth="700"
+                                MinHeight="165">
+                                <GroupBox>
+                                    <GroupBox.Header>
+                                        <StackPanel Orientation="Horizontal">
+                                            <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedContributionYear}">
+                                                <ComboBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock>
+                                                            <Run Text="{twainctrl:Loc YEAR}" />
+                                                            <Run Text="{Binding Mode=OneWay}" />
+                                                        </TextBlock>
+                                                    </DataTemplate>
+                                                </ComboBox.ItemTemplate>
+                                            </ComboBox>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Run Text="{Binding Mode=OneWay, Path=ContributionDocumentCount}" />
+                                                <Run Text="{twainctrl:Loc DOCUMENT}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </GroupBox.Header>
+                                    <Extensions:ContributionControl Contributions="{Binding ContributionData}"
+                                        SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}"
+                                        Template="{StaticResource CustomContributionTemplate}" />
+                                </GroupBox>
+                            </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                         <TextBlock FontFamily="Webdings"
                             FontSize="16"

@@ -63,6 +63,8 @@
                         </ListBox>
                         <ListBox Grid.Row="1"
                             Grid.Column="1"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
                             d:ItemsSource="{d:SampleData ItemCount=10}"
                             ItemsSource="{Binding Contributions, RelativeSource={RelativeSource TemplatedParent}}"
                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
@@ -70,7 +72,6 @@
                             SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="ListBoxItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
                                     <Setter Property="Margin" Value="0" />
                                     <Setter Property="Padding" Value="0" />
                                 </Style>
@@ -89,9 +90,7 @@
                             </ListBox.ItemsPanel>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Rectangle Width="10"
-                                        Height="10"
-                                        d:Fill="Green"
+                                    <Rectangle d:Fill="Green"
                                         d:Height="10"
                                         d:Width="10"
                                         Stroke="{Binding Stroke}">

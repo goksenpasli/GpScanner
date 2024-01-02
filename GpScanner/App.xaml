@@ -571,13 +571,14 @@
                     </ListBox>
                     <ListBox Grid.Row="1"
                         Grid.Column="1"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
                         ItemsSource="{Binding Contributions, RelativeSource={RelativeSource TemplatedParent}}"
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
                         SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
-                                <Setter Property="HorizontalContentAlignment" Value="Center" />
                                 <Setter Property="Margin" Value="0" />
                                 <Setter Property="Padding" Value="0" />
                             </Style>
@@ -596,10 +597,7 @@
                         </ListBox.ItemsPanel>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Rectangle Width="10"
-                                    Height="10"
-                                    Stroke="{Binding Stroke}"
-                                    ToolTipService.InitialShowDelay="100">
+                                <Rectangle Stroke="{Binding Stroke}" ToolTipService.InitialShowDelay="100">
                                     <Rectangle.Fill>
                                         <MultiBinding Converter="{StaticResource ContributionToColorConverter}">
                                             <Binding Path="Count" />
