@@ -488,20 +488,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        SeçiliKaydet = new RelayCommand<object>(
-            parameter =>
+        SaveSelectedFilesPdfFile = new RelayCommand<object>(
+            async parameter =>
             {
-                if (Filesavetask?.IsCompleted == false)
+                if (!CheckFileSaveProgress())
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
-
-                SaveFileDialog saveFileDialog = new()
-                {
-                    Filter = "Pdf Dosyası (*.pdf)|*.pdf|Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf|Jpg Resmi (*.jpg)|*.jpg|Tif Resmi (*.tif)|*.tif|Txt Dosyası (*.txt)|*.txt|Webp Dosyası (*.webp)|*.webp|Zip Dosyası (*.zip)|*.zip",
-                    FileName = Scanner.SaveFileName
-                };
+                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     Filesavetask = Task.Run(
@@ -509,46 +503,165 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
                             string fileName = saveFileDialog.FileName;
-                            switch (saveFileDialog.FilterIndex)
-                            {
-                                case 1:
-                                    await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, false, Settings.Default.ImgLoadResolution);
-                                    break;
-
-                                case 2:
-                                    await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
-                                    break;
-
-                                case 3:
-                                    await SaveJpgImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
-                                    break;
-
-                                case 4:
-                                    await SaveTifImageAsync(seçiliresimler, fileName);
-                                    break;
-
-                                case 5:
-                                    await SaveTxtFileAsync(seçiliresimler, fileName);
-                                    break;
-
-                                case 6:
-                                    await SaveWebpImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
-                                    break;
-
-                                case 7:
-                                    SaveZipImage(seçiliresimler, fileName);
-                                    break;
-                            }
-
-                            await Dispatcher.InvokeAsync(
-                                () =>
-                                {
-                                    if (Settings.Default.RemoveProcessedImage)
-                                    {
-                                        SeçiliListeTemizle.Execute(null);
-                                    }
-                                });
+                            await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, false, Settings.Default.ImgLoadResolution);
                         });
+                await RemoveProcessedImages();
+                }
+            },
+            parameter =>
+            {
+                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
+                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+            });
+
+        SaveSelectedFilesJpgFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (!CheckFileSaveProgress())
+                {
+                    return;
+                }
+                SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    Filesavetask = Task.Run(
+                        async () =>
+                        {
+                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            string fileName = saveFileDialog.FileName;
+                            await SaveJpgImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
+                        });
+                await RemoveProcessedImages();
+                }
+            },
+            parameter =>
+            {
+                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
+                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+            });
+
+        SaveSelectedFilesBwPdfFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (!CheckFileSaveProgress())
+                {
+                    return;
+                }
+                SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    Filesavetask = Task.Run(
+                        async () =>
+                        {
+                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            string fileName = saveFileDialog.FileName;
+                            await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
+                        });
+                await RemoveProcessedImages();
+                }
+            },
+            parameter =>
+            {
+                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
+                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+            });
+
+        SaveSelectedFilesTifFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (!CheckFileSaveProgress())
+                {
+                    return;
+                }
+                SaveFileDialog saveFileDialog = new() { Filter = "Tif Dosyası (*.tif)|*.tif", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    Filesavetask = Task.Run(
+                        async () =>
+                        {
+                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            string fileName = saveFileDialog.FileName;
+                            await SaveTifImageAsync(seçiliresimler, fileName);
+                        });
+                await RemoveProcessedImages();
+                }
+            },
+            parameter =>
+            {
+                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
+                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+            });
+
+        SaveSelectedFilesTxtFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (!CheckFileSaveProgress())
+                {
+                    return;
+                }
+                SaveFileDialog saveFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    Filesavetask = Task.Run(
+                        async () =>
+                        {
+                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            string fileName = saveFileDialog.FileName;
+                            await SaveTxtFileAsync(seçiliresimler, fileName);
+                        });
+                await RemoveProcessedImages();
+                }
+            },
+            parameter =>
+            {
+                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
+                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+            });
+
+        SaveSelectedFilesWebpFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (!CheckFileSaveProgress())
+                {
+                    return;
+                }
+                SaveFileDialog saveFileDialog = new() { Filter = "Webp Dosyası (*.webp)|*.webp", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    Filesavetask = Task.Run(
+                        async () =>
+                        {
+                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            string fileName = saveFileDialog.FileName;
+                            await SaveWebpImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
+                        });
+                await RemoveProcessedImages();
+                }
+            },
+            parameter =>
+            {
+                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
+                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+            });
+
+        SaveSelectedFilesZipFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (!CheckFileSaveProgress())
+                {
+                    return;
+                }
+                SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası (*.zip)|*.zip", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    Filesavetask = Task.Run(
+                        () =>
+                        {
+                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            string fileName = saveFileDialog.FileName;
+                            SaveZipImage(seçiliresimler, fileName);
+                        });
+                await RemoveProcessedImages();
                 }
             },
             parameter =>
@@ -588,16 +701,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         await SavePdfImageAsync(seçiliresimler, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, isBlackAndWhiteMode, Settings.Default.ImgLoadResolution);
                     }
-
-                    await Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            OnPropertyChanged(nameof(Scanner.Resimler));
-                            if (Settings.Default.RemoveProcessedImage)
-                            {
-                                SeçiliListeTemizle.Execute(null);
-                            }
-                        });
+                    await RemoveProcessedImages();
                 }),
             parameter =>
             {
@@ -2156,6 +2260,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SaveProfile { get; }
 
+    public RelayCommand<object> SaveSelectedFilesBwPdfFile { get; }
+
+    public RelayCommand<object> SaveSelectedFilesJpgFile { get; }
+
+    public RelayCommand<object> SaveSelectedFilesPdfFile { get; }
+
+    public RelayCommand<object> SaveSelectedFilesTifFile { get; }
+
+    public RelayCommand<object> SaveSelectedFilesTxtFile { get; }
+
+    public RelayCommand<object> SaveSelectedFilesWebpFile { get; }
+
+    public RelayCommand<object> SaveSelectedFilesZipFile { get; }
+
     public RelayCommand<object> SaveSingleJpgFile { get; }
 
     public RelayCommand<object> SaveSinglePdfFile { get; }
@@ -2755,6 +2873,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+    private static bool CheckFileSaveProgress()
+    {
+        if (Filesavetask?.IsCompleted == false)
+        {
+            _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
+            return false;
+        }
+        return true;
+    }
+
     private static bool IsWindowOpen(Window window) => Application.Current?.Windows?.Cast<Window>().Any(x => x == window) == true;
 
     private async Task AddAttachmentFileAsync(string[] files, string loadfilename, string savefilename)
@@ -3342,6 +3470,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     outputDocument.ApplyDefaultPdfCompression();
                     outputDocument.Save(savefilename);
+                }
+            });
+    }
+
+    private async Task RemoveProcessedImages()
+    {
+        await Dispatcher.InvokeAsync(
+            () =>
+            {
+                if (Settings.Default.RemoveProcessedImage)
+                {
+                    OnPropertyChanged(nameof(Scanner.Resimler));
+                    SeçiliListeTemizle.Execute(null);
                 }
             });
     }

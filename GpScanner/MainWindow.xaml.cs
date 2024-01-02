@@ -398,6 +398,7 @@ public partial class MainWindow : Window
         {
             _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), Title);
             e.Cancel = true;
+            return;
         }
         AppNotifyIcon?.Dispose();
         BackupDatabaseFile();

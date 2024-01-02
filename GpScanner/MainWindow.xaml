@@ -42,7 +42,7 @@
             Command="{Binding SeçiliDirektPdfKaydet, ElementName=twainCtrl}"
             Modifiers="Ctrl+Shift" />
         <KeyBinding Key="S"
-            Command="{Binding SeçiliKaydet, ElementName=twainCtrl}"
+            Command="{Binding SaveSelectedFilesPdfFile, ElementName=twainCtrl}"
             Modifiers="Ctrl" />
         <KeyBinding Key="O"
             Command="{Binding LoadImage, ElementName=twainCtrl}"
