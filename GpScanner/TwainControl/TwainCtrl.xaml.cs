@@ -311,15 +311,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
-                bool bw = Keyboard.Modifiers == ModifierKeys.Alt;
                 if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
                 {
-                    if (bw)
-                    {
-                        await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
-                        return;
-                    }
                     await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
+                }
+            },
+            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
+        
+        SaveSingleBwPdfFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                {
+                    await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
@@ -2277,7 +2282,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> SaveSingleJpgFile { get; }
 
     public RelayCommand<object> SaveSinglePdfFile { get; }
-
+    public RelayCommand<object> SaveSingleBwPdfFile { get; }
     public RelayCommand<object> SaveSingleTifFile { get; }
 
     public RelayCommand<object> SaveSingleTxtFile { get; }
