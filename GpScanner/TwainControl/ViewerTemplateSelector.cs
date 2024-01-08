@@ -18,6 +18,8 @@ namespace TwainControl
 
         public DataTemplate Vid { get; set; }
 
+        public DataTemplate Xlsx { get; set; }
+
         public DataTemplate Xml { get; set; }
 
         public DataTemplate Xps { get; set; }
@@ -40,6 +42,7 @@ namespace TwainControl
                         ".zip" => Zip,
                         ".xps" => Xps,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
+                        ".csv" or ".xls" or ".xlsx" or ".xlsb" => Xlsx,
                         _ => imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty
                     };
                 }

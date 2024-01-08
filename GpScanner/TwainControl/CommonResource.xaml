@@ -10,6 +10,8 @@
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+    <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
+    <Extensions:FilePathToIconConverter x:Key="FilePathToIconLargeConverter" IconSize="jumbo" />
     <Style x:Key="TextBlockPdfLayout" TargetType="TextBlock">
         <Style.Triggers>
             <DataTrigger Binding="{Binding}" Value="Left">
@@ -552,6 +554,7 @@
         <StackPanel>
             <TextBlock Width="210"
                 HorizontalAlignment="Right"
+                Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}, ConverterParameter='fileext'}"
                 TextWrapping="Wrap">
                 <Hyperlink BaselineAlignment="Center"
                     Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
@@ -562,12 +565,45 @@
                         Source="/TwainControl;component/Icons/delete.png" />
                 </Hyperlink>
             </TextBlock>
-            <TextBlock HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                FontFamily="Webdings"
-                FontSize="200"
-                Foreground="Red"
-                Text="N" />
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Hyperlink BaselineAlignment="Center"
+                    Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                    CommandParameter="{Binding Mode=OneWay}"
+                    TextDecorations="None">
+                    <Image Width="256"
+                        Height="256"
+                        Source="{Binding Converter={StaticResource FilePathToIconLargeConverter}, Mode=OneWay}" />
+                </Hyperlink>
+            </TextBlock>
+        </StackPanel>
+    </DataTemplate>
+    <DataTemplate x:Key="EypSimpleXlsxTemplate">
+        <StackPanel>
+            <TextBlock Width="210"
+                HorizontalAlignment="Right"
+                Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}, ConverterParameter='fileext'}"
+                TextWrapping="Wrap">
+                <Hyperlink BaselineAlignment="Center"
+                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                    CommandParameter="{Binding Mode=OneWay}"
+                    TextDecorations="None">
+                    <Image Width="16"
+                        Height="16"
+                        Source="/TwainControl;component/Icons/delete.png" />
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Hyperlink BaselineAlignment="Center"
+                    Command="{Binding Path=DataContext.WebAdreseGit, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                    CommandParameter="{Binding Mode=OneWay}"
+                    TextDecorations="None">
+                    <InlineUIContainer BaselineAlignment="Center">
+                        <local:XlsxViewer Width="210"
+                            Height="280"
+                            XlsxDataFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    </InlineUIContainer>
+                </Hyperlink>
+            </TextBlock>
         </StackPanel>
     </DataTemplate>
     <DataTemplate x:Key="EypImgViewerTemplate">
@@ -712,5 +748,6 @@
         Img="{StaticResource EypImgViewerTemplate}"
         Pdf="{StaticResource EypSimplePdfTemplate}"
         Vid="{StaticResource VideoViewerTemplateMini}"
+        Xlsx="{StaticResource EypSimpleXlsxTemplate}"
         Xml="{StaticResource XmlViewerTemplate}" />
 </ResourceDictionary>
