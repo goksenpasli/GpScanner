@@ -638,24 +638,6 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <ToggleButton twainctrl:Policy.PolicyName="Sıralama"
-                                    FontFamily="Wingdings"
-                                    FontSize="16"
-                                    IsChecked="{Binding Sıralama}"
-                                    IsEnabled="{Binding HasItems, ElementName=LbDoc}">
-                                    <ToggleButton.Style>
-                                        <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsChecked" Value="True">
-                                                    <Setter Property="Content" Value="é" />
-                                                </Trigger>
-                                                <Trigger Property="IsChecked" Value="False">
-                                                    <Setter Property="Content" Value="ê" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ToggleButton.Style>
-                                </ToggleButton>
                                 <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments"
                                     Command="{Binding CycleSelectedDocuments}"
                                     CommandParameter="{Binding ElementName=LbDoc}">

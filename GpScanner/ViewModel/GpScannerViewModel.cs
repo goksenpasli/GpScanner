@@ -116,7 +116,6 @@ public partial class GpScannerViewModel : InpcBase
     private ReminderData selectedReminder;
     private Size selectedSize;
     private bool shutdown;
-    private bool sıralama;
     private TesseractViewModel tesseractViewModel;
     private TranslateViewModel translateViewModel;
     private ObservableCollection<string> unIndexedFiles;
@@ -1869,20 +1868,6 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool Sıralama
-    {
-        get => sıralama;
-
-        set
-        {
-            if (sıralama != value)
-            {
-                sıralama = value;
-                OnPropertyChanged(nameof(Sıralama));
-            }
-        }
-    }
-
     public ICommand StartPdfBatch { get; }
 
     public ICommand StartTxtBatch { get; }
@@ -2442,13 +2427,6 @@ public partial class GpScannerViewModel : InpcBase
         if (e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
         {
             SeçiliGün = (DateTime)SelectedContribution.ContrubutionDate;
-        }
-
-        if (e.PropertyName is "Sıralama")
-        {
-            MainWindow.cvs?.SortDescriptions.Clear();
-            SortDescription sortDescription = Sıralama ? new SortDescription("FileName", ListSortDirection.Descending) : new SortDescription("FileName", ListSortDirection.Ascending);
-            MainWindow.cvs?.SortDescriptions.Add(sortDescription);
         }
 
         if (e.PropertyName is "AramaMetni")
