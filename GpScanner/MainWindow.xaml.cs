@@ -197,7 +197,6 @@ public partial class MainWindow : Window
                     twainCtrl.SelectedTabIndex = 4;
                     EypPdfViewer eypPdfViewer = twainCtrl.PdfImportViewer.PdfViewer;
                     eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
-                    eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
                     return;
                 }
 

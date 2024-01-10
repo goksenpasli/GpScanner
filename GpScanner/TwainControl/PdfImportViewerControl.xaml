@@ -1140,6 +1140,7 @@
             <Extensions:SplitButton Command="{Binding OcrCurrentPdfPage}"
                 CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
                 DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 IsSplitPartOpen="{Binding OcrDialogOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -1197,30 +1198,53 @@
                     </Extensions:ResizablePanel>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
-            <Extensions:ContentToggleButton>
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Image Width="16"
                     Height="16"
                     Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
                 <Extensions:ContentToggleButton.OverContent>
-                    <Extensions:ResizablePanel Width="300"
-                        Height="400"
-                        MinWidth="300"
-                        MinHeight="400">
-                        <ListBox ItemTemplateSelector="{StaticResource PdfEypListBoxViewerSelector}"
-                            ItemsSource="{Binding EypAttachments, Source={x:Reference PdfViewer}}"
-                            VirtualizingPanel.CacheLength="2,2"
-                            VirtualizingPanel.CacheLengthUnit="Item"
-                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                            VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Standard">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                        ItemSize="220,330"
-                                        SpacingMode="None" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                        </ListBox>
+                    <Extensions:ResizablePanel Width="500"
+                        Height="440"
+                        MinWidth="280"
+                        MinHeight="440">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="4*" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <ListBox ItemTemplateSelector="{StaticResource PdfEypListBoxViewerSelector}"
+                                ItemsSource="{Binding EypAttachments, Source={x:Reference PdfViewer}}"
+                                VirtualizingPanel.CacheLength="2,2"
+                                VirtualizingPanel.CacheLengthUnit="Item"
+                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                VirtualizingPanel.ScrollUnit="Pixel"
+                                VirtualizingPanel.VirtualizationMode="Standard">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                            ItemSize="220,330"
+                                            SpacingMode="None" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                            </ListBox>
+                            <ListBox Grid.Row="1"
+                                ItemsSource="{Binding EypNonSuportedAttachments, Source={x:Reference PdfViewer}}"
+                                VirtualizingPanel.CacheLength="2,2"
+                                VirtualizingPanel.CacheLengthUnit="Item"
+                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                VirtualizingPanel.ScrollUnit="Pixel"
+                                VirtualizingPanel.VirtualizationMode="Standard">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <Hyperlink Command="{Binding WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                <Run Text="{Binding Mode=OneWay}" />
+                                            </Hyperlink>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </Grid>
                     </Extensions:ResizablePanel>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>

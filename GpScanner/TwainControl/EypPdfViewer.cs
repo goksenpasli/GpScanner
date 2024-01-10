@@ -25,6 +25,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register("EypFilePath", typeof(string), typeof(EypPdfViewer), new PropertyMetadata(null, Changed));
     private readonly string[] eypcontentfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx",];
     private ObservableCollection<string> eypAttachments;
+    private ObservableCollection<string> eypNonSuportedAttachments;
 
     public EypPdfViewer()
     {
@@ -44,7 +45,6 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         }
 
                         PdfFilePath = eypfile;
-                        AddToHistoryList(PdfFilePath);
                     }
 
                     if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
@@ -163,6 +163,15 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         }
     }
 
+    public ObservableCollection<string> EypNonSuportedAttachments { get => eypNonSuportedAttachments;
+        set {
+            if (eypNonSuportedAttachments != value)
+            {
+                eypNonSuportedAttachments = value;
+                OnPropertyChanged(nameof(EypNonSuportedAttachments));
+            }
+        }
+    }
     public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
 
     public RelayCommand<object> FlipPdfPage { get; }
@@ -185,6 +194,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     {
         List<string> files = TwainCtrl.EypFileExtract(filename);
         EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
+        EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
         using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLower()) == ".pdf"), PdfDocumentOpenMode.Import);
         return document?.FullPath;
     }
@@ -204,8 +214,6 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             if (string.Equals(Path.GetExtension(droppedfiles[0]), ".eyp", StringComparison.OrdinalIgnoreCase))
             {
                 PdfFilePath = ExtractEypFilesToPdf(droppedfiles[0]);
-                AddToHistoryList(PdfFilePath);
-
                 return;
             }
             if (IsValidPdfFile(droppedfiles[0]))

@@ -1313,6 +1313,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 MessageBox.Show($"{Translation.GetResStringValue("CLOSEFILE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     pdfviewer.EypAttachments = null;
+                    pdfviewer.EypNonSuportedAttachments = null;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.Source = null;
                     pdfviewer.Sayfa = 1;
