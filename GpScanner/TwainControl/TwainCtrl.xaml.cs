@@ -317,7 +317,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
-        
+
         SaveSingleBwPdfFile = new RelayCommand<object>(
             async parameter =>
             {
@@ -510,7 +510,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string fileName = saveFileDialog.FileName;
                             await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, false, Settings.Default.ImgLoadResolution);
                         });
-                await RemoveProcessedImages();
+                    await RemoveProcessedImages();
                 }
             },
             parameter =>
@@ -536,7 +536,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string fileName = saveFileDialog.FileName;
                             await SaveJpgImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
                         });
-                await RemoveProcessedImages();
+                    await RemoveProcessedImages();
                 }
             },
             parameter =>
@@ -562,7 +562,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string fileName = saveFileDialog.FileName;
                             await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
                         });
-                await RemoveProcessedImages();
+                    await RemoveProcessedImages();
                 }
             },
             parameter =>
@@ -588,7 +588,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string fileName = saveFileDialog.FileName;
                             await SaveTifImageAsync(seçiliresimler, fileName);
                         });
-                await RemoveProcessedImages();
+                    await RemoveProcessedImages();
                 }
             },
             parameter =>
@@ -614,7 +614,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string fileName = saveFileDialog.FileName;
                             await SaveTxtFileAsync(seçiliresimler, fileName);
                         });
-                await RemoveProcessedImages();
+                    await RemoveProcessedImages();
                 }
             },
             parameter =>
@@ -640,7 +640,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string fileName = saveFileDialog.FileName;
                             await SaveWebpImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
                         });
-                await RemoveProcessedImages();
+                    await RemoveProcessedImages();
                 }
             },
             parameter =>
@@ -666,7 +666,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string fileName = saveFileDialog.FileName;
                             SaveZipImage(seçiliresimler, fileName);
                         });
-                await RemoveProcessedImages();
+                    await RemoveProcessedImages();
                 }
             },
             parameter =>
@@ -1308,10 +1308,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ClosePdfFile = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer &&
+                if (parameter is EypPdfViewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
                 MessageBox.Show($"{Translation.GetResStringValue("CLOSEFILE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
+                    pdfviewer.EypAttachments = null;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.Source = null;
                     pdfviewer.Sayfa = 1;
@@ -1321,7 +1322,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     RefreshDocumentList = true;
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
+            parameter => parameter is EypPdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         ReverseData = new RelayCommand<object>(
             parameter =>
@@ -2279,10 +2280,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> SaveSelectedFilesZipFile { get; }
 
+    public RelayCommand<object> SaveSingleBwPdfFile { get; }
+
     public RelayCommand<object> SaveSingleJpgFile { get; }
 
     public RelayCommand<object> SaveSinglePdfFile { get; }
-    public RelayCommand<object> SaveSingleBwPdfFile { get; }
+
     public RelayCommand<object> SaveSingleTifFile { get; }
 
     public RelayCommand<object> SaveSingleTxtFile { get; }
@@ -2567,8 +2570,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
                             if (zipArchiveEntry != null)
                             {
-                                string destinationFileName =
-                                    $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
+                                string destinationFileName = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
                                 zipArchiveEntry.ExtractToFile(destinationFileName, true);
                                 data.Add(destinationFileName);
                             }

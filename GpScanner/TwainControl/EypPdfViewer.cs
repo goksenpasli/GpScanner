@@ -4,6 +4,8 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -21,6 +23,8 @@ namespace TwainControl;
 public class EypPdfViewer : PdfViewer.PdfViewer
 {
     public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register("EypFilePath", typeof(string), typeof(EypPdfViewer), new PropertyMetadata(null, Changed));
+    private readonly string[] eypcontentfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx",];
+    private ObservableCollection<string> eypAttachments;
 
     public EypPdfViewer()
     {
@@ -146,6 +150,19 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public new RelayCommand<object> DosyaAç { get; }
 
+    public ObservableCollection<string> EypAttachments
+    {
+        get => eypAttachments;
+        set
+        {
+            if (eypAttachments != value)
+            {
+                eypAttachments = value;
+                OnPropertyChanged(nameof(EypAttachments));
+            }
+        }
+    }
+
     public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
 
     public RelayCommand<object> FlipPdfPage { get; }
@@ -166,10 +183,10 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public string ExtractEypFilesToPdf(string filename)
     {
-        using PdfDocument document = TwainCtrl.EypFileExtract(filename).Where(z => Path.GetExtension(z.ToLower()) == ".pdf").ToArray().MergePdf();
-        string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-        document.Save(source);
-        return source;
+        List<string> files = TwainCtrl.EypFileExtract(filename);
+        EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
+        using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLower()) == ".pdf"), PdfDocumentOpenMode.Import);
+        return document?.FullPath;
     }
 
     protected override void OnDrop(DragEventArgs e)

@@ -1078,22 +1078,31 @@
                                                 </Button>
                                             </StackPanel>
                                         </TabItem.Header>
-                                        <ListBox ItemsSource="{Binding Source={StaticResource GörülenReminder}}" SelectedItem="{Binding SelectedReminder}">
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Açıklama}" />
-                                                        <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding Tarih}">
-                                                            <DatePicker.Resources>
-                                                                <Style TargetType="DatePickerTextBox">
-                                                                    <Setter Property="IsReadOnly" Value="True" />
-                                                                </Style>
-                                                            </DatePicker.Resources>
-                                                        </DatePicker>
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="3*" />
+                                            </Grid.ColumnDefinitions>
+                                            <ListBox ItemsSource="{Binding Source={StaticResource GörülenReminder}}" SelectedItem="{Binding SelectedReminder}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel>
+                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Açıklama}" />
+                                                            <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding Tarih}">
+                                                                <DatePicker.Resources>
+                                                                    <Style TargetType="DatePickerTextBox">
+                                                                        <Setter Property="IsReadOnly" Value="True" />
+                                                                    </Style>
+                                                                </DatePicker.Resources>
+                                                            </DatePicker>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                            <ContentPresenter Grid.Column="1"
+                                                Content="{Binding Mode=OneWay, Path=SelectedReminder.FileName}"
+                                                ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}" />
+                                        </Grid>
                                     </TabItem>
                                 </TabControl>
                             </GroupBox>

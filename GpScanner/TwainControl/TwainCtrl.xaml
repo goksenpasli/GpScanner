@@ -2186,7 +2186,7 @@
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                        ItemSize="315,315"
+                                        ItemSize="230,330"
                                         SpacingMode="None" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
@@ -2255,7 +2255,7 @@
                     <TabItem.Header>
                         <Image Width="32"
                             Height="32"
-                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.udf}" />
+                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
@@ -2270,7 +2270,7 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32"
                                         Height="32"
-                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.udf}" />
+                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                                 </StackPanel>
                             </Button>

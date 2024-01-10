@@ -577,6 +577,11 @@
             </TextBlock>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="EmptyEypListBoxTemplate">
+        <Image Width="256"
+            Height="256"
+            Source="{Binding Converter={StaticResource FilePathToIconLargeConverter}, Mode=OneWay}" />
+    </DataTemplate>
     <DataTemplate x:Key="EypSimpleXlsxTemplate">
         <StackPanel>
             <TextBlock Width="210"
@@ -639,7 +644,7 @@
             <Extensions:ImageViewer Grid.Row="1"
                 Width="210"
                 Height="297"
-                DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=StackPanel}}"
+                DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                 ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                 OpenButtonVisibility="Collapsed"
                 PanoramaButtonVisibility="Collapsed"
@@ -750,4 +755,9 @@
         Vid="{StaticResource VideoViewerTemplateMini}"
         Xlsx="{StaticResource EypSimpleXlsxTemplate}"
         Xml="{StaticResource XmlViewerTemplate}" />
+    <local:ViewerTemplateSelector x:Key="PdfEypListBoxViewerSelector"
+        Img="{StaticResource EypImgViewerTemplate}"
+        Pdf="{StaticResource EypSimplePdfTemplate}"
+        Vid="{StaticResource VideoViewerTemplateMini}"
+        Xlsx="{StaticResource EypSimpleXlsxTemplate}" />
 </ResourceDictionary>
