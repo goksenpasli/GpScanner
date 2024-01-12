@@ -297,6 +297,15 @@
                                 </ListBoxItem.Content>
                             </ListBoxItem>
                         </ListBox>
+                        <Button HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding StopFlagAnimation}"
+                            Content="n"
+                            FontFamily="Wingdings"
+                            FontSize="16"
+                            ToolTip="{twainctrl:Loc STOP}" />
                         <local:TesseractView Grid.Column="1" Margin="1" />
                     </Grid>
                 </GroupBox>

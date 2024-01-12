@@ -260,6 +260,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             },
             parameter => true);
 
+        WebAdreseGit = new RelayCommand<object>(parameter => TwainCtrl.GotoPage(parameter as string), parameter => true);
+
         ClearLines = new RelayCommand<object>(parameter => Points.Clear(), parameter => Points is not null);
     }
 
@@ -899,6 +901,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
         }
     }
+
+    public RelayCommand<object> WebAdreseGit { get; }
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 

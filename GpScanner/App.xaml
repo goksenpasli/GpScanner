@@ -425,7 +425,6 @@
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     IsHitTestVisible="False"
                     OpenButtonVisibility="Collapsed"
-                    OrijinalResimDosyaAçButtonVisibility="Collapsed"
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Collapsed"
                     TifNavigasyonButtonEtkin="Collapsed"

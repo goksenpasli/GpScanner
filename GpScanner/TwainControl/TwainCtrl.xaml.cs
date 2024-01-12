@@ -1684,8 +1684,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             new RelayCommand<object>(
             parameter =>
             {
+                string file = parameter as string;
+                if (!File.Exists(file))
+                {
+                    return;
+                }
                 PdfImportViewerControl pdfImportViewerControl = new();
-                pdfImportViewerControl.PdfViewer.PdfFilePath = parameter as string;
+                if (Path.GetExtension(file.ToLower()) == ".pdf")
+                {
+                    pdfImportViewerControl.PdfViewer.PdfFilePath = file;
+                }
+                if (Path.GetExtension(file.ToLower()) == ".eyp")
+                {
+                    pdfImportViewerControl.PdfViewer.EypFilePath = file;
+                }
                 pdfImportViewerControl.DataContext = this;
                 maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };
                 maximizedWindow.Closed += (s, e) =>
@@ -1698,7 +1710,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 maximizedWindow.Content = pdfImportViewerControl;
                 _ = maximizedWindow.ShowDialog();
             },
-            parameter => !IsWindowOpen(maximizedWindow));
+            parameter => true);
 
         ImageViewerFullScreen =
             new RelayCommand<object>(

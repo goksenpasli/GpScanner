@@ -55,7 +55,6 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     private TiffBitmapDecoder decoder;
     private bool disposedValue;
     private Visibility openButtonVisibility = Visibility.Collapsed;
-    private Visibility orijinalResimDosyaAçButtonVisibility;
     private IEnumerable<int> pages;
     private Visibility panoramaButtonVisibility;
     private Visibility printButtonVisibility = Visibility.Collapsed;
@@ -222,20 +221,6 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public int OriginalPixelHeight { get => (int)GetValue(OriginalPixelHeightProperty); set => SetValue(OriginalPixelHeightProperty, value); }
 
     public int OriginalPixelWidth { get => (int)GetValue(OriginalPixelWidthProperty); set => SetValue(OriginalPixelWidthProperty, value); }
-
-    public Visibility OrijinalResimDosyaAçButtonVisibility
-    {
-        get => orijinalResimDosyaAçButtonVisibility;
-
-        set
-        {
-            if (orijinalResimDosyaAçButtonVisibility != value)
-            {
-                orijinalResimDosyaAçButtonVisibility = value;
-                OnPropertyChanged(nameof(OrijinalResimDosyaAçButtonVisibility));
-            }
-        }
-    }
 
     [Browsable(false)]
     public IEnumerable<int> Pages

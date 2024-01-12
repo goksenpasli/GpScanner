@@ -187,9 +187,7 @@
                     </TextBlock>
                 </CheckBox.Content>
             </CheckBox>
-            <CheckBox local:Policy.PolicyName="UseMozJpegEncoding"
-                IsChecked="{Binding Scanner.UseMozJpegEncoding}"
-                IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}">
+            <CheckBox local:Policy.PolicyName="UseMozJpegEncoding" IsChecked="{Binding Scanner.UseMozJpegEncoding}">
                 <CheckBox.Content>
                     <TextBlock FontWeight="Bold"
                         Foreground="{StaticResource Colorfull}"

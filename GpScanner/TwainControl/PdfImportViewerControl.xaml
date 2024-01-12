@@ -29,6 +29,7 @@
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+            <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
             <Pdfviewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
             <Style TargetType="ComboBox">
@@ -1237,8 +1238,13 @@
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock>
-                                            <Hyperlink Command="{Binding WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
-                                                <Run Text="{Binding Mode=OneWay}" />
+                                            <InlineUIContainer BaselineAlignment="Center">
+                                                <Image Width="16"
+                                                    Height="16"
+                                                    Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                                            </InlineUIContainer>
+                                            <Hyperlink Command="{Binding WebAdreseGit, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}, ConverterParameter='fileext'}" />
                                             </Hyperlink>
                                         </TextBlock>
                                     </DataTemplate>
@@ -1673,10 +1679,11 @@
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc DRAWTEXT}" />
                                     <TextBox Width="200"
                                         VerticalContentAlignment="Center"
+                                        BorderThickness="2"
                                         Text="{Binding Text}">
-                                        <TextBox.Background>
+                                        <TextBox.BorderBrush>
                                             <SolidColorBrush Color="{Binding GraphObjectFillColor, Converter={StaticResource XKnownColorToBrushConverter}}" />
-                                        </TextBox.Background>
+                                        </TextBox.BorderBrush>
                                     </TextBox>
                                     <Extensions:NumericUpDownControl Width="40"
                                         Maximum="512"

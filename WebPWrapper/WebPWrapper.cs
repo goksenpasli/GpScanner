@@ -20,6 +20,7 @@
 /// GetInfo(byte[] rawWebP, out int width, out int height, out bool has_alpha, out bool has_animation, out string format) - Get information of WEBP data
 /// float[] PictureDistortion(Bitmap source, Bitmap reference, int metric_type) - Get PSNR, SSIM or LSIM distortion metric between two pictures
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -33,7 +34,12 @@ namespace WebPWrapper
     {
         private const int WEBP_MAX_DIMENSION = 16383;
 
-        public static bool WebpDllExists { get; } = Environment.Is64BitProcess ? File.Exists("libwebp_x64.dll") : File.Exists("libwebp_x86.dll");
+        public static bool WebpDllExists
+        {
+            get;
+        } = Environment.Is64BitProcess
+            ? File.Exists($@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\libwebp_x64.dll")
+            : File.Exists($@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\libwebp_x86.dll");
         #region | Destruction |
 
         /// <summary>
@@ -1252,7 +1258,6 @@ namespace WebPWrapper
         /// <summary>
         /// Lossy encoding images
         /// </summary>
-        /// <param name="bgr">Pointer to BGRA image data</param>
         /// <param name="width">The range is limited currently from 1 to 16383</param>
         /// <param name="height">The range is limited currently from 1 to 16383</param>
         /// <param name="stride">Specifies the distance between scan lines</param>

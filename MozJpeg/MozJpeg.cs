@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -275,7 +276,12 @@ namespace MozJpeg
         private IntPtr _decompressHandle = IntPtr.Zero;
         private bool _isDisposed;
 
-        public static bool MozJpegDllExists { get; } = Environment.Is64BitProcess ? File.Exists("turbojpeg_x64.dll") : File.Exists("turbojpeg_x86.dll");
+        public static bool MozJpegDllExists
+        {
+            get;
+        } = Environment.Is64BitProcess
+            ? File.Exists($@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\turbojpeg_x64.dll")
+            : File.Exists($@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\turbojpeg_x86.dll");
 
         #region | Destruction |
 
@@ -330,7 +336,6 @@ namespace MozJpeg
         /// <summary>
         /// Decompress a JPEG image to an 24bppRgb Bitmap.
         /// </summary>
-        /// <param name="pathFileName">Full path and filename of JPEG file</param>
         /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>Bitmap with image</returns>
         public Bitmap Decode(byte[] rawJpeg, TJFlags flags = TJFlags.NONE)
@@ -391,8 +396,6 @@ namespace MozJpeg
         /// <summary>
         /// Decompress a JPEG image to an 24bppRgb Bitmap.
         /// </summary>
-        /// <param name="pathFileName">Full path and filename of JPEG file</param>
-        /// <param name="flags">The bitwise OR of one or more of the <see cref="TJFlags"/> "flags"</param>
         /// <returns>Bitmap with image</returns>
         public void GetInfo(byte[] rawJpeg, out int width, out int height, out float horizontalResolution, out float verticalResolution, out TJSubsamplingOptions subsampl, out TJColorSpaces colorspace)
         {

@@ -648,7 +648,7 @@
                 ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                 OpenButtonVisibility="Collapsed"
                 PanoramaButtonVisibility="Collapsed"
-                PrintButtonVisibility="Collapsed" />
+                PrintButtonVisibility="Visible" />
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="EypSimplePdfTemplate">
@@ -704,6 +704,44 @@
             </Image>
         </Grid>
     </DataTemplate>
+    <DataTemplate x:Key="EypViewerTemplate">
+        <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <StackPanel HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock>
+                    <Hyperlink Command="{Binding PdfViewerFullScreen}"
+                        CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        TextDecorations="None">
+                        <Run FontFamily="Wingdings 2"
+                            FontSize="18"
+                            FontWeight="Bold"
+                            Text="4" />
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink BaselineAlignment="Center"
+                        Command="{Binding EypPdfSeçiliDosyaSil}"
+                        CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        TextDecorations="None">
+                        <Image Width="16"
+                            Height="16"
+                            Source="/TwainControl;component/Icons/delete.png" />
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            <local:EypPdfViewer Grid.Row="1"
+                Width="210"
+                Height="297"
+                AutoFitContent="True"
+                EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                ToolBarVisibility="Collapsed" />
+        </Grid>
+    </DataTemplate>
     <DataTemplate x:Key="XmlViewerTemplate">
         <Grid>
             <Grid.RowDefinitions>
@@ -756,6 +794,7 @@
         Xlsx="{StaticResource EypSimpleXlsxTemplate}"
         Xml="{StaticResource XmlViewerTemplate}" />
     <local:ViewerTemplateSelector x:Key="PdfEypListBoxViewerSelector"
+        Eyp="{StaticResource EypViewerTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
         Pdf="{StaticResource EypSimplePdfTemplate}"
         Vid="{StaticResource VideoViewerTemplateMini}"

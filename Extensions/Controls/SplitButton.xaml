@@ -89,6 +89,7 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#ADB2B5" />
+                            <Setter TargetName="path" Property="Fill" Value="#BFBFBF" />
                             <Setter TargetName="border" Property="Panel.Background" Value="#F4F4F4" />
                             <Setter Property="TextElement.Foreground" Value="#838383" />
                         </Trigger>
