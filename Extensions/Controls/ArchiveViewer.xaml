@@ -119,17 +119,8 @@
                                     </GridViewColumn>
                                     <GridViewColumn Width="65"
                                         local:GridViewSort.PropertyName="Crc"
-                                        Header="CRC32">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <TextBlock>
-                                                    <Hyperlink Command="{Binding FileCrcGenerate, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" IsEnabled="{Binding IsSelected, RelativeSource={RelativeSource AncestorType={x:Type ListViewItem}}}">
-                                                        <Run Text="{Binding Crc, TargetNullValue='HESAPLA'}" />
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
+                                        DisplayMemberBinding="{Binding Crc}"
+                                        Header="CRC32" />
                                 </GridView>
                             </ListView.View>
                         </ListView>

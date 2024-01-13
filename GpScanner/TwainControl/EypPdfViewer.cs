@@ -23,7 +23,7 @@ namespace TwainControl;
 public class EypPdfViewer : PdfViewer.PdfViewer
 {
     public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register("EypFilePath", typeof(string), typeof(EypPdfViewer), new PropertyMetadata(null, Changed));
-    private readonly string[] eypcontentfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx",];
+    private readonly string[] eypcontentfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx", ".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip"];
     private ObservableCollection<string> eypAttachments;
     private ObservableCollection<string> eypNonSuportedAttachments;
 

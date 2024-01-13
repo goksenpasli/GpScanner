@@ -16,8 +16,8 @@ namespace Extensions
     public class ArchiveViewer : Control, INotifyPropertyChanged, IDisposable
     {
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
+        protected ICollectionView cvs;
         private ObservableCollection<ArchiveData> arşivİçerik;
-        private ICollectionView cvs;
         private bool disposedValue;
         private string search = string.Empty;
         private ArchiveData selectedFile;
@@ -66,26 +66,6 @@ namespace Extensions
                     }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
-
-            FileCrcGenerate = new RelayCommand<object>(
-                parameter =>
-                {
-                    try
-                    {
-                        using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
-                        ZipArchiveEntry dosya = archive.GetEntry(SelectedFile.TamYol);
-                        if (dosya != null)
-                        {
-                            using Stream stream = dosya.Open();
-                            SelectedFile.Crc = CalculateFileCRC(stream);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new ArgumentException(ex.Message);
-                    }
-                },
-                parameter => !string.IsNullOrWhiteSpace(ArchivePath) && SelectedFile is not null);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -109,8 +89,6 @@ namespace Extensions
         }
 
         public RelayCommand<object> ArşivTekDosyaÇıkar { get; }
-
-        public RelayCommand<object> FileCrcGenerate { get; }
 
         public string Search
         {
@@ -168,7 +146,18 @@ namespace Extensions
             GC.SuppressFinalize(this);
         }
 
-        public string ExtractToFile(string entryname)
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                }
+                disposedValue = true;
+            }
+        }
+
+        protected string ExtractToFile(string entryname)
         {
             using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
             if (archive != null)
@@ -180,43 +169,6 @@ namespace Extensions
             }
 
             return null;
-        }
-
-        public async void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
-        {
-            archiveViewer.Arşivİçerik = [];
-            await Task.Run(
-                () =>
-                {
-                    using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
-                    foreach (ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0))
-                    {
-                        ArchiveData archiveData = new()
-                        {
-                            SıkıştırılmışBoyut = item.CompressedLength,
-                            DosyaAdı = item.Name,
-                            TamYol = item.FullName,
-                            Boyut = item.Length,
-                            Oran = (float)item.CompressedLength / item.Length,
-                            DüzenlenmeZamanı = item.LastWriteTime.Date,
-                            Crc = null
-                        };
-                        _ = Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
-                    }
-                });
-            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
-            cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                }
-                disposedValue = true;
-            }
         }
 
         protected void LoadDroppedZipFile(string[] droppedfiles)
@@ -262,6 +214,36 @@ namespace Extensions
 
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+        protected virtual async void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
+        {
+            archiveViewer.Arşivİçerik = [];
+            await Task.Run(
+                () =>
+                {
+                    using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
+                    foreach (ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0))
+                    {
+                        ArchiveData archiveData = new()
+                        {
+                            SıkıştırılmışBoyut = item.CompressedLength,
+                            DosyaAdı = item.Name,
+                            TamYol = item.FullName,
+                            Boyut = item.Length,
+                            Oran = (float)item.CompressedLength / item.Length,
+                            DüzenlenmeZamanı = item.LastWriteTime.Date,
+                            Crc = null
+                        };
+                        _ = Dispatcher.InvokeAsync(
+                            () =>
+                            {
+                                archiveViewer.Arşivİçerik.Add(archiveData);
+                                archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
+                            });
+                    }
+                });
+            cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
+        }
+
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ArchiveViewer archiveViewer && e.NewValue is not null)
@@ -273,7 +255,7 @@ namespace Extensions
 
         private void AddFilesToZip(string zipPath, string[] files)
         {
-            if (files?.Length == 0 || files.Contains(zipPath))
+            if (Path.GetExtension(zipPath) != ".zip" || files?.Length == 0 || files.Contains(zipPath))
             {
                 return;
             }

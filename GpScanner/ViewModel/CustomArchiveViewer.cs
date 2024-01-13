@@ -27,7 +27,7 @@ public class CustomArchiveViewer : ArchiveViewer
                             _ = Process.Start(extractedfile);
                             return;
                         }
-                        if (Tag is TwainCtrl twainCtrl)
+                        if (DataContext is TwainCtrl twainCtrl)
                         {
                             string extractedfile = ExtractToFile(filename);
                             _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);

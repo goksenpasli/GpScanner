@@ -69,8 +69,10 @@ public class Translation : DependencyObject
 
     public static ResourceManager GetResourceManager(DependencyObject dependencyObject) => (ResourceManager)dependencyObject.GetValue(ResourceManagerProperty);
 
-    public static string GetResStringValue(string resdata)
-    { return string.IsNullOrEmpty(resdata) ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata)) : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture); }
+    public static string GetResStringValue(string resdata) => string.IsNullOrEmpty(resdata)
+                                                              ? throw new ArgumentException($"'{nameof(resdata)}' cannot be null or empty.", nameof(resdata))
+                                                              : Resources.ResourceManager.GetString(resdata, TranslationSource.Instance.CurrentCulture);
+
     public static void SetDesignCulture(DependencyObject obj, string value) => obj.SetValue(DesignCultureProperty, value);
 
     public static void SetResourceManager(DependencyObject dependencyObject, ResourceManager value) => dependencyObject.SetValue(ResourceManagerProperty, value);

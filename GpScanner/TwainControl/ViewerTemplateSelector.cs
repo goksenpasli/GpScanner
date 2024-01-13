@@ -31,6 +31,7 @@ namespace TwainControl
             if (!DesignerProperties.GetIsInDesignMode(container) && item is string dosya)
             {
                 string[] imgext = [".jpg", ".jpeg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff"];
+                string[] archiveext = [".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip"];
                 string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
                 string ext = Path.GetExtension(dosya).ToLower();
                 if (ext != null)
@@ -39,11 +40,10 @@ namespace TwainControl
                     {
                         ".pdf" => Pdf,
                         ".eyp" => Eyp,
-                        ".zip" => Zip,
                         ".xps" => Xps,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
                         ".csv" or ".xls" or ".xlsx" or ".xlsb" => Xlsx,
-                        _ => imgext.Contains(ext) ? Img : videoext.Contains(ext) ? Vid : Empty
+                        _ => imgext.Contains(ext) ? Img : archiveext.Contains(ext) ? Zip : videoext.Contains(ext) ? Vid : Empty
                     };
                 }
             }

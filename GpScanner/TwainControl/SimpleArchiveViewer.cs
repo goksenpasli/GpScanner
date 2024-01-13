@@ -1,9 +1,12 @@
 ﻿using Extensions;
+using SevenZipExtractor;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace TwainControl;
 
@@ -52,5 +55,47 @@ public class SimpleArchiveViewer : ArchiveViewer
         {
             LoadDroppedZipFile(droppedfiles);
         }
+    }
+
+    protected override async void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
+    {
+        archiveViewer.Arşivİçerik = [];
+        await Task.Run(
+            () =>
+            {
+                using ArchiveFile archive = new(ArchiveFilePath);
+                foreach (Entry item in archive?.Entries.Where(z => z.Size > 0))
+                {
+                    ArchiveData archiveData = new()
+                    {
+                        SıkıştırılmışBoyut = (long)item.PackedSize,
+                        DosyaAdı = item.FileName,
+                        TamYol = item.FileName,
+                        Boyut = (long)item.Size,
+                        Oran = (float)item.PackedSize / item.Size,
+                        DüzenlenmeZamanı = item.LastWriteTime.Date,
+                        Crc = item.CRC.ToString()
+                    };
+                    _ = Dispatcher.InvokeAsync(
+                        () =>
+                        {
+                            archiveViewer.Arşivİçerik.Add(archiveData);
+                            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
+                        });
+                }
+            });
+        cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
+    }
+
+    private new string ExtractToFile(string entryname)
+    {
+        using ArchiveFile archiveFile = new(ArchivePath);
+        foreach (Entry entry in archiveFile.Entries)
+        {
+            string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(entryname)}";
+            entry.Extract(extractpath);
+            return extractpath;
+        }
+        return null;
     }
 }

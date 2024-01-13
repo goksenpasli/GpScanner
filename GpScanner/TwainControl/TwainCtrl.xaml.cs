@@ -1297,8 +1297,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         LoadArchiveFile = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Filter = "Zip Dosyaları (*.zip)|*.zip", Multiselect = false };
-                if (openFileDialog.ShowDialog() == true && parameter is ArchiveViewer archiveViewer)
+                OpenFileDialog openFileDialog = new() { Filter = "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip", Multiselect = false };
+                if (openFileDialog.ShowDialog() == true && parameter is SimpleArchiveViewer archiveViewer)
                 {
                     archiveViewer.ArchivePath = openFileDialog.FileName;
                 }
@@ -2754,7 +2754,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         filenames = null;
                     }
                 }
-
             });
         return Task.CompletedTask;
     }

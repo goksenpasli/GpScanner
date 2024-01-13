@@ -362,7 +362,7 @@
             <DataTemplate x:Key="ZipViewerTemplate">
                 <ViewModel:CustomArchiveViewer AllowDrop="True"
                     ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    Tag="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}" />
+                    DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
                 <Extensions:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />

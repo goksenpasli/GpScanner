@@ -786,17 +786,25 @@
             ControlVisible="Collapsed"
             MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
+    <DataTemplate x:Key="ZipViewerTemplate">
+        <local:SimpleArchiveViewer Width="210"
+            Height="297"
+            ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+            DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+    </DataTemplate>
     <local:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
         Empty="{StaticResource EmptyTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
         Pdf="{StaticResource EypSimplePdfTemplate}"
         Vid="{StaticResource VideoViewerTemplateMini}"
         Xlsx="{StaticResource EypSimpleXlsxTemplate}"
-        Xml="{StaticResource XmlViewerTemplate}" />
+        Xml="{StaticResource XmlViewerTemplate}"
+        Zip="{StaticResource ZipViewerTemplate}" />
     <local:ViewerTemplateSelector x:Key="PdfEypListBoxViewerSelector"
         Eyp="{StaticResource EypViewerTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
         Pdf="{StaticResource EypSimplePdfTemplate}"
         Vid="{StaticResource VideoViewerTemplateMini}"
-        Xlsx="{StaticResource EypSimpleXlsxTemplate}" />
+        Xlsx="{StaticResource EypSimpleXlsxTemplate}"
+        Zip="{StaticResource ZipViewerTemplate}" />
 </ResourceDictionary>
