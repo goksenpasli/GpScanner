@@ -712,7 +712,7 @@
                 Vid="{StaticResource VideoViewerTemplateFull}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
-                Zip="{StaticResource ZipViewerTemplateFull}" />
+                Zip="{StaticResource DvdBurnerEmptyViewerTemplate}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

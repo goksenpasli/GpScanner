@@ -176,7 +176,7 @@
                                 Background="{DynamicResource GroupBoxBackGround}" />
                             <ContentControl Grid.Column="2"
                                 Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, ElementName=Lb}"
-                                ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}" />
+                                ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
                         </Grid>
                         <Grid Grid.Row="3">
                             <ProgressBar IsIndeterminate="{Binding ProgressIndeterminate, RelativeSource={RelativeSource TemplatedParent}}"
