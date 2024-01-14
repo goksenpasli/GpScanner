@@ -1423,60 +1423,6 @@
                                                             Height="32"
                                                             Source="/TwainControl;component/Icons/landscape.png" />
                                                     </Button>
-                                                    <Extensions:SplitButton local:Policy.PolicyName="AddSplitListsIndex" Command="{Binding AddSplitListsIndex}">
-                                                        <TextBlock FontFamily="Wingdings 2" Text="Ê" />
-                                                        <Extensions:SplitButton.InternalContent>
-                                                            <GroupBox>
-                                                                <Grid>
-                                                                    <Grid.RowDefinitions>
-                                                                        <RowDefinition />
-                                                                        <RowDefinition Height="Auto" />
-                                                                    </Grid.RowDefinitions>
-                                                                    <Grid.ColumnDefinitions>
-                                                                        <ColumnDefinition Width="Auto" />
-                                                                        <ColumnDefinition />
-                                                                    </Grid.ColumnDefinitions>
-                                                                    <ListBox Width="120" ItemsSource="{Binding ImagesSplitLists}">
-                                                                        <ListBox.ItemsPanel>
-                                                                            <ItemsPanelTemplate>
-                                                                                <VirtualizingStackPanel Orientation="Horizontal" />
-                                                                            </ItemsPanelTemplate>
-                                                                        </ListBox.ItemsPanel>
-                                                                        <ListBox.ItemTemplate>
-                                                                            <DataTemplate>
-                                                                                <TextBlock>
-                                                                                    <Hyperlink Command="{Binding RemoveSplitListsIndex, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
-                                                                                        <Run Text="{Binding Mode=OneWay}" />
-                                                                                    </Hyperlink>
-                                                                                </TextBlock>
-                                                                            </DataTemplate>
-                                                                        </ListBox.ItemTemplate>
-                                                                    </ListBox>
-                                                                    <ItemsControl Grid.RowSpan="2"
-                                                                        Grid.Column="1"
-                                                                        HorizontalContentAlignment="Stretch"
-                                                                        VerticalContentAlignment="Stretch"
-                                                                        ItemsSource="{Binding SplittedIndexImages}">
-                                                                        <ItemsControl.ItemTemplate>
-                                                                            <DataTemplate>
-                                                                                <Button Command="{Binding SelectSplittedIndexImages, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
-                                                                                    <Button.Content>
-                                                                                        <TextBlock VerticalAlignment="Center">
-                                                                                            <Run Text="{Binding Mode=OneWay, Path=Length}" />
-                                                                                            <Run Text="{local:Loc FILE}" />
-                                                                                        </TextBlock>
-                                                                                    </Button.Content>
-                                                                                </Button>
-                                                                            </DataTemplate>
-                                                                        </ItemsControl.ItemTemplate>
-                                                                    </ItemsControl>
-                                                                    <Button Grid.Row="1"
-                                                                        Command="{Binding SplitImagesByIndex}"
-                                                                        Content="{local:Loc SLICE}" />
-                                                                </Grid>
-                                                            </GroupBox>
-                                                        </Extensions:SplitButton.InternalContent>
-                                                    </Extensions:SplitButton>
                                                 </StackPanel>
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
@@ -1636,6 +1582,70 @@
                                                 Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </InlineUIContainer>
                                     </TextBlock>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <Extensions:SplitButton VerticalContentAlignment="Bottom"
+                                        local:Policy.PolicyName="AddSplitListsIndex"
+                                        Command="{Binding AddSplitListsIndex}">
+                                        <TextBlock FontFamily="Wingdings 2"
+                                            FontSize="16"
+                                            Text="Ë" />
+                                        <Extensions:SplitButton.InternalContent>
+                                            <GroupBox Width="150" Header="{local:Loc SLICE}">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition />
+                                                    </Grid.ColumnDefinitions>
+                                                    <ListBox BorderBrush="Cyan" ItemsSource="{Binding ImagesSplitLists}">
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <TextBlock>
+                                                                    <Hyperlink Command="{Binding RemoveSplitListsIndex, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                        <Run Text="{Binding Mode=OneWay}" />
+                                                                    </Hyperlink>
+                                                                </TextBlock>
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
+                                                    <ItemsControl Grid.RowSpan="2"
+                                                        Grid.Column="1"
+                                                        HorizontalContentAlignment="Stretch"
+                                                        VerticalContentAlignment="Stretch"
+                                                        ItemsSource="{Binding SplittedIndexImages}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Button Command="{Binding SelectSplittedIndexImages, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                    <Button.Content>
+                                                                        <TextBlock VerticalAlignment="Center">
+                                                                            <Run Text="{Binding Mode=OneWay, Path=Length}" />
+                                                                            <Run Text="{local:Loc FILE}" />
+                                                                        </TextBlock>
+                                                                    </Button.Content>
+                                                                </Button>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                    <UniformGrid Grid.Row="1" Rows="2">
+                                                        <TextBox Text="{Binding TextSplitList, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" ToolTip="1,2,4,8,16" />
+                                                        <Button BorderBrush="Cyan"
+                                                            Command="{Binding SplitImagesByIndex}"
+                                                            Content="{local:Loc SLICE}" />
+                                                    </UniformGrid>
+                                                </Grid>
+                                            </GroupBox>
+                                        </Extensions:SplitButton.InternalContent>
+                                    </Extensions:SplitButton>
                                 </StackPanel>
                             </TabItem.Header>
                             <ListBox x:Name="Lb"

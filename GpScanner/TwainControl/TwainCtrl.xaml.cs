@@ -141,6 +141,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private PageRotation selectedRotation = PageRotation.NONE;
     private int selectedTabIndex = 0;
     private List<ScannedImage[]> splittedIndexImages;
+    private string textSplitList;
     private Twain twain;
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
     private ScannedImage undoImage;
@@ -160,7 +161,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Camera.PropertyChanged += CameraUserControl_PropertyChangedAsync;
         TranslationSource.Instance.PropertyChanged += Language_PropertyChanged;
         SelectedPaper = Settings.Default.LockSelectedPaper ? Papers.FirstOrDefault(z => z.PaperType == Settings.Default.DefaultPaper) : Papers.FirstOrDefault(z => z.PaperType == "A4");
-        
+
         ScanImage = new RelayCommand<object>(
             async parameter =>
             {
@@ -1652,14 +1653,31 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         AddSplitListsIndex = new RelayCommand<object>(
             parameter =>
             {
+                if (SeçiliResim is null)
+                {
+                    return;
+                }
                 if (ImagesSplitLists?.Contains(SeçiliResim.Index) == false)
                 {
                     ImagesSplitLists?.Add(SeçiliResim.Index);
                 }
             },
-            parameter => SeçiliResim is not null);
+            parameter => true);
 
-        SplitImagesByIndex = new RelayCommand<object>(parameter => SplittedIndexImages = SplitArray(Scanner.Resimler.ToArray(), [.. ImagesSplitLists]), parameter => Scanner?.Resimler?.Count > 1 && ImagesSplitLists?.Count > 0);
+        SplitImagesByIndex = new RelayCommand<object>(
+            parameter =>
+            {
+                if (Keyboard.Modifiers == ModifierKeys.Alt && ImagesSplitLists.Count > 0)
+                {
+                    SplittedIndexImages = SplitArray(Scanner.Resimler.ToArray(), [.. ImagesSplitLists]);
+                    return;
+                }
+                if (!string.IsNullOrWhiteSpace(TextSplitList))
+                {
+                    SplittedIndexImages = SplitArray(Scanner.Resimler.ToArray(), TextSplitList.Split(',').Select(int.Parse).ToArray());
+                }
+            },
+            parameter => Scanner?.Resimler?.Count > 1);
 
         SelectSplittedIndexImages = new RelayCommand<object>(
             parameter =>
@@ -2538,6 +2556,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public ICommand Tersiniİşaretle { get; }
+
+    public string TextSplitList
+    {
+        get => textSplitList;
+        set
+        {
+            if (textSplitList != value)
+            {
+                textSplitList = value;
+                OnPropertyChanged(nameof(TextSplitList));
+            }
+        }
+    }
 
     public ICommand Tümünüİşaretle { get; }
 
