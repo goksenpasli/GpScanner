@@ -760,6 +760,7 @@ public partial class GpScannerViewModel : InpcBase
                 }
                 BatchFolderProcessedFileList = [];
                 InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks);
+                GC.Collect();
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
                     try
@@ -829,6 +830,7 @@ public partial class GpScannerViewModel : InpcBase
                 {
                     await files.SavePdfFilesAsync();
                 }
+                GC.Collect();
             },
             parameter => BatchFolderProcessedFileList?.Any(z => z.Checked) == true);
 
@@ -840,6 +842,7 @@ public partial class GpScannerViewModel : InpcBase
                     ocrcancellationToken?.Cancel();
                     BatchTxtOcrs = null;
                 }
+                GC.Collect();
             },
             parameter => BatchTxtOcrs?.Count > 0);
 
@@ -853,6 +856,7 @@ public partial class GpScannerViewModel : InpcBase
                 }
 
                 InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks);
+                GC.Collect();
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
                     try

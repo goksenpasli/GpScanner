@@ -159,8 +159,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         PropertyChanged += TwainCtrl_PropertyChangedAsync;
         Camera.PropertyChanged += CameraUserControl_PropertyChangedAsync;
         TranslationSource.Instance.PropertyChanged += Language_PropertyChanged;
-        SelectedPaper = Papers.FirstOrDefault(z => z.PaperType == "A4");
-
+        SelectedPaper = Settings.Default.LockSelectedPaper ? Papers.FirstOrDefault(z => z.PaperType == Settings.Default.DefaultPaper) : Papers.FirstOrDefault(z => z.PaperType == "A4");
+        
         ScanImage = new RelayCommand<object>(
             async parameter =>
             {
@@ -4011,6 +4011,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             ToolBox.Paper = SelectedPaper;
             DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
             SetCropPageResolution();
+            Settings.Default.DefaultPaper = SelectedPaper.PaperType;
         }
 
         if (e.PropertyName is "SeekIndex" && SeekIndex >= 0 && SeekIndex < Scanner.Resimler.Count)

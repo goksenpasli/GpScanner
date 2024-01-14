@@ -505,5 +505,29 @@ namespace TwainControl.Properties {
                 this["InkCollection"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("A4")]
+        public string DefaultPaper {
+            get {
+                return ((string)(this["DefaultPaper"]));
+            }
+            set {
+                this["DefaultPaper"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LockSelectedPaper {
+            get {
+                return ((bool)(this["LockSelectedPaper"]));
+            }
+            set {
+                this["LockSelectedPaper"] = value;
+            }
+        }
     }
 }

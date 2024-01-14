@@ -28,7 +28,6 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="255" />
             <ColumnDefinition />
-            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <RepeatButton Command="{Binding Back}"
             Content="ç"
