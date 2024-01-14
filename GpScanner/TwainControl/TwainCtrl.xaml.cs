@@ -140,6 +140,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private Paper selectedPaper;
     private PageRotation selectedRotation = PageRotation.NONE;
     private int selectedTabIndex = 0;
+    private List<ScannedImage[]> splittedIndexImages;
     private Twain twain;
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
     private ScannedImage undoImage;
@@ -706,7 +707,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         await SavePdfImageAsync(seçiliresimler, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, isBlackAndWhiteMode, Settings.Default.ImgLoadResolution);
                     }
-                    await RemoveProcessedImages();
+                    await RemoveProcessedImages(true);
                 }),
             parameter =>
             {
@@ -1297,7 +1298,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         LoadArchiveFile = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Filter = "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip", Multiselect = false };
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter =
+                    "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip",
+                    Multiselect = false
+                };
                 if (openFileDialog.ShowDialog() == true && parameter is SimpleArchiveViewer archiveViewer)
                 {
                     archiveViewer.ArchivePath = openFileDialog.FileName;
@@ -1643,6 +1649,31 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => SeçiliResim is not null);
 
+        AddSplitListsIndex = new RelayCommand<object>(
+            parameter =>
+            {
+                if (ImagesSplitLists?.Contains(SeçiliResim.Index) == false)
+                {
+                    ImagesSplitLists?.Add(SeçiliResim.Index);
+                }
+            },
+            parameter => SeçiliResim is not null);
+
+        SplitImagesByIndex = new RelayCommand<object>(parameter => SplittedIndexImages = SplitArray(Scanner.Resimler.ToArray(), [.. ImagesSplitLists]), parameter => Scanner?.Resimler?.Count > 1 && ImagesSplitLists?.Count > 0);
+
+        SelectSplittedIndexImages = new RelayCommand<object>(
+            parameter =>
+            {
+                TümününİşaretiniKaldır.Execute(null);
+                foreach (ScannedImage item in parameter as ScannedImage[])
+                {
+                    item.Seçili = true;
+                }
+            },
+            parameter => parameter is ScannedImage[] scannedimages && scannedimages.Length > 0);
+
+        RemoveSplitListsIndex = new RelayCommand<object>(parameter => ImagesSplitLists?.Remove((int)parameter), parameter => true);
+
         DetectEmptyPages = new RelayCommand<object>(
             parameter => Parallel.ForEach(Scanner.Resimler, item => item.Seçili = item.Resim.Resize(0.1).BitmapSourceToBitmap().IsEmptyPage(Settings.Default.EmptyThreshold)),
             parameter => Scanner?.Resimler?.Any() == true);
@@ -1662,8 +1693,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => SeçiliResim is not null);
 
-        GridSplitterMouseDoubleClick =
-       new RelayCommand<object>(
+        GridSplitterMouseDoubleClick = new RelayCommand<object>(
             parameter =>
             {
                 TwainGuiControlLength = new GridLength(3, GridUnitType.Star);
@@ -1671,8 +1701,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        GridSplitterMouseRightButtonDown =
-            new RelayCommand<object>(
+        GridSplitterMouseRightButtonDown = new RelayCommand<object>(
             parameter =>
             {
                 TwainGuiControlLength = new GridLength(1, GridUnitType.Star);
@@ -1680,8 +1709,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        PdfViewerFullScreen =
-            new RelayCommand<object>(
+        PdfViewerFullScreen = new RelayCommand<object>(
             parameter =>
             {
                 string file = parameter as string;
@@ -1712,8 +1740,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        ImageViewerFullScreen =
-            new RelayCommand<object>(
+        ImageViewerFullScreen = new RelayCommand<object>(
             parameter =>
             {
                 ImageViewer imageViewer = new() { PanoramaButtonVisibility = Visibility.Collapsed, PrintButtonVisibility = Visibility.Visible, ImageFilePath = parameter as string };
@@ -1729,8 +1756,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        XmlViewerFullScreen =
-            new RelayCommand<object>(
+        XmlViewerFullScreen = new RelayCommand<object>(
             parameter =>
             {
                 XmlViewerControl xmlViewerControl = new();
@@ -1760,6 +1786,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand AddPageNumber { get; }
 
     public ICommand AddPdfAttachmentFile { get; }
+
+    public RelayCommand<object> AddSplitListsIndex { get; }
 
     public double AllImageRotationAngle
     {
@@ -2018,6 +2046,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public ObservableCollection<int> ImagesSplitLists { get; set; } = [];
+
     public RelayCommand<object> ImageViewerFullScreen { get; }
 
     public byte[] ImgData
@@ -2259,6 +2289,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand RemoveSelectedPage { get; }
 
+    public RelayCommand<object> RemoveSplitListsIndex { get; }
+
     public ICommand ResetCrop { get; }
 
     public RelayCommand<object> ResetPreviewSize { get; }
@@ -2482,11 +2514,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public RelayCommand<object> SelectSplittedIndexImages { get; }
+
     public ICommand ShowDateFolderHelp { get; }
 
     public RelayCommand<object> ShuffleData { get; }
 
+    public RelayCommand<object> SplitImagesByIndex { get; }
+
     public ICommand SplitPdf { get; }
+
+    public List<ScannedImage[]> SplittedIndexImages
+    {
+        get => splittedIndexImages;
+        set
+        {
+            if (splittedIndexImages != value)
+            {
+                splittedIndexImages = value;
+                OnPropertyChanged(nameof(SplittedIndexImages));
+            }
+        }
+    }
 
     public ICommand Tersiniİşaretle { get; }
 
@@ -3493,15 +3542,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    private async Task RemoveProcessedImages()
+    private async Task RemoveProcessedImages(bool notifyimage = false)
     {
         await Dispatcher.InvokeAsync(
             () =>
             {
                 if (Settings.Default.RemoveProcessedImage)
                 {
-                    OnPropertyChanged(nameof(Scanner.Resimler));
                     SeçiliListeTemizle.Execute(null);
+                }
+                if (notifyimage)
+                {
+                    OnPropertyChanged(nameof(Scanner.Resimler));
                 }
             });
     }
@@ -3835,6 +3887,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             collection[j] = temp;
         }
         return collection;
+    }
+
+    private List<T[]> SplitArray<T>(T[] array, params int[] indices)
+    {
+        if (indices.Length == 0)
+        {
+            throw new ArgumentException("At least one split index is required.");
+        }
+        Array.Sort(indices);
+        List<T[]> parts = new(indices.Length + 1);
+        for (int i = 0; i < indices.Length; i++)
+        {
+            int startIndex = i == 0 ? 0 : indices[i - 1];
+            int length = i == 0 ? indices[i] : indices[i] - indices[i - 1];
+            parts.Add(array.Skip(startIndex).Take(length).ToArray());
+        }
+        parts.Add(array.Skip(indices[indices.Length - 1]).ToArray());
+        return parts;
     }
 
     private void StackPanel_Drop(object sender, DragEventArgs e) => DropFile(sender, e);

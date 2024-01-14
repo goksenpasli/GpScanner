@@ -1267,7 +1267,8 @@
                             </Extensions:ContentToggleButton>
                             <ScrollViewer Grid.Column="2"
                                 MaxHeight="55"
-                                Margin="2,0,2,0"
+                                Margin="1,0,0,0"
+                                VerticalAlignment="Center"
                                 HorizontalScrollBarVisibility="Disabled"
                                 VerticalScrollBarVisibility="Auto">
                                 <WrapPanel>
@@ -1368,34 +1369,92 @@
                                         BorderBrush="Cyan"
                                         Command="{Binding Tümünüİşaretle}">
                                         <Extensions:SplitButton.InternalContent>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button local:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır}">
-                                                    <StackPanel Orientation="Horizontal">
+                                            <Border Background="{StaticResource BorderBackground}"
+                                                BorderBrush="{x:Null}"
+                                                BorderThickness="1">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button local:Policy.PolicyName="TümününİşaretiniKaldır" Command="{Binding TümününİşaretiniKaldır}">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Width="32"
+                                                                Height="32"
+                                                                Source="/TwainControl;component/Icons/none.png" />
+                                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc NONE}" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button local:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle}">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Image Width="32"
+                                                                Height="32"
+                                                                Source="/TwainControl;component/Icons/inverse.png" />
+                                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
+                                                        </StackPanel>
+                                                    </Button>
+                                                    <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
                                                         <Image Width="32"
                                                             Height="32"
-                                                            Source="/TwainControl;component/Icons/none.png" />
-                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc NONE}" />
-                                                    </StackPanel>
-                                                </Button>
-                                                <Button local:Policy.PolicyName="Tersiniİşaretle" Command="{Binding Tersiniİşaretle}">
-                                                    <StackPanel Orientation="Horizontal">
+                                                            Source="/TwainControl;component/Icons/portrait.png" />
+                                                    </Button>
+                                                    <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
                                                         <Image Width="32"
                                                             Height="32"
-                                                            Source="/TwainControl;component/Icons/inverse.png" />
-                                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
-                                                    </StackPanel>
-                                                </Button>
-                                                <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
-                                                    <Image Width="32"
-                                                        Height="32"
-                                                        Source="/TwainControl;component/Icons/portrait.png" />
-                                                </Button>
-                                                <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
-                                                    <Image Width="32"
-                                                        Height="32"
-                                                        Source="/TwainControl;component/Icons/landscape.png" />
-                                                </Button>
-                                            </StackPanel>
+                                                            Source="/TwainControl;component/Icons/landscape.png" />
+                                                    </Button>
+                                                    <Extensions:SplitButton local:Policy.PolicyName="AddSplitListsIndex" Command="{Binding AddSplitListsIndex}">
+                                                        <TextBlock FontFamily="Wingdings 2" Text="Ê" />
+                                                        <Extensions:SplitButton.InternalContent>
+                                                            <GroupBox>
+                                                                <Grid>
+                                                                    <Grid.RowDefinitions>
+                                                                        <RowDefinition />
+                                                                        <RowDefinition Height="Auto" />
+                                                                    </Grid.RowDefinitions>
+                                                                    <Grid.ColumnDefinitions>
+                                                                        <ColumnDefinition Width="Auto" />
+                                                                        <ColumnDefinition />
+                                                                    </Grid.ColumnDefinitions>
+                                                                    <ListBox Width="120" ItemsSource="{Binding ImagesSplitLists}">
+                                                                        <ListBox.ItemsPanel>
+                                                                            <ItemsPanelTemplate>
+                                                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                                                            </ItemsPanelTemplate>
+                                                                        </ListBox.ItemsPanel>
+                                                                        <ListBox.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <TextBlock>
+                                                                                    <Hyperlink Command="{Binding RemoveSplitListsIndex, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                                        <Run Text="{Binding Mode=OneWay}" />
+                                                                                    </Hyperlink>
+                                                                                </TextBlock>
+                                                                            </DataTemplate>
+                                                                        </ListBox.ItemTemplate>
+                                                                    </ListBox>
+                                                                    <ItemsControl Grid.RowSpan="2"
+                                                                        Grid.Column="1"
+                                                                        HorizontalContentAlignment="Stretch"
+                                                                        VerticalContentAlignment="Stretch"
+                                                                        ItemsSource="{Binding SplittedIndexImages}">
+                                                                        <ItemsControl.ItemTemplate>
+                                                                            <DataTemplate>
+                                                                                <Button Command="{Binding SelectSplittedIndexImages, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                                    <Button.Content>
+                                                                                        <TextBlock VerticalAlignment="Center">
+                                                                                            <Run Text="{Binding Mode=OneWay, Path=Length}" />
+                                                                                            <Run Text="{local:Loc FILE}" />
+                                                                                        </TextBlock>
+                                                                                    </Button.Content>
+                                                                                </Button>
+                                                                            </DataTemplate>
+                                                                        </ItemsControl.ItemTemplate>
+                                                                    </ItemsControl>
+                                                                    <Button Grid.Row="1"
+                                                                        Command="{Binding SplitImagesByIndex}"
+                                                                        Content="{local:Loc SLICE}" />
+                                                                </Grid>
+                                                            </GroupBox>
+                                                        </Extensions:SplitButton.InternalContent>
+                                                    </Extensions:SplitButton>
+                                                </StackPanel>
+                                            </Border>
                                         </Extensions:SplitButton.InternalContent>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="24"
