@@ -178,7 +178,6 @@
     <Compile Include="ViewModel\AllPdfViewerControl.cs" />
     <Compile Include="ViewModel\AppDbContext.cs" />
     <Compile Include="ViewModel\BatchTxtOcr.cs" />
-    <Compile Include="ViewModel\CustomArchiveViewer.cs" />
     <Compile Include="ViewModel\Data.cs" />
     <Compile Include="ViewModel\DirectoryStats.cs" />
     <Compile Include="ViewModel\DocumentViewerModel.cs" />

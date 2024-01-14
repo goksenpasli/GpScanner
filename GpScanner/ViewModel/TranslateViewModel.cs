@@ -185,7 +185,7 @@ public class TranslateViewModel : InpcBase
 
     private async void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "Metin")
+        if (e.PropertyName is "Metin" && Metin is not null)
         {
             Çeviri = await Extensions.TranslateViewModel.DileÇevirAsync(Metin, MevcutDil, ÇevrilenDil);
         }

@@ -360,9 +360,7 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <ViewModel:CustomArchiveViewer AllowDrop="True"
-                    ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
                 <Extensions:ArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -710,6 +708,7 @@
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
+                Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource DvdBurnerEmptyViewerTemplate}" />

@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyTrademark("Gok$en")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly
-)]
+[assembly: Guid("9ABBD8CE-C1F3-46EF-AC3D-70FB3B139276")]
+[assembly: ThemeInfo(ResourceDictionaryLocation.None, ResourceDictionaryLocation.SourceAssembly)]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

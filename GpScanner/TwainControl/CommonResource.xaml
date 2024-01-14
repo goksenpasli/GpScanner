@@ -611,6 +611,9 @@
             </TextBlock>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="DvdBurnerXlsxTemplate">
+        <local:XlsxViewer XlsxDataFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+    </DataTemplate>
     <DataTemplate x:Key="EypImgViewerTemplate">
         <Grid>
             <Grid.RowDefinitions>
