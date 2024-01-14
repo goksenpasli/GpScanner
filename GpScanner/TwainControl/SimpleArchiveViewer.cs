@@ -90,12 +90,9 @@ public class SimpleArchiveViewer : ArchiveViewer
     private new string ExtractToFile(string entryname)
     {
         using ArchiveFile archiveFile = new(ArchivePath);
-        foreach (Entry entry in archiveFile.Entries)
-        {
-            string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(entryname)}";
-            entry.Extract(extractpath);
-            return extractpath;
-        }
-        return null;
+        Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname);
+        string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(entryname)}";
+        entry.Extract(extractpath);
+        return extractpath;
     }
 }
