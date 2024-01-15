@@ -1674,7 +1674,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 if (!string.IsNullOrWhiteSpace(TextSplitList))
                 {
-                    SplittedIndexImages = SplitArray(Scanner.Resimler.ToArray(), TextSplitList.Split(',').Select(int.Parse).ToArray());
+                    SplittedIndexImages = SplitArray(Scanner.Resimler.ToArray(), TextSplitList.Split(',').Select(z => int.TryParse(z, out int result) ? result : 0).ToArray());
                 }
             },
             parameter => Scanner?.Resimler?.Count > 1);
@@ -1688,7 +1688,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     item.Seçili = true;
                 }
             },
-            parameter => parameter is ScannedImage[] scannedimages && scannedimages.Length > 0);
+            parameter => Scanner?.Resimler?.Count > 0 && parameter is ScannedImage[] scannedimages && scannedimages?.Length > 0);
 
         RemoveSplitListsIndex = new RelayCommand<object>(parameter => ImagesSplitLists?.Remove((int)parameter), parameter => true);
 
@@ -1749,8 +1749,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
-                                              pdfImportViewerControl?.PdfViewer?.Dispose();
+                                              pdfImportViewerControl.PdfViewer.Source = null;
                                               pdfImportViewerControl.PdfViewer.PdfFilePath = null;
+                                              pdfImportViewerControl.PdfViewer.EypAttachments = null;
+                                              pdfImportViewerControl.PdfViewer.EypNonSuportedAttachments = null;
+                                              pdfImportViewerControl.PdfViewer.ToplamSayfa = 0;
+                                              SayfaBaşlangıç = 1;
+                                              SayfaBitiş = 1;
                                               RefreshDocumentList = true;
                                           };
                 maximizedWindow.Content = pdfImportViewerControl;
@@ -2804,6 +2809,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
 
                             case ".zip":
+                            case ".7z":
+                            case ".arj":
+                            case ".bzip2":
+                            case ".cab":
+                            case ".gzip":
+                            case ".iso":
+                            case ".lzh":
+                            case ".lzma":
+                            case ".ntfs":
+                            case ".ppmd":
+                            case ".rar":
+                            case ".rar5":
+                            case ".rpm":
+                            case ".tar":
+                            case ".vhd":
+                            case ".wim":
+                            case ".xar":
+                            case ".xz":
+                            case ".z":
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {

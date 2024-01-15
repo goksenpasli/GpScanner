@@ -780,6 +780,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0)
         {
+            if (pdfViewer.PdfFilePath is null)
+            {
+                return;
+            }
             int sayfa = (int)e.NewValue;
             if (sayfa > pdfViewer.ToplamSayfa)
             {
