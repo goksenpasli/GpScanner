@@ -1,6 +1,5 @@
 ﻿using CatenaLogic.Windows.Presentation.WebcamPlayer;
 using Extensions;
-using Extensions.Controls;
 using Microsoft.Win32;
 using System.ComponentModel;
 using System.IO;
@@ -29,17 +28,9 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
         Unloaded += CameraUserControl_Unloaded;
-        KameradanResimYükle = new RelayCommand<object>(parameter => ResimData = CameraEncodeBitmapImage().ToArray(), parameter => SeçiliKamera is not null);
+        PropertyChanged += CameraUserControl_PropertyChanged;
 
-        VideodanResimYükle = new RelayCommand<object>(
-            parameter =>
-            {
-                if (parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
-                {
-                    ResimData = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-                }
-            },
-            parameter => parameter is MediaViewer mediaViewer && !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
+        KameradanResimYükle = new RelayCommand<object>(parameter => ResimData = CameraEncodeBitmapImage().ToArray(), parameter => SeçiliKamera is not null);
 
         Durdur = new RelayCommand<object>(parameter => Device?.Stop(), parameter => SeçiliKamera is not null && Device?.IsRunning == true);
 
@@ -56,7 +47,6 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
             },
             parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
 
-        PropertyChanged += CameraUserControl_PropertyChanged;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -152,8 +142,6 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
             }
         }
     }
-
-    public RelayCommand<object> VideodanResimYükle { get; }
 
     public MemoryStream CameraEncodeBitmapImage()
     {

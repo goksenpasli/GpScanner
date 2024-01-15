@@ -2319,20 +2319,36 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <Button Command="{Binding LoadArchiveFile}" CommandParameter="{Binding ElementName=ArchiveVwr, Mode=OneWay}">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Image Width="32"
-                                    Height="32"
-                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
+                                <Image Width="32" Height="32">
+                                    <Image.Style>
+                                        <Style TargetType="Image">
+                                            <Setter Property="Source" Value="{Binding Converter={StaticResource FilePathToIconConverter}, ElementName=ArchiveVwr, Path=ArchivePath}" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=ArchiveVwr, Path=ArchivePath}" Value="{x:Null}">
+                                                    <Setter Property="Source" Value="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
                                 <TextBlock VerticalAlignment="Center"
                                     FontWeight="Bold"
                                     Text="{local:Loc FILE}" />
                             </StackPanel>
                         </Button>
+                        <Extensions:ButtonedTextBox Grid.Row="1"
+                            d:Text="ArchivePath"
+                            IsReadOnly="True"
+                            PasteButtonVisibility="Collapsed"
+                            ResetButtonVisibility="Collapsed"
+                            Text="{Binding ElementName=ArchiveVwr, Path=ArchivePath}" />
                         <local:SimpleArchiveViewer x:Name="ArchiveVwr"
-                            Grid.Row="1"
+                            Grid.Row="2"
                             AllowDrop="True" />
                     </Grid>
                 </TabItem>
@@ -2373,6 +2389,34 @@
                                 Text="{local:Loc LIMITED}"
                                 TextWrapping="Wrap" />
                         </UniformGrid>
+                    </Grid>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Image Width="32" Height="32">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="137" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </TabItem.Header>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <RepeatButton local:Policy.PolicyName="VideodanResimYükle"
+                            Command="{Binding VideodanResimYükle}"
+                            CommandParameter="{Binding ElementName=mediaViewer, Mode=OneWay}"
+                            Content="ç"
+                            FontFamily="Wingdings"
+                            FontSize="16" />
+                        <Controls:MediaViewer x:Name="mediaViewer"
+                            Grid.Column="1"
+                            AutoPlay="True"
+                            OpenButtonVisibility="Visible" />
                     </Grid>
                 </TabItem>
             </TabControl>

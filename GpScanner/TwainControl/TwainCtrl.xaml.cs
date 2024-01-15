@@ -1794,6 +1794,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 _ = maximizedWindow.ShowDialog();
             },
             parameter => true);
+
+        VideodanResimYükle = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
+                {
+                    MemoryStream ms = new(grid.ToRenderTargetBitmap().ToTiffJpegByteArray(Format.Jpg));
+                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                    bitmapFrame.Freeze();
+                    Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame });
+                    ms = null;
+                }
+            },
+            parameter => parameter is MediaViewer mediaViewer && !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -2627,6 +2641,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public FileVersionInfo Version => FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess()?.MainModule?.FileName);
 
+    public RelayCommand<object> VideodanResimYükle { get; }
+
     public ICommand WebAdreseGit { get; }
 
     public RelayCommand<object> XmlViewerFullScreen { get; }
@@ -2833,6 +2849,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     {
                                         SelectedTabIndex = 3;
                                         ArchiveVwr.ArchivePath = filename;
+                                    });
+                                break;
+
+                            case ".mp4":
+                            case ".3gp":
+                            case ".mpg":
+                            case ".mpeg":
+                            case ".avi":
+                            case ".m2ts":
+                            case ".ts":
+                            case ".m4v":
+                            case ".mkv":
+                            case ".mpv4":
+                            case ".mov":
+                            case ".wmv":
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        SelectedTabIndex = 6;
+                                        mediaViewer.MediaDataFilePath = filename;
                                     });
                                 break;
 
@@ -3165,7 +3201,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 MemoryStream ms = new(cameraUserControl.ResimData);
                 BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                 bitmapFrame.Freeze();
-                Scanner.Resimler.Add(new ScannedImage { Resim = bitmapFrame });
+                Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame });
                 ms = null;
             }
 

@@ -74,7 +74,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                         Boyut = (long)item.Size,
                         Oran = (float)item.PackedSize / item.Size,
                         DüzenlenmeZamanı = item.LastWriteTime.Date,
-                        Crc = item.CRC.ToString()
+                        Crc = item.CRC.ToString("X")
                     };
                     _ = Dispatcher.InvokeAsync(
                         () =>
