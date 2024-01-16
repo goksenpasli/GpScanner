@@ -2425,14 +2425,7 @@
                             Height="32"
                             Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xls}" />
                     </TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <local:XlsxViewer x:Name="xlsxViewer" />
-                        <local:XmlViewerControl x:Name="xmlViewerControl" Grid.Row="1" />
-                    </Grid>
+                    <local:XlsxViewer x:Name="xlsxViewer" />
                 </TabItem>
             </TabControl>
         </GroupBox>

@@ -2884,15 +2884,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     });
                                 break;
 
-                            case ".xml":
-                                await Dispatcher.InvokeAsync(
-                                    () =>
-                                    {
-                                        SelectedTabIndex = 7;
-                                        XmlViewerControlModel.SetXmlContent(xmlViewerControl, filename);
-                                    });
-                                break;
-
                             case ".webp":
                                 await AddWebpFiles(decodeheight, filename);
                                 break;
