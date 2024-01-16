@@ -699,4 +699,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>SORTIE</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>COPIE</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Copié dans le presse-papier</value>
+  </data>
 </root>

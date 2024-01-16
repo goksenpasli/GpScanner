@@ -702,4 +702,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>AFSLUT</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPI</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Kopieret til udklipsholder</value>
+  </data>
 </root>

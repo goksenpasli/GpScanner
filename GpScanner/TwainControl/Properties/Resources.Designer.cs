@@ -270,6 +270,24 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string COPY {
+            get {
+                return ResourceManager.GetString("COPY", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string COPYCLIPBOARD {
+            get {
+                return ResourceManager.GetString("COPYCLIPBOARD", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string CRUNTIME {
             get {
                 return ResourceManager.GetString("CRUNTIME", resourceCulture);

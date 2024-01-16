@@ -699,4 +699,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>SALIDA</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>COPIAR</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Copiado al portapapeles</value>
+  </data>
 </root>

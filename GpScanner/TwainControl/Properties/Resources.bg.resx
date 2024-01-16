@@ -702,4 +702,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>ИЗХОД</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>КОПИЕ</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Копирано в клипборда</value>
+  </data>
 </root>

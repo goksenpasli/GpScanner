@@ -702,4 +702,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>IZLAZ</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPIRATI</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Kopirano u međuspremnik</value>
+  </data>
 </root>

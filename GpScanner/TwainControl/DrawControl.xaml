@@ -117,18 +117,6 @@
             </local:ZoomableInkCanvas>
         </ScrollViewer>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Button local:Policy.PolicyName="EditingImage"
-                Command="{Binding LoadImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                CommandParameter="{Binding EditingImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                <Image Width="24" Height="24">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="139" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-            </Button>
             <ComboBox x:Name="CbEdit"
                 VerticalContentAlignment="Center"
                 ItemsSource="{Binding Mode=OneWay, Source={StaticResource InkCanvasEditingMode}}"
@@ -187,7 +175,7 @@
                 Value="{Binding StylusHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
             <Button local:Policy.PolicyName="SaveEditedImage"
                 Command="{Binding SaveEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                CommandParameter="{Binding EditingImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                CommandParameter="{Binding SeçiliResim}">
                 <Image Width="24"
                     Height="24"
                     Source="/TwainControl;component/Icons/save.png" />
@@ -208,6 +196,7 @@
             <Slider Width="100"
                 VerticalAlignment="Center"
                 AutoToolTipPlacement="TopLeft"
+                AutoToolTipPrecision="2"
                 Maximum="{Binding ElementName=Ink, Path=MaxZoom}"
                 Minimum="{Binding ElementName=Ink, Path=MinZoom}"
                 Style="{DynamicResource Slider}"

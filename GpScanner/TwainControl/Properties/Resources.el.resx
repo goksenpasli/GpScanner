@@ -699,4 +699,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>ΕΞΟΔΟΣ</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>ΑΝΤΙΓΡΑΦΟ</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Αντιγράφηκε στο Πρόχειρο</value>
+  </data>
 </root>

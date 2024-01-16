@@ -47,15 +47,19 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         SaveEditedImage = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is BitmapFrame &&
-                MessageBox.Show($"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}", Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (parameter is ScannedImage scannedImage &&
+                MessageBox.Show(
+                    $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}",
+                    Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.No) ==
+                MessageBoxResult.Yes)
                 {
-                    EditingImage = SaveInkCanvasToImage();
+                    scannedImage.Resim = SaveInkCanvasToImage();
                 }
             },
-            parameter => parameter is BitmapFrame && TemporaryImage is not null);
-
-        LoadImage = new RelayCommand<object>(parameter => TemporaryImage = EditingImage, parameter => EditingImage is not null);
+            parameter => parameter is ScannedImage && TemporaryImage is not null);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -131,8 +135,6 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             }
         }
     }
-
-    public RelayCommand<object> LoadImage { get; }
 
     public bool Lock
     {

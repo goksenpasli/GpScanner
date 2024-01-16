@@ -699,4 +699,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>VÝSTUP</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPÍROVAT</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Zkopírováno do schránky</value>
+  </data>
 </root>

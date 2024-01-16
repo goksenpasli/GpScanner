@@ -699,4 +699,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>બહાર નીકળો</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>કોપી</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>ક્લિપબોર્ડ પર કૉપિ કર્યું</value>
+  </data>
 </root>

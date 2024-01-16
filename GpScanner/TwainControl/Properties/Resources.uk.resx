@@ -699,4 +699,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>ВИХІД</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>КОПІЮВАТИ</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Скопійовано в буфер обміну</value>
+  </data>
 </root>

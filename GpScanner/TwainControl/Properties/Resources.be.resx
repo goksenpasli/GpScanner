@@ -702,4 +702,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>ВЫХОД</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>КАПІЯВАЦЬ</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Скапіравана ў буфер абмену</value>
+  </data>
 </root>

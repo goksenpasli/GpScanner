@@ -699,4 +699,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>出口</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>コピー</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>クリップボードにコピーされました</value>
+  </data>
 </root>

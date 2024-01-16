@@ -699,4 +699,10 @@
   <data name="EXIT" xml:space="preserve">
     <value>ÇIXIŞ</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPYALA</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Buferə Kopyalandı</value>
+  </data>
 </root>

@@ -699,4 +699,7 @@
   <data name="EXIT" xml:space="preserve">
     <value>UITGANG</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPIËREN</value>
+  </data>
 </root>

@@ -840,7 +840,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp|Webp Dosyası (*.webp)|*.webp|Zip Dosyası (*.zip)|*.zip|Xml Dosyası (*.xml)|*.xml|Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv)|*.xls;*.xlsx;*.xlsb;*.csv",
+                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp|Webp Dosyası (*.webp)|*.webp|Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip|Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv)|*.xls;*.xlsx;*.xlsb;*.csv",
                     Multiselect = true
                 };
 
@@ -1467,6 +1467,30 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
+        CopyCurrentImageToClipBoard = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is BitmapFrame bitmapFrame)
+                {
+                    using Image image = bitmapFrame.BitmapSourceToBitmap();
+                    Clipboard.SetImage(image);
+                    _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            },
+            parameter => parameter is BitmapFrame bitmapFrame && bitmapFrame is not null);
+
+        CopyCurrentImageToImageEditor = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is BitmapFrame bitmapFrame)
+                {
+                    SelectedTabIndex = 1;
+                    drawControl.TemporaryImage = drawControl.EditingImage = bitmapFrame;
+                    drawControl.Ink.CurrentZoom = ActualHeight / bitmapFrame.PixelHeight;
+                }
+            },
+            parameter => parameter is BitmapFrame bitmapFrame && bitmapFrame is not null);
+
         ApplyPdfMedianFilter = new RelayCommand<object>(
             async parameter =>
             {
@@ -1899,6 +1923,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.High, false, (double)Quality.High),
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Ultra, false, (double)Quality.Ultra)
     ];
+
+    public RelayCommand<object> CopyCurrentImageToClipBoard { get; }
+
+    public RelayCommand<object> CopyCurrentImageToImageEditor { get; }
 
     public ICommand CopyPdfBitmapFile { get; }
 

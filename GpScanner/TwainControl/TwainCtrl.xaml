@@ -1787,6 +1787,31 @@
                                                                                         <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
                                                                                     </MenuItem.Icon>
                                                                                 </MenuItem>
+                                                                                <Separator />
+                                                                                <MenuItem Command="{Binding CopyCurrentImageToClipBoard, Source={x:Reference UserControl}}" Header="{local:Loc COPY}">
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Width="16" Height="16">
+                                                                                            <Image.Source>
+                                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                    <Binding Source="Shell32.dll" />
+                                                                                                    <Binding Source="134" />
+                                                                                                </MultiBinding>
+                                                                                            </Image.Source>
+                                                                                        </Image>
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
+                                                                                <MenuItem Command="{Binding CopyCurrentImageToImageEditor, Source={x:Reference UserControl}}" Header="{local:Loc GRAPH}">
+                                                                                    <MenuItem.Icon>
+                                                                                        <Image Width="16" Height="16">
+                                                                                            <Image.Source>
+                                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                    <Binding Source="pifmgr.dll" />
+                                                                                                    <Binding Source="16" />
+                                                                                                </MultiBinding>
+                                                                                            </Image.Source>
+                                                                                        </Image>
+                                                                                    </MenuItem.Icon>
+                                                                                </MenuItem>
                                                                             </StackPanel>
                                                                         </Border>
                                                                     </Extensions:SplitButton.InternalContent>
@@ -2120,24 +2145,6 @@
                             </StackPanel>
                         </Grid>
                     </Button>
-                    <!--<Extensions:SplitButton Command="{Binding WebAdreseGit}" CommandParameter="https://github.com/goksenpasli">
-                        <Extensions:SplitButton.InternalContent>
-                            <local:AboutView />
-                        </Extensions:SplitButton.InternalContent>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="32" Height="32">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="14" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <TextBlock VerticalAlignment="Center"
-                                FontWeight="Bold"
-                                Text="{local:Loc ABOUT}" />
-                        </StackPanel>
-                    </Extensions:SplitButton>-->
                 </UniformGrid>
             </Grid>
         </GroupBox>
@@ -2218,7 +2225,7 @@
                             </Image.Source>
                         </Image>
                     </TabItem.Header>
-                    <local:DrawControl Background="{StaticResource BorderBackground}" EditingImage="{Binding SeçiliResim.Resim}" />
+                    <local:DrawControl x:Name="drawControl" Background="{StaticResource BorderBackground}" />
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>

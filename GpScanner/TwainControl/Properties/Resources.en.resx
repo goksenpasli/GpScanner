@@ -706,4 +706,10 @@ TO FILE</value>
   <data name="EXIT" xml:space="preserve">
     <value>EXIT</value>
   </data>
+  <data name="COPY" xml:space="preserve">
+    <value>COPY</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Copied To Clipboard</value>
+  </data>
 </root>

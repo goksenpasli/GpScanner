@@ -168,6 +168,7 @@
                                 <Slider Grid.Column="4"
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft"
+                                    AutoToolTipPrecision="2"
                                     IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
                                     Minimum="0.01"
                                     SmallChange="1"
