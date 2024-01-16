@@ -219,7 +219,6 @@
                                             <Viewport3D x:Name="PanoramaViewPort"
                                                 Cursor="ScrollAll"
                                                 MouseLeftButtonDown="Viewport3D_MouseLeftButtonDown"
-                                                MouseLeftButtonUp="Viewport3D_MouseLeftButtonUp"
                                                 MouseMove="Viewport3D_MouseMove"
                                                 MouseWheel="Viewport3D_MouseWheel">
                                                 <Viewport3D.Camera>

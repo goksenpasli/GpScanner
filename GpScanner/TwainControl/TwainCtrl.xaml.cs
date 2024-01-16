@@ -840,7 +840,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp|Webp Dosyası (*.webp)|*.webp|Zip Dosyası (*.zip)|*.zip",
+                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|Pdf Dosyası (*.pdf)|*.pdf|Xps Dosyası (*.xps)|*.xps|Eyp Dosyası (*.eyp)|*.eyp|Webp Dosyası (*.webp)|*.webp|Zip Dosyası (*.zip)|*.zip|Xml Dosyası (*.xml)|*.xml|Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv)|*.xls;*.xlsx;*.xlsb;*.csv",
                     Multiselect = true
                 };
 
@@ -2869,6 +2869,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     {
                                         SelectedTabIndex = 6;
                                         mediaViewer.MediaDataFilePath = filename;
+                                    });
+                                break;
+
+                            case ".xls":
+                            case ".xlsx":
+                            case ".xlsb":
+                            case ".csv":
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        SelectedTabIndex = 7;
+                                        xlsxViewer.XlsxDataFilePath = filename;
+                                    });
+                                break;
+
+                            case ".xml":
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        SelectedTabIndex = 7;
+                                        XmlViewerControlModel.SetXmlContent(xmlViewerControl, filename);
                                     });
                                 break;
 

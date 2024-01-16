@@ -112,7 +112,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     private static readonly DispatcherTimer osdtimer = new();
     private static bool sliderdragging;
     private static DispatcherTimer timer;
-    private bool _isOnDrag;
     private Point _startPoint;
     private double _startRotateX;
     private double _startRotateY;
@@ -1177,17 +1176,14 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Viewport3D_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        _isOnDrag = true;
         _startPoint = e.GetPosition(this);
         _startRotateX = RotateX;
         _startRotateY = RotateY;
     }
 
-    private void Viewport3D_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) => _isOnDrag = false;
-
     private void Viewport3D_MouseMove(object sender, MouseEventArgs e)
     {
-        if (_isOnDrag && e.RightButton == MouseButtonState.Pressed)
+        if (PanoramaMode && e.RightButton == MouseButtonState.Pressed)
         {
             Vector delta = _startPoint - e.GetPosition(this);
             RotateX = _startRotateX + (delta.X / ActualWidth * 360);

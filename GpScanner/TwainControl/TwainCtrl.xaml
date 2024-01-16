@@ -2419,6 +2419,21 @@
                             OpenButtonVisibility="Visible" />
                     </Grid>
                 </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Image Width="32"
+                            Height="32"
+                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xls}" />
+                    </TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <local:XlsxViewer x:Name="xlsxViewer" />
+                        <local:XmlViewerControl x:Name="xmlViewerControl" Grid.Row="1" />
+                    </Grid>
+                </TabItem>
             </TabControl>
         </GroupBox>
     </Grid>
