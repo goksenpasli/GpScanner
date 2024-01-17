@@ -748,7 +748,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             Regex timestampRegex = new(@"^(\d{2}:\d{2}:\d{2}.\d{3,})\s*-->\s*(\d{2}:\d{2}:\d{2}.\d{3,})");
             SubtitleContent currentSubtitle = null;
 
-            foreach (string line in File.ReadAllLines(filePath, Encoding.GetEncoding(SelectedEncodingCodePage)))
+            foreach (string line in File.ReadAllLines(filePath, Encoding.GetEncoding(SelectedEncodingCodePage)).Where(z => !string.IsNullOrWhiteSpace(z.Trim())).ToArray())
             {
                 if (timestampRegex.IsMatch(line))
                 {
@@ -758,10 +758,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 else if (!string.IsNullOrWhiteSpace(line) && currentSubtitle != null)
                 {
                     currentSubtitle.Text += $"{line.Trim()} ";
+                    subtitles.Add(currentSubtitle);
+                    currentSubtitle = null;
                 }
                 else if (string.IsNullOrWhiteSpace(line) && currentSubtitle != null)
                 {
-                    currentSubtitle.Text = currentSubtitle.Text.Trim();
+                    currentSubtitle.Text = currentSubtitle.Text?.Trim();
                     subtitles.Add(currentSubtitle);
                     currentSubtitle = null;
                 }
