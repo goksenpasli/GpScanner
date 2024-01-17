@@ -239,26 +239,25 @@ public static class PdfGeneration
             page.Orientation = bitmapframe.PixelWidth < bitmapframe.PixelHeight ? PageOrientation.Portrait : PageOrientation.Landscape;
             bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
             XSize size = default;
-            if (resizepaper)
+            switch (paper.PaperType)
             {
-                if (paper.PaperType == "Custom")
-                {
-                    size.Width = Settings.Default.CustomPaperWidth / TwainCtrl.Inch * 72;
-                    size.Height = Settings.Default.CustomPaperHeight / TwainCtrl.Inch * 72;
+                case "Custom":
+                    size.Width = XUnit.FromCentimeter(paper.Width);
+                    size.Height = XUnit.FromCentimeter(paper.Height);
                     page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
-                }
-                else
-                {
+                    break;
+
+                case "Original":
+                    page.Width = bitmapframe.PixelWidth;
+                    page.Height = bitmapframe.PixelHeight;
+                    size.Width = page.Orientation == PageOrientation.Portrait ? bitmapframe.PixelWidth : bitmapframe.PixelHeight;
+                    size.Height = page.Orientation == PageOrientation.Portrait ? bitmapframe.PixelHeight : bitmapframe.PixelWidth;
+                    break;
+
+                default:
                     page.Size = paper.GetPaperSize();
                     size = PageSizeConverter.ToSize(page.Size);
-                }
-            }
-            else
-            {
-                page.Width = bitmapframe.PixelWidth;
-                page.Height = bitmapframe.PixelHeight;
-                size.Width = page.Orientation == PageOrientation.Portrait ? bitmapframe.PixelWidth : bitmapframe.PixelHeight;
-                size.Height = page.Orientation == PageOrientation.Portrait ? bitmapframe.PixelHeight : bitmapframe.PixelWidth;
+                    break;
             }
 
             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
@@ -330,8 +329,6 @@ public static class PdfGeneration
         try
         {
             Scanner.ProgressState = TaskbarItemProgressState.Normal;
-            double customPaperWidth = Settings.Default.CustomPaperWidth;
-            double customPaperHeight = Settings.Default.CustomPaperHeight;
             Color pdfpagetextcolor = (Color)ColorConverter.ConvertFromString(Scanner.PdfPageTextColor);
             XBrush pdfpagetextbrush = new XSolidBrush(XColor.FromArgb(pdfpagetextcolor.A, pdfpagetextcolor.R, pdfpagetextcolor.G, pdfpagetextcolor.B));
             for (int i = 0; i < bitmapFrames.Count; i++)
@@ -341,26 +338,25 @@ public static class PdfGeneration
                 page.Orientation = scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight ? PageOrientation.Portrait : PageOrientation.Landscape;
                 bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
                 XSize size = default;
-                if (resizepaper)
+                switch (paper.PaperType)
                 {
-                    if (paper.PaperType == "Custom")
-                    {
-                        size.Width = customPaperWidth / TwainCtrl.Inch * 72;
-                        size.Height = customPaperHeight / TwainCtrl.Inch * 72;
+                    case "Custom":
+                        size.Width = XUnit.FromCentimeter(paper.Width);
+                        size.Height = XUnit.FromCentimeter(paper.Height);
                         page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
-                    }
-                    else
-                    {
+                        break;
+
+                    case "Original":
+                        page.Width = scannedimage.Resim.PixelWidth;
+                        page.Height = scannedimage.Resim.PixelHeight;
+                        size.Width = page.Orientation == PageOrientation.Portrait ? scannedimage.Resim.PixelWidth : scannedimage.Resim.PixelHeight;
+                        size.Height = page.Orientation == PageOrientation.Portrait ? scannedimage.Resim.PixelHeight : scannedimage.Resim.PixelWidth;
+                        break;
+
+                    default:
                         page.Size = paper.GetPaperSize();
                         size = PageSizeConverter.ToSize(page.Size);
-                    }
-                }
-                else
-                {
-                    page.Width = scannedimage.Resim.PixelWidth;
-                    page.Height = scannedimage.Resim.PixelHeight;
-                    size.Width = page.Orientation == PageOrientation.Portrait ? scannedimage.Resim.PixelWidth : scannedimage.Resim.PixelHeight;
-                    size.Height = page.Orientation == PageOrientation.Portrait ? scannedimage.Resim.PixelHeight : scannedimage.Resim.PixelWidth;
+                        break;
                 }
 
                 if (Scanner.UseMozJpegEncoding && format != Format.Tiff)

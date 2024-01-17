@@ -202,7 +202,23 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 for (int i = 0; i < seçiliresimler.Count / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
                     page = pdfdocument.AddPage();
-                    page.Size = Paper.GetPaperSize() == PageSize.Undefined ? PageSize.A4 : Paper.GetPaperSize();
+                    switch (Paper.PaperType)
+                    {
+                        case "Custom":
+                            page.Width = XUnit.FromCentimeter(Paper.Width);
+                            page.Height = XUnit.FromCentimeter(Paper.Height);
+                            break;
+
+                        case "Original":
+                            page.Width = XUnit.FromPoint(seçiliresimler[i].Resim.PixelWidth);
+                            page.Height = XUnit.FromPoint(seçiliresimler[i].Resim.PixelHeight);
+                            break;
+
+                        default:
+                            page.Size = Paper.GetPaperSize();
+                            break;
+                    }
+
                     page.Orientation = pageOrientation;
                     for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {

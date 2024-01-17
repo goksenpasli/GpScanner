@@ -3328,6 +3328,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Scanner.SelectedProfile = Settings.Default.DefaultProfile;
         }
 
+        if (e.PropertyName is "CustomPaperWidth" or "CustomPaperHeight")
+        {
+            Paper paper = Papers.FirstOrDefault(z => z.PaperType == "Custom");
+            paper.Width = Settings.Default.CustomPaperWidth;
+            paper.Height = Settings.Default.CustomPaperHeight;
+        }
+
         Settings.Default.Save();
     }
 
