@@ -622,9 +622,6 @@
                                                     <UniformGrid Columns="4" />
                                                 </ItemsPanelTemplate>
                                             </GroupStyle.Panel>
-                                            <GroupStyle.HeaderTemplate>
-                                                <DataTemplate />
-                                            </GroupStyle.HeaderTemplate>
                                         </GroupStyle>
                                     </ComboBox.GroupStyle>
                                     <ComboBox.ItemTemplate>
@@ -956,15 +953,6 @@
                                                             <UniformGrid Columns="4" />
                                                         </ItemsPanelTemplate>
                                                     </GroupStyle.Panel>
-                                                    <GroupStyle.HeaderTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock HorizontalAlignment="Center"
-                                                                FontStyle="Italic"
-                                                                FontWeight="Bold"
-                                                                Foreground="Black"
-                                                                Text="{Binding Name}" />
-                                                        </DataTemplate>
-                                                    </GroupStyle.HeaderTemplate>
                                                 </GroupStyle>
                                             </ComboBox.GroupStyle>
                                             <ComboBox.ItemTemplate>
@@ -1275,7 +1263,7 @@
                                 local:Policy.PolicyName="PdfSettingsPage"
                                 ArrowVisibility="Collapsed">
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <local:PdfSettings Width="500" />
+                                    <local:PdfSettings />
                                 </Extensions:ContentToggleButton.OverContent>
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">

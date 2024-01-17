@@ -386,6 +386,7 @@
                                                 BorderThickness="1">
                                                 <Slider Height="96"
                                                     AutoToolTipPlacement="TopLeft"
+                                                    AutoToolTipPrecision="2"
                                                     Minimum="0.01"
                                                     Orientation="Vertical"
                                                     SmallChange="1"

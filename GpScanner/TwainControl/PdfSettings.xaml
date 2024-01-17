@@ -5,12 +5,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:mozjpeg="clr-namespace:MozJpeg;assembly=MozJpeg"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="440"
-    d:DesignWidth="500"
+    d:DesignWidth="550"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -71,7 +70,8 @@
                 </GroupBox>
                 <GroupBox>
                     <StackPanel>
-                        <Extensions:ButtonedTextBox local:Policy.PolicyName="UserName"
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            local:Policy.PolicyName="UserName"
                             CopyButtonVisibility="Collapsed"
                             OpenButtonVisibility="Collapsed"
                             Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -99,10 +99,20 @@
                             </Image>
                         </Extensions:ButtonedTextBox>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CWIDTH}" />
-                            <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CHEIGHT}" />
-                            <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                            <Image Width="32" Height="32">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="1" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <UniformGrid Columns="2" Rows="2">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc CWIDTH}" />
+                                <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc CHEIGHT}" />
+                                <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                            </UniformGrid>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
@@ -179,7 +189,7 @@
                 IsChecked="{Binding Scanner.ApplyDataBaseOcr}"
                 IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                 <CheckBox.Content>
-                    <TextBlock TextWrapping="Wrap">
+                    <TextBlock Width="410" TextWrapping="Wrap">
                         <Run Text="{local:Loc ADDOCRTODB}" />
                         <Run FontWeight="Bold"
                             Foreground="Red"
