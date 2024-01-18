@@ -114,6 +114,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     using MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
                     using Image image = Image.FromStream(ms);
                     System.Windows.Forms.Clipboard.SetImage(image);
+                    _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             },
             parameter => true);
@@ -163,8 +164,13 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         }
     }
 
-    public ObservableCollection<string> EypNonSuportedAttachments { get => eypNonSuportedAttachments;
-        set {
+    public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
+
+    public ObservableCollection<string> EypNonSuportedAttachments
+    {
+        get => eypNonSuportedAttachments;
+        set
+        {
             if (eypNonSuportedAttachments != value)
             {
                 eypNonSuportedAttachments = value;
@@ -172,7 +178,6 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             }
         }
     }
-    public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
 
     public RelayCommand<object> FlipPdfPage { get; }
 

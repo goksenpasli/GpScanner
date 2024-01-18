@@ -761,12 +761,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     subtitles.Add(currentSubtitle);
                     currentSubtitle = null;
                 }
-                else if (string.IsNullOrWhiteSpace(line) && currentSubtitle != null)
-                {
-                    currentSubtitle.Text = currentSubtitle.Text?.Trim();
-                    subtitles.Add(currentSubtitle);
-                    currentSubtitle = null;
-                }
             }
             return subtitles;
         }

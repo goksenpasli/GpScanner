@@ -52,6 +52,7 @@
     <Reference Include="PdfiumViewer, Version=2.14.4.0, Culture=neutral, PublicKeyToken=97c6f28bf5a3df6e, processorArchitecture=MSIL">
       <HintPath>..\packages\PdfiumViewer.Updated.2.14.4\lib\net45\PdfiumViewer.dll</HintPath>
     </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Drawing" />

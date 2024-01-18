@@ -1589,7 +1589,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
                     XPoint center = new(page.Width / 2, page.Height / 2);
                     gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
-                    BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage);
+                    BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage, pdfviewer.Dpi);
                     XImage image = XImage.FromBitmapSource(bitmapImage);
                     gfx.DrawImage(image, 0, 0);
                     document.Save(pdfviewer.PdfFilePath);
@@ -2788,7 +2788,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         inputDocument.Pages.RemoveAt(i - 1);
                     }
-                    if (inputDocument.PageCount > 1)
+                    if (inputDocument.PageCount > 0)
                     {
                         inputDocument.Save(pdffilepath);
                     }

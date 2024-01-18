@@ -97,7 +97,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PrintPdf(pdfDocument, PrintDpi);
+                PrintDialog printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1 };
+                if (printdialog.ShowDialog() == true)
+                {
+                    for (int i = 1; i <= printdialog.PrintTicket.CopyCount; i++)
+                    {
+                        PrintPdf(printdialog, pdfDocument, PrintDpi);
+                    }
+                }
             },
             parameter => PdfFilePath is not null);
 
@@ -105,7 +112,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PrintPdf(pdfDocument, (int)parameter, (int)parameter, PrintDpi);
+                PrintDialog printdialog = new() { CurrentPageEnabled = true, PageRangeSelection = PageRangeSelection.CurrentPage, UserPageRangeEnabled = false, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1 };
+                if (printdialog.ShowDialog() == true)
+                {
+                    for (int i = 1; i <= printdialog.PrintTicket.CopyCount; i++)
+                    {
+                        PrintPdf(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
+                    }
+                }
             },
             parameter => PdfFilePath is not null);
 
@@ -806,6 +820,17 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    private void GenerateDocument(PrintDialog pd, PdfDocument document, int startPage, int endPage, int Dpi)
+    {
+        FixedDocument fixedDocument = new();
+        for (int i = startPage; i <= endPage; i++)
+        {
+            RenderPageContents(document, Dpi, pd.PrintableAreaWidth, pd.PrintableAreaHeight, fixedDocument, i);
+        }
+        XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
+        xpsWriter.WriteAsync(fixedDocument);
+    }
+
     private void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
@@ -822,48 +847,27 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void PrintPdf(PdfDocument document, int Dpi = 300)
+    private void PrintPdf(PrintDialog printdialog, PdfDocument pdfdocument, int Dpi = 300)
     {
-        PrintDialog pd = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)document.PageCount, MinPage = 1 };
-        if (pd.ShowDialog() == true)
+        int startPage;
+        int endPage;
+        if (printdialog.PageRangeSelection == PageRangeSelection.AllPages)
         {
-            int startPage;
-            int endPage;
-            if (pd.PageRangeSelection == PageRangeSelection.AllPages)
-            {
-                startPage = 1;
-                endPage = document.PageCount;
-            }
-            else
-            {
-                startPage = pd.PageRange.PageFrom;
-                endPage = pd.PageRange.PageTo;
-            }
-
-            FixedDocument fixedDocument = new();
-            for (int i = startPage; i <= endPage; i++)
-            {
-                RenderPageContents(document, Dpi, pd.PrintableAreaWidth, pd.PrintableAreaHeight, fixedDocument, i);
-            }
-            XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
-            xpsWriter.WriteAsync(fixedDocument);
+            startPage = 1;
+            endPage = pdfdocument.PageCount;
         }
+        else
+        {
+            startPage = printdialog.PageRange.PageFrom;
+            endPage = printdialog.PageRange.PageTo;
+        }
+        GenerateDocument(printdialog, pdfdocument, startPage, endPage, Dpi);
     }
 
-    private void PrintPdf(PdfDocument document, int startPage, int endPage, int Dpi = 300)
+    private void PrintPdf(PrintDialog printdialog, PdfDocument pdfdocument, int startPage, int endPage, int Dpi = 300)
     {
-        PrintDialog pd = new() { CurrentPageEnabled = true, PageRangeSelection = PageRangeSelection.CurrentPage, UserPageRangeEnabled = false, MaxPage = (uint)document.PageCount, MinPage = 1 };
-        if (pd.ShowDialog() == true)
-        {
-            pd.PageRange = new PageRange(startPage, endPage);
-            FixedDocument fixedDocument = new();
-            for (int i = startPage; i <= endPage; i++)
-            {
-                RenderPageContents(document, Dpi, pd.PrintableAreaWidth, pd.PrintableAreaHeight, fixedDocument, i);
-            }
-            XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
-            xpsWriter.WriteAsync(fixedDocument);
-        }
+        printdialog.PageRange = new PageRange(startPage, endPage);
+        GenerateDocument(printdialog, pdfdocument, startPage, endPage, Dpi);
     }
 
     private void RenderPageContents(PdfDocument pdfiumdocument, int Dpi, double printwidth, double printheight, FixedDocument fixedDocument, int pagenumber)
