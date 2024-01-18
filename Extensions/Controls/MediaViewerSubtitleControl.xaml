@@ -88,7 +88,7 @@
                     HexCode="{Binding SubTitleColor, Mode=TwoWay}"
                     PredefinedColorVisibility="Visible" />
                 <ToggleButton VerticalContentAlignment="Center"
-                    Content="OTOMATİK ALTYAZI ÇEVİRİ"
+                    Content="VİDEO OTOMATİK ALTYAZI ÇEVİRİ"
                     IsChecked="{Binding AutoTranslate}" />
                 <Controls:TranslateView IsEnabled="{Binding AutoTranslate}" />
                 <local:ButtonedTextBox CopyButtonVisibility="Collapsed"
@@ -136,9 +136,14 @@
                         Text="{Binding SubTitle}"
                         TextWrapping="Wrap" />
                     <GroupBox Grid.Row="1">
-                        <UniformGrid Columns="2">
+                        <UniformGrid Columns="2" Rows="2">
+                            <CheckBox VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                Content="ALTYAZI ÇEVİR"
+                                IsChecked="{Binding Translate}" />
                             <ComboBox VerticalContentAlignment="Center"
                                 DisplayMemberPath="Key"
+                                IsEnabled="{Binding Translate}"
                                 ItemsSource="{DynamicResource Diller}"
                                 SelectedValue="{Binding SaveTranslateLanguage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedValuePath="Value" />

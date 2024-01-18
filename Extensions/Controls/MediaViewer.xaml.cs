@@ -116,10 +116,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     private double _startRotateX;
     private double _startRotateY;
     private ObservableCollection<SubtitleContent> parsedSubtitle;
-    private string saveTranslateLanguage;
+    private string saveTranslateLanguage = "tr";
     private string searchSubtitle;
     private int selectedEncodingCodePage = 65001;
     private bool showOsdInfo;
+    private bool translate;
     private int translateSaveProgress;
 
     public MediaViewer()
@@ -257,25 +258,34 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 TranslateSaveProgress = 0;
                 foreach (SubtitleContent item in ParsedSubtitle)
                 {
-                    SubtitleContent srtcontent = new() { Text = await TranslateViewModel.DileÇevirAsync(item.Text, "auto", SaveTranslateLanguage), StartTime = item.StartTime, EndTime = item.EndTime, Segment = item.Segment };
-                    translatedsubtitle.Add(srtcontent);
+                    if (Translate)
+                    {
+                        SubtitleContent srtcontent = new() { Text = await TranslateViewModel.DileÇevirAsync(item.Text, "auto", SaveTranslateLanguage), StartTime = item.StartTime, EndTime = item.EndTime, Segment = item.Segment };
+                        translatedsubtitle.Add(srtcontent);
+                    }
+                    else
+                    {
+                        SubtitleContent srtcontent = new() { Text = item.Text, StartTime = item.StartTime, EndTime = item.EndTime, Segment = item.Segment };
+                        translatedsubtitle.Add(srtcontent);
+                    }
                     TranslateSaveProgress++;
                 }
                 SaveFileDialog saveFileDialog = new() { AddExtension = true, Filter = "Srt Dosyası (*.srt)|*.srt|Vtt Dosyası (*.vtt)|*.vtt", FileName = SaveTranslateLanguage };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     StringBuilder sb = new();
-                    foreach (SubtitleContent item in translatedsubtitle)
+                    for (int i = 0; i < translatedsubtitle.Count; i++)
                     {
+                        SubtitleContent item = translatedsubtitle[i];
                         _ = saveFileDialog.FilterIndex == 1
-                            ? sb.Append(item.Segment).Append('\n').Append(item.StartTime.ToString().Replace('.', ',')).Append(" --> ").Append(item.EndTime.ToString().Replace('.', ',')).Append("\r\n").Append(item.Text).Append("\r\n\r\n")
+                            ? sb.Append(i + 1).Append('\n').Append(item.StartTime.ToString().Replace('.', ',')).Append(" --> ").Append(item.EndTime.ToString().Replace('.', ',')).Append("\r\n").Append(item.Text).Append("\r\n\r\n")
                             : sb.Append(item.StartTime.ToString()).Append(" --> ").Append(item.EndTime.ToString()).Append("\r\n").Append(item.Text).Append("\r\n\r\n");
                     }
                     using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
                     streamWriter.WriteLine(sb.ToString().Trim());
                 }
             },
-            parameter => ParsedSubtitle?.Count > 0 && !string.IsNullOrWhiteSpace(SaveTranslateLanguage) && SaveTranslateLanguage != "auto");
+            parameter => ParsedSubtitle?.Count > 0 && SaveTranslateLanguage != "auto");
 
         SetSubtitleMargin = new RelayCommand<object>(
             parameter =>
@@ -654,6 +664,21 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public string TooltipOriginalSubtitle { get => (string)GetValue(TooltipOriginalSubtitleProperty); set => SetValue(TooltipOriginalSubtitleProperty, value); }
+
+    [Description("Subtitle Controls")]
+    [Category("Subtitle")]
+    public bool Translate
+    {
+        get => translate;
+        set
+        {
+            if (translate != value)
+            {
+                translate = value;
+                OnPropertyChanged(nameof(Translate));
+            }
+        }
+    }
 
     public int TranslateSaveProgress
     {

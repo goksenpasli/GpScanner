@@ -89,9 +89,6 @@
                     <Setter TargetName="startTag" Property="Text" Value="" />
                     <Setter TargetName="xmlTag" Property="Text" Value="{Binding InnerText}" />
                 </DataTrigger>
-                <DataTrigger Binding="{Binding HasChildNodes}" Value="False">
-                    <Setter TargetName="endTag" Property="Text" Value="/&gt;" />
-                </DataTrigger>
             </HierarchicalDataTemplate.Triggers>
         </HierarchicalDataTemplate>
     </UserControl.Resources>
