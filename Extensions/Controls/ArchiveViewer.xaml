@@ -8,7 +8,6 @@
         <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
-    <local:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
     <Style TargetType="local:ArchiveViewer">
         <Setter Property="Template">
             <Setter.Value>
@@ -102,8 +101,8 @@
                                         DisplayMemberBinding="{Binding SıkıştırılmışBoyut, Mode=OneWay}"
                                         Header="SIKIŞTIRILMIŞ&#x0a;BOYUT" />
                                     <GridViewColumn Width="70"
-                                        local:GridViewSort.PropertyName="DosyaAdı"
-                                        DisplayMemberBinding="{Binding DosyaAdı, Converter={StaticResource FilePathToFileDescriptionConverter}, Mode=OneWay}"
+                                        local:GridViewSort.PropertyName="DosyaTipi"
+                                        DisplayMemberBinding="{Binding DosyaTipi, Mode=OneWay}"
                                         Header="TİP" />
                                     <GridViewColumn Width="45"
                                         local:GridViewSort.PropertyName="Oran"

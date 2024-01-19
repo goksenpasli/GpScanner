@@ -170,7 +170,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                         GC.Collect();
                     }
                     XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
-                    xpsWriter.WriteAsync(fixedDocument);
+                    xpsWriter.WriteAsync(fixedDocument, pd.PrintTicket);
                 }
             },
             parameter => Source is not null);

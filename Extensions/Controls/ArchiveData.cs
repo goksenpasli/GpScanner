@@ -1,4 +1,5 @@
 ﻿using System;
+using static Extensions.ShellIcon;
 
 namespace Extensions;
 
@@ -7,6 +8,7 @@ public class ArchiveData : InpcBase
     private long boyut;
     private string crc;
     private string dosyaAdı;
+    private string dosyaTipi;
     private DateTime düzenlenmeZamanı;
     private float oran;
     private long sıkıştırılmışBoyut;
@@ -49,6 +51,19 @@ public class ArchiveData : InpcBase
             {
                 dosyaAdı = value;
                 OnPropertyChanged(nameof(DosyaAdı));
+            }
+        }
+    }
+
+    public string DosyaTipi
+    {
+        get => GetFileType(DosyaAdı, new SHFILEINFO());
+        set
+        {
+            if (dosyaTipi != value)
+            {
+                dosyaTipi = value;
+                OnPropertyChanged(nameof(DosyaTipi));
             }
         }
     }

@@ -113,10 +113,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                         endPage = printdialog.PageRange.PageTo;
                         printdialog.PageRange = new PageRange(startPage, endPage);
                     }
-                    for (int i = 1; i <= printdialog.PrintTicket.CopyCount; i++)
-                    {
-                        GenerateDocument(printdialog, pdfDocument, startPage, endPage, PrintDpi);
-                    }
+                    GenerateDocument(printdialog, pdfDocument, startPage, endPage, PrintDpi);
                 }
             },
             parameter => PdfFilePath is not null);
@@ -128,10 +125,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 PrintDialog printdialog = new() { CurrentPageEnabled = true, PageRangeSelection = PageRangeSelection.CurrentPage, UserPageRangeEnabled = false, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1 };
                 if (printdialog.ShowDialog() == true)
                 {
-                    for (int i = 1; i <= printdialog.PrintTicket.CopyCount; i++)
-                    {
-                        GenerateDocument(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
-                    }
+                    GenerateDocument(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
                 }
             },
             parameter => PdfFilePath is not null);
@@ -841,7 +835,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             RenderPageContents(document, Dpi, pd.PrintableAreaWidth, pd.PrintableAreaHeight, fixedDocument, i);
         }
         XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
-        xpsWriter.WriteAsync(fixedDocument);
+        xpsWriter.WriteAsync(fixedDocument, pd.PrintTicket);
     }
 
     private void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -869,14 +863,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         using Bitmap bitmap = pdfiumdocument.Render(pagenumber - 1, width, height, Dpi, Dpi, true) as Bitmap;
         BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
         bitmapimage.Freeze();
-
         System.Windows.Controls.Image image = new() { Source = bitmapimage };
         fixedPage.Width = width < height ? printwidth : printheight;
         fixedPage.Height = width > height ? printwidth : printheight;
         _ = fixedPage.Children.Add(image);
-        fixedPage.SetValue(WidthProperty, fixedPage.Width);
-        fixedPage.SetValue(HeightProperty, fixedPage.Height);
-
         ((IAddChild)pageContent).AddChild(fixedPage);
         _ = fixedDocument.Pages.Add(pageContent);
         GC.Collect();
