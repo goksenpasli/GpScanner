@@ -151,10 +151,11 @@
                                         </Image>
                                     </RepeatButton>
                                 </StackPanel>
-                                <Button Grid.Column="3"
+                                <local:SplitButton Grid.Column="3"
                                     Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                    SplitContentPartIsEnabled="{Binding PrintDpiSettingsListEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                     Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Button.Content>
+                                    <local:SplitButton.Content>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -163,8 +164,13 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                    </Button.Content>
-                                </Button>
+                                    </local:SplitButton.Content>
+                                    <local:SplitButton.InternalContent>
+                                        <ListBox ItemStringFormat="{}{0} Dpi"
+                                            ItemsSource="{Binding DpiList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                            SelectedItem="{Binding PrintDpi, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                    </local:SplitButton.InternalContent>
+                                </local:SplitButton>
                                 <Slider Grid.Column="4"
                                     Margin="2"
                                     AutoToolTipPlacement="TopLeft"

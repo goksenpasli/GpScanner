@@ -963,12 +963,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (openFileDialog.ShowDialog() == true)
                 {
                     string[] files = openFileDialog.FileNames;
-                    if (files.Length > 0)
+                    foreach (string item in files?.Where(z => PdfViewer.PdfViewer.IsValidPdfFile(z)))
                     {
-                        foreach (string item in files)
-                        {
-                            Scanner?.UnsupportedFiles?.Add(item);
-                        }
+                        Scanner?.UnsupportedFiles?.Add(item);
                     }
                 }
             },
@@ -3082,8 +3079,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return true;
     }
 
-    private static bool IsWindowOpen(Window window) => Application.Current?.Windows?.Cast<Window>().Any(x => x == window) == true;
-
     private async Task AddAttachmentFileAsync(string[] files, string loadfilename, string savefilename)
     {
         await Task.Run(
@@ -3102,12 +3097,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    private async Task AddEypFiles(string filename)
-    {
-        List<string> files = EypFileExtract(filename);
-        await Dispatcher.InvokeAsync(() => files.ForEach(z => Scanner?.UnsupportedFiles?.Add(z)));
-        await AddFiles([.. files], DecodeHeight);
-    }
+    private async Task AddEypFiles(string filename) => await AddFiles([.. (EypFileExtract(filename))], DecodeHeight);
 
     private async Task AddImageFiles(string filename)
     {

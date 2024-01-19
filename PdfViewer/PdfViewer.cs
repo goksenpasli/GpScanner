@@ -100,9 +100,22 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 PrintDialog printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1 };
                 if (printdialog.ShowDialog() == true)
                 {
+                    int startPage = 0;
+                    int endPage = 0;
+                    if (printdialog.PageRangeSelection == PageRangeSelection.AllPages)
+                    {
+                        startPage = 1;
+                        endPage = pdfDocument.PageCount;
+                    }
+                    if (printdialog.PageRangeSelection == PageRangeSelection.UserPages)
+                    {
+                        startPage = printdialog.PageRange.PageFrom;
+                        endPage = printdialog.PageRange.PageTo;
+                        printdialog.PageRange = new PageRange(startPage, endPage);
+                    }
                     for (int i = 1; i <= printdialog.PrintTicket.CopyCount; i++)
                     {
-                        PrintPdf(printdialog, pdfDocument, PrintDpi);
+                        GenerateDocument(printdialog, pdfDocument, startPage, endPage, PrintDpi);
                     }
                 }
             },
@@ -117,7 +130,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     for (int i = 1; i <= printdialog.PrintTicket.CopyCount; i++)
                     {
-                        PrintPdf(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
+                        GenerateDocument(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
                     }
                 }
             },
@@ -845,29 +858,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         {
             Resize.Execute(null);
         }
-    }
-
-    private void PrintPdf(PrintDialog printdialog, PdfDocument pdfdocument, int Dpi = 300)
-    {
-        int startPage;
-        int endPage;
-        if (printdialog.PageRangeSelection == PageRangeSelection.AllPages)
-        {
-            startPage = 1;
-            endPage = pdfdocument.PageCount;
-        }
-        else
-        {
-            startPage = printdialog.PageRange.PageFrom;
-            endPage = printdialog.PageRange.PageTo;
-        }
-        GenerateDocument(printdialog, pdfdocument, startPage, endPage, Dpi);
-    }
-
-    private void PrintPdf(PrintDialog printdialog, PdfDocument pdfdocument, int startPage, int endPage, int Dpi = 300)
-    {
-        printdialog.PageRange = new PageRange(startPage, endPage);
-        GenerateDocument(printdialog, pdfdocument, startPage, endPage, Dpi);
     }
 
     private void RenderPageContents(PdfDocument pdfiumdocument, int Dpi, double printwidth, double printheight, FixedDocument fixedDocument, int pagenumber)

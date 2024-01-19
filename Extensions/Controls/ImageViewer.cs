@@ -40,6 +40,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty OriginalPixelHeightProperty = DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
     public static readonly DependencyProperty OriginalPixelWidthProperty = DependencyProperty.Register("OriginalPixelWidth", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
     public static readonly DependencyProperty PanoramaModeProperty = DependencyProperty.Register("PanoramaMode", typeof(bool), typeof(ImageViewer), new PropertyMetadata(PanoramaModeChanged));
+    public static readonly DependencyProperty PrintDpiProperty = DependencyProperty.Register("PrintDpi", typeof(int), typeof(ImageViewer), new PropertyMetadata(300));
+    public static readonly DependencyProperty PrintDpiSettingsListEnabledProperty = DependencyProperty.Register("PrintDpiSettingsListEnabled", typeof(bool), typeof(ImageViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty RotateXProperty = DependencyProperty.Register("RotateX", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty RotateYProperty = DependencyProperty.Register("RotateY", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
@@ -52,13 +54,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     private double _startRotateX;
     private double _startRotateY;
     private Viewport3D _viewport;
-    private TiffBitmapDecoder decoder;
     private bool disposedValue;
     private Visibility openButtonVisibility = Visibility.Collapsed;
     private IEnumerable<int> pages;
     private Visibility panoramaButtonVisibility;
     private Visibility printButtonVisibility = Visibility.Collapsed;
     private int sayfa = 1;
+    private TiffBitmapDecoder tiffdecoder;
     private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
     private bool toolBarIsEnabled = true;
 
@@ -77,9 +79,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                 }
             });
 
-        ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => Decoder != null && Sayfa > 1 && Sayfa <= Decoder.Frames.Count);
+        ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => TiffDecoder != null && Sayfa > 1 && Sayfa <= TiffDecoder.Frames.Count);
 
-        ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => Decoder != null && Sayfa >= 1 && Sayfa < Decoder.Frames.Count);
+        ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => TiffDecoder != null && Sayfa >= 1 && Sayfa < TiffDecoder.Frames.Count);
 
         Resize = new RelayCommand<object>(
             parameter =>
@@ -106,38 +108,33 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
             parameter =>
             {
                 PrintDialog pd = new();
-                DrawingVisual dv = new();
-                if (Decoder == null)
+                if (pd.ShowDialog() == true)
                 {
-                    if (pd.ShowDialog() == true)
+                    if (TiffDecoder == null)
                     {
+                        DrawingVisual dv = new();
                         using (DrawingContext dc = dv.RenderOpen())
                         {
                             BitmapSource imagesource = Source.Width > Source.Height
-                                                       ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, 300, 300)
-                                                       : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, 300, 300);
+                                                       ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, PrintDpi, PrintDpi)
+                                                       : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, PrintDpi, PrintDpi);
                             imagesource.Freeze();
                             dc.DrawImage(imagesource, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                         }
-
                         pd.PrintVisual(dv, string.Empty);
+                        return;
                     }
+                    pd.PageRangeSelection = PageRangeSelection.AllPages;
+                    pd.UserPageRangeEnabled = true;
+                    pd.MaxPage = (uint)TiffDecoder.Frames.Count;
+                    pd.MinPage = 1;
 
-                    return;
-                }
-
-                pd.PageRangeSelection = PageRangeSelection.AllPages;
-                pd.UserPageRangeEnabled = true;
-                pd.MaxPage = (uint)Decoder.Frames.Count;
-                pd.MinPage = 1;
-                if (pd.ShowDialog() == true)
-                {
                     int başlangıç;
                     int bitiş;
                     if (pd.PageRangeSelection == PageRangeSelection.AllPages)
                     {
                         başlangıç = 0;
-                        bitiş = Decoder.Frames.Count - 1;
+                        bitiş = TiffDecoder.Frames.Count - 1;
                     }
                     else
                     {
@@ -150,16 +147,22 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         PageContent pageContent = new();
                         FixedPage fixedPage = new();
-                        BitmapSource imagesource = Decoder.Frames[i];
-                        fixedPage.Width = imagesource.Width < imagesource.Height ? pd.PrintableAreaWidth : pd.PrintableAreaHeight;
-                        fixedPage.Height = imagesource.Width > imagesource.Height ? pd.PrintableAreaWidth : pd.PrintableAreaHeight;
-                        imagesource = Decoder.Frames[i].Resize(fixedPage.Width, fixedPage.Height);
+                        BitmapSource imagesource = TiffDecoder.Frames[i];
+                        if (imagesource.Width < imagesource.Height)
+                        {
+                            fixedPage.Width = pd.PrintableAreaWidth;
+                            fixedPage.Height = pd.PrintableAreaHeight;
+                            imagesource = imagesource.Resize(pd.PrintableAreaWidth, pd.PrintableAreaHeight, null, PrintDpi, PrintDpi);
+                        }
+                        else
+                        {
+                            fixedPage.Width = pd.PrintableAreaHeight;
+                            fixedPage.Height = pd.PrintableAreaWidth;
+                            imagesource = imagesource.Resize(pd.PrintableAreaHeight, pd.PrintableAreaWidth, null, PrintDpi, PrintDpi);
+                        }
                         imagesource.Freeze();
-                        Image image = new() { Source = imagesource };
+                        Image image = new() { Source = imagesource, Width = fixedPage.Width, Height = fixedPage.Height };
                         _ = fixedPage.Children.Add(image);
-                        fixedPage.SetValue(WidthProperty, fixedPage.Width);
-                        fixedPage.SetValue(HeightProperty, fixedPage.Height);
-
                         ((IAddChild)pageContent).AddChild(fixedPage);
                         _ = fixedDocument.Pages.Add(pageContent);
                         imagesource = null;
@@ -181,22 +184,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int DecodeHeight { get => (int)GetValue(DecodeHeightProperty); set => SetValue(DecodeHeightProperty, value); }
 
-    [Browsable(false)]
-    public TiffBitmapDecoder Decoder
-    {
-        get => decoder;
-
-        set
-        {
-            if (decoder != value)
-            {
-                decoder = value;
-                OnPropertyChanged(nameof(Decoder));
-            }
-        }
-    }
-
     public ICommand DosyaAç { get; set; }
+
+    public int[] DpiList { get; } = [12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200];
 
     public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 
@@ -267,6 +257,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    public int PrintDpi { get => (int)GetValue(PrintDpiProperty); set => SetValue(PrintDpiProperty, value); }
+
+    public bool PrintDpiSettingsListEnabled { get => (bool)GetValue(PrintDpiSettingsListEnabledProperty); set => SetValue(PrintDpiSettingsListEnabledProperty, value); }
+
     public ICommand Resize { get; set; }
 
     public double RotateX { get => (double)GetValue(RotateXProperty); set => SetValue(RotateXProperty, value); }
@@ -292,6 +286,20 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public ImageSource Source { get => (ImageSource)GetValue(SourceProperty); set => SetValue(SourceProperty, value); }
 
     public Geometry3D SphereModel { get; set; } = MediaViewer.CreateGeometry();
+    [Browsable(false)]
+    public TiffBitmapDecoder TiffDecoder
+    {
+        get => tiffdecoder;
+
+        set
+        {
+            if (tiffdecoder != value)
+            {
+                tiffdecoder = value;
+                OnPropertyChanged(nameof(TiffDecoder));
+            }
+        }
+    }
 
     public Visibility TifNavigasyonButtonEtkin
     {
@@ -460,10 +468,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 case ".tiff" or ".tif" or ".tıff" or ".tıf":
                     imageViewer.Sayfa = 1;
-                    imageViewer.Decoder = new TiffBitmapDecoder(new Uri(filepath), BitmapCreateOptions.None, BitmapCacheOption.None);
+                    imageViewer.TiffDecoder = new TiffBitmapDecoder(new Uri(filepath), BitmapCreateOptions.None, BitmapCacheOption.None);
                     imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
-                    imageViewer.Source = imageViewer.Decoder.Frames[0];
-                    imageViewer.Pages = Enumerable.Range(1, imageViewer.Decoder.Frames.Count);
+                    imageViewer.Source = imageViewer.TiffDecoder.Frames[0];
+                    imageViewer.Pages = Enumerable.Range(1, imageViewer.TiffDecoder.Frames.Count);
                     return;
 
                 case ".png" or ".jpg" or ".jpeg" or ".bmp":
@@ -520,9 +528,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "Sayfa" && Decoder is not null)
+        if (e.PropertyName is "Sayfa" && TiffDecoder is not null)
         {
-            Source = Decoder.Frames[Sayfa - 1];
+            Source = TiffDecoder.Frames[Sayfa - 1];
         }
     }
 
