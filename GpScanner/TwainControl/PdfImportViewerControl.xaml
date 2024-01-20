@@ -948,7 +948,17 @@
                 <Extensions:ContentToggleButton.OverContent>
                     <GroupBox MaxWidth="250" Header="{local:Loc WATERMARK}">
                         <StackPanel>
-                            <TextBox VerticalContentAlignment="Center" Text="{Binding PdfWaterMarkText, UpdateSourceTrigger=PropertyChanged}" />
+                            <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                CopyButtonVisibility="Collapsed"
+                                FontSizeButtonVisibility="Collapsed"
+                                OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
+                                PrintButtonVisibility="Collapsed"
+                                RemainingLengthVisibility="Collapsed"
+                                ResetButtonVisibility="Collapsed"
+                                Text="{Binding PdfWaterMarkText, UpdateSourceTrigger=PropertyChanged}"
+                                TitleCaseMenuVisibility="Visible" />
                             <UniformGrid Columns="2">
                                 <ComboBox Height="22.4"
                                     VerticalContentAlignment="Center"
@@ -1051,7 +1061,8 @@
                 <Extensions:ContentToggleButton.OverContent>
                     <GroupBox>
                         <StackPanel>
-                            <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                            <ListBox HorizontalContentAlignment="Center"
+                                d:ItemsSource="{d:SampleData ItemCount=5}"
                                 ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfLayout}}"
                                 SelectedItem="{Binding Scanner.Layout}">
                                 <ListBox.ItemTemplate>
@@ -1065,6 +1076,33 @@
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
+                            <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                CopyButtonVisibility="Collapsed"
+                                FontSizeButtonVisibility="Collapsed"
+                                OpenButtonVisibility="Collapsed"
+                                PasteButtonVisibility="Collapsed"
+                                PrintButtonVisibility="Collapsed"
+                                RemainingLengthVisibility="Collapsed"
+                                ResetButtonVisibility="Collapsed"
+                                Text="{Binding Scanner.PdfBatchNumberText, UpdateSourceTrigger=PropertyChanged}"
+                                TitleCaseMenuVisibility="Visible">
+                                <Extensions:ButtonedTextBox.Description>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        Content="n"
+                                        FontFamily="Wingdings 3"
+                                        IsChecked="{Binding Scanner.PdfBatchNumberIsFirst}" />
+                                </Extensions:ButtonedTextBox.Description>
+                            </Extensions:ButtonedTextBox>
+                            <UniformGrid Columns="2">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
+                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                    Maximum="512"
+                                    Minimum="1"
+                                    SmallChange="1"
+                                    Value="{Binding Scanner.PdfPageNumberSize, UpdateSourceTrigger=PropertyChanged}" />
+                            </UniformGrid>
                             <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding Scanner.PdfPageNumberAlignTextColor}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>

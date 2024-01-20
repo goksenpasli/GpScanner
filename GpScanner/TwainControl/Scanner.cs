@@ -7,7 +7,6 @@ using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Security;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
@@ -73,15 +72,18 @@ public class Scanner : InpcBase, IDataErrorInfo
     private int medianValue;
     private bool paperBackScan;
     private bool passwordProtect;
+    private bool pdfBatchNumberIsFirst;
+    private string pdfBatchNumberText = string.Empty;
     private string pdfFilePath;
     private XKnownColor pdfPageNumberAlignTextColor = XKnownColor.Black;
     private bool pdfPageNumberDraw;
+    private double pdfPageNumberSize = 12;
     private string pdfPageText;
     private double pdfPageTextAngle = 315d;
     private string pdfPageTextColor = "Black";
     private bool pdfPageTextDraw;
     private double pdfPageTextSize = 32d;
-    private SecureString pdfPassword;
+    private string pdfPassword;
     private double pdfSaveProgressValue;
     private string profileName;
     private TaskbarItemProgressState progressState = TaskbarItemProgressState.None;
@@ -765,6 +767,32 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public bool PdfBatchNumberIsFirst
+    {
+        get => pdfBatchNumberIsFirst;
+        set
+        {
+            if (pdfBatchNumberIsFirst != value)
+            {
+                pdfBatchNumberIsFirst = value;
+                OnPropertyChanged(nameof(PdfBatchNumberIsFirst));
+            }
+        }
+    }
+
+    public string PdfBatchNumberText
+    {
+        get => pdfBatchNumberText;
+        set
+        {
+            if (pdfBatchNumberText != value)
+            {
+                pdfBatchNumberText = value;
+                OnPropertyChanged(nameof(PdfBatchNumberText));
+            }
+        }
+    }
+
     public string PdfFilePath
     {
         get => pdfFilePath;
@@ -803,6 +831,19 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 pdfPageNumberDraw = value;
                 OnPropertyChanged(nameof(PdfPageNumberDraw));
+            }
+        }
+    }
+
+    public double PdfPageNumberSize
+    {
+        get => pdfPageNumberSize;
+        set
+        {
+            if (pdfPageNumberSize != value)
+            {
+                pdfPageNumberSize = value;
+                OnPropertyChanged(nameof(PdfPageNumberSize));
             }
         }
     }
@@ -877,7 +918,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public SecureString PdfPassword
+    public string PdfPassword
     {
         get => pdfPassword;
 

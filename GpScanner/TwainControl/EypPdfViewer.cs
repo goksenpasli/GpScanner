@@ -66,11 +66,14 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 if (parameter is int sayfa)
                 {
                     string path = PdfFilePath;
-                    using PdfDocument inputDocument = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Import);
-                    TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
-                    await Task.Delay(1000);
-                    PdfFilePath = null;
-                    PdfFilePath = path;
+                    using PdfDocument inputDocument = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                    if (inputDocument != null)
+                    {
+                        TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
+                        await Task.Delay(1000);
+                        PdfFilePath = null;
+                        PdfFilePath = path;
+                    }
                 }
             },
             parameter => true);
@@ -125,21 +128,24 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 if (parameter is int currentpage)
                 {
                     string oldpdfpath = PdfFilePath;
-                    using PdfDocument document = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify);
-                    PdfPage page = document.Pages[currentpage - 1];
-                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
-                    XPoint center = new(page.Width / 2, page.Height / 2);
-                    gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
-                    BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage);
-                    XImage image = XImage.FromBitmapSource(bitmapImage);
-                    gfx.DrawImage(image, 0, 0);
-                    document.Save(PdfFilePath);
-                    image = null;
-                    bitmapImage = null;
-                    await Task.Delay(1000);
-                    PdfFilePath = null;
-                    PdfFilePath = oldpdfpath;
-                    Sayfa = currentpage;
+                    using PdfDocument document = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                    if (document != null)
+                    {
+                        PdfPage page = document.Pages[currentpage - 1];
+                        using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
+                        XPoint center = new(page.Width / 2, page.Height / 2);
+                        gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
+                        BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage);
+                        XImage image = XImage.FromBitmapSource(bitmapImage);
+                        gfx.DrawImage(image, 0, 0);
+                        document.Save(PdfFilePath);
+                        image = null;
+                        bitmapImage = null;
+                        await Task.Delay(1000);
+                        PdfFilePath = null;
+                        PdfFilePath = oldpdfpath;
+                        Sayfa = currentpage;
+                    }
                 }
             },
             parameter => true);
@@ -200,7 +206,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         List<string> files = TwainCtrl.EypFileExtract(filename);
         EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
         EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
-        using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLower()) == ".pdf"), PdfDocumentOpenMode.Import);
+        using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLower()) == ".pdf"), PdfDocumentOpenMode.Import ,PdfGeneration.PasswordProvider);
         return document?.FullPath;
     }
 

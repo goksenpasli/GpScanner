@@ -15,22 +15,22 @@
     <Style x:Key="TextBlockPdfLayout" TargetType="TextBlock">
         <Style.Triggers>
             <DataTrigger Binding="{Binding}" Value="Left">
-                <Setter Property="Text" Value="¡" />
+                <Setter Property="Text" Value="j" />
             </DataTrigger>
             <DataTrigger Binding="{Binding}" Value="Middle">
-                <Setter Property="Text" Value="£" />
+                <Setter Property="Text" Value="h" />
             </DataTrigger>
             <DataTrigger Binding="{Binding}" Value="Right">
-                <Setter Property="Text" Value="¢" />
+                <Setter Property="Text" Value="k" />
             </DataTrigger>
             <DataTrigger Binding="{Binding}" Value="LeftBottom">
-                <Setter Property="Text" Value="¡" />
+                <Setter Property="Text" Value="l" />
             </DataTrigger>
             <DataTrigger Binding="{Binding}" Value="MiddleBottom">
-                <Setter Property="Text" Value="¤" />
+                <Setter Property="Text" Value="i" />
             </DataTrigger>
             <DataTrigger Binding="{Binding}" Value="RightBottom">
-                <Setter Property="Text" Value="¢" />
+                <Setter Property="Text" Value="m" />
             </DataTrigger>
         </Style.Triggers>
     </Style>

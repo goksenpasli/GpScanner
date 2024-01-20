@@ -187,14 +187,17 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     if (parameter is PdfAnnotation selectedannotation && File.Exists(PdfViewer.PdfFilePath))
                     {
-                        using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                        PdfPage page = reader?.Pages[PdfViewer.Sayfa - 1];
-                        PdfAnnotation annotation = page.Annotations.ToList().Cast<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
-                        if (annotation is not null)
+                        using PdfDocument pdfdocument = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                        if (pdfdocument != null)
                         {
-                            page?.Annotations?.Remove(annotation);
-                            reader.Save(PdfViewer.PdfFilePath);
-                            ReadAnnotation.Execute(null);
+                            PdfPage page = pdfdocument.Pages[PdfViewer.Sayfa - 1];
+                            PdfAnnotation annotation = page.Annotations.ToList().Cast<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
+                            if (annotation is not null)
+                            {
+                                page?.Annotations?.Remove(annotation);
+                                pdfdocument.Save(PdfViewer.PdfFilePath);
+                                ReadAnnotation.Execute(null);
+                            }
                         }
                     }
                 }
@@ -1174,35 +1177,37 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     EscToolTip.IsOpen = false;
                     cnv.Children?.Clear();
-                    using PdfDocument pdfDocument = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
-                    List<PdfPage> pdfpages = GetPdfPagesOrientation(pdfDocument);
-                    foreach (PdfPage pdfpage in pdfpages)
+                    using PdfDocument pdfDocument = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                    if (pdfDocument != null)
                     {
-                        PdfPage page = SinglePage ? pdfDocument.Pages[PdfViewer.Sayfa - 1] : pdfpage;
-                        using XGraphics gfx = XGraphics.FromPdfPage(page);
-                        Rect rect = CalculateRect(scrollviewer, x1, x2, y1, y2, page);
-                        XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
-                        XBrush brush = SetBrush(GraphObjectFillColor, GraphObjectFirstGradientColor, GraphObjectSecondGradientColor, TransparentLevel, rect, IsLinearDraw);
-
-                        DrawShapes(page, gfx, rect, pen, brush);
-                        DrawLinesAndCurves(page, gfx, rect, pen, brush);
-                        DrawImages(gfx, rect);
-                        DrawTexts(page, gfx, rect, brush);
-                        DrawAnnotations(page, gfx, rect);
-
-                        if (SinglePage)
+                        List<PdfPage> pdfpages = GetPdfPagesOrientation(pdfDocument);
+                        foreach (PdfPage pdfpage in pdfpages)
                         {
-                            break;
+                            PdfPage page = SinglePage ? pdfDocument.Pages[PdfViewer.Sayfa - 1] : pdfpage;
+                            using XGraphics gfx = XGraphics.FromPdfPage(page);
+                            Rect rect = CalculateRect(scrollviewer, x1, x2, y1, y2, page);
+                            XPen pen = new(XColor.FromKnownColor(GraphObjectColor)) { DashStyle = PenDash, LineCap = PenLineCap, LineJoin = PenLineJoin, Width = PenWidth };
+                            XBrush brush = SetBrush(GraphObjectFillColor, GraphObjectFirstGradientColor, GraphObjectSecondGradientColor, TransparentLevel, rect, IsLinearDraw);
+
+                            DrawShapes(page, gfx, rect, pen, brush);
+                            DrawLinesAndCurves(page, gfx, rect, pen, brush);
+                            DrawImages(gfx, rect);
+                            DrawTexts(page, gfx, rect, brush);
+                            DrawAnnotations(page, gfx, rect);
+
+                            if (SinglePage)
+                            {
+                                break;
+                            }
+                        }
+
+                        pdfpages = null;
+                        if (!Keyboard.IsKeyDown(Key.Escape) && SaveRefreshPdfPage.CanExecute(null))
+                        {
+                            SaveRefreshPdfPage.Execute(pdfDocument);
                         }
                     }
-
-                    pdfpages = null;
                     ResetMouse();
-
-                    if (!Keyboard.IsKeyDown(Key.Escape) && SaveRefreshPdfPage.CanExecute(null))
-                    {
-                        SaveRefreshPdfPage.Execute(pdfDocument);
-                    }
                 }
             }
 

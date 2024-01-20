@@ -963,10 +963,22 @@
                                                             <ColumnDefinition Width="Auto" />
                                                             <ColumnDefinition />
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock VerticalAlignment="Center"
-                                                            FontStyle="Italic"
-                                                            FontWeight="Bold"
-                                                            Text="{Binding PaperType}" />
+                                                        <Grid>
+                                                            <Image Width="12"
+                                                                Height="12"
+                                                                Visibility="{Binding LockSelectedPaper, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="47" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                            <TextBlock VerticalAlignment="Center"
+                                                                FontStyle="Italic"
+                                                                FontWeight="Bold"
+                                                                Text="{Binding PaperType}" />
+                                                        </Grid>
                                                         <StackPanel Grid.Column="1" Orientation="Horizontal">
                                                             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                                         </StackPanel>
