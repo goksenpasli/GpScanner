@@ -1141,6 +1141,18 @@
                                                 <Run Text="{Binding Mode=OneWay, Path=ContributionDocumentCount}" />
                                                 <Run Text="{twainctrl:Loc DOCUMENT}" />
                                             </TextBlock>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                            </StackPanel>
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWSIZE}" />
+                                            <Slider Width="400"
+                                                AutoToolTipPlacement="TopLeft"
+                                                AutoToolTipPrecision="0"
+                                                Maximum="800"
+                                                Minimum="32"
+                                                SmallChange="1"
+                                                Style="{StaticResource Slider}"
+                                                Value="{Binding ContributionPreviewSize}" />
                                         </StackPanel>
                                     </GroupBox.Header>
                                     <Extensions:ContributionControl Contributions="{Binding ContributionData}"

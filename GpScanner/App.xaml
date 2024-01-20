@@ -200,6 +200,22 @@
                     </PdfViewer:PdfShadowedImage.Tag>
                 </PdfViewer:PdfShadowedImage>
             </DataTemplate>
+            <DataTemplate x:Key="ContributionViewerPdfViewerTemplateMini">
+                <PdfViewer:PdfShadowedImage Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}"
+                    Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}"
+                    Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                    <PdfViewer:PdfShadowedImage.Tag>
+                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                            <Binding Mode="OneWay" />
+                            <Binding Mode="OneWay">
+                                <Binding.Source>
+                                    <System:Int32>1</System:Int32>
+                                </Binding.Source>
+                            </Binding>
+                        </MultiBinding>
+                    </PdfViewer:PdfShadowedImage.Tag>
+                </PdfViewer:PdfShadowedImage>
+            </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid Margin="2">
                     <Grid.RowDefinitions>
@@ -428,6 +444,18 @@
                     TifNavigasyonButtonEtkin="Collapsed"
                     ToolBarVisibility="Collapsed" />
             </DataTemplate>
+            <DataTemplate x:Key="ContributionViewerImgTemplateMini">
+                <Extensions:ImageViewer Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                    Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                    DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    IsHitTestVisible="False"
+                    OpenButtonVisibility="Collapsed"
+                    PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Collapsed"
+                    TifNavigasyonButtonEtkin="Collapsed"
+                    ToolBarVisibility="Collapsed" />
+            </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
@@ -634,13 +662,11 @@
                                                         <Style TargetType="ListBox">
                                                             <Style.Triggers>
                                                                 <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true">
-                                                                    <Setter Property="ItemTemplateSelector" Value="{DynamicResource DocumentViewerMiniSelector}" />
+                                                                    <Setter Property="ItemTemplateSelector" Value="{DynamicResource ContributionViewerSelector}" />
                                                                     <Setter Property="ItemsPanel">
                                                                         <Setter.Value>
                                                                             <ItemsPanelTemplate>
-                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                                                                    ItemSize="155,155"
-                                                                                    SpacingMode="None" />
+                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
                                                                             </ItemsPanelTemplate>
                                                                         </Setter.Value>
                                                                     </Setter>
@@ -678,6 +704,14 @@
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
+            <twain:ViewerTemplateSelector x:Key="ContributionViewerSelector"
+                Eyp="{StaticResource EmptyViewerTemplate}"
+                Img="{StaticResource ContributionViewerImgTemplateMini}"
+                Pdf="{StaticResource ContributionViewerPdfViewerTemplateMini}"
+                Vid="{StaticResource EmptyViewerTemplate}"
+                Xml="{StaticResource EmptyViewerTemplate}"
+                Xps="{StaticResource EmptyViewerTemplate}"
+                Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector"
                 Eyp="{StaticResource EmptyViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"

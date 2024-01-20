@@ -77,6 +77,7 @@ public partial class GpScannerViewModel : InpcBase
     private ObservableCollection<BatchPdfData> compressedFiles = [];
     private ObservableCollection<ContributionData> contributionData;
     private int contributionDocumentCount;
+    private double contributionPreviewSize = 120;
     private int cycleIndex;
     private bool detectBarCode = true;
     private bool detectPageSeperator;
@@ -1280,6 +1281,19 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
+    public double ContributionPreviewSize
+    {
+        get => contributionPreviewSize;
+        set
+        {
+            if (contributionPreviewSize != value)
+            {
+                contributionPreviewSize = value;
+                OnPropertyChanged(nameof(ContributionPreviewSize));
+            }
+        }
+    }
+
     public ICommand CycleSelectedDocuments { get; }
 
     public ICommand DateBack { get; }
@@ -2265,14 +2279,14 @@ public partial class GpScannerViewModel : InpcBase
                                           {
                                               OpenSettings.Execute(null);
                                           }
-                                      }; 
-            updateMenuItem.Click += (s, e) =>
-                                      {
-                                          if (CheckUpdate.CanExecute(null))
-                                          {
-                                              CheckUpdate.Execute(null);
-                                          }
                                       };
+            updateMenuItem.Click += (s, e) =>
+                                    {
+                                        if (CheckUpdate.CanExecute(null))
+                                        {
+                                            CheckUpdate.Execute(null);
+                                        }
+                                    };
             ContextMenu menu = new();
             _ = menu.MenuItems.Add(settingsMenuItem);
             _ = menu.MenuItems.Add(updateMenuItem);

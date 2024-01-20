@@ -1309,9 +1309,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip",
                     Multiselect = false
                 };
-                if (openFileDialog.ShowDialog() == true && parameter is SimpleArchiveViewer archiveViewer)
+                if (openFileDialog.ShowDialog() == true)
                 {
-                    archiveViewer.ArchivePath = openFileDialog.FileName;
+                    ArchiveVwr.ArchivePath = openFileDialog.FileName;
+                }
+            },
+            parameter => true);
+
+        LoadXlsFile = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new() { Filter = "Excel Dosyası(*.xls; *.xlsx; *.xlsb; *.csv) | *.xls; *.xlsx; *.xlsb; *.csv", Multiselect = false };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    xlsxViewer.XlsxDataFilePath = openFileDialog.FileName;
                 }
             },
             parameter => true);
@@ -2175,6 +2186,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand LoadPdfExtractFile { get; }
 
     public ICommand LoadSingleUdfFile { get; }
+
+    public RelayCommand<object> LoadXlsFile { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
 

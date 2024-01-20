@@ -2329,7 +2329,7 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Button Command="{Binding LoadArchiveFile}" CommandParameter="{Binding ElementName=ArchiveVwr, Mode=OneWay}">
+                        <Button Command="{Binding LoadArchiveFile}">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <Image Width="32" Height="32">
                                     <Image.Style>
@@ -2432,7 +2432,23 @@
                             Height="32"
                             Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xls}" />
                     </TabItem.Header>
-                    <local:XlsxViewer x:Name="xlsxViewer" />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Button Command="{Binding LoadXlsFile}">
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Image Width="32"
+                                    Height="32"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xls}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    FontWeight="Bold"
+                                    Text="{local:Loc FILE}" />
+                            </StackPanel>
+                        </Button>
+                        <local:XlsxViewer x:Name="xlsxViewer" Grid.Row="1" />
+                    </Grid>
                 </TabItem>
             </TabControl>
         </GroupBox>
