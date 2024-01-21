@@ -450,6 +450,7 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
                                     ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -472,41 +473,28 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <StackPanel x:Name="SpDelay"
-                                    Grid.Column="1"
-                                    Orientation="Horizontal">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="20" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanDelay"
-                                        IsReadOnly="True"
-                                        Maximum="120"
-                                        Minimum="0"
-                                        SmallChange="1"
-                                        Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="54" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanBetweenDelay"
-                                        IsReadOnly="True"
-                                        Maximum="120"
-                                        Minimum="0"
-                                        SmallChange="1"
-                                        Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc SECOND}" />
-                                </StackPanel>
+                                <ComboBox Grid.Column="1"
+                                    VerticalContentAlignment="Center"
+                                    local:Policy.PolicyName="Çözünürlük"
+                                    FontWeight="Bold"
+                                    ItemStringFormat="{}{0} Dpi"
+                                    ItemsSource="{Binding ScanResolutionList, Mode=OneWay}"
+                                    SelectedItem="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                <ListBox Grid.Column="2"
+                                    VerticalContentAlignment="Center"
+                                    local:Policy.PolicyName="SelectedRotation"
+                                    ItemsPanel="{StaticResource ListBoxItemsPanelHorizontal}"
+                                    SelectedValue="{Binding SelectedRotation}"
+                                    SelectedValuePath="Tag">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
+                                    <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
+                                    <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
+                                </ListBox>
                                 <UniformGrid Grid.Row="1"
-                                    Grid.ColumnSpan="2"
+                                    Grid.ColumnSpan="3"
                                     Columns="4">
                                     <ToggleButton IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ToggleButton.Style>
@@ -620,8 +608,8 @@
                         <GroupBox.Header>
                             <Grid Margin="1">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -662,73 +650,90 @@
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
-                                <ComboBox Grid.Column="1"
+                                <StackPanel x:Name="SpDelay"
+                                    Grid.Column="1"
+                                    Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="20" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanDelay"
+                                        IsReadOnly="True"
+                                        Maximum="120"
+                                        Minimum="0"
+                                        Orientation="Horizontal"
+                                        SmallChange="1"
+                                        Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="54" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanBetweenDelay"
+                                        IsReadOnly="True"
+                                        Maximum="120"
+                                        Minimum="0"
+                                        Orientation="Horizontal"
+                                        SmallChange="1"
+                                        Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                        Text="{local:Loc SECOND}"
+                                        ToolTip="{local:Loc SECOND}" />
+                                </StackPanel>
+                                <ListBox Grid.Column="2"
                                     VerticalContentAlignment="Center"
-                                    local:Policy.PolicyName="Çözünürlük"
-                                    FontWeight="Bold"
-                                    ItemStringFormat="{}{0} Dpi"
-                                    ItemsSource="{Binding ScanResolutionList, Mode=OneWay}"
-                                    SelectedItem="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                <UniformGrid Grid.Column="2" Columns="2">
-                                    <ListBox VerticalContentAlignment="Center"
-                                        local:Policy.PolicyName="SelectedRotation"
-                                        ItemsPanel="{StaticResource ListBoxItemsPanelHorizontal}"
-                                        SelectedValue="{Binding SelectedRotation}"
-                                        SelectedValuePath="Tag">
-                                        <ListBox.ItemContainerStyle>
-                                            <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
-                                        </ListBox.ItemContainerStyle>
-                                        <ListBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
-                                        <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
-                                        <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
-                                    </ListBox>
-                                    <ListBox VerticalContentAlignment="Center"
-                                        local:Policy.PolicyName="SelectedFlip"
-                                        ItemsPanel="{StaticResource ListBoxItemsPanelHorizontal}"
-                                        SelectedValue="{Binding SelectedFlip}"
-                                        SelectedValuePath="Tag">
-                                        <ListBox.ItemContainerStyle>
-                                            <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
-                                        </ListBox.ItemContainerStyle>
-                                        <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageFlips}}">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                        <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageFlips}}">
-                                            <Image Width="16"
-                                                Height="16"
-                                                RenderTransformOrigin="0.5,0.5">
-                                                <Image.RenderTransform>
-                                                    <TransformGroup>
-                                                        <RotateTransform Angle="-90" />
-                                                    </TransformGroup>
-                                                </Image.RenderTransform>
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="252" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                        <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageFlips}}">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="252" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </ListBoxItem>
-                                    </ListBox>
-                                </UniformGrid>
+                                    local:Policy.PolicyName="SelectedFlip"
+                                    ItemsPanel="{StaticResource ListBoxItemsPanelHorizontal}"
+                                    SelectedValue="{Binding SelectedFlip}"
+                                    SelectedValuePath="Tag">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageFlips}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageFlips}}">
+                                        <Image Width="16"
+                                            Height="16"
+                                            RenderTransformOrigin="0.5,0.5">
+                                            <Image.RenderTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="-90" />
+                                                </TransformGroup>
+                                            </Image.RenderTransform>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="252" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                    <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageFlips}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="252" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ListBoxItem>
+                                </ListBox>
                                 <Extensions:ContentToggleButton Grid.Column="3" ArrowVisibility="Collapsed">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -1220,45 +1225,10 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" PlacementMode="Right">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="55" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <Extensions:ContentToggleButton.OverContent>
-                                    <Border Background="{StaticResource BorderBackground}"
-                                        BorderBrush="Gray"
-                                        BorderThickness="1">
-                                        <StackPanel>
-                                            <Slider Height="96"
-                                                AutoToolTipPlacement="TopLeft"
-                                                Maximum="400"
-                                                Minimum="85"
-                                                Orientation="Vertical"
-                                                SmallChange="1"
-                                                Style="{StaticResource Slider}"
-                                                ToolTip="{local:Loc PREVIEWSIZE}"
-                                                Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
-                                            <Button Command="{Binding ResetPreviewSize}">
-                                                <Image Width="16"
-                                                    Height="16"
-                                                    Source="/TwainControl;component/Icons/delete.png" />
-                                            </Button>
-                                        </StackPanel>
-                                    </Border>
-                                </Extensions:ContentToggleButton.OverContent>
-                            </Extensions:ContentToggleButton>
-                            <Extensions:ContentToggleButton Grid.Column="1"
-                                local:Policy.PolicyName="PdfSettingsPage"
-                                ArrowVisibility="Collapsed">
+                            <Extensions:ContentToggleButton local:Policy.PolicyName="PdfSettingsPage" ArrowVisibility="Collapsed">
                                 <Extensions:ContentToggleButton.OverContent>
                                     <local:PdfSettings />
                                 </Extensions:ContentToggleButton.OverContent>
@@ -1274,7 +1244,7 @@
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SETTİNGS}" />
                                 </StackPanel>
                             </Extensions:ContentToggleButton>
-                            <ScrollViewer Grid.Column="2"
+                            <ScrollViewer Grid.Column="1"
                                 MaxHeight="55"
                                 Margin="1,0,0,0"
                                 VerticalAlignment="Center"
@@ -1447,7 +1417,7 @@
                                     </Button>
                                 </WrapPanel>
                             </ScrollViewer>
-                            <StackPanel Grid.Column="3" Orientation="Horizontal">
+                            <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <StackPanel>
                                     <TextBlock HorizontalAlignment="Center"
                                         VerticalAlignment="Top"
@@ -1471,7 +1441,7 @@
                             </StackPanel>
                         </Grid>
                     </GroupBox.Header>
-                    <TabControl>
+                    <TabControl Background="{StaticResource BorderBackground}">
                         <TabItem>
                             <TabItem.Header>
                                 <StackPanel Orientation="Horizontal">
@@ -1633,268 +1603,296 @@
                                     </Extensions:SplitButton>
                                 </StackPanel>
                             </TabItem.Header>
-                            <ListBox x:Name="Lb"
-                                Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
-                                local:Policy.PolicyName="LoadImage"
-                                AllowDrop="True"
-                                Background="{StaticResource BorderBackground}"
-                                Drop="ListBox_DropAsync"
-                                ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
-                                PreviewMouseWheel="ListBox_PreviewMouseWheel"
-                                SelectedIndex="{Binding SeekIndex}"
-                                SelectedItem="{Binding SeçiliResim}"
-                                SelectionMode="Extended"
-                                VirtualizingPanel.CacheLength="3,3"
-                                VirtualizingPanel.CacheLengthUnit="Item"
-                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                VirtualizingPanel.ScrollUnit="Pixel"
-                                VirtualizingPanel.VirtualizationMode="Standard">
-                                <ListBox.ItemContainerStyle>
-                                    <Style TargetType="{x:Type ListBoxItem}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate>
-                                                    <StackPanel Background="{TemplateBinding Background}"
-                                                        Drop="StackPanel_Drop"
-                                                        GiveFeedback="StackPanel_GiveFeedback">
-                                                        <TextBlock HorizontalAlignment="Center">
-                                                            <InlineUIContainer>
-                                                                <Extensions:NumericUpDownControl Height="20"
-                                                                    BorderBrush="Cyan"
-                                                                    LargeChange="1"
-                                                                    Maximum="1"
-                                                                    Minimum="-1"
-                                                                    NumericUpdownTextBoxVisibility="Collapsed"
-                                                                    Orientation="Horizontal"
-                                                                    SmallChange="1"
-                                                                    Value="{Binding RotationAngle}" />
-                                                            </InlineUIContainer><InlineUIContainer BaselineAlignment="Center">
-                                                                <Extensions:SplitButton local:Policy.PolicyName="Kaydet"
-                                                                    Background="{x:Null}"
-                                                                    Command="{Binding SaveSinglePdfFile, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
-                                                                    CommandParameter="{Binding Resim}">
-                                                                    <Image Width="24"
-                                                                        Height="24"
-                                                                        Source="/TwainControl;component/Icons/save.png" />
-                                                                    <Extensions:SplitButton.InternalContent>
-                                                                        <Border Background="{StaticResource BorderBackground}"
-                                                                            BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                                            BorderThickness="1">
-                                                                            <StackPanel>
-                                                                                <StackPanel.Resources>
-                                                                                    <Style TargetType="MenuItem">
-                                                                                        <Setter Property="CommandParameter" Value="{Binding Resim}" />
-                                                                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                                                                        <Setter Property="VerticalContentAlignment" Value="Center" />
-                                                                                    </Style>
-                                                                                    <Style TargetType="Image">
-                                                                                        <Setter Property="Height" Value="16" />
-                                                                                        <Setter Property="Width" Value="16" />
-                                                                                    </Style>
-                                                                                </StackPanel.Resources>
-                                                                                <MenuItem Command="{Binding SaveSinglePdfFile, Source={x:Reference UserControl}}">
-                                                                                    <MenuItem.Header>
-                                                                                        <StackPanel Orientation="Horizontal">
-                                                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                            <Extensions:NumericUpDownControl IsReadOnly="True"
-                                                                                                Maximum="95"
-                                                                                                Minimum="10"
-                                                                                                SmallChange="1"
-                                                                                                Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                        </StackPanel>
-                                                                                    </MenuItem.Header>
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                                <MenuItem Command="{Binding SaveSingleBwPdfFile, Source={x:Reference UserControl}}">
-                                                                                    <MenuItem.Header>
-                                                                                        <StackPanel Orientation="Horizontal">
-                                                                                            <TextBlock VerticalAlignment="Center">
-                                                                                                <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                <Run Text="{local:Loc BW}" />
-                                                                                            </TextBlock>
-                                                                                            <Extensions:NumericUpDownControl IsReadOnly="True"
-                                                                                                Maximum="95"
-                                                                                                Minimum="10"
-                                                                                                SmallChange="1"
-                                                                                                Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                        </StackPanel>
-                                                                                    </MenuItem.Header>
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                                <MenuItem Command="{Binding SaveSingleJpgFile, Source={x:Reference UserControl}}">
-                                                                                    <MenuItem.Header>
-                                                                                        <StackPanel Orientation="Horizontal">
-                                                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                            <Extensions:NumericUpDownControl IsReadOnly="True"
-                                                                                                Maximum="95"
-                                                                                                Minimum="10"
-                                                                                                SmallChange="1"
-                                                                                                Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                        </StackPanel>
-                                                                                    </MenuItem.Header>
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                                <MenuItem Command="{Binding SaveSingleTifFile, Source={x:Reference UserControl}}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                                <MenuItem Command="{Binding SaveSingleXpsFile, Source={x:Reference UserControl}}" Header="{Binding Source='.xps', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                                <MenuItem Command="{Binding SaveSingleWebpFile, Source={x:Reference UserControl}}" IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
-                                                                                    <MenuItem.Header>
-                                                                                        <StackPanel Orientation="Horizontal">
-                                                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                            <Extensions:NumericUpDownControl IsReadOnly="True"
-                                                                                                Maximum="95"
-                                                                                                Minimum="10"
-                                                                                                SmallChange="1"
-                                                                                                Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                        </StackPanel>
-                                                                                    </MenuItem.Header>
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                                <MenuItem Command="{Binding SaveSingleTxtFile, Source={x:Reference UserControl}}"
-                                                                                    Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                                                                    IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                                <Separator />
-                                                                                <MenuItem Command="{Binding CopyCurrentImageToClipBoard, Source={x:Reference UserControl}}" Header="{local:Loc COPY}">
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Width="16" Height="16">
-                                                                                            <Image.Source>
-                                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                    <Binding Source="Shell32.dll" />
-                                                                                                    <Binding Source="134" />
-                                                                                                </MultiBinding>
-                                                                                            </Image.Source>
-                                                                                        </Image>
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                                <MenuItem Command="{Binding CopyCurrentImageToImageEditor, Source={x:Reference UserControl}}" Header="{local:Loc GRAPH}">
-                                                                                    <MenuItem.Icon>
-                                                                                        <Image Width="16" Height="16">
-                                                                                            <Image.Source>
-                                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                    <Binding Source="pifmgr.dll" />
-                                                                                                    <Binding Source="16" />
-                                                                                                </MultiBinding>
-                                                                                            </Image.Source>
-                                                                                        </Image>
-                                                                                    </MenuItem.Icon>
-                                                                                </MenuItem>
-                                                                            </StackPanel>
-                                                                        </Border>
-                                                                    </Extensions:SplitButton.InternalContent>
-                                                                </Extensions:SplitButton>
-                                                            </InlineUIContainer><Run Cursor="SizeAll"
-                                                                FontFamily="Wingdings"
-                                                                FontSize="24"
-                                                                FontWeight="Bold"
-                                                                MouseLeftButtonDown="Run_MouseLeftButtonDown"
-                                                                Text="B" /><Hyperlink local:Policy.PolicyName="InvertImage"
-                                                                Command="{Binding DataContext.InvertImage, ElementName=UserControl}"
-                                                                CommandParameter="{Binding Mode=OneWay}"
-                                                                TextDecorations="None">
-                                                                <Run FontFamily="Wingdings"
-                                                                    FontSize="26"
-                                                                    Foreground="Black"
-                                                                    Text="[" />
-                                                            </Hyperlink><Hyperlink local:Policy.PolicyName="AutoDeskewImage"
-                                                                Command="{Binding DataContext.AutoDeskewImage, ElementName=UserControl}"
-                                                                CommandParameter="{Binding Mode=OneWay}"
-                                                                TextDecorations="None">
-                                                                <Run FontFamily="Wingdings 3"
-                                                                    FontSize="26"
-                                                                    Foreground="Black"
-                                                                    Text="R" />
-                                                            </Hyperlink><Hyperlink local:Policy.PolicyName="ResimSil"
-                                                                BaselineAlignment="Center"
-                                                                Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
-                                                                CommandParameter="{Binding Mode=OneWay}"
-                                                                FontFamily="Segoe UI Black"
-                                                                TextDecorations="None">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Slider AutoToolTipPlacement="TopLeft"
+                                        Maximum="400"
+                                        Minimum="85"
+                                        Orientation="Vertical"
+                                        SmallChange="1"
+                                        Style="{StaticResource Slider}"
+                                        ToolTip="{local:Loc PREVIEWSIZE}"
+                                        Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
+                                    <Button Grid.Row="1"
+                                        Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        Command="{Binding ResetPreviewSize}">
+                                        <Image Width="16"
+                                            Height="16"
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                    </Button>
+                                </Grid>
+                                <ListBox x:Name="Lb"
+                                    Grid.Column="1"
+                                    Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
+                                    local:Policy.PolicyName="LoadImage"
+                                    AllowDrop="True"
+                                    Background="{StaticResource BorderBackground}"
+                                    Drop="ListBox_DropAsync"
+                                    ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
+                                    PreviewMouseWheel="ListBox_PreviewMouseWheel"
+                                    SelectedIndex="{Binding SeekIndex}"
+                                    SelectedItem="{Binding SeçiliResim}"
+                                    SelectionMode="Extended"
+                                    VirtualizingPanel.CacheLength="3,3"
+                                    VirtualizingPanel.CacheLengthUnit="Item"
+                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                    VirtualizingPanel.ScrollUnit="Pixel"
+                                    VirtualizingPanel.VirtualizationMode="Standard">
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <StackPanel Background="{TemplateBinding Background}"
+                                                            Drop="StackPanel_Drop"
+                                                            GiveFeedback="StackPanel_GiveFeedback">
+                                                            <TextBlock HorizontalAlignment="Center">
                                                                 <InlineUIContainer>
-                                                                    <Image Width="24"
-                                                                        Height="24"
-                                                                        Source="/TwainControl;component/Icons/delete.png" />
-                                                                </InlineUIContainer>
-                                                            </Hyperlink>
-                                                        </TextBlock>
-                                                        <Canvas Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                            <ToggleButton Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                VerticalAlignment="Center"
-                                                                VerticalContentAlignment="Center"
-                                                                Background="{x:Null}"
-                                                                BorderBrush="{x:Null}"
-                                                                IsChecked="{Binding Seçili}"
-                                                                RenderTransformOrigin="0.5,0.5"
-                                                                Style="{StaticResource ToggleButtonAnimationStyle}">
-                                                                <ToggleButton.RenderTransform>
-                                                                    <TransformGroup>
-                                                                        <ScaleTransform />
-                                                                        <SkewTransform />
-                                                                        <RotateTransform />
-                                                                        <TranslateTransform />
-                                                                    </TransformGroup>
-                                                                </ToggleButton.RenderTransform>
-                                                                <Viewbox>
-                                                                    <PdfViewer:PdfShadowedImage Width="{Binding ResimThumb.Width, Mode=OneWay}"
-                                                                        Height="{Binding ResimThumb.Height, Mode=OneWay}"
-                                                                        d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                        d:Source="/GpScanner;component/scanner.ico"
-                                                                        d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                                        <PdfViewer:PdfShadowedImage.Source>
-                                                                            <PriorityBinding>
-                                                                                <Binding IsAsync="True"
-                                                                                    Mode="OneWay"
-                                                                                    Path="ResimThumb" />
-                                                                                <Binding Converter="{StaticResource ListFilePathToIconConverter}" Path="FilePath" />
-                                                                            </PriorityBinding>
-                                                                        </PdfViewer:PdfShadowedImage.Source>
-                                                                    </PdfViewer:PdfShadowedImage>
-                                                                </Viewbox>
-                                                            </ToggleButton>
-                                                            <TextBlock Canvas.Left="0"
-                                                                Canvas.Bottom="0"
-                                                                FontWeight="Bold"
-                                                                Text="{Binding Index, Mode=OneWay}" />
-                                                        </Canvas>
-                                                    </StackPanel>
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                                <Setter Property="Background" Value="MediumSeaGreen" />
-                                                <Setter Property="IsSelected" Value="True" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </ListBox.ItemContainerStyle>
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                            </ListBox>
+                                                                    <Extensions:NumericUpDownControl Height="20"
+                                                                        BorderBrush="Cyan"
+                                                                        LargeChange="1"
+                                                                        Maximum="1"
+                                                                        Minimum="-1"
+                                                                        NumericUpdownTextBoxVisibility="Collapsed"
+                                                                        Orientation="Horizontal"
+                                                                        SmallChange="1"
+                                                                        Value="{Binding RotationAngle}" />
+                                                                </InlineUIContainer><InlineUIContainer BaselineAlignment="Center">
+                                                                    <Extensions:SplitButton local:Policy.PolicyName="Kaydet"
+                                                                        Background="{x:Null}"
+                                                                        Command="{Binding SaveSinglePdfFile, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
+                                                                        CommandParameter="{Binding Resim}">
+                                                                        <Image Width="24"
+                                                                            Height="24"
+                                                                            Source="/TwainControl;component/Icons/save.png" />
+                                                                        <Extensions:SplitButton.InternalContent>
+                                                                            <Border Background="{StaticResource BorderBackground}"
+                                                                                BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                                                BorderThickness="1">
+                                                                                <StackPanel>
+                                                                                    <StackPanel.Resources>
+                                                                                        <Style TargetType="MenuItem">
+                                                                                            <Setter Property="CommandParameter" Value="{Binding Resim}" />
+                                                                                            <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                                                                            <Setter Property="VerticalContentAlignment" Value="Center" />
+                                                                                        </Style>
+                                                                                        <Style TargetType="Image">
+                                                                                            <Setter Property="Height" Value="16" />
+                                                                                            <Setter Property="Width" Value="16" />
+                                                                                        </Style>
+                                                                                    </StackPanel.Resources>
+                                                                                    <MenuItem Command="{Binding SaveSinglePdfFile, Source={x:Reference UserControl}}">
+                                                                                        <MenuItem.Header>
+                                                                                            <StackPanel Orientation="Horizontal">
+                                                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                    Maximum="95"
+                                                                                                    Minimum="10"
+                                                                                                    SmallChange="1"
+                                                                                                    Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                            </StackPanel>
+                                                                                        </MenuItem.Header>
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                    <MenuItem Command="{Binding SaveSingleBwPdfFile, Source={x:Reference UserControl}}">
+                                                                                        <MenuItem.Header>
+                                                                                            <StackPanel Orientation="Horizontal">
+                                                                                                <TextBlock VerticalAlignment="Center">
+                                                                                                    <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                                    <Run Text="{local:Loc BW}" />
+                                                                                                </TextBlock>
+                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                    Maximum="95"
+                                                                                                    Minimum="10"
+                                                                                                    SmallChange="1"
+                                                                                                    Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                            </StackPanel>
+                                                                                        </MenuItem.Header>
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                    <MenuItem Command="{Binding SaveSingleJpgFile, Source={x:Reference UserControl}}">
+                                                                                        <MenuItem.Header>
+                                                                                            <StackPanel Orientation="Horizontal">
+                                                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                    Maximum="95"
+                                                                                                    Minimum="10"
+                                                                                                    SmallChange="1"
+                                                                                                    Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                            </StackPanel>
+                                                                                        </MenuItem.Header>
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                    <MenuItem Command="{Binding SaveSingleTifFile, Source={x:Reference UserControl}}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                    <MenuItem Command="{Binding SaveSingleXpsFile, Source={x:Reference UserControl}}" Header="{Binding Source='.xps', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                    <MenuItem Command="{Binding SaveSingleWebpFile, Source={x:Reference UserControl}}" IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
+                                                                                        <MenuItem.Header>
+                                                                                            <StackPanel Orientation="Horizontal">
+                                                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                    Maximum="95"
+                                                                                                    Minimum="10"
+                                                                                                    SmallChange="1"
+                                                                                                    Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                            </StackPanel>
+                                                                                        </MenuItem.Header>
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                    <MenuItem Command="{Binding SaveSingleTxtFile, Source={x:Reference UserControl}}"
+                                                                                        Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                                                                        IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                    <Separator />
+                                                                                    <MenuItem Command="{Binding CopyCurrentImageToClipBoard, Source={x:Reference UserControl}}" Header="{local:Loc COPY}">
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Width="16" Height="16">
+                                                                                                <Image.Source>
+                                                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                        <Binding Source="Shell32.dll" />
+                                                                                                        <Binding Source="134" />
+                                                                                                    </MultiBinding>
+                                                                                                </Image.Source>
+                                                                                            </Image>
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                    <MenuItem Command="{Binding CopyCurrentImageToImageEditor, Source={x:Reference UserControl}}" Header="{local:Loc GRAPH}">
+                                                                                        <MenuItem.Icon>
+                                                                                            <Image Width="16" Height="16">
+                                                                                                <Image.Source>
+                                                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                        <Binding Source="pifmgr.dll" />
+                                                                                                        <Binding Source="16" />
+                                                                                                    </MultiBinding>
+                                                                                                </Image.Source>
+                                                                                            </Image>
+                                                                                        </MenuItem.Icon>
+                                                                                    </MenuItem>
+                                                                                </StackPanel>
+                                                                            </Border>
+                                                                        </Extensions:SplitButton.InternalContent>
+                                                                    </Extensions:SplitButton>
+                                                                </InlineUIContainer><Run Cursor="SizeAll"
+                                                                    FontFamily="Wingdings"
+                                                                    FontSize="24"
+                                                                    FontWeight="Bold"
+                                                                    MouseLeftButtonDown="Run_MouseLeftButtonDown"
+                                                                    Text="B" /><Hyperlink local:Policy.PolicyName="InvertImage"
+                                                                    Command="{Binding DataContext.InvertImage, ElementName=UserControl}"
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    TextDecorations="None">
+                                                                    <Run FontFamily="Wingdings"
+                                                                        FontSize="26"
+                                                                        Foreground="Black"
+                                                                        Text="[" />
+                                                                </Hyperlink><Hyperlink local:Policy.PolicyName="AutoDeskewImage"
+                                                                    Command="{Binding DataContext.AutoDeskewImage, ElementName=UserControl}"
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    TextDecorations="None">
+                                                                    <Run FontFamily="Wingdings 3"
+                                                                        FontSize="26"
+                                                                        Foreground="Black"
+                                                                        Text="R" />
+                                                                </Hyperlink><Hyperlink local:Policy.PolicyName="ResimSil"
+                                                                    BaselineAlignment="Center"
+                                                                    Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    FontFamily="Segoe UI Black"
+                                                                    TextDecorations="None">
+                                                                    <InlineUIContainer>
+                                                                        <Image Width="24"
+                                                                            Height="24"
+                                                                            Source="/TwainControl;component/Icons/delete.png" />
+                                                                    </InlineUIContainer>
+                                                                </Hyperlink>
+                                                            </TextBlock>
+                                                            <Canvas Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                                <ToggleButton Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                    Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                    VerticalAlignment="Center"
+                                                                    VerticalContentAlignment="Center"
+                                                                    Background="{x:Null}"
+                                                                    BorderBrush="{x:Null}"
+                                                                    IsChecked="{Binding Seçili}"
+                                                                    RenderTransformOrigin="0.5,0.5"
+                                                                    Style="{StaticResource ToggleButtonAnimationStyle}">
+                                                                    <ToggleButton.RenderTransform>
+                                                                        <TransformGroup>
+                                                                            <ScaleTransform />
+                                                                            <SkewTransform />
+                                                                            <RotateTransform />
+                                                                            <TranslateTransform />
+                                                                        </TransformGroup>
+                                                                    </ToggleButton.RenderTransform>
+                                                                    <Viewbox>
+                                                                        <PdfViewer:PdfShadowedImage Width="{Binding ResimThumb.Width, Mode=OneWay}"
+                                                                            Height="{Binding ResimThumb.Height, Mode=OneWay}"
+                                                                            d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                            d:Source="/GpScanner;component/scanner.ico"
+                                                                            d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                                            <PdfViewer:PdfShadowedImage.Source>
+                                                                                <PriorityBinding>
+                                                                                    <Binding IsAsync="True"
+                                                                                        Mode="OneWay"
+                                                                                        Path="ResimThumb" />
+                                                                                    <Binding Converter="{StaticResource ListFilePathToIconConverter}" Path="FilePath" />
+                                                                                </PriorityBinding>
+                                                                            </PdfViewer:PdfShadowedImage.Source>
+                                                                        </PdfViewer:PdfShadowedImage>
+                                                                    </Viewbox>
+                                                                </ToggleButton>
+                                                                <TextBlock Canvas.Left="0"
+                                                                    Canvas.Bottom="0"
+                                                                    FontWeight="Bold"
+                                                                    Text="{Binding Index, Mode=OneWay}" />
+                                                            </Canvas>
+                                                        </StackPanel>
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                                    <Setter Property="Background" Value="MediumSeaGreen" />
+                                                    <Setter Property="IsSelected" Value="True" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </Grid>
                         </TabItem>
-
                     </TabControl>
                 </GroupBox>
                 <UniformGrid Grid.Row="2" Columns="3">
@@ -2144,7 +2142,9 @@
             </GridSplitter.InputBindings>
         </GridSplitter>
         <GroupBox Grid.Column="2">
-            <TabControl x:Name="TbCtrl" SelectedIndex="{Binding SelectedTabIndex}">
+            <TabControl x:Name="TbCtrl"
+                Background="{StaticResource BorderBackground}"
+                SelectedIndex="{Binding SelectedTabIndex}">
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
