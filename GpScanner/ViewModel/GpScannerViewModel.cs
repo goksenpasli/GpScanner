@@ -2646,6 +2646,20 @@ public partial class GpScannerViewModel : InpcBase
                     TesseractViewModel.SeçiliDil = "Portuguese";
 
                     break;
+
+                case "INDONESIA":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("id");
+                    CalendarLang = XmlLanguage.GetLanguage("id");
+                    TesseractViewModel.SeçiliDil = "Indonesian";
+
+                    break;
+
+                case "ՀԱՅԵՐԵՆ":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("hy");
+                    CalendarLang = XmlLanguage.GetLanguage("hy");
+                    TesseractViewModel.SeçiliDil = "Armenian";
+
+                    break;
             }
 
             Settings.Default.DefaultLang = SeçiliDil;

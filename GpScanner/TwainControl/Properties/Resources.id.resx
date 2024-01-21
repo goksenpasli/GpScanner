@@ -1,0 +1,711 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>PILIH SUMBER</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>PENGATURAN</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>RESOLUSI</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>ADF</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>PUTIH HITAM</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>ABU-ABU</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>WARNA</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>DUA SISI</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>TAMPILKAN GUI</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>PINDAI TERPISAH</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>TAMPILKAN FILE SETELAH SCAN CEPAT</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>PENGATURAN LAINNYA</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>MEJA</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>DETEKSI PERBATASAN OTOMATIS</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>TUNJUKKAN KEMAJUAN</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>ROTASI OTOMATIS</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>TIDAK ADA TINDAKAN</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>TUTUP KOMPUTER</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>MULAI ULANG KOMPUTER</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>NAMA FILE</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>HARI</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>BULAN</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>TAHUN</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>WAKTU</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>MENIT</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>KEDUA</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>PANDUAN</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>NAMA BELAKANG</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>SIMPAN PROFIL</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>MENGHAPUS</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>PINDAI</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>CEPAT</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>PINDAI OTOMATIS</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>SEMUA</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>TIDAK ADA</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>BALIK</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>UKURAN PREVIEW GAMBAR</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PERLINDUNGAN PDF</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>ENKRIPT</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>PENGATURAN YANG DIBUAT DI SINI MEMPENGARUHI SEMUA PENGATURAN PDF.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>IZINKAN CETAK</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>IZINKAN SALINAN</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>IZINKAN EDIT</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>SIMPAN YANG DIPILIH</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>HAPUS DAFTAR</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>GABUNG PDF</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>TENTANG</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>DOKUMEN</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>PANGKAS GAMBAR</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>MENGATUR ULANG</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>HITUNGAN LEBAR</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>HITUNGAN TINGGI</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>MENGIRIS</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>TEKS</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>UKURAN TEKS</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>SUDUT TEKS</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>FONT</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>GAMBAR TEKS</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>SIMPAN PDF</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>MEMBANTU</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>MENGAJUKAN</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>KALENDER</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>GRAFIK</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>LIHAT SEMUA</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>FILE PRATINJAU</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESSERAK</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>MENGGABUNGKAN</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>GABUNGKAN YANG TERPILIH</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>PILIH MINIMAL DUA FILE PDF</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>BACA AKTIF</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>ISI</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>TAMPILKAN DI DALAM FOLDER</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Karena biner Tesseract dan leptonica dikompilasi dengan Visual Studio 2019, Anda perlu memastikan bahwa Anda telah menginstal Visual Studio 2019 Runtime</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Unduh juga file data bahasa lainnya untuk tesseract 4.1.0 dari tesseract-ocr jika diperlukan.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Waktu Proses Visual Studio 2019 x86 dan x64</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Data bahasa Tesseract lainnya</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>PEMINDAI</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>KATA SANDI</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Shutdown Atau Restart Sudah Diatur.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Setelah Pekerjaan Pemindaian Cepat</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Atur Folder Simpan Otomatis</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Jalur Penyimpanan Otomatis Berubah.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Semua Dokumen yang Dipindai di Daftar Bawah Akan Dihapus Apakah Anda ingin melanjutkan?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Pindai</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Terapkan Rotasi</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Aplikasi sudah berjalan.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>DAFTAR IMS</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>MENERJEMAHKAN</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>BAHASA SUMBER</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>BAHASA TUJUAN</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>BATALKAN DAFTAR PERANGKAT IMS</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Simpan Setiap Halaman ke File Terpisah File Disimpan ke Folder yang Ditentukan Di Bawah.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>SIMPAN OCR PDF</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Berhenti</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>KOSONG</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>MENGHAPUS</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Disarankan untuk memilih format yang sesuai untuk indeks folder aplikasi browser lama Anda.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>LEBAR KUSTOM</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>TINGGI KUSTOM</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Tentukan Folder Simpan Otomatis.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Masalah yang Diketahui</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Terkadang, meskipun file ditambahkan ke daftar, file tersebut tidak muncul dalam daftar.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Menunjukkan berapa detik pemindai akan menunggu sebelum memindai!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>PEMINDAI FILM</value>
+  </data>
+  <data name="LICENSE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Abaikan Lebar Tinggi Sama.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>PERPUSTAKAAN</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Pilih Folder Simpan Pdf</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Pilih Folder Gambar</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Putar Suara Saat Pemindaian Selesai</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Jika Dicentang Beberapa Dokumen Dapat Di-OCR Pada Saat Yang Sama</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Tutup Berkas</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>WARNA BALIK</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>MELIPAT</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>CERMIN</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>RIAK</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>DIINSTAL</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>File Sedang Digunakan.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Tekan Dan Tahan Tombol Esc Untuk Membatalkan</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>WARNA</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>KERINGANAN</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>KEJENUHAN</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Pratinjau Pdf Sederhana.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Setelah Selesai Keluarkan CD</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>HORISONTAL</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Ambil Yang Pertama Dan Terakhir Lanjutkan</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Pisahkan dan Sortir</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>ACAK</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>FILE TIDAK TERINDEKS</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Tampilkan Informasi Pdf</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr Semua Halaman Pdf</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Akses ditolak.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Nama File Tidak Valid</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>FILE DATABASE CADANGAN</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>EKSTENSI FILE ASOSIASI</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimalkan Ke System Tray</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Pesan Permulaan</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>PENGISIAN LINEAR</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>KELUAR</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>MENYALIN</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Disalin Ke Papan Klip</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>TAMBAHKAN DOKUMEN</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>TAMBAHKAN OCR KE DATABASE</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Jika ini dicentang, dokumen yang ditandai di bawah ini disimpan dalam database sebagai teks dokumen aktif di sebelah kiri.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Aplikasi ini telah dikembangkan untuk memfasilitasi pemindaian dan pelacakan dokumen.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>MENERAPKAN</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>GANTI WARNA</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>OTOMATIS</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>GAMBAR OTOMATIS</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>TEKS OTOMATIS</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>KELOMPOK</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Ketika File Gambar Ditambahkan ke Folder yang Ditentukan Di Bawah, Konversi Otomatis ke File Pdf di Folder yang Sama Dilakukan Selama Program Terbuka</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>KAMERA</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Jika Anda mengklik ini setelah mengatur nilai ambang batas, Anda dapat membuat pilihan warna kedua.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>KOMPRES</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>BAWAAN</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>WARNA TUJUAN</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>LEWATKAN HALAMAN KOSONG</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Buka File Eyp Secara Langsung.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>DATAR</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>KUALITAS JPEG</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>KIRI</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Format File Ini Memiliki Dukungan Terbatas.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>MEMUAT</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Tidak Ada Kode Patch yang Terdeteksi</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>TIDAK ADA PROFIL YANG DIPILIH</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Proses Ocr Pdf Membutuhkan Waktu Ekstra.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>APLIKASI SAYA YANG LAIN</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Langsung Timpa File Terkompresi dalam Dokumen yang Dipindai</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>NOMOR HALAMAN</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Buka File Pdf Secara Langsung.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>PERHATIKAN PERUBAHAN FOLDER PDF</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>DETEKSI QR</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Hapus File yang Diproses Dari Daftar Dokumen</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Apakah Anda Ingin Menghapus Gambar yang Dipilih?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Ganti Halaman</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>MULAI ULANG APLIKASI</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>BENAR</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>PUTAR 180 DERAJAT</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>PUTAR 270 DERAJAT</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>PUTAR 90 DERAJAT</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>GUNAKAN PEMISAH</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Terpisah</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Klik Dua Kali Untuk Memulihkan, Klik Kanan Untuk Memperluas</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>WARNA SUMBER</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Klik kanan untuk memilih warna sumber.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>AWAL</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>MENANDAI</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Beberapa Tugas Sedang Berjalan Tunggu Sampai Selesai.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Pilih Bahasa Tesseract</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>PERPUSTAKAAN PIHAK KE-3 YANG DIGUNAKAN DALAM APLIKASI</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>AMBANG</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Proses Sedang Berlangsung.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>MEMPERBARUI</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>TANDA AIR</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Kontrol Berwarna Cyan Bekerja Secara Berbeda Dengan Satu atau Lebih Tombol Alt Shift Ctrl</value>
+  </data>
+</root>

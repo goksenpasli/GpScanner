@@ -296,6 +296,22 @@
                                     </StackPanel>
                                 </ListBoxItem.Content>
                             </ListBoxItem>
+                            <ListBoxItem Tag="INDONESIA">
+                                <ListBoxItem.Content>
+                                    <StackPanel>
+                                        <Image />
+                                        <TextBlock />
+                                    </StackPanel>
+                                </ListBoxItem.Content>
+                            </ListBoxItem>
+                            <ListBoxItem Tag="ՀԱՅԵՐԵՆ">
+                                <ListBoxItem.Content>
+                                    <StackPanel>
+                                        <Image />
+                                        <TextBlock />
+                                    </StackPanel>
+                                </ListBoxItem.Content>
+                            </ListBoxItem>
                         </ListBox>
                         <Button HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"

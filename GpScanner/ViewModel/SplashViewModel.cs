@@ -32,6 +32,8 @@ namespace GpScanner.ViewModel
             { "БЪЛГАРСКИ", "flag-of-Bulgarian.png" },
             { "भारतीय", "flag-of-India.png" },
             { "PORTUGUÊS", "flag-of-Portuguese.png" },
+            { "INDONESIA", "flag-of-indonesia.png" },
+            { "ՀԱՅԵՐԵՆ", "flag-of-armenia.png" },
             { "DEFAULT", "flag-of-Turkey.png" }
         };
         private Uri flagUri;
