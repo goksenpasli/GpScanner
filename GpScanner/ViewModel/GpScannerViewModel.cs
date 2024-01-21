@@ -89,6 +89,7 @@ public partial class GpScannerViewModel : InpcBase
     private string ftpPassword = string.Empty;
     private string ftpSite = string.Empty;
     private string ftpUserName = string.Empty;
+    private ObservableCollection<Size> getPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
     private int ındexedFileCount;
     private FlowDirection langFlowDirection = FlowDirection.LeftToRight;
     private bool listBoxBorderAnimation;
@@ -1442,7 +1443,18 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public ObservableCollection<Size> GetPreviewSize => [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645)];
+    public ObservableCollection<Size> GetPreviewSize
+    {
+        get => getPreviewSize;
+        set
+        {
+            if (getPreviewSize != value)
+            {
+                getPreviewSize = value;
+                OnPropertyChanged(nameof(GetPreviewSize));
+            }
+        }
+    }
 
     public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
 
@@ -2176,6 +2188,11 @@ public partial class GpScannerViewModel : InpcBase
             {
                 Settings.Default.RegisterBatchWatcher = false;
             }
+        }
+
+        if (e.PropertyName is "CustomWidth" or "CustomHeight")
+        {
+            GetPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
         }
 
         Settings.Default.Save();

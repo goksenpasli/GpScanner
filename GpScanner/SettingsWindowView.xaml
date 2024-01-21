@@ -586,9 +586,6 @@
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                             </StackPanel>
-                            <TextBlock VerticalAlignment="Center"
-                                Text="PDF DPI"
-                                TextWrapping="Wrap" />
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="DefaultThumbNailDpi"
                                 ItemStringFormat="{}{0} Dpi"
@@ -600,6 +597,20 @@
                                     </Style>
                                 </ComboBox.ItemContainerStyle>
                             </ComboBox>
+                            <UniformGrid Rows="2">
+                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                    Minimum="100"
+                                    Orientation="Horizontal"
+                                    SmallChange="1"
+                                    ToolTip="{twainctrl:Loc CWIDTH}"
+                                    Value="{Binding CustomWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                    Minimum="100"
+                                    Orientation="Horizontal"
+                                    SmallChange="1"
+                                    ToolTip="{twainctrl:Loc CHEIGHT}"
+                                    Value="{Binding CustomHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                            </UniformGrid>
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="SelectedSize"
                                 ItemsSource="{Binding GetPreviewSize}"

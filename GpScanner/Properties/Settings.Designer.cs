@@ -503,5 +503,29 @@ namespace GpScanner.Properties {
                 this["StartupMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("500")]
+        public double CustomWidth {
+            get {
+                return ((double)(this["CustomWidth"]));
+            }
+            set {
+                this["CustomWidth"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("800")]
+        public double CustomHeight {
+            get {
+                return ((double)(this["CustomHeight"]));
+            }
+            set {
+                this["CustomHeight"] = value;
+            }
+        }
     }
 }
