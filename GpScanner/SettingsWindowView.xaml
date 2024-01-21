@@ -79,26 +79,10 @@
                             d:SelectedValue="TÜRKÇE"
                             twainctrl:Policy.PolicyName="SeçiliDil"
                             Background="{StaticResource BorderBackground}"
+                            ItemsSource="{x:Static viewmodel:SplashViewModel.LanguageFlags}"
                             SelectedValue="{Binding SeçiliDil}"
-                            SelectedValuePath="Tag"
-                            VirtualizingPanel.ScrollUnit="Pixel">
+                            SelectedValuePath="Key">
                             <ListBox.Resources>
-                                <Style TargetType="Image">
-                                    <Setter Property="CacheMode">
-                                        <Setter.Value>
-                                            <BitmapCache RenderAtScale="2" />
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="Effect" Value="{StaticResource FlagRippleEffect}" />
-                                    <Setter Property="FlowDirection" Value="LeftToRight" />
-                                    <Setter Property="Source" Value="{Binding Path=Tag, Converter={StaticResource StringToCountryFlagImageConverter}, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
-                                    <Setter Property="Width" Value="60" />
-                                </Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="FontSize" Value="11" />
-                                    <Setter Property="HorizontalAlignment" Value="Center" />
-                                    <Setter Property="Text" Value="{Binding Path=Tag, RelativeSource={RelativeSource AncestorType=ListBoxItem}}" />
-                                </Style>
                                 <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem">
                                     <Setter Property="HorizontalAlignment" Value="Center" />
                                     <Setter Property="Margin" Value="2,0,2,0" />
@@ -120,206 +104,23 @@
                                     <Extensions:VirtualizingWrapPanel SpacingMode="None" />
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
-                            <ListBoxItem Tag="TÜRKÇE">
-                                <ListBoxItem.Content>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
                                     <StackPanel>
-                                        <Image />
-                                        <TextBlock />
+                                        <Image Width="60"
+                                            Effect="{StaticResource FlagRippleEffect}"
+                                            FlowDirection="LeftToRight"
+                                            Source="{Binding Key, Converter={StaticResource StringToCountryFlagImageConverter}}">
+                                            <Image.CacheMode>
+                                                <BitmapCache RenderAtScale="2" />
+                                            </Image.CacheMode>
+                                        </Image>
+                                        <TextBlock HorizontalAlignment="Center"
+                                            FontSize="11"
+                                            Text="{Binding Key}" />
                                     </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="ENGLISH">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="FRANÇAIS">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="ITALIANO">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="عربي">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="РУССКИЙ">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="DEUTSCH">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="日本">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="DUTCH">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="CZECH">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="ESPAÑOL">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="中國人">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="УКРАЇНСЬКА">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="ΕΛΛΗΝΙΚΑ">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="فلسطين">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="AZƏRBAYCAN">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="HRVATSKI">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="DANSK">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="БЕЛАРУСКАЯ">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="БЪЛГАРСКИ">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="भारतीय">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="PORTUGUÊS">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="INDONESIA">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="ՀԱՅԵՐԵՆ">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
-                            <ListBoxItem Tag="ROMÂNĂ">
-                                <ListBoxItem.Content>
-                                    <StackPanel>
-                                        <Image />
-                                        <TextBlock />
-                                    </StackPanel>
-                                </ListBoxItem.Content>
-                            </ListBoxItem>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                         <Button HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"

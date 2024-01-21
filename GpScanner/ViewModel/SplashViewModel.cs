@@ -7,11 +7,10 @@ namespace GpScanner.ViewModel
 {
     public class SplashViewModel : InpcBase
     {
-        private const string basePath = "pack://application:,,,/GpScanner;component/Resources/";
-        private static readonly Dictionary<string, string> languageFlags = new()
+        public static readonly Dictionary<string, string> LanguageFlags = new()
         {
-            { "ENGLISH", "flag-of-United-States-of-America.png" },
             { "TÜRKÇE", "flag-of-Turkey.png" },
+            { "ENGLISH", "flag-of-United-States-of-America.png" },
             { "FRANÇAIS", "flag-of-France.png" },
             { "ITALIANO", "flag-of-Italy.png" },
             { "عربي", "flag-of-Saudi-Arabia.png" },
@@ -35,8 +34,9 @@ namespace GpScanner.ViewModel
             { "INDONESIA", "flag-of-indonesia.png" },
             { "ՀԱՅԵՐԵՆ", "flag-of-armenia.png" },
             { "ROMÂNĂ", "flag-of-romania.png" },
-            { "DEFAULT", "flag-of-Turkey.png" }
+            { "MAGYAR", "flag-of-hungary.png" },
         };
+        private const string basePath = "pack://application:,,,/GpScanner;component/Resources/";
         private Uri flagUri;
 
         public SplashViewModel() { FlagUri = GetFlag(Settings.Default.DefaultLang); }
@@ -56,12 +56,12 @@ namespace GpScanner.ViewModel
 
         public static Uri GetFlag(string language)
         {
-            if (languageFlags.TryGetValue(language.ToUpper(), out string flagPath))
+            if (LanguageFlags.TryGetValue(language.ToUpper(), out string flagPath))
             {
                 string fullPath = $"{basePath}{flagPath}";
                 return new Uri(fullPath);
             }
-            return new Uri($"{basePath}{languageFlags["DEFAULT"]}");
+            return new Uri($"{basePath}{LanguageFlags["DEFAULT"]}");
         }
     }
 }
