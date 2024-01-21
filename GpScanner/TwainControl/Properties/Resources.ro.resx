@@ -1,0 +1,711 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>SELECTARE SURSA</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>SETĂRI</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>REZOLUŢIE</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>ADF</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>ALB NEGRU</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>GRI</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>CULOARE</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>DOUĂ FEȚE</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>AFIȚIȚI GUI</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>SCANARE SEPARATĂ</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>AFIȘAȚI FIȘIERUL DUPĂ SCANARE RAPIDĂ</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>ALTE SETARI</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>DESKEW</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>DETECȚIA AUTOMATĂ DE FRONTIERE</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>ARĂTAȚI PROGRESUL</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>ROTARE AUTOMATĂ</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>FARA ACTIUNE</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>ÎNCHIS CALCULATORUL</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>RESTART CALCULATORUL</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>NUME DE FIȘIER</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>ZI</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>LUNĂ</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>AN</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>TIMP</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>MINUT</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>AL DOILEA</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>GUID</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>NUME DE UTILIZATOR</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>SALVEAZA PROFILUL</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>ȘTERGE</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>SCANĂ</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>RAPID</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>AUTO SCANARE</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>TOATE</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>NICI UNUL</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>VERSO</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>DIMENSIUNEA PREVISUALIZARE IMAGINEI</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF PROTECT</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>CRIPTARE</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>SETĂRILE FACUTE AICI AFECTEAZĂ TOATE SETĂRILE PDF.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>PERMITEȚI IMPRIMARE</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>PERMITĂ COPIE</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>PERMITĂ EDITARE</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>SALVAȚI SELECTATE</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>LISTĂ CLARĂ</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>FUNCȚI PDF</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>DESPRE</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>DOCUMENT</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>TIMITE IMAGINEA</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>RESET</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>CONTORUL LĂȚIMII</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>CONTORAREA ÎNĂLȚIMII</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>FELIE</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>TEXT</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>MĂRIMEA TEXTULUI</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>UNGHI DE TEXT</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>FONT</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>DESENAȚI TEXT</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>SALVAȚI PDF</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>AJUTOR</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>FIŞIER</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>CALENDAR</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>GRAFIC</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>A VEDEA TOT</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>PREVISUALIZARE FIȘIER</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESSERACT</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>COMBINA</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>MERGE SELECTED</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>SELECTAȚI CEL MĂR DOUA FIȘIERE PDF</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>CITEȘTE ACTIV</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>CONŢINUT</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>ARATĂ ÎN DOSAR</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Deoarece binarele tesseract și leptonica sunt compilate cu Visual Studio 2019, trebuie să vă asigurați că aveți instalat Visual Studio 2019 Runtime</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>De asemenea, descărcați fișiere de date în alte limbi pentru tesseract 4.1.0 de la tesseract-ocr, dacă este necesar.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Studio 2019 x86 și x64 Runtime</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Alte date de limbaj tesseract</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>SCANNER</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>PAROLA</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Oprirea sau repornirea este setată.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>După o lucrare de scanare rapidă</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Setați folderul Salvare automată</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Calea de salvare automată a fost schimbată.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Toate documentele scanate din lista de jos vor fi șterse Doriți să continuați?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Scanează</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Aplicați rotația</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Aplicația rulează deja.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>ÎNREGISTRARE STI</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>TRADUCEȚI</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>LIMBA-SURSĂ</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>LIMBA DE DESTINATIE</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>ANUL ÎNREGISTRAREA DISPOZITIVULUI STI</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Salvarea fiecărei pagini într-un fișier separat. Fișierele sunt salvate în folderul specificat mai jos.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>SALVAȚI PDF OCR</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>GOL</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DESPLECAȚI</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Este recomandat să alegeți formatul potrivit pentru indexul folderului vechii aplicații de browser.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>LĂȚime personalizată</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ÎNĂLȚime personalizată</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Specificați folderul de salvare automată.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Probleme cunoscute</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Uneori, deși un fișier este adăugat în listă, acesta nu apare în listă.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Afișează câte secunde va aștepta scanerul înainte de a scana!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>SCANNER DE FILM</value>
+  </data>
+  <data name="LICENSE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignorați Lățime Înălțime Egal.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>BIBLIOTECĂ</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Selectați Pdf Salvare folder</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Selectați folderul imagini</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Redați sunet când scanarea este finalizată</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Dacă este bifat, mai multe documente pot fi OCR în același timp</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Închideți fișierul</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>INVERSAȚI CULOAREA</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>FOLD</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>OGLINDĂ</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>CLIPOCI</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>INSTALAT</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Fișierul este în uz.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Apăsați și țineți apăsat butonul Esc pentru a anula</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>NUANŢĂ</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>LUMINAREA</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>SATURARE</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Previzualizare Pdf simplă.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Când ați terminat, scoateți CD-ul</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>ORIZONTALĂ</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Luați primul și ultimul Continuați</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Împărțiți și sortați</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>ALEATORIU</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>FIȘIERE NEINDEXATE</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Afișați informații PDF</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr Toate Paginile Pdf</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Acces interzis.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Numele fișierului este invalid</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>BACKUP FIȘIER BAZ DE DATE</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>EXTENSIUNEA DOSARULUI ASOCIAT</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimizați în bara de sistem</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Mesaj de pornire</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>UMPLURE LINEARĂ</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>IEȘIRE</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>COPIE</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Copiat în Clipboard</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>ADAUGĂ DOCUMENT</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>ADĂUGAȚI OCR ÎN BAZĂ DE DATE</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Dacă aceasta este bifată, documentul marcat mai jos este salvat în baza de date ca text al documentului activ din stânga.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Această aplicație a fost dezvoltată pentru a facilita scanarea și urmărirea documentelor.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>APLICA</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>SCHIMBA CULOAREA</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AUTOMAT</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>POZA AUTOMATĂ</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>TEXT AUTOMAT</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>LOT</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Când fișierele imagine sunt adăugate la folderul specificat mai jos, conversia automată în fișiere PDF din același folder se face atâta timp cât programul este deschis</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>APARAT FOTO</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Dacă faceți clic pe acesta după ce ați setat valoarea pragului, puteți face o a doua selecție de culoare.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRIMA</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>MOD IMPLICIT</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>CULOAREA DESTINATIEI</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>OMITĂ PAGINA GOLĂ</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Deschideți Eyp Files Direct.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>PAT PLAT</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>CALITATE JPEG</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>STÂNGA</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Acest format de fișier are suport limitat.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>SARCINĂ</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Nu a fost detectat niciun cod de corecție</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>NICIUN PROFIL SELECTAT</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Procesul Pdf Ocr necesită timp suplimentar.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>Celelalte aplicații ale mele</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Suprascrie direct fișierul comprimat din documentele scanate</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>NUMĂRUL PAGINII</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Deschideți fișierele PDF direct.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>VEZI SCHIMBAREA DOSARELOR PDF</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>DETECTA QR</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Ștergeți fișierele procesate din lista de documente</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Doriți să ștergeți imaginea selectată?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Înlocuiește Pagini</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>RESTARTAPP</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>DREAPTA</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ROTIRE 180 DE GRADE</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ROTIRE 270 DE GRADE</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ROTIRE 90 DE GRADE</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>UTILIZAȚI SEPERATOR</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Împărțită</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Faceți dublu clic pentru a restaura, faceți clic dreapta pentru a extinde</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>CULOAREA SURSA</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Faceți clic dreapta pentru a selecta culoarea sursă.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ETICHETĂ</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Unele sarcini rulează, așteptați să se termine.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Selectați Limba Tesseract</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>BIBLIOTECE DE LA TERȚE PĂRȚI UTILIZATE ÎN APLICAȚIE</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>PRAG</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Procesul este în desfășurare.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>ACTUALIZAȚI</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>FILIGRANA</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Orice control de culoare cian funcționează diferit cu una sau mai multe taste Alt Shift Ctrl</value>
+  </data>
+</root>

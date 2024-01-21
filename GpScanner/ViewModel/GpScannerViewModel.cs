@@ -2660,6 +2660,13 @@ public partial class GpScannerViewModel : InpcBase
                     TesseractViewModel.SeçiliDil = "Armenian";
 
                     break;
+
+                case "ROMÂNĂ":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ro");
+                    CalendarLang = XmlLanguage.GetLanguage("ro");
+                    TesseractViewModel.SeçiliDil = "Romanian";
+
+                    break;
             }
 
             Settings.Default.DefaultLang = SeçiliDil;

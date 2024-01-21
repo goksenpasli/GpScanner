@@ -312,6 +312,14 @@
                                     </StackPanel>
                                 </ListBoxItem.Content>
                             </ListBoxItem>
+                            <ListBoxItem Tag="ROMÂNĂ">
+                                <ListBoxItem.Content>
+                                    <StackPanel>
+                                        <Image />
+                                        <TextBlock />
+                                    </StackPanel>
+                                </ListBoxItem.Content>
+                            </ListBoxItem>
                         </ListBox>
                         <Button HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
