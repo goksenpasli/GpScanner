@@ -75,6 +75,7 @@
     <Compile Include="Controls\Helpers.cs" />
     <Compile Include="Controls\Chart.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
+    <Compile Include="Controls\HSV.cs" />
     <Compile Include="Controls\Magnifier.cs" />
     <Compile Include="Controls\MediaViewerSubtitleControl.xaml.cs">
       <DependentUpon>MediaViewerSubtitleControl.xaml</DependentUpon>
@@ -82,6 +83,7 @@
     <Compile Include="Controls\PageRangeDocumentPaginator.cs" />
     <Compile Include="Controls\ResizablePanel.cs" />
     <Compile Include="Controls\ResizeDirections.cs" />
+    <Compile Include="Controls\RGB.cs" />
     <Compile Include="Controls\SelectableTextBlock.cs" />
     <Compile Include="Controls\SubtitleContent.cs" />
     <Compile Include="Controls\TranslateView.xaml.cs">
@@ -96,6 +98,7 @@
     <Compile Include="Converters\FolderPathToIconConverter.cs" />
     <Compile Include="Converters\FolderPathToLocalizedNameConverter.cs" />
     <Compile Include="Converters\GetDirectoriesConverter.cs" />
+    <Compile Include="Converters\StringToColorHexCodeConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
     <Compile Include="IgnoreMouseWheelBehavior.cs" />

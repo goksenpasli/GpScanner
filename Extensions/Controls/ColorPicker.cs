@@ -1,5 +1,4 @@
-﻿using System;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,80 +6,6 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 
 namespace Extensions;
-
-public static class HSV
-{
-    public static RGB[] GetSpectrum()
-    {
-        RGB[] rgbs = new RGB[360];
-
-        for (int h = 0; h < 360; h++)
-        {
-            rgbs[h] = RGBFromHSV(h, 1f, 1f);
-        }
-
-        return rgbs;
-    }
-
-    public static RGB[] GradientSpectrum()
-    {
-        RGB[] rgbs = new RGB[7];
-
-        for (int h = 0; h < 7; h++)
-        {
-            rgbs[h] = RGBFromHSV(h * 60, 1f, 1f);
-        }
-
-        return rgbs;
-    }
-
-    public static RGB RGBFromHSV(double h, double s, double v)
-    {
-        if (h > 360 || h < 0 || s > 1 || s < 0 || v > 1 || v < 0)
-        {
-            return null;
-        }
-
-        double c = v * s;
-        double x = c * (1 - Math.Abs((h / 60 % 2) - 1));
-        double m = v - c;
-
-        double r = 0, g = 0, b = 0;
-
-        if (h < 60)
-        {
-            r = c;
-            g = x;
-        }
-        else if (h < 120)
-        {
-            r = x;
-            g = c;
-        }
-        else if (h < 180)
-        {
-            g = c;
-            b = x;
-        }
-        else if (h < 240)
-        {
-            g = x;
-            b = c;
-        }
-        else if (h < 300)
-        {
-            r = x;
-            b = c;
-        }
-        else if (h <= 360)
-        {
-            r = c;
-            b = x;
-        }
-
-        return new RGB((r + m) * 255, (g + m) * 255, (b + m) * 255);
-    }
-}
 
 [TemplatePart(Name = "SpectrumGrid", Type = typeof(Rectangle))]
 [TemplatePart(Name = "RgbGrid", Type = typeof(Rectangle))]
@@ -140,6 +65,12 @@ public class ColorPicker : Control
 
     public Brush SpectrumGridBackground { get => (Brush)GetValue(SpectrumGridBackgroundProperty); set => SetValue(SpectrumGridBackgroundProperty, value); }
 
+    public static string ConvertColorNameToHex(string colorName)
+    {
+        Color color = (Color)ColorConverter.ConvertFromString(colorName);
+        return $"#{color.R:X2}{color.G:X2}{color.B:X2}";
+    }
+
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
@@ -193,36 +124,4 @@ public class ColorPicker : Control
             MiddleStopColor = HSV.RGBFromHSV(currH, 1f, 1f).Color();
         }
     }
-}
-
-public class RGB
-{
-    public RGB()
-    {
-        R = 0xff;
-        G = 0xff;
-        B = 0xff;
-    }
-
-    public RGB(double r, double g, double b)
-    {
-        if (r > 255 || g > 255 || b > 255)
-        {
-            throw new ArgumentException("RGB must be under 255 (1byte)");
-        }
-
-        R = (byte)r;
-        G = (byte)g;
-        B = (byte)b;
-    }
-
-    public byte B { get; set; }
-
-    public byte G { get; set; }
-
-    public byte R { get; set; }
-
-    public Color Color() => new() { R = R, G = G, B = B, A = 255 };
-
-    public string Hex(byte Alpha) => BitConverter.ToString([Alpha, R, G, B]).Replace("-", string.Empty);
 }
