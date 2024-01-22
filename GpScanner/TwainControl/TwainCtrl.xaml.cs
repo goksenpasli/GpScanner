@@ -78,6 +78,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private byte[] cameraQRCodeData;
     private bool canUndoImage;
     private CroppedBitmap croppedOcrBitmap;
+    private double customDeskewAngle;
     private byte[] dataBaseQrData;
     private ObservableCollection<OcrData> dataBaseTextData;
     private int decodeHeight;
@@ -243,19 +244,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
-                        item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        BitmapFrame bitmapframe = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        bitmapframe?.Freeze();
+                        item.Resim = bitmapframe;
+                        bitmapframe = null;
+                        GC.Collect();
                         return;
                     }
 
                     if (Keyboard.Modifiers == ModifierKeys.Shift)
                     {
-                        item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
+                        BitmapFrame bitmapframe = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
+                        bitmapframe?.Freeze();
+                        item.Resim = bitmapframe;
+                        bitmapframe = null;
+                        GC.Collect();
                         return;
                     }
 
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
-                    bitmapFrame.Freeze();
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+                    bitmapFrame?.Freeze();
                     item.Resim = bitmapFrame;
+                    bitmapFrame = null;
+                    GC.Collect();
                 }
             },
             parameter => Scanner.ArayüzEtkin);
@@ -274,10 +285,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 MessageBoxResult.Yes)
                 {
                     double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
-                    item.Resim = BitmapFrame.Create(await ((BitmapSource)item.Resim).RotateImageAsync(deskewAngle));
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(await ((BitmapSource)item.Resim).RotateImageAsync(deskewAngle));
+                    bitmapFrame?.Freeze();
+                    item.Resim = bitmapFrame;
+                    bitmapFrame = null;
+                    GC.Collect();
                 }
             },
             parameter => Scanner.ArayüzEtkin);
+
+        ManualDeskewImage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is ScannedImage item)
+                {
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(await ((BitmapSource)item.Resim).RotateImageAsync(CustomDeskewAngle));
+                    bitmapFrame?.Freeze();
+                    item.Resim = bitmapFrame;
+                    bitmapFrame = null;
+                    GC.Collect();
+                }
+            },
+            parameter => Scanner.ArayüzEtkin && CustomDeskewAngle != 0);
 
         InvertSelectedImage = new RelayCommand<object>(
             parameter =>
@@ -288,19 +317,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     if (bw)
                     {
-                        item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        BitmapFrame blackandwhiteimage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        blackandwhiteimage?.Freeze();
+                        item.Resim = blackandwhiteimage;
+                        blackandwhiteimage = null;
+                        GC.Collect();
                         continue;
                     }
 
                     if (grayscale)
                     {
-                        item.Resim = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
+                        BitmapFrame grayimage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
+                        grayimage?.Freeze();
+                        item.Resim = grayimage;
+                        grayimage = null;
+                        GC.Collect();
                         continue;
                     }
 
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap());
-                    bitmapFrame.Freeze();
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+                    bitmapFrame?.Freeze();
                     item.Resim = bitmapFrame;
+                    bitmapFrame = null;
+                    GC.Collect();
                 }
             },
             parameter => Scanner.Resimler.Count(z => z.Seçili) > 0);
@@ -1978,6 +2017,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public double CustomDeskewAngle
+    {
+        get => customDeskewAngle;
+        set
+        {
+            if (customDeskewAngle != value)
+            {
+                customDeskewAngle = value;
+                OnPropertyChanged(nameof(CustomDeskewAngle));
+            }
+        }
+    }
+
     public ICommand CycleSelectedDocuments { get; }
 
     public byte[] DataBaseQrData
@@ -2188,6 +2240,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand LoadSingleUdfFile { get; }
 
     public RelayCommand<object> LoadXlsFile { get; }
+
+    public RelayCommand<object> ManualDeskewImage { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
 
@@ -4142,7 +4196,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             if (Scanner.ApplyMedian)
             {
-                evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue);
+                evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
             }
 
             if (Settings.Default.CropScan)
@@ -4158,7 +4212,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             if (Scanner.InvertImage)
             {
-                evrak = evrak.InvertBitmap();
+                evrak = evrak.InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
             }
 
             evrak.Freeze();

@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -139,18 +140,26 @@ public class ScannedImage : InpcBase
         {
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                Resim = await Resim.FlipImageAsync(RotationAngle);
+                BitmapFrame flippedimage = await Resim.FlipImageAsync(RotationAngle);
+                flippedimage?.Freeze();
+                Resim = flippedimage;
                 RotationAngle = 0;
+                GC.Collect();
                 return;
             }
-
-            Resim = await Resim.RotateImageAsync(RotationAngle);
+            BitmapFrame rotatedimage = await Resim.RotateImageAsync(RotationAngle);
+            rotatedimage?.Freeze();
+            Resim = rotatedimage;
             RotationAngle = 0;
+            GC.Collect();
         }
         if (e.PropertyName is "FlipAngle" && FlipAngle != 0)
         {
-            Resim = await Resim.FlipImageAsync(FlipAngle);
+            BitmapFrame flippedimage = await Resim.FlipImageAsync(FlipAngle);
+            flippedimage?.Freeze();
+            Resim = flippedimage;
             FlipAngle = 0;
+            GC.Collect();
         }
     }
 }

@@ -46,7 +46,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             },
             parameter => Scanner?.CroppedImage is not null);
 
-        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap(), parameter => Scanner?.CroppedImage is not null);
+        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg), parameter => Scanner?.CroppedImage is not null);
 
         AutoCropImage = new RelayCommand<object>(
             parameter =>
