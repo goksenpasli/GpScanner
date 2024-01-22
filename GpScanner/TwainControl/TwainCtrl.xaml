@@ -2109,9 +2109,11 @@
                                         Foreground="Red"
                                         Text="{Binding Scanner.SeçiliResimSayısı}" />
                                 </Canvas>
-                                <TextBlock VerticalAlignment="Center"
+                                <TextBlock Width="95"
+                                    VerticalAlignment="Center"
                                     FontWeight="Bold"
-                                    Text="{local:Loc AUTOPATH}">
+                                    Text="{local:Loc AUTOPATH}"
+                                    TextWrapping="Wrap">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Style.Triggers>

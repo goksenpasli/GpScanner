@@ -3061,7 +3061,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
     {
-        using PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+        using PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
         if (inputDocument is not null)
         {
             foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), pagecount))
@@ -3742,7 +3742,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         await Task.Run(
             () =>
             {
-                using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                using PdfDocument inputDocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
                 if (inputDocument is not null)
                 {
                     using PdfDocument outputdocument = new();

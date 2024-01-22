@@ -578,7 +578,7 @@ public partial class GpScannerViewModel : InpcBase
             {
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
                 _ = Process.Start(
-                    "twux32.exe",
+                    $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\twux32.exe",
                     $"/w:{new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();

@@ -30,6 +30,7 @@
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
+            <Extensions:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
             <Pdfviewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" />
             <Pdfviewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
             <Style TargetType="ComboBox">
@@ -141,11 +142,15 @@
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
                                 <ScrollViewer x:Name="ScrollVwr"
                                     Grid.Row="0"
                                     AllowDrop="True"
                                     HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                    VerticalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    VerticalScrollBarVisibility="Hidden">
                                     <Image RenderTransformOrigin="0.5,0.5"
                                         ScrollViewer.CanContentScroll="True"
                                         Source="{Binding Source, RelativeSource={RelativeSource Mode=TemplatedParent}}"
@@ -158,8 +163,19 @@
                                         </Image.LayoutTransform>
                                     </Image>
                                 </ScrollViewer>
+                                <ScrollBar x:Name="ScrollVwrAllPage"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Minimum="1"
+                                    Orientation="Vertical"
+                                    SmallChange="1"
+                                    ViewportSize="1"
+                                    Visibility="{Binding Source, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Value="{Binding Sayfa, Delay=100, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                 <ContentControl x:Name="Cnt"
                                     Grid.Row="1"
+                                    Grid.ColumnSpan="2"
                                     Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                     <WrapPanel Grid.Column="1" Orientation="Horizontal">
                                         <Button Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource Mode=TemplatedParent}}">
@@ -556,6 +572,9 @@
                                 </Trigger>
                                 <DataTrigger Binding="{Binding Visibility, ElementName=Cnt}" Value="Collapsed">
                                     <Setter TargetName="Cnt" Property="Content" Value="{x:Null}" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Maximum, ElementName=ScrollVwrAllPage}" Value="1">
+                                    <Setter TargetName="ScrollVwrAllPage" Property="Visibility" Value="Collapsed" />
                                 </DataTrigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

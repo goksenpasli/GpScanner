@@ -104,7 +104,7 @@ public static class PdfGeneration
             throw new ArgumentOutOfRangeException(nameof(startpage), "start page should not be greater than end page");
         }
 
-        using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Modify, PasswordProvider);
+        using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Import, PasswordProvider);
         if (inputDocument != null)
         {
             using PdfDocument outputDocument = new();
