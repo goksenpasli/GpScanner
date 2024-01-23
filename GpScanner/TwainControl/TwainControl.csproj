@@ -104,6 +104,7 @@
     <Compile Include="CameraUserControl.xaml.cs">
       <DependentUpon>CameraUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\BitmapFrameToBitmapFrameConverter.cs" />
     <Compile Include="Converter\DivideConverter.cs" />
     <Compile Include="Converter\EnumOrientationToConvertedLanguageTextConverter.cs" />
     <Compile Include="Converter\FileDateContextMenuConverter.cs" />

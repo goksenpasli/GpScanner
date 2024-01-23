@@ -39,6 +39,7 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FolderPathToIconConverter x:Key="FolderPathToIconConverter" />
+            <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameConverter" />
             <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
             <Image x:Key="TimeIcon"
                 Width="16"
@@ -2207,7 +2208,7 @@
                             PreviewMouseWheel="ImgViewer_PreviewMouseWheel"
                             PrintButtonVisibility="Visible"
                             SnapTick="True"
-                            Source="{Binding SeçiliResim.Resim, Mode=OneWay}" />
+                            Source="{Binding SeçiliResim.Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameConverter}}" />
                         <Canvas x:Name="cnv" />
                         <Expander HorizontalAlignment="Left"
                             VerticalAlignment="Top"
