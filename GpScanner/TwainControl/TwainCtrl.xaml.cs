@@ -269,7 +269,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     GC.Collect();
                 }
             },
-            parameter => Scanner.ArayüzEtkin);
+            parameter => true);
 
         AutoDeskewImage = new RelayCommand<object>(
             async parameter =>
@@ -292,7 +292,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     GC.Collect();
                 }
             },
-            parameter => Scanner.ArayüzEtkin);
+            parameter => true);
 
         ManualDeskewImage = new RelayCommand<object>(
             async parameter =>
@@ -306,7 +306,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     GC.Collect();
                 }
             },
-            parameter => Scanner.ArayüzEtkin && CustomDeskewAngle != 0);
+            parameter => CustomDeskewAngle != 0);
 
         InvertSelectedImage = new RelayCommand<object>(
             parameter =>
@@ -4254,9 +4254,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
                 {
-                    image.Resim = await image.Resim.FlipImageAsync(AllImageRotationAngle);
+                    image.Resim = BitmapFrame.Create(await image.Resim.FlipImageAsync(AllImageRotationAngle));
                 }
-
+                GC.Collect();
                 AllImageRotationAngle = 0;
                 return;
             }
@@ -4265,18 +4265,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
                 {
-                    image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
+                    image.Resim = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
                 }
-
+                GC.Collect();
                 AllImageRotationAngle = 0;
                 return;
             }
 
             foreach (ScannedImage image in Scanner.Resimler)
             {
-                image.Resim = await image.Resim.RotateImageAsync(AllImageRotationAngle);
+                image.Resim = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
             }
-
+            GC.Collect();
             AllImageRotationAngle = 0;
         }
     }

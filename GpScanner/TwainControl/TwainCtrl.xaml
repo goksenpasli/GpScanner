@@ -1805,19 +1805,22 @@
                                                                     FontWeight="Bold"
                                                                     MouseLeftButtonDown="Run_MouseLeftButtonDown"
                                                                     Text="B" /><InlineUIContainer BaselineAlignment="Center">
-                                                                    <Extensions:SplitButton local:Policy.PolicyName="AutoDeskewImage"
-                                                                        Background="{x:Null}"
-                                                                        Command="{Binding DataContext.AutoDeskewImage, ElementName=UserControl}"
-                                                                        CommandParameter="{Binding Mode=OneWay}">
+                                                                    <Extensions:ContentToggleButton local:Policy.PolicyName="AutoDeskewImage" Background="{x:Null}">
                                                                         <TextBlock FontFamily="Wingdings 3"
                                                                             FontSize="22"
                                                                             Foreground="Black"
                                                                             Text="R" />
-                                                                        <Extensions:SplitButton.InternalContent>
+                                                                        <Extensions:ContentToggleButton.OverContent>
                                                                             <Border Background="{StaticResource BorderBackground}"
                                                                                 BorderBrush="{StaticResource GroupBoxBackGround}"
                                                                                 BorderThickness="1">
-                                                                                <UniformGrid Rows="3">
+                                                                                <UniformGrid Rows="4">
+                                                                                    <Button Command="{Binding DataContext.AutoDeskewImage, Source={x:Reference UserControl}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                                        <TextBlock FontFamily="Wingdings 3"
+                                                                                            FontSize="22"
+                                                                                            Foreground="Black"
+                                                                                            Text="R" />
+                                                                                    </Button>
                                                                                     <Button local:Policy.PolicyName="InvertImage"
                                                                                         BorderBrush="Cyan"
                                                                                         Command="{Binding DataContext.InvertImage, Source={x:Reference UserControl}}"
@@ -1842,8 +1845,8 @@
                                                                                         Content="{local:Loc DESKEW}" />
                                                                                 </UniformGrid>
                                                                             </Border>
-                                                                        </Extensions:SplitButton.InternalContent>
-                                                                    </Extensions:SplitButton>
+                                                                        </Extensions:ContentToggleButton.OverContent>
+                                                                    </Extensions:ContentToggleButton>
                                                                 </InlineUIContainer><Hyperlink local:Policy.PolicyName="ResimSil"
                                                                     BaselineAlignment="Center"
                                                                     Command="{Binding DataContext.ResimSil, ElementName=UserControl}"

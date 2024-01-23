@@ -231,7 +231,7 @@ public static class BitmapMethods
         return InternalCreateCursor(bmp);
     }
 
-    public static async Task<BitmapFrame> FlipImageAsync(this BitmapFrame bitmapFrame, double angle)
+    public static async Task<BitmapImage> FlipImageAsync(this BitmapFrame bitmapFrame, double angle)
     {
         TransformedBitmap transformedBitmap = null;
         switch (angle)
@@ -249,7 +249,7 @@ public static class BitmapMethods
         return await Task.Run(
             () =>
             {
-                BitmapFrame frame = BitmapFrame.Create(transformedBitmap);
+                BitmapImage frame = BitmapFrame.Create(transformedBitmap).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
                 frame.Freeze();
                 transformedBitmap = null;
                 return frame;
@@ -267,7 +267,7 @@ public static class BitmapMethods
         image.EndInit();
         image.Freeze();
 
-        RenderTargetBitmap skewedimage = null;
+        BitmapImage skewedimage = null;
         if (deskew)
         {
             double deskewAngle = Deskew.GetDeskewAngle(image);
@@ -411,7 +411,7 @@ public static class BitmapMethods
         return target;
     }
 
-    public static async Task<RenderTargetBitmap> RotateImageAsync(this ImageSource Source, double angle)
+    public static async Task<BitmapImage> RotateImageAsync(this ImageSource Source, double angle)
     {
         try
         {
@@ -430,10 +430,13 @@ public static class BitmapMethods
                     RenderTargetBitmap rtb = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, 96, 96, PixelFormats.Default);
                     rtb.Render(dv);
                     rtb.Freeze();
+                    BitmapImage bitmapimage = rtb.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
+                    bitmapimage.Freeze();
                     bitmapSource = null;
                     Source = null;
                     dv = null;
-                    return rtb;
+                    rtb = null;
+                    return bitmapimage;
                 });
         }
         catch (Exception ex)
@@ -443,7 +446,7 @@ public static class BitmapMethods
         }
     }
 
-    public static async Task<BitmapFrame> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
+    public static async Task<BitmapImage> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
     {
         if (angle is not -1 and not 1)
         {
@@ -456,10 +459,9 @@ public static class BitmapMethods
         return await Task.Run(
             () =>
             {
-                BitmapFrame frame = BitmapFrame.Create(transformedBitmap);
-                frame.Freeze();
-                transformedBitmap = null;
-                return frame;
+                BitmapImage bitmapimage = transformedBitmap.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
+                bitmapimage?.Freeze();
+                return bitmapimage;
             });
     }
 

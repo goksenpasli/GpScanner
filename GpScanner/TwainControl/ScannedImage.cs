@@ -140,24 +140,22 @@ public class ScannedImage : InpcBase
         {
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                BitmapFrame flippedimage = await Resim.FlipImageAsync(RotationAngle);
+                BitmapImage flippedimage = await Resim.FlipImageAsync(RotationAngle);
                 flippedimage?.Freeze();
-                Resim = flippedimage;
+                Resim = BitmapFrame.Create(flippedimage);
                 RotationAngle = 0;
                 GC.Collect();
                 return;
             }
-            BitmapFrame rotatedimage = await Resim.RotateImageAsync(RotationAngle);
-            rotatedimage?.Freeze();
-            Resim = rotatedimage;
+            Resim = BitmapFrame.Create(await Resim.RotateImageAsync(RotationAngle));
             RotationAngle = 0;
             GC.Collect();
         }
         if (e.PropertyName is "FlipAngle" && FlipAngle != 0)
         {
-            BitmapFrame flippedimage = await Resim.FlipImageAsync(FlipAngle);
+            BitmapImage flippedimage = await Resim.FlipImageAsync(FlipAngle);
             flippedimage?.Freeze();
-            Resim = flippedimage;
+            Resim = BitmapFrame.Create(flippedimage);
             FlipAngle = 0;
             GC.Collect();
         }

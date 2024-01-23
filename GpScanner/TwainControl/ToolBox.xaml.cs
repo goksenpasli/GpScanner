@@ -3,6 +3,7 @@ using Ocr;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Imaging;
@@ -43,6 +44,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 double deskewAngle = Deskew.GetDeskewAngle((BitmapSource)Scanner.CroppedImage);
                 Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(deskewAngle);
+                GC.Collect();
             },
             parameter => Scanner?.CroppedImage is not null);
 
