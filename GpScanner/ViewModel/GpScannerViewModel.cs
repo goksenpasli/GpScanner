@@ -2556,6 +2556,13 @@ public partial class GpScannerViewModel : InpcBase
                     TesseractViewModel.SeçiliDil = "Dutch";
 
                     break;
+                    
+                case "BELGIË":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
+                    CalendarLang = XmlLanguage.GetLanguage("nl-NL");
+                    TesseractViewModel.SeçiliDil = "Dutch";
+
+                    break;
 
                 case "CZECH":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("cs-CZ");
@@ -2593,6 +2600,14 @@ public partial class GpScannerViewModel : InpcBase
                     break;
 
                 case "فلسطين":
+                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
+                    CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                    TesseractViewModel.SeçiliDil = "Arabic";
+
+                    LangFlowDirection = FlowDirection.RightToLeft;
+                    break;
+
+                case "لبنان":
                     TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
                     CalendarLang = XmlLanguage.GetLanguage("ar-AR");
                     TesseractViewModel.SeçiliDil = "Arabic";

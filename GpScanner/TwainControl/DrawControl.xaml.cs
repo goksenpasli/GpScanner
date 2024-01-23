@@ -60,9 +60,22 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 }
             },
             parameter => parameter is ScannedImage && TemporaryImage is not null);
+
+        ClearTemporaryImage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show($"{Translation.GetResStringValue("CLOSEFILE")}", Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    Ink?.Strokes?.Clear();
+                    TemporaryImage = null;
+                }
+            },
+            parameter => TemporaryImage is not null);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public RelayCommand<object> ClearTemporaryImage { get; }
 
     public bool DrawControlContextMenu
     {

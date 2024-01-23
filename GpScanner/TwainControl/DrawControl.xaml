@@ -193,6 +193,11 @@
                     </Border>
                 </Extension:ContentToggleButton.OverContent>
             </Extension:ContentToggleButton>
+            <Button Command="{Binding ClearTemporaryImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                <Image Width="24"
+                    Height="24"
+                    Source="/TwainControl;component/Icons/delete.png" />
+            </Button>
             <Slider Width="100"
                 VerticalAlignment="Center"
                 AutoToolTipPlacement="TopLeft"
@@ -201,6 +206,7 @@
                 Minimum="{Binding ElementName=Ink, Path=MinZoom}"
                 Style="{DynamicResource Slider}"
                 Value="{Binding ElementName=Ink, Path=CurrentZoom}" />
+
         </StackPanel>
     </Grid>
 </UserControl>
