@@ -9,7 +9,19 @@ namespace TwainControl.Converter;
 
 public sealed class BitmapFrameToBitmapFrameConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is BitmapFrame bitmapFrame ? BitmapFrame.Create(bitmapFrame.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg)) : null;
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    {
+        if (value is BitmapFrame bitmapFrame)
+        {
+            BitmapFrame bf = BitmapFrame.Create(bitmapFrame.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+            bf.Freeze();
+            return bf;
+        }
+        else
+        {
+            return null;
+        }
+    }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }

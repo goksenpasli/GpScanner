@@ -142,12 +142,16 @@ public class ScannedImage : InpcBase
             {
                 BitmapImage flippedimage = await Resim.FlipImageAsync(RotationAngle);
                 flippedimage?.Freeze();
-                Resim = BitmapFrame.Create(flippedimage);
+                BitmapFrame bf = BitmapFrame.Create(flippedimage);
+                bf.Freeze();
+                Resim = bf;
                 RotationAngle = 0;
                 GC.Collect();
                 return;
             }
-            Resim = BitmapFrame.Create(await Resim.RotateImageAsync(RotationAngle));
+            BitmapFrame bitmapframe = BitmapFrame.Create(await Resim.RotateImageAsync(RotationAngle));
+            bitmapframe.Freeze();
+            Resim = bitmapframe;
             RotationAngle = 0;
             GC.Collect();
         }
@@ -155,7 +159,9 @@ public class ScannedImage : InpcBase
         {
             BitmapImage flippedimage = await Resim.FlipImageAsync(FlipAngle);
             flippedimage?.Freeze();
-            Resim = BitmapFrame.Create(flippedimage);
+            BitmapFrame bf = BitmapFrame.Create(flippedimage);
+            bf.Freeze();
+            Resim = bf;
             FlipAngle = 0;
             GC.Collect();
         }

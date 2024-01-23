@@ -4254,7 +4254,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
                 {
-                    image.Resim = BitmapFrame.Create(await image.Resim.FlipImageAsync(AllImageRotationAngle));
+                    BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.FlipImageAsync(AllImageRotationAngle));
+                    bitmapframe.Freeze();
+                    image.Resim = bitmapframe;
+                    bitmapframe = null;
                 }
                 GC.Collect();
                 AllImageRotationAngle = 0;
@@ -4265,7 +4268,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
                 {
-                    image.Resim = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
+                    BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
+                    bitmapframe.Freeze();
+                    image.Resim = bitmapframe;
+                    bitmapframe = null;
                 }
                 GC.Collect();
                 AllImageRotationAngle = 0;
@@ -4274,7 +4280,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             foreach (ScannedImage image in Scanner.Resimler)
             {
-                image.Resim = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
+                BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
+                bitmapframe.Freeze();
+                image.Resim = bitmapframe;
+                bitmapframe = null;
             }
             GC.Collect();
             AllImageRotationAngle = 0;
