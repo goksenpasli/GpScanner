@@ -529,5 +529,17 @@ namespace TwainControl.Properties {
                 this["LockSelectedPaper"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DocumentNumberVisible {
+            get {
+                return ((bool)(this["DocumentNumberVisible"]));
+            }
+            set {
+                this["DocumentNumberVisible"] = value;
+            }
+        }
     }
 }

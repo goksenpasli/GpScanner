@@ -122,7 +122,8 @@
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
-                        <Button HorizontalAlignment="Right"
+                        <Button Margin="0,0,20,0"
+                            HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Background="{x:Null}"
                             BorderBrush="{x:Null}"
@@ -648,7 +649,21 @@
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
                             </CheckBox>
-
+                            <ToggleButton IsChecked="{Binding Path=DocumentNumberVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}" ToolTip="{twainctrl:Loc PAGENUMBER}">
+                                <Canvas Width="16" Height="16">
+                                    <TextBlock Canvas.Top="0"
+                                        FontSize="10"
+                                        Text="1" />
+                                    <TextBlock Canvas.Left="4"
+                                        Canvas.Top="2"
+                                        FontSize="10"
+                                        Text="2" />
+                                    <TextBlock Canvas.Left="8"
+                                        Canvas.Top="4"
+                                        FontSize="10"
+                                        Text="3" />
+                                </Canvas>
+                            </ToggleButton>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>

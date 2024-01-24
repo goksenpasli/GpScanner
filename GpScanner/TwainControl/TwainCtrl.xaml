@@ -1657,8 +1657,8 @@
                                                             Drop="StackPanel_Drop"
                                                             GiveFeedback="StackPanel_GiveFeedback">
                                                             <TextBlock HorizontalAlignment="Center">
-                                                                <InlineUIContainer>
-                                                                    <Extensions:NumericUpDownControl Height="20"
+                                                                <InlineUIContainer BaselineAlignment="Center">
+                                                                    <Extensions:NumericUpDownControl Height="25.6"
                                                                         BorderBrush="Cyan"
                                                                         LargeChange="1"
                                                                         Maximum="1"
@@ -1899,7 +1899,8 @@
                                                                 <TextBlock Canvas.Left="0"
                                                                     Canvas.Bottom="0"
                                                                     FontWeight="Bold"
-                                                                    Text="{Binding Index, Mode=OneWay}" />
+                                                                    Text="{Binding Index, Mode=OneWay}"
+                                                                    Visibility="{Binding DocumentNumberVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}" />
                                                             </Canvas>
                                                         </StackPanel>
                                                     </ControlTemplate>

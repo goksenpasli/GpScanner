@@ -2112,6 +2112,223 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
+    private void ChangeApplicationLanguage(string lang)
+    {
+        LangFlowDirection = FlowDirection.LeftToRight;
+        switch (lang)
+        {
+            case "TÜRKÇE":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+                CalendarLang = XmlLanguage.GetLanguage("tr-TR");
+                TesseractViewModel.SeçiliDil = "Turkish";
+                break;
+
+            case "ENGLISH":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+                CalendarLang = XmlLanguage.GetLanguage("en-US");
+                TesseractViewModel.SeçiliDil = "English";
+
+                break;
+
+            case "FRANÇAIS":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
+                CalendarLang = XmlLanguage.GetLanguage("fr-FR");
+                TesseractViewModel.SeçiliDil = "French";
+
+                break;
+
+            case "ITALIANO":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("it-IT");
+                CalendarLang = XmlLanguage.GetLanguage("it-IT");
+                TesseractViewModel.SeçiliDil = "Italian";
+
+                break;
+
+            case "عربي":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
+                CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                TesseractViewModel.SeçiliDil = "Arabic";
+
+                LangFlowDirection = FlowDirection.RightToLeft;
+                break;
+
+            case "РУССКИЙ":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
+                CalendarLang = XmlLanguage.GetLanguage("ru-RU");
+                TesseractViewModel.SeçiliDil = "Russian";
+
+                break;
+
+            case "DEUTSCH":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
+                CalendarLang = XmlLanguage.GetLanguage("de-DE");
+                TesseractViewModel.SeçiliDil = "German";
+
+                break;
+
+            case "日本":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ja-JP");
+                CalendarLang = XmlLanguage.GetLanguage("ja-JP");
+                TesseractViewModel.SeçiliDil = "Japanese";
+
+                break;
+
+            case "DUTCH":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
+                CalendarLang = XmlLanguage.GetLanguage("nl-NL");
+                TesseractViewModel.SeçiliDil = "Dutch";
+
+                break;
+
+            case "BELGIË":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
+                CalendarLang = XmlLanguage.GetLanguage("nl-NL");
+                TesseractViewModel.SeçiliDil = "Dutch";
+
+                break;
+
+            case "CZECH":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("cs-CZ");
+                CalendarLang = XmlLanguage.GetLanguage("cs-CZ");
+                TesseractViewModel.SeçiliDil = "Czech";
+
+                break;
+
+            case "ESPAÑOL":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("es-ES");
+                CalendarLang = XmlLanguage.GetLanguage("es-ES");
+                TesseractViewModel.SeçiliDil = "Spanish";
+
+                break;
+
+            case "中國人":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("zh-CN");
+                CalendarLang = XmlLanguage.GetLanguage("zh-CN");
+                TesseractViewModel.SeçiliDil = "Chinese";
+
+                break;
+
+            case "УКРАЇНСЬКА":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("uk-UA");
+                CalendarLang = XmlLanguage.GetLanguage("uk-UA");
+                TesseractViewModel.SeçiliDil = "Ukrainian";
+
+                break;
+
+            case "ΕΛΛΗΝΙΚΑ":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("el");
+                CalendarLang = XmlLanguage.GetLanguage("el");
+                TesseractViewModel.SeçiliDil = "Greek";
+
+                break;
+
+            case "فلسطين":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
+                CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                TesseractViewModel.SeçiliDil = "Arabic";
+
+                LangFlowDirection = FlowDirection.RightToLeft;
+                break;
+
+            case "لبنان":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
+                CalendarLang = XmlLanguage.GetLanguage("ar-AR");
+                TesseractViewModel.SeçiliDil = "Arabic";
+
+                LangFlowDirection = FlowDirection.RightToLeft;
+                break;
+
+            case "AZƏRBAYCAN":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("az");
+                CalendarLang = XmlLanguage.GetLanguage("az");
+                TesseractViewModel.SeçiliDil = "Azerbaijani";
+
+                break;
+            case "БЕЛАРУСКАЯ":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("be");
+                CalendarLang = XmlLanguage.GetLanguage("be");
+                TesseractViewModel.SeçiliDil = "Belarusian";
+
+                break;
+
+            case "БЪЛГАРСКИ":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("bg");
+                CalendarLang = XmlLanguage.GetLanguage("bg");
+                TesseractViewModel.SeçiliDil = "Bulgarian";
+
+                break;
+
+            case "DANSK":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("da");
+                CalendarLang = XmlLanguage.GetLanguage("da");
+                TesseractViewModel.SeçiliDil = "Danish";
+
+                break;
+
+            case "HRVATSKI":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("hr");
+                CalendarLang = XmlLanguage.GetLanguage("hr");
+                TesseractViewModel.SeçiliDil = "Croatian";
+
+                break;
+
+            case "भारतीय":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("gu");
+                CalendarLang = XmlLanguage.GetLanguage("gu");
+                TesseractViewModel.SeçiliDil = "Hindi";
+
+                break;
+            case "PORTUGUÊS":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("pt");
+                CalendarLang = XmlLanguage.GetLanguage("pt");
+                TesseractViewModel.SeçiliDil = "Portuguese";
+
+                break;
+
+            case "INDONESIA":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("id");
+                CalendarLang = XmlLanguage.GetLanguage("id");
+                TesseractViewModel.SeçiliDil = "Indonesian";
+
+                break;
+
+            case "ՀԱՅԵՐԵՆ":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("hy");
+                CalendarLang = XmlLanguage.GetLanguage("hy");
+                TesseractViewModel.SeçiliDil = "Armenian";
+
+                break;
+
+            case "ROMÂNĂ":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ro");
+                CalendarLang = XmlLanguage.GetLanguage("ro");
+                TesseractViewModel.SeçiliDil = "Romanian";
+
+                break;
+
+            case "MAGYAR":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("hu");
+                CalendarLang = XmlLanguage.GetLanguage("hu");
+                TesseractViewModel.SeçiliDil = "Hungarian";
+
+                break;
+
+            case "SVENSKA":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("sv");
+                CalendarLang = XmlLanguage.GetLanguage("sv");
+                TesseractViewModel.SeçiliDil = "Swedish";
+
+                break;
+
+            case "SUOMI":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("sv");
+                CalendarLang = XmlLanguage.GetLanguage("sv");
+                TesseractViewModel.SeçiliDil = "Finnish";
+
+                break;
+        }
+    }
+
     private Version CheckFileVersion(string filepath) => File.Exists(filepath) ? new Version(FileVersionInfo.GetVersionInfo(filepath).FileVersion) : null;
 
     private void CreateEmptySqliteDatabase()
@@ -2491,206 +2708,7 @@ public partial class GpScannerViewModel : InpcBase
 
         if (e.PropertyName is "SeçiliDil")
         {
-            LangFlowDirection = FlowDirection.LeftToRight;
-            switch (SeçiliDil)
-            {
-                case "TÜRKÇE":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
-                    CalendarLang = XmlLanguage.GetLanguage("tr-TR");
-                    TesseractViewModel.SeçiliDil = "Turkish";
-                    break;
-
-                case "ENGLISH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
-                    CalendarLang = XmlLanguage.GetLanguage("en-US");
-                    TesseractViewModel.SeçiliDil = "English";
-
-                    break;
-
-                case "FRANÇAIS":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("fr-FR");
-                    CalendarLang = XmlLanguage.GetLanguage("fr-FR");
-                    TesseractViewModel.SeçiliDil = "French";
-
-                    break;
-
-                case "ITALIANO":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("it-IT");
-                    CalendarLang = XmlLanguage.GetLanguage("it-IT");
-                    TesseractViewModel.SeçiliDil = "Italian";
-
-                    break;
-
-                case "عربي":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
-                    CalendarLang = XmlLanguage.GetLanguage("ar-AR");
-                    TesseractViewModel.SeçiliDil = "Arabic";
-
-                    LangFlowDirection = FlowDirection.RightToLeft;
-                    break;
-
-                case "РУССКИЙ":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ru-RU");
-                    CalendarLang = XmlLanguage.GetLanguage("ru-RU");
-                    TesseractViewModel.SeçiliDil = "Russian";
-
-                    break;
-
-                case "DEUTSCH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("de-DE");
-                    CalendarLang = XmlLanguage.GetLanguage("de-DE");
-                    TesseractViewModel.SeçiliDil = "German";
-
-                    break;
-
-                case "日本":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ja-JP");
-                    CalendarLang = XmlLanguage.GetLanguage("ja-JP");
-                    TesseractViewModel.SeçiliDil = "Japanese";
-
-                    break;
-
-                case "DUTCH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
-                    CalendarLang = XmlLanguage.GetLanguage("nl-NL");
-                    TesseractViewModel.SeçiliDil = "Dutch";
-
-                    break;
-                    
-                case "BELGIË":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("nl-NL");
-                    CalendarLang = XmlLanguage.GetLanguage("nl-NL");
-                    TesseractViewModel.SeçiliDil = "Dutch";
-
-                    break;
-
-                case "CZECH":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("cs-CZ");
-                    CalendarLang = XmlLanguage.GetLanguage("cs-CZ");
-                    TesseractViewModel.SeçiliDil = "Czech";
-
-                    break;
-
-                case "ESPAÑOL":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("es-ES");
-                    CalendarLang = XmlLanguage.GetLanguage("es-ES");
-                    TesseractViewModel.SeçiliDil = "Spanish";
-
-                    break;
-
-                case "中國人":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("zh-CN");
-                    CalendarLang = XmlLanguage.GetLanguage("zh-CN");
-                    TesseractViewModel.SeçiliDil = "Chinese";
-
-                    break;
-
-                case "УКРАЇНСЬКА":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("uk-UA");
-                    CalendarLang = XmlLanguage.GetLanguage("uk-UA");
-                    TesseractViewModel.SeçiliDil = "Ukrainian";
-
-                    break;
-
-                case "ΕΛΛΗΝΙΚΑ":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("el");
-                    CalendarLang = XmlLanguage.GetLanguage("el");
-                    TesseractViewModel.SeçiliDil = "Greek";
-
-                    break;
-
-                case "فلسطين":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
-                    CalendarLang = XmlLanguage.GetLanguage("ar-AR");
-                    TesseractViewModel.SeçiliDil = "Arabic";
-
-                    LangFlowDirection = FlowDirection.RightToLeft;
-                    break;
-
-                case "لبنان":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ar-AR");
-                    CalendarLang = XmlLanguage.GetLanguage("ar-AR");
-                    TesseractViewModel.SeçiliDil = "Arabic";
-
-                    LangFlowDirection = FlowDirection.RightToLeft;
-                    break;
-
-                case "AZƏRBAYCAN":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("az");
-                    CalendarLang = XmlLanguage.GetLanguage("az");
-                    TesseractViewModel.SeçiliDil = "Azerbaijani";
-
-                    break;
-                case "БЕЛАРУСКАЯ":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("be");
-                    CalendarLang = XmlLanguage.GetLanguage("be");
-                    TesseractViewModel.SeçiliDil = "Belarusian";
-
-                    break;
-
-                case "БЪЛГАРСКИ":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("bg");
-                    CalendarLang = XmlLanguage.GetLanguage("bg");
-                    TesseractViewModel.SeçiliDil = "Bulgarian";
-
-                    break;
-
-                case "DANSK":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("da");
-                    CalendarLang = XmlLanguage.GetLanguage("da");
-                    TesseractViewModel.SeçiliDil = "Danish";
-
-                    break;
-
-                case "HRVATSKI":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("hr");
-                    CalendarLang = XmlLanguage.GetLanguage("hr");
-                    TesseractViewModel.SeçiliDil = "Croatian";
-
-                    break;
-
-                case "भारतीय":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("gu");
-                    CalendarLang = XmlLanguage.GetLanguage("gu");
-                    TesseractViewModel.SeçiliDil = "Hindi";
-
-                    break;
-                case "PORTUGUÊS":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("pt");
-                    CalendarLang = XmlLanguage.GetLanguage("pt");
-                    TesseractViewModel.SeçiliDil = "Portuguese";
-
-                    break;
-
-                case "INDONESIA":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("id");
-                    CalendarLang = XmlLanguage.GetLanguage("id");
-                    TesseractViewModel.SeçiliDil = "Indonesian";
-
-                    break;
-
-                case "ՀԱՅԵՐԵՆ":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("hy");
-                    CalendarLang = XmlLanguage.GetLanguage("hy");
-                    TesseractViewModel.SeçiliDil = "Armenian";
-
-                    break;
-
-                case "ROMÂNĂ":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ro");
-                    CalendarLang = XmlLanguage.GetLanguage("ro");
-                    TesseractViewModel.SeçiliDil = "Romanian";
-
-                    break;
-
-                case "MAGYAR":
-                    TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("hu");
-                    CalendarLang = XmlLanguage.GetLanguage("hu");
-                    TesseractViewModel.SeçiliDil = "Hungarian";
-
-                    break;
-            }
-
+            ChangeApplicationLanguage(SeçiliDil);
             Settings.Default.DefaultLang = SeçiliDil;
         }
 
