@@ -708,4 +708,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Alla cyanfärgade kontroller fungerar annorlunda med en eller flera av Alt Shift Ctrl-tangenterna</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Denna process kan ta lång tid.</value>
+  </data>
 </root>

@@ -75,6 +75,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
     private ScanSettings _settings;
     private double allImageRotationAngle;
+    private double allRotateProgressValue;
     private byte[] cameraQRCodeData;
     private bool canUndoImage;
     private CroppedBitmap croppedOcrBitmap;
@@ -311,6 +312,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         InvertSelectedImage = new RelayCommand<object>(
             parameter =>
             {
+                if (MessageBox.Show($"{Translation.GetResStringValue("LONGTIMEJOB")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.No)
+                {
+                    return;
+                }
                 bool bw = Keyboard.Modifiers == ModifierKeys.Alt;
                 bool grayscale = Keyboard.Modifiers == ModifierKeys.Shift;
                 foreach (ScannedImage item in Scanner?.Resimler?.Where(z => z.Seçili))
@@ -1933,6 +1938,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 allImageRotationAngle = value;
                 OnPropertyChanged(nameof(AllImageRotationAngle));
+            }
+        }
+    }
+
+    public double AllRotateProgressValue
+    {
+        get => allRotateProgressValue;
+        set
+        {
+            if (allRotateProgressValue != value)
+            {
+                allRotateProgressValue = value;
+                OnPropertyChanged(nameof(AllRotateProgressValue));
             }
         }
     }
@@ -4250,14 +4268,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if (e.PropertyName is "AllImageRotationAngle" && AllImageRotationAngle != 0)
         {
+            if (Scanner.Resimler.Count > 0 && MessageBox.Show($"{Translation.GetResStringValue("LONGTIMEJOB")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.No)
+            {
+                AllImageRotationAngle = 0;
+                return;
+            }
+
+            double count;
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
-                foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
+                count = Scanner.Resimler.Count(z => z.Seçili);
+                for (int i = 0; i < Scanner.Resimler.Count(z => z.Seçili); i++)
                 {
+                    ScannedImage image = Scanner.Resimler[i];
                     BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.FlipImageAsync(AllImageRotationAngle));
                     bitmapframe.Freeze();
                     image.Resim = bitmapframe;
                     bitmapframe = null;
+                    AllRotateProgressValue = (i + 1) / count;
                 }
                 GC.Collect();
                 AllImageRotationAngle = 0;
@@ -4266,24 +4294,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             if (Keyboard.Modifiers == ModifierKeys.Alt)
             {
-                foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
+                count = Scanner.Resimler.Count(z => z.Seçili);
+                for (int i = 0; i < count; i++)
                 {
+                    ScannedImage image = Scanner.Resimler[i];
                     BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
                     bitmapframe.Freeze();
                     image.Resim = bitmapframe;
                     bitmapframe = null;
+                    AllRotateProgressValue = (i + 1) / count;
                 }
                 GC.Collect();
                 AllImageRotationAngle = 0;
                 return;
             }
-
-            foreach (ScannedImage image in Scanner.Resimler)
+            count = Scanner.Resimler.Count;
+            for (int i = 0; i < Scanner.Resimler.Count; i++)
             {
+                ScannedImage image = Scanner.Resimler[i];
                 BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
                 bitmapframe.Freeze();
                 image.Resim = bitmapframe;
                 bitmapframe = null;
+                AllRotateProgressValue = (i + 1) / count;
             }
             GC.Collect();
             AllImageRotationAngle = 0;

@@ -708,4 +708,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Kopirano u međuspremnik</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Ovaj proces može trajati dugo.</value>
+  </data>
 </root>

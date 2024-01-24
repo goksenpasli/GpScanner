@@ -708,4 +708,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Копирано в клипборда</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Този процес може да отнеме много време.</value>
+  </data>
 </root>

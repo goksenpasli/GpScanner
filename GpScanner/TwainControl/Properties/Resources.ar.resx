@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>نسخ إلى الحافظة</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>قد تستغرق هذه العملية وقتًا طويلاً.</value>
+  </data>
 </root>

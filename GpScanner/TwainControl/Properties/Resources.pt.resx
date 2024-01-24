@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Copiado para a área de transferência</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Este processo pode demorar muito.</value>
+  </data>
 </root>

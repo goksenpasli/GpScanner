@@ -718,4 +718,7 @@ BELGE EKLE</value>
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Panoya kopyalandı</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Bu İşlem Uzun Sürebilir. Devam Etmek İstiyor musun?</value>
+  </data>
 </root>

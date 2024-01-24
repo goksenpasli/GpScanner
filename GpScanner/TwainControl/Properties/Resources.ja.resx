@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>クリップボードにコピーされました</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>このプロセスには長い時間がかかる場合があります。</value>
+  </data>
 </root>

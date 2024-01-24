@@ -743,4 +743,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value />
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value />
+  </data>
 </root>

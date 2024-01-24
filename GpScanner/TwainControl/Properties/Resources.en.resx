@@ -712,4 +712,7 @@ TO FILE</value>
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Copied To Clipboard</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>This Process May Take A Long Time.</value>
+  </data>
 </root>

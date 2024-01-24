@@ -702,4 +702,10 @@
   <data name="COPY" xml:space="preserve">
     <value>KOPIËREN</value>
   </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Gekopieerd naar het klembord</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Dit proces kan lang duren.</value>
+  </data>
 </root>

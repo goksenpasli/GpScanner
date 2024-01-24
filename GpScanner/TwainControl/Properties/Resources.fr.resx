@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Copié dans le presse-papier</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Ce processus peut prendre beaucoup de temps.</value>
+  </data>
 </root>

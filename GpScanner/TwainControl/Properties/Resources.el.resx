@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Αντιγράφηκε στο Πρόχειρο</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Αυτή η διαδικασία μπορεί να πάρει πολύ χρόνο.</value>
+  </data>
 </root>

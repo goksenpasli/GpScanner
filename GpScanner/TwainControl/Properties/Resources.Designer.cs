@@ -716,6 +716,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string LONGTIMEJOB {
+            get {
+                return ResourceManager.GetString("LONGTIMEJOB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MERGE {
             get {
                 return ResourceManager.GetString("MERGE", resourceCulture);

@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Copiado al portapapeles</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Este proceso puede llevar mucho tiempo.</value>
+  </data>
 </root>

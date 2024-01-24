@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Buferə Kopyalandı</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Bu Proses Uzun Zaman Ala bilər.</value>
+  </data>
 </root>

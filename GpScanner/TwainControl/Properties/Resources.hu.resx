@@ -708,4 +708,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Bármely cián színű vezérlő másként működik az Alt Shift Ctrl billentyűk közül egy vagy több használatával</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Ez a folyamat sokáig tarthat.</value>
+  </data>
 </root>

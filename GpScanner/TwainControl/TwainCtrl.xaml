@@ -1420,9 +1420,16 @@
                             </ScrollViewer>
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
                                 <StackPanel>
-                                    <TextBlock HorizontalAlignment="Center"
-                                        VerticalAlignment="Top"
-                                        Text="{local:Loc ALL}" />
+                                    <Grid>
+                                        <ProgressBar Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Foreground="Yellow"
+                                            Maximum="1"
+                                            Value="{Binding AllRotateProgressValue}" />
+                                        <TextBlock HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Text="{local:Loc ALL}" />
+                                    </Grid>
                                     <Extensions:NumericUpDownControl VerticalAlignment="Center"
                                         BorderBrush="Cyan"
                                         LargeChange="1"

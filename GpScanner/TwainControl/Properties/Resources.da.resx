@@ -708,4 +708,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Kopieret til udklipsholder</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Denne proces kan tage lang tid.</value>
+  </data>
 </root>

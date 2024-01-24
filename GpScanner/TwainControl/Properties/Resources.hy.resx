@@ -708,4 +708,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Ցանկացած ցիան գույնի հսկողություն տարբեր կերպ է աշխատում Alt Shift Ctrl ստեղների մեկ կամ մի քանիսի հետ</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Այս գործընթացը կարող է երկար տևել:</value>
+  </data>
 </root>

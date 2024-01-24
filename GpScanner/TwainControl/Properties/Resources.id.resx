@@ -708,4 +708,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Kontrol Berwarna Cyan Bekerja Secara Berbeda Dengan Satu atau Lebih Tombol Alt Shift Ctrl</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Proses Ini Mungkin Membutuhkan Waktu Lama.</value>
+  </data>
 </root>

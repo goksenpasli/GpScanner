@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Zkopírováno do schránky</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Tento proces může trvat dlouho.</value>
+  </data>
 </root>

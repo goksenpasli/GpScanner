@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>复制到剪贴板</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>这个过程可能需要很长时间。</value>
+  </data>
 </root>

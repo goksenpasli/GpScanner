@@ -705,4 +705,7 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Скопійовано в буфер обміну</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Цей процес може зайняти багато часу.</value>
+  </data>
 </root>
