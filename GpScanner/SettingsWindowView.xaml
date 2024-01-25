@@ -44,7 +44,7 @@
     <Window.InputBindings>
         <KeyBinding Key="Pause" Command="{Binding StopFlagAnimation}" />
     </Window.InputBindings>
-    <TabControl>
+    <TabControl Background="{StaticResource BorderBackground}">
         <TabItem>
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">

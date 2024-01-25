@@ -43,7 +43,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             async parameter =>
             {
                 double deskewAngle = Deskew.GetDeskewAngle((BitmapSource)Scanner.CroppedImage);
-                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(deskewAngle);
+                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(deskewAngle, Brushes.White);
                 GC.Collect();
             },
             parameter => Scanner?.CroppedImage is not null);

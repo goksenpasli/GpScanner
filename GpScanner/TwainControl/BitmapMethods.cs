@@ -271,7 +271,7 @@ public static class BitmapMethods
         if (deskew)
         {
             double deskewAngle = Deskew.GetDeskewAngle(image);
-            skewedimage = await image.RotateImageAsync(deskewAngle);
+            skewedimage = await image.RotateImageAsync(deskewAngle, System.Windows.Media.Brushes.White);
             skewedimage.Freeze();
         }
 
@@ -411,7 +411,26 @@ public static class BitmapMethods
         return target;
     }
 
-    public static async Task<BitmapImage> RotateImageAsync(this ImageSource Source, double angle)
+    public static async Task<BitmapImage> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
+    {
+        if (angle is not -1 and not 1)
+        {
+            throw new ArgumentOutOfRangeException(nameof(angle), "angle should be -1 or 1");
+        }
+
+        TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
+        transformedBitmap.Freeze();
+        bitmapFrame = null;
+        return await Task.Run(
+            () =>
+            {
+                BitmapImage bitmapimage = transformedBitmap.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
+                bitmapimage?.Freeze();
+                return bitmapimage;
+            });
+    }
+
+    public static async Task<BitmapImage> RotateImageAsync(this ImageSource Source, double angle, Brush backgroundbrush = null)
     {
         try
         {
@@ -422,8 +441,13 @@ public static class BitmapMethods
                     DrawingVisual dv = new();
                     using (DrawingContext dc = dv.RenderOpen())
                     {
+                        Rect rect = new(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight);
+                        if (backgroundbrush != null)
+                        {
+                            dc.DrawRectangle(backgroundbrush, null, rect);
+                        }
                         dc.PushTransform(new RotateTransform(angle, bitmapSource.PixelWidth / 2, bitmapSource.PixelHeight / 2));
-                        dc.DrawImage(Source, new Rect(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight));
+                        dc.DrawImage(Source, rect);
                         dc.Pop();
                     }
 
@@ -444,25 +468,6 @@ public static class BitmapMethods
             Source = null;
             throw new ArgumentException(ex.Message);
         }
-    }
-
-    public static async Task<BitmapImage> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
-    {
-        if (angle is not -1 and not 1)
-        {
-            throw new ArgumentOutOfRangeException(nameof(angle), "angle should be -1 or 1");
-        }
-
-        TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));
-        transformedBitmap.Freeze();
-        bitmapFrame = null;
-        return await Task.Run(
-            () =>
-            {
-                BitmapImage bitmapimage = transformedBitmap.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
-                bitmapimage?.Freeze();
-                return bitmapimage;
-            });
     }
 
     public static IEnumerable<int> SteppedRange(int fromInclusive, int toExclusive, int step)

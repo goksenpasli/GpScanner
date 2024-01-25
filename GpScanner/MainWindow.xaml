@@ -1020,7 +1020,7 @@
                                 <GroupBox.Resources>
                                     <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="48" />
                                 </GroupBox.Resources>
-                                <TabControl>
+                                <TabControl Background="{StaticResource BorderBackground}">
                                     <TabItem>
                                         <TabItem.Header>
                                             <StackPanel Orientation="Horizontal">
@@ -1402,7 +1402,8 @@
                                     </Grid.RowDefinitions>
                                     <TabControl Grid.RowSpan="2"
                                         Width="800"
-                                        Height="400">
+                                        Height="400"
+                                        Background="{StaticResource BorderBackground}">
                                         <TabItem>
                                             <TabItem.Header>
                                                 <StackPanel Orientation="Horizontal">
