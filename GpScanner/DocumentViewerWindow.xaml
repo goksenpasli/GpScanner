@@ -30,6 +30,7 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <RepeatButton Command="{Binding Back}"
+            CommandParameter="{Binding ElementName=Lb}"
             Content="ç"
             FontFamily="Wingdings"
             FontSize="16" />
@@ -82,6 +83,7 @@
         </ListBox>
         <RepeatButton Grid.Row="2"
             Command="{Binding Forward}"
+            CommandParameter="{Binding ElementName=Lb}"
             Content="è"
             FontFamily="Wingdings"
             FontSize="16" />

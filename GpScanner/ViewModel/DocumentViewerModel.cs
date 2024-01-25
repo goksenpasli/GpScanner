@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -29,16 +30,24 @@ public class DocumentViewerModel : InpcBase
         Back = new RelayCommand<object>(
             parameter =>
             {
-                Index--;
-                FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
+                if (parameter is ListBox listBox)
+                {
+                    Index--;
+                    FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
+                    listBox.ScrollIntoView(FilePath);
+                }
             },
             parameter => Index > 0);
 
         Forward = new RelayCommand<object>(
             parameter =>
             {
-                Index++;
-                FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
+                if (parameter is ListBox listBox)
+                {
+                    Index++;
+                    FilePath = DirectoryAllPdfFiles?.ElementAtOrDefault(Index);
+                    listBox.ScrollIntoView(FilePath);
+                }
             },
             parameter => Index < DirectoryAllPdfFiles?.Count() - 1);
 
