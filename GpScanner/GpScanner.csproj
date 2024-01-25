@@ -189,7 +189,6 @@
     <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
     <Compile Include="ViewModel\MirrorAngleEffect.cs" />
-    <Compile Include="ViewModel\PdfCompressorControl.cs" />
     <Compile Include="ViewModel\ReminderData.cs" />
     <Compile Include="ViewModel\RippleEffect.cs" />
     <Compile Include="ViewModel\ScannerData.cs" />

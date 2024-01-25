@@ -118,7 +118,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     _ = BatchPdfList?.Remove(batchPdfData);
                 }
             },
-            parameter => true);
+            parameter => CompressionProgress is 0 or 1);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
