@@ -64,25 +64,26 @@ public class SimpleArchiveViewer : ArchiveViewer
             async () =>
             {
                 using ArchiveFile archive = new(ArchiveFilePath);
-                foreach (Entry item in archive?.Entries.Where(z => z.Size > 0))
+                if (archive != null)
                 {
-                    ArchiveData archiveData = new()
+                    archiveViewer.TotalFilesCount = archive.Entries.Count;
+                    foreach (Entry item in archive.Entries)
                     {
-                        SıkıştırılmışBoyut = (long)item.PackedSize,
-                        DosyaAdı = item.FileName,
-                        TamYol = item.FileName,
-                        Boyut = (long)item.Size,
-                        Oran = (float)item.PackedSize / item.Size,
-                        DüzenlenmeZamanı = item.LastWriteTime.Date,
-                        Crc = item.CRC.ToString("X")
-                    };
-                    await Dispatcher.InvokeAsync(
-                        () =>
+                        ArchiveData archiveData = new()
                         {
-                            archiveViewer.Arşivİçerik.Add(archiveData);
-                            archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
-                        });
+                            SıkıştırılmışBoyut = (long)item.PackedSize,
+                            DosyaAdı = item.FileName,
+                            TamYol = item.FileName,
+                            Boyut = (long)item.Size,
+                            Oran = (float)item.PackedSize / item.Size,
+                            DüzenlenmeZamanı = item.LastWriteTime.Date,
+                            Crc = item.CRC.ToString("X")
+                        };
+                        await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                    }
                 }
+
+                archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
             });
         cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
     }

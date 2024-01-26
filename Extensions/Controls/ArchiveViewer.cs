@@ -23,6 +23,7 @@ namespace Extensions
         private ArchiveData selectedFile;
         private string[] selectedFiles;
         private double toplamOran;
+        private int totalFilesCount;
 
         static ArchiveViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ArchiveViewer), new FrameworkPropertyMetadata(typeof(ArchiveViewer))); }
 
@@ -140,6 +141,19 @@ namespace Extensions
             }
         }
 
+        public int TotalFilesCount
+        {
+            get => totalFilesCount;
+            set
+            {
+                if (totalFilesCount != value)
+                {
+                    totalFilesCount = value;
+                    OnPropertyChanged(nameof(TotalFilesCount));
+                }
+            }
+        }
+
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -221,25 +235,26 @@ namespace Extensions
                 async () =>
                 {
                     using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
-                    foreach (ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0))
+                    if (archive != null)
                     {
-                        ArchiveData archiveData = new()
+                        archiveViewer.TotalFilesCount = archive.Entries.Count;
+                        foreach (ZipArchiveEntry item in archive.Entries)
                         {
-                            SıkıştırılmışBoyut = item.CompressedLength,
-                            DosyaAdı = item.Name,
-                            TamYol = item.FullName,
-                            Boyut = item.Length,
-                            Oran = (float)item.CompressedLength / item.Length,
-                            DüzenlenmeZamanı = item.LastWriteTime.Date,
-                            Crc = null
-                        };
-                        await Dispatcher.InvokeAsync(
-                            () =>
+                            ArchiveData archiveData = new()
                             {
-                                archiveViewer.Arşivİçerik.Add(archiveData);
-                                archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
-                            });
+                                SıkıştırılmışBoyut = item.CompressedLength,
+                                DosyaAdı = item.Name,
+                                TamYol = item.FullName,
+                                Boyut = item.Length,
+                                Oran = (float)item.CompressedLength / item.Length,
+                                DüzenlenmeZamanı = item.LastWriteTime.Date,
+                                Crc = null
+                            };
+                            await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                        }
                     }
+
+                    archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
                 });
             cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
         }
