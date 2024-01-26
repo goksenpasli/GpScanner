@@ -218,7 +218,7 @@ namespace Extensions
         {
             archiveViewer.Arşivİçerik = [];
             await Task.Run(
-                () =>
+                async () =>
                 {
                     using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
                     foreach (ZipArchiveEntry item in archive?.Entries.Where(z => z.Length > 0))
@@ -233,7 +233,7 @@ namespace Extensions
                             DüzenlenmeZamanı = item.LastWriteTime.Date,
                             Crc = null
                         };
-                        _ = Dispatcher.InvokeAsync(
+                        await Dispatcher.InvokeAsync(
                             () =>
                             {
                                 archiveViewer.Arşivİçerik.Add(archiveData);

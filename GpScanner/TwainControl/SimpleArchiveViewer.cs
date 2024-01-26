@@ -61,7 +61,7 @@ public class SimpleArchiveViewer : ArchiveViewer
     {
         archiveViewer.Arşivİçerik = [];
         await Task.Run(
-            () =>
+            async () =>
             {
                 using ArchiveFile archive = new(ArchiveFilePath);
                 foreach (Entry item in archive?.Entries.Where(z => z.Size > 0))
@@ -76,7 +76,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                         DüzenlenmeZamanı = item.LastWriteTime.Date,
                         Crc = item.CRC.ToString("X")
                     };
-                    _ = Dispatcher.InvokeAsync(
+                    await Dispatcher.InvokeAsync(
                         () =>
                         {
                             archiveViewer.Arşivİçerik.Add(archiveData);

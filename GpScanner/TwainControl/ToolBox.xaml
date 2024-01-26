@@ -151,10 +151,13 @@
                                     SmallChange="1"
                                     Ticks="0, 90, 180, 270, 360"
                                     Value="{Binding Scanner.CroppedImageAngle}" />
-                                <Extensions:NumericUpDownControl Maximum="10"
-                                    Minimum="0"
-                                    SmallChange="1"
-                                    Value="{Binding Scanner.MedianValue, UpdateSourceTrigger=PropertyChanged}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
+                                    <Extensions:NumericUpDownControl Maximum="10"
+                                        Minimum="0"
+                                        SmallChange="1"
+                                        Value="{Binding Scanner.MedianValue, Delay=150, UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
                             </UniformGrid>
                             <Button local:Policy.PolicyName="InvertImage"
                                 Command="{Binding InvertImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
