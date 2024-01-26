@@ -138,7 +138,6 @@ public partial class GpScannerViewModel : InpcBase
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         GenerateAnimationTimer();
-        GenerateFlagAnimation();
         GenerateSystemTrayMenu();
         GenerateJumpList();
         _ = LoadDatas();
@@ -1026,8 +1025,13 @@ public partial class GpScannerViewModel : InpcBase
             parameter =>
             {
                 Window mainWindow = Application.Current?.Windows?.OfType<Window>()?.FirstOrDefault();
-                SettingsWindowView settingswindow = new() { Owner = mainWindow, DataContext = mainWindow.DataContext };
-                _ = settingswindow.ShowDialog();
+                if (mainWindow.DataContext is GpScannerViewModel gpScannerViewModel)
+                {
+                    gpScannerViewModel.GenerateFlagAnimation();
+                    SettingsWindowView settingswindow = new() { Owner = mainWindow, DataContext = gpScannerViewModel };
+                    settingswindow.Closed += (s, e) => gpScannerViewModel.StopFlagAnimation.Execute(null);
+                    _ = settingswindow.ShowDialog();
+                }
             },
             parameter => Policy.CheckPolicy("OpenSettings"));
     }
