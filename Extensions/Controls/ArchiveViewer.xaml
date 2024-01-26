@@ -22,7 +22,8 @@
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <ListView d:ItemsSource="{d:SampleData ItemCount=3}"
+                        <ListView x:Name="Lv"
+                            d:ItemsSource="{d:SampleData ItemCount=3}"
                             local:GridViewSort.AutoSort="True"
                             AlternationCount="2"
                             Background="{TemplateBinding Background}"
@@ -156,6 +157,16 @@
                             </StatusBarItem>
                             <StatusBarItem Grid.Column="2" HorizontalAlignment="Right">
                                 <TextBlock>
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=HasItems, Mode=OneWay, ElementName=Lv}" Value="false">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
                                     <Run Text="{Binding Path=Arşivİçerik.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />
                                     <System:String>/</System:String>
                                     <Run Text="{Binding TotalFilesCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />

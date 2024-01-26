@@ -29,7 +29,6 @@
                 <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
-            <PdfViewer:PageNumberOneUpConverter x:Key="PageNumberOneUpConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
             <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
@@ -2201,7 +2200,7 @@
                                 NumericUpdownTextBoxVisibility="Collapsed"
                                 SmallChange="1"
                                 Value="{Binding SeekIndex}" />
-                            <TextBlock VerticalAlignment="Center" Text="{Binding SeekIndex, Mode=OneWay, Converter={StaticResource PageNumberOneUpConverter}}" />
+                            <TextBlock VerticalAlignment="Center" Text="{Binding SeçiliResim.Index, Mode=OneWay}" />
                         </StackPanel>
                     </TabItem.Header>
                     <Grid Background="{StaticResource BorderBackground}" IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}">
