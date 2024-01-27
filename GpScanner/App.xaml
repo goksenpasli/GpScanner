@@ -489,6 +489,12 @@
             <DataTemplate x:Key="XmlViewerThumbTemplate">
                 <twain:XmlViewerControl Grid.Row="1" twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="DocxViewerThumbTemplate">
+                <local:DocxViewer DocxDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
+            <DataTemplate x:Key="DvdBurnerZipViewerTemplate">
+                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <DataTemplate x:Key="SimplePdfTemplate">
                 <Image Grid.Row="1" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
                     <Image.Tag>
@@ -737,6 +743,7 @@
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DvdBurnerDocumentViewerSelector"
+                Docx="{StaticResource DocxViewerThumbTemplate}"
                 Empty="{StaticResource DvdBurnerEmptyViewerTemplate}"
                 Eyp="{StaticResource EypViewerTemplate}"
                 Img="{StaticResource ImgViewerTemplate}"
@@ -745,7 +752,7 @@
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
-                Zip="{StaticResource DvdBurnerEmptyViewerTemplate}" />
+                Zip="{StaticResource DvdBurnerZipViewerTemplate}" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

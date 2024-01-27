@@ -8,9 +8,12 @@ namespace Extensions;
 
 public class RelayAsyncCommand<T> : RelayCommand<T>
 {
+    [DebuggerStepThrough]
     public RelayAsyncCommand(Action<T> execute) : base(execute)
     {
     }
+
+    [DebuggerStepThrough]
     public RelayAsyncCommand(Action<T> execute, Predicate<T> canExecute) : base(execute, canExecute)
     {
     }
@@ -55,10 +58,12 @@ public class RelayCommand<T> : ICommand
     #endregion Fields
 
     #region Constructors
+    [DebuggerStepThrough]
     public RelayCommand(Action<T> execute) : this(execute, null)
     {
     }
 
+    [DebuggerStepThrough]
     public RelayCommand(Action<T> execute, Predicate<T> canExecute)
     {
         _execute = execute ?? throw new ArgumentNullException(nameof(execute));
@@ -82,10 +87,12 @@ public class RelayCommand : ICommand
     protected readonly Func<bool> canExecute;
     protected readonly Action execute;
 
+    [DebuggerStepThrough]
     public RelayCommand(Action execute) : this(execute, null)
     {
     }
 
+    [DebuggerStepThrough]
     public RelayCommand(Action execute, Func<bool> canExecute)
     {
         this.execute = execute ?? throw new ArgumentNullException(nameof(execute));

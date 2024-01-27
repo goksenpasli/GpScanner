@@ -8,6 +8,8 @@ namespace TwainControl
 {
     public class ViewerTemplateSelector : DataTemplateSelector
     {
+        public DataTemplate Docx { get; set; }
+
         public DataTemplate Empty { get; set; }
 
         public DataTemplate Eyp { get; set; }
@@ -41,6 +43,7 @@ namespace TwainControl
                         ".pdf" => Pdf,
                         ".eyp" => Eyp,
                         ".xps" => Xps,
+                        ".docx" or ".txt" => Docx,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
                         ".csv" or ".xls" or ".xlsx" or ".xlsb" => Xlsx,
                         _ => imgext.Contains(ext) ? Img : archiveext.Contains(ext) ? Zip : videoext.Contains(ext) ? Vid : Empty
