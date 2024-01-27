@@ -12,30 +12,31 @@ public class Policy : DependencyObject
 
     public static bool CheckKeyPolicy(string searchvalue, RegistryKey registryKey)
     {
-        try
+        using RegistryKey key = registryKey;
+        if (key is not null)
         {
-            using RegistryKey key = registryKey;
-            if (key is not null)
+            foreach (string value in key.GetValueNames())
             {
-                foreach (string value in key.GetValueNames())
+                if (value == searchvalue && key.GetValue(value) is int dwordvalue)
                 {
-                    if (value == searchvalue)
-                    {
-                        return (int)key.GetValue(value) != 0;
-                    }
+                    return dwordvalue != 0;
                 }
             }
+        }
+        return true;
+    }
 
-            return true;
+    public static bool CheckPolicy(string policyname)
+    {
+        try
+        {
+            return CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
         }
         catch (Exception)
         {
         }
-
         return true;
     }
-
-    public static bool CheckPolicy(string policyname) => CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
 
     public static string GetPolicyName(DependencyObject obj) => (string)obj.GetValue(PolicyNameProperty);
 

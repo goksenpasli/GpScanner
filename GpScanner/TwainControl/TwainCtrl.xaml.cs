@@ -2879,8 +2879,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 player.Play();
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            MessageBox.Show(ex.Message, AppName);
         }
     }
 

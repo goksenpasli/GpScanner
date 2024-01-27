@@ -29,11 +29,12 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty BatchPdfListProperty = DependencyProperty.Register("BatchPdfList", typeof(ObservableCollection<BatchPdfData>), typeof(Compressor), new PropertyMetadata(new ObservableCollection<BatchPdfData>()));
     public static readonly DependencyProperty BatchProcessIsEnabledProperty = DependencyProperty.Register("BatchProcessIsEnabled", typeof(bool), typeof(Compressor), new PropertyMetadata(true));
     public static readonly DependencyProperty BlackAndWhiteProperty = DependencyProperty.Register("BlackAndWhite", typeof(bool), typeof(Compressor), new PropertyMetadata(Settings.Default.Bw, BwChanged));
+    public static readonly DependencyPropertyKey CompressFinishedProperty = DependencyProperty.RegisterReadOnly("CompressFinished", typeof(bool), typeof(Compressor), new PropertyMetadata(true));
     public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Dpi, DpiChanged));
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-    public readonly List<string> imagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
+    private readonly List<string> imagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private double compressionProgress;
     private ListBox listbox;
 
@@ -53,45 +54,37 @@ public class Compressor : Control, INotifyPropertyChanged
             ];
         }
 
-        CompressFile = new RelayCommand<object>(
-            async parameter =>
-            {
-                if (IsValidPdfFile(LoadedPdfPath))
-                {
-                    using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(LoadedPdfPath);
-                    SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = $"{Path.GetFileNameWithoutExtension(LoadedPdfPath)}_Compressed.pdf" };
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        pdfDocument.Save(saveFileDialog.FileName);
-                        LoadedPdfPath = null;
-                    }
-                    ApplyDefaultPdfCompression(pdfDocument);
-                }
-            },
-            parameter => true);
-
         BatchCompressFile = new RelayCommand<object>(
             async parameter =>
             {
-                foreach (BatchPdfData file in BatchPdfList)
+                try
                 {
-                    string outputFile = $"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf";
-                    if (Path.GetExtension(file.Filename.ToLower()) == ".pdf" && IsValidPdfFile(file.Filename))
+                    SetValue(CompressFinishedProperty, false);
+                    foreach (BatchPdfData file in BatchPdfList)
                     {
-                        using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
-                        pdfDocument.Save(outputFile);
-                        ApplyDefaultPdfCompression(pdfDocument);
-                        file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
-                        file.Completed = true;
+                        string outputFile = $"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf";
+                        if (Path.GetExtension(file.Filename.ToLower()) == ".pdf" && IsValidPdfFile(file.Filename))
+                        {
+                            using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
+                            pdfDocument.Save(outputFile);
+                            ApplyDefaultPdfCompression(pdfDocument);
+                            file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
+                            file.Completed = true;
+                        }
+                        else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLower())))
+                        {
+                            using PdfDocument pdfDocument = await GeneratePdf(file.Filename);
+                            pdfDocument.Save(outputFile);
+                            ApplyDefaultPdfCompression(pdfDocument);
+                            file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
+                            file.Completed = true;
+                        }
                     }
-                    else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLower())))
-                    {
-                        using PdfDocument pdfDocument = await GeneratePdf(file.Filename);
-                        pdfDocument.Save(outputFile);
-                        ApplyDefaultPdfCompression(pdfDocument);
-                        file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
-                        file.Completed = true;
-                    }
+                    CompressionProgress = 0;
+                }
+                finally
+                {
+                    SetValue(CompressFinishedProperty, true);
                 }
             },
             parameter => BatchPdfList?.Count > 0);
@@ -118,7 +111,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     _ = BatchPdfList?.Remove(batchPdfData);
                 }
             },
-            parameter => CompressionProgress is 0 or 1);
+            parameter => CompressFinished);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -131,7 +124,7 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public bool BlackAndWhite { get => (bool)GetValue(BlackAndWhiteProperty); set => SetValue(BlackAndWhiteProperty, value); }
 
-    public RelayCommand<object> CompressFile { get; }
+    public bool CompressFinished => (bool)GetValue(CompressFinishedProperty.DependencyProperty);
 
     public double CompressionProgress
     {

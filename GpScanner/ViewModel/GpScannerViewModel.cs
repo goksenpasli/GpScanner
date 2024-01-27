@@ -351,6 +351,7 @@ public partial class GpScannerViewModel : InpcBase
                 }
                 finally
                 {
+                    OcrIsBusy = false;
                     if (Shutdown)
                     {
                         ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
@@ -362,7 +363,7 @@ public partial class GpScannerViewModel : InpcBase
         UnindexedAllFilesOcr = new RelayCommand<object>(
             async parameter =>
             {
-                int i = 0;
+                int i = 1;
                 foreach (string unIndexedFile in UnIndexedFiles.ToList())
                 {
                     try
@@ -409,10 +410,8 @@ public partial class GpScannerViewModel : InpcBase
 
                         ocrdata = null;
                         ocrtext = null;
-                        OcrIsBusy = false;
                         _ = UnIndexedFiles?.Remove(unIndexedFile);
-                        IndexedFileCount = i + 1;
-                        i++;
+                        IndexedFileCount = i++;
                         GC.Collect();
                     }
                     catch (Exception)
@@ -420,6 +419,7 @@ public partial class GpScannerViewModel : InpcBase
                     }
                     finally
                     {
+                        OcrIsBusy = false;
                         if (Shutdown)
                         {
                             ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);

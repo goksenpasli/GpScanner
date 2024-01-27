@@ -76,7 +76,9 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
-                                    <Button VerticalContentAlignment="Stretch" Command="{Binding BatchCompressFile, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                    <Button VerticalContentAlignment="Stretch"
+                                        Command="{Binding BatchCompressFile, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        IsEnabled="{Binding CompressFinished, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                                         <Grid>
                                             <ProgressBar Background="{x:Null}"
                                                 BorderBrush="{x:Null}"
