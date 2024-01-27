@@ -53,6 +53,7 @@
     <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
@@ -67,6 +68,9 @@
     <Compile Include="Controls\ArchiveData.cs" />
     <Compile Include="Controls\ArchiveViewer.cs" />
     <Compile Include="Controls\ButtonedTextBox.cs" />
+    <Compile Include="Controls\Calculator.xaml.cs">
+      <DependentUpon>Calculator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ContributionControl.cs" />
     <Compile Include="Controls\ContributionData.cs" />
     <Compile Include="Controls\CRC32.cs" />
@@ -149,6 +153,10 @@
     <Compile Include="TranslateViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\Calculator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\FileBreadcrumbControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

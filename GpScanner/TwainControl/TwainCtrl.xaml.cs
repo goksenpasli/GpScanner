@@ -72,7 +72,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
     private readonly string[] imagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
-    private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = new DoubleCollection(new double[] { 1 }) };
+    private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = new DoubleCollection([1]) };
     private ScanSettings _settings;
     private double allImageRotationAngle;
     private double allRotateProgressValue;

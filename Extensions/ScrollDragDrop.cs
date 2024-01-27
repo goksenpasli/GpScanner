@@ -19,7 +19,7 @@ public static class ScrollDragDrop
 
         IEnumerable<T> FindChildren()
         {
-            Queue<DependencyObject> queue = new(new[] { parent });
+            Queue<DependencyObject> queue = new([parent]);
 
             while (queue.Any())
             {

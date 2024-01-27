@@ -46,7 +46,6 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
                 }
             },
             parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
-
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

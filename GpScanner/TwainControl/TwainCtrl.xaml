@@ -1388,21 +1388,6 @@
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc ALL}" />
                                         </StackPanel>
                                     </Extensions:SplitButton>
-                                    <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
-                                        <Image Width="24"
-                                            Height="24"
-                                            Source="/TwainControl;component/Icons/save.png" />
-                                    </Button>
-                                    <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
-                                        <Image Width="24" Height="24">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="70" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button>
                                     <Button local:Policy.PolicyName="CycleSelectedDocuments"
                                         Command="{Binding CycleSelectedDocuments}"
                                         CommandParameter="{Binding ElementName=Lb}">
@@ -1415,6 +1400,27 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
+                                    <Extensions:ContentToggleButton>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <StackPanel>
+                                                <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
+                                                    <Image Width="24"
+                                                        Height="24"
+                                                        Source="/TwainControl;component/Icons/save.png" />
+                                                </Button>
+                                                <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
+                                                    <Image Width="24" Height="24">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="70" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </Button>
+                                            </StackPanel>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
                                 </WrapPanel>
                             </ScrollViewer>
                             <StackPanel Grid.Column="2" Orientation="Horizontal">
@@ -2352,30 +2358,23 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <Button Command="{Binding LoadArchiveFile}">
-                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Style>
-                                        <Style TargetType="Image">
-                                            <Setter Property="Source" Value="{Binding Converter={StaticResource FilePathToIconConverter}, ElementName=ArchiveVwr, Path=ArchivePath}" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding ElementName=ArchiveVwr, Path=ArchivePath}" Value="{x:Null}">
-                                                    <Setter Property="Source" Value="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Image.Style>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Text="{local:Loc FILE}" />
-                            </StackPanel>
+                            <Button.Content>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32"
+                                        Height="32"
+                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Text="{local:Loc FILE}" />
+                                </StackPanel>
+                            </Button.Content>
                         </Button>
                         <Extensions:ButtonedTextBox Grid.Row="1"
                             d:Text="ArchivePath"
-                            IsReadOnly="True"
+                            Description="{Binding ElementName=ArchiveVwr, Path=ArchivePath, Mode=OneWay}"
                             PasteButtonVisibility="Collapsed"
-                            ResetButtonVisibility="Collapsed"
-                            Text="{Binding ElementName=ArchiveVwr, Path=ArchivePath}" />
+                            Text="{Binding ElementName=ArchiveVwr, Path=ArchivePath, UpdateSourceTrigger=PropertyChanged}"
+                            TextBoxVisibility="Collapsed" />
                         <local:SimpleArchiveViewer x:Name="ArchiveVwr"
                             Grid.Row="2"
                             AllowDrop="True" />

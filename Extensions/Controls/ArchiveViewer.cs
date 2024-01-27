@@ -261,10 +261,17 @@ namespace Extensions
 
         private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is ArchiveViewer archiveViewer && e.NewValue is not null)
+            if (d is ArchiveViewer archiveViewer && e.NewValue is string path)
             {
-                string ArchiveFilePath = (string)e.NewValue;
-                archiveViewer.ReadArchiveContent(ArchiveFilePath, archiveViewer);
+                if (File.Exists(path))
+                {
+                    archiveViewer.ReadArchiveContent(path, archiveViewer);
+                }
+                else
+                {
+                    archiveViewer.Arşivİçerik?.Clear();
+                    archiveViewer.ToplamOran = 0;
+                }
             }
         }
 
@@ -295,14 +302,6 @@ namespace Extensions
                                 })
                              : null;
             }
-        }
-
-        private string CalculateFileCRC(Stream stream)
-        {
-            using CRC32 crc32 = new();
-            byte[] crcValue = crc32.ComputeHash(stream);
-            stream?.Dispose();
-            return BitConverter.ToString(crcValue).Replace("-", string.Empty).ToUpper();
         }
     }
 }
