@@ -2456,6 +2456,7 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <Button Command="{Binding LoadXlsFile}">
@@ -2468,7 +2469,13 @@
                                     Text="{local:Loc FILE}" />
                             </StackPanel>
                         </Button>
-                        <local:XlsxViewer x:Name="xlsxViewer" Grid.Row="1" />
+                        <Extensions:ButtonedTextBox Grid.Row="1"
+                            d:Text="ArchivePath"
+                            Description="{Binding ElementName=xlsxViewer, Path=XlsxDataFilePath, Mode=OneWay}"
+                            PasteButtonVisibility="Collapsed"
+                            Text="{Binding ElementName=xlsxViewer, Path=XlsxDataFilePath, UpdateSourceTrigger=PropertyChanged}"
+                            TextBoxVisibility="Collapsed" />
+                        <local:XlsxViewer x:Name="xlsxViewer" Grid.Row="2" />
                     </Grid>
                 </TabItem>
                 <TabItem>

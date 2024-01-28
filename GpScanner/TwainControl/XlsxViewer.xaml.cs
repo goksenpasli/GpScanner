@@ -59,17 +59,25 @@ namespace TwainControl
 
         private static void XlsxDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is XlsxViewer viewer && e.NewValue != null)
+            if (d is XlsxViewer viewer && e.NewValue is string uriString)
             {
                 try
                 {
-                    string uriString = (string)e.NewValue;
-                    using FileStream fs = File.Open(uriString, FileMode.Open, FileAccess.Read);
-                    viewer.Tablolar = Path.GetExtension(uriString) switch
+                    if (string.IsNullOrWhiteSpace(uriString))
                     {
-                        ".csv" => CsvStreamToDt(fs).Tables,
-                        _ => XlsxStreamToDt(fs).Tables,
-                    };
+                        viewer.Tablolar = null;
+                        return;
+                    }
+
+                    if (File.Exists(uriString))
+                    {
+                        using FileStream fs = File.Open(uriString, FileMode.Open, FileAccess.Read);
+                        viewer.Tablolar = Path.GetExtension(uriString) switch
+                        {
+                            ".csv" => CsvStreamToDt(fs).Tables,
+                            _ => XlsxStreamToDt(fs).Tables,
+                        };
+                    }
                 }
                 catch (Exception ex)
                 {

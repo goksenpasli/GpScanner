@@ -191,31 +191,24 @@ public partial class GpScannerViewModel : InpcBase
                 SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = Translation.GetResStringValue("MERGE") };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    try
-                    {
-                        Task task = Task.Run(
-                            () =>
-                            {
-                                List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
-                                using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
-                                for (int i = 0; i < pdffilelist.Count; i++)
-                                {
-                                    string fPath = pdffilelist[i];
-                                    _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
-                                    ZipProgress = (i + 1) / (double)pdffilelist.Count;
-                                }
-                                ZipProgressIndeterminate = true;
-                            });
-                        await task;
-                        if (task?.IsCompleted == true)
+                    Task task = Task.Run(
+                        () =>
                         {
-                            ZipProgress = 0;
-                            ZipProgressIndeterminate = false;
-                        }
-                    }
-                    catch (Exception ex)
+                            List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
+                            using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
+                            for (int i = 0; i < pdffilelist.Count; i++)
+                            {
+                                string fPath = pdffilelist[i];
+                                _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
+                                ZipProgress = (i + 1) / (double)pdffilelist.Count;
+                            }
+                            ZipProgressIndeterminate = true;
+                        });
+                    await task;
+                    if (task?.IsCompleted == true)
                     {
-                        _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                        ZipProgress = 0;
+                        ZipProgressIndeterminate = false;
                     }
                 }
             },
@@ -261,37 +254,38 @@ public partial class GpScannerViewModel : InpcBase
                 if (parameter is PdfViewer.PdfViewer pdfviewer && PdfViewer.PdfViewer.IsValidPdfFile(pdfviewer.PdfFilePath))
                 {
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    if (filedata != null)
+                    if (filedata == null)
                     {
-                        OcrIsBusy = true;
-                        ObservableCollection<OcrData> ocrdata;
-                        if (Keyboard.Modifiers == ModifierKeys.Alt)
-                        {
-                            for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
-                            {
-                                using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Twainsettings.Settings.Default.ImgLoadResolution);
-                                ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
-                                using (AppDbContext context = new())
-                                {
-                                    _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
-                                    _ = context.SaveChanges();
-                                }
-                                OcrPdfThumbnailPageNumber = i;
-                            }
-                            OcrPdfThumbnailPageNumber = null;
-                        }
-                        else
-                        {
-                            using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
-                            ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
-                            using AppDbContext context = new();
-                            _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
-                            _ = context.SaveChanges();
-                        }
-                        filedata = null;
-                        ocrdata = null;
-                        OcrIsBusy = false;
+                        return;
                     }
+                    OcrIsBusy = true;
+                    ObservableCollection<OcrData> ocrdata;
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
+                    {
+                        for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
+                        {
+                            using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Twainsettings.Settings.Default.ImgLoadResolution);
+                            ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
+                            using (AppDbContext context = new())
+                            {
+                                _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                                _ = context.SaveChanges();
+                            }
+                            OcrPdfThumbnailPageNumber = i;
+                        }
+                        OcrPdfThumbnailPageNumber = null;
+                    }
+                    else
+                    {
+                        using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
+                        ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
+                        using AppDbContext context = new();
+                        _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                        _ = context.SaveChanges();
+                    }
+                    filedata = null;
+                    ocrdata = null;
+                    OcrIsBusy = false;
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && (Settings.Default.ThumbMultipleOcrEnabled || !OcrIsBusy));
@@ -435,22 +429,23 @@ public partial class GpScannerViewModel : InpcBase
                 if (parameter is PdfViewer.PdfViewer pdfviewer && PdfViewer.PdfViewer.IsValidPdfFile(pdfviewer.PdfFilePath))
                 {
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    if (filedata != null)
+                    if (filedata == null)
                     {
-                        OcrIsBusy = true;
-                        ObservableCollection<OcrData> ocrdata;
-                        using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
-                        ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang, true);
-                        OcrIsBusy = false;
-                        filedata = null;
-                        SaveFileDialog saveFileDialog = new() { Filter = "Docx Dosyası(*.docx)|*.docx", FileName = Translation.GetResStringValue("FILE") };
-                        if (saveFileDialog.ShowDialog() == true)
-                        {
-                            using DocX document = WriteDocxFile(ocrdata, saveFileDialog.FileName);
-                            document.Save(saveFileDialog.FileName);
-                        }
-                        ocrdata = null;
+                        return;
                     }
+                    OcrIsBusy = true;
+                    ObservableCollection<OcrData> ocrdata;
+                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
+                    ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang, true);
+                    OcrIsBusy = false;
+                    filedata = null;
+                    SaveFileDialog saveFileDialog = new() { Filter = "Docx Dosyası(*.docx)|*.docx", FileName = Translation.GetResStringValue("FILE") };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        using DocX document = WriteDocxFile(ocrdata, saveFileDialog.FileName);
+                        document.Save(saveFileDialog.FileName);
+                    }
+                    ocrdata = null;
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && !OcrIsBusy);
@@ -772,44 +767,41 @@ public partial class GpScannerViewModel : InpcBase
                 {
                     try
                     {
-                        if (item.Count > 0)
-                        {
-                            BatchTxtOcr batchTxtOcr = new();
-                            Paper paper = ToolBox.Paper;
-                            Task task = Task.Run(
-                                async () =>
+                        BatchTxtOcr batchTxtOcr = new();
+                        Paper paper = ToolBox.Paper;
+                        Task task = Task.Run(
+                            async () =>
+                            {
+                                for (int i = 0; i < item.Count; i++)
                                 {
-                                    for (int i = 0; i < item.Count; i++)
+                                    if (ocrcancellationToken?.IsCancellationRequested == false)
                                     {
-                                        if (ocrcancellationToken?.IsCancellationRequested == false)
-                                        {
-                                            string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                            ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true ? item.ElementAtOrDefault(i).GetOcrData(Settings.Default.DefaultTtsLang) : null;
+                                        string pdffile = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
+                                        ObservableCollection<OcrData> scannedText = scanner?.ApplyPdfSaveOcr == true ? item.ElementAtOrDefault(i).GetOcrData(Settings.Default.DefaultTtsLang) : null;
 
-                                            batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                            batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
-                                            if (Settings.Default.PdfBatchCompress)
-                                            {
-                                                BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution).Save(pdffile);
-                                            }
-                                            else
-                                            {
-                                                item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
-                                            }
-                                            await Application.Current?.Dispatcher?.InvokeAsync(
-                                            () =>
-                                            {
-                                                string file = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                                BatchFolderProcessedFileList.Add(new BatchFiles() { Name = file });
-                                            });
-                                            scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
+                                        batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                        batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
+                                        if (Settings.Default.PdfBatchCompress)
+                                        {
+                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution).Save(pdffile);
                                         }
+                                        else
+                                        {
+                                            item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+                                        }
+                                        await Application.Current?.Dispatcher?.InvokeAsync(
+                                        () =>
+                                        {
+                                            string file = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
+                                            BatchFolderProcessedFileList.Add(new BatchFiles() { Name = file });
+                                        });
+                                        scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
                                     }
-                                },
-                                ocrcancellationToken.Token);
-                            BatchTxtOcrs.Add(batchTxtOcr);
-                            Tasks.Add(task);
-                        }
+                                }
+                            },
+                            ocrcancellationToken.Token);
+                        BatchTxtOcrs.Add(batchTxtOcr);
+                        Tasks.Add(task);
                     }
                     catch (Exception)
                     {
@@ -868,30 +860,27 @@ public partial class GpScannerViewModel : InpcBase
                 {
                     try
                     {
-                        if (item.Count > 0)
-                        {
-                            BatchTxtOcr batchTxtOcr = new();
-                            Task task = Task.Run(
-                                () =>
+                        BatchTxtOcr batchTxtOcr = new();
+                        Task task = Task.Run(
+                            () =>
+                            {
+                                for (int i = 0; i < item.Count; i++)
                                 {
-                                    for (int i = 0; i < item.Count; i++)
+                                    if (ocrcancellationToken?.IsCancellationRequested == false)
                                     {
-                                        if (ocrcancellationToken?.IsCancellationRequested == false)
-                                        {
-                                            string image = item[i];
-                                            string txtfile = Path.ChangeExtension(image, ".txt");
-                                            string content = string.Join(" ", image.GetOcrData(Settings.Default.DefaultTtsLang).Select(z => z.Text));
-                                            File.WriteAllText(txtfile, content);
-                                            batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
-                                            scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
-                                            batchTxtOcr.FilePath = Path.GetFileName(image);
-                                        }
+                                        string image = item[i];
+                                        string txtfile = Path.ChangeExtension(image, ".txt");
+                                        string content = string.Join(" ", image.GetOcrData(Settings.Default.DefaultTtsLang).Select(z => z.Text));
+                                        File.WriteAllText(txtfile, content);
+                                        batchTxtOcr.ProgressValue = (i + 1) / (double)item.Count;
+                                        scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
+                                        batchTxtOcr.FilePath = Path.GetFileName(image);
                                     }
-                                },
-                                ocrcancellationToken.Token);
-                            BatchTxtOcrs.Add(batchTxtOcr);
-                            Tasks.Add(task);
-                        }
+                                }
+                            },
+                            ocrcancellationToken.Token);
+                        BatchTxtOcrs.Add(batchTxtOcr);
+                        Tasks.Add(task);
                     }
                     catch (Exception)
                     {
@@ -934,14 +923,15 @@ public partial class GpScannerViewModel : InpcBase
                 {
                     List<Scanner> listboxFiles = MainWindow.cvs.View.OfType<Scanner>().ToList();
                     Scanner currentFile = listboxFiles.Where(z => z.Seçili).ElementAtOrDefault(cycleIndex);
-                    if (currentFile is not null)
+                    if (currentFile is null)
                     {
-                        listBox.ScrollIntoView(currentFile);
-                        currentFile.BorderAnimation = true;
-                        cycleIndex = (cycleIndex + 1) % listboxFiles.Count(z => z.Seçili);
-                        await Task.Delay(1000);
-                        currentFile.BorderAnimation = false;
+                        return;
                     }
+                    listBox.ScrollIntoView(currentFile);
+                    currentFile.BorderAnimation = true;
+                    cycleIndex = (cycleIndex + 1) % listboxFiles.Count(z => z.Seçili);
+                    await Task.Delay(1000);
+                    currentFile.BorderAnimation = false;
                 }
             },
             parameter => MainWindow.cvs?.View?.OfType<Scanner>().Count(z => z.Seçili) > 0);

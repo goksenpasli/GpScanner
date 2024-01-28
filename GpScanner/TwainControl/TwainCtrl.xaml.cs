@@ -440,20 +440,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         resimler[i].Seçili = true;
                     }
+                    return;
                 }
-                else if (Keyboard.Modifiers == ModifierKeys.Shift)
+                if (Keyboard.Modifiers == ModifierKeys.Shift)
                 {
                     for (int i = 0; i < resimler.Count; i += 2)
                     {
                         resimler[i].Seçili = true;
                     }
+                    return;
                 }
-                else
+                foreach (ScannedImage item in resimler)
                 {
-                    foreach (ScannedImage item in resimler)
-                    {
-                        item.Seçili = true;
-                    }
+                    item.Seçili = true;
                 }
             },
             parameter => Policy.CheckPolicy("Tümünüİşaretle") && Scanner?.Resimler?.Count > 0);
@@ -908,7 +907,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 if (openFileDialog.ShowDialog() == true && parameter is XpsViewer xpsViewer)
                 {
-                    switch (Path.GetExtension(openFileDialog.FileName))
+                    switch (Path.GetExtension(openFileDialog.FileName.ToLower()))
                     {
                         case ".udf":
                             xpsViewer.XpsDataFilePath = LoadUdfFile(openFileDialog.FileName);
@@ -1266,30 +1265,31 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string path = pdfviewer.PdfFilePath;
                     int currentpage = pdfviewer.Sayfa;
                     using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                    if (pdfdocument != null)
+                    if (pdfdocument == null)
                     {
-                        if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt))
+                        return;
+                    }
+                    if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt))
+                    {
+                        if (Keyboard.Modifiers == ModifierKeys.Shift)
                         {
-                            if (Keyboard.Modifiers == ModifierKeys.Shift)
-                            {
-                                SavePageRotated(path, pdfdocument, -90);
-                                pdfviewer.PdfFilePath = null;
-                                pdfviewer.PdfFilePath = path;
-                                return;
-                            }
-
-                            SavePageRotated(path, pdfdocument, 90);
+                            SavePageRotated(path, pdfdocument, -90);
                             pdfviewer.PdfFilePath = null;
                             pdfviewer.PdfFilePath = path;
                             return;
                         }
 
-                        SavePageRotated(path, pdfdocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
-                        await Task.Delay(1000);
+                        SavePageRotated(path, pdfdocument, 90);
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = path;
-                        pdfviewer.Sayfa = currentpage;
+                        return;
                     }
+
+                    SavePageRotated(path, pdfdocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
+                    await Task.Delay(1000);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = path;
+                    pdfviewer.Sayfa = currentpage;
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1611,45 +1611,46 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string oldpdfpath = pdfviewer.PdfFilePath;
                     int currentpage = pdfviewer.Sayfa;
                     using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                    if (pdfdocument != null)
+                    if (pdfdocument == null)
                     {
-                        if (Keyboard.Modifiers == ModifierKeys.Alt)
+                        return;
+                    }
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
+                    {
+                        for (int i = 0; i < pdfdocument.PageCount; i++)
                         {
-                            for (int i = 0; i < pdfdocument.PageCount; i++)
-                            {
-                                PdfPage pageall = pdfdocument.Pages[i];
-                                using XGraphics gfxall = XGraphics.FromPdfPage(pageall, XGraphicsPdfPageOptions.Append);
-                                double textallwidth = gfxall.MeasureString(GetPdfBatchNumberString(i), new XFont("Times New Roman", Scanner.PdfPageNumberSize)).Width;
-                                gfxall.DrawText(
-                                    new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
-                                    GetPdfBatchNumberString(i),
-                                    PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[0],
-                                    PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[1],
-                                    Scanner.PdfPageNumberSize);
-                            }
-
-                            pdfdocument.Save(pdfviewer.PdfFilePath);
-                            pdfviewer.PdfFilePath = null;
-                            pdfviewer.PdfFilePath = oldpdfpath;
-                            pdfviewer.Sayfa = 1;
-                            return;
+                            PdfPage pageall = pdfdocument.Pages[i];
+                            using XGraphics gfxall = XGraphics.FromPdfPage(pageall, XGraphicsPdfPageOptions.Append);
+                            double textallwidth = gfxall.MeasureString(GetPdfBatchNumberString(i), new XFont("Times New Roman", Scanner.PdfPageNumberSize)).Width;
+                            gfxall.DrawText(
+                                new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
+                                GetPdfBatchNumberString(i),
+                                PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[0],
+                                PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[1],
+                                Scanner.PdfPageNumberSize);
                         }
 
-                        PdfPage page = pdfdocument.Pages[pdfviewer.Sayfa - 1];
-                        using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                        double textwidth = gfx.MeasureString(GetPdfBatchNumberString(pdfviewer.Sayfa), new XFont("Times New Roman", Scanner.PdfPageNumberSize)).Width;
-                        gfx.DrawText(
-                            new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
-                            GetPdfBatchNumberString(pdfviewer.Sayfa - 1),
-                            PdfGeneration.GetPdfTextLayout(page, textwidth)[0],
-                            PdfGeneration.GetPdfTextLayout(page, textwidth)[1],
-                            Scanner.PdfPageNumberSize);
                         pdfdocument.Save(pdfviewer.PdfFilePath);
-                        await Task.Delay(1000);
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = oldpdfpath;
-                        pdfviewer.Sayfa = currentpage;
+                        pdfviewer.Sayfa = 1;
+                        return;
                     }
+
+                    PdfPage page = pdfdocument.Pages[pdfviewer.Sayfa - 1];
+                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                    double textwidth = gfx.MeasureString(GetPdfBatchNumberString(pdfviewer.Sayfa), new XFont("Times New Roman", Scanner.PdfPageNumberSize)).Width;
+                    gfx.DrawText(
+                        new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
+                        GetPdfBatchNumberString(pdfviewer.Sayfa - 1),
+                        PdfGeneration.GetPdfTextLayout(page, textwidth)[0],
+                        PdfGeneration.GetPdfTextLayout(page, textwidth)[1],
+                        Scanner.PdfPageNumberSize);
+                    pdfdocument.Save(pdfviewer.PdfFilePath);
+                    await Task.Delay(1000);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = oldpdfpath;
+                    pdfviewer.Sayfa = currentpage;
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
@@ -2884,7 +2885,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message, AppName);
+            _ = MessageBox.Show(ex.Message, AppName);
         }
     }
 
@@ -2894,16 +2895,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 PdfDocument inputDocument = PdfReader.Open(pdffilepath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if (inputDocument is not null)
+                if (inputDocument is null)
                 {
-                    for (int i = end; i >= start; i--)
-                    {
-                        inputDocument.Pages.RemoveAt(i - 1);
-                    }
-                    if (inputDocument.PageCount > 0)
-                    {
-                        inputDocument.Save(pdffilepath);
-                    }
+                    return;
+                }
+                for (int i = end; i >= start; i--)
+                {
+                    inputDocument.Pages.RemoveAt(i - 1);
+                }
+                if (inputDocument.PageCount > 0)
+                {
+                    inputDocument.Save(pdffilepath);
                 }
             });
     }
@@ -3138,18 +3140,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)
     {
         using PdfDocument inputDocument = PdfReader.Open(pdfpath, PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
-        if (inputDocument is not null)
+        if (inputDocument is null)
         {
-            foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), pagecount))
+            return;
+        }
+        foreach (List<int> item in ChunkBy(Enumerable.Range(0, inputDocument.PageCount).ToList(), pagecount))
+        {
+            using PdfDocument outputDocument = new();
+            foreach (int pagenumber in item)
             {
-                using PdfDocument outputDocument = new();
-                foreach (int pagenumber in item)
-                {
-                    _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
-                }
-
-                outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
+                _ = outputDocument.AddPage(inputDocument.Pages[pagenumber]);
             }
+
+            outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
         }
     }
 
@@ -3203,15 +3206,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument pdfdocument = PdfReader.Open(loadfilename, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if (pdfdocument is not null)
+                if (pdfdocument is null)
                 {
-                    foreach (string item in files)
-                    {
-                        pdfdocument.AddEmbeddedFile(Path.GetFileNameWithoutExtension(item), item);
-                    }
-
-                    pdfdocument.Save(savefilename);
+                    return;
                 }
+                foreach (string item in files)
+                {
+                    pdfdocument.AddEmbeddedFile(Path.GetFileNameWithoutExtension(item), item);
+                }
+
+                pdfdocument.Save(savefilename);
             });
     }
 
@@ -3233,28 +3237,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         if (PdfViewer.PdfViewer.IsValidPdfFile(filename))
         {
             byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
-            if (filedata != null)
+            if (filedata == null)
             {
-                double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
-                MemoryStream ms;
-                for (int i = 1; i <= totalpagecount; i++)
-                {
-                    ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, Scanner.Deskew);
-                    bitmapFrame.Freeze();
-                    await Dispatcher.InvokeAsync(
-                        () =>
-                        {
-                            Scanner?.Resimler.Add(new ScannedImage { Resim = bitmapFrame, FilePath = filename });
-                            PdfLoadProgressValue = i / totalpagecount;
-                        });
-                    bitmapFrame = null;
-                }
-
-                _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
-                filedata = null;
-                ms = null;
+                return;
             }
+            double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
+            MemoryStream ms;
+            for (int i = 1; i <= totalpagecount; i++)
+            {
+                ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
+                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, Scanner.Deskew);
+                bitmapFrame.Freeze();
+                await Dispatcher.InvokeAsync(
+                    () =>
+                    {
+                        Scanner?.Resimler.Add(new ScannedImage { Resim = bitmapFrame, FilePath = filename });
+                        PdfLoadProgressValue = i / totalpagecount;
+                    });
+                bitmapFrame = null;
+            }
+
+            _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
+            filedata = null;
+            ms = null;
         }
     }
 
@@ -3273,26 +3278,32 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         decoder = null;
         for (int i = 0; i < tiffpagecount; i++)
         {
-            BitmapFrame bitmapFrame = await Task.Run(
-                () =>
-                {
-                    TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
-                    BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
-                    image.Freeze();
-                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
-                    bitmapFrame.Freeze();
-                    decoder = null;
-                    return bitmapFrame;
-                });
+            try
+            {
+                BitmapFrame bitmapFrame = await Task.Run(
+                       () =>
+                       {
+                           TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
+                           BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
+                           image.Freeze();
+                           BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
+                           bitmapFrame.Freeze();
+                           decoder = null;
+                           return bitmapFrame;
+                       });
 
-            ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
-            await Dispatcher.InvokeAsync(
-                () =>
-                {
-                    Scanner?.Resimler.Add(img);
-                    double progressvalue = (i + 1) / (double)tiffpagecount;
-                    PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
-                });
+                ScannedImage img = new() { Resim = bitmapFrame, FilePath = filename };
+                await Dispatcher.InvokeAsync(
+                    () =>
+                    {
+                        Scanner?.Resimler.Add(img);
+                        double progressvalue = (i + 1) / (double)tiffpagecount;
+                        PdfLoadProgressValue = progressvalue == 1 ? 0 : progressvalue;
+                    });
+            }
+            catch (Exception)
+            {
+            }
         }
     }
 
@@ -3782,11 +3793,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
-                if (outputDocument != null)
+                if (outputDocument == null)
                 {
-                    outputDocument.ApplyDefaultPdfCompression();
-                    outputDocument.Save(savefilename);
+                    return;
                 }
+                outputDocument.ApplyDefaultPdfCompression();
+                outputDocument.Save(savefilename);
             });
     }
 
@@ -3822,14 +3834,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (inputDocument is not null)
                 {
                     using PdfDocument outputdocument = new();
-                    if (outputdocument != null)
+                    if (outputdocument == null)
                     {
-                        for (int i = inputDocument.PageCount - 1; i >= 0; i--)
-                        {
-                            _ = outputdocument.AddPage(inputDocument.Pages[i]);
-                        }
-                        outputdocument.Save(savefilename);
+                        return;
                     }
+                    for (int i = inputDocument.PageCount - 1; i >= 0; i--)
+                    {
+                        _ = outputdocument.AddPage(inputDocument.Pages[i]);
+                    }
+                    outputdocument.Save(savefilename);
                 }
             });
     }
