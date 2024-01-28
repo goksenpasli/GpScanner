@@ -73,7 +73,6 @@
     </Compile>
     <Compile Include="Controls\ContributionControl.cs" />
     <Compile Include="Controls\ContributionData.cs" />
-    <Compile Include="Controls\CRC32.cs" />
     <Compile Include="Controls\FadedTooltipControl.cs" />
     <Compile Include="Controls\FileBreadcrumbControl.cs" />
     <Compile Include="Controls\Helpers.cs" />

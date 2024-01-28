@@ -515,6 +515,7 @@ public static class BitmapMethods
             using WebP webp = new();
             using MemoryStream ms = new(resim);
             using Bitmap bmp = Image.FromStream(ms) as Bitmap;
+            resim = null;
             return bmp.PixelFormat is PixelFormat.Format24bppRgb or PixelFormat.Format32bppArgb ? webp.EncodeLossy(bmp, kalite) : webp.EncodeLossy(bmp.BitmapChangeFormat(PixelFormat.Format24bppRgb), kalite);
         }
         catch (Exception)

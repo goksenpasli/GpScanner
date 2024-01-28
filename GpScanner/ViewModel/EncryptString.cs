@@ -22,7 +22,7 @@ public static class EncryptString
             {
                 cs.Write(cipherBytes, 0, cipherBytes.Length);
             }
-
+            cipherBytes = null;
             cipherText = Encoding.Unicode.GetString(ms.ToArray());
         }
 
@@ -43,7 +43,7 @@ public static class EncryptString
             {
                 cs.Write(clearBytes, 0, clearBytes.Length);
             }
-
+            clearBytes = null;
             clearText = Convert.ToBase64String(ms.ToArray());
         }
 

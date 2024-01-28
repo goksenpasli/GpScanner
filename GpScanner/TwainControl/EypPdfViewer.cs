@@ -104,6 +104,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     twainCtrl?.Scanner?.Resimler.Add(scannedImage);
                     ms = null;
+                    filedata = null;
                 }
             },
             parameter => true);
@@ -115,6 +116,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 {
                     byte[] filedata = await ReadAllFileAsync(PdfFilePath);
                     using MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
+                    filedata = null;
                     using Image image = Image.FromStream(ms);
                     System.Windows.Forms.Clipboard.SetImage(image);
                     _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title, MessageBoxButton.OK, MessageBoxImage.Information);

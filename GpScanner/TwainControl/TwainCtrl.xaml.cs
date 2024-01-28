@@ -1253,6 +1253,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
                     ms = null;
+                    filedata = null;
                 }
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1520,6 +1521,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
                     using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
+                    filedata = null;
                     using Image image = Image.FromStream(ms);
                     Clipboard.SetImage(image);
                 }
@@ -1559,6 +1561,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                     ms = null;
+                    filedata = null;
                     using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue).GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution);
                     SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("PAGENUMBER")} {pdfViewer.Sayfa}.pdf" };
                     if (saveFileDialog.ShowDialog() == true)
@@ -3875,6 +3878,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             string uniqueFilename = directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "jpg");
                             File.WriteAllBytes(uniqueFilename, bytes);
+                            bytes = null;
                         }
                         if (Settings.Default.RemoveProcessedImage)
                         {
@@ -4018,6 +4022,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             string uniqueFilename = directory.SetUniqueFile(Path.GetFileNameWithoutExtension(filename), "webp");
                             File.WriteAllBytes(uniqueFilename, bytes);
+                            bytes = null;
                         }
                         if (Settings.Default.RemoveProcessedImage)
                         {

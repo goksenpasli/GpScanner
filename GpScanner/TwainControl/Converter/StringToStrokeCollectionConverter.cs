@@ -14,6 +14,7 @@ public sealed class Base64StringToStrokeCollectionConverter : IValueConverter
         {
             byte[] data = System.Convert.FromBase64String(base64strokedata);
             using MemoryStream ms = new(data);
+            data = null;
             return (StrokeCollection)new(ms);
         }
         return null;

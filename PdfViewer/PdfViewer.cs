@@ -162,6 +162,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         byte[] image = (await ConvertToImgAsync(PdfFilePath, (int)parameter, PrintDpi)).ToTiffJpegByteArray(Format.Jpg);
                         File.WriteAllBytes(saveFileDialog.FileName, image);
+                        image = null;
                     }
                     catch (Exception ex)
                     {
@@ -654,6 +655,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     using MemoryStream ms = new(stream);
                     using PdfDocument pdfDoc = PdfDocument.Load(ms);
+                    stream = null;
                     return (pdfDoc?.PageCount) ?? 0;
                 });
         }

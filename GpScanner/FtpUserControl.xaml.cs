@@ -114,6 +114,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
                 totalBytesRead += bytesRead;
                 progressCallback(totalBytesRead / (double)fileSize);
             }
+            buffer = null;
         }
         catch (Exception ex)
         {

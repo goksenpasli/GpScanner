@@ -1237,6 +1237,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         OcrText = await GetOcrData(twainCtrl.Scanner?.SelectedTtsLanguage, imgdata);
                         QrCode.QrCode qrCode = new();
                         QrText = qrCode.GetImageBarcodeResult(imgdata);
+                        imgdata = null;
                         OcrProgressIndeterminate = false;
                     }
                     mousedowncoord.X = mousedowncoord.Y = 0;

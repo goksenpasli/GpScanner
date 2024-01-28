@@ -171,6 +171,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 byte[] data = grid.ToRenderTargetBitmap().ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
                 string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
                 File.WriteAllBytes(dosya, data);
+                data = null;
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 OsdText = "Görüntü Yakalandı";
             },
@@ -197,7 +198,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                         singlefile = picturesfolder.SetUniqueFile("Resim", "jpg");
                         File.WriteAllBytes(singlefile, imgdata);
                     }
-
+                    imgdata = null;
                     ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, singlefile);
 
                     return;
@@ -223,7 +224,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                         textBlock.SetValue(Grid.RowProperty, 1);
                         _ = imagegrid.Children.Add(textBlock);
                     }
-
+                    imgdata = null;
                     _ = uniformgrid.Children.Add(imagegrid);
                 }
 

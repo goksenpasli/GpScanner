@@ -104,7 +104,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                             await fileStream.WriteAsync(buffer, 0, bytesRead);
                             ocrData.ProgressValue = fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
                         }
-
+                        buffer = null;
                         ocrData.IsEnabled = true;
                         TesseractFiles = GetTesseractFiles(Tessdatafolder);
                     }
