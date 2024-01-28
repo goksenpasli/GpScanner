@@ -5,23 +5,8 @@ namespace GpScanner.ViewModel;
 
 public class ScannerData : InpcBase
 {
-    private ObservableCollection<Data> data = [];
     private ObservableCollection<ReminderData> görülenReminder = [];
     private ObservableCollection<ReminderData> reminder = [];
-
-    public ObservableCollection<Data> Data
-    {
-        get => data;
-
-        set
-        {
-            if (data != value)
-            {
-                data = value;
-                OnPropertyChanged(nameof(Data));
-            }
-        }
-    }
 
     public ObservableCollection<ReminderData> GörülenReminder
     {

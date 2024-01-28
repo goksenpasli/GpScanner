@@ -126,7 +126,18 @@
                         ItemsSource="{Binding Files, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                         <ListBox.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Command="{Binding RemoveAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="TÜMÜNÜ SİL" />
+                                <MenuItem Command="{Binding RemoveAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="TÜMÜNÜ SİL">
+                                    <MenuItem.Icon>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="131" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </MenuItem.Icon>
+                                </MenuItem>
                             </ContextMenu>
                         </ListBox.ContextMenu>
                         <ListBox.ItemTemplate>

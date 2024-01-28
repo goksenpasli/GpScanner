@@ -296,15 +296,6 @@
                                 Source="{Binding Source='.docx', Converter={StaticResource FilePathToIconConverter}}" />
                         </Button>
                         <Button BorderBrush="Cyan"
-                            Command="{Binding ReadPdfTag}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Path=PdfFilePath, Mode=OneWay}">
-                            <Button.Content>
-                                <TextBlock FontFamily="Wingdings 2"
-                                    FontSize="16"
-                                    Text="-" />
-                            </Button.Content>
-                        </Button>
-                        <Button BorderBrush="Cyan"
                             Command="{Binding MergeSelectedImagesToPdfFile}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
                             <Button.Content>

@@ -733,6 +733,7 @@
                                                                         Text="B" />
                                                                     <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
                                                                     <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
+                                                                    <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
                                                                 </TextBlock>
                                                                 <TextBlock Grid.Column="1">
                                                                     <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"

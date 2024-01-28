@@ -62,6 +62,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private bool fileisPdfFile;
     private string fileName = "Tarama";
     private string fileOcrContent;
+    private float fileSize;
     private string folderName;
     private int ftpLoadProgressValue;
     private double hue;
@@ -602,6 +603,19 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 fileOcrContent = value;
                 OnPropertyChanged(nameof(FileOcrContent));
+            }
+        }
+    }
+
+    public float FileSize
+    {
+        get => fileSize;
+        set
+        {
+            if (fileSize != value)
+            {
+                fileSize = value;
+                OnPropertyChanged(nameof(FileSize));
             }
         }
     }

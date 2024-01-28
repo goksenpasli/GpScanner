@@ -36,7 +36,7 @@
                                 </Grid.RowDefinitions>
                                 <UniformGrid Grid.Row="0"
                                     Grid.Column="0"
-                                    Rows="2">
+                                    Rows="3">
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text="{Binding Dpi, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                         <Run Text="DPI" />
@@ -60,6 +60,28 @@
                                         SmallChange="1"
                                         Style="{DynamicResource Slider}"
                                         Value="{Binding Quality, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run Text="{twainctrl:Loc ALL}" />
+                                        <Run Text="{twainctrl:Loc CLEARLIST}" />
+                                    </TextBlock>
+                                    <Button Command="{Binding ClearPdfCompressorBatchList}"
+                                        CommandParameter="{Binding BatchPdfList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        IsEnabled="{Binding CompressFinished, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="131" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Run Text="{twainctrl:Loc ALL}" />
+                                                <Run Text="{twainctrl:Loc CLEARLIST}" />
+                                            </TextBlock>
+                                        </StackPanel>
+                                    </Button>
                                 </UniformGrid>
                                 <StackPanel Grid.Row="0"
                                     Grid.RowSpan="3"
@@ -78,7 +100,8 @@
                                     </Button>
                                     <Button VerticalContentAlignment="Stretch"
                                         Command="{Binding BatchCompressFile, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                        IsEnabled="{Binding CompressFinished, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                        IsEnabled="{Binding CompressFinished, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        TargetUpdated="CompressFinishedButton_TargetUpdated">
                                         <Grid>
                                             <ProgressBar Background="{x:Null}"
                                                 BorderBrush="{x:Null}"

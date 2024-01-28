@@ -140,7 +140,7 @@ public partial class GpScannerViewModel : InpcBase
         GenerateAnimationTimer();
         GenerateSystemTrayMenu();
         GenerateJumpList();
-        _ = LoadDatas();
+        _ = LoadRemainderDatas();
 
         RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => IsAdministrator);
 
@@ -460,6 +460,12 @@ public partial class GpScannerViewModel : InpcBase
             {
                 if (parameter is string filepath)
                 {
+                    if (Keyboard.Modifiers == ModifierKeys.Alt)
+                    {
+                        ExploreFile.Execute(filepath);
+                        return;
+                    }
+
                     DocumentViewerWindow documentViewerWindow = new();
                     if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
@@ -1034,6 +1040,16 @@ public partial class GpScannerViewModel : InpcBase
                 }
             },
             parameter => Policy.CheckPolicy("OpenSettings"));
+
+        ClearPdfCompressorBatchList = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is ObservableCollection<BatchPdfData> list)
+                {
+                    list.Clear();
+                }
+            },
+            parameter => parameter is ObservableCollection<BatchPdfData> list && list.Count > 0);
     }
 
     public static bool IsAdministrator
@@ -1244,6 +1260,8 @@ public partial class GpScannerViewModel : InpcBase
     }
 
     public ICommand CheckUpdate { get; }
+
+    public RelayCommand<object> ClearPdfCompressorBatchList { get; }
 
     public ObservableCollection<BatchPdfData> CompressedFiles
     {
@@ -2597,11 +2615,12 @@ public partial class GpScannerViewModel : InpcBase
             ObservableCollection<Scanner> list = [];
             try
             {
-                List<string> files = Directory.EnumerateFiles(Twainsettings.Settings.Default.AutoFolder, "*.*", SearchOption.AllDirectories).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = FastFileSearch.EnumerateFilepaths(Twainsettings.Settings.Default.AutoFolder).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower())).ToList();
                 files.Sort(new StrCmpLogicalComparer());
                 foreach (string dosya in files)
                 {
-                    list.Add(new Scanner { FileName = dosya, FolderName = Directory.GetParent(dosya).Name });
+                    FileInfo fi = new(dosya);
+                    list.Add(new Scanner { FileName = dosya, FolderName = fi.Directory.Name, FileSize = fi.Length / 1048576F });
                 }
                 files = null;
                 return list;
@@ -2791,7 +2810,7 @@ public partial class GpScannerViewModel : InpcBase
         return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
     }
 
-    private async Task LoadDatas() => ScannerData = new ScannerData { Reminder = await ReminderYükle(), GörülenReminder = await GörülenReminderYükle() };
+    private async Task LoadRemainderDatas() => ScannerData = new ScannerData { Reminder = await ReminderYükle(), GörülenReminder = await GörülenReminderYükle() };
 
     private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
 
