@@ -51,6 +51,7 @@ public class BatchFiles : TessFiles;
 
 public partial class GpScannerViewModel : InpcBase
 {
+    public static readonly string ProfileFolder = $"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}";
     public static NotifyIcon AppNotifyIcon;
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
@@ -408,8 +409,9 @@ public partial class GpScannerViewModel : InpcBase
                         IndexedFileCount = i++;
                         GC.Collect();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
                     }
                     finally
                     {
@@ -803,8 +805,9 @@ public partial class GpScannerViewModel : InpcBase
                         BatchTxtOcrs.Add(batchTxtOcr);
                         Tasks.Add(task);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
                     }
                 }
 
@@ -882,8 +885,9 @@ public partial class GpScannerViewModel : InpcBase
                         BatchTxtOcrs.Add(batchTxtOcr);
                         Tasks.Add(task);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
                     }
                 }
 
@@ -2018,6 +2022,12 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
+    public static async Task WriteToLogFile(string filePath, string content)
+    {
+        using StreamWriter writer = new(filePath, true);
+        await writer.WriteLineAsync($"{DateTime.Now} {content}");
+    }
+
     public void AddBarcodeToList(string barcodecontent)
     {
         if (!string.IsNullOrWhiteSpace(barcodecontent))
@@ -2347,7 +2357,7 @@ public partial class GpScannerViewModel : InpcBase
     {
         if (!File.Exists(Settings.Default.DatabaseFile))
         {
-            Settings.Default.DatabaseFile = $@"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}\Data.db";
+            Settings.Default.DatabaseFile = $@"{ProfileFolder}\Data.db";
             using AppDbContext context = new();
             _ = context.Database
             .ExecuteSqlCommand(
@@ -2511,7 +2521,7 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    private void GenerateSystemTrayMenu()
+    private async void GenerateSystemTrayMenu()
     {
         try
         {
@@ -2554,12 +2564,13 @@ public partial class GpScannerViewModel : InpcBase
                                             Application.Current.Windows.Cast<Window>().FirstOrDefault().WindowState = WindowState.Maximized;
                                         };
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
         }
     }
 
-    private ObservableCollection<ContributionData> GetContributionData(List<ScannerFileDatas> files, DateTime first, DateTime last)
+    private async Task<ObservableCollection<ContributionData>> GetContributionData(List<ScannerFileDatas> files, DateTime first, DateTime last)
     {
         try
         {
@@ -2580,8 +2591,9 @@ public partial class GpScannerViewModel : InpcBase
             IEnumerable<ContributionData> collection = contributiondata.Where(z => z.ContrubutionDate >= first && z.ContrubutionDate <= last).OrderBy(z => z.ContrubutionDate);
             return new ObservableCollection<ContributionData>(collection);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
         }
         return null;
     }
@@ -2753,7 +2765,7 @@ public partial class GpScannerViewModel : InpcBase
             {
                 DateTime firstdate = new(SelectedContributionYear, 1, 1);
                 DateTime lastdate = new(SelectedContributionYear, 12, 31);
-                ContributionData = GetContributionData(files, firstdate, lastdate);
+                ContributionData = await GetContributionData(files, firstdate, lastdate);
                 ContributionDocumentCount = ContributionData.Sum(z => z.Count);
             }
         }

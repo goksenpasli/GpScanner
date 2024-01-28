@@ -30,7 +30,9 @@ public class Policy : DependencyObject
     {
         try
         {
-            return CheckKeyPolicy(policyname, Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner")) && CheckKeyPolicy(policyname, Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner"));
+            using RegistryKey localMachineKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner");
+            using RegistryKey currentUserKey = Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner");
+            return CheckKeyPolicy(policyname, localMachineKey) && CheckKeyPolicy(policyname, currentUserKey);
         }
         catch (Exception)
         {

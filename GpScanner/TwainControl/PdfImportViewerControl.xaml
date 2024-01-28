@@ -631,7 +631,8 @@
                         <MenuItem.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="2" Orientation="Horizontal">
-                                    <Pdfviewer:PdfShadowedImage Width="128"
+                                    <Pdfviewer:PdfShadowedImage x:Name="PdfImg"
+                                        Width="128"
                                         Height="128"
                                         Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
                                         <Image.Tag>
@@ -653,6 +654,7 @@
                                         Background="{x:Null}"
                                         BorderBrush="{x:Null}"
                                         CopyButtonVisibility="Visible"
+                                        IsEnabled="{Binding ElementName=PdfImg, Path=Source, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
                                         IsReadOnly="True"
                                         PasteButtonVisibility="Collapsed"
                                         PrintButtonVisibility="Collapsed"

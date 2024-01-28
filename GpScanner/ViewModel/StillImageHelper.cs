@@ -130,7 +130,7 @@ public static class StillImageHelper
         {
             _serverRunning = true;
             _ = Task.Run(
-                () =>
+                async () =>
                 {
                     try
                     {
@@ -149,8 +149,9 @@ public static class StillImageHelper
                             pipeServer.Disconnect();
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\Error.log", ex.Message);
                     }
                     finally
                     {
