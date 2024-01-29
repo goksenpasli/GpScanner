@@ -35,7 +35,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title);
+                    throw new ArgumentException(ex.Message);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(ArchivePath));
@@ -63,24 +63,31 @@ public class SimpleArchiveViewer : ArchiveViewer
         await Task.Run(
             async () =>
             {
-                using ArchiveFile archive = new(ArchiveFilePath);
-                if (archive != null)
+                try
                 {
-                    archiveViewer.TotalFilesCount = archive.Entries.Count;
-                    foreach (Entry item in archive.Entries)
+                    using ArchiveFile archive = new(ArchiveFilePath);
+                    if (archive != null)
                     {
-                        ArchiveData archiveData = new()
+                        archiveViewer.TotalFilesCount = archive.Entries.Count;
+                        foreach (Entry item in archive.Entries)
                         {
-                            SıkıştırılmışBoyut = (long)item.PackedSize,
-                            DosyaAdı = item.FileName,
-                            TamYol = item.FileName,
-                            Boyut = (long)item.Size,
-                            Oran = (float)item.PackedSize / item.Size,
-                            DüzenlenmeZamanı = item.LastWriteTime.Date,
-                            Crc = item.CRC.ToString("X")
-                        };
-                        await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                            ArchiveData archiveData = new()
+                            {
+                                SıkıştırılmışBoyut = (long)item.PackedSize,
+                                DosyaAdı = item.FileName,
+                                TamYol = item.FileName,
+                                Boyut = (long)item.Size,
+                                Oran = (float)item.PackedSize / item.Size,
+                                DüzenlenmeZamanı = item.LastWriteTime.Date,
+                                Crc = item.CRC.ToString("X")
+                            };
+                            await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(ex.Message);
                 }
 
                 archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;

@@ -81,7 +81,7 @@ namespace TwainControl
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message);
+                    throw new ArgumentException(ex.Message);
                 }
             }
         }

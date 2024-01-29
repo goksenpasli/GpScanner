@@ -234,24 +234,31 @@ namespace Extensions
             await Task.Run(
                 async () =>
                 {
-                    using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
-                    if (archive != null)
+                    try
                     {
-                        archiveViewer.TotalFilesCount = archive.Entries.Count;
-                        foreach (ZipArchiveEntry item in archive.Entries)
+                        using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
+                        if (archive != null)
                         {
-                            ArchiveData archiveData = new()
+                            archiveViewer.TotalFilesCount = archive.Entries.Count;
+                            foreach (ZipArchiveEntry item in archive.Entries)
                             {
-                                SıkıştırılmışBoyut = item.CompressedLength,
-                                DosyaAdı = item.Name,
-                                TamYol = item.FullName,
-                                Boyut = item.Length,
-                                Oran = (float)item.CompressedLength / item.Length,
-                                DüzenlenmeZamanı = item.LastWriteTime.Date,
-                                Crc = null
-                            };
-                            await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                                ArchiveData archiveData = new()
+                                {
+                                    SıkıştırılmışBoyut = item.CompressedLength,
+                                    DosyaAdı = item.Name,
+                                    TamYol = item.FullName,
+                                    Boyut = item.Length,
+                                    Oran = (float)item.CompressedLength / item.Length,
+                                    DüzenlenmeZamanı = item.LastWriteTime.Date,
+                                    Crc = null
+                                };
+                                await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                            }
                         }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException(ex.Message);
                     }
 
                     archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;

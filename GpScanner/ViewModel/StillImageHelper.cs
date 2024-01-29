@@ -98,7 +98,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            throw new ArgumentException(ex.Message);
         }
     }
 
@@ -183,7 +183,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            throw new ArgumentException(ex.Message);
         }
     }
 

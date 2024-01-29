@@ -86,7 +86,7 @@ public partial class MainWindow : Window
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                    throw new ArgumentException(ex.Message);
                 }
             }
             if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)

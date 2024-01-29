@@ -863,9 +863,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         ZipExtractSingleFile(openFileDialog.FileName, "runtimes/win-x86/native/pdfium.dll", dllpath);
                         _ = MessageBox.Show($"{Translation.GetResStringValue("INSTALLED")}\n{Translation.GetResStringValue("RESTARTAPP")}", AppName);
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        _ = MessageBox.Show(Translation.GetResStringValue("FILEINUSE"), AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                        throw new ArgumentException(ex.Message);
                     }
                 }
             },
@@ -2861,7 +2861,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             catch (Exception ex)
             {
-                _ = MessageBox.Show(ex.Message, AppName);
+                throw new ArgumentException(ex.Message);
             }
         }
     }
@@ -2885,7 +2885,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, AppName);
+            throw new ArgumentException(ex.Message);
         }
     }
 
@@ -3166,10 +3166,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            throw new ArgumentException(ex.Message);
         }
-
-        return null;
     }
 
     protected virtual void Dispose(bool disposing)

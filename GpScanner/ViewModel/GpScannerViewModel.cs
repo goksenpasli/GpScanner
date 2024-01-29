@@ -176,7 +176,7 @@ public partial class GpScannerViewModel : InpcBase
                     }
                     catch (Exception ex)
                     {
-                        _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                        throw new ArgumentException(ex.Message);
                     }
                 }
             },
@@ -2521,7 +2521,7 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    private async void GenerateSystemTrayMenu()
+    private void GenerateSystemTrayMenu()
     {
         try
         {
@@ -2566,7 +2566,7 @@ public partial class GpScannerViewModel : InpcBase
         }
         catch (Exception ex)
         {
-            await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
+            throw new ArgumentException(ex.Message);
         }
     }
 
@@ -2667,9 +2667,8 @@ public partial class GpScannerViewModel : InpcBase
             using AppDbContext context = new();
             return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.AsNoTracking().ToListAsync())?.Where(z => z.Seen)?.OrderBy(z => z.Tarih)]);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
     }
@@ -2844,9 +2843,8 @@ public partial class GpScannerViewModel : InpcBase
             using AppDbContext context = new();
             return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.AsNoTracking().ToListAsync())?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih)]);
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
             return null;
         }
     }

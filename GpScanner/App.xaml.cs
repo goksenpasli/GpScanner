@@ -1,5 +1,4 @@
-﻿using GpScanner.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -8,6 +7,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Threading;
+using GpScanner.ViewModel;
 
 namespace GpScanner;
 
@@ -61,7 +61,11 @@ public partial class App : Application
 
     private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
-        _ = MessageBox.Show(e.Exception.Message);
+        _ = Current.Dispatcher.Invoke(async () =>
+        {
+            _ = MessageBox.Show(e.Exception.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning);
+            await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\Error.log", e.Exception.StackTrace);
+        });
         e.Handled = true;
     }
 

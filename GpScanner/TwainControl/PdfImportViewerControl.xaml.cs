@@ -105,7 +105,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, AppName);
+                    throw new ArgumentException(ex.Message);
                 }
             },
             parameter => true);
@@ -123,7 +123,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, AppName);
+                    throw new ArgumentException(ex.Message);
                 }
             },
             parameter => Ink?.Strokes?.Any() == true);
@@ -139,7 +139,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, AppName);
+                    throw new ArgumentException(ex.Message);
                 }
             },
             parameter => Ink?.Strokes?.Any() == true);
@@ -157,7 +157,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, AppName);
+                    throw new ArgumentException(ex.Message);
                 }
             },
             parameter => Ink?.Strokes?.Any() == true);
@@ -175,7 +175,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, AppName);
+                    throw new ArgumentException(ex.Message);
                 }
             },
             parameter => true);
@@ -203,7 +203,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message, AppName);
+                    throw new ArgumentException(ex.Message);
                 }
             },
             parameter => true);

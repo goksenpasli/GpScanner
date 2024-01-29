@@ -118,7 +118,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            throw new ArgumentException(ex.Message);
         }
     }
 
@@ -134,7 +134,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            throw new ArgumentException(ex.Message);
         }
     }
 }
