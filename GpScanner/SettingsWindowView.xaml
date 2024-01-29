@@ -33,6 +33,7 @@
             MaxNumber="1200"
             MinNumber="12" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
+        <Extensions:FilePathToIconConverter x:Key="JumboSizeFilePathToIconConverter" IconSize="jumbo" />
         <Converter:PageSizePreviewWidthConverter x:Key="PageSizePreviewWidthConverter" />
         <Converter:StringToCountryFlagImageConverter x:Key="StringToCountryFlagImageConverter" />
         <Converter:PageSizePreviewHeightConverter x:Key="PageSizePreviewHeightConverter" />
@@ -961,6 +962,73 @@
                     </Grid>
                 </GroupBox>
             </UniformGrid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="32" Height="32">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="eventvwr.exe" />
+                                <Binding Source="0" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ERROR}" />
+                </StackPanel>
+            </TabItem.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Image Width="256"
+                    Height="256"
+                    Source="{Binding Converter={StaticResource JumboSizeFilePathToIconConverter}, Source=.evtx}" />
+                <Border Grid.RowSpan="2"
+                    Grid.Column="1"
+                    BorderBrush="{StaticResource GroupBoxBackGround}"
+                    BorderThickness="1">
+                    <ContentControl Content="{Binding ErrorLogPath, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" ContentTemplate="{StaticResource DocxViewerThumbTemplate}" />
+                </Border>
+                <UniformGrid Grid.Row="1"
+                    Grid.Column="0"
+                    Rows="2">
+                    <Button Command="{Binding LoadErrorEvents}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="32" Height="32">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="eventvwr.exe" />
+                                        <Binding Source="0" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center">
+                                <Run Text="{twainctrl:Loc ERROR}" />
+                                <Run Text="{twainctrl:Loc LOAD}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Button>
+                    <Button Command="{Binding SaveZipErrorEvents}">
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="32" Height="32">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="zipfldr.dll" />
+                                        <Binding Source="0" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc COMPRESS}" />
+                        </StackPanel>
+                    </Button>
+                </UniformGrid>
+            </Grid>
         </TabItem>
     </TabControl>
 </Window>

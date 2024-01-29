@@ -51,6 +51,7 @@ public class BatchFiles : TessFiles;
 
 public partial class GpScannerViewModel : InpcBase
 {
+    public static readonly string ErrorFile = "Error.log";
     public static readonly string ProfileFolder = $"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}";
     public static NotifyIcon AppNotifyIcon;
     public Task Filesavetask;
@@ -84,6 +85,7 @@ public partial class GpScannerViewModel : InpcBase
     private bool detectPageSeperator;
     private bool documentPanelIsExpanded;
     private ObservableCollection<Scanner> dosyalar;
+    private string errorLogPath;
     private ObservableCollection<string> fileSystemWatcherProcessedFileList;
     private int flagProgress;
     private double fold = 0.3;
@@ -411,7 +413,7 @@ public partial class GpScannerViewModel : InpcBase
                     }
                     catch (Exception ex)
                     {
-                        await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
+                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
                     }
                     finally
                     {
@@ -807,7 +809,7 @@ public partial class GpScannerViewModel : InpcBase
                     }
                     catch (Exception ex)
                     {
-                        await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
+                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
                     }
                 }
 
@@ -887,7 +889,7 @@ public partial class GpScannerViewModel : InpcBase
                     }
                     catch (Exception ex)
                     {
-                        await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
+                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
                     }
                 }
 
@@ -1044,6 +1046,32 @@ public partial class GpScannerViewModel : InpcBase
                 }
             },
             parameter => parameter is ObservableCollection<BatchPdfData> list && list.Count > 0);
+
+        LoadErrorEvents = new RelayCommand<object>(
+            parameter =>
+            {
+                ErrorLogPath = $@"{ProfileFolder}\{ErrorFile}";
+                if (!File.Exists(ErrorLogPath))
+                {
+                    OpenFileDialog openFileDialog = new() { Filter = "Log Dosyası (*.log)|*.log", Multiselect = false };
+                    if (openFileDialog.ShowDialog() == true)
+                    {
+                        ErrorLogPath = openFileDialog.FileName;
+                    }
+                }
+            },
+            parameter => true);
+
+        SaveZipErrorEvents = new RelayCommand<object>(
+            parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = "Error.zip" };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    CreateSingleZipFile(ErrorLogPath, saveFileDialog.FileName);
+                }
+            },
+            parameter => File.Exists(ErrorLogPath));
     }
 
     public static bool IsAdministrator
@@ -1373,6 +1401,19 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
+    public string ErrorLogPath
+    {
+        get => errorLogPath;
+        set
+        {
+            if (errorLogPath != value)
+            {
+                errorLogPath = value;
+                OnPropertyChanged(nameof(ErrorLogPath));
+            }
+        }
+    }
+
     public ICommand ExploreFile { get; }
 
     public ObservableCollection<string> FileSystemWatcherProcessedFileList
@@ -1518,6 +1559,8 @@ public partial class GpScannerViewModel : InpcBase
     }
 
     public RelayCommand<object> LoadContributionData { get; }
+
+    public RelayCommand<object> LoadErrorEvents { get; }
 
     public RelayCommand<object> LoadUnindexedFiles { get; }
 
@@ -1765,6 +1808,8 @@ public partial class GpScannerViewModel : InpcBase
     public ICommand SavePatchProfile { get; }
 
     public ICommand SaveQrImage { get; }
+
+    public RelayCommand<object> SaveZipErrorEvents { get; }
 
     public ObservableCollection<OcrData> ScannedText
     {
@@ -2405,6 +2450,12 @@ public partial class GpScannerViewModel : InpcBase
         commandKey?.SetValue(string.Empty, $@"""{applicationPath}"" ""%1""");
     }
 
+    private void CreateSingleZipFile(string filepath, string zipsavepath)
+    {
+        using ZipArchive archive = ZipFile.Open(zipsavepath, ZipArchiveMode.Update);
+        _ = archive.CreateEntryFromFile(filepath, Path.GetFileName(filepath));
+    }
+
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
@@ -2593,7 +2644,7 @@ public partial class GpScannerViewModel : InpcBase
         }
         catch (Exception ex)
         {
-            await WriteToLogFile($@"{ProfileFolder}\Error.log", ex.Message);
+            await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
         }
         return null;
     }

@@ -708,4 +708,7 @@
   <data name="LONGTIMEJOB" xml:space="preserve">
     <value>Ce processus peut prendre beaucoup de temps.</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ERREUR</value>
+  </data>
 </root>

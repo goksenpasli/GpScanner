@@ -708,4 +708,7 @@
   <data name="LONGTIMEJOB" xml:space="preserve">
     <value>Bu Proses Uzun Zaman Ala bilər.</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>SƏHV</value>
+  </data>
 </root>

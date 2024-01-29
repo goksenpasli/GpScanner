@@ -110,11 +110,11 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\bblanchon.PDFium.Win32.122.0.6259\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\packages\bblanchon.PDFium.Win32.122.0.6259\build\net461\bblanchon.PDFium.Win32.targets')" />
+  <Import Project="..\packages\bblanchon.PDFium.Win32.123.0.6268\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\packages\bblanchon.PDFium.Win32.123.0.6268\build\net461\bblanchon.PDFium.Win32.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\bblanchon.PDFium.Win32.122.0.6259\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\bblanchon.PDFium.Win32.122.0.6259\build\net461\bblanchon.PDFium.Win32.targets'))" />
+    <Error Condition="!Exists('..\packages\bblanchon.PDFium.Win32.123.0.6268\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\bblanchon.PDFium.Win32.123.0.6268\build\net461\bblanchon.PDFium.Win32.targets'))" />
   </Target>
 </Project>

@@ -711,4 +711,7 @@
   <data name="LONGTIMEJOB" xml:space="preserve">
     <value>Acest proces poate dura mult timp.</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>GREŞEALĂ</value>
+  </data>
 </root>

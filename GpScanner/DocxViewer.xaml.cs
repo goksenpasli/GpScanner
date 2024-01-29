@@ -46,7 +46,7 @@ namespace GpScanner
                         viewer.Fd.Document = DocxFlowDocument(document);
                         return;
                     }
-                    if (Path.GetExtension(uriString.ToLower()) is ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml")
+                    if (Path.GetExtension(uriString.ToLower()) is ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
                     {
                         System.Windows.Documents.Paragraph paragraph = new();
                         paragraph.Inlines.Add(File.ReadAllText(uriString));

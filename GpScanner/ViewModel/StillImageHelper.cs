@@ -151,7 +151,7 @@ public static class StillImageHelper
                     }
                     catch (Exception ex)
                     {
-                        await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\Error.log", ex.Message);
+                        await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.Message);
                     }
                     finally
                     {

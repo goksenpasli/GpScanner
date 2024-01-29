@@ -711,4 +711,7 @@
   <data name="LONGTIMEJOB" xml:space="preserve">
     <value>Ovaj proces može trajati dugo.</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>POGREŠKA</value>
+  </data>
 </root>

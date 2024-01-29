@@ -708,4 +708,7 @@
   <data name="LONGTIMEJOB" xml:space="preserve">
     <value>Αυτή η διαδικασία μπορεί να πάρει πολύ χρόνο.</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ΛΑΘΟΣ</value>
+  </data>
 </root>

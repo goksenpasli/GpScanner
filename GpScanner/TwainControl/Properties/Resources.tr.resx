@@ -721,4 +721,7 @@ BELGE EKLE</value>
   <data name="LONGTIMEJOB" xml:space="preserve">
     <value>Bu İşlem Uzun Sürebilir. Devam Etmek İstiyor musun?</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>HATA</value>
+  </data>
 </root>

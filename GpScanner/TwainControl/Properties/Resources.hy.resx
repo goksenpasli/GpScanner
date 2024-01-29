@@ -711,4 +711,7 @@
   <data name="LONGTIMEJOB" xml:space="preserve">
     <value>Այս գործընթացը կարող է երկար տևել:</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ՍԽԱԼ</value>
+  </data>
 </root>

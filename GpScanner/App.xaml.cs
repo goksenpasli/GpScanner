@@ -64,7 +64,7 @@ public partial class App : Application
         _ = Current.Dispatcher.Invoke(async () =>
         {
             _ = MessageBox.Show(e.Exception.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning);
-            await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\Error.log", e.Exception.StackTrace);
+            await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", e.Exception.StackTrace);
         });
         e.Handled = true;
     }

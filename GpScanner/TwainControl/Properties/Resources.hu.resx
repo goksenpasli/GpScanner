@@ -711,4 +711,7 @@
   <data name="LONGTIMEJOB" xml:space="preserve">
     <value>Ez a folyamat sokáig tarthat.</value>
   </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>HIBA</value>
+  </data>
 </root>
