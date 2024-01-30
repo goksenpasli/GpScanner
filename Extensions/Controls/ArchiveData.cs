@@ -10,6 +10,7 @@ public class ArchiveData : InpcBase
     private string dosyaAdı;
     private string dosyaTipi;
     private DateTime düzenlenmeZamanı;
+    private bool ısChecked;
     private float oran;
     private long sıkıştırılmışBoyut;
     private string tamYol;
@@ -78,6 +79,19 @@ public class ArchiveData : InpcBase
             {
                 düzenlenmeZamanı = value;
                 OnPropertyChanged(nameof(DüzenlenmeZamanı));
+            }
+        }
+    }
+
+    public bool IsChecked
+    {
+        get => ısChecked;
+        set
+        {
+            if (ısChecked != value)
+            {
+                ısChecked = value;
+                OnPropertyChanged(nameof(IsChecked));
             }
         }
     }

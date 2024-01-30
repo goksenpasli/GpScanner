@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -67,6 +68,27 @@ namespace Extensions
                     }
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
+
+            TümünüSeç = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (ArchiveData item in CollectionViewSource.GetDefaultView(Arşivİçerik))
+                    {
+                        item.IsChecked = !item.IsChecked;
+                    }
+                },
+                parameter => Arşivİçerik is not null && !CollectionViewSource.GetDefaultView(Arşivİçerik).IsEmpty);
+
+            SeçiliAyıkla = new RelayCommand<object>(
+                parameter =>
+                {
+                    System.Windows.Forms.FolderBrowserDialog dialog = new() { Description = "Kaydedilecek Klasörü Seçin.", SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) };
+                    if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                    {
+                        ExtractSelectedFiles(ArchivePath, Arşivİçerik.Where(z => z.IsChecked), dialog.SelectedPath);
+                    }
+                },
+                parameter => Arşivİçerik is not null && CollectionViewSource.GetDefaultView(Arşivİçerik).OfType<ArchiveData>().Count(z => z.IsChecked) > 0);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -103,6 +125,8 @@ namespace Extensions
                 }
             }
         }
+
+        public RelayCommand<object> SeçiliAyıkla { get; }
 
         public ArchiveData SelectedFile
         {
@@ -154,6 +178,8 @@ namespace Extensions
             }
         }
 
+        public RelayCommand<object> TümünüSeç { get; }
+
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -168,6 +194,20 @@ namespace Extensions
                 {
                 }
                 disposedValue = true;
+            }
+        }
+
+        protected void ExtractSelectedFiles(string archivepath, IEnumerable<ArchiveData> files, string destinationfolder)
+        {
+            if (string.IsNullOrWhiteSpace(destinationfolder) || !Directory.Exists(destinationfolder))
+            {
+                throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
+            }
+            using ZipArchive archive = ZipFile.Open(archivepath, ZipArchiveMode.Read) ?? throw new ArgumentException("Arşiv Açılamadı");
+            foreach (ArchiveData item in files)
+            {
+                ZipArchiveEntry dosya = archive.Entries?.FirstOrDefault(z => z.Name == Path.GetFileName(item.DosyaAdı));
+                dosya?.ExtractToFile(Path.Combine(destinationfolder, Path.GetFileName(item.DosyaAdı)), true);
             }
         }
 

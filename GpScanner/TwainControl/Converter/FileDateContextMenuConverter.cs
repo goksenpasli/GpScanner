@@ -10,7 +10,7 @@ namespace TwainControl.Converter
         {
             if (value is string placeholder)
             {
-                _ = Scanner.FileContextMenuDictionary.TryGetValue(placeholder, out string result);
+                _ = Scanner.FileContextMenuDictionary().TryGetValue(placeholder, out string result);
                 return result;
             }
             return string.Empty;

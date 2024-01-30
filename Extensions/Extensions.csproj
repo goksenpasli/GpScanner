@@ -60,6 +60,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="WindowsBase" />

@@ -1,6 +1,7 @@
 ﻿using Extensions;
 using SevenZipExtractor;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -39,9 +40,22 @@ public class SimpleArchiveViewer : ArchiveViewer
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(ArchivePath));
+
+        SeçiliAyıkla = new RelayCommand<object>(
+            parameter =>
+            {
+                System.Windows.Forms.FolderBrowserDialog dialog = new() { Description = "Kaydedilecek Klasörü Seçin.", SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) };
+                if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    ExtractSelectedFiles(ArchivePath, Arşivİçerik.Where(z => z.IsChecked), dialog.SelectedPath);
+                }
+            },
+            parameter => Arşivİçerik is not null && CollectionViewSource.GetDefaultView(Arşivİçerik).OfType<ArchiveData>().Count(z => z.IsChecked) > 0);
     }
 
     public new RelayCommand<object> ArşivTekDosyaÇıkar { get; }
+
+    public new RelayCommand<object> SeçiliAyıkla { get; }
 
     protected override void OnDrop(DragEventArgs e)
     {
@@ -95,12 +109,26 @@ public class SimpleArchiveViewer : ArchiveViewer
         cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
     }
 
+    private new void ExtractSelectedFiles(string archivepath, IEnumerable<ArchiveData> list, string destinationfolder)
+    {
+        if (string.IsNullOrWhiteSpace(destinationfolder) || !Directory.Exists(destinationfolder))
+        {
+            throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
+        }
+        using ArchiveFile archiveFile = new(archivepath);
+        foreach (ArchiveData item in list)
+        {
+            Entry entry = archiveFile.Entries?.FirstOrDefault(z => z.FileName == item.DosyaAdı);
+            entry?.Extract(Path.Combine(destinationfolder, Path.GetFileName(item.DosyaAdı)));
+        }
+    }
+
     private new string ExtractToFile(string entryname)
     {
         using ArchiveFile archiveFile = new(ArchivePath);
         Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname);
         string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(entryname)}";
-        entry.Extract(extractpath);
+        entry?.Extract(extractpath);
         return extractpath;
     }
 }

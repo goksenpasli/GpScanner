@@ -35,6 +35,11 @@
                             ScrollViewer.IsDeferredScrollingEnabled="False"
                             SelectedItem="{Binding SelectedFile, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
                             SelectionMode="Single">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Command="{Binding SeçiliAyıkla, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="SEÇİLİLERİ AYIKLA" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListViewItem}">
                                     <Setter Property="Template">
@@ -71,12 +76,17 @@
                             </ListView.ItemContainerStyle>
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Width="28">
+                                    <GridViewColumn Width="45">
+                                        <GridViewColumn.Header>
+                                            <CheckBox Command="{Binding TümünüSeç, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        </GridViewColumn.Header>
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
-                                                <Image Width="16"
-                                                    Height="16"
-                                                    Source="{Binding DosyaAdı, Converter={StaticResource FilePathToIconConverter}}" />
+                                                <CheckBox IsChecked="{Binding IsChecked}">
+                                                    <Image Width="16"
+                                                        Height="16"
+                                                        Source="{Binding DosyaAdı, Converter={StaticResource FilePathToIconConverter}}" />
+                                                </CheckBox>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>

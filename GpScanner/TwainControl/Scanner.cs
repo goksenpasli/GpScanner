@@ -16,18 +16,6 @@ namespace TwainControl;
 
 public class Scanner : InpcBase, IDataErrorInfo
 {
-    public static readonly Dictionary<string, string> FileContextMenuDictionary = new()
-    {
-        { "[DATE]", DateTime.Now.Day.ToString() },
-        { "[MONTH]", DateTime.Now.Month.ToString() },
-        { "[YEAR]", DateTime.Now.Year.ToString() },
-        { "[HOUR]", DateTime.Now.Hour.ToString() },
-        { "[MINUTE]", DateTime.Now.Minute.ToString() },
-        { "[SECOND]", DateTime.Now.Second.ToString() },
-        { "[GUID]", Guid.NewGuid().ToString() },
-        { "[USERNAME]", Environment.UserName },
-        { "[RESOLUTION]", Settings.Default.Çözünürlük.ToString() }
-    };
     private bool allowCopy = true;
     private bool allowEdit = true;
     private bool allowPrint = true;
@@ -1051,7 +1039,7 @@ public class Scanner : InpcBase, IDataErrorInfo
             if (new[] { "[", "]" }.Any(FileName.Contains))
             {
                 string tempfilename = FileName;
-                foreach (KeyValuePair<string, string> entry in FileContextMenuDictionary)
+                foreach (KeyValuePair<string, string> entry in FileContextMenuDictionary())
                 {
                     tempfilename = tempfilename.Replace(entry.Key, entry.Value);
                     saveFileName = tempfilename;
@@ -1445,6 +1433,22 @@ public class Scanner : InpcBase, IDataErrorInfo
         "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => Translation.GetResStringValue("EMPTY"),
         _ => null
     };
+
+    public static Dictionary<string, string> FileContextMenuDictionary()
+    {
+        return new Dictionary<string, string>
+        {
+            { "[DATE]", DateTime.Now.Day.ToString() },
+            { "[MONTH]", DateTime.Now.Month.ToString() },
+            { "[YEAR]", DateTime.Now.Year.ToString() },
+            { "[HOUR]", DateTime.Now.Hour.ToString() },
+            { "[MINUTE]", DateTime.Now.Minute.ToString() },
+            { "[SECOND]", DateTime.Now.Second.ToString() },
+            { "[GUID]", Guid.NewGuid().ToString() },
+            { "[USERNAME]", Environment.UserName },
+            { "[RESOLUTION]", Settings.Default.Çözünürlük.ToString() }
+        };
+    }
 
     public static void RefreshIndexNumbers(ObservableCollection<ScannedImage> resimler)
     {

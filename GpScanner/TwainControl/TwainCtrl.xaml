@@ -451,6 +451,7 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
                                     ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -493,8 +494,21 @@
                                     <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
                                     <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
                                 </ListBox>
+                                <Extensions:ContentToggleButton Grid.Column="3" ArrowVisibility="Collapsed">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="245" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <local:PageCropControl />
+                                    </Extensions:ContentToggleButton.OverContent>
+                                </Extensions:ContentToggleButton>
                                 <UniformGrid Grid.Row="1"
-                                    Grid.ColumnSpan="3"
+                                    Grid.ColumnSpan="4"
                                     Columns="4">
                                     <ToggleButton IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ToggleButton.Style>
@@ -609,7 +623,6 @@
                             <Grid Margin="1">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -734,20 +747,7 @@
                                         </Image>
                                     </ListBoxItem>
                                 </ListBox>
-                                <Extensions:ContentToggleButton Grid.Column="3" ArrowVisibility="Collapsed">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="245" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <local:PageCropControl />
-                                    </Extensions:ContentToggleButton.OverContent>
-                                </Extensions:ContentToggleButton>
-                                <ToggleButton Grid.Column="4" IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                <ToggleButton Grid.Column="3" IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                     <Grid>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
@@ -2199,7 +2199,7 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <Extensions:NumericUpDownControl IsEnabled="{Binding SeçiliResim, Converter={StaticResource NullableToBooleanConverter}}"
+                            <Extensions:NumericUpDownControl IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
                                 IsReadOnly="True"
                                 Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
                                 Minimum="0"
@@ -2414,8 +2414,10 @@
                             <TextBlock VerticalAlignment="Center"
                                 FontSize="16"
                                 Foreground="Red"
-                                Text="{local:Loc LIMITED}"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap">
+                                <Run Text="UDF" />
+                                <Run Text="{local:Loc LIMITED}" />
+                            </TextBlock>
                         </UniformGrid>
                     </Grid>
                 </TabItem>
