@@ -1947,6 +1947,7 @@
                 x:FieldModifier="public"
                 AutoFitContent="True"
                 OpenButtonVisibility="Visible"
+                Orientation="Height"
                 PreviewKeyDown="PdfViewer_PreviewKeyDown"
                 PreviewKeyUp="PdfViewer_PreviewKeyUp"
                 PreviewMouseDown="PdfImportViewerControl_MouseDown"

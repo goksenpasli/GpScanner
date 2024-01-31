@@ -541,5 +541,17 @@ namespace TwainControl.Properties {
                 this["DocumentNumberVisible"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowArchiveViewerThumbs {
+            get {
+                return ((bool)(this["ShowArchiveViewerThumbs"]));
+            }
+            set {
+                this["ShowArchiveViewerThumbs"] = value;
+            }
+        }
     }
 }

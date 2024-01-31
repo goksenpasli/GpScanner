@@ -9,6 +9,7 @@
         <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+    <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <Style TargetType="local:ArchiveViewer">
         <Setter Property="Template">
             <Setter.Value>
@@ -76,7 +77,7 @@
                             </ListView.ItemContainerStyle>
                             <ListView.View>
                                 <GridView>
-                                    <GridViewColumn Width="45">
+                                    <GridViewColumn Width="48">
                                         <GridViewColumn.Header>
                                             <CheckBox Command="{Binding TümünüSeç, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                         </GridViewColumn.Header>
@@ -128,14 +129,14 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="65"
+                                    <GridViewColumn Width="70"
                                         local:GridViewSort.PropertyName="Crc"
                                         DisplayMemberBinding="{Binding Crc}"
                                         Header="CRC32" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <Grid Grid.Column="1">
+                        <Grid Grid.Column="1" Visibility="{Binding ElementName=Lv, Path=HasItems, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <ProgressBar Width="20"
                                 Foreground="{DynamicResource ProgressBarPinkForeground}"
                                 Maximum="100"

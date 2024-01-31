@@ -665,6 +665,30 @@
                                         Text="3" />
                                 </Canvas>
                             </ToggleButton>
+                            <CheckBox VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                twainctrl:Policy.PolicyName="ShowArchiveViewerThumbs"
+                                IsChecked="{Binding ShowArchiveViewerThumbs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                <CheckBox.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="ZipFldr.dll" />
+                                                        <Binding Source="0" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock FontFamily="Webdings"
+                                                FontSize="24"
+                                                Foreground="Green"
+                                                Text="N" />
+                                        </Canvas>
+                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                    </StackPanel>
+                                </CheckBox.Content>
+                            </CheckBox>
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>

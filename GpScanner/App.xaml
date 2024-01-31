@@ -162,7 +162,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="2*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <Button Command="{Binding DataContext.AddFileToControlPanel, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" CommandParameter="{Binding ElementName=PdfVwr, Path=Source}">

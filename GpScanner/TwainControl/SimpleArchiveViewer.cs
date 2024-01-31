@@ -2,21 +2,26 @@
 using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using TwainControl.Properties;
 
 namespace TwainControl;
 
 public class SimpleArchiveViewer : ArchiveViewer
 {
     private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jfıf", ".jpe", ".png", ".gif", ".gıf", ".bmp", ".tıf", ".tiff", ".tıff", ".heic", ".tif", ".webp", ".xps"];
+    private double previewPanelHeight;
+    private string thumbFile;
 
     public SimpleArchiveViewer()
     {
+        PropertyChanged += SimpleArchiveViewer_PropertyChanged;
         ArşivTekDosyaÇıkar = new RelayCommand<object>(
             parameter =>
             {
@@ -55,7 +60,34 @@ public class SimpleArchiveViewer : ArchiveViewer
 
     public new RelayCommand<object> ArşivTekDosyaÇıkar { get; }
 
+    public double PreviewPanelHeight
+    {
+        get => previewPanelHeight;
+
+        set
+        {
+            if (previewPanelHeight != value)
+            {
+                previewPanelHeight = value;
+                OnPropertyChanged(nameof(PreviewPanelHeight));
+            }
+        }
+    }
+
     public new RelayCommand<object> SeçiliAyıkla { get; }
+
+    public string ThumbFile
+    {
+        get => thumbFile;
+        set
+        {
+            if (thumbFile != value)
+            {
+                thumbFile = value;
+                OnPropertyChanged(nameof(ThumbFile));
+            }
+        }
+    }
 
     protected override void OnDrop(DragEventArgs e)
     {
@@ -130,5 +162,21 @@ public class SimpleArchiveViewer : ArchiveViewer
         string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(entryname)}";
         entry?.Extract(extractpath);
         return extractpath;
+    }
+
+    private void SimpleArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "SelectedFile")
+        {
+            if (Settings.Default.ShowArchiveViewerThumbs)
+            {
+                PreviewPanelHeight = double.PositiveInfinity;
+                ThumbFile = SelectedFile is not null ? ExtractToFile(SelectedFile.DosyaAdı) : null;
+            }
+            else
+            {
+                PreviewPanelHeight = 0;
+            }
+        }
     }
 }

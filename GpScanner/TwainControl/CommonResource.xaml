@@ -577,6 +577,11 @@
             </TextBlock>
         </StackPanel>
     </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerEmptyTemplate">
+        <Image Width="256"
+            Height="256"
+            Source="{Binding Converter={StaticResource FilePathToIconLargeConverter}, Mode=OneWay}" />
+    </DataTemplate>
     <DataTemplate x:Key="EmptyEypListBoxTemplate">
         <Image Width="256"
             Height="256"
@@ -653,6 +658,14 @@
                 PanoramaButtonVisibility="Collapsed"
                 PrintButtonVisibility="Visible" />
         </Grid>
+    </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerImgViewerTemplate">
+        <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+            ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+            OpenButtonVisibility="Collapsed"
+            Orientation="Height"
+            PanoramaButtonVisibility="Collapsed"
+            PrintButtonVisibility="Visible" />
     </DataTemplate>
     <DataTemplate x:Key="EypSimplePdfTemplate">
         <Grid DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType=ListBox}}">
@@ -781,6 +794,9 @@
                 local:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
         </Grid>
     </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerXmlViewerTemplate">
+        <local:XmlViewerControl local:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+    </DataTemplate>
     <DataTemplate x:Key="VideoViewerTemplateMini">
         <Controls:MediaViewer Width="315"
             Height="315"
@@ -789,11 +805,32 @@
             ControlVisible="Collapsed"
             MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerVideoViewerTemplate">
+        <Controls:MediaViewer AutoPlay="False" MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+    </DataTemplate>
     <DataTemplate x:Key="ZipViewerTemplate">
         <local:SimpleArchiveViewer Width="210"
             Height="297"
             ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
             DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+    </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerZipViewerTemplate">
+        <local:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+    </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerEypViewerTemplate">
+        <local:EypPdfViewer AutoFitContent="True"
+            Dpi="96"
+            EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+            Orientation="Height" />
+    </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerPdfViewerTemplate">
+        <local:EypPdfViewer AutoFitContent="True"
+            Dpi="96"
+            Orientation="Height"
+            PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+    </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerXpsViewerTemplate">
+        <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
     <local:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
         Empty="{StaticResource EmptyTemplate}"
@@ -803,6 +840,17 @@
         Xlsx="{StaticResource EypSimpleXlsxTemplate}"
         Xml="{StaticResource XmlViewerTemplate}"
         Zip="{StaticResource ZipViewerTemplate}" />
+    <local:ViewerTemplateSelector x:Key="SimpleArchiveViewerSelector"
+        Docx="{StaticResource SimpleArchiveViewerEmptyTemplate}"
+        Empty="{StaticResource SimpleArchiveViewerEmptyTemplate}"
+        Eyp="{StaticResource SimpleArchiveViewerEypViewerTemplate}"
+        Img="{StaticResource SimpleArchiveViewerImgViewerTemplate}"
+        Pdf="{StaticResource SimpleArchiveViewerPdfViewerTemplate}"
+        Vid="{StaticResource SimpleArchiveViewerEmptyTemplate}"
+        Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
+        Xml="{StaticResource SimpleArchiveViewerXmlViewerTemplate}"
+        Xps="{StaticResource SimpleArchiveViewerXpsViewerTemplate}"
+        Zip="{StaticResource SimpleArchiveViewerZipViewerTemplate}" />
     <local:ViewerTemplateSelector x:Key="PdfEypListBoxViewerSelector"
         Eyp="{StaticResource EypViewerTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
