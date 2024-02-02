@@ -82,7 +82,6 @@ public partial class GpScannerViewModel : InpcBase
     private double contributionPreviewSize = 120;
     private int cycleIndex;
     private bool detectBarCode = true;
-    private bool detectPageSeperator;
     private bool documentPanelIsExpanded;
     private ObservableCollection<Scanner> dosyalar;
     private string errorLogPath;
@@ -105,7 +104,7 @@ public partial class GpScannerViewModel : InpcBase
     private bool ocrısBusy;
     private int? ocrPdfThumbnailPageNumber;
     private string patchFileName;
-    private string patchProfileName = string.Empty;
+    private string patchProfileName;
     private string patchTag;
     private bool pdfBatchRunning;
     private double pdfMergeProgressValue;
@@ -592,12 +591,12 @@ public partial class GpScannerViewModel : InpcBase
         SavePatchProfile = new RelayCommand<object>(
             parameter =>
             {
-                string profile = $"{PatchFileName}|{PatchTag}";
+                string profile = $"{PatchTag}|{PatchFileName}";
                 _ = Settings.Default.PatchCodes.Add(profile);
                 Settings.Default.Save();
                 Settings.Default.Reload();
             },
-            parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchFileName) && TwainCtrl.FileNameValid(PatchTag));
+            parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchTag) && TwainCtrl.FileNameValid(PatchFileName));
 
         AddFtpSites = new RelayCommand<object>(
             parameter =>
@@ -639,10 +638,12 @@ public partial class GpScannerViewModel : InpcBase
         SaveQrImage = new RelayCommand<object>(
             parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Jpg Resmi (*.jpg)|*.jpg", FileName = "QR" };
+                SaveFileDialog saveFileDialog = new() { Filter = "Png Resmi (*.png)|*.png", FileName = "QR" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    File.WriteAllBytes(saveFileDialog.FileName, BitmapFrame.Create(parameter as WriteableBitmap).ToTiffJpegByteArray(Format.Jpg));
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(parameter as WriteableBitmap);
+                    bitmapFrame.Freeze();
+                    File.WriteAllBytes(saveFileDialog.FileName, bitmapFrame.ToTiffJpegByteArray(Format.Png));
                 }
             },
             parameter => parameter is WriteableBitmap writeableBitmap && writeableBitmap is not null);
@@ -658,7 +659,6 @@ public partial class GpScannerViewModel : InpcBase
                 {
                     PatchFileName = null;
                     PatchTag = null;
-                    DetectPageSeperator = false;
                 }
             },
             parameter => true);
@@ -1359,20 +1359,6 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public bool DetectPageSeperator
-    {
-        get => detectPageSeperator;
-
-        set
-        {
-            if (detectPageSeperator != value)
-            {
-                detectPageSeperator = value;
-                OnPropertyChanged(nameof(DetectPageSeperator));
-            }
-        }
-    }
-
     public bool DocumentPanelIsExpanded
     {
         get => documentPanelIsExpanded;
@@ -1706,7 +1692,7 @@ public partial class GpScannerViewModel : InpcBase
 
     public string PatchProfileName
     {
-        get => patchProfileName;
+        get => patchProfileName?.Split('|')[0];
 
         set
         {
@@ -2081,12 +2067,12 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string GetPatchCodeResult(string barcode)
+    public string GetPatchCodeResult(string qrcodetag)
     {
-        if (!string.IsNullOrWhiteSpace(barcode))
+        if (!string.IsNullOrWhiteSpace(qrcodetag))
         {
             List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
-            string matchingPatchCode = patchcodes?.Find(z => z.Split('|')[0] == barcode);
+            string matchingPatchCode = patchcodes?.Find(z => z.Split('|')[0] == qrcodetag);
             return matchingPatchCode != null ? matchingPatchCode.Split('|')[1] : "Tarama";
         }
 

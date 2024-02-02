@@ -889,7 +889,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         "Xps Dosyası (*.xps)|*.xps|" +
                         "Eyp Dosyası (*.eyp)|*.eyp|" +
                         "Webp Dosyası (*.webp)|*.webp|" +
-                        "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz|" + 
+                        "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz|" +
                         "Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv)|*.xls;*.xlsx;*.xlsb;*.csv",
                     Multiselect = true
                 };
@@ -3521,7 +3521,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.ArayüzEtkin = false;
         QrCode.QrCode qrcode = new();
         Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(Scanner?.Resimler?.LastOrDefault()?.Resim);
-        OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
+        if (Scanner.UsePageSeperator)
+        {
+            OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
+        }
         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
         List<ObservableCollection<OcrData>> PdfFileOcrData = null;
         if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
@@ -4130,6 +4133,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if (e.PropertyName is "UsePageSeperator")
         {
+            if (!Settings.Default.UseSelectedProfile && !Scanner.UsePageSeperator)
+            {
+                Scanner.FileName = Translation.GetResStringValue("DEFAULTSCANNAME");
+            }
             OnPropertyChanged(nameof(Scanner.UsePageSeperator));
         }
 

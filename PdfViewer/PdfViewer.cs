@@ -686,7 +686,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     bs = (BitmapSource)Source;
                     bs.Freeze();
-                    dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
+                    dc.DrawImage(bs, new Rect(0, 0, bs.PixelWidth, bs.PixelHeight));
                 }
             }
 

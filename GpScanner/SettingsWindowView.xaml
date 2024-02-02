@@ -7,6 +7,7 @@
     xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
@@ -62,9 +63,8 @@
             </TabItem.Header>
             <Grid Background="{StaticResource BorderBackground}">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="190.4" />
+                    <RowDefinition />
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="80.8" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="48" />
                     <RowDefinition Height="48" />
@@ -182,134 +182,8 @@
                     </Grid>
                 </GroupBox>
                 <GroupBox Grid.Row="2">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="3" />
-                            <ColumnDefinition Width="129.6" />
-                        </Grid.ColumnDefinitions>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <StackPanel>
-                                <CheckBox VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="DetectBarCode"
-                                    IsChecked="{Binding DetectBarCode}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="48"
-                                                Height="48"
-                                                Source="{Binding Source='GPSCANNER', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc QRDETECT}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                                <Separator />
-                                <CheckBox VerticalAlignment="Center"
-                                    twainctrl:Policy.PolicyName="DetectPageSeperator"
-                                    IsChecked="{Binding DetectPageSeperator}"
-                                    IsEnabled="{Binding DetectBarCode}">
-                                    <CheckBox.Content>
-                                        <StackPanel>
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SEPERATOR}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal">
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                            </StackPanel>
-                            <UniformGrid Grid.Column="2" Columns="2">
-                                <UniformGrid Rows="3">
-                                    <Extensions:ButtonedTextBox x:Name="Tb"
-                                        VerticalContentAlignment="Center"
-                                        d:Text="PatchFileName"
-                                        Description="{twainctrl:Loc TAG}"
-                                        IsEnabled="{Binding DetectPageSeperator}"
-                                        OpenButtonVisibility="Collapsed"
-                                        Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                        d:Text="PatchTag"
-                                        Description="{twainctrl:Loc FILENAME}"
-                                        IsEnabled="{Binding DetectPageSeperator}"
-                                        OpenButtonVisibility="Collapsed"
-                                        Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Button twainctrl:Policy.PolicyName="SavePatchProfile"
-                                        Command="{Binding SavePatchProfile}"
-                                        IsEnabled="{Binding DetectPageSeperator}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="16"
-                                                Height="16"
-                                                Source="/TwainControl;component/Icons/save.png" />
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
-                                        </StackPanel>
-                                    </Button>
-                                </UniformGrid>
-                                <ListBox d:ItemsSource="{d:SampleData ItemCount=3}"
-                                    twainctrl:Policy.PolicyName="PatchProfileName"
-                                    Background="{StaticResource BorderBackground}"
-                                    IsEnabled="{Binding DetectPageSeperator}"
-                                    ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
-                                    SelectedItem="{Binding PatchProfileName}">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Margin="1" Orientation="Horizontal">
-                                                <TextBlock Margin="0,0,5,0"
-                                                    VerticalAlignment="Center"
-                                                    FontStyle="Italic"
-                                                    Text="{Binding Mode=OneWay}">
-                                                    <Hyperlink Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
-                                                        <Run Text="{twainctrl:Loc DELETE}" />
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </UniformGrid>
-                        </Grid>
-                        <StackPanel Grid.Column="1" Orientation="Horizontal">
-                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        </StackPanel>
-                        <UniformGrid Grid.Column="2"
-                            Margin="1"
-                            Columns="2">
-                            <Image x:Name="Img"
-                                Width="64"
-                                Height="64"
-                                d:Source="{Binding Source='Gok$en', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
-                                Source="{Binding ElementName=Tb, Path=Text, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
-                            <UniformGrid Rows="2">
-                                <Button twainctrl:Policy.PolicyName="SaveQrImage"
-                                    Command="{Binding SaveQrImage}"
-                                    CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
-                                    <Image Width="24"
-                                        Height="24"
-                                        Source="/TwainControl;component/Icons/save.png" />
-                                </Button>
-                                <Button twainctrl:Policy.PolicyName="PrintImage"
-                                    Command="{Binding PrintImage}"
-                                    CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
-                                    <Image Width="24" Height="24">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="16" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
-                            </UniformGrid>
-                        </UniformGrid>
-                    </Grid>
-                </GroupBox>
-                <GroupBox Grid.Row="3">
                     <StackPanel>
-                        <UniformGrid Columns="9">
+                        <UniformGrid Columns="5" Rows="2">
                             <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                                 <Run Text="{twainctrl:Loc FILE}" />
                                 <Run Text="{twainctrl:Loc RES}" />
@@ -413,6 +287,10 @@
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                             </StackPanel>
+                            <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+                                <sys:String>PDF</sys:String>
+                                <Run Text="{twainctrl:Loc PREVIEWFILE}" />
+                            </TextBlock>
                             <ComboBox VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="DefaultThumbNailDpi"
                                 ItemStringFormat="{}{0} Dpi"
@@ -692,7 +570,7 @@
                         </StackPanel>
                     </StackPanel>
                 </GroupBox>
-                <GroupBox Grid.Row="4" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
+                <GroupBox Grid.Row="3" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="2*" />
@@ -800,7 +678,7 @@
                         </ListBox>
                     </Grid>
                 </GroupBox>
-                <GroupBox Grid.Row="5">
+                <GroupBox Grid.Row="4">
                     <StackPanel Orientation="Horizontal">
                         <Button twainctrl:Policy.PolicyName="ResetSettings"
                             Background="Red"
@@ -986,6 +864,117 @@
                     </Grid>
                 </GroupBox>
             </UniformGrid>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="32"
+                        Height="32"
+                        Source="{Binding Source='GPSCANNER', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc QRDETECT}" />
+                </StackPanel>
+            </TabItem.Header>
+            <GroupBox>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <CheckBox VerticalAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        twainctrl:Policy.PolicyName="DetectBarCode"
+                        IsChecked="{Binding DetectBarCode}">
+                        <CheckBox.Content>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="48"
+                                    Height="48"
+                                    RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                    Source="{Binding Source='GPSCANNER', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc QRDETECT}" />
+                            </StackPanel>
+                        </CheckBox.Content>
+                    </CheckBox>
+                    <Separator Grid.Row="1" />
+                    <UniformGrid Grid.Row="2"
+                        Columns="3"
+                        IsEnabled="{Binding DetectBarCode}">
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            d:Text="PatchFileName"
+                            Description="{twainctrl:Loc FILENAME}"
+                            OpenButtonVisibility="Collapsed"
+                            Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            d:Text="PatchTag"
+                            Description="{twainctrl:Loc TAG}"
+                            OpenButtonVisibility="Collapsed"
+                            Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
+                        <Button twainctrl:Policy.PolicyName="SavePatchProfile" Command="{Binding SavePatchProfile}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="/TwainControl;component/Icons/save.png" />
+                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SAVEPROFILE}" />
+                            </StackPanel>
+                        </Button>
+                    </UniformGrid>
+                    <UniformGrid Grid.Row="3"
+                        Margin="1"
+                        Columns="3">
+                        <Image Width="64"
+                            Height="64"
+                            d:Source="{Binding Source='Gok$en', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
+                            RenderOptions.BitmapScalingMode="NearestNeighbor"
+                            Source="{Binding PatchTag, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
+                        <Button twainctrl:Policy.PolicyName="SaveQrImage"
+                            Command="{Binding SaveQrImage}"
+                            CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
+                            <Image Width="24"
+                                Height="24"
+                                Source="/TwainControl;component/Icons/save.png" />
+                        </Button>
+                        <Button twainctrl:Policy.PolicyName="PrintImage"
+                            Command="{Binding PrintImage}"
+                            CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
+                            <Image Width="24" Height="24">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="16" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Button>
+                    </UniformGrid>
+                    <UniformGrid Grid.Row="4" Columns="2">
+                        <ListBox d:ItemsSource="{d:SampleData ItemCount=3}"
+                            twainctrl:Policy.PolicyName="PatchProfileName"
+                            Background="{StaticResource BorderBackground}"
+                            IsEnabled="{Binding DetectBarCode}"
+                            ItemsSource="{Binding PatchCodes, Source={x:Static properties:Settings.Default}}"
+                            SelectedItem="{Binding PatchProfileName}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="1" Orientation="Horizontal">
+                                        <TextBlock Margin="0,0,5,0"
+                                            VerticalAlignment="Center"
+                                            FontStyle="Italic"
+                                            Text="{Binding Mode=OneWay}"><Hyperlink Command="{Binding DataContext.RemovePatchProfile, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}" CommandParameter="{Binding Mode=OneWay}">
+                                                <Run Text="{twainctrl:Loc DELETE}" />
+                                            </Hyperlink></TextBlock>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Image x:Name="Img"
+                            d:Source="{Binding Source='Gok$en', Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}"
+                            RenderOptions.BitmapScalingMode="NearestNeighbor"
+                            Source="{Binding PatchProfileName, Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}" />
+                    </UniformGrid>
+                </Grid>
+            </GroupBox>
         </TabItem>
         <TabItem>
             <TabItem.Header>

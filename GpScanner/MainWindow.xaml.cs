@@ -318,7 +318,7 @@ public partial class MainWindow : Window
             {
                 ViewModel.AddBarcodeToList(twainCtrl?.Scanner?.BarcodeContent);
 
-                if (ViewModel.DetectPageSeperator && twainCtrl?.Scanner?.BarcodeContent is not null)
+                if (twainCtrl?.Scanner?.UsePageSeperator == true && twainCtrl?.Scanner?.BarcodeContent is not null)
                 {
                     twainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(twainCtrl.Scanner.BarcodeContent);
                 }
@@ -370,17 +370,12 @@ public partial class MainWindow : Window
                 ViewModel.AddBarcodeToList(twainCtrl?.Scanner?.BarcodeContent);
             }
 
-            if (e.PropertyName is "UsePageSeperator" && twainCtrl?.Scanner?.UsePageSeperator == true)
+            if (e.PropertyName is "UsePageSeperator" && twainCtrl?.Scanner?.UsePageSeperator == true && Settings.Default.PatchCodes.Count == 0)
             {
-                if (Settings.Default.PatchCodes.Count <= 0)
-                {
-                    twainCtrl.Scanner.UsePageSeperator = false;
-                    _ = MessageBox.Show($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("SEPERATOR")}", Title);
-                    return;
-                }
-
-                ViewModel.DetectPageSeperator = twainCtrl.Scanner.UsePageSeperator;
+                twainCtrl.Scanner.UsePageSeperator = false;
+                _ = MessageBox.Show($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("QRDETECT")}", Title);
             }
+
             if (e.PropertyName is "RefreshDocumentList" && twainCtrl?.RefreshDocumentList == true)
             {
                 DateTime tempdate = ViewModel.SeçiliGün;

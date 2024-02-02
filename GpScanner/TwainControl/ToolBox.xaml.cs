@@ -36,8 +36,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     {
         InitializeComponent();
 
-        PrintCroppedImage =
-            new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
+        PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
 
         DeskewImage = new RelayCommand<object>(
             async parameter =>
