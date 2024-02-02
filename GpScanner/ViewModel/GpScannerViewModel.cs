@@ -2067,16 +2067,16 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
-    public string GetPatchCodeResult(string qrcodetag)
+    public string GetFileNameFromPatchCodeResult(string qrcodetag)
     {
-        if (!string.IsNullOrWhiteSpace(qrcodetag))
+        if (string.IsNullOrWhiteSpace(qrcodetag))
         {
-            List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
-            string matchingPatchCode = patchcodes?.Find(z => z.Split('|')[0] == qrcodetag);
-            return matchingPatchCode != null ? matchingPatchCode.Split('|')[1] : "Tarama";
+            return Translation.GetResStringValue("DEFAULTSCANNAME");
         }
 
-        return string.Empty;
+        List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
+        string matchingPatchCode = patchcodes?.Find(z => z.Split('|')[0] == qrcodetag);
+        return matchingPatchCode?.Split('|')[1] ?? Translation.GetResStringValue("DEFAULTSCANNAME");
     }
 
     public bool NeedAppUpdate() => Settings.Default.CheckAppUpdate && DateTime.Now > Settings.Default.LastCheckDate.AddDays(Settings.Default.UpdateInterval);

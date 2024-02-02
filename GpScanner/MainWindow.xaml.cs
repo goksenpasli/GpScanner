@@ -316,11 +316,14 @@ public partial class MainWindow : Window
 
             if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
             {
-                ViewModel.AddBarcodeToList(twainCtrl?.Scanner?.BarcodeContent);
-
-                if (twainCtrl?.Scanner?.UsePageSeperator == true && twainCtrl?.Scanner?.BarcodeContent is not null)
+                string detectedbarcode = twainCtrl?.Scanner?.BarcodeContent;
+                if (detectedbarcode != null)
                 {
-                    twainCtrl.Scanner.FileName = ViewModel.GetPatchCodeResult(twainCtrl.Scanner.BarcodeContent);
+                    ViewModel.AddBarcodeToList(detectedbarcode);
+                    if (twainCtrl?.Scanner?.UsePageSeperator == true)
+                    {
+                        twainCtrl.Scanner.FileName = ViewModel.GetFileNameFromPatchCodeResult(detectedbarcode);
+                    }
                 }
             }
 

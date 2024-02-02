@@ -3521,10 +3521,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.ArayüzEtkin = false;
         QrCode.QrCode qrcode = new();
         Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(Scanner?.Resimler?.LastOrDefault()?.Resim);
-        if (Scanner.UsePageSeperator)
-        {
-            OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
-        }
+        OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
         Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
         List<ObservableCollection<OcrData>> PdfFileOcrData = null;
         if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
