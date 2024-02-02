@@ -117,7 +117,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                         archiveViewer.TotalFilesCount = archive.Entries.Count;
                         foreach (Entry item in archive.Entries)
                         {
-                            ArchiveData archiveData = new()
+                            ExtendedArchiveData archiveData = new()
                             {
                                 SıkıştırılmışBoyut = (long)item.PackedSize,
                                 DosyaAdı = item.FileName,
@@ -125,7 +125,10 @@ public class SimpleArchiveViewer : ArchiveViewer
                                 Boyut = (long)item.Size,
                                 Oran = (float)item.PackedSize / item.Size,
                                 DüzenlenmeZamanı = item.LastWriteTime.Date,
-                                Crc = item.CRC.ToString("X")
+                                Crc = item.CRC.ToString("X"),
+                                HostOs = item.HostOS,
+                                Method = item.Method,
+                                Attributes = (FileAttributes)item.Attributes,
                             };
                             await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
                         }

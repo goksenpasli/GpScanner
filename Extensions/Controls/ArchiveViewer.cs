@@ -35,9 +35,9 @@ namespace Extensions
             {
                 Arşivİçerik =
                 [
-                    new() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
-                    new() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
-                    new() { DosyaAdı = "DosyaAdı", Oran = 0.5F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                    new() { DosyaAdı = "DosyaAdı", Oran = 0.4F, Boyut = 100, SıkıştırılmışBoyut = 40, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                    new() { DosyaAdı = "DosyaAdı", Oran = 0.6F, Boyut = 100, SıkıştırılmışBoyut = 60, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
+                    new() { DosyaAdı = "DosyaAdı", Oran = 0.8F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
                 ];
             }
             ArşivTekDosyaÇıkar = new RelayCommand<object>(

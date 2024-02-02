@@ -114,6 +114,7 @@
     <Compile Include="DrawControl.xaml.cs">
       <DependentUpon>DrawControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ExtendedArchiveData.cs" />
     <Compile Include="EypPdfViewer.cs" />
     <Compile Include="ImageWidthHeightComparer.cs" />
     <Compile Include="PageCropControl.xaml.cs">

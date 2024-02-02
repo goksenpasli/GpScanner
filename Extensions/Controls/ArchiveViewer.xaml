@@ -36,13 +36,16 @@
                             ScrollViewer.IsDeferredScrollingEnabled="False"
                             SelectedItem="{Binding SelectedFile, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
                             SelectionMode="Single">
-                            <ListView.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Command="{Binding SeçiliAyıkla, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="SEÇİLİLERİ AYIKLA" />
-                                </ContextMenu>
-                            </ListView.ContextMenu>
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="ContextMenu">
+                                        <Setter.Value>
+                                            <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                                <MenuItem Command="{Binding Tag.SeçiliAyıkla}" Header="SEÇİLİLERİ AYIKLA" />
+                                            </ContextMenu>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Tag" Value="{Binding Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -91,13 +94,14 @@
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
-                                    <GridViewColumn Width="150"
+                                    <GridViewColumn Width="110"
                                         local:GridViewSort.PropertyName="DosyaAdı"
                                         DisplayMemberBinding="{Binding DosyaAdı, Mode=OneWay}">
                                         <GridViewColumn.Header>
                                             <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" Text="DOSYA ADI" />
+                                                <TextBlock VerticalAlignment="Center" Text="DOSYA&#xA;ADI" />
                                                 <local:ButtonedTextBox Width="60"
+                                                    VerticalContentAlignment="Center"
                                                     CopyButtonVisibility="Collapsed"
                                                     OpenButtonVisibility="Collapsed"
                                                     PasteButtonVisibility="Collapsed"

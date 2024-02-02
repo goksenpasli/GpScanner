@@ -49,6 +49,7 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition />
+                            <RowDefinition Height="3" />
                             <RowDefinition Height="3*" MaxHeight="{Binding PreviewPanelHeight, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -64,13 +65,16 @@
                             ScrollViewer.IsDeferredScrollingEnabled="False"
                             SelectedItem="{Binding SelectedFile, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}"
                             SelectionMode="Single">
-                            <ListView.ContextMenu>
-                                <ContextMenu>
-                                    <MenuItem Command="{Binding SeçiliAyıkla, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="SEÇİLİLERİ AYIKLA" />
-                                </ContextMenu>
-                            </ListView.ContextMenu>
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListViewItem}">
+                                    <Setter Property="ContextMenu">
+                                        <Setter.Value>
+                                            <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
+                                                <MenuItem Command="{Binding Tag.SeçiliAyıkla}" Header="SEÇİLİLERİ AYIKLA" />
+                                            </ContextMenu>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="Tag" Value="{Binding Mode=OneWay, RelativeSource={RelativeSource AncestorType=Extensions:ArchiveViewer}}" />
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -117,12 +121,13 @@
                                         </GridViewColumn.CellTemplate>
                                         <CheckBox Command="{Binding TümünüSeç, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                     </GridViewColumn>
-                                    <GridViewColumn Width="150"
+                                    <GridViewColumn Width="110"
                                         Extensions:GridViewSort.PropertyName="DosyaAdı"
                                         DisplayMemberBinding="{Binding DosyaAdı, Mode=OneWay}">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center" Text="DOSYA ADI" />
+                                            <TextBlock VerticalAlignment="Center" Text="DOSYA&#xA;ADI" />
                                             <Extensions:ButtonedTextBox Width="60"
+                                                VerticalContentAlignment="Center"
                                                 CopyButtonVisibility="Collapsed"
                                                 OpenButtonVisibility="Collapsed"
                                                 PasteButtonVisibility="Collapsed"
@@ -157,6 +162,18 @@
                                         Extensions:GridViewSort.PropertyName="Crc"
                                         DisplayMemberBinding="{Binding Crc}"
                                         Header="CRC32" />
+                                    <GridViewColumn Width="70"
+                                        Extensions:GridViewSort.PropertyName="HostOs"
+                                        DisplayMemberBinding="{Binding HostOs}"
+                                        Header="İŞLETİM&#x0a;SİSTEMİ" />
+                                    <GridViewColumn Width="70"
+                                        Extensions:GridViewSort.PropertyName="Method"
+                                        DisplayMemberBinding="{Binding Method}"
+                                        Header="YÖNTEM" />
+                                    <GridViewColumn Width="70"
+                                        Extensions:GridViewSort.PropertyName="Attributes"
+                                        DisplayMemberBinding="{Binding Attributes}"
+                                        Header="ÖZNİTELİK" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -172,11 +189,16 @@
                                 FontWeight="Bold"
                                 Text="{Binding ToplamOran, RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat=\{0:F0\}}" />
                         </Grid>
-                        <ContentControl Grid.Row="1"
+                        <GridSplitter Grid.Row="1"
+                            Grid.ColumnSpan="2"
+                            Height="3"
+                            HorizontalAlignment="Stretch"
+                            Background="{StaticResource GroupBoxBackGround}" />
+                        <ContentControl Grid.Row="2"
                             Grid.ColumnSpan="2"
                             Content="{Binding ElementName=ArchiveVwr, Path=ThumbFile, Mode=OneWay}"
                             ContentTemplateSelector="{DynamicResource SimpleArchiveViewerSelector}" />
-                        <StatusBar Grid.Row="2" Grid.ColumnSpan="2">
+                        <StatusBar Grid.Row="3" Grid.ColumnSpan="2">
                             <StatusBar.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Grid>
