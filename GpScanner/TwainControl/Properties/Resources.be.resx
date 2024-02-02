@@ -714,4 +714,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>ПАМЫЛКА</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>СКАНІРАВАЦЬ КОЖНУЮ СТАРОНКУ Ў АСОБНЫ ФАЙЛ</value>
+  </data>
 </root>

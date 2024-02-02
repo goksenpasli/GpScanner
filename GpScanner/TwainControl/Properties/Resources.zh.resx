@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>错误</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>将每一页扫描到单独的文件</value>
+  </data>
 </root>

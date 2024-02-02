@@ -3599,6 +3599,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return null;
     }
 
+    private async Task<ObservableCollection<OcrData>> GetImageOcrData(ScannedImage item)
+    {
+        if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
+        {
+            Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
+            return await item.Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
     private string GetPdfBatchNumberString(int i) => Scanner.PdfBatchNumberIsFirst ? $"{i + 1} {Scanner.PdfBatchNumberText}" : $"{Scanner.PdfBatchNumberText} {i + 1}";
 
     private List<T> GroupByFirstLastList<T>(List<T> scannedImages, int splitCount = 2)
@@ -4084,12 +4097,43 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         _settings = DefaultScanSettings();
     }
 
-    private void ScanComplete(object sender, ScanningCompleteEventArgs e)
+    private async void ScanComplete(object sender, ScanningCompleteEventArgs e)
     {
+        if (Scanner.ScanSeperate)
+        {
+            if (!Scanner.UsePageSeperator)
+            {
+                for (int i = 0; i < Scanner.Resimler.Count; i++)
+                {
+                    ScannedImage item = Scanner.Resimler[i];
+                    Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+                    DataBaseTextData = await GetImageOcrData(item);
+                    await SavePdfImageAsync(item.Resim, Scanner.PdfFilePath, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
+                    Scanner.PdfSaveProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
+                }
+            }
+            else
+            {
+                QrCode.QrCode qrcode = new();
+                for (int i = 0; i < Scanner.Resimler.Count; i++)
+                {
+                    ScannedImage item = Scanner.Resimler[i];
+                    Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(item.Resim);
+                    OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
+                    Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+                    DataBaseTextData = await GetImageOcrData(item);
+                    await SavePdfImageAsync(item.Resim, Scanner.PdfFilePath, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
+                    Scanner.PdfSaveProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
+                }
+            }
+            OnPropertyChanged(nameof(Scanner.Resimler));
+        }
+
         if (Settings.Default.PlayNotificationAudio)
         {
             PlayNotificationSound(Settings.Default.AudioFilePath);
         }
+        DataBaseTextData = null;
         twain.ScanningComplete -= ScanComplete;
     }
 

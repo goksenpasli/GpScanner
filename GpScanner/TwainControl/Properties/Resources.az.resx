@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>SƏHV</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>HƏR SƏHİFƏNİ AYRI FAYLA TARAYIN</value>
+  </data>
 </root>

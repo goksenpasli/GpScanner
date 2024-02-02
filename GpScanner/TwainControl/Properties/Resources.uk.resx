@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>ПОМИЛКА</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>СКАНУЙТЕ КОЖНУ СТОРІНКУ В ОКРЕМИЙ ФАЙЛ</value>
+  </data>
 </root>

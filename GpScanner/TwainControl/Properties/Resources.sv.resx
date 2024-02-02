@@ -714,4 +714,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>MISSTAG</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SKANNA VARJE SIDA TILL EN SEPARAT FIL</value>
+  </data>
 </root>

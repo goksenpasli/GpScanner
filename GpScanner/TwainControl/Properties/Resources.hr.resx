@@ -714,4 +714,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>POGREŠKA</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SKENIRAJTE SVAKU STRANICU U POSEBNU DATOTEKU</value>
+  </data>
 </root>

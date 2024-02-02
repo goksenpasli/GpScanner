@@ -718,4 +718,7 @@ TO FILE</value>
   <data name="ERROR" xml:space="preserve">
     <value>ERROR</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SCAN EACH PAGE TO A SEPARATE FILE</value>
+  </data>
 </root>

@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>خطأ</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>قم بمسح كل صفحة ضوئيًا إلى ملف منفصل</value>
+  </data>
 </root>

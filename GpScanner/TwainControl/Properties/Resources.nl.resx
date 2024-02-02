@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>FOUT</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SCAN ELKE PAGINA NAAR EEN AFZONDERLIJK BESTAND</value>
+  </data>
 </root>

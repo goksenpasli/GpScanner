@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>ΛΑΘΟΣ</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>ΣΑΡΩΣΤΕ ΚΑΘΕ ΣΕΛΙΔΑ ΣΕ ΞΕΧΩΡΙΣΤΟ ΑΡΧΕΙΟ</value>
+  </data>
 </root>

@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>FEHLER</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>Scannen Sie jede Seite in eine separate Datei</value>
+  </data>
 </root>

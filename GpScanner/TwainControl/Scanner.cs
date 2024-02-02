@@ -83,6 +83,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string saveFileName;
     private Brush saveProgressBarForegroundBrush;
     private bool saveProgressIndeterminate;
+    private bool scanSeperate;
     private bool seçili;
     private int seçiliResimSayısı;
     private string selectedProfile;
@@ -1087,6 +1088,19 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 saveProgressIndeterminate = value;
                 OnPropertyChanged(nameof(SaveProgressIndeterminate));
+            }
+        }
+    }
+
+    public bool ScanSeperate
+    {
+        get => scanSeperate;
+        set
+        {
+            if (scanSeperate != value)
+            {
+                scanSeperate = value;
+                OnPropertyChanged(nameof(ScanSeperate));
             }
         }
     }

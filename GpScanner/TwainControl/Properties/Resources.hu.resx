@@ -714,4 +714,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>HIBA</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>MINDEN OLDALOT EGY KÜLÖN FÁJLBA SZKENNELJEN BE</value>
+  </data>
 </root>

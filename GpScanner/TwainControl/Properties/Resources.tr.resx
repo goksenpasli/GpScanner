@@ -724,4 +724,7 @@ BELGE EKLE</value>
   <data name="ERROR" xml:space="preserve">
     <value>HATA</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>HER SAYFAYI AYRI DOSYAYA TARA</value>
+  </data>
 </root>

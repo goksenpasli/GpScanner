@@ -714,4 +714,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>ՍԽԱԼ</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>ՍԿԱՆԱՑԵՔ ՅՈՒՐԱՔԱՆՉՅՈՒՐ ԷՋԸ ԱՌԱՆՁԻՆ Ֆայլի մեջ</value>
+  </data>
 </root>

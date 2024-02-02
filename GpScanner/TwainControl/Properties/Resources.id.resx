@@ -714,4 +714,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>KESALAHAN</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>PINDAI SETIAP HALAMAN KE FILE TERPISAH</value>
+  </data>
 </root>

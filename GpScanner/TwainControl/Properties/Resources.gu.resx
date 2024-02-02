@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>ભૂલ</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>દરેક પૃષ્ઠને અલગ ફાઇલ માટે સ્કેન કરો</value>
+  </data>
 </root>

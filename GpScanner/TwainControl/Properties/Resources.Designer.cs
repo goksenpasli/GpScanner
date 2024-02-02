@@ -1112,6 +1112,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SEPERATE {
+            get {
+                return ResourceManager.GetString("SEPERATE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SEPERATESCAN {
             get {
                 return ResourceManager.GetString("SEPERATESCAN", resourceCulture);

@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>間違い</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>各ページをスキャンして別のファイルに保存する</value>
+  </data>
 </root>

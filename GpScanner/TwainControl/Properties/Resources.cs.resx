@@ -711,4 +711,7 @@
   <data name="ERROR" xml:space="preserve">
     <value>CHYBA</value>
   </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>NASKENUJTE KAŽDOU STRÁNKU DO SAMOSTATNÉHO SOUBORU</value>
+  </data>
 </root>
