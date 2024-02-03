@@ -546,6 +546,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
+                {
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        int i = 0;
+                        foreach (ScannedImage resimlerItem in Scanner.Resimler.Where(z => z.Seçili))
+                        {
+                            ScannedImage item = resimlerItem;
+                            Scanner.PdfFilePath = Path.GetDirectoryName(saveFileDialog.FileName).SetUniqueFile(Scanner.SaveFileName, "pdf");
+                            await SavePdfImageAsync(item.Resim, Scanner.PdfFilePath, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
+                            Scanner.PdfSaveProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
+                            i++;
+                        }
+                    }
+                    return;
+                }
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     Filesavetask = Task.Run(
@@ -1908,6 +1924,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
+        VideoViewerFullScreen = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is Grid grid)
+                {
+                    grid.Children.Remove(mediaViewer);
+                    maximizedWindow = new() {ResizeMode=ResizeMode.NoResize, WindowState = WindowState.Maximized, ShowInTaskbar = false, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };                   
+                    maximizedWindow.Closed += (s, e) =>
+                                              {
+                                                  maximizedWindow.Content = null;
+                                                  _ = grid.Children.Add(mediaViewer);
+                                              };
+                    maximizedWindow.Content = mediaViewer;
+                    _ = maximizedWindow.ShowDialog();
+                }
+            },
+            parameter => true);
+
         VideodanResimYükle = new RelayCommand<object>(
             async parameter =>
             {
@@ -2789,6 +2823,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public FileVersionInfo Version => FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess()?.MainModule?.FileName);
 
     public RelayCommand<object> VideodanResimYükle { get; }
+
+    public RelayCommand<object> VideoViewerFullScreen { get; }
 
     public ICommand WebAdreseGit { get; }
 

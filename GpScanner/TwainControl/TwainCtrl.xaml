@@ -1978,6 +1978,7 @@
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         local:Policy.PolicyName="SeçiliKaydet"
+                        BorderBrush="Cyan"
                         Command="{Binding SaveSelectedFilesPdfFile}">
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"
@@ -2455,6 +2456,13 @@
                             Content="ç"
                             FontFamily="Wingdings"
                             FontSize="16" />
+                        <Button VerticalAlignment="Bottom"
+                            Command="{Binding VideoViewerFullScreen}"
+                            CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Grid}}"
+                            Content="4"
+                            FontFamily="Wingdings 2"
+                            FontSize="14"
+                            FontWeight="Bold" />
                         <Controls:MediaViewer x:Name="mediaViewer"
                             Grid.Column="1"
                             AutoPlay="True"

@@ -75,6 +75,14 @@
                                         FontFamily="Webdings"
                                         FontSize="18"
                                         Foreground="Blue" />
+                                    <Slider Width="100"
+                                        VerticalAlignment="Center"
+                                        IsMoveToPointEnabled="True"
+                                        Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
+                                        Thumb.DragCompleted="Sld_DragCompleted"
+                                        Thumb.DragStarted="Sld_DragStarted"
+                                        Visibility="{Binding SliderControlVisible}"
+                                        Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
                                 </StackPanel>
                             </ControlTemplate>
                         </MenuItem.Template>
