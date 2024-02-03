@@ -493,19 +493,6 @@
                                     <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
                                     <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
                                 </ListBox>
-                                <Extensions:ContentToggleButton Grid.Column="3" ArrowVisibility="Collapsed">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="245" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <local:PageCropControl />
-                                    </Extensions:ContentToggleButton.OverContent>
-                                </Extensions:ContentToggleButton>
                                 <UniformGrid Grid.Row="1"
                                     Grid.ColumnSpan="4"
                                     Columns="4">
@@ -776,6 +763,7 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition Width="70" />
                                         <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <ListBox local:Policy.PolicyName="Mode"
                                         Background="{x:Null}"
@@ -1039,6 +1027,19 @@
                                             </Image>
                                         </Grid>
                                     </ToggleButton>
+                                    <Extensions:ContentToggleButton Grid.Column="4" ArrowVisibility="Collapsed">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="245" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <local:PageCropControl />
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
                                 </Grid>
                                 <Separator />
                                 <Grid>

@@ -2,6 +2,7 @@
 using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -16,7 +17,7 @@ namespace TwainControl;
 public class SimpleArchiveViewer : ArchiveViewer
 {
     private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jfıf", ".jpe", ".png", ".gif", ".gıf", ".bmp", ".tıf", ".tiff", ".tıff", ".heic", ".tif", ".webp", ".xps"];
-    private double previewPanelHeight;
+    private double previewPanelWidth;
     private string thumbFile;
 
     public SimpleArchiveViewer()
@@ -60,16 +61,16 @@ public class SimpleArchiveViewer : ArchiveViewer
 
     public new RelayCommand<object> ArşivTekDosyaÇıkar { get; }
 
-    public double PreviewPanelHeight
+    public double PreviewPanelWidth
     {
-        get => previewPanelHeight;
+        get => previewPanelWidth;
 
         set
         {
-            if (previewPanelHeight != value)
+            if (previewPanelWidth != value)
             {
-                previewPanelHeight = value;
-                OnPropertyChanged(nameof(PreviewPanelHeight));
+                previewPanelWidth = value;
+                OnPropertyChanged(nameof(PreviewPanelWidth));
             }
         }
     }
@@ -103,9 +104,9 @@ public class SimpleArchiveViewer : ArchiveViewer
         }
     }
 
-    protected override async void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
+    protected override async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string ArchiveFilePath)
     {
-        archiveViewer.Arşivİçerik = [];
+        Arşivİçerik = [];
         await Task.Run(
             async () =>
             {
@@ -114,7 +115,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                     using ArchiveFile archive = new(ArchiveFilePath);
                     if (archive != null)
                     {
-                        archiveViewer.TotalFilesCount = archive.Entries.Count;
+                        TotalFilesCount = archive.Entries.Count;
                         foreach (Entry item in archive.Entries)
                         {
                             ExtendedArchiveData archiveData = new()
@@ -130,7 +131,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                                 Method = item.Method,
                                 Attributes = (FileAttributes)item.Attributes,
                             };
-                            await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                            await Dispatcher.InvokeAsync(() => Arşivİçerik.Add(archiveData));
                         }
                     }
                 }
@@ -139,9 +140,10 @@ public class SimpleArchiveViewer : ArchiveViewer
                     throw new ArgumentException(ex.Message);
                 }
 
-                archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
+                ToplamOran = (double)Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / Arşivİçerik.Sum(z => z.Boyut) * 100;
             });
         cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
+        return Arşivİçerik;
     }
 
     private new void ExtractSelectedFiles(string archivepath, IEnumerable<ArchiveData> list, string destinationfolder)
@@ -173,12 +175,12 @@ public class SimpleArchiveViewer : ArchiveViewer
         {
             if (Settings.Default.ShowArchiveViewerThumbs)
             {
-                PreviewPanelHeight = double.PositiveInfinity;
+                PreviewPanelWidth = double.PositiveInfinity;
                 ThumbFile = SelectedFile is not null ? ExtractToFile(SelectedFile.DosyaAdı) : null;
             }
             else
             {
-                PreviewPanelHeight = 0;
+                PreviewPanelWidth = 0;
             }
         }
     }

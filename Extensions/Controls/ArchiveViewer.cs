@@ -268,9 +268,9 @@ namespace Extensions
 
         protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-        protected virtual async void ReadArchiveContent(string ArchiveFilePath, ArchiveViewer archiveViewer)
+        protected virtual async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string ArchiveFilePath)
         {
-            archiveViewer.Arşivİçerik = [];
+            Arşivİçerik = [];
             await Task.Run(
                 async () =>
                 {
@@ -279,7 +279,7 @@ namespace Extensions
                         using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
                         if (archive != null)
                         {
-                            archiveViewer.TotalFilesCount = archive.Entries.Count;
+                            TotalFilesCount = archive.Entries.Count;
                             foreach (ZipArchiveEntry item in archive.Entries)
                             {
                                 ArchiveData archiveData = new()
@@ -292,7 +292,7 @@ namespace Extensions
                                     DüzenlenmeZamanı = item.LastWriteTime.Date,
                                     Crc = null
                                 };
-                                await Dispatcher.InvokeAsync(() => archiveViewer.Arşivİçerik.Add(archiveData));
+                                await Dispatcher.InvokeAsync(() => Arşivİçerik.Add(archiveData));
                             }
                         }
                     }
@@ -301,18 +301,19 @@ namespace Extensions
                         throw new ArgumentException(ex.Message);
                     }
 
-                    archiveViewer.ToplamOran = (double)archiveViewer.Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / archiveViewer.Arşivİçerik.Sum(z => z.Boyut) * 100;
+                    ToplamOran = (double)Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / Arşivİçerik.Sum(z => z.Boyut) * 100;
                 });
             cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
+            return Arşivİçerik;
         }
 
-        private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ArchiveViewer archiveViewer && e.NewValue is string path)
             {
                 if (File.Exists(path))
                 {
-                    archiveViewer.ReadArchiveContent(path, archiveViewer);
+                    _ = await archiveViewer.ReadArchiveContent(path);
                 }
                 else
                 {

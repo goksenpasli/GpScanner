@@ -586,7 +586,7 @@ public partial class GpScannerViewModel : InpcBase
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
-            parameter => Policy.CheckPolicy("CheckUpdate"));
+            parameter => Policy.CheckPolicy(nameof(CheckUpdate)));
 
         SavePatchProfile = new RelayCommand<object>(
             parameter =>
@@ -1035,7 +1035,7 @@ public partial class GpScannerViewModel : InpcBase
                     _ = settingswindow.ShowDialog();
                 }
             },
-            parameter => Policy.CheckPolicy("OpenSettings"));
+            parameter => Policy.CheckPolicy(nameof(OpenSettings)));
 
         ClearPdfCompressorBatchList = new RelayCommand<object>(
             parameter =>

@@ -174,7 +174,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 twain.StartScanning(_settings);
                 twain.ScanningComplete += ScanComplete;
             },
-            parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy("ScanImage"));
+            parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy(nameof(ScanImage)));
 
         FastScanImage = new RelayCommand<object>(
             async parameter =>
@@ -200,7 +200,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Scanner?.AutoSave == true &&
             !string.IsNullOrWhiteSpace(Scanner?.FileName) &&
             FileNameValid(Scanner?.FileName) &&
-            Policy.CheckPolicy("FastScanImage"));
+            Policy.CheckPolicy(nameof(FastScanImage)));
 
         ResimSil = new RelayCommand<object>(
             parameter =>
@@ -455,7 +455,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     item.Seçili = true;
                 }
             },
-            parameter => Policy.CheckPolicy("Tümünüİşaretle") && Scanner?.Resimler?.Count > 0);
+            parameter => Policy.CheckPolicy(nameof(Tümünüİşaretle)) && Scanner?.Resimler?.Count > 0);
 
         PdfImportViewerTümünüİşaretle = new RelayCommand<object>(
             parameter =>
@@ -561,7 +561,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesJpgFile = new RelayCommand<object>(
@@ -587,7 +587,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesBwPdfFile = new RelayCommand<object>(
@@ -613,7 +613,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesTifFile = new RelayCommand<object>(
@@ -639,7 +639,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesTxtFile = new RelayCommand<object>(
@@ -665,7 +665,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesWebpFile = new RelayCommand<object>(
@@ -691,7 +691,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesZipFile = new RelayCommand<object>(
@@ -717,7 +717,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy("SeçiliKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SeçiliDirektPdfKaydet = new RelayCommand<object>(
@@ -756,7 +756,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy("SeçiliDirektPdfKaydet") && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.AutoSave == true && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return Policy.CheckPolicy(nameof(SeçiliDirektPdfKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.AutoSave == true && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         ListeTemizle = new RelayCommand<object>(
@@ -776,7 +776,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     GC.Collect();
                 }
             },
-            parameter => Policy.CheckPolicy("ListeTemizle") && Scanner?.Resimler?.Count > 0 && Scanner.ArayüzEtkin);
+            parameter => Policy.CheckPolicy(nameof(ListeTemizle)) && Scanner?.Resimler?.Count > 0 && Scanner.ArayüzEtkin);
 
         SeçiliListeTemizle = new RelayCommand<object>(
             parameter =>
@@ -790,7 +790,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 ToolBox.ResetCropMargin();
                 GC.Collect();
             },
-            parameter => Policy.CheckPolicy("SeçiliListeTemizle") && Scanner?.Resimler?.Any(z => z.Seçili) == true && Scanner.ArayüzEtkin);
+            parameter => Policy.CheckPolicy(nameof(SeçiliListeTemizle)) && Scanner?.Resimler?.Any(z => z.Seçili) == true && Scanner.ArayüzEtkin);
 
         ShowDateFolderHelp = new RelayCommand<object>(
             parameter =>
@@ -905,7 +905,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     await AddFiles(openFileDialog.FileNames, DecodeHeight);
                 }
             },
-            parameter => Policy.CheckPolicy("LoadImage"));
+            parameter => Policy.CheckPolicy(nameof(LoadImage)));
 
         LoadSingleUdfFile = new RelayCommand<object>(
             parameter =>
