@@ -20,13 +20,18 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Opacity="{TemplateBinding Opacity}">
                             <Grid>
-                                <ContentPresenter Content="{Binding TooltipContent, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
                                 <ToggleButton HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Content="X"
-                                    Foreground="Red"
+                                    FontWeight="Bold"
+                                    Foreground="Blue"
                                     IsChecked="{Binding Show, RelativeSource={RelativeSource TemplatedParent}}"
                                     Visibility="{Binding ShowCloseButton, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <ContentPresenter Grid.Row="1" Content="{Binding TooltipContent, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Grid>
                         </Border>
                     </Popup>

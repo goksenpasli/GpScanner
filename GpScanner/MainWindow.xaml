@@ -496,18 +496,76 @@
                                             Text="ZIP" />
                                     </Canvas>
                                 </Button>
-                                <Extensions:ContentToggleButton Command="{Binding LoadGroupFilesMonth}">
+                                <Extensions:ContentToggleButton Command="{Binding LoadGroupFilesMonth}" TopMost="False">
                                     <Extensions:ContentToggleButton.OverContent>
                                         <GroupBox Header="{twainctrl:Loc MONTH}">
                                             <ItemsControl ItemsSource="{Binding YearlyGroupData}">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <Button Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}" CommandParameter="{Binding Mode=OneWay}">
-                                                            <TextBlock>
-                                                                <Run Text="{twainctrl:Loc MONTH}" />
-                                                                <Run Text="{Binding Key, Mode=OneWay}" />
-                                                            </TextBlock>
-                                                        </Button>
+                                                        <Grid>
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Button x:Name="Btn"
+                                                                    Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
+                                                                    CommandParameter="{Binding Mode=OneWay}">
+                                                                    <StackPanel Orientation="Horizontal">
+                                                                        <Image Width="32" Height="32">
+                                                                            <Image.Source>
+                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                    <Binding Source="zipfldr.dll" />
+                                                                                    <Binding Source="0" />
+                                                                                </MultiBinding>
+                                                                            </Image.Source>
+                                                                        </Image>
+                                                                        <TextBlock VerticalAlignment="Center">
+                                                                            <Run Text="{twainctrl:Loc MONTH}" />
+                                                                            <Run Text="{Binding Key, Mode=OneWay}" />
+                                                                        </TextBlock>
+                                                                    </StackPanel>
+                                                                </Button>
+                                                                <TextBlock x:Name="TbView"
+                                                                    VerticalAlignment="Center"
+                                                                    FontFamily="Webdings"
+                                                                    FontSize="20"
+                                                                    Foreground="Red"
+                                                                    IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
+                                                                    Text="N" />
+                                                            </StackPanel>
+                                                            <Extensions:FadedToolTipControl x:Name="Fade"
+                                                                Background="{StaticResource BorderBackground}"
+                                                                BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                                PopupParent="{Binding ElementName=TbView}"
+                                                                Position="Bottom"
+                                                                ShowCloseButton="Visible"
+                                                                TimeToClose="{x:Static sys:Int32.MaxValue}"
+                                                                TimeToShow="2000">
+                                                                <Extensions:FadedToolTipControl.Style>
+                                                                    <Style TargetType="Extensions:FadedToolTipControl">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding ElementName=TbView, Path=IsMouseOver}" Value="true">
+                                                                                <Setter Property="Show" Value="True" />
+                                                                            </DataTrigger>
+                                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="true">
+                                                                                <Setter Property="Show" Value="True" />
+                                                                            </DataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Extensions:FadedToolTipControl.Style>
+                                                                <ListBox Width="720"
+                                                                    Height="480"
+                                                                    ItemsSource="{Binding Mode=OneWay, Path=Name}">
+                                                                    <ListBox.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <ContentControl Content="{Binding Mode=OneWay}" ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                                                                        </DataTemplate>
+                                                                    </ListBox.ItemTemplate>
+                                                                    <ListBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                                                        </ItemsPanelTemplate>
+                                                                    </ListBox.ItemsPanel>
+                                                                </ListBox>
+                                                            </Extensions:FadedToolTipControl>
+                                                        </Grid>
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
                                                 <ItemsControl.ItemsPanel>
