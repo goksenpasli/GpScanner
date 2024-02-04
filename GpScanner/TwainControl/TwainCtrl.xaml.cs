@@ -2895,8 +2895,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _ = Application.Current.Dispatcher.InvokeAsync(() => _ = MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
         }
         return null;
     }

@@ -206,10 +206,14 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     public string ExtractEypFilesToPdf(string filename)
     {
         List<string> files = TwainCtrl.EypFileExtract(filename);
-        EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
-        EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
-        using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLower()) == ".pdf"), PdfDocumentOpenMode.Import ,PdfGeneration.PasswordProvider);
-        return document?.FullPath;
+        if (files != null)
+        {
+            EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
+            EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
+            using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLower()) == ".pdf"), PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
+            return document?.FullPath;
+        }
+        return null;
     }
 
     protected override void OnDrop(DragEventArgs e)
@@ -241,10 +245,17 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     {
         if (d is EypPdfViewer eypPdfViewer && e.NewValue is not null)
         {
-            string eypfile = eypPdfViewer.ExtractEypFilesToPdf((string)e.NewValue);
-            if (IsValidPdfFile(eypfile))
+            try
             {
-                eypPdfViewer.PdfFilePath = eypfile;
+                string eypfile = eypPdfViewer.ExtractEypFilesToPdf((string)e.NewValue);
+                if (IsValidPdfFile(eypfile))
+                {
+                    eypPdfViewer.PdfFilePath = eypfile;
+                }
+            }
+            catch (Exception ex)
+            {
+                _ = Application.Current.Dispatcher.InvokeAsync(() => _ = MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
             }
         }
     }

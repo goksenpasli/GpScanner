@@ -62,7 +62,7 @@ public partial class GpScannerViewModel : InpcBase
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
-    private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml"];
+    private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private int allPdfPage = 1;
     private string aramaMetni;
@@ -461,6 +461,12 @@ public partial class GpScannerViewModel : InpcBase
                     if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
                         ExploreFile.Execute(filepath);
+                        return;
+                    }
+
+                    if (Keyboard.Modifiers == ModifierKeys.Shift)
+                    {
+                        TwainCtrl.GotoPage(filepath);
                         return;
                     }
 

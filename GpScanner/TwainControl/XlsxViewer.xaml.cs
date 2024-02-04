@@ -81,7 +81,7 @@ namespace TwainControl
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    _ = Application.Current.Dispatcher.InvokeAsync(() => _ = MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
                 }
             }
         }

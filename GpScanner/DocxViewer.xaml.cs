@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using GpScanner.ViewModel;
 using System;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -56,7 +57,13 @@ namespace GpScanner
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(ex.Message);
+                _ = Application.Current.Dispatcher
+                .InvokeAsync(
+                    async () =>
+                    {
+                        _ = MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.StackTrace);
+                    });
             }
         }
 
