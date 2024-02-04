@@ -450,11 +450,6 @@
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
-            <DataTemplate x:Key="EypViewerTemplate">
-                <twain:EypPdfViewer AutoFitContent="True"
-                    EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    ToolBarVisibility="Collapsed" />
-            </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplateFull">
                 <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
@@ -704,10 +699,12 @@
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <twain:ViewerTemplateSelector x:Key="ContributionViewerSelector"
+                Docx="{StaticResource EmptyViewerTemplate}"
                 Eyp="{StaticResource EmptyViewerTemplate}"
                 Img="{StaticResource ContributionViewerImgTemplateMini}"
                 Pdf="{StaticResource ContributionViewerPdfViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
+                Xlsx="{StaticResource EmptyViewerTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
                 Xps="{StaticResource EmptyViewerTemplate}"
                 Zip="{StaticResource EmptyViewerTemplate}" />
@@ -723,7 +720,7 @@
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="ThumbViewerSelector"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
-                Eyp="{StaticResource EypViewerTemplate}"
+                Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
@@ -733,7 +730,7 @@
                 Zip="{StaticResource ZipViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="FastPdfThumbViewerSelector"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
-                Eyp="{StaticResource EypViewerTemplate}"
+                Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource SimplePdfTemplate}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
@@ -744,7 +741,7 @@
             <twain:ViewerTemplateSelector x:Key="DvdBurnerDocumentViewerSelector"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Empty="{StaticResource DvdBurnerEmptyViewerTemplate}"
-                Eyp="{StaticResource EypViewerTemplate}"
+                Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"

@@ -496,6 +496,29 @@
                                             Text="ZIP" />
                                     </Canvas>
                                 </Button>
+                                <Extensions:ContentToggleButton Command="{Binding LoadGroupFilesMonth}">
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <GroupBox Header="{twainctrl:Loc MONTH}">
+                                            <ItemsControl ItemsSource="{Binding YearlyGroupData}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Button Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}" CommandParameter="{Binding Mode=OneWay}">
+                                                            <TextBlock>
+                                                                <Run Text="{twainctrl:Loc MONTH}" />
+                                                                <Run Text="{Binding Key, Mode=OneWay}" />
+                                                            </TextBlock>
+                                                        </Button>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Columns="4" Rows="3" />
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
+                                        </GroupBox>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                </Extensions:ContentToggleButton>
                                 <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <Canvas Width="32" Height="32">
                                         <Image Width="32" Height="32">

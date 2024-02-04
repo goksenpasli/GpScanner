@@ -123,6 +123,7 @@ public partial class GpScannerViewModel : InpcBase
     private TesseractViewModel tesseractViewModel;
     private TranslateViewModel translateViewModel;
     private ObservableCollection<string> unIndexedFiles;
+    private IEnumerable<IGrouping<int, ContributionData>> yearlyGroupData;
     private double zipProgress;
     private bool zipProgressIndeterminate;
 
@@ -193,7 +194,7 @@ public partial class GpScannerViewModel : InpcBase
                 SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = Translation.GetResStringValue("MERGE") };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    Task task = Task.Run(
+                    await Task.Run(
                         () =>
                         {
                             List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
@@ -206,12 +207,8 @@ public partial class GpScannerViewModel : InpcBase
                             }
                             ZipProgressIndeterminate = true;
                         });
-                    await task;
-                    if (task?.IsCompleted == true)
-                    {
-                        ZipProgress = 0;
-                        ZipProgressIndeterminate = false;
-                    }
+                    ZipProgress = 0;
+                    ZipProgressIndeterminate = false;
                 }
             },
             parameter =>
@@ -1078,6 +1075,42 @@ public partial class GpScannerViewModel : InpcBase
                 }
             },
             parameter => File.Exists(ErrorLogPath));
+
+        LoadGroupFilesMonth = new RelayCommand<object>(
+            async parameter =>
+            {
+                ObservableCollection<ContributionData> contributiondata = await GetContributionData(GetContributionFiles(), new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                YearlyGroupData = contributiondata.GroupBy(z => z.ContrubutionDate.Value.Month);
+            },
+            parameter => true);
+
+        MonthZipFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is IGrouping<int, ContributionData> data)
+                {
+                    string monthname = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(data.Key);
+                    SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = $"{monthname} {Translation.GetResStringValue("MERGE")}" };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        await Task.Run(
+                            () =>
+                            {
+                                List<string> zippedfiles = data.Where(z => z.Count > 0).SelectMany(z => ((ExtendedContributionData)z).Name).ToList();
+                                using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
+                                for (int i = 0; i < zippedfiles.Count; i++)
+                                {
+                                    string fPath = zippedfiles[i];
+                                    _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
+                                }
+                                ZipProgressIndeterminate = true;
+                            });
+                        ZipProgressIndeterminate = false;
+                    }
+                    YearlyGroupData = null;
+                }
+            },
+            parameter => parameter is IGrouping<int, ContributionData> data && data.Count(z => z.Count > 0) > 0);
     }
 
     public static bool IsAdministrator
@@ -1554,6 +1587,8 @@ public partial class GpScannerViewModel : InpcBase
 
     public RelayCommand<object> LoadErrorEvents { get; }
 
+    public RelayCommand<object> LoadGroupFilesMonth { get; }
+
     public RelayCommand<object> LoadUnindexedFiles { get; }
 
     public GridLength MainWindowDocumentGuiControlLength
@@ -1598,6 +1633,8 @@ public partial class GpScannerViewModel : InpcBase
     }
 
     public ICommand ModifyGridWidth { get; }
+
+    public RelayCommand<object> MonthZipFile { get; }
 
     public bool NetFxVersionSupported
     {
@@ -2017,6 +2054,19 @@ public partial class GpScannerViewModel : InpcBase
     public RelayCommand<object> UploadSharePoint { get; }
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
+
+    public IEnumerable<IGrouping<int, ContributionData>> YearlyGroupData
+    {
+        get => yearlyGroupData;
+        set
+        {
+            if (yearlyGroupData != value)
+            {
+                yearlyGroupData = value;
+                OnPropertyChanged(nameof(YearlyGroupData));
+            }
+        }
+    }
 
     public IEnumerable<int> Years { get; } = Enumerable.Range(DateTime.Now.Year - 10, 11);
 
