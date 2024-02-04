@@ -737,38 +737,55 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
 
         SeçiliDirektPdfKaydet = new RelayCommand<object>(
-            parameter => Filesavetask =
-            Task.Run(
-                async () =>
-                {
-                    List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
-                    if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
+            parameter =>
+            {
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
+                Filesavetask =
+                Task.Run(
+                    async () =>
                     {
-                        Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-                        Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
-                        for (int i = 0; i < seçiliresimler.Count; i++)
+                        List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                        if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
                         {
-                            byte[] imgdata = null;
-                            _ = await Dispatcher.InvokeAsync(() => imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
-                            ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsync(Scanner.SelectedTtsLanguage);
-                            await Dispatcher.InvokeAsync(
-                                () =>
-                                {
-                                    DataBaseQrData = imgdata;
-                                    DataBaseTextData = ocrdata;
-                                });
-                            Scanner.PdfSaveProgressValue = i / (double)seçiliresimler.Count;
+                            Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
+                            Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+                            for (int i = 0; i < seçiliresimler.Count; i++)
+                            {
+                                byte[] imgdata = null;
+                                _ = await Dispatcher.InvokeAsync(() => imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
+                                ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsync(Scanner.SelectedTtsLanguage);
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        DataBaseQrData = imgdata;
+                                        DataBaseTextData = ocrdata;
+                                    });
+                                Scanner.PdfSaveProgressValue = (i + 1) / (double)seçiliresimler.Count;
+                            }
                         }
-                    }
 
-                    bool isBlackAndWhiteMode = (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite;
-                    bool isColourOrGreyscaleMode = (ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale;
-                    if (isBlackAndWhiteMode || isColourOrGreyscaleMode)
-                    {
-                        await SavePdfImageAsync(seçiliresimler, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, isBlackAndWhiteMode, Settings.Default.ImgLoadResolution);
-                    }
-                    await RemoveProcessedImages(true);
-                }),
+                        bool isBlackAndWhiteMode = (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite;
+                        bool isColourOrGreyscaleMode = (ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale;
+
+                        if (isBlackAndWhiteMode || isColourOrGreyscaleMode)
+                        {
+                            if (altkeypressed)
+                            {
+                                for (int i = 0; i < seçiliresimler.Count; i++)
+                                {
+                                    ScannedImage item = seçiliresimler[i];
+                                    await SavePdfImageAsync(item.Resim, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, isBlackAndWhiteMode);
+                                    Scanner.PdfSaveProgressValue = (i + 1) / (double)seçiliresimler.Count;
+                                }
+                            }
+                            else
+                            {
+                                await SavePdfImageAsync(seçiliresimler, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, isBlackAndWhiteMode, Settings.Default.ImgLoadResolution);
+                            }
+                        }
+                        await RemoveProcessedImages(true);
+                    });
+            },
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
@@ -1930,7 +1947,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is Grid grid)
                 {
                     grid.Children.Remove(mediaViewer);
-                    maximizedWindow = new() {ResizeMode=ResizeMode.NoResize, WindowState = WindowState.Maximized, ShowInTaskbar = false, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };                   
+                    maximizedWindow = new() { ResizeMode = ResizeMode.NoResize, WindowState = WindowState.Maximized, ShowInTaskbar = false, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };
                     maximizedWindow.Closed += (s, e) =>
                                               {
                                                   maximizedWindow.Content = null;

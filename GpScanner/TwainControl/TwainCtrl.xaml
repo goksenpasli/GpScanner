@@ -2138,6 +2138,7 @@
                     <Button HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         local:Policy.PolicyName="SeçiliDirektPdfKaydet"
+                        BorderBrush="Cyan"
                         Command="{Binding SeçiliDirektPdfKaydet}">
                         <Grid>
                             <ProgressBar d:Foreground="#FF06B025"

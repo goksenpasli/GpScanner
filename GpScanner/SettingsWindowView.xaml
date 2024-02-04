@@ -256,36 +256,103 @@
                                         </Image>
                                     </Canvas>
                                 </ToggleButton>
-                                <TextBlock HorizontalAlignment="Left"
-                                    VerticalAlignment="Center"
-                                    FontFamily="Webdings"
-                                    FontSize="32"
-                                    Foreground="Red"
-                                    Text="N">
-                                    <TextBlock.ToolTip>
-                                        <Canvas Width="210" Height="297">
-                                            <Canvas.Resources>
-                                                <Style TargetType="Rectangle">
-                                                    <Setter Property="Effect">
-                                                        <Setter.Value>
-                                                            <DropShadowEffect BlurRadius="3"
-                                                                Opacity="0.33"
-                                                                ShadowDepth="3" />
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                    <Setter Property="StrokeThickness" Value="2" />
-                                                </Style>
-                                            </Canvas.Resources>
-                                            <Rectangle Width="210"
-                                                Height="297"
-                                                Stroke="Black" />
-                                            <Rectangle Canvas.Bottom="0"
-                                                Width="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource PageSizePreviewWidthConverter}}"
-                                                Height="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource PageSizePreviewHeightConverter}}"
-                                                Stroke="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                <ToggleButton twainctrl:Policy.PolicyName="MinimizeTray"
+                                    IsChecked="{Binding MinimizeTray, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                    ToolTip="{twainctrl:Loc MINTOTRAY}">
+                                    <Grid>
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="97" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="123" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Grid>
+                                </ToggleButton>
+                                <ToggleButton IsChecked="{Binding Path=DocumentNumberVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}" ToolTip="{twainctrl:Loc PAGENUMBER}">
+                                    <Canvas Width="16" Height="16">
+                                        <TextBlock Canvas.Top="0"
+                                            FontSize="10"
+                                            Text="1" />
+                                        <TextBlock Canvas.Left="4"
+                                            Canvas.Top="2"
+                                            FontSize="10"
+                                            Text="2" />
+                                        <TextBlock Canvas.Left="8"
+                                            Canvas.Top="4"
+                                            FontSize="10"
+                                            Text="3" />
+                                    </Canvas>
+                                </ToggleButton>
+                                <CheckBox VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    twainctrl:Policy.PolicyName="PlayNotificationAudio"
+                                    IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <CheckBox.ToolTip>
+                                        <TextBlock FontWeight="Bold"
+                                            Foreground="Red"
+                                            Text="{twainctrl:Loc PLAYSOUND}" />
+                                    </CheckBox.ToolTip>
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PlayNotificationAudio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}">
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="201" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Canvas.Right="0"
+                                                Canvas.Bottom="0"
+                                                Width="16"
+                                                Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="168" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
                                         </Canvas>
-                                    </TextBlock.ToolTip>
-                                </TextBlock>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <ListBox Height="200"
+                                                VerticalContentAlignment="Center"
+                                                ItemsSource="{Binding AudioFiles, Mode=OneWay}"
+                                                SelectedItem="{Binding AudioFilePath, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                                                            <Hyperlink BaselineAlignment="Center"
+                                                                Command="{Binding DataContext.PlayAudio, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                TextDecorations="None">
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="137" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Hyperlink>
+                                                        </TextBlock>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                </CheckBox>
                             </StackPanel>
                             <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                                 <sys:String>PDF</sys:String>
@@ -355,6 +422,33 @@
                                     </Canvas>
                                 </CheckBox>
                                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
+                                <Extensions:NumericUpDownControl FontWeight="Bold"
+                                    IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                    Maximum="10"
+                                    Minimum="1"
+                                    Orientation="Horizontal"
+                                    SmallChange="1"
+                                    Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier" IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="22" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                </ToggleButton>
                             </StackPanel>
                         </UniformGrid>
                         <Separator Margin="0,1,0,1" />
@@ -419,130 +513,9 @@
                                 </CheckBox.Content>
                             </CheckBox>
                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
-                            <ToggleButton twainctrl:Policy.PolicyName="MinimizeTray"
-                                IsChecked="{Binding MinimizeTray, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                ToolTip="{twainctrl:Loc MINTOTRAY}">
-                                <Grid>
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="97" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="123" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Grid>
-                            </ToggleButton>
-                            <Extensions:NumericUpDownControl FontWeight="Bold"
-                                IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                Maximum="10"
-                                Minimum="1"
-                                Orientation="Horizontal"
-                                SmallChange="1"
-                                Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                            <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier" IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="1" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="22" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Canvas>
-                            </ToggleButton>
-                            <CheckBox VerticalAlignment="Center"
-                                VerticalContentAlignment="Center"
-                                twainctrl:Policy.PolicyName="PlayNotificationAudio"
-                                IsChecked="{Binding PlayNotificationAudio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                <CheckBox.ToolTip>
-                                    <TextBlock FontWeight="Bold"
-                                        Foreground="Red"
-                                        Text="{twainctrl:Loc PLAYSOUND}" />
-                                </CheckBox.ToolTip>
-                                <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PlayNotificationAudio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}">
-                                    <Canvas Width="32" Height="32">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="201" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <Image Canvas.Right="0"
-                                            Canvas.Bottom="0"
-                                            Width="16"
-                                            Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="168" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Canvas>
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <ListBox Height="200"
-                                            VerticalContentAlignment="Center"
-                                            ItemsSource="{Binding AudioFiles, Mode=OneWay}"
-                                            SelectedItem="{Binding AudioFilePath, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
-                                                        <Hyperlink BaselineAlignment="Center"
-                                                            Command="{Binding DataContext.PlayAudio, RelativeSource={RelativeSource AncestorType=ListBox}}"
-                                                            CommandParameter="{Binding Mode=OneWay}"
-                                                            TextDecorations="None">
-                                                            <Image Width="16" Height="16">
-                                                                <Image.Source>
-                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                        <Binding Source="Shell32.dll" />
-                                                                        <Binding Source="137" />
-                                                                    </MultiBinding>
-                                                                </Image.Source>
-                                                            </Image>
-                                                        </Hyperlink>
-                                                    </TextBlock>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </Extensions:ContentToggleButton.OverContent>
-                                </Extensions:ContentToggleButton>
-                            </CheckBox>
-                            <ToggleButton IsChecked="{Binding Path=DocumentNumberVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}" ToolTip="{twainctrl:Loc PAGENUMBER}">
-                                <Canvas Width="16" Height="16">
-                                    <TextBlock Canvas.Top="0"
-                                        FontSize="10"
-                                        Text="1" />
-                                    <TextBlock Canvas.Left="4"
-                                        Canvas.Top="2"
-                                        FontSize="10"
-                                        Text="2" />
-                                    <TextBlock Canvas.Left="8"
-                                        Canvas.Top="4"
-                                        FontSize="10"
-                                        Text="3" />
-                                </Canvas>
-                            </ToggleButton>
+                            <StackPanel Orientation="Horizontal">
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
                             <CheckBox VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 twainctrl:Policy.PolicyName="ShowArchiveViewerThumbs"
