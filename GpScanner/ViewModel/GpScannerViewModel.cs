@@ -1080,7 +1080,7 @@ public partial class GpScannerViewModel : InpcBase
             async parameter =>
             {
                 ObservableCollection<ContributionData> contributiondata = await GetContributionData(GetContributionFiles(), new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
-                YearlyGroupData = contributiondata.GroupBy(z => z.ContrubutionDate.Value.Month);
+                YearlyGroupData = contributiondata?.GroupBy(z => z.ContrubutionDate.Value.Month);
             },
             parameter => true);
 
