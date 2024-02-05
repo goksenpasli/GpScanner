@@ -527,6 +527,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 string oldpath = Settings.Default.AutoFolder;
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
+                    DriveInfo driveInfo = new(dialog.SelectedPath);
+                    if (driveInfo.DriveType == DriveType.CDRom)
+                    {
+                        _ = MessageBox.Show($"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        return;
+                    }
                     Settings.Default.AutoFolder = dialog.SelectedPath;
                     Scanner.LocalizedPath = ShellIcon.GetDisplayName(dialog.SelectedPath);
                 }
@@ -2897,7 +2903,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            _ = Application.Current.Dispatcher.InvokeAsync(() => _ = MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
+            _ = Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
         }
         return null;
     }

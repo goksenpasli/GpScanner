@@ -1084,6 +1084,16 @@ public partial class GpScannerViewModel : InpcBase
             },
             parameter => true);
 
+        AddPdfGroupFilesMonthToControlPanel = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is object[] obj && obj[0] is string filepath && File.Exists(filepath) && obj[1] is TwainCtrl twainCtrl)
+                {
+                    await twainCtrl.AddFiles([filepath], twainCtrl.DecodeHeight);
+                }
+            },
+            parameter => true);
+
         MonthZipFile = new RelayCommand<object>(
             async parameter =>
             {
@@ -1124,6 +1134,8 @@ public partial class GpScannerViewModel : InpcBase
     }
 
     public ICommand AddFtpSites { get; }
+
+    public RelayCommand<object> AddPdfGroupFilesMonthToControlPanel { get; }
 
     public ICommand AddToCalendar { get; }
 
@@ -2908,24 +2920,31 @@ public partial class GpScannerViewModel : InpcBase
 
     private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
 
-    private void RegisterSimplePdfFileWatcher()
+    private async void RegisterSimplePdfFileWatcher()
     {
         string autoFolder = Twainsettings.Settings.Default.AutoFolder;
         if (!string.IsNullOrWhiteSpace(autoFolder))
         {
-            FileSystemWatcher watcher = new(autoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
-            watcher.Renamed += (s, e) =>
-                               {
-                                   using (AppDbContext context = new())
+            try
+            {
+                FileSystemWatcher watcher = new(autoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
+                watcher.Renamed += (s, e) =>
                                    {
-                                       foreach (Data item in context?.Data?.Where(z => z.FileName == e.OldFullPath))
+                                       using (AppDbContext context = new())
                                        {
-                                           item.FileName = e.FullPath;
+                                           foreach (Data item in context?.Data?.Where(z => z.FileName == e.OldFullPath))
+                                           {
+                                               item.FileName = e.FullPath;
+                                           }
+                                           _ = context.SaveChanges();
                                        }
-                                       _ = context.SaveChanges();
-                                   }
-                                   Dosyalar = GetScannerFileData();
-                               };
+                                       Dosyalar = GetScannerFileData();
+                                   };
+            }
+            catch (Exception ex)
+            {
+                await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
+            }
         }
     }
 

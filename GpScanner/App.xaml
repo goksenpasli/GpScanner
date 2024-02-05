@@ -21,6 +21,7 @@
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+            <Extensions:CloneConverter x:Key="CloneConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverterEmptyViewerTemplate" IconSize="jumbo" />
@@ -199,6 +200,41 @@
                         </MultiBinding>
                     </PdfViewer:PdfShadowedImage.Tag>
                 </PdfViewer:PdfShadowedImage>
+            </DataTemplate>
+            <DataTemplate x:Key="PdfViewerDocumentViewerMonthTemplateMini">
+                <Grid Width="140" Height="140">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Button Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}">
+                        <Button.CommandParameter>
+                            <MultiBinding Converter="{StaticResource CloneConverter}">
+                                <Binding Mode="OneWay" />
+                                <Binding Mode="OneWay"
+                                    Path="TwainCtrl"
+                                    RelativeSource="{RelativeSource AncestorType=Window}" />
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                        <Button.Content>
+                            <TextBlock FontFamily="Wingdings"
+                                FontSize="16"
+                                Text="ç" />
+                        </Button.Content>
+                    </Button>
+                    <PdfViewer:PdfShadowedImage Grid.Row="1" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                        <PdfViewer:PdfShadowedImage.Tag>
+                            <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                                <Binding Mode="OneWay" />
+                                <Binding Mode="OneWay">
+                                    <Binding.Source>
+                                        <System:Int32>1</System:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                            </MultiBinding>
+                        </PdfViewer:PdfShadowedImage.Tag>
+                    </PdfViewer:PdfShadowedImage>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ContributionViewerPdfViewerTemplateMini">
                 <PdfViewer:PdfShadowedImage Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}"
@@ -713,6 +749,16 @@
                 Eyp="{StaticResource EmptyViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}"
+                Vid="{StaticResource EmptyViewerTemplate}"
+                Xlsx="{StaticResource EmptyViewerTemplate}"
+                Xml="{StaticResource EmptyViewerTemplate}"
+                Xps="{StaticResource EmptyViewerTemplate}"
+                Zip="{StaticResource EmptyViewerTemplate}" />
+            <twain:ViewerTemplateSelector x:Key="DocumentViewerMonthPreviewSelector"
+                Docx="{StaticResource EmptyViewerTemplate}"
+                Eyp="{StaticResource EmptyViewerTemplate}"
+                Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
+                Pdf="{StaticResource PdfViewerDocumentViewerMonthTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
                 Xlsx="{StaticResource EmptyViewerTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
