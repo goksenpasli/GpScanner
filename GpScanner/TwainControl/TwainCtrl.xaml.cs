@@ -2913,7 +2913,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
     {
         bitmapSource.Freeze();
-        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource);
+        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
         bitmapFrame.Freeze();
         return bitmapFrame;
     }
