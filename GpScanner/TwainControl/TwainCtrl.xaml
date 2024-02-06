@@ -1149,84 +1149,86 @@
                                     </CheckBox>
                                 </Grid>
                                 <Separator />
-                                <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                    d:Description="SaveFileName"
-                                    d:Text="FileName"
-                                    local:Policy.PolicyName="SaveFileName"
-                                    Description="{Binding Scanner.SaveFileName}"
-                                    GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus"
-                                    MaxLength="255"
-                                    OpenButtonVisibility="Collapsed"
-                                    RemainingLengthVisibility="Collapsed"
-                                    ResetButtonVisibility="Collapsed"
-                                    Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                                    TitleCaseMenuVisibility="Visible"
-                                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
-                                    <Extensions:ButtonedTextBox.ContextMenu>
-                                        <ContextMenu>
-                                            <ContextMenu.Resources>
-                                                <Style TargetType="{x:Type MenuItem}">
-                                                    <Setter Property="Command" Value="{Binding InsertFileNamePlaceHolder}" />
-                                                    <Setter Property="ToolTip" Value="{Binding CommandParameter, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FileDateContextMenuConverter}}" />
-                                                </Style>
-                                            </ContextMenu.Resources>
-                                            <MenuItem CommandParameter="[DATE]"
-                                                Header="{local:Loc DAY}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[MONTH]"
-                                                Header="{local:Loc MONTH}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[YEAR]"
-                                                Header="{local:Loc YEAR}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[HOUR]"
-                                                Header="{local:Loc TIME}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[MINUTE]"
-                                                Header="{local:Loc MINUTE}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[SECOND]"
-                                                Header="{local:Loc SECOND}"
-                                                Icon="{StaticResource TimeIcon}" />
-                                            <MenuItem CommandParameter="[GUID]" Header="{local:Loc GUID}">
-                                                <MenuItem.Icon>
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Comres.dll" />
-                                                                <Binding Source="0" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[USERNAME]" Header="{local:Loc USERNAME}">
-                                                <MenuItem.Icon>
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Comres.dll" />
-                                                                <Binding Source="1" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                            <MenuItem CommandParameter="[RESOLUTION]" Header="{local:Loc RES}">
-                                                <MenuItem.Icon>
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="140" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </MenuItem.Icon>
-                                            </MenuItem>
-                                        </ContextMenu>
-                                    </Extensions:ButtonedTextBox.ContextMenu>
-                                </Extensions:ButtonedTextBox>
+                                <AdornerDecorator>
+                                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                        d:Description="SaveFileName"
+                                        d:Text="FileName"
+                                        local:Policy.PolicyName="SaveFileName"
+                                        Description="{Binding Scanner.SaveFileName}"
+                                        GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus"
+                                        MaxLength="255"
+                                        OpenButtonVisibility="Collapsed"
+                                        RemainingLengthVisibility="Collapsed"
+                                        ResetButtonVisibility="Collapsed"
+                                        Text="{Binding Scanner.FileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                        TitleCaseMenuVisibility="Visible"
+                                        Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                                        <Extensions:ButtonedTextBox.ContextMenu>
+                                            <ContextMenu>
+                                                <ContextMenu.Resources>
+                                                    <Style TargetType="{x:Type MenuItem}">
+                                                        <Setter Property="Command" Value="{Binding InsertFileNamePlaceHolder}" />
+                                                        <Setter Property="ToolTip" Value="{Binding CommandParameter, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FileDateContextMenuConverter}}" />
+                                                    </Style>
+                                                </ContextMenu.Resources>
+                                                <MenuItem CommandParameter="[DATE]"
+                                                    Header="{local:Loc DAY}"
+                                                    Icon="{StaticResource TimeIcon}" />
+                                                <MenuItem CommandParameter="[MONTH]"
+                                                    Header="{local:Loc MONTH}"
+                                                    Icon="{StaticResource TimeIcon}" />
+                                                <MenuItem CommandParameter="[YEAR]"
+                                                    Header="{local:Loc YEAR}"
+                                                    Icon="{StaticResource TimeIcon}" />
+                                                <MenuItem CommandParameter="[HOUR]"
+                                                    Header="{local:Loc TIME}"
+                                                    Icon="{StaticResource TimeIcon}" />
+                                                <MenuItem CommandParameter="[MINUTE]"
+                                                    Header="{local:Loc MINUTE}"
+                                                    Icon="{StaticResource TimeIcon}" />
+                                                <MenuItem CommandParameter="[SECOND]"
+                                                    Header="{local:Loc SECOND}"
+                                                    Icon="{StaticResource TimeIcon}" />
+                                                <MenuItem CommandParameter="[GUID]" Header="{local:Loc GUID}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Comres.dll" />
+                                                                    <Binding Source="0" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[USERNAME]" Header="{local:Loc USERNAME}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Comres.dll" />
+                                                                    <Binding Source="1" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[RESOLUTION]" Header="{local:Loc RES}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="140" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Extensions:ButtonedTextBox.ContextMenu>
+                                    </Extensions:ButtonedTextBox>
+                                </AdornerDecorator>
                             </StackPanel>
                         </ScrollViewer>
                     </GroupBox>

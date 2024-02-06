@@ -138,6 +138,7 @@
     </ApplicationDefinition>
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\LanguageStringConverter.cs" />
+    <Compile Include="Converter\LanguageStringToolTipConverter.cs" />
     <Compile Include="Converter\MonthContributionDataFileNameConverter.cs" />
     <Compile Include="Converter\NumberRangeToColorConverter.cs" />
     <Compile Include="Converter\PageSizePreviewHeightConverter.cs" />

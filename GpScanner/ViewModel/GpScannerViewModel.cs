@@ -62,6 +62,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
+    private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "delete"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private int allPdfPage = 1;
@@ -121,6 +122,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private ReminderData selectedReminder;
     private Size selectedSize;
     private bool shutdown;
+    private string sqlText = string.Empty;
     private TesseractViewModel tesseractViewModel;
     private TranslateViewModel translateViewModel;
     private ObservableCollection<string> unIndexedFiles;
@@ -1082,6 +1084,25 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
+        RunSqliteCommand = new RelayCommand<object>(
+            async parameter =>
+            {
+                try
+                {
+                    using AppDbContext context = new();
+                    if (context.Database.Exists())
+                    {
+                        _ = await context.Database.ExecuteSqlCommandAsync(SqlText);
+                        _ = await context.SaveChangesAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(ex.Message);
+                }
+            },
+            parameter => File.Exists(Settings.Default.DatabaseFile) && IsAdministrator && !string.IsNullOrWhiteSpace(SqlText) && !sqlitedangerouscommands.Any(SqlText.ToLower().Contains));
+
         AddPdfGroupFilesMonthToControlPanel = new RelayCommand<object>(
             async parameter =>
             {
@@ -1855,6 +1876,8 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public RelayCommand<object> RunSqliteCommand { get; }
+
     public ICommand SavePatchProfile { get; }
 
     public ICommand SaveQrImage { get; }
@@ -2009,6 +2032,20 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public string SqlText
+    {
+        get => sqlText;
+
+        set
+        {
+            if (sqlText != value)
+            {
+                sqlText = value;
+                OnPropertyChanged(nameof(SqlText));
+            }
+        }
+    }
+
     public ICommand StartPdfBatch { get; }
 
     public ICommand StartTxtBatch { get; }
@@ -2120,6 +2157,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     public string this[string columnName] => columnName switch
     {
         "IsAdministrator" when !IsAdministrator => $"{Translation.GetResStringValue("FOLDERACCESS")}",
+        "SqlText" when sqlitedangerouscommands.Any(SqlText.ToLower().Contains) => $"{Translation.GetResStringValue("ERROR")}",
         _ => null
     };
 
