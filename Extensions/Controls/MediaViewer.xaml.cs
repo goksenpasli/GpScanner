@@ -935,7 +935,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
             void OsdTextChange(object s, EventArgs e)
             {
-                osdtimer.Stop();
+                osdtimer?.Stop();
                 mediaViewer.OsdText = null;
             }
         }
@@ -1154,13 +1154,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     {
         sliderdragging = false;
         Player.Position = TimeSpan.FromSeconds(Sld.Value);
-        timer.Start();
+        timer?.Start();
     }
 
     private void Sld_DragStarted(object sender, DragStartedEventArgs e)
     {
         sliderdragging = true;
-        timer.Stop();
+        timer?.Stop();
     }
 
     private void Slider_HeightValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e) => PixelateSize = new Size(PixelateSize.Width, e.NewValue);

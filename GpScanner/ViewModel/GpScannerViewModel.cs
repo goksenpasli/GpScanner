@@ -342,13 +342,13 @@ public partial class GpScannerViewModel : InpcBase
                         _ = UnIndexedFiles?.Remove(unIndexedFile);
                     }
                 }
-                finally
+                catch (Exception ex)
                 {
-                    OcrIsBusy = false;
-                    if (Shutdown)
-                    {
-                        ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
-                    }
+                    await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
+                }
+                if (Shutdown)
+                {
+                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
                 }
             },
             parameter => !OcrIsBusy && parameter is string pdffilepath && File.Exists(pdffilepath) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -405,20 +405,17 @@ public partial class GpScannerViewModel : InpcBase
                         ocrtext = null;
                         _ = UnIndexedFiles?.Remove(unIndexedFile);
                         IndexedFileCount = i++;
+                        OcrIsBusy = false;
                         GC.Collect();
                     }
                     catch (Exception ex)
                     {
                         await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
                     }
-                    finally
-                    {
-                        OcrIsBusy = false;
-                        if (Shutdown)
-                        {
-                            ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
-                        }
-                    }
+                }
+                if (Shutdown)
+                {
+                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
                 }
             },
             parameter => !OcrIsBusy && UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
