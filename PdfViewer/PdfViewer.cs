@@ -116,7 +116,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     GenerateDocument(printdialog, pdfDocument, startPage, endPage, PrintDpi);
                 }
             },
-            parameter => PdfFilePath is not null);
+            parameter => PdfFilePath is not null && File.Exists(PdfFilePath));
 
         PrintSinglePage = new RelayCommand<object>(
             parameter =>
@@ -128,7 +128,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     GenerateDocument(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
                 }
             },
-            parameter => PdfFilePath is not null);
+            parameter => PdfFilePath is not null && File.Exists(PdfFilePath));
 
         DeleteSinglePage = new RelayCommand<object>(
             parameter =>

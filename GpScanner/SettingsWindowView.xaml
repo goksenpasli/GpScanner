@@ -549,7 +549,9 @@
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <UniformGrid Columns="3" IsEnabled="{Binding Source={x:Static viewmodel:GpScannerViewModel.IsAdministrator}}">
+                        <UniformGrid Columns="3"
+                            IsEnabled="{Binding IsAdministrator, ValidatesOnDataErrors=True}"
+                            Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                             <Button twainctrl:Policy.PolicyName="RegisterSti" Command="{Binding RegisterSti, Mode=OneWay}">
                                 <StackPanel Orientation="Horizontal">
                                     <Canvas Width="32" Height="32">

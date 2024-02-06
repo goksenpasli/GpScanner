@@ -551,14 +551,17 @@
                                                                     </Style.Triggers>
                                                                 </Style>
                                                             </Extensions:FadedToolTipControl.Style>
-                                                            <ListBox Width="800"
+                                                            <ListBox Width="720"
                                                                 Height="480"
                                                                 ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
-                                                                ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}">
+                                                                ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
+                                                                VirtualizingPanel.CacheLengthUnit="Item"
+                                                                VirtualizingPanel.ScrollUnit="Pixel"
+                                                                VirtualizingPanel.VirtualizationMode="Standard">
                                                                 <ListBox.ItemsPanel>
                                                                     <ItemsPanelTemplate>
                                                                         <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                                                            ItemSize="155,155"
+                                                                            ItemSize="165,165"
                                                                             SpacingMode="None" />
                                                                     </ItemsPanelTemplate>
                                                                 </ListBox.ItemsPanel>

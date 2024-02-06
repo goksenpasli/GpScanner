@@ -49,7 +49,7 @@ namespace GpScanner.ViewModel;
 
 public class BatchFiles : TessFiles;
 
-public partial class GpScannerViewModel : InpcBase
+public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
 {
     public static readonly string ErrorFile = "Error.log";
     public static readonly string ProfileFolder = $"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}";
@@ -93,6 +93,7 @@ public partial class GpScannerViewModel : InpcBase
     private string ftpUserName = string.Empty;
     private ObservableCollection<Size> getPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
     private int ındexedFileCount;
+    private bool ısAdministrator;
     private FlowDirection langFlowDirection = FlowDirection.LeftToRight;
     private bool listBoxBorderAnimation;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
@@ -1120,16 +1121,6 @@ public partial class GpScannerViewModel : InpcBase
             parameter => parameter is IGrouping<int, ContributionData> data && data.Count(z => z.Count > 0) > 0);
     }
 
-    public static bool IsAdministrator
-    {
-        get
-        {
-            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
-            WindowsPrincipal principal = new(identity);
-            return principal.IsInRole(WindowsBuiltInRole.Administrator);
-        }
-    }
-
     public ICommand AddFtpSites { get; }
 
     public RelayCommand<object> AddPdfGroupFilesMonthToControlPanel { get; }
@@ -1435,6 +1426,8 @@ public partial class GpScannerViewModel : InpcBase
         }
     }
 
+    public string Error => string.Empty;
+
     public string ErrorLogPath
     {
         get => errorLogPath;
@@ -1561,6 +1554,25 @@ public partial class GpScannerViewModel : InpcBase
             {
                 ındexedFileCount = value;
                 OnPropertyChanged(nameof(IndexedFileCount));
+            }
+        }
+    }
+
+    public bool IsAdministrator
+    {
+        get
+        {
+            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new(identity);
+            ısAdministrator = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            return ısAdministrator;
+        }
+        set
+        {
+            if (ısAdministrator != value)
+            {
+                ısAdministrator = value;
+                OnPropertyChanged(nameof(IsAdministrator));
             }
         }
     }
@@ -2104,6 +2116,12 @@ public partial class GpScannerViewModel : InpcBase
             }
         }
     }
+
+    public string this[string columnName] => columnName switch
+    {
+        "IsAdministrator" when !IsAdministrator => $"{Translation.GetResStringValue("FOLDERACCESS")}",
+        _ => null
+    };
 
     public static void BackupDatabaseFile()
     {

@@ -26,7 +26,6 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverterEmptyViewerTemplate" IconSize="jumbo" />
             <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
-            <Converter:FilePathCheckConverter x:Key="FilePathCheckConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
             <Converter:LanguageStringConverter x:Key="LanguageStringConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
@@ -202,7 +201,7 @@
                 </PdfViewer:PdfShadowedImage>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerMonthTemplateMini">
-                <Grid Width="140" Height="140">
+                <Grid Width="150" Height="150">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition />
@@ -395,7 +394,7 @@
                         AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
-                        PdfFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible"
                         ScrollBarVisible="Hidden"
                         SliderZoomAngleVisibility="Collapsed"
@@ -403,14 +402,14 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
-                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
                 <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Visible" />
             </DataTemplate>
@@ -422,7 +421,7 @@
                     </Grid.ColumnDefinitions>
                     <Extensions:ImageViewer x:Name="ImgVwr"
                         DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
-                        ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PanoramaButtonVisibility="Collapsed"
                         PrintButtonVisibility="Visible" />
                     <Grid Grid.Column="1">
@@ -462,8 +461,8 @@
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
                 <Extensions:ImageViewer Width="150"
                     Height="150"
-                    DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    DecodeHeight="150"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     IsHitTestVisible="False"
                     OpenButtonVisibility="Collapsed"
                     PanoramaButtonVisibility="Collapsed"
@@ -474,20 +473,21 @@
             <DataTemplate x:Key="ContributionViewerImgTemplateMini">
                 <Extensions:ImageViewer Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
                     Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                    DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
-                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    DecodeHeight="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     IsHitTestVisible="False"
                     OpenButtonVisibility="Collapsed"
+                    Orientation="Height"
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Collapsed"
                     TifNavigasyonButtonEtkin="Collapsed"
                     ToolBarVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
-                <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplateFull">
-                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
                 <Controls:MediaViewer Width="300"
@@ -495,27 +495,27 @@
                     AutoPlay="False"
                     ContextMenuVisibility="Visible"
                     ControlVisible="Collapsed"
-                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateMini">
                 <Controls:MediaViewer AutoPlay="False"
                     ContextMenuVisibility="Visible"
                     ControlVisible="Collapsed"
-                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateFull">
                 <Controls:MediaViewer AutoPlay="False"
-                    MediaDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     OsdTextVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="XmlViewerThumbTemplate">
-                <twain:XmlViewerControl Grid.Row="1" twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <twain:XmlViewerControl Grid.Row="1" twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DocxViewerThumbTemplate">
-                <local:DocxViewer DocxDataFilePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <local:DocxViewer DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DvdBurnerZipViewerTemplate">
-                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, Converter={StaticResource FilePathCheckConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="SimplePdfTemplate">
                 <Image Grid.Row="1" Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
@@ -629,7 +629,10 @@
                         ItemsSource="{Binding Contributions, RelativeSource={RelativeSource TemplatedParent}}"
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                        SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}">
+                        SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}"
+                        VirtualizingPanel.CacheLengthUnit="Item"
+                        VirtualizingPanel.ScrollUnit="Pixel"
+                        VirtualizingPanel.VirtualizationMode="Standard">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="Margin" Value="0" />
@@ -685,7 +688,10 @@
                                                     Height="600"
                                                     ItemsSource="{Binding Name}"
                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                    ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                                                    ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                    VirtualizingPanel.CacheLengthUnit="Item"
+                                                    VirtualizingPanel.ScrollUnit="Pixel"
+                                                    VirtualizingPanel.VirtualizationMode="Standard">
                                                     <ListBox.Style>
                                                         <Style TargetType="ListBox">
                                                             <Style.Triggers>
