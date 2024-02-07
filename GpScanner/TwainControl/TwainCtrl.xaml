@@ -30,6 +30,7 @@
             </ResourceDictionary.MergedDictionaries>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
+            <Converter:ResourceLanguageStringConverter x:Key="ResourceLanguageStringConverter" />
             <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
             <Converter:FileDateContextMenuConverter x:Key="FileDateContextMenuConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
@@ -155,6 +156,15 @@
                         DataContext="{Binding ElementName=Adorner, Mode=OneWay}"
                         RenderTransformOrigin="0.5,0.5"
                         UseLayoutRounding="True">
+                        <Viewbox Width="18" Height="18">
+                            <TextBlock Foreground="White">
+                                <TextBlock.Text>
+                                    <MultiBinding Converter="{StaticResource ResourceLanguageStringConverter}">
+                                        <Binding Mode="OneWay" Source="STOP" />
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
+                        </Viewbox>
                         <Canvas.ToolTip>
                             <ToolTip Background="{x:Null}"
                                 BorderBrush="{x:Null}"
@@ -163,13 +173,16 @@
                                     Background="Red"
                                     BorderBrush="White"
                                     BorderThickness="1">
-                                    <TextBlock Foreground="White" Text="{Binding AdornedElement.(Validation.Errors)/ErrorContent, Mode=OneWay}" />
+                                    <TextBlock Foreground="White">
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource ResourceLanguageStringConverter}">
+                                                <Binding Mode="OneWay" Path="DataContext[0].ErrorContent" />
+                                            </MultiBinding>
+                                        </TextBlock.Text>
+                                    </TextBlock>
                                 </Border>
                             </ToolTip>
                         </Canvas.ToolTip>
-                        <Viewbox Width="18" Height="18">
-                            <TextBlock Foreground="White" Text="{local:Loc STOP}" />
-                        </Viewbox>
                     </Canvas>
                     <AdornedElementPlaceholder x:Name="Adorner" />
                 </Grid>

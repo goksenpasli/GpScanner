@@ -721,4 +721,7 @@ TO FILE</value>
   <data name="SEPERATE" xml:space="preserve">
     <value>SCAN EACH PAGE TO A SEPARATE FILE</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SUCCESS</value>
+  </data>
 </root>

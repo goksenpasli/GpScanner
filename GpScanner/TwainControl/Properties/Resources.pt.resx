@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>DIGITALIZE CADA PÁGINA PARA UM ARQUIVO SEPARADO</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SUCESSO</value>
+  </data>
 </root>

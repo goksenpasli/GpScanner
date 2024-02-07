@@ -717,4 +717,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>СКАНІРАВАЦЬ КОЖНУЮ СТАРОНКУ Ў АСОБНЫ ФАЙЛ</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ПОСПЕХ</value>
+  </data>
 </root>

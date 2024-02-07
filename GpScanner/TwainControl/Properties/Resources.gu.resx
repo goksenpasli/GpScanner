@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>દરેક પૃષ્ઠને અલગ ફાઇલ માટે સ્કેન કરો</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>સફળતા</value>
+  </data>
 </root>

@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>各ページをスキャンして別のファイルに保存する</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>成功</value>
+  </data>
 </root>

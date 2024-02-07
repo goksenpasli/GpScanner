@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>ΣΑΡΩΣΤΕ ΚΑΘΕ ΣΕΛΙΔΑ ΣΕ ΞΕΧΩΡΙΣΤΟ ΑΡΧΕΙΟ</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ΕΠΙΤΥΧΙΑ</value>
+  </data>
 </root>

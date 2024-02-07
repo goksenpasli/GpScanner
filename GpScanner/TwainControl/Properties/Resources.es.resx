@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>ESCANEE CADA PÁGINA EN UN ARCHIVO SEPARADO</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ÉXITO</value>
+  </data>
 </root>

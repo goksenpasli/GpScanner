@@ -62,7 +62,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
-    private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "delete"];
+    private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private int allPdfPage = 1;
@@ -122,6 +122,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private ReminderData selectedReminder;
     private Size selectedSize;
     private bool shutdown;
+    private List<Data> sqlQueryData;
     private string sqlText = string.Empty;
     private TesseractViewModel tesseractViewModel;
     private TranslateViewModel translateViewModel;
@@ -1092,7 +1093,8 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     using AppDbContext context = new();
                     if (context.Database.Exists())
                     {
-                        _ = await context.Database.ExecuteSqlCommandAsync(SqlText);
+                        await context.Database.ExecuteSqlCommandAsync(SqlText);
+                        SqlQueryData = await context.Database.SqlQuery<Data>("select * from Data").ToListAsync();
                         _ = await context.SaveChangesAsync();
                     }
                 }
@@ -1102,6 +1104,26 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
             },
             parameter => File.Exists(Settings.Default.DatabaseFile) && IsAdministrator && !string.IsNullOrWhiteSpace(SqlText) && !sqlitedangerouscommands.Any(SqlText.ToLower().Contains));
+
+        RunSqliteVacuumCommand = new RelayCommand<object>(
+            async parameter =>
+            {
+                try
+                {
+                    using AppDbContext context = new();
+                    if (context.Database.Exists())
+                    {
+                        context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, "VACUUM;");
+                        _ = await context.SaveChangesAsync();
+                        MessageBox.Show(Translation.GetResStringValue("SUCCESS"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(ex.Message);
+                }
+            },
+            parameter => File.Exists(Settings.Default.DatabaseFile) && IsAdministrator);
 
         AddPdfGroupFilesMonthToControlPanel = new RelayCommand<object>(
             async parameter =>
@@ -1878,6 +1900,8 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> RunSqliteCommand { get; }
 
+    public RelayCommand<object> RunSqliteVacuumCommand { get; }
+
     public ICommand SavePatchProfile { get; }
 
     public ICommand SaveQrImage { get; }
@@ -2032,6 +2056,20 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public List<Data> SqlQueryData
+    {
+        get => sqlQueryData;
+
+        set
+        {
+            if (sqlQueryData != value)
+            {
+                sqlQueryData = value;
+                OnPropertyChanged(nameof(SqlQueryData));
+            }
+        }
+    }
+
     public string SqlText
     {
         get => sqlText;
@@ -2156,8 +2194,8 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string this[string columnName] => columnName switch
     {
-        "IsAdministrator" when !IsAdministrator => $"{Translation.GetResStringValue("FOLDERACCESS")}",
-        "SqlText" when sqlitedangerouscommands.Any(SqlText.ToLower().Contains) => $"{Translation.GetResStringValue("ERROR")}",
+        "IsAdministrator" when !IsAdministrator => "FOLDERACCESS",
+        "SqlText" when sqlitedangerouscommands.Any(SqlText.ToLower().Contains) => "ERROR",
         _ => null
     };
 

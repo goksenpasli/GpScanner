@@ -717,4 +717,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>MINDEN OLDALOT EGY KÜLÖN FÁJLBA SZKENNELJEN BE</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SIKER</value>
+  </data>
 </root>

@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>HƏR SƏHİFƏNİ AYRI FAYLA TARAYIN</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>UĞUR</value>
+  </data>
 </root>

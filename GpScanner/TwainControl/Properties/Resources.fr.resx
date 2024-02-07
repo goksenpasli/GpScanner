@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>NUMÉRISEZ CHAQUE PAGE DANS UN FICHIER SÉPARÉ</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SUCCÈS</value>
+  </data>
 </root>

@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>قم بمسح كل صفحة ضوئيًا إلى ملف منفصل</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>نجاح</value>
+  </data>
 </root>

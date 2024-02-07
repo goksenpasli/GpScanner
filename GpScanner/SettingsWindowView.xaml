@@ -977,29 +977,71 @@
                         Height="256"
                         HorizontalAlignment="Left"
                         Source="{Binding Converter={StaticResource JumboSizeFilePathToIconConverter}, Source=.dll}" />
-                    <TextBox Width="600"
-                        HorizontalAlignment="Right"
-                        d:Text="SqlText"
-                        AcceptsReturn="True"
-                        Background="{StaticResource BorderBackground}"
-                        BorderBrush="{StaticResource GroupBoxBackGround}"
-                        FontSize="32"
-                        Text="{Binding SqlText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                        Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}" />
-                    <Button Grid.Row="1" Command="{Binding RunSqliteCommand}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="96"
-                                Height="96"
-                                HorizontalAlignment="Left"
-                                Source="{Binding Converter={StaticResource JumboSizeFilePathToIconConverter}, Source=.exe}" />
-                            <TextBlock VerticalAlignment="Center"
-                                FontSize="24"
-                                FontWeight="Bold">
-                                <sys:String>SQL</sys:String>
-                                <Run Text="{twainctrl:Loc START}" />
-                            </TextBlock>
-                        </StackPanel>
-                    </Button>
+                    <Grid Width="650" HorizontalAlignment="Right">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="150" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <TextBox d:Text="SqlText"
+                            AcceptsReturn="True"
+                            Background="{StaticResource BorderBackground}"
+                            BorderBrush="{StaticResource GroupBoxBackGround}"
+                            FontSize="16"
+                            Text="{Binding SqlText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                            TextWrapping="Wrap"
+                            Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}"
+                            VerticalScrollBarVisibility="Auto" />
+                        <DataGrid Grid.Row="1"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            CanUserDeleteRows="True"
+                            IsReadOnly="True"
+                            ItemsSource="{Binding SqlQueryData}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Id, Mode=OneWay}" Header="ID" />
+                                <DataGridTextColumn Binding="{Binding FileName, Mode=OneWay}" Header="{twainctrl:Loc FILENAME}" />
+                                <DataGridTextColumn Binding="{Binding QrData, Mode=OneWay}" Header="QR" />
+                                <DataGridTextColumn Binding="{Binding FileContent, Mode=OneWay}" Header="{twainctrl:Loc CONTENT}" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    <UniformGrid Grid.Row="1" Columns="2">
+                        <Button Command="{Binding RunSqliteCommand}"
+                            IsEnabled="{Binding IsAdministrator, ValidatesOnDataErrors=True}"
+                            Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="24" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center"
+                                    FontSize="24"
+                                    FontWeight="Bold"><Run>SQL</Run><Run Text=" " /><Run Text="{twainctrl:Loc START}" /></TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Command="{Binding RunSqliteVacuumCommand}"
+                            IsEnabled="{Binding IsAdministrator, ValidatesOnDataErrors=True}"
+                            Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="31" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                    Text="VACUUM" />
+                            </StackPanel>
+                        </Button>
+                    </UniformGrid>
                 </Grid>
             </AdornerDecorator>
         </TabItem>

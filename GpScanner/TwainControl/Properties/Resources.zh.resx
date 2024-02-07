@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>将每一页扫描到单独的文件</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>成功</value>
+  </data>
 </root>

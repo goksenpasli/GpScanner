@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>Scannen Sie jede Seite in eine separate Datei</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ERFOLG</value>
+  </data>
 </root>

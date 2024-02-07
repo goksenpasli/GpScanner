@@ -727,4 +727,7 @@ BELGE EKLE</value>
   <data name="SEPERATE" xml:space="preserve">
     <value>HER SAYFAYI AYRI DOSYAYA TARA</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>BAŞARILI</value>
+  </data>
 </root>

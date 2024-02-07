@@ -1442,9 +1442,9 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string this[string columnName] => columnName switch
     {
-        "FileName" when string.IsNullOrWhiteSpace(FileName) => $"{Translation.GetResStringValue("FILENAME")} {Translation.GetResStringValue("EMPTY")}",
-        "FileName" when !TwainCtrl.FileNameValid(FileName) => $"{Translation.GetResStringValue("INVALIDFILENAME")}",
-        "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => Translation.GetResStringValue("EMPTY"),
+        "FileName" when string.IsNullOrWhiteSpace(FileName) => "EMPTY",
+        "FileName" when !TwainCtrl.FileNameValid(FileName) => "INVALIDFILENAME",
+        "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "EMPTY",
         _ => null
     };
 

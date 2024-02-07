@@ -714,4 +714,7 @@
   <data name="SEPERATE" xml:space="preserve">
     <value>NASKENUJTE KAŽDOU STRÁNKU DO SAMOSTATNÉHO SOUBORU</value>
   </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ÚSPĚCH</value>
+  </data>
 </root>
