@@ -174,7 +174,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 twain.StartScanning(_settings);
                 twain.ScanningComplete += ScanComplete;
             },
-            parameter => !Environment.Is64BitProcess && Scanner?.Tarayıcılar?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy(nameof(ScanImage)));
+            parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy(nameof(ScanImage)));
 
         FastScanImage = new RelayCommand<object>(
             async parameter =>
@@ -194,13 +194,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 twain.StartScanning(_settings);
                 twain.ScanningComplete += FastScanComplete;
             },
-            parameter => !Environment.Is64BitProcess &&
-            Scanner?.Tarayıcılar?.Count > 0 &&
-            !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) &&
-            Scanner?.AutoSave == true &&
-            !string.IsNullOrWhiteSpace(Scanner?.FileName) &&
-            FileNameValid(Scanner?.FileName) &&
-            Policy.CheckPolicy(nameof(FastScanImage)));
+            parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Scanner?.AutoSave == true && FileNameValid(Scanner?.FileName) && Policy.CheckPolicy(nameof(FastScanImage)));
 
         ResimSil = new RelayCommand<object>(
             parameter =>
@@ -362,7 +356,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
+            parameter => FileNameValid(Scanner?.FileName));
 
         SaveSingleBwPdfFile = new RelayCommand<object>(
             async parameter =>
@@ -373,7 +367,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
+            parameter => FileNameValid(Scanner?.FileName));
 
         SaveSingleJpgFile = new RelayCommand<object>(
             parameter =>
@@ -384,7 +378,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
+            parameter => FileNameValid(Scanner?.FileName));
 
         SaveSingleXpsFile = new RelayCommand<object>(
             parameter =>
@@ -395,7 +389,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
+            parameter => FileNameValid(Scanner?.FileName));
 
         SaveSingleTifFile = new RelayCommand<object>(
             parameter =>
@@ -406,7 +400,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     SaveTifImage(bitmapFrame, saveFileDialog.FileName);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
+            parameter => FileNameValid(Scanner?.FileName));
 
         SaveSingleWebpFile = new RelayCommand<object>(
             parameter =>
@@ -417,7 +411,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     SaveWebpImage(bitmapFrame, saveFileDialog.FileName);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
+            parameter => FileNameValid(Scanner?.FileName));
 
         SaveSingleTxtFile = new RelayCommand<object>(
             async parameter =>
@@ -428,7 +422,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     await SaveTxtFileAsync(bitmapFrame, saveFileDialog.FileName);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner?.FileName) && FileNameValid(Scanner?.FileName));
+            parameter => FileNameValid(Scanner?.FileName));
 
         Tümünüİşaretle = new RelayCommand<object>(
             parameter =>
@@ -455,7 +449,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     item.Seçili = true;
                 }
             },
-            parameter => Policy.CheckPolicy(nameof(Tümünüİşaretle)) && Scanner?.Resimler?.Count > 0);
+            parameter => Policy.CheckPolicy(nameof(Tümünüİşaretle)) && AnyImageExist());
 
         PdfImportViewerTümünüİşaretle = new RelayCommand<object>(
             parameter =>
@@ -486,7 +480,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     item.Seçili = true;
                 }
             },
-            parameter => Scanner?.Resimler?.Count > 0);
+            parameter => AnyImageExist());
 
         TümünüİşaretleYatay = new RelayCommand<object>(
             parameter =>
@@ -497,7 +491,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     item.Seçili = true;
                 }
             },
-            parameter => Scanner?.Resimler?.Count > 0);
+            parameter => AnyImageExist());
 
         TümününİşaretiniKaldır = new RelayCommand<object>(
             parameter =>
@@ -508,7 +502,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     item.Seçili = false;
                 }
             },
-            parameter => Scanner?.Resimler?.Count > 0);
+            parameter => AnyImageExist());
 
         Tersiniİşaretle = new RelayCommand<object>(
             parameter =>
@@ -518,7 +512,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     item.Seçili = !item.Seçili;
                 }
             },
-            parameter => Scanner?.Resimler?.Count > 0);
+            parameter => AnyImageExist());
 
         KayıtYoluBelirle = new RelayCommand<object>(
             parameter =>
@@ -582,8 +576,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesJpgFile = new RelayCommand<object>(
@@ -608,8 +602,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesBwPdfFile = new RelayCommand<object>(
@@ -634,8 +628,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesTifFile = new RelayCommand<object>(
@@ -660,8 +654,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesTxtFile = new RelayCommand<object>(
@@ -686,8 +680,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesWebpFile = new RelayCommand<object>(
@@ -712,8 +706,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SaveSelectedFilesZipFile = new RelayCommand<object>(
@@ -738,8 +732,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         SeçiliDirektPdfKaydet = new RelayCommand<object>(
@@ -794,8 +788,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                Scanner.SeçiliResimSayısı = Scanner?.Resimler.Count(z => z.Seçili) ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliDirektPdfKaydet)) && !string.IsNullOrWhiteSpace(Scanner?.FileName) && Scanner?.AutoSave == true && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliDirektPdfKaydet)) && Scanner?.AutoSave == true && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         ListeTemizle = new RelayCommand<object>(
@@ -815,7 +809,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     GC.Collect();
                 }
             },
-            parameter => Policy.CheckPolicy(nameof(ListeTemizle)) && Scanner?.Resimler?.Count > 0 && Scanner.ArayüzEtkin);
+            parameter => Policy.CheckPolicy(nameof(ListeTemizle)) && AnyImageExist() && Scanner.ArayüzEtkin);
 
         SeçiliListeTemizle = new RelayCommand<object>(
             parameter =>
@@ -857,7 +851,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             !Settings.Default.Profile.Cast<string>().Select(z => z.Split('|')[0]).Contains(Scanner?.ProfileName) &&
             FileNameValid(Scanner?.FileName) &&
             FileNameValid(Scanner?.ProfileName) &&
-            Scanner?.Tarayıcılar?.Count > 0 &&
+            AnyScannerExist() &&
             !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı));
 
         RemoveProfile = new RelayCommand<object>(
@@ -1070,12 +1064,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     listBox.ScrollIntoView(scannedImage);
                     scannedImage.Animate = true;
                     cycleindex++;
-                    cycleindex %= Scanner?.Resimler?.Count(z => z.Seçili) ?? 0;
+                    cycleindex %= GetSelectedImagesCount() ?? 0;
                     await Task.Delay(1000);
                     scannedImage.Animate = false;
                 }
             },
-            parameter => Scanner?.Resimler?.Count(z => z.Seçili) > 0);
+            parameter => GetSelectedImagesCount() > 0);
 
         PdfWaterMark = new RelayCommand<object>(
             async parameter =>
@@ -1478,7 +1472,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 int start = Scanner.Resimler.IndexOf(Scanner?.Resimler.FirstOrDefault(z => z.Seçili));
                 int end = Scanner.Resimler.IndexOf(Scanner?.Resimler.LastOrDefault(z => z.Seçili));
-                if (Scanner?.Resimler?.Count(z => z.Seçili) == end - start + 1)
+                if (GetSelectedImagesCount() == end - start + 1)
                 {
                     List<ScannedImage> scannedImages = [.. Scanner.Resimler];
                     scannedImages.Reverse(start, end - start + 1);
@@ -1491,7 +1485,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 List<ScannedImage> selected = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
                 int start = Scanner?.Resimler?.IndexOf(selected?.FirstOrDefault()) ?? 0;
                 int end = Scanner?.Resimler?.IndexOf(selected?.LastOrDefault()) ?? 0;
-                return Scanner?.Resimler?.Count(z => z.Seçili) > 1 && selected?.Count() == end - start + 1;
+                return GetSelectedImagesCount() > 1 && selected?.Count() == end - start + 1;
             });
 
         RemoveSelectedPage = new RelayCommand<object>(
@@ -1577,26 +1571,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         CopyCurrentImageToClipBoard = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is BitmapFrame bitmapFrame)
+                if (parameter is BitmapFrame bitmapFrame && bitmapFrame is not null)
                 {
                     using Image image = bitmapFrame.BitmapSourceToBitmap();
                     Clipboard.SetImage(image);
                     _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             },
-            parameter => parameter is BitmapFrame bitmapFrame && bitmapFrame is not null);
+            parameter => true);
 
         CopyCurrentImageToImageEditor = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is BitmapFrame bitmapFrame)
+                if (parameter is BitmapFrame bitmapFrame && bitmapFrame is not null)
                 {
                     SelectedTabIndex = 1;
                     drawControl.TemporaryImage = drawControl.EditingImage = bitmapFrame;
                     drawControl.Ink.CurrentZoom = ActualHeight / bitmapFrame.PixelHeight;
                 }
             },
-            parameter => parameter is BitmapFrame bitmapFrame && bitmapFrame is not null);
+            parameter => true);
 
         ApplyPdfMedianFilter = new RelayCommand<object>(
             async parameter =>
@@ -1840,7 +1834,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     item.Seçili = true;
                 }
             },
-            parameter => Scanner?.Resimler?.Count > 0 && parameter is ScannedImage[] scannedimages && scannedimages?.Length > 0);
+            parameter => AnyImageExist() && parameter is ScannedImage[] scannedimages && scannedimages?.Length > 0);
 
         RemoveSplitListsIndex = new RelayCommand<object>(parameter => ImagesSplitLists?.Remove((int)parameter), parameter => true);
 
@@ -2908,7 +2902,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return null;
     }
 
-    public static bool FileNameValid(string filename) => filename.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
+    public static bool FileNameValid(string filename) => !string.IsNullOrWhiteSpace(filename) && filename.IndexOfAny(Path.GetInvalidFileNameChars()) < 0;
 
     public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
     {
@@ -3121,7 +3115,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public void CreateBuiltInScanProfiles()
     {
-        if (Scanner?.Tarayıcılar?.Count > 0)
+        if (AnyScannerExist())
         {
             string[] profiles = new string[6];
             string[] dpiValues = ["96", "200", "300"];
@@ -3414,6 +3408,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         docSeq = null;
     }
 
+    private bool AnyImageExist() => Scanner?.Resimler?.Count > 0;
+
+    private bool AnyScannerExist() => Scanner?.Tarayıcılar?.Count > 0;
+
     private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) => Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
 
     private async void CameraUserControl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
@@ -3673,6 +3671,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     private string GetPdfBatchNumberString(int i) => Scanner.PdfBatchNumberIsFirst ? $"{i + 1} {Scanner.PdfBatchNumberText}" : $"{Scanner.PdfBatchNumberText} {i + 1}";
+
+    private int? GetSelectedImagesCount() => Scanner?.Resimler?.Count(z => z.Seçili);
 
     private List<T> GroupByFirstLastList<T>(List<T> scannedImages, int splitCount = 2)
     {
