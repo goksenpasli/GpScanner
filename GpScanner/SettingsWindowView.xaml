@@ -996,19 +996,46 @@
                             CanUserAddRows="False"
                             CanUserDeleteRows="True"
                             IsReadOnly="True"
-                            ItemsSource="{Binding SqlQueryData}">
+                            ItemsSource="{Binding SqlQueryData}"
+                            VirtualizingPanel.CacheLength="3,3"
+                            VirtualizingPanel.CacheLengthUnit="Item"
+                            VirtualizingPanel.ScrollUnit="Pixel">
                             <DataGrid.Columns>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Hyperlink BaselineAlignment="Bottom"
+                                                    Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                    CommandParameter="{Binding Mode=OneWay, Path=FileName}"
+                                                    TextDecorations="None">
+                                                    <InlineUIContainer>
+                                                        <Image Width="16"
+                                                            Height="16"
+                                                            Source="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FilePathToIconConverter}}" />
+                                                    </InlineUIContainer>
+                                                </Hyperlink>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTextColumn Binding="{Binding Id, Mode=OneWay}" Header="ID" />
                                 <DataGridTextColumn Binding="{Binding FileName, Mode=OneWay}" Header="{twainctrl:Loc FILENAME}" />
                                 <DataGridTextColumn Binding="{Binding QrData, Mode=OneWay}" Header="QR" />
-                                <DataGridTextColumn Binding="{Binding FileContent, Mode=OneWay}" Header="{twainctrl:Loc CONTENT}" />
+                                <DataGridTextColumn Width="300"
+                                    Binding="{Binding FileContent, Mode=OneWay}"
+                                    Header="{twainctrl:Loc CONTENT}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style>
+                                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
                     <UniformGrid Grid.Row="1" Columns="2">
-                        <Button Command="{Binding RunSqliteCommand}"
-                            IsEnabled="{Binding IsAdministrator, ValidatesOnDataErrors=True}"
-                            Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                        <Button Command="{Binding RunSqliteCommand}" Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
@@ -1023,9 +1050,7 @@
                                     FontWeight="Bold"><Run>SQL</Run><Run Text=" " /><Run Text="{twainctrl:Loc START}" /></TextBlock>
                             </StackPanel>
                         </Button>
-                        <Button Command="{Binding RunSqliteVacuumCommand}"
-                            IsEnabled="{Binding IsAdministrator, ValidatesOnDataErrors=True}"
-                            Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                        <Button Command="{Binding RunSqliteVacuumCommand}" Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32" Height="32">
                                     <Image.Source>

@@ -6,7 +6,7 @@ namespace GpScanner.ViewModel;
 
 public class Data : InpcBase
 {
-    private string fileContent;
+    private string fileContent = string.Empty;
     private string fileName;
     private int ıd;
     private string qrData;

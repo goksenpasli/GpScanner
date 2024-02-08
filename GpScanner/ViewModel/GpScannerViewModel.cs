@@ -329,10 +329,6 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                             ocrdata = await unIndexedFile.OcrAsync(Settings.Default.DefaultTtsLang);
                             ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
                         }
-                        if (string.IsNullOrEmpty(ocrtext))
-                        {
-                            ocrtext = " ";
-                        }
 
                         using (AppDbContext context = new())
                         {
@@ -1103,7 +1099,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     throw new ArgumentException(ex.Message);
                 }
             },
-            parameter => File.Exists(Settings.Default.DatabaseFile) && IsAdministrator && !string.IsNullOrWhiteSpace(SqlText) && !sqlitedangerouscommands.Any(SqlText.ToLower().Contains));
+            parameter => File.Exists(Settings.Default.DatabaseFile) && !string.IsNullOrWhiteSpace(SqlText) && !sqlitedangerouscommands.Any(SqlText.ToLower().Contains));
 
         RunSqliteVacuumCommand = new RelayCommand<object>(
             async parameter =>
@@ -1123,7 +1119,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     throw new ArgumentException(ex.Message);
                 }
             },
-            parameter => File.Exists(Settings.Default.DatabaseFile) && IsAdministrator);
+            parameter => File.Exists(Settings.Default.DatabaseFile));
 
         AddPdfGroupFilesMonthToControlPanel = new RelayCommand<object>(
             async parameter =>
@@ -2840,7 +2836,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 List<string> unindexedfiles = Dosyalar.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLower()))).Select(z => z.FileName).ToList();
                 using AppDbContext context = new();
-                List<string> scannedFiles = (await context.Data.AsNoTracking().ToListAsync())?.Where(x => !string.IsNullOrEmpty(x.FileContent)).Select(x => x.FileName).ToList();
+                List<string> scannedFiles = (await context.Data.AsNoTracking().ToListAsync())?.Select(x => x.FileName).ToList();
 
                 if (unindexedfiles != null && scannedFiles != null)
                 {

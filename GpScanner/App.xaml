@@ -27,7 +27,6 @@
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverterEmptyViewerTemplate" IconSize="jumbo" />
             <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
-            <Converter:ResourceLanguageStringConverter x:Key="ResourceLanguageStringConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
@@ -93,23 +92,6 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <DrawingBrush x:Key="Dur"
-                ice:Freeze="True"
-                Stretch="Uniform">
-                <DrawingBrush.Drawing>
-                    <DrawingGroup>
-                        <GeometryDrawing ice:Freeze="True"
-                            Brush="Black"
-                            Geometry="F1 M 5.27184,18L 0,12.7282L 0,5.27184L 5.27184,1.90735e-006L 12.7282,1.90735e-006L 18,5.27184L 18,12.7282L 12.7282,18L 5.27184,18 Z " />
-                        <GeometryDrawing ice:Freeze="True"
-                            Brush="White"
-                            Geometry="F1 M 5.38416,17.7293L 0.26928,12.6158L 0.26928,5.38416L 5.38416,0.269283L 12.6158,0.270723L 17.7293,5.38416L 17.7293,12.6158L 12.6158,17.7293L 5.38416,17.7293 Z " />
-                        <GeometryDrawing ice:Freeze="True"
-                            Brush="Red"
-                            Geometry="F1 M 0.684,12.4445L 0.684,5.55552L 5.55552,0.684002L 12.4445,0.684002L 17.316,5.55552L 17.316,12.4445L 12.4445,17.316L 5.55552,17.316L 0.684,12.4445 Z " />
-                    </DrawingGroup>
-                </DrawingBrush.Drawing>
-            </DrawingBrush>
             <ControlTemplate x:Key="ValidationErrorTemplate">
                 <Grid Focusable="False">
                     <Canvas x:Name="Cnv"
