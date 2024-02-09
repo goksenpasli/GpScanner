@@ -1462,10 +1462,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         FirstLastSortSequenceData = new RelayCommand<object>(
             parameter =>
             {
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
+                {
+                    Scanner.Resimler = FirstLastReverseSequence([.. Scanner.Resimler], item => item.Index);
+                    Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                    return;
+                }
                 Scanner.Resimler = FirstLastSequence(Scanner.Resimler);
                 Scanner.RefreshIndexNumbers(Scanner.Resimler);
             },
-            parameter => Scanner?.Resimler?.Count > 2 && Scanner?.Resimler?.Count % 2 == 0);
+            parameter => Scanner?.Resimler?.Count > 1);
 
         ReverseDataHorizontal = new RelayCommand<object>(
             parameter =>
@@ -3622,6 +3628,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         PdfFileOcrData = null;
         twain.ScanningComplete -= FastScanComplete;
         Scanner.ArayüzEtkin = true;
+    }
+
+    private ObservableCollection<T> FirstLastReverseSequence<T>(List<T> items, Func<T, int> indexSelector)
+    {
+        items.Sort(
+            (a, b) =>
+            {
+                if (indexSelector(a) % 2 != indexSelector(b) % 2)
+                {
+                    return indexSelector(a) % 2 == 1 ? -1 : 1;
+                }
+
+                return indexSelector(a) % 2 == 0 ? indexSelector(b).CompareTo(indexSelector(a)) : indexSelector(a).CompareTo(indexSelector(b));
+            });
+
+        return new ObservableCollection<T>(items);
     }
 
     private ObservableCollection<T> FirstLastSequence<T>(ObservableCollection<T> images)

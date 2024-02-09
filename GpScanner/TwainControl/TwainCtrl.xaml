@@ -1487,11 +1487,15 @@
                                             Command="{Binding FirstLastSortSequenceData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc FIRSTLAST}">
-                                            <Run BaselineAlignment="Center"
-                                                FontFamily="Wingdings 3"
-                                                FontSize="16"
-                                                Text="G" />
-                                        </Hyperlink><Hyperlink BaselineAlignment="Center"
+                                            <InlineUIContainer>
+                                                <Border BorderBrush="Cyan" BorderThickness="1">
+                                                    <TextBlock FontFamily="Wingdings 3"
+                                                        FontSize="16"
+                                                        Text="G" />
+                                                </Border>
+                                            </InlineUIContainer>
+                                        </Hyperlink>
+                                        <Hyperlink BaselineAlignment="Center"
                                             Command="{Binding ShuffleData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc RANDOM}">
