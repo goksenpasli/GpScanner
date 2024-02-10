@@ -1652,7 +1652,7 @@
                                                                     <Extensions:SplitButton local:Policy.PolicyName="Kaydet"
                                                                         Background="{x:Null}"
                                                                         Command="{Binding SaveSinglePdfFile, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
-                                                                        CommandParameter="{Binding Resim}">
+                                                                        CommandParameter="{Binding Mode=OneWay}">
                                                                         <Image Width="24"
                                                                             Height="24"
                                                                             Source="/TwainControl;component/Icons/save.png" />
@@ -1663,7 +1663,7 @@
                                                                                 <StackPanel>
                                                                                     <StackPanel.Resources>
                                                                                         <Style TargetType="MenuItem">
-                                                                                            <Setter Property="CommandParameter" Value="{Binding Resim}" />
+                                                                                            <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
                                                                                             <Setter Property="HorizontalContentAlignment" Value="Left" />
                                                                                             <Setter Property="VerticalContentAlignment" Value="Center" />
                                                                                         </Style>
@@ -1777,6 +1777,41 @@
                                                                                             </Image>
                                                                                         </MenuItem.Icon>
                                                                                     </MenuItem>
+                                                                                    <Separator />
+                                                                                    <Expander Header="{local:Loc DESKEW}">
+                                                                                        <StackPanel>
+                                                                                            <Button local:Policy.PolicyName="AutoDeskewImage"
+                                                                                                Command="{Binding DataContext.AutoDeskewImage, Source={x:Reference UserControl}}"
+                                                                                                CommandParameter="{Binding Mode=OneWay}">
+                                                                                                <TextBlock FontFamily="Wingdings 3"
+                                                                                                    FontSize="22"
+                                                                                                    Foreground="Black"
+                                                                                                    Text="R" />
+                                                                                            </Button>
+                                                                                            <Button local:Policy.PolicyName="InvertImage"
+                                                                                                BorderBrush="Cyan"
+                                                                                                Command="{Binding DataContext.InvertImage, Source={x:Reference UserControl}}"
+                                                                                                CommandParameter="{Binding Mode=OneWay}">
+                                                                                                <TextBlock FontFamily="Wingdings"
+                                                                                                    FontSize="26"
+                                                                                                    Foreground="Black"
+                                                                                                    Text="[" />
+                                                                                            </Button>
+                                                                                            <StackPanel Orientation="Horizontal">
+                                                                                                <ContentControl Content="{DynamicResource LeftRotate}" />
+                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                    Maximum="3"
+                                                                                                    Minimum="-3"
+                                                                                                    Orientation="Horizontal"
+                                                                                                    Value="{Binding DataContext.CustomDeskewAngle, Source={x:Reference UserControl}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                                                                <ContentControl Content="{DynamicResource RightRotate}" />
+                                                                                            </StackPanel>
+                                                                                            <Button local:Policy.PolicyName="ManualDeskewImage"
+                                                                                                Command="{Binding DataContext.ManualDeskewImage, Source={x:Reference UserControl}}"
+                                                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                                                Content="{local:Loc DESKEW}" />
+                                                                                        </StackPanel>
+                                                                                    </Expander>
                                                                                 </StackPanel>
                                                                             </Border>
                                                                         </Extensions:SplitButton.InternalContent>
@@ -1786,50 +1821,7 @@
                                                                     FontSize="24"
                                                                     FontWeight="Bold"
                                                                     MouseLeftButtonDown="Run_MouseLeftButtonDown"
-                                                                    Text="B" /><InlineUIContainer BaselineAlignment="Center">
-                                                                    <Extensions:ContentToggleButton local:Policy.PolicyName="AutoDeskewImage" Background="{x:Null}">
-                                                                        <TextBlock FontFamily="Wingdings 3"
-                                                                            FontSize="22"
-                                                                            Foreground="Black"
-                                                                            Text="R" />
-                                                                        <Extensions:ContentToggleButton.OverContent>
-                                                                            <Border Background="{StaticResource BorderBackground}"
-                                                                                BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                                                BorderThickness="1">
-                                                                                <UniformGrid Rows="4">
-                                                                                    <Button Command="{Binding DataContext.AutoDeskewImage, Source={x:Reference UserControl}}" CommandParameter="{Binding Mode=OneWay}">
-                                                                                        <TextBlock FontFamily="Wingdings 3"
-                                                                                            FontSize="22"
-                                                                                            Foreground="Black"
-                                                                                            Text="R" />
-                                                                                    </Button>
-                                                                                    <Button local:Policy.PolicyName="InvertImage"
-                                                                                        BorderBrush="Cyan"
-                                                                                        Command="{Binding DataContext.InvertImage, Source={x:Reference UserControl}}"
-                                                                                        CommandParameter="{Binding Mode=OneWay}">
-                                                                                        <TextBlock FontFamily="Wingdings"
-                                                                                            FontSize="26"
-                                                                                            Foreground="Black"
-                                                                                            Text="[" />
-                                                                                    </Button>
-                                                                                    <StackPanel Orientation="Horizontal">
-                                                                                        <ContentControl Content="{DynamicResource LeftRotate}" />
-                                                                                        <Extensions:NumericUpDownControl Width="64"
-                                                                                            IsReadOnly="True"
-                                                                                            Maximum="3"
-                                                                                            Minimum="-3"
-                                                                                            Orientation="Horizontal"
-                                                                                            Value="{Binding DataContext.CustomDeskewAngle, Source={x:Reference UserControl}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                                                        <ContentControl Content="{DynamicResource RightRotate}" />
-                                                                                    </StackPanel>
-                                                                                    <Button Command="{Binding DataContext.ManualDeskewImage, Source={x:Reference UserControl}}"
-                                                                                        CommandParameter="{Binding Mode=OneWay}"
-                                                                                        Content="{local:Loc DESKEW}" />
-                                                                                </UniformGrid>
-                                                                            </Border>
-                                                                        </Extensions:ContentToggleButton.OverContent>
-                                                                    </Extensions:ContentToggleButton>
-                                                                </InlineUIContainer><Hyperlink local:Policy.PolicyName="ResimSil"
+                                                                    Text="B" /><Hyperlink local:Policy.PolicyName="ResimSil"
                                                                     BaselineAlignment="Center"
                                                                     Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
                                                                     CommandParameter="{Binding Mode=OneWay}"

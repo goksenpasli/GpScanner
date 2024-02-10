@@ -312,7 +312,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 bool bw = Keyboard.Modifiers == ModifierKeys.Alt;
                 bool grayscale = Keyboard.Modifiers == ModifierKeys.Shift;
-                foreach (ScannedImage item in Scanner?.Resimler?.Where(z => z.Seçili))
+                foreach (ScannedImage item in GetSelectedImages())
                 {
                     if (bw)
                     {
@@ -351,9 +351,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
-                    await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
+                    await SavePdfImageAsync(scannedImage.Resim, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -362,9 +362,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
-                    await SavePdfImageAsync(bitmapFrame, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
+                    await SavePdfImageAsync(scannedImage.Resim, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -373,9 +373,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
-                    SaveJpgImage(bitmapFrame, saveFileDialog.FileName);
+                    SaveJpgImage(scannedImage.Resim, saveFileDialog.FileName);
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -384,9 +384,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Xps Dosyası (*.xps)|*.xps", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
-                    SaveXpsImage(bitmapFrame, saveFileDialog.FileName);
+                    SaveXpsImage(scannedImage.Resim, saveFileDialog.FileName);
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -395,9 +395,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Tif Dosyası (*.tif)|*.tif", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
-                    SaveTifImage(bitmapFrame, saveFileDialog.FileName);
+                    SaveTifImage(scannedImage.Resim, saveFileDialog.FileName);
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -406,9 +406,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Webp Dosyası (*.webp)|*.webp", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
-                    SaveWebpImage(bitmapFrame, saveFileDialog.FileName);
+                    SaveWebpImage(scannedImage.Resim, saveFileDialog.FileName);
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -417,9 +417,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true && parameter is BitmapFrame bitmapFrame)
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
-                    await SaveTxtFileAsync(bitmapFrame, saveFileDialog.FileName);
+                    await SaveTxtFileAsync(scannedImage.Resim, saveFileDialog.FileName);
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -551,7 +551,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (saveFileDialog.ShowDialog() == true)
                     {
                         int i = 0;
-                        foreach (ScannedImage resimlerItem in Scanner.Resimler.Where(z => z.Seçili))
+                        foreach (ScannedImage resimlerItem in GetSelectedImages())
                         {
                             ScannedImage item = resimlerItem;
                             Scanner.PdfFilePath = Path.GetDirectoryName(saveFileDialog.FileName).SetUniqueFile(Scanner.SaveFileName, "pdf");
@@ -567,7 +567,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Filesavetask = Task.Run(
                         async () =>
                         {
-                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, false, Settings.Default.ImgLoadResolution);
                         });
@@ -593,7 +593,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Filesavetask = Task.Run(
                         async () =>
                         {
-                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             await SaveJpgImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
                         });
@@ -619,7 +619,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Filesavetask = Task.Run(
                         async () =>
                         {
-                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
                         });
@@ -645,7 +645,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Filesavetask = Task.Run(
                         async () =>
                         {
-                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             await SaveTifImageAsync(seçiliresimler, fileName);
                         });
@@ -671,7 +671,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Filesavetask = Task.Run(
                         async () =>
                         {
-                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             await SaveTxtFileAsync(seçiliresimler, fileName);
                         });
@@ -697,7 +697,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Filesavetask = Task.Run(
                         async () =>
                         {
-                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             await SaveWebpImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
                         });
@@ -723,7 +723,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Filesavetask = Task.Run(
                         () =>
                         {
-                            List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                            List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             SaveZipImage(seçiliresimler, fileName);
                         });
@@ -744,7 +744,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Task.Run(
                     async () =>
                     {
-                        List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                        List<ScannedImage> seçiliresimler = GetSelectedImages();
                         if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
                         {
                             Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
@@ -814,7 +814,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SeçiliListeTemizle = new RelayCommand<object>(
             parameter =>
             {
-                foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                foreach (ScannedImage item in GetSelectedImages())
                 {
                     _ = Scanner.Resimler?.Remove(item);
                 }
@@ -1058,7 +1058,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         CycleSelectedDocuments = new RelayCommand<object>(
             async parameter =>
             {
-                ScannedImage scannedImage = Scanner.Resimler.Where(z => z.Seçili).ElementAtOrDefault(cycleindex);
+                ScannedImage scannedImage = GetSelectedImages().ElementAtOrDefault(cycleindex);
                 if (parameter is ListBox listBox && scannedImage is not null)
                 {
                     listBox.ScrollIntoView(scannedImage);
@@ -1109,7 +1109,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         MergeSelectedImagesToPdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                List<ScannedImage> seçiliresimler = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                List<ScannedImage> seçiliresimler = GetSelectedImages();
                 if (parameter is PdfViewer.PdfViewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
                 seçiliresimler.Any() &&
@@ -1488,7 +1488,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                List<ScannedImage> selected = Scanner?.Resimler?.Where(z => z.Seçili).ToList();
+                List<ScannedImage> selected = GetSelectedImages();
                 int start = Scanner?.Resimler?.IndexOf(selected?.FirstOrDefault()) ?? 0;
                 int end = Scanner?.Resimler?.IndexOf(selected?.LastOrDefault()) ?? 0;
                 return GetSelectedImagesCount() > 1 && selected?.Count() == end - start + 1;
@@ -1577,9 +1577,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         CopyCurrentImageToClipBoard = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is BitmapFrame bitmapFrame && bitmapFrame is not null)
+                if (parameter is ScannedImage scannedImage && scannedImage?.Resim is not null)
                 {
-                    using Image image = bitmapFrame.BitmapSourceToBitmap();
+                    using Image image = scannedImage.Resim.BitmapSourceToBitmap();
                     Clipboard.SetImage(image);
                     _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
@@ -1589,11 +1589,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         CopyCurrentImageToImageEditor = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is BitmapFrame bitmapFrame && bitmapFrame is not null)
+                if (parameter is ScannedImage scannedImage && scannedImage?.Resim is not null)
                 {
                     SelectedTabIndex = 1;
-                    drawControl.TemporaryImage = drawControl.EditingImage = bitmapFrame;
-                    drawControl.Ink.CurrentZoom = ActualHeight / bitmapFrame.PixelHeight;
+                    drawControl.TemporaryImage = drawControl.EditingImage = scannedImage.Resim;
+                    drawControl.Ink.CurrentZoom = ActualHeight / scannedImage.Resim.PixelHeight;
                 }
             },
             parameter => true);
@@ -1768,7 +1768,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ApplyCropAllImages = new RelayCommand<object>(
             parameter =>
             {
-                foreach (ScannedImage item in Scanner.Resimler.Where(z => z.Seçili).ToList())
+                foreach (ScannedImage item in GetSelectedImages())
                 {
                     BitmapFrame bitmapframe = BitmapFrame.Create(GenerateCroppedImage(item.Resim, Settings.Default.Top, Settings.Default.Left, Settings.Default.Bottom, Settings.Default.Right));
                     bitmapframe.Freeze();
@@ -1781,7 +1781,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter =>
             {
-                List<ScannedImage> distinct = Scanner?.Resimler?.Where(z => z.Seçili)?.Distinct(new ImageWidthHeightComparer()).ToList();
+                List<ScannedImage> distinct = GetSelectedImages()?.Distinct(new ImageWidthHeightComparer()).ToList();
                 DistinctImages = $"{string.Join(",", distinct?.Select(z => z.Index))} {Translation.GetResStringValue("DOCUMENT")}";
                 SelectedImageWidthHeightIsEqual = IgnoreImageWidthHeight || distinct?.Count() == 1;
                 return SeçiliResim is not null &&
@@ -3632,16 +3632,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private ObservableCollection<T> FirstLastReverseSequence<T>(List<T> items, Func<T, int> indexSelector)
     {
-        items.Sort(
-            (a, b) =>
-            {
-                if (indexSelector(a) % 2 != indexSelector(b) % 2)
-                {
-                    return indexSelector(a) % 2 == 1 ? -1 : 1;
-                }
-
-                return indexSelector(a) % 2 == 0 ? indexSelector(b).CompareTo(indexSelector(a)) : indexSelector(a).CompareTo(indexSelector(b));
-            });
+        items.Sort((a, b) => indexSelector(a) % 2 != indexSelector(b) % 2 ? indexSelector(a) % 2 == 1 ? -1 : 1 : indexSelector(a) % 2 == 0 ? indexSelector(b).CompareTo(indexSelector(a)) : indexSelector(a).CompareTo(indexSelector(b)));
 
         return new ObservableCollection<T>(items);
     }
@@ -3693,6 +3684,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     private string GetPdfBatchNumberString(int i) => Scanner.PdfBatchNumberIsFirst ? $"{i + 1} {Scanner.PdfBatchNumberText}" : $"{Scanner.PdfBatchNumberText} {i + 1}";
+
+    private List<ScannedImage> GetSelectedImages() => Scanner?.Resimler?.Where(z => z.Seçili).ToList();
 
     private int? GetSelectedImagesCount() => Scanner?.Resimler?.Count(z => z.Seçili);
 
@@ -4433,7 +4426,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 count = Scanner.Resimler.Count(z => z.Seçili);
-                foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
+                foreach (ScannedImage image in GetSelectedImages())
                 {
                     BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.FlipImageAsync(AllImageRotationAngle));
                     bitmapframe.Freeze();
@@ -4451,7 +4444,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if (Keyboard.Modifiers == ModifierKeys.Alt)
             {
                 count = Scanner.Resimler.Count(z => z.Seçili);
-                foreach (ScannedImage image in Scanner.Resimler.Where(z => z.Seçili))
+                foreach (ScannedImage image in GetSelectedImages())
                 {
                     BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
                     bitmapframe.Freeze();
