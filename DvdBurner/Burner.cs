@@ -105,7 +105,7 @@ namespace DvdBurner
                             }
                             catch (Exception ex)
                             {
-                                ActionText = ex.Message.Trim();
+                                ActionText = ex?.Message.Trim();
                                 ActionTextForeground = Brushes.Red;
                             }
                             finally
@@ -180,7 +180,7 @@ namespace DvdBurner
                             }
                             catch (Exception ex)
                             {
-                                ActionText = ex.Message.Trim();
+                                ActionText = ex?.Message.Trim();
                                 ActionTextForeground = Brushes.Red;
                             }
                             finally
@@ -511,7 +511,7 @@ namespace DvdBurner
             }
             catch (Exception ex)
             {
-                ActionText = $"Hata{ex.Message}";
+                ActionText = $"Hata{ex?.Message}";
             }
         }
 

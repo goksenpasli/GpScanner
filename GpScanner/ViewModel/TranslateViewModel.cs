@@ -23,7 +23,7 @@ public class TranslateViewModel : InpcBase
     static TranslateViewModel()
     {
         speechSynthesizer = new SpeechSynthesizer();
-        TtsDilleri = speechSynthesizer.GetInstalledVoices()?.Select(z => z.VoiceInfo.Name)?.ToList();
+        TtsDilleri = speechSynthesizer.GetInstalledVoices()?.Select(z => z.VoiceInfo?.Name)?.ToList();
     }
 
     public TranslateViewModel()

@@ -98,7 +98,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 
@@ -114,7 +114,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex?.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         return false;
@@ -151,7 +151,7 @@ public static class StillImageHelper
                     }
                     catch (Exception ex)
                     {
-                        await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.Message);
+                        await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex?.Message);
                     }
                     finally
                     {
@@ -183,7 +183,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 

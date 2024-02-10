@@ -42,7 +42,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(ArchivePath));
@@ -137,7 +137,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
 
                 ToplamOran = (double)Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / Arşivİçerik.Sum(z => z.Boyut) * 100;

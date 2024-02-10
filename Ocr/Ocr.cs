@@ -46,7 +46,7 @@ public static class Ocr
         using TesseractEngine engine = CreateTesseractEngine(tesseractlanguage);
         using Pix pixImage = Pix.LoadFromFile(dosya);
         using Page page = engine.Process(pixImage);
-        using ResultIterator iterator = page.GetIterator();
+        using ResultIterator iterator = page?.GetIterator();
         if (iterator != null)
         {
             iterator.Begin();
@@ -116,7 +116,7 @@ public static class Ocr
         using TesseractEngine engine = CreateTesseractEngine(tesseractlanguage);
         using Pix pixImage = Pix.LoadFromMemory(dosya);
         using Page page = engine.Process(pixImage);
-        using ResultIterator iterator = page.GetIterator();
+        using ResultIterator iterator = page?.GetIterator();
         if (iterator != null)
         {
             iterator.Begin();
@@ -139,7 +139,7 @@ public static class Ocr
         using TesseractEngine engine = CreateTesseractEngine(tesseractlanguage);
         using Pix pixImage = Pix.LoadFromMemory(dosya);
         using Page page = engine.Process(pixImage);
-        using ResultIterator iterator = page.GetIterator();
+        using ResultIterator iterator = page?.GetIterator();
         if (iterator != null)
         {
             iterator.Begin();
@@ -160,7 +160,7 @@ public static class Ocr
             if (iterator?.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect) == true)
             {
                 Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
-                OcrData item = new() { Text = iterator.GetText(pageIteratorLevel).Trim(), Rect = imgrect };
+                OcrData item = new() { Text = iterator?.GetText(pageIteratorLevel).Trim(), Rect = imgrect };
                 if (!string.IsNullOrWhiteSpace(item.Text))
                 {
                     ocrdata.Add(item);

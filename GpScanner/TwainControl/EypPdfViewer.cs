@@ -255,7 +255,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             }
             catch (Exception ex)
             {
-                _ = Application.Current.Dispatcher.InvokeAsync(() => _ = MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
+                _ = Application.Current.Dispatcher.InvokeAsync(() => _ = MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
             }
         }
     }

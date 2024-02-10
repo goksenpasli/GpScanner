@@ -238,7 +238,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 

@@ -23,14 +23,32 @@
     </UserControl.Resources>
     <GroupBox>
         <GroupBox.Header>
-            <Button Command="{Binding ResetTesseractFilter}">
-                <StackPanel Orientation="Horizontal">
-                    <Image Width="16"
-                        Height="16"
-                        Source="/TwainControl;component/Icons/delete.png" />
-                    <TextBlock Text="{twainctrl:Loc RESET}" />
-                </StackPanel>
-            </Button>
+            <UniformGrid Columns="2">
+                <Button Command="{Binding ResetTesseractFilter}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="16"
+                            Height="16"
+                            Source="/TwainControl;component/Icons/delete.png" />
+                        <TextBlock Text="{twainctrl:Loc RESET}" />
+                    </StackPanel>
+                </Button>
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <Hyperlink BaselineAlignment="Center"
+                        Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                        CommandParameter="{Binding Tessdatafolder}"
+                        TextDecorations="None">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="4" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Hyperlink>
+                    <Run BaselineAlignment="Center" Text="TESSERACT" />
+                </TextBlock>
+            </UniformGrid>
         </GroupBox.Header>
         <Grid>
             <Grid.ColumnDefinitions>
@@ -117,68 +135,49 @@
                     </FlowDocument>
                 </FlowDocumentScrollViewer>
             </Extension:FadedToolTipControl>
-            <GroupBox Grid.Column="1">
-                <GroupBox.Header>
-                    <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                        <Hyperlink BaselineAlignment="Center"
-                            Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                            CommandParameter="{Binding Tessdatafolder}"
-                            TextDecorations="None">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="4" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Hyperlink>
-                        <Run BaselineAlignment="Center" Text="TESSERACT" />
-                    </TextBlock>
-                </GroupBox.Header>
-                <ListBox x:Name="LbTessFiles"
-                    MinHeight="16"
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                    twainctrl:Policy.PolicyName="DefaultTtsLang"
-                    Background="{StaticResource BorderBackground}"
-                    BorderBrush="{Binding CheckedFiles.Count, Mode=OneWay, Converter={StaticResource ListBoxNumberRangeToColorConverter}}"
-                    BorderThickness="2"
-                    ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
-                    SelectionMode="Extended"
-                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="ListBoxItem">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
-                                            <CheckBox.Content>
-                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                    <Run d:Text="DisplayName"
-                                                        BaselineAlignment="Center"
-                                                        Text="{Binding Path=DisplayName, Mode=OneWay}" />
-                                                    <Hyperlink BaselineAlignment="Center"
-                                                        Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                        CommandParameter="{Binding Mode=OneWay}"
-                                                        FontFamily="Segoe UI Black"
-                                                        IsEnabled="{Binding DataContext.IsFolderWritable, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                        TextDecorations="None">
-                                                        <InlineUIContainer>
-                                                            <Image Width="16"
-                                                                Height="16"
-                                                                Source="/TwainControl;component/Icons/delete.png" />
-                                                        </InlineUIContainer>
-                                                    </Hyperlink>
-                                                </TextBlock>
-                                            </CheckBox.Content>
-                                        </CheckBox>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
-            </GroupBox>
+            <ListBox x:Name="LbTessFiles"
+                Grid.Column="1"
+                MinHeight="16"
+                d:ItemsSource="{d:SampleData ItemCount=5}"
+                twainctrl:Policy.PolicyName="DefaultTtsLang"
+                Background="{StaticResource BorderBackground}"
+                BorderBrush="{Binding CheckedFiles.Count, Mode=OneWay, Converter={StaticResource ListBoxNumberRangeToColorConverter}}"
+                BorderThickness="2"
+                ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
+                SelectionMode="Extended"
+                Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate>
+                                    <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
+                                        <CheckBox.Content>
+                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                <Run d:Text="DisplayName"
+                                                    BaselineAlignment="Center"
+                                                    Text="{Binding Path=DisplayName, Mode=OneWay}" />
+                                                <Hyperlink BaselineAlignment="Center"
+                                                    Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                    FontFamily="Segoe UI Black"
+                                                    IsEnabled="{Binding DataContext.IsFolderWritable, ValidatesOnDataErrors=True, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                    TextDecorations="None">
+                                                    <InlineUIContainer>
+                                                        <Image Width="16"
+                                                            Height="16"
+                                                            Source="/TwainControl;component/Icons/delete.png" />
+                                                    </InlineUIContainer>
+                                                </Hyperlink>
+                                            </TextBlock>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+            </ListBox>
         </Grid>
     </GroupBox>
 </UserControl>

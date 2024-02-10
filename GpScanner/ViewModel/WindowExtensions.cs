@@ -30,7 +30,7 @@ public static class WindowExtensions
         IntPtr systemMenuHandle = GetSystemMenu(new WindowInteropHelper(form).Handle, false);
         _ = InsertMenu(systemMenuHandle, 7, MF_BYPOSITION, _AboutSysMenuID, Translation.GetResStringValue("ABOUT"));
         HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(form).Handle);
-        source.AddHook(WndProc);
+        source?.AddHook(WndProc);
     }
 
     internal static void HideMinimizeButtons(this Window window)

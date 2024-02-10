@@ -33,7 +33,7 @@ namespace Extensions
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(ex.Message);
+                        throw new ArgumentException(ex?.Message);
                     }
                 },
                 parameter => !string.IsNullOrWhiteSpace(parameter as string));

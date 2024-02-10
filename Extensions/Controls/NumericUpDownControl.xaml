@@ -32,10 +32,9 @@
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                 <RepeatButton.Content>
-                    <Viewbox>
                         <Path x:Name="Up"
                             Width="9.5"
-                            MinHeight="8.5"
+                            Height="7"
                             Data="M0,0L5,5 10,0z"
                             Fill="{TemplateBinding Foreground}"
                             RenderTransformOrigin="0.5,0.5"
@@ -45,7 +44,6 @@
                                 <RotateTransform Angle="90" />
                             </Path.RenderTransform>
                         </Path>
-                    </Viewbox>
                 </RepeatButton.Content>
             </RepeatButton>
             <TextBox Grid.Row="0"
@@ -68,10 +66,9 @@
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                 <RepeatButton.Content>
-                    <Viewbox>
                         <Path x:Name="Down"
                             Width="9.5"
-                            MinHeight="8.5"
+                            Height="7"
                             Data="M0,0L5,5 10,0z"
                             Fill="{TemplateBinding Foreground}"
                             RenderTransformOrigin="0.5,0.5"
@@ -81,7 +78,6 @@
                                 <RotateTransform Angle="-90" />
                             </Path.RenderTransform>
                         </Path>
-                    </Viewbox>
                 </RepeatButton.Content>
             </RepeatButton>
         </Grid>
@@ -125,7 +121,6 @@
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                 <RepeatButton.Content>
-                    <Viewbox>
                         <Path x:Name="Up"
                             Width="9.5"
                             Height="7"
@@ -138,7 +133,6 @@
                                 <RotateTransform Angle="-180" />
                             </Path.RenderTransform>
                         </Path>
-                    </Viewbox>
                 </RepeatButton.Content>
             </RepeatButton>
             <RepeatButton x:Name="PART_LineDownButton"
@@ -151,7 +145,6 @@
                 Style="{StaticResource ScrollBarButton}"
                 Visibility="{Binding NumericUpDownButtonsVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                 <RepeatButton.Content>
-                    <Viewbox>
                         <Path x:Name="Down"
                             Width="9.5"
                             Height="7"
@@ -160,7 +153,6 @@
                             RenderTransformOrigin="0.5,0.5"
                             Stretch="Fill"
                             StrokeLineJoin="Round" />
-                    </Viewbox>
                 </RepeatButton.Content>
             </RepeatButton>
         </Grid>

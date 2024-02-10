@@ -223,7 +223,7 @@ public class Compressor : Control, INotifyPropertyChanged
                 catch (Exception ex)
                 {
                     imagefile = null;
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             });
         return document;
@@ -382,7 +382,7 @@ public class Compressor : Control, INotifyPropertyChanged
         catch (Exception ex)
         {
             bitmapFrames = null;
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
 
         return document;

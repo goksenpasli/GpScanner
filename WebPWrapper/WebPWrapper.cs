@@ -188,7 +188,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.Decode");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.Decode");
             }
             finally
             {
@@ -256,7 +256,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.Thumbnail");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.Thumbnail");
             }
             finally
             {
@@ -339,7 +339,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.Thumbnail");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.Thumbnail");
             }
             finally
             {
@@ -370,7 +370,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.Load");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.Load");
             }
         }
 
@@ -383,7 +383,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.Load");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.Load");
             }
         }
         #endregion | Public Decode Functions |
@@ -429,7 +429,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.EncodeLossless (Simple)");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.EncodeLossless (Simple)");
             }
             finally
             {
@@ -535,7 +535,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.EncodeLossly");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.EncodeLossly");
             }
             finally
             {
@@ -650,7 +650,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.Save");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.Save");
             }
         }
         #endregion | Public Encode Functions |
@@ -704,7 +704,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.GetInfo");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.GetInfo");
             }
             finally
             {
@@ -814,7 +814,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.GetPictureDistortion");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.GetPictureDistortion");
             }
             finally
             {
@@ -861,7 +861,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.GetVersion");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.GetVersion");
             }
         }
         #endregion | Another Public Functions |
@@ -990,7 +990,7 @@ namespace WebPWrapper
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn WebP.AdvancedEncode");
+                throw new Exception($"{ex?.Message}\r\nIn WebP.AdvancedEncode");
             }
             finally
             {

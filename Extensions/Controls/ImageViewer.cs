@@ -19,15 +19,6 @@ using System.Windows.Xps;
 
 namespace Extensions;
 
-public enum FitImageOrientation
-{
-    None = 0,
-
-    Width = 1,
-
-    Height = 2
-}
-
 [TemplatePart(Name = "PanoramaViewPort", Type = typeof(Viewport3D))]
 [TemplatePart(Name = "panoramaBrush", Type = typeof(DiffuseMaterial))]
 public class ImageViewer : Control, INotifyPropertyChanged, IDisposable

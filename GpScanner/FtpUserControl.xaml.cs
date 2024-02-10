@@ -118,7 +118,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 
@@ -134,7 +134,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 }

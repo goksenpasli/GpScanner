@@ -377,7 +377,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn MozJpeg.Decode");
+                throw new Exception($"{ex?.Message}\r\nIn MozJpeg.Decode");
             }
             finally
             {
@@ -425,7 +425,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn MozJpeg.GetInfo");
+                throw new Exception($"{ex?.Message}\r\nIn MozJpeg.GetInfo");
             }
             finally
             {
@@ -452,7 +452,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn MozJpeg.Load");
+                throw new Exception($"{ex?.Message}\r\nIn MozJpeg.Load");
             }
         }
         #endregion | Public Decompress Functions |
@@ -533,7 +533,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn MozJpeg.Encode");
+                throw new Exception($"{ex?.Message}\r\nIn MozJpeg.Encode");
             }
             finally
             {
@@ -560,7 +560,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn MozJpeg.Save");
+                throw new Exception($"{ex?.Message}\r\nIn MozJpeg.Save");
             }
         }
         #endregion | Public Compress Functions |
@@ -617,7 +617,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn MozJpeg.GetPixelsPerInch");
+                throw new Exception($"{ex?.Message}\r\nIn MozJpeg.GetPixelsPerInch");
             }
         }
         #endregion | Private Functions |
@@ -650,7 +650,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn clsArray.Locate");
+                throw new Exception($"{ex?.Message}\r\nIn clsArray.Locate");
             }
         }
 
@@ -662,7 +662,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn clsArray.IsEmptyLocate");
+                throw new Exception($"{ex?.Message}\r\nIn clsArray.IsEmptyLocate");
             }
         }
 
@@ -687,7 +687,7 @@ namespace MozJpeg
             }
             catch (Exception ex)
             {
-                throw new Exception($"{ex.Message}\r\nIn clsArray.IsMatch");
+                throw new Exception($"{ex?.Message}\r\nIn clsArray.IsMatch");
             }
         }
     }

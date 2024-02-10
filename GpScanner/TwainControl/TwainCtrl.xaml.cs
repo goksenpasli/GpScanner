@@ -141,7 +141,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private Orientation selectedOrientation = Orientation.Default;
     private Paper selectedPaper;
     private PageRotation selectedRotation = PageRotation.NONE;
-    private int selectedTabIndex = 0;
+    private int selectedTabIndex;
     private List<ScannedImage[]> splittedIndexImages;
     private string textSplitList;
     private Twain twain;
@@ -898,7 +898,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(ex.Message);
+                        throw new ArgumentException(ex?.Message);
                     }
                 }
             },
@@ -2903,7 +2903,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            _ = Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
+            _ = Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
         }
         return null;
     }
@@ -2928,7 +2928,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new ArgumentException(ex?.Message);
             }
         }
     }
@@ -2952,7 +2952,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 
@@ -3233,7 +3233,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 

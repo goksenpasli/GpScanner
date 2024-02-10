@@ -74,8 +74,9 @@
     </Compile>
     <Compile Include="Controls\ContributionControl.cs" />
     <Compile Include="Controls\ContributionData.cs" />
-    <Compile Include="Controls\FadedTooltipControl.cs" />
+    <Compile Include="Controls\FadedToolTipControl.cs" />
     <Compile Include="Controls\FileBreadcrumbControl.cs" />
+    <Compile Include="Controls\FitImageOrientation.cs" />
     <Compile Include="Controls\Helpers.cs" />
     <Compile Include="Controls\Chart.cs" />
     <Compile Include="Controls\ColorPicker.cs" />

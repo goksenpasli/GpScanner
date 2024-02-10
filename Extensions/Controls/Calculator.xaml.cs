@@ -59,7 +59,7 @@ namespace Extensions.Controls
             }
             catch (Exception ex)
             {
-                DisplayError(ex.Message);
+                DisplayError(ex?.Message);
             }
         }
 

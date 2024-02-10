@@ -66,15 +66,7 @@ namespace Extensions
         {
             if (d is Popup popup)
             {
-                popup.Opened += (s, e) =>
-                                {
-                                    IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
-
-                                    if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
-                                    {
-                                        _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
-                                    }
-                                };
+                ExtensionMethods.PopupOpened(f, popup);
             }
         }
 

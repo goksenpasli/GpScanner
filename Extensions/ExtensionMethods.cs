@@ -8,6 +8,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls.Primitives;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Brush = System.Windows.Media.Brush;
@@ -354,7 +356,20 @@ public static class ExtensionMethods
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
+    }
+
+    public static void PopupOpened(DependencyPropertyChangedEventArgs f, Popup popup)
+    {
+        popup.Opened += (s, e) =>
+        {
+            IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
+
+            if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
+            {
+                _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
+            }
+        };
     }
 }

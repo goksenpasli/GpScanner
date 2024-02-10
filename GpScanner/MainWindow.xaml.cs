@@ -86,7 +86,7 @@ public partial class MainWindow : Window
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             }
             if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)

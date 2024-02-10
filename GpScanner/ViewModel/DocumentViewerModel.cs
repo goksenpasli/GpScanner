@@ -60,7 +60,7 @@ public class DocumentViewerModel : InpcBase
                     BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = FilePath, Resim = bitmapFrame };
-                    Scanner?.Resimler.Add(scannedImage);
+                    Scanner?.Resimler?.Add(scannedImage);
                     bitmapFrame = null;
                     scannedImage = null;
                     ms = null;
@@ -182,7 +182,7 @@ public class DocumentViewerModel : InpcBase
                 async () =>
                 {
                     using AppDbContext context = new();
-                    return string.Join(" ", (await context.Data.AsNoTracking().ToListAsync())?.Where(z => z.FileName == FilePath)?.Select(z => z.FileContent));
+                    return string.Join(" ", (await context?.Data?.AsNoTracking().ToListAsync())?.Where(z => z.FileName == FilePath)?.Select(z => z.FileContent));
                 });
         }
     }

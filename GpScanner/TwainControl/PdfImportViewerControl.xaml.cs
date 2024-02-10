@@ -104,7 +104,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => true);
@@ -122,7 +122,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => Ink?.Strokes?.Any() == true);
@@ -138,7 +138,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => Ink?.Strokes?.Any() == true);
@@ -156,7 +156,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => Ink?.Strokes?.Any() == true);
@@ -174,7 +174,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => true);
@@ -202,7 +202,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => true);

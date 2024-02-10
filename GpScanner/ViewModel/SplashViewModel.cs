@@ -39,6 +39,7 @@ namespace GpScanner.ViewModel
             { "BELGIË", "flag-of-belgium.png" },
             { "SVENSKA", "flag-of-sweden.png" },
             { "SUOMI", "flag-of-finland.png" },
+            { "MALAYSIAN", "Flag_of_Malaysia.png" },
         };
         private const string basePath = "pack://application:,,,/GpScanner;component/Resources/";
         private Uri flagUri;
@@ -65,7 +66,7 @@ namespace GpScanner.ViewModel
                 string fullPath = $"{basePath}{flagPath}";
                 return new Uri(fullPath);
             }
-            return new Uri($"{basePath}{LanguageFlags["DEFAULT"]}");
+            return new Uri($"{basePath}{LanguageFlags["TÜRKÇE"]}");
         }
     }
 }

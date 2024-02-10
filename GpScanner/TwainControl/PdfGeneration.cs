@@ -171,7 +171,7 @@ public static class PdfGeneration
         {
             imagefiles = null;
             ScannedText = null;
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
 
         return document;
@@ -217,7 +217,7 @@ public static class PdfGeneration
         {
             imagefile = null;
             ScannedText = null;
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
 
         return document;
@@ -315,7 +315,7 @@ public static class PdfGeneration
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 
@@ -436,7 +436,7 @@ public static class PdfGeneration
         {
             bitmapFrames = null;
             ScannedText = null;
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
 
         return Task.FromResult(document);
@@ -504,7 +504,7 @@ public static class PdfGeneration
         catch (Exception ex)
         {
             pdffiles = null;
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 
@@ -533,7 +533,7 @@ public static class PdfGeneration
             catch (Exception ex)
             {
                 files = null;
-                throw new ArgumentException(ex.Message);
+                throw new ArgumentException(ex?.Message);
             }
         }
     }

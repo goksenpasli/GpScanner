@@ -145,7 +145,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(ex.Message);
+                        throw new ArgumentException(ex?.Message);
                     }
                 }
             },
@@ -166,7 +166,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(ex.Message);
+                        throw new ArgumentException(ex?.Message);
                     }
                 }
             },

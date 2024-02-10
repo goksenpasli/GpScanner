@@ -61,7 +61,7 @@ namespace GpScanner
                 .InvokeAsync(
                     async () =>
                     {
-                        _ = MessageBox.Show(ex.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        _ = MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning);
                         await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.StackTrace);
                     });
             }

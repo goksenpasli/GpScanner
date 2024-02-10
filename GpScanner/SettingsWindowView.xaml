@@ -124,8 +124,7 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <Button Margin="0,0,20,0"
-                                HorizontalAlignment="Right"
+                            <Button HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Background="{x:Null}"
                                 BorderBrush="{x:Null}"
@@ -708,6 +707,9 @@
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
                                 </StackPanel>
                             </CheckBox>
+                            <StackPanel Orientation="Horizontal">
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                            </StackPanel>
                             <CheckBox VerticalAlignment="Center" IsChecked="{Binding Path=BackUpDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                 <CheckBox.Content>
                                     <TextBlock>
@@ -977,21 +979,48 @@
                         Height="256"
                         HorizontalAlignment="Left"
                         Source="{Binding Converter={StaticResource JumboSizeFilePathToIconConverter}, Source=.dll}" />
-                    <Grid Width="650" HorizontalAlignment="Right">
+                    <Grid Width="680" HorizontalAlignment="Right">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="150" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <TextBox d:Text="SqlText"
+                        <UniformGrid Columns="2">
+                            <ComboBox DisplayMemberPath="[1]"
+                                ItemsSource="{Binding SampleSqlQueryLists}"
+                                SelectedValue="{Binding SqlText}"
+                                SelectedValuePath="[1]" />
+                            <CheckBox VerticalAlignment="Center"
+                                d:Content="SQL QUERY"
+                                IsChecked="{Binding IsSqlQuery}">
+                                <CheckBox.Style>
+                                    <Style TargetType="CheckBox">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsSqlQuery}" Value="True">
+                                                <Setter Property="Content" Value="SQL QUERY" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding IsSqlQuery}" Value="False">
+                                                <Setter Property="Content" Value="SQL COMMAND" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </CheckBox.Style>
+                            </CheckBox>
+                        </UniformGrid>
+                        <Extensions:ButtonedTextBox Grid.Row="1"
+                            d:Text="SqlText"
                             AcceptsReturn="True"
                             Background="{StaticResource BorderBackground}"
                             BorderBrush="{StaticResource GroupBoxBackGround}"
                             FontSize="16"
+                            FontSizeButtonVisibility="Visible"
+                            OpenButtonVisibility="Collapsed"
                             Text="{Binding SqlText, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                             TextWrapping="Wrap"
                             Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}"
                             VerticalScrollBarVisibility="Auto" />
-                        <DataGrid Grid.Row="1"
+                        <DataGrid Grid.Row="2"
+                            d:ItemsSource="{d:SampleData ItemCount=5}"
                             AutoGenerateColumns="False"
                             CanUserAddRows="False"
                             CanUserDeleteRows="True"
@@ -1020,8 +1049,39 @@
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Binding="{Binding Id, Mode=OneWay}" Header="ID" />
-                                <DataGridTextColumn Binding="{Binding FileName, Mode=OneWay}" Header="{twainctrl:Loc FILENAME}" />
-                                <DataGridTextColumn Binding="{Binding QrData, Mode=OneWay}" Header="QR" />
+                                <DataGridTemplateColumn Header="{twainctrl:Loc FILENAME}" SortMemberPath="FileName">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock>
+                                                <Run BaselineAlignment="Center" Text="{Binding FileName, Mode=OneWay}" />
+                                                <Run BaselineAlignment="Center"
+                                                    FontFamily="Webdings"
+                                                    FontSize="20"
+                                                    Foreground="Green"
+                                                    Text="N">
+                                                    <Run.ToolTip>
+                                                        <ToolTip>
+                                                            <ContentControl Width="150"
+                                                                Height="150"
+                                                                Content="{Binding Mode=OneWay, Path=FileName}"
+                                                                ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                                                        </ToolTip>
+                                                    </Run.ToolTip>
+                                                </Run>
+                                            </TextBlock>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTemplateColumn Header="QR" SortMemberPath="QrData">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Image MaxWidth="80"
+                                                MaxHeight="80"
+                                                d:Source="{Binding Source='GPSCANNER', Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}"
+                                                Source="{Binding QrData, Mode=OneWay, Converter={StaticResource StringToQrBitmapImageConverter}}" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                                 <DataGridTextColumn Width="300"
                                     Binding="{Binding FileContent, Mode=OneWay}"
                                     Header="{twainctrl:Loc CONTENT}">

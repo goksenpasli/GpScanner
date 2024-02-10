@@ -47,8 +47,6 @@ using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner.ViewModel;
 
-public class BatchFiles : TessFiles;
-
 public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
 {
     public static readonly string ErrorFile = "Error.log";
@@ -76,7 +74,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string calendarDesc;
     private XmlLanguage calendarLang;
     private bool calendarPanelIsExpanded;
-    private int checkedPdfCount = 0;
+    private int checkedPdfCount;
     private ObservableCollection<BatchPdfData> compressedFiles = [];
     private ObservableCollection<ContributionData> contributionData;
     private int contributionDocumentCount;
@@ -95,6 +93,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private ObservableCollection<Size> getPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
     private int ındexedFileCount;
     private bool ısAdministrator;
+    private bool ısSqlQuery = true;
     private FlowDirection langFlowDirection = FlowDirection.LeftToRight;
     private bool listBoxBorderAnimation;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
@@ -182,7 +181,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(ex.Message);
+                        throw new ArgumentException(ex?.Message);
                     }
                 }
             },
@@ -344,7 +343,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
                 catch (Exception ex)
                 {
-                    await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
+                    await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
                 }
                 if (Shutdown)
                 {
@@ -390,10 +389,6 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                             ocrdata = await unIndexedFile.OcrAsync(Settings.Default.DefaultTtsLang);
                             ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
                         }
-                        if (string.IsNullOrEmpty(ocrtext))
-                        {
-                            ocrtext = " ";
-                        }
 
                         using (AppDbContext context = new())
                         {
@@ -410,7 +405,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
+                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
                     }
                 }
                 if (Shutdown)
@@ -809,7 +804,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
+                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
                     }
                 }
 
@@ -889,7 +884,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
+                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
                     }
                 }
 
@@ -1089,14 +1084,20 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     using AppDbContext context = new();
                     if (context.Database.Exists())
                     {
-                        await context.Database.ExecuteSqlCommandAsync(SqlText);
-                        SqlQueryData = await context.Database.SqlQuery<Data>("select * from Data").ToListAsync();
+                        if (IsSqlQuery)
+                        {
+                            SqlQueryData = await context.Database.SqlQuery<Data>(SqlText).ToListAsync();
+                            return;
+                        }
+                        _ = await context.Database.ExecuteSqlCommandAsync(SqlText);
                         _ = await context.SaveChangesAsync();
+                        SqlText = "Select * From Data;";
+                        SqlQueryData = await context.Database.SqlQuery<Data>(SqlText).ToListAsync();
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => File.Exists(Settings.Default.DatabaseFile) && !string.IsNullOrWhiteSpace(SqlText) && !sqlitedangerouscommands.Any(SqlText.ToLower().Contains));
@@ -1109,14 +1110,14 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     using AppDbContext context = new();
                     if (context.Database.Exists())
                     {
-                        context.Database.ExecuteSqlCommand(TransactionalBehavior.DoNotEnsureTransaction, "VACUUM;");
+                        _ = await context.Database.ExecuteSqlCommandAsync(TransactionalBehavior.DoNotEnsureTransaction, "VACUUM;");
                         _ = await context.SaveChangesAsync();
-                        MessageBox.Show(Translation.GetResStringValue("SUCCESS"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                        _ = MessageBox.Show(Translation.GetResStringValue("SUCCESS"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new ArgumentException(ex.Message);
+                    throw new ArgumentException(ex?.Message);
                 }
             },
             parameter => File.Exists(Settings.Default.DatabaseFile));
@@ -1616,6 +1617,19 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public bool IsSqlQuery
+    {
+        get => ısSqlQuery;
+        set
+        {
+            if (ısSqlQuery != value)
+            {
+                ısSqlQuery = value;
+                OnPropertyChanged(nameof(IsSqlQuery));
+            }
+        }
+    }
+
     public FlowDirection LangFlowDirection
     {
         get => langFlowDirection;
@@ -1897,6 +1911,8 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> RunSqliteCommand { get; }
 
     public RelayCommand<object> RunSqliteVacuumCommand { get; }
+
+    public List<string[]> SampleSqlQueryLists { get; } = [["1", "Select * From Data;"], ["2", "Select * From Data Where FileContent='';"], ["3", "Select * From Data Where QrData='';"],];
 
     public ICommand SavePatchProfile { get; }
 
@@ -2534,6 +2550,13 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                 TesseractViewModel.SeçiliDil = "Finnish";
 
                 break;
+
+            case "MALAYSIAN":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("ms");
+                CalendarLang = XmlLanguage.GetLanguage("ms");
+                TesseractViewModel.SeçiliDil = "Malay";
+
+                break;
         }
     }
 
@@ -2758,7 +2781,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex.Message);
+            throw new ArgumentException(ex?.Message);
         }
     }
 
@@ -2785,7 +2808,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
         catch (Exception ex)
         {
-            await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
+            await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
         }
         return null;
     }
@@ -3030,7 +3053,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
             catch (Exception ex)
             {
-                await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
+                await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
             }
         }
     }

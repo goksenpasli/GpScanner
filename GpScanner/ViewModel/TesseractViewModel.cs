@@ -49,7 +49,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        throw new ArgumentException(ex.Message);
+                        throw new ArgumentException(ex?.Message);
                     }
                 }
             },
@@ -70,7 +70,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         }
                         catch (Exception ex)
                         {
-                            throw new ArgumentException(ex.Message);
+                            throw new ArgumentException(ex?.Message);
                         }
                     }
                 }
@@ -110,7 +110,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        _ = MessageBox.Show(ex.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                        _ = MessageBox.Show(ex?.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
                         if (File.Exists(datafile))
                         {
                             File.Delete(datafile);

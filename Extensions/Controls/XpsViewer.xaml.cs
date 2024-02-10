@@ -52,7 +52,7 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
             }
             catch (Exception ex)
             {
-                throw new ArgumentException(ex.Message);
+                throw new ArgumentException(ex?.Message);
             }
         }
     }
