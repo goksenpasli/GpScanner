@@ -271,7 +271,7 @@
                         <TextBlock.Text>
                             <MultiBinding Converter="{StaticResource ResourceLanguageStringConverter}">
                                 <Binding Mode="OneWay" Source="STOP" />
-                                <Binding Mode="OneWay" Path="Tag.Scanner.UiLanguageChanged" />
+                                <Binding Mode="OneWay" Path="Tag.Scanner.UiLanguage" />
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
@@ -288,7 +288,7 @@
                                 <TextBlock.Text>
                                     <MultiBinding Converter="{StaticResource ResourceLanguageStringConverter}">
                                         <Binding Mode="OneWay" Path="DataContext[0].ErrorContent" />
-                                        <Binding Mode="OneWay" Path="Tag.Scanner.UiLanguageChanged" />
+                                        <Binding Mode="OneWay" Path="Tag.Scanner.UiLanguage" />
                                     </MultiBinding>
                                 </TextBlock.Text>
                             </TextBlock>

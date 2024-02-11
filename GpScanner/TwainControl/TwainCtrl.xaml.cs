@@ -3826,8 +3826,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void Language_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        Scanner.UiLanguageChanged = false;
-        Scanner.UiLanguageChanged = true;
+        if (sender is TranslationSource translationSource)
+        {
+            Scanner.UiLanguage = translationSource.CurrentCulture;
+        }
         if (!Settings.Default.UseSelectedProfile)
         {
             Scanner.FileName = Translation.GetResStringValue("DEFAULTSCANNAME");

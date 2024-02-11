@@ -30,6 +30,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:SplitConverter x:Key="SplitConverter" />
             <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
+            <Converter:CentimetersToInchesConverter x:Key="CentimetersToInchesConverter" />
             <Converter:FileDateContextMenuConverter x:Key="FileDateContextMenuConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="ListFilePathToIconConverter" IconSize="extraLarge" />
@@ -925,17 +926,32 @@
                                                                 DockPanel.Dock="Top"
                                                                 FontSize="9"
                                                                 Foreground="Red"
-                                                                Text="{Binding Width, StringFormat=\{0\}cm}"
-                                                                TextWrapping="Wrap" />
+                                                                TextWrapping="Wrap">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding Converter="{StaticResource CentimetersToInchesConverter}">
+                                                                        <Binding Mode="OneWay" Path="Width" />
+                                                                        <Binding Mode="OneWay"
+                                                                            Path="Scanner.UiLanguage"
+                                                                            RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
+                                                            </TextBlock>
                                                             <TextBlock VerticalAlignment="Center"
                                                                 DockPanel.Dock="Left"
                                                                 FontSize="9"
                                                                 Foreground="Red"
                                                                 RenderTransformOrigin="0.5,0.5"
                                                                 SnapsToDevicePixels="True"
-                                                                Text="{Binding Height, StringFormat=\{0\}cm}"
                                                                 TextWrapping="Wrap"
                                                                 UseLayoutRounding="True">
+                                                                <TextBlock.Text>
+                                                                    <MultiBinding Converter="{StaticResource CentimetersToInchesConverter}">
+                                                                        <Binding Mode="OneWay" Path="Height" />
+                                                                        <Binding Mode="OneWay"
+                                                                            Path="Scanner.UiLanguage"
+                                                                            RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
+                                                                    </MultiBinding>
+                                                                </TextBlock.Text>
                                                                 <TextBlock.LayoutTransform>
                                                                     <RotateTransform Angle="-90" />
                                                                 </TextBlock.LayoutTransform>
@@ -1040,7 +1056,7 @@
                                                             <MultiBinding Converter="{StaticResource EnumOrientationToConvertedLanguageTextConverter}">
                                                                 <Binding Mode="OneWay" />
                                                                 <Binding Mode="OneWay"
-                                                                    Path="Scanner.UiLanguageChanged"
+                                                                    Path="Scanner.UiLanguage"
                                                                     RelativeSource="{RelativeSource AncestorType=local:TwainCtrl}" />
                                                             </MultiBinding>
                                                         </Run.Text>

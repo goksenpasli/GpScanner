@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
@@ -97,7 +98,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private string targetColor = "Transparent";
     private double threshold;
     private int toolBarBwThreshold = 160;
-    private bool uiLanguageChanged;
+    private CultureInfo uiLanguage;
     private ObservableCollection<string> unsupportedFiles = [];
     private bool useFilmScanner;
     private bool useMozJpegEncoding;
@@ -1287,16 +1288,15 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public bool UiLanguageChanged
+    public CultureInfo UiLanguage
     {
-        get => uiLanguageChanged;
-
+        get => uiLanguage;
         set
         {
-            if (uiLanguageChanged != value)
+            if (uiLanguage != value)
             {
-                uiLanguageChanged = value;
-                OnPropertyChanged(nameof(UiLanguageChanged));
+                uiLanguage = value;
+                OnPropertyChanged(nameof(UiLanguage));
             }
         }
     }
