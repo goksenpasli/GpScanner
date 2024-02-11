@@ -1624,7 +1624,6 @@
                                     SelectedIndex="{Binding SeekIndex}"
                                     SelectedItem="{Binding SeçiliResim}"
                                     SelectionMode="Extended"
-                                    VirtualizingPanel.CacheLength="3,3"
                                     VirtualizingPanel.CacheLengthUnit="Item"
                                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                     VirtualizingPanel.ScrollUnit="Pixel"
@@ -1852,22 +1851,18 @@
                                                                             <TranslateTransform />
                                                                         </TransformGroup>
                                                                     </ToggleButton.RenderTransform>
-                                                                    <Viewbox>
-                                                                        <PdfViewer:PdfShadowedImage Width="{Binding ResimThumb.Width, Mode=OneWay}"
-                                                                            Height="{Binding ResimThumb.Height, Mode=OneWay}"
-                                                                            d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                            d:Source="/GpScanner;component/scanner.ico"
-                                                                            d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                                            <PdfViewer:PdfShadowedImage.Source>
-                                                                                <PriorityBinding>
-                                                                                    <Binding IsAsync="True"
-                                                                                        Mode="OneWay"
-                                                                                        Path="ResimThumb" />
-                                                                                    <Binding Converter="{StaticResource ListFilePathToIconConverter}" Path="FilePath" />
-                                                                                </PriorityBinding>
-                                                                            </PdfViewer:PdfShadowedImage.Source>
-                                                                        </PdfViewer:PdfShadowedImage>
-                                                                    </Viewbox>
+                                                                    <PdfViewer:PdfShadowedImage d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                        d:Source="/GpScanner;component/scanner.ico"
+                                                                        d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                                        <PdfViewer:PdfShadowedImage.Source>
+                                                                            <PriorityBinding>
+                                                                                <Binding IsAsync="True"
+                                                                                    Mode="OneWay"
+                                                                                    Path="ResimThumb" />
+                                                                                <Binding Converter="{StaticResource ListFilePathToIconConverter}" Path="FilePath" />
+                                                                            </PriorityBinding>
+                                                                        </PdfViewer:PdfShadowedImage.Source>
+                                                                    </PdfViewer:PdfShadowedImage>
                                                                 </ToggleButton>
                                                                 <TextBlock Canvas.Left="0"
                                                                     Canvas.Bottom="0"
@@ -2242,7 +2237,6 @@
                             Background="{StaticResource BorderBackground}"
                             Drop="LbEypContent_Drop"
                             ItemsSource="{Binding Scanner.UnsupportedFiles}"
-                            VirtualizingPanel.CacheLength="2,2"
                             VirtualizingPanel.CacheLengthUnit="Item"
                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                             VirtualizingPanel.ScrollUnit="Pixel"

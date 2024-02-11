@@ -190,6 +190,19 @@ public static class ExtensionMethods
         }
     }
 
+    public static void PopupOpened(DependencyPropertyChangedEventArgs f, Popup popup)
+    {
+        popup.Opened += (s, e) =>
+                        {
+                            IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
+
+                            if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
+                            {
+                                _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
+                            }
+                        };
+    }
+
     public static Brush RandomColor() => new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
@@ -231,6 +244,27 @@ public static class ExtensionMethods
         TransformedBitmap tb = new(bfPhoto, transformGroup);
         tb.Freeze();
         return tb;
+    }
+
+    public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran)
+    {
+        return bfPhoto is null
+               ? null
+               : await Task.Run(
+            () =>
+            {
+                ScaleTransform newTransform = new(oran, oran);
+                newTransform.Freeze();
+
+                TransformedBitmap tb = new();
+                tb.BeginInit();
+                tb.Source = bfPhoto;
+                tb.Transform = newTransform;
+                tb.EndInit();
+                tb.Freeze();
+
+                return tb;
+            });
     }
 
     public static string SetUniqueFile(this string path, string file, string extension, string seperator = "_")
@@ -358,18 +392,5 @@ public static class ExtensionMethods
         {
             throw new ArgumentException(ex?.Message);
         }
-    }
-
-    public static void PopupOpened(DependencyPropertyChangedEventArgs f, Popup popup)
-    {
-        popup.Opened += (s, e) =>
-        {
-            IntPtr hwnd = ((HwndSource)PresentationSource.FromVisual(popup.Child)).Handle;
-
-            if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
-            {
-                _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
-            }
-        };
     }
 }

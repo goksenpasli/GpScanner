@@ -40,7 +40,6 @@
                 EnableColumnVirtualization="True"
                 IsReadOnly="True"
                 ItemsSource="{Binding SelectedItem.DefaultView, ElementName=LbSayfalar, Mode=OneWay}"
-                VirtualizingPanel.CacheLength="2,2"
                 VirtualizingPanel.CacheLengthUnit="Item"
                 VirtualizingPanel.IsVirtualizing="True"
                 VirtualizingPanel.ScrollUnit="Pixel"

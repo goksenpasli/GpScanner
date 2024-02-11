@@ -222,7 +222,6 @@
                                                             <ListBox VerticalContentAlignment="Center"
                                                                 ItemsSource="{Binding Pages, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                                 SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                                                VirtualizingPanel.CacheLength="3,3"
                                                                 VirtualizingPanel.CacheLengthUnit="Item"
                                                                 VirtualizingPanel.ScrollUnit="Pixel"
                                                                 VirtualizingPanel.VirtualizationMode="Standard">
@@ -770,7 +769,6 @@
                             </Grid.RowDefinitions>
                             <ListBox ItemsSource="{Binding PdfPages}"
                                 SelectionMode="Extended"
-                                VirtualizingPanel.CacheLength="3,3"
                                 VirtualizingPanel.CacheLengthUnit="Item"
                                 VirtualizingPanel.ScrollUnit="Pixel"
                                 VirtualizingPanel.VirtualizationMode="Standard">
@@ -1274,7 +1272,6 @@
                             </Grid.RowDefinitions>
                             <ListBox ItemTemplateSelector="{StaticResource PdfEypListBoxViewerSelector}"
                                 ItemsSource="{Binding EypAttachments, Source={x:Reference PdfViewer}}"
-                                VirtualizingPanel.CacheLength="2,2"
                                 VirtualizingPanel.CacheLengthUnit="Item"
                                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                 VirtualizingPanel.ScrollUnit="Pixel"
@@ -1295,7 +1292,6 @@
                                     </TextBlock>
                                 </Expander.Header>
                                 <ListBox ItemsSource="{Binding EypNonSuportedAttachments, Source={x:Reference PdfViewer}}"
-                                    VirtualizingPanel.CacheLength="2,2"
                                     VirtualizingPanel.CacheLengthUnit="Item"
                                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                     VirtualizingPanel.ScrollUnit="Pixel"

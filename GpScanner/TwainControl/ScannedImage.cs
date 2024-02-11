@@ -87,14 +87,13 @@ public class ScannedImage : InpcBase
             {
                 resim = value;
                 OnPropertyChanged(nameof(Resim));
-                OnPropertyChanged(nameof(ResimThumb));
             }
         }
     }
 
     public BitmapSource ResimThumb
     {
-        get => Resim?.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+        get => resimThumb;
 
         set
         {
@@ -164,6 +163,10 @@ public class ScannedImage : InpcBase
             Resim = bf;
             FlipAngle = 0;
             GC.Collect();
+        }
+        if (e.PropertyName is "Resim" && Resim is not null)
+        {
+            ResimThumb = await Resim.ResizeAsync(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
         }
     }
 }

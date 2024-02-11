@@ -1026,7 +1026,6 @@
                             CanUserDeleteRows="True"
                             IsReadOnly="True"
                             ItemsSource="{Binding SqlQueryData}"
-                            VirtualizingPanel.CacheLength="3,3"
                             VirtualizingPanel.CacheLengthUnit="Item"
                             VirtualizingPanel.ScrollUnit="Pixel">
                             <DataGrid.Columns>

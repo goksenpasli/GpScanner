@@ -78,6 +78,7 @@
     <Compile Include="FitImageOrientation.cs" />
     <Compile Include="PageNumberOneUpConverter.cs" />
     <Compile Include="PdfPageToThumbImageConverter.cs" />
+    <Compile Include="PdfShadowedImage.cs" />
     <Compile Include="PdfViewer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
