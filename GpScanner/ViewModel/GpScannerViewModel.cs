@@ -3010,11 +3010,6 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                 ContributionDocumentCount = ContributionData.Sum(z => z.Count);
             }
         }
-
-        if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
-        {
-            CalendarPanelIsExpanded = true;
-        }
     }
 
     private void InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks)
@@ -3053,7 +3048,15 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
     }
 
-    private async Task LoadRemainderDatas() => ScannerData = new ScannerData { Reminder = await ReminderYükle(), GörülenReminder = await GörülenReminderYükle() };
+    private async Task LoadRemainderDatas()
+    {
+        ScannerData = new ScannerData { Reminder = await ReminderYükle(), GörülenReminder = await GörülenReminderYükle() };
+
+        if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
+        {
+            CalendarPanelIsExpanded = true;
+        }
+    }
 
     private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
 

@@ -108,9 +108,15 @@
                                 </Image.Source>
                             </Image>
                             <UniformGrid Columns="2" Rows="2">
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc CWIDTH}" />
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="{local:Loc CWIDTH}" />
+                                    <Run Text="(cm)" />
+                                </TextBlock>
                                 <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
-                                <TextBlock VerticalAlignment="Center" Text="{local:Loc CHEIGHT}" />
+                                <TextBlock VerticalAlignment="Center">
+                                    <Run Text="{local:Loc CHEIGHT}" />
+                                    <Run Text="(cm)" />
+                                </TextBlock>
                                 <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
                             </UniformGrid>
                         </StackPanel>

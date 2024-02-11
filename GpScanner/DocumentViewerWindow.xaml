@@ -31,7 +31,7 @@
         </Grid.ColumnDefinitions>
         <RepeatButton Command="{Binding Back}"
             CommandParameter="{Binding ElementName=Lb}"
-            Content="ç"
+            Content="é"
             FontFamily="Wingdings"
             FontSize="16" />
         <ContentControl x:Name="cnt"
@@ -84,7 +84,7 @@
         <RepeatButton Grid.Row="2"
             Command="{Binding Forward}"
             CommandParameter="{Binding ElementName=Lb}"
-            Content="è"
+            Content="ê"
             FontFamily="Wingdings"
             FontSize="16" />
     </Grid>

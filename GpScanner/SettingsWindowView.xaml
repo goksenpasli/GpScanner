@@ -494,25 +494,27 @@
                                     twainctrl:Policy.PolicyName="ContributionIsImageMode"
                                     IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                     <CheckBox.Content>
-                                        <Canvas Width="32" Height="32">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="19" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock Canvas.Bottom="2"
-                                                FontFamily="Webdings"
-                                                FontSize="26"
-                                                FontWeight="Bold"
-                                                Foreground="GreenYellow"
-                                                Text="" />
-                                        </Canvas>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="19" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock Canvas.Bottom="2"
+                                                    FontFamily="Webdings"
+                                                    FontSize="26"
+                                                    FontWeight="Bold"
+                                                    Foreground="GreenYellow"
+                                                    Text="" />
+                                            </Canvas>
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                        </StackPanel>
                                     </CheckBox.Content>
                                 </CheckBox>
-                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
                                 <StackPanel Orientation="Horizontal">
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 </StackPanel>
@@ -727,7 +729,8 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock VerticalAlignment="Center" Width="90"
+                                    <TextBlock Width="90"
+                                        VerticalAlignment="Center"
                                         Text="{twainctrl:Loc AUTOPATH}"
                                         TextWrapping="Wrap" />
                                 </StackPanel>
