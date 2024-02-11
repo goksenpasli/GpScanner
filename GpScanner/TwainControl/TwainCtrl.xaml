@@ -1499,9 +1499,22 @@
                                             Command="{Binding ShuffleData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc RANDOM}">
-                                            <Image Width="16"
+                                            <Canvas Width="16"
                                                 Height="16"
-                                                Source="/TwainControl;component/Icons/dice.png" />
+                                                Background="Transparent">
+                                                <Canvas.Resources>
+                                                    <Style TargetType="Ellipse">
+                                                        <Setter Property="Fill" Value="Orange" />
+                                                        <Setter Property="Height" Value="4" />
+                                                        <Setter Property="Width" Value="4" />
+                                                    </Style>
+                                                </Canvas.Resources>
+                                                <Ellipse Canvas.Left="6" Canvas.Top="6" />
+                                                <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
+                                                <Ellipse Canvas.Left="10.5" Canvas.Top="10.5" />
+                                                <Ellipse Canvas.Left="10.5" Canvas.Top="2" />
+                                                <Ellipse Canvas.Left="1.5" Canvas.Top="10.5" />
+                                            </Canvas>
                                         </Hyperlink><Run BaselineAlignment="Center" Text="1" /><Hyperlink BaselineAlignment="Center"
                                             Command="{Binding FirstLastGroup}"
                                             TextDecorations="None"

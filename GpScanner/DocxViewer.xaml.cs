@@ -41,6 +41,10 @@ namespace GpScanner
             {
                 if (d is DocxViewer viewer && e.NewValue is string uriString)
                 {
+                    if (!File.Exists(uriString))
+                    {
+                        return;
+                    }
                     if (Path.GetExtension(uriString.ToLower()) == ".docx")
                     {
                         using DocX document = DocX.Load(uriString);

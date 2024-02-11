@@ -527,5 +527,17 @@ namespace GpScanner.Properties {
                 this["CustomHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DataBaseBackUpFolder {
+            get {
+                return ((string)(this["DataBaseBackUpFolder"]));
+            }
+            set {
+                this["DataBaseBackUpFolder"] = value;
+            }
+        }
     }
 }

@@ -1159,6 +1159,23 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
             },
             parameter => parameter is IGrouping<int, ContributionData> data && data.Count(z => z.Count > 0) > 0);
+
+        SetDbBackUpFolder = new RelayCommand<object>(
+            parameter =>
+            {
+                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}", SelectedPath = Settings.Default.DataBaseBackUpFolder };
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    DriveInfo driveInfo = new(dialog.SelectedPath);
+                    if (driveInfo.DriveType == DriveType.CDRom)
+                    {
+                        _ = MessageBox.Show($"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        return;
+                    }
+                    Settings.Default.DataBaseBackUpFolder = dialog.SelectedPath;
+                }
+            },
+            parameter => true);
     }
 
     public ICommand AddFtpSites { get; }
@@ -2050,6 +2067,8 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand SetBatchWatchFolder { get; }
 
+    public RelayCommand<object> SetDbBackUpFolder { get; }
+
     public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
 
     public int[] SettingsPagePictureResizeList { get; } = Enumerable.Range(5, 100).Where(z => z % 5 == 0).ToArray();
@@ -2213,15 +2232,23 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public static void BackupDatabaseFile()
     {
-        if (File.Exists(Settings.Default.DatabaseFile) && Settings.Default.BackUpDatabase)
+        if (!File.Exists(Settings.Default.DatabaseFile) || !Settings.Default.BackUpDatabase)
         {
-            FileInfo fi = new(Settings.Default.DatabaseFile);
-            string backupfile = $"{fi.DirectoryName}\\{DateTime.Today.DayOfWeek}.db";
-            if (fi.Length > 0)
-            {
-                File.Copy(fi.FullName, backupfile, true);
-            }
+            return;
         }
+        string databaseFilePath = Settings.Default.DatabaseFile;
+        FileInfo fi = new(databaseFilePath);
+        string backupFileName = $"{fi.DirectoryName}\\{DateTime.Today.DayOfWeek}.db";
+        string backupFolderPath = Settings.Default.DataBaseBackUpFolder;
+        if (Directory.Exists(backupFolderPath))
+        {
+            backupFileName = $"{backupFolderPath}\\{DateTime.Today.DayOfWeek}.db";
+        }
+        else
+        {
+            Settings.Default.DataBaseBackUpFolder = string.Empty;
+        }
+        File.Copy(databaseFilePath, backupFileName, true);
     }
 
     public static async Task WriteToLogFile(string filePath, string content)

@@ -1453,9 +1453,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ShuffleData = new RelayCommand<object>(
             parameter =>
             {
-                Random random = new();
-                Scanner.Resimler = Shuffle(Scanner.Resimler, random);
-                Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                if (MessageBox.Show($"{Translation.GetResStringValue("RANDOM")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    Random random = new();
+                    Scanner.Resimler = Shuffle(Scanner.Resimler, random);
+                    Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                }
             },
             parameter => Scanner?.Resimler?.Count > 1);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -45,7 +46,9 @@ public static class UdfParser
 
     private static Content ExtractContent(Paragraph paragraph)
     {
-        return new Content
+        return paragraph is null
+               ? null
+               : new Content
         {
             Background = paragraph.Content.FirstOrDefault().Background,
             Alignment = paragraph.Alignment,
@@ -69,7 +72,7 @@ public static class UdfParser
 
     private static Run[,] Getcellcontent(Table table, Template content, int genişlik, int yükseklik)
     {
-        System.Collections.Generic.List<Content> cellparagrafcontent = table.Row.SelectMany(z => z.Cell).SelectMany(z => z.Paragraph).Select(ExtractContent).ToList();
+        List<Content> cellparagrafcontent = table.Row.SelectMany(z => z.Cell).SelectMany(z => z.Paragraph).Select(ExtractContent).ToList();
 
         Run[,] array = new Run[genişlik, yükseklik];
         int j = 0;

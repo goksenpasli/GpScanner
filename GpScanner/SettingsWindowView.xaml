@@ -710,26 +710,28 @@
                             <StackPanel Orientation="Horizontal">
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                             </StackPanel>
-                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding Path=BackUpDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                <CheckBox.Content>
-                                    <TextBlock>
-                                        <Run BaselineAlignment="Center" Text="{twainctrl:Loc BACKUPDB}" />
-                                        <Hyperlink BaselineAlignment="Center"
-                                            Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                                            CommandParameter="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
-                                            TextDecorations="None">
-                                            <Image Width="16" Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="4" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Hyperlink>
-                                    </TextBlock>
-                                </CheckBox.Content>
+                            <CheckBox VerticalAlignment="Center"
+                                VerticalContentAlignment="Center"
+                                IsChecked="{Binding Path=BackUpDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                <TextBlock Width="170"
+                                    Text="{twainctrl:Loc BACKUPDB}"
+                                    TextWrapping="Wrap" />
                             </CheckBox>
+                            <Button Command="{Binding SetDbBackUpFolder}" IsEnabled="{Binding Path=BackUpDatabase, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="4" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Width="90"
+                                        Text="{twainctrl:Loc AUTOPATH}"
+                                        TextWrapping="Wrap" />
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                     </GroupBox>
                 </Grid>

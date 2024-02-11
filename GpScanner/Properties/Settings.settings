@@ -130,5 +130,8 @@
     <Setting Name="CustomHeight" Type="System.Double" Scope="User">
       <Value Profile="(Default)">800</Value>
     </Setting>
+    <Setting Name="DataBaseBackUpFolder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
   </Settings>
 </SettingsFile>
