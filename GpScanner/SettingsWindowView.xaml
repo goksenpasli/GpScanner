@@ -24,6 +24,7 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
+        <Converter:PdfFileNameToInfoConverter x:Key="PdfFileNameToInfoConverter" IsEnabled="True" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
             MaxNumber="100"
             MinNumber="5" />
@@ -1056,23 +1057,36 @@
                                 <DataGridTemplateColumn Header="{twainctrl:Loc FILENAME}" SortMemberPath="FileName">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <TextBlock>
-                                                <Run BaselineAlignment="Center" Text="{Binding FileName, Mode=OneWay}" />
-                                                <Run BaselineAlignment="Center"
-                                                    FontFamily="Webdings"
-                                                    FontSize="20"
-                                                    Foreground="Green"
-                                                    Text="N">
-                                                    <Run.ToolTip>
-                                                        <ToolTip>
-                                                            <ContentControl Width="150"
-                                                                Height="150"
-                                                                Content="{Binding Mode=OneWay, Path=FileName}"
-                                                                ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                                                        </ToolTip>
-                                                    </Run.ToolTip>
-                                                </Run>
-                                            </TextBlock>
+                                            <Extensions:ButtonedTextBox VerticalAlignment="Top"
+                                                Background="Transparent"
+                                                BorderBrush="Transparent"
+                                                IsReadOnly="True"
+                                                PasteButtonVisibility="Collapsed"
+                                                ResetButtonVisibility="Collapsed"
+                                                SelectionBrush="DarkMagenta"
+                                                Text="{Binding FileName, Mode=OneWay}">
+                                                <Extensions:ButtonedTextBox.Description>
+                                                    <TextBlock FontFamily="Webdings"
+                                                        FontSize="20"
+                                                        Foreground="Green"
+                                                        Text="N">
+                                                        <TextBlock.ToolTip>
+                                                            <ToolTip>
+                                                                <UniformGrid Columns="2">
+                                                                    <ContentControl Width="150"
+                                                                        Height="150"
+                                                                        Content="{Binding Mode=OneWay, Path=FileName}"
+                                                                        ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                                                                    <TextBlock Width="150"
+                                                                        Height="150"
+                                                                        Margin="5"
+                                                                        Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource PdfFileNameToInfoConverter}}" />
+                                                                </UniformGrid>
+                                                            </ToolTip>
+                                                        </TextBlock.ToolTip>
+                                                    </TextBlock>
+                                                </Extensions:ButtonedTextBox.Description>
+                                            </Extensions:ButtonedTextBox>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
