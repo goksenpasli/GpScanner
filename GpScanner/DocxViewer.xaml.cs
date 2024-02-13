@@ -45,13 +45,13 @@ namespace GpScanner
                     {
                         return;
                     }
-                    if (Path.GetExtension(uriString.ToLower()) == ".docx")
+                    if (Path.GetExtension(uriString.ToLowerInvariant()) == ".docx")
                     {
                         using DocX document = DocX.Load(uriString);
                         viewer.Fd.Document = DocxFlowDocument(document);
                         return;
                     }
-                    if (Path.GetExtension(uriString.ToLower()) is ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
+                    if (Path.GetExtension(uriString.ToLowerInvariant()) is ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
                     {
                         System.Windows.Documents.Paragraph paragraph = new();
                         paragraph.Inlines.Add(File.ReadAllText(uriString));

@@ -23,7 +23,7 @@ namespace TwainControl;
 public class EypPdfViewer : PdfViewer.PdfViewer
 {
     public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register("EypFilePath", typeof(string), typeof(EypPdfViewer), new PropertyMetadata(null, Changed));
-    private readonly string[] eypcontentfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx", ".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip"];
+    private readonly string[] eypcontentfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx", ".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip"];
     private ObservableCollection<string> eypAttachments;
     private ObservableCollection<string> eypNonSuportedAttachments;
 
@@ -36,7 +36,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 openFileDialog.Multiselect = false;
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".eyp")
+                    if (Path.GetExtension(openFileDialog.FileName.ToLowerInvariant()) == ".eyp")
                     {
                         string eypfile = ExtractEypFilesToPdf(openFileDialog.FileName);
                         if (!IsValidPdfFile(eypfile))
@@ -47,7 +47,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         PdfFilePath = eypfile;
                     }
 
-                    if (Path.GetExtension(openFileDialog.FileName.ToLower()) == ".pdf")
+                    if (Path.GetExtension(openFileDialog.FileName.ToLowerInvariant()) == ".pdf")
                     {
                         if (!IsValidPdfFile(openFileDialog.FileName))
                         {
@@ -208,9 +208,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         List<string> files = TwainCtrl.EypFileExtract(filename);
         if (files != null)
         {
-            EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
-            EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z).ToLower())));
-            using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLower()) == ".pdf"), PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
+            EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z).ToLowerInvariant())));
+            EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z).ToLowerInvariant())));
+            using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLowerInvariant()) == ".pdf"), PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
             return document?.FullPath;
         }
         return null;

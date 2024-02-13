@@ -69,6 +69,7 @@
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
+        <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
         <Converter:MonthContributionDataFileNameConverter x:Key="MonthContributionDataFileNameConverter" />
         <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter"
             MaxNumber="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
@@ -1902,27 +1903,29 @@
                                             </GroupBox>
                                         </TabItem>
                                         <TabItem Header="{twainctrl:Loc FILE}">
-                                            <ListBox Background="{StaticResource BorderBackground}" ItemsSource="{Binding BatchImageFileExtensions}">
-                                                <ListBox.ItemTemplate>
+                                            <ItemsControl Background="{StaticResource BorderBackground}" ItemsSource="{Binding BatchImageFileExtensions}">
+                                                <ItemsControl.ItemTemplate>
                                                     <DataTemplate>
-                                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
+                                                        <CheckBox VerticalContentAlignment="Center"
+                                                            IsChecked="{Binding Checked}"
+                                                            IsEnabled="{Binding Enabled}">
                                                             <CheckBox.Content>
                                                                 <StackPanel Orientation="Horizontal">
                                                                     <Image Width="32"
                                                                         Height="32"
                                                                         Source="{Binding Mode=OneWay, Path=Name, Converter={StaticResource FilePathToIconConverter}}" />
-                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay}" />
+                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                                                                 </StackPanel>
                                                             </CheckBox.Content>
                                                         </CheckBox>
                                                     </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                                <ListBox.ItemsPanel>
+                                                </ItemsControl.ItemTemplate>
+                                                <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <UniformGrid Columns="3" />
                                                     </ItemsPanelTemplate>
-                                                </ListBox.ItemsPanel>
-                                            </ListBox>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
                                         </TabItem>
                                     </TabControl>
                                     <ListBox Grid.Column="1"

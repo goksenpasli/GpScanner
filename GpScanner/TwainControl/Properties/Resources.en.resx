@@ -724,4 +724,7 @@ TO FILE</value>
   <data name="SUCCESS" xml:space="preserve">
     <value>SUCCESS</value>
   </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORIGINAL</value>
+  </data>
 </root>

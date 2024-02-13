@@ -455,9 +455,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         if (filepath is not null && File.Exists(filepath))
         {
-            switch (Path.GetExtension(filepath).ToLower())
+            switch (Path.GetExtension(filepath).ToLowerInvariant())
             {
-                case ".tiff" or ".tif" or ".tıff" or ".tıf":
+                case ".tiff" or ".tif":
                     imageViewer.Sayfa = 1;
                     imageViewer.TiffDecoder = new TiffBitmapDecoder(new Uri(filepath), BitmapCreateOptions.None, BitmapCacheOption.None);
                     imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;

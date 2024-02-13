@@ -34,7 +34,7 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-    private readonly List<string> imagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
+    private readonly List<string> imagefileextensions = [".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
     private double compressionProgress;
     private ListBox listbox;
 
@@ -63,7 +63,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     foreach (BatchPdfData file in BatchPdfList)
                     {
                         string outputFile = $"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf";
-                        if (Path.GetExtension(file.Filename.ToLower()) == ".pdf" && IsValidPdfFile(file.Filename))
+                        if (Path.GetExtension(file.Filename.ToLowerInvariant()) == ".pdf" && IsValidPdfFile(file.Filename))
                         {
                             using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
                             pdfDocument.Save(outputFile);
@@ -71,7 +71,7 @@ public class Compressor : Control, INotifyPropertyChanged
                             file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
                             file.Completed = true;
                         }
-                        else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLower())))
+                        else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLowerInvariant())))
                         {
                             using PdfDocument pdfDocument = await GeneratePdf(file.Filename);
                             pdfDocument.Save(outputFile);
@@ -393,7 +393,7 @@ public class Compressor : Control, INotifyPropertyChanged
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
         if (droppedfiles?.Length > 0)
         {
-            foreach (string file in droppedfiles.Where(file => imagefileextensions.Contains(Path.GetExtension(file).ToLower()) || IsValidPdfFile(file)))
+            foreach (string file in droppedfiles.Where(file => imagefileextensions.Contains(Path.GetExtension(file).ToLowerInvariant()) || IsValidPdfFile(file)))
             {
                 BatchPdfList.Add(new BatchPdfData() { Filename = file });
             }

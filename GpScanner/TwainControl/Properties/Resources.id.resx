@@ -720,4 +720,7 @@
   <data name="SUCCESS" xml:space="preserve">
     <value>KESUKSESAN</value>
   </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ASLI</value>
+  </data>
 </root>

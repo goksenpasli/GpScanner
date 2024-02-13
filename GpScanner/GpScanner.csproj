@@ -315,6 +315,10 @@
       <Project>{39ace1c2-42eb-4bdd-89bf-2b73c82b7925}</Project>
       <Name>UdfParser</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WebPWrapper\WebPWrapper.csproj">
+      <Project>{F971B2A1-8893-43D7-A5AA-4AE7EB41A82A}</Project>
+      <Name>WebPWrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="TwainControl\TwainControl.csproj">
       <Project>{e18bdb1b-1d7c-4f60-85b1-53eae13074c4}</Project>
       <Name>TwainControl</Name>

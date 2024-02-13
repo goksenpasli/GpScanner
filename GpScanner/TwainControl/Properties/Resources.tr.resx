@@ -730,4 +730,7 @@ BELGE EKLE</value>
   <data name="SUCCESS" xml:space="preserve">
     <value>BAŞARILI</value>
   </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORİJİNAL</value>
+  </data>
 </root>

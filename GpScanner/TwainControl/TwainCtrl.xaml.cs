@@ -71,7 +71,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private readonly object _lockObject = new();
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
-    private readonly string[] imagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
+    private readonly string[] imagefileextensions = [".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
     private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = new DoubleCollection([1]) };
     private ScanSettings _settings;
     private double allImageRotationAngle;
@@ -947,7 +947,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 if (openFileDialog.ShowDialog() == true && parameter is XpsViewer xpsViewer)
                 {
-                    switch (Path.GetExtension(openFileDialog.FileName.ToLower()))
+                    switch (Path.GetExtension(openFileDialog.FileName.ToLowerInvariant()))
                     {
                         case ".udf":
                             xpsViewer.XpsDataFilePath = LoadUdfFile(openFileDialog.FileName);
@@ -1153,7 +1153,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         string[] clipboardFiles = (string[])clipboardData.GetData(System.Windows.DataFormats.FileDrop);
                         List<string> clipboardPdfFiles = clipboardFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
-                        List<string> clipboardImageFiles = clipboardFiles.Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLower())).ToList();
+                        List<string> clipboardImageFiles = clipboardFiles.Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant())).ToList();
                         if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
                         {
                             await Task.Run(
@@ -1891,11 +1891,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
                 PdfImportViewerControl pdfImportViewerControl = new();
-                if (Path.GetExtension(file.ToLower()) == ".pdf")
+                if (Path.GetExtension(file.ToLowerInvariant()) == ".pdf")
                 {
                     pdfImportViewerControl.PdfViewer.PdfFilePath = file;
                 }
-                if (Path.GetExtension(file.ToLower()) == ".eyp")
+                if (Path.GetExtension(file.ToLowerInvariant()) == ".eyp")
                 {
                     pdfImportViewerControl.PdfViewer.EypFilePath = file;
                 }
@@ -2893,7 +2893,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
                             if (zipArchiveEntry != null)
                             {
-                                string destinationFileName = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLower())}";
+                                string destinationFileName = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLowerInvariant())}";
                                 zipArchiveEntry.ExtractToFile(destinationFileName, true);
                                 data.Add(destinationFileName);
                             }
@@ -3005,7 +3005,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     try
                     {
-                        switch (Path.GetExtension(filename.ToLower()))
+                        switch (Path.GetExtension(filename.ToLowerInvariant()))
                         {
                             case ".pdf":
                                 await AddPdfFiles(filename);
@@ -3019,11 +3019,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".jpg":
                             case ".jpeg":
                             case ".jfif":
-                            case ".jfıf":
                             case ".jpe":
                             case ".png":
                             case ".gif":
-                            case ".gıf":
                             case ".bmp":
                                 await AddImageFiles(filename);
                                 break;
@@ -3100,7 +3098,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 await AddWebpFiles(decodeheight, filename);
                                 break;
 
-                            case ".tıf" or ".tiff" or ".tıff" or ".tif":
+                            case ".tiff" or ".tif":
                                 await AddTiffFiles(filename);
 
                                 break;

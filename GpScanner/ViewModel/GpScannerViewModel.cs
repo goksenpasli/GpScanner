@@ -31,6 +31,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using System.Windows.Threading;
 using TwainControl;
+using WebPWrapper;
 using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
 using Application = System.Windows.Application;
@@ -60,8 +61,8 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
-    private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
-    private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
+    private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
+    private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
     private int allPdfPage = 1;
     private string aramaMetni;
     private ObservableCollection<string> barcodeList = [];
@@ -71,18 +72,15 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private ObservableCollection<TessFiles> batchImageFileExtensions =
         [
         new TessFiles() { Name = ".tiff", Checked = true },
-        new TessFiles() { Name = ".tıf", Checked = true },
-        new TessFiles() { Name = ".tıff", Checked = true },
         new TessFiles() { Name = ".tif", Checked = true },
         new TessFiles() { Name = ".jpg", Checked = true },
         new TessFiles() { Name = ".jpe", Checked = true },
         new TessFiles() { Name = ".gif", Checked = true },
         new TessFiles() { Name = ".jpeg", Checked = true },
         new TessFiles() { Name = ".jfif", Checked = true },
-        new TessFiles() { Name = ".jfıf", Checked = true },
         new TessFiles() { Name = ".png", Checked = true },
         new TessFiles() { Name = ".bmp", Checked = true },
-        new TessFiles() { Name = ".webp", Checked = false },
+        new TessFiles() { Name = ".webp", Checked = false, Enabled = WebP.WebpDllExists },
         ];
     private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
     private ObservableCollection<string> burnFiles = [];
@@ -318,7 +316,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                         BitmapImage bitmapImage = null;
                         ObservableCollection<OcrData> ocrdata = null;
                         string ocrtext = string.Empty;
-                        if (Path.GetExtension(unIndexedFile.ToLower()) == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile))
+                        if (Path.GetExtension(unIndexedFile.ToLowerInvariant()) == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile))
                         {
                             double pagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(File.ReadAllBytes(unIndexedFile));
                             if (OcrAllPdfPages)
@@ -379,7 +377,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                         BitmapImage bitmapImage = null;
                         ObservableCollection<OcrData> ocrdata;
                         string ocrtext = string.Empty;
-                        if (Path.GetExtension(unIndexedFile.ToLower()) == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile))
+                        if (Path.GetExtension(unIndexedFile.ToLowerInvariant()) == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile))
                         {
                             double pagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(File.ReadAllBytes(unIndexedFile));
                             if (OcrAllPdfPages)
@@ -518,7 +516,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
 
-                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
+                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLowerInvariant()) == ".pdf"))
                 {
                     item.Seçili = true;
                 }
@@ -558,7 +556,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
 
-                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLower()) == ".pdf"))
+                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLowerInvariant()) == ".pdf"))
                 {
                     item.Seçili = !item.Seçili;
                 }
@@ -2324,7 +2322,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                                        isFileLocked = IsFileLocked(currentfilepath);
                                    }
 
-                                   if (File.Exists(currentfilepath) && BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(currentfilename).ToLower()))
+                                   if (File.Exists(currentfilepath) && BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(currentfilename).ToLowerInvariant()))
                                    {
                                        await FileSystemWatcherOcrFile(paper, batchsavefolder, currentfilepath, currentfilename);
                                        await Application.Current?.Dispatcher?.InvokeAsync(
@@ -2886,7 +2884,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
             ObservableCollection<Scanner> list = [];
             try
             {
-                List<string> files = FastFileSearch.EnumerateFilepaths(Twainsettings.Settings.Default.AutoFolder).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLower())).ToList();
+                List<string> files = FastFileSearch.EnumerateFilepaths(Twainsettings.Settings.Default.AutoFolder).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLowerInvariant())).ToList();
                 files.Sort(new StrCmpLogicalComparer());
                 foreach (string dosya in files)
                 {
@@ -2911,7 +2909,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             if (Dosyalar is not null)
             {
-                List<string> unindexedfiles = Dosyalar.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLower()))).Select(z => z.FileName).ToList();
+                List<string> unindexedfiles = Dosyalar.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).Select(z => z.FileName).ToList();
                 using AppDbContext context = new();
                 List<string> scannedFiles = (await context.Data.AsNoTracking().ToListAsync())?.Select(x => x.FileName).ToList();
 
@@ -3017,7 +3015,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
             foreach (Scanner item in Dosyalar?.Where(z => z.Seçili))
             {
                 burnfiles.Add(item.FileName);
-                if (Path.GetExtension(item.FileName.ToLower()) == ".pdf")
+                if (Path.GetExtension(item.FileName.ToLowerInvariant()) == ".pdf")
                 {
                     compressedfiles.Add(new BatchPdfData() { Filename = item.FileName });
                 }
@@ -3041,7 +3039,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private void InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks)
     {
-        files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(file => BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLower())).ToList();
+        files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(file => BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLowerInvariant())).ToList();
         slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
         scanner = ToolBox.Scanner;
         scanner.ProgressState = TaskbarItemProgressState.Normal;

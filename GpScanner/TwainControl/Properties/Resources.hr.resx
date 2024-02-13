@@ -720,4 +720,7 @@
   <data name="SUCCESS" xml:space="preserve">
     <value>USPJEH</value>
   </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>IZVORNIK</value>
+  </data>
 </root>

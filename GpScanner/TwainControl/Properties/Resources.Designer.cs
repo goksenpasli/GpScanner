@@ -842,6 +842,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ORİGİNAL {
+            get {
+                return ResourceManager.GetString("ORİGİNAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string OTHERSETTINGS {
             get {
                 return ResourceManager.GetString("OTHERSETTINGS", resourceCulture);

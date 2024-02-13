@@ -32,10 +32,10 @@ namespace TwainControl
         {
             if (!DesignerProperties.GetIsInDesignMode(container) && item is string dosya)
             {
-                string[] imgext = [".jpg", ".jpeg", ".bmp", ".png", ".tif", ".tiff", ".tıf", ".tıff"];
+                string[] imgext = [".jpg", ".jpeg", ".bmp", ".png", ".tif", ".tiff"];
                 string[] archiveext = [".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip", ".gz"];
                 string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
-                string ext = Path.GetExtension(dosya).ToLower();
+                string ext = Path.GetExtension(dosya).ToLowerInvariant();
                 if (ext != null)
                 {
                     return ext switch

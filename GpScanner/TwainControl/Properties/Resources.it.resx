@@ -717,4 +717,7 @@
   <data name="SUCCESS" xml:space="preserve">
     <value>SUCCESSO</value>
   </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORIGINALE</value>
+  </data>
 </root>

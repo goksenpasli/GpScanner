@@ -16,7 +16,7 @@ namespace TwainControl;
 
 public class SimpleArchiveViewer : ArchiveViewer
 {
-    private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jfıf", ".jpe", ".png", ".gif", ".gıf", ".bmp", ".tıf", ".tiff", ".tıff", ".heic", ".tif", ".webp", ".xps"];
+    private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps"];
     private double previewPanelWidth;
     private string thumbFile;
 
@@ -28,7 +28,7 @@ public class SimpleArchiveViewer : ArchiveViewer
             {
                 try
                 {
-                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename).ToLower()))
+                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename).ToLowerInvariant()))
                     {
                         string extractedfile = ExtractToFile(parameter as string);
                         _ = Process.Start(extractedfile);

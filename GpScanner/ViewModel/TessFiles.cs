@@ -6,6 +6,7 @@ public class TessFiles : InpcBase
 {
     private bool @checked;
     private string displayName;
+    private bool enabled = true;
     private double fileSize;
     private string name;
 
@@ -32,6 +33,19 @@ public class TessFiles : InpcBase
             {
                 displayName = value;
                 OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+    }
+
+    public bool Enabled
+    {
+        get => enabled;
+        set
+        {
+            if (enabled != value)
+            {
+                enabled = value;
+                OnPropertyChanged(nameof(Enabled));
             }
         }
     }

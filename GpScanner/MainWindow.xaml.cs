@@ -189,7 +189,7 @@ public partial class MainWindow : Window
         if (commandLineArgs.Length > 1)
         {
             string filePath = commandLineArgs[1];
-            string extension = Path.GetExtension(filePath)?.ToLower();
+            string extension = Path.GetExtension(filePath)?.ToLowerInvariant();
             if (File.Exists(filePath))
             {
                 if (Settings.Default.DirectOpenEypFile && extension == ".eyp")
