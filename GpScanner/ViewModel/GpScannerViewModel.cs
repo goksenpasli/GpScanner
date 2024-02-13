@@ -59,7 +59,6 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
-    private readonly List<string> batchimagefileextensions = [".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tıff", ".tıf", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tıf", ".tıff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".jfıf", ".png", ".bmp"];
@@ -68,7 +67,23 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private ObservableCollection<string> barcodeList = [];
     private bool batchDialogOpen;
     private string batchFolder;
-    private ObservableCollection<BatchFiles> batchFolderProcessedFileList;
+    private ObservableCollection<TessFiles> batchFolderProcessedFileList;
+    private ObservableCollection<TessFiles> batchImageFileExtensions =
+        [
+        new TessFiles() { Name = ".tiff", Checked = true },
+        new TessFiles() { Name = ".tıf", Checked = true },
+        new TessFiles() { Name = ".tıff", Checked = true },
+        new TessFiles() { Name = ".tif", Checked = true },
+        new TessFiles() { Name = ".jpg", Checked = true },
+        new TessFiles() { Name = ".jpe", Checked = true },
+        new TessFiles() { Name = ".gif", Checked = true },
+        new TessFiles() { Name = ".jpeg", Checked = true },
+        new TessFiles() { Name = ".jfif", Checked = true },
+        new TessFiles() { Name = ".jfıf", Checked = true },
+        new TessFiles() { Name = ".png", Checked = true },
+        new TessFiles() { Name = ".bmp", Checked = true },
+        new TessFiles() { Name = ".webp", Checked = false },
+        ];
     private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
     private ObservableCollection<string> burnFiles = [];
     private string calendarDesc;
@@ -114,7 +129,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private ObservableCollection<OcrData> scannedText = [];
     private string seçiliDil;
     private DateTime seçiliGün;
-    private BatchFiles selectedBatchFile;
+    private TessFiles selectedBatchFile;
     private ContributionData selectedContribution;
     private int selectedContributionYear = DateTime.Now.Year;
     private string selectedFtp;
@@ -679,7 +694,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchFolder = new RelayCommand<object>(
             parameter =>
             {
-                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", batchimagefileextensions)}" };
+                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", BatchImageFileExtensions.Where(z => z.Checked).Select(z => z.Name))}" };
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     BatchFolder = dialog.SelectedPath;
@@ -701,7 +716,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         BatchFolderTümünüİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                foreach (BatchFiles item in BatchFolderProcessedFileList)
+                foreach (TessFiles item in BatchFolderProcessedFileList)
                 {
                     item.Checked = true;
                 }
@@ -711,7 +726,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         BatchFolderTümünüİşaretiniKaldır = new RelayCommand<object>(
             parameter =>
             {
-                foreach (BatchFiles item in BatchFolderProcessedFileList)
+                foreach (TessFiles item in BatchFolderProcessedFileList)
                 {
                     item.Checked = false;
                 }
@@ -792,7 +807,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                                         () =>
                                         {
                                             string file = Path.ChangeExtension(item.ElementAtOrDefault(i), ".pdf");
-                                            BatchFolderProcessedFileList.Add(new BatchFiles() { Name = file });
+                                            BatchFolderProcessedFileList.Add(new TessFiles() { Name = file });
                                         });
                                         scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
                                     }
@@ -1267,7 +1282,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<BatchFiles> BatchFolderProcessedFileList
+    public ObservableCollection<TessFiles> BatchFolderProcessedFileList
     {
         get => batchFolderProcessedFileList;
         set
@@ -1287,6 +1302,19 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> BatchFolderTümünüKaydet { get; }
 
     public RelayCommand<object> BatchFolderTümünüSil { get; }
+
+    public ObservableCollection<TessFiles> BatchImageFileExtensions
+    {
+        get => batchImageFileExtensions;
+        set
+        {
+            if (batchImageFileExtensions != value)
+            {
+                batchImageFileExtensions = value;
+                OnPropertyChanged(nameof(BatchImageFileExtensions));
+            }
+        }
+    }
 
     public RelayCommand<object> BatchMergeSelectedFiles { get; }
 
@@ -1981,7 +2009,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public BatchFiles SelectedBatchFile
+    public TessFiles SelectedBatchFile
     {
         get => selectedBatchFile;
         set
@@ -2285,7 +2313,6 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             FileSystemWatcherProcessedFileList = [];
             FileSystemWatcher watcher = new(batchfolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.*", IncludeSubdirectories = true, EnableRaisingEvents = true };
-            batchimagefileextensions.Add(".webp");
             watcher.Created += async (s, e) =>
                                {
                                    string currentfilepath = e.FullPath;
@@ -2297,7 +2324,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
                                        isFileLocked = IsFileLocked(currentfilepath);
                                    }
 
-                                   if (File.Exists(currentfilepath) && batchimagefileextensions.Contains(Path.GetExtension(currentfilename.ToLower())))
+                                   if (File.Exists(currentfilepath) && BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(currentfilename).ToLower()))
                                    {
                                        await FileSystemWatcherOcrFile(paper, batchsavefolder, currentfilepath, currentfilename);
                                        await Application.Current?.Dispatcher?.InvokeAsync(
@@ -3014,7 +3041,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private void InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks)
     {
-        files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(s => batchimagefileextensions.Any(ext => ext == Path.GetExtension(s).ToLower())).ToList();
+        files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(file => BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLower())).ToList();
         slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
         scanner = ToolBox.Scanner;
         scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -3058,7 +3085,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private ObservableCollection<BatchFiles> OrderBatchFiles(ObservableCollection<BatchFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
+    private ObservableCollection<TessFiles> OrderBatchFiles(ObservableCollection<TessFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
 
     private async void RegisterSimplePdfFileWatcher()
     {

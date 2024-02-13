@@ -1297,7 +1297,7 @@
                                         AllowDrop="True"
                                         Background="{StaticResource BorderBackground}"
                                         Drop="ListBox_DropAsync"
-                                        ItemsSource="{Binding Scanner.Resimler, Source={x:Reference twainCtrl}}"                                     
+                                        ItemsSource="{Binding Scanner.Resimler, Source={x:Reference twainCtrl}}"
                                         VirtualizingPanel.CacheLengthUnit="Item"
                                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                         VirtualizingPanel.ScrollUnit="Pixel"
@@ -1900,6 +1900,29 @@
                                                     </UniformGrid>
                                                 </Grid>
                                             </GroupBox>
+                                        </TabItem>
+                                        <TabItem Header="{twainctrl:Loc FILE}">
+                                            <ListBox Background="{StaticResource BorderBackground}" ItemsSource="{Binding BatchImageFileExtensions}">
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
+                                                            <CheckBox.Content>
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="32"
+                                                                        Height="32"
+                                                                        Source="{Binding Mode=OneWay, Path=Name, Converter={StaticResource FilePathToIconConverter}}" />
+                                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay}" />
+                                                                </StackPanel>
+                                                            </CheckBox.Content>
+                                                        </CheckBox>
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <UniformGrid Columns="3" />
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+                                            </ListBox>
                                         </TabItem>
                                     </TabControl>
                                     <ListBox Grid.Column="1"
