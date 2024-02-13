@@ -75,7 +75,7 @@
     <Compile Include="Controls\ContributionControl.cs" />
     <Compile Include="Controls\ContributionData.cs" />
     <Compile Include="Controls\FadedToolTipControl.cs" />
-    <Compile Include="Controls\FileBreadcrumbControl.cs" />
+    <Compile Include="Controls\FileBreadCrumbControl.cs" />
     <Compile Include="Controls\FitImageOrientation.cs" />
     <Compile Include="Controls\Helpers.cs" />
     <Compile Include="Controls\Chart.cs" />
@@ -158,7 +158,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FileBreadcrumbControl.xaml">
+    <Page Include="Controls\FileBreadCrumbControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

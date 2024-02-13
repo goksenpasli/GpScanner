@@ -224,7 +224,7 @@
                                                                 SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                                                 VirtualizingPanel.CacheLengthUnit="Item"
                                                                 VirtualizingPanel.ScrollUnit="Pixel"
-                                                                VirtualizingPanel.VirtualizationMode="Standard">
+                                                                VirtualizingPanel.VirtualizationMode="Recycling">
                                                                 <ListBox.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel HorizontalAlignment="Center">
@@ -771,7 +771,7 @@
                                 SelectionMode="Extended"
                                 VirtualizingPanel.CacheLengthUnit="Item"
                                 VirtualizingPanel.ScrollUnit="Pixel"
-                                VirtualizingPanel.VirtualizationMode="Standard">
+                                VirtualizingPanel.VirtualizationMode="Recycling">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Selected}">
@@ -1275,7 +1275,7 @@
                                 VirtualizingPanel.CacheLengthUnit="Item"
                                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                 VirtualizingPanel.ScrollUnit="Pixel"
-                                VirtualizingPanel.VirtualizationMode="Standard">
+                                VirtualizingPanel.VirtualizationMode="Recycling">
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
@@ -1295,7 +1295,7 @@
                                     VirtualizingPanel.CacheLengthUnit="Item"
                                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                     VirtualizingPanel.ScrollUnit="Pixel"
-                                    VirtualizingPanel.VirtualizationMode="Standard">
+                                    VirtualizingPanel.VirtualizationMode="Recycling">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="{x:Type ListBoxItem}">
                                             <Setter Property="Template">

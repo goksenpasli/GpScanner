@@ -614,7 +614,7 @@
                         SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}"
                         VirtualizingPanel.CacheLengthUnit="Item"
                         VirtualizingPanel.ScrollUnit="Pixel"
-                        VirtualizingPanel.VirtualizationMode="Standard">
+                        VirtualizingPanel.VirtualizationMode="Recycling">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="Margin" Value="0" />
@@ -673,7 +673,7 @@
                                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                     VirtualizingPanel.CacheLengthUnit="Item"
                                                     VirtualizingPanel.ScrollUnit="Pixel"
-                                                    VirtualizingPanel.VirtualizationMode="Standard">
+                                                    VirtualizingPanel.VirtualizationMode="Recycling">
                                                     <ListBox.Style>
                                                         <Style TargetType="ListBox">
                                                             <Style.Triggers>

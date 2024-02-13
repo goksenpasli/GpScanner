@@ -145,7 +145,7 @@
                                 <ColumnDefinition Width="80" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <Extensions:FileBreadcrumbControl FilePath="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" ShowFileName="Visible" />
+                            <Extensions:FileBreadCrumbControl FilePath="{Binding DatabaseFile, Mode=OneWay, Source={x:Static properties:Settings.Default}}" ShowFileName="Visible" />
                             <Button Grid.Column="1"
                                 twainctrl:Policy.PolicyName="ChangeDataFolder"
                                 Command="{Binding ChangeDataFolder}">
@@ -1033,7 +1033,8 @@
                             IsReadOnly="True"
                             ItemsSource="{Binding SqlQueryData}"
                             VirtualizingPanel.CacheLengthUnit="Item"
-                            VirtualizingPanel.ScrollUnit="Pixel">
+                            VirtualizingPanel.ScrollUnit="Pixel"
+                            VirtualizingPanel.VirtualizationMode="Recycling">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>

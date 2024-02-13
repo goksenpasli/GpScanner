@@ -8,21 +8,21 @@ using System.Windows.Controls;
 
 namespace Extensions
 {
-    public class FileBreadcrumbControl : Control
+    public class FileBreadCrumbControl : Control
     {
         public static readonly DependencyProperty FilePathProperty =
-            DependencyProperty.Register("FilePath", typeof(string), typeof(FileBreadcrumbControl), new PropertyMetadata(string.Empty, OnFilePathChanged));
+            DependencyProperty.Register("FilePath", typeof(string), typeof(FileBreadCrumbControl), new PropertyMetadata(string.Empty, OnFilePathChanged));
         public static readonly DependencyProperty IsIndeterminateProperty =
-            DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(FileBreadcrumbControl), new PropertyMetadata(false));
+            DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(FileBreadCrumbControl), new PropertyMetadata(false));
         public static readonly DependencyProperty PathSegmentsProperty =
-            DependencyProperty.Register("PathSegments", typeof(ObservableCollection<Data>), typeof(FileBreadcrumbControl), new PropertyMetadata(new ObservableCollection<Data>()));
-        public static readonly DependencyProperty ProgressValueProperty = DependencyProperty.Register("ProgressValue", typeof(double), typeof(FileBreadcrumbControl), new PropertyMetadata(0d));
+            DependencyProperty.Register("PathSegments", typeof(ObservableCollection<Data>), typeof(FileBreadCrumbControl), new PropertyMetadata(new ObservableCollection<Data>()));
+        public static readonly DependencyProperty ProgressValueProperty = DependencyProperty.Register("ProgressValue", typeof(double), typeof(FileBreadCrumbControl), new PropertyMetadata(0d));
         public static readonly DependencyProperty ShowFileNameProperty =
-            DependencyProperty.Register("ShowFileName", typeof(Visibility), typeof(FileBreadcrumbControl), new PropertyMetadata(Visibility.Collapsed, VisibilityChanged));
+            DependencyProperty.Register("ShowFileName", typeof(Visibility), typeof(FileBreadCrumbControl), new PropertyMetadata(Visibility.Collapsed, VisibilityChanged));
 
-        static FileBreadcrumbControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FileBreadcrumbControl), new FrameworkPropertyMetadata(typeof(FileBreadcrumbControl))); }
+        static FileBreadCrumbControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FileBreadCrumbControl), new FrameworkPropertyMetadata(typeof(FileBreadCrumbControl))); }
 
-        public FileBreadcrumbControl()
+        public FileBreadCrumbControl()
         {
             Navigate = new RelayCommand<object>(
                 parameter =>
@@ -55,7 +55,7 @@ namespace Extensions
 
         private static void OnFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is FileBreadcrumbControl breadcrumbControl)
+            if (d is FileBreadCrumbControl breadcrumbControl)
             {
                 breadcrumbControl.UpdatePathSegments();
                 breadcrumbControl.FileName = Path.GetFileName(breadcrumbControl.FilePath);
@@ -64,7 +64,7 @@ namespace Extensions
 
         private static void VisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is FileBreadcrumbControl breadcrumbControl)
+            if (d is FileBreadCrumbControl breadcrumbControl)
             {
                 breadcrumbControl.FileName = e.NewValue is Visibility.Visible ? Path.GetFileName(breadcrumbControl.FilePath) : null;
             }

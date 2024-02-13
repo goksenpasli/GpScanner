@@ -109,7 +109,7 @@
                     VirtualizingPanel.CacheLengthUnit="Item"
                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                     VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Standard">
+                    VirtualizingPanel.VirtualizationMode="Recycling">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Background" Value="{Binding BackgroundColor}" />

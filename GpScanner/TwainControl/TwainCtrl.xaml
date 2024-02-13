@@ -1656,7 +1656,7 @@
                                     VirtualizingPanel.CacheLengthUnit="Item"
                                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                     VirtualizingPanel.ScrollUnit="Pixel"
-                                    VirtualizingPanel.VirtualizationMode="Standard">
+                                    VirtualizingPanel.VirtualizationMode="Recycling">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="{x:Type ListBoxItem}">
                                             <Setter Property="Template">
@@ -2269,7 +2269,7 @@
                             VirtualizingPanel.CacheLengthUnit="Item"
                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                             VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Standard">
+                            VirtualizingPanel.VirtualizationMode="Recycling">
                             <ListBox.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListBoxItem}">
                                     <Setter Property="Template">

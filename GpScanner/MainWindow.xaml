@@ -558,7 +558,7 @@
                                                                 ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
                                                                 VirtualizingPanel.CacheLengthUnit="Item"
                                                                 VirtualizingPanel.ScrollUnit="Pixel"
-                                                                VirtualizingPanel.VirtualizationMode="Standard">
+                                                                VirtualizingPanel.VirtualizationMode="Recycling">
                                                                 <ListBox.ItemsPanel>
                                                                     <ItemsPanelTemplate>
                                                                         <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
@@ -752,7 +752,7 @@
                             VirtualizingPanel.CacheLengthUnit="Item"
                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                             VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Standard">
+                            VirtualizingPanel.VirtualizationMode="Recycling">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
@@ -1302,7 +1302,7 @@
                                         VirtualizingPanel.CacheLengthUnit="Item"
                                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                         VirtualizingPanel.ScrollUnit="Pixel"
-                                        VirtualizingPanel.VirtualizationMode="Standard">
+                                        VirtualizingPanel.VirtualizationMode="Recycling">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
@@ -1713,7 +1713,7 @@
                                                             VirtualizingPanel.CacheLengthUnit="Item"
                                                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                                             VirtualizingPanel.ScrollUnit="Pixel"
-                                                            VirtualizingPanel.VirtualizationMode="Standard">
+                                                            VirtualizingPanel.VirtualizationMode="Recycling">
                                                             <ListBox.ItemTemplate>
                                                                 <DataTemplate>
                                                                     <CheckBox VerticalContentAlignment="Center"

@@ -12,26 +12,26 @@
             <ItemsPresenter />
         </ScrollViewer>
     </ControlTemplate>
-    <Style TargetType="local:FileBreadcrumbControl">
+    <Style TargetType="local:FileBreadCrumbControl">
         <Setter Property="Background" Value="{DynamicResource BorderBackground}" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type local:FileBreadcrumbControl}">
+                <ControlTemplate TargetType="{x:Type local:FileBreadCrumbControl}">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                         ScrollViewer.CanContentScroll="True"
                         VerticalScrollBarVisibility="Hidden">
-                        <Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}">
+                        <Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <ProgressBar Background="{x:Null}"
                                 BorderBrush="{x:Null}"
-                                IsIndeterminate="{Binding IsIndeterminate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                IsIndeterminate="{Binding IsIndeterminate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                 Maximum="1"
                                 Minimum="0"
-                                Value="{Binding ProgressValue, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}" />
+                                Value="{Binding ProgressValue, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
                             <ItemsControl Grid.Column="0"
                                 VerticalAlignment="Stretch"
                                 VerticalContentAlignment="Stretch"
@@ -44,7 +44,7 @@
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <local:SplitButton BorderBrush="{x:Null}"
-                                            Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                            Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                             CommandParameter="{Binding Mode=OneWay, Path=FullPath}"
                                             Content="{Binding Mode=OneWay, Path=Path}"
                                             Opacity="0.8"
@@ -62,7 +62,7 @@
                                                                         Source="{Binding Mode=OneWay, Converter={StaticResource FolderPathToIconConverter}}" />
                                                                 </InlineUIContainer>
                                                                 <Hyperlink BaselineAlignment="Center"
-                                                                    Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                                                    Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                                                     CommandParameter="{Binding Mode=OneWay}"
                                                                     TextDecorations="None">
                                                                     <Run Text="{Binding Mode=OneWay, Converter={StaticResource FolderPathToLocalizedNameConverter}}" />
@@ -84,16 +84,16 @@
                             <local:ButtonedTextBox Grid.Column="1"
                                 VerticalAlignment="Center"
                                 CopyButtonVisibility="Visible"
-                                Description="{Binding FileName, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                Description="{Binding FileName, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                 FontSizeButtonVisibility="Collapsed"
                                 PasteButtonVisibility="Collapsed"
                                 PrintButtonVisibility="Collapsed"
                                 RemainingLengthVisibility="Collapsed"
                                 ResetButtonVisibility="Collapsed"
-                                Text="{Binding FilePath, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}"
+                                Text="{Binding FilePath, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                 TextBoxVisibility="Collapsed"
                                 TitleCaseMenuVisibility="Collapsed"
-                                Visibility="{Binding ShowFileName, RelativeSource={RelativeSource AncestorType=local:FileBreadcrumbControl}}" />
+                                Visibility="{Binding ShowFileName, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
                         </Grid>
                     </ScrollViewer>
                 </ControlTemplate>

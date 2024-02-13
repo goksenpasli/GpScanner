@@ -211,7 +211,7 @@
                                                         SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                                         VirtualizingPanel.CacheLengthUnit="Item"
                                                         VirtualizingPanel.ScrollUnit="Pixel"
-                                                        VirtualizingPanel.VirtualizationMode="Standard">
+                                                        VirtualizingPanel.VirtualizationMode="Recycling">
                                                         <ListBox.ItemContainerStyle>
                                                             <Style TargetType="ListBoxItem">
                                                                 <Setter Property="HorizontalContentAlignment" Value="Center" />
