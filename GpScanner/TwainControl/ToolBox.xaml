@@ -221,7 +221,9 @@
                             </StackPanel>
                         </UniformGrid>
                         <UniformGrid Columns="2">
-                            <Button local:Policy.PolicyName="SplitImage" Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
+                            <Button local:Policy.PolicyName="SplitImage"
+                                BorderBrush="Cyan"
+                                Command="{Binding SplitImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc SLICE}" />
                                     <Image Width="16"
@@ -457,9 +459,21 @@
                         <Button local:Policy.PolicyName="SetWatermark"
                             Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                             Content="{local:Loc DRAWTEXT}" />
-                        <Button local:Policy.PolicyName="DeskewImage"
-                            Command="{Binding DeskewImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                            Content="{local:Loc DESKEW}" />
+                        <UniformGrid Columns="2">
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <ContentControl Content="{DynamicResource LeftRotate}" />
+                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                    Maximum="3"
+                                    Minimum="-3"
+                                    Orientation="Horizontal"
+                                    Value="{Binding CustomDeskewAngle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                <ContentControl Content="{DynamicResource RightRotate}" />
+                            </StackPanel>
+                            <Button local:Policy.PolicyName="ToolBoxManualDeskewImage"
+                                Command="{Binding ToolBoxManualDeskewImage}"
+                                CommandParameter="{Binding Scanner.CroppedImage}"
+                                Content="{local:Loc DESKEW}" />
+                        </UniformGrid>
                         <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
                         <Extensions:ContentToggleButton local:Policy.PolicyName="SourceColor" Background="{Binding Scanner.SourceColor, Mode=OneWay}">
                             <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />

@@ -303,6 +303,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => CustomDeskewAngle != 0);
 
+        ToolBoxManualDeskewImage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is ImageSource item)
+                {
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(await item.RotateImageAsync(CustomDeskewAngle, Brushes.White));
+                    bitmapFrame?.Freeze();
+                    Scanner.CroppedImage = bitmapFrame;
+                    bitmapFrame = null;
+                    GC.Collect();
+                }
+            },
+            parameter => Scanner?.CroppedImage is not null && CustomDeskewAngle != 0);
+
         InvertSelectedImage = new RelayCommand<object>(
             parameter =>
             {
@@ -2795,6 +2809,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public RelayCommand<object> ToolBoxManualDeskewImage { get; }
 
     public ICommand Tümünüİşaretle { get; }
 

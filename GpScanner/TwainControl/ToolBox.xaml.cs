@@ -3,7 +3,6 @@ using Ocr;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Imaging;
@@ -37,15 +36,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         InitializeComponent();
 
         PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
-
-        DeskewImage = new RelayCommand<object>(
-            async parameter =>
-            {
-                double deskewAngle = Deskew.GetDeskewAngle((BitmapSource)Scanner.CroppedImage);
-                Scanner.CroppedImage = await Scanner.CroppedImage.RotateImageAsync(deskewAngle, Brushes.White);
-                GC.Collect();
-            },
-            parameter => Scanner?.CroppedImage is not null);
 
         InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg), parameter => Scanner?.CroppedImage is not null);
 
@@ -97,8 +87,21 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         SplitImage = new RelayCommand<object>(
             async parameter =>
             {
-                string savefolder = CreateSaveFolder("SPLIT");
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
                 List<CroppedBitmap> croppedBitmaps = CropImageToList(Scanner.CroppedImage, Scanner.EnAdet, Scanner.BoyAdet);
+                if (altkeypressed)
+                {
+                    foreach (CroppedBitmap bitmap in croppedBitmaps)
+                    {
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmap.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+                        bitmapFrame.Freeze();
+                        ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                        Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
+                    }
+                    return;
+                }
+
+                string savefolder = CreateSaveFolder("SPLIT");
                 await Task.Run(
                     () =>
                     {
@@ -329,8 +332,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             }
         }
     }
-
-    public ICommand DeskewImage { get; }
 
     public ICommand InvertImage { get; }
 
