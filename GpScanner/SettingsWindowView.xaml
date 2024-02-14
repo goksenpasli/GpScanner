@@ -1047,7 +1047,22 @@
                                                     <InlineUIContainer>
                                                         <Image Width="16"
                                                             Height="16"
-                                                            Source="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FilePathToIconConverter}}" />
+                                                            Source="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FilePathToIconConverter}}">
+                                                            <Image.ToolTip>
+                                                                <ToolTip>
+                                                                    <UniformGrid Columns="2">
+                                                                        <ContentControl Width="150"
+                                                                            Height="150"
+                                                                            Content="{Binding Mode=OneWay, Path=FileName}"
+                                                                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                                                                        <TextBlock Width="150"
+                                                                            Height="150"
+                                                                            Margin="5"
+                                                                            Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource PdfFileNameToInfoConverter}}" />
+                                                                    </UniformGrid>
+                                                                </ToolTip>
+                                                            </Image.ToolTip>
+                                                        </Image>
                                                     </InlineUIContainer>
                                                 </Hyperlink>
                                             </TextBlock>
@@ -1061,33 +1076,13 @@
                                             <Extensions:ButtonedTextBox VerticalAlignment="Top"
                                                 Background="Transparent"
                                                 BorderBrush="Transparent"
+                                                Description="{Binding FileName, Mode=OneWay}"
                                                 IsReadOnly="True"
                                                 PasteButtonVisibility="Collapsed"
                                                 ResetButtonVisibility="Collapsed"
                                                 SelectionBrush="DarkMagenta"
-                                                Text="{Binding FileName, Mode=OneWay}">
-                                                <Extensions:ButtonedTextBox.Description>
-                                                    <TextBlock FontFamily="Webdings"
-                                                        FontSize="20"
-                                                        Foreground="Green"
-                                                        Text="N">
-                                                        <TextBlock.ToolTip>
-                                                            <ToolTip>
-                                                                <UniformGrid Columns="2">
-                                                                    <ContentControl Width="150"
-                                                                        Height="150"
-                                                                        Content="{Binding Mode=OneWay, Path=FileName}"
-                                                                        ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                                                                    <TextBlock Width="150"
-                                                                        Height="150"
-                                                                        Margin="5"
-                                                                        Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource PdfFileNameToInfoConverter}}" />
-                                                                </UniformGrid>
-                                                            </ToolTip>
-                                                        </TextBlock.ToolTip>
-                                                    </TextBlock>
-                                                </Extensions:ButtonedTextBox.Description>
-                                            </Extensions:ButtonedTextBox>
+                                                Text="{Binding FileName, Mode=OneWay}"
+                                                TextBoxVisibility="Collapsed" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

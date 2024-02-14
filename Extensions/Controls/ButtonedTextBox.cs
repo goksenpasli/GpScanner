@@ -31,33 +31,15 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ButtonedTextBox()
     {
-        if (ResetButtonVisibility == Visibility.Visible)
-        {
-            _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, ResetCanExecute));
-        }
-        if (CopyButtonVisibility == Visibility.Visible)
-        {
-            _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
-        }
-        if (PrintButtonVisibility == Visibility.Visible)
-        {
-            _ = CommandBindings.Add(new CommandBinding(Print, PrintCommand, CanExecute));
-        }
-        if (OpenButtonVisibility == Visibility.Visible)
-        {
-            _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
-        }
-        if (TitleCaseMenuVisibility == Visibility.Visible)
-        {
-            _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanCaseExecute));
-            _ = CommandBindings.Add(new CommandBinding(TitleCase, TitleCaseCommand, CanCaseExecute));
-            _ = CommandBindings.Add(new CommandBinding(LowerCase, LowerCaseCommand, CanCaseExecute));
-            _ = CommandBindings.Add(new CommandBinding(UpperLowerCase, UpperLowerCaseCaseCommand, CanCaseExecute));
-        }
-        if (PasteButtonVisibility == Visibility.Visible)
-        {
-            _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute));
-        }
+        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, ResetCanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Print, PrintCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(TitleCase, TitleCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(LowerCase, LowerCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(UpperLowerCase, UpperLowerCaseCaseCommand, CanCaseExecute));
+        _ = CommandBindings.Add(new CommandBinding(Paste, PasteCommand, PasteCanExecute));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
