@@ -45,8 +45,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("BlurColor", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty BwAmountProperty =
         DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
-    public static readonly DependencyProperty ContextMenuVisibilityProperty =
-        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(MediaElement), new PropertyMetadata(Visibility.Collapsed));
+    public static readonly DependencyProperty ContextMenuEnabledProperty = DependencyProperty.Register("ContextMenuEnabled", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register("ControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register("EndTimeSpan", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero));
     public static readonly DependencyProperty FlipXProperty =
@@ -423,7 +422,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Video Controls")]
     [Category("Controls")]
-    public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
+    public bool ContextMenuEnabled { get => (bool)GetValue(ContextMenuEnabledProperty); set => SetValue(ContextMenuEnabledProperty, value); }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -1193,6 +1192,14 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             Player.Stop();
             OsdText = "Durdu";
+        }
+    }
+
+    private void Close_Click(object sender, RoutedEventArgs e)
+    {
+        if (Parent is Window window)
+        {
+            window?.Close();
         }
     }
 

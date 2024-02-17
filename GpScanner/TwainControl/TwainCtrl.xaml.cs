@@ -1969,11 +1969,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is Grid grid)
                 {
+                    mediaViewer.ContextMenuEnabled = true;
+                    mediaViewer.ControlVisible = Visibility.Collapsed;
                     grid.Children.Remove(mediaViewer);
-                    maximizedWindow = new() { ResizeMode = ResizeMode.NoResize, WindowState = WindowState.Maximized, ShowInTaskbar = false, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+                    maximizedWindow = new() { WindowStyle=WindowStyle.None, AllowsTransparency=true, ResizeMode = ResizeMode.NoResize, WindowState = WindowState.Maximized, ShowInTaskbar = false, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };
                     maximizedWindow.Closed += (s, e) =>
                                               {
                                                   maximizedWindow.Content = null;
+                                                  mediaViewer.ContextMenuEnabled=false;
+                                                  mediaViewer.ControlVisible=Visibility.Visible;
                                                   _ = grid.Children.Add(mediaViewer);
                                               };
                     maximizedWindow.Content = mediaViewer;

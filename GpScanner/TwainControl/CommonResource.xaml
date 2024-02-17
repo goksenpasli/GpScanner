@@ -1066,7 +1066,7 @@
         <Controls:MediaViewer Width="315"
             Height="315"
             AutoPlay="False"
-            ContextMenuVisibility="Visible"
+            ContextMenuEnabled="True"
             ControlVisible="Collapsed"
             MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>

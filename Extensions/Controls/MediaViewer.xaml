@@ -21,6 +21,7 @@
             <local:DoubleToThicknessConverter x:Key="DoubleToThicknessConverter" />
             <local:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" />
             <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
+            <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <local:GrowablePoissonDiskEffect x:Key="GrowablePoissonDiskEffect" DiskRadius="{Binding BlurAmount}" />
             <local:InvertColorEffect x:Key="InvertColorEffect" />
@@ -40,9 +41,10 @@
         </Grid.RowDefinitions>
         <Grid x:Name="grid"
             Background="Black"
-            ClipToBounds="True">
+            ClipToBounds="True"
+            ContextMenuService.IsEnabled="{Binding ContextMenuEnabled}">
             <Grid.ContextMenu>
-                <ContextMenu Visibility="{Binding ContextMenuVisibility}">
+                <ContextMenu>
                     <MenuItem Command="{Binding OpenFile}"
                         FontFamily="Segoe UI"
                         Header="Dosya Aç"
@@ -51,38 +53,56 @@
                         <MenuItem.Template>
                             <ControlTemplate>
                                 <StackPanel Margin="32,0,0,0" Orientation="Horizontal">
-                                    <Button x:Name="Play"
-                                        Width="24"
-                                        Height="24"
-                                        Click="Play_Click"
-                                        Content="4"
-                                        FontFamily="Webdings"
-                                        FontSize="18"
-                                        Foreground="Blue" />
-                                    <Button x:Name="Pause"
-                                        Width="24"
-                                        Height="24"
-                                        Click="Pause_Click"
-                                        Content=";"
-                                        FontFamily="Webdings"
-                                        FontSize="18"
-                                        Foreground="Blue" />
-                                    <Button x:Name="Stop"
-                                        Width="24"
-                                        Height="24"
-                                        Click="Stop_Click"
-                                        Content="&lt;"
-                                        FontFamily="Webdings"
-                                        FontSize="18"
-                                        Foreground="Blue" />
-                                    <Slider Width="100"
-                                        VerticalAlignment="Center"
-                                        IsMoveToPointEnabled="True"
-                                        Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
-                                        Thumb.DragCompleted="Sld_DragCompleted"
-                                        Thumb.DragStarted="Sld_DragStarted"
-                                        Visibility="{Binding SliderControlVisible}"
-                                        Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        IsChecked="{Binding ControlVisible, Converter={StaticResource VisibilityToBooleanConverter}}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button x:Name="Play"
+                                                Width="24"
+                                                Height="24"
+                                                Click="Play_Click"
+                                                Content="4"
+                                                FontFamily="Webdings"
+                                                FontSize="18"
+                                                Foreground="Blue" />
+                                            <Button x:Name="Pause"
+                                                Width="24"
+                                                Height="24"
+                                                Click="Pause_Click"
+                                                Content=";"
+                                                FontFamily="Webdings"
+                                                FontSize="18"
+                                                Foreground="Blue" />
+                                            <Button x:Name="Stop"
+                                                Width="24"
+                                                Height="24"
+                                                Click="Stop_Click"
+                                                Content="&lt;"
+                                                FontFamily="Webdings"
+                                                FontSize="18"
+                                                Foreground="Blue" />
+                                            <Button x:Name="Close"
+                                                Width="24"
+                                                Height="24"
+                                                Click="Close_Click"
+                                                Content="r"
+                                                FontFamily="Webdings"
+                                                FontSize="18"
+                                                Foreground="Red" />
+                                        </StackPanel>
+                                    </CheckBox>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        IsChecked="{Binding SliderControlVisible, Converter={StaticResource VisibilityToBooleanConverter}}">
+                                        <Slider Width="100"
+                                            VerticalAlignment="Center"
+                                            IsMoveToPointEnabled="True"
+                                            Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
+                                            Thumb.DragCompleted="Sld_DragCompleted"
+                                            Thumb.DragStarted="Sld_DragStarted"
+                                            Visibility="{Binding SliderControlVisible}"
+                                            Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
+                                    </CheckBox>
                                 </StackPanel>
                             </ControlTemplate>
                         </MenuItem.Template>

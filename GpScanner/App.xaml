@@ -475,13 +475,13 @@
                 <Controls:MediaViewer Width="300"
                     Height="300"
                     AutoPlay="False"
-                    ContextMenuVisibility="Visible"
+                    ContextMenuEnabled="True"
                     ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplateMini">
                 <Controls:MediaViewer AutoPlay="False"
-                    ContextMenuVisibility="Visible"
+                    ContextMenuEnabled="True"
                     ControlVisible="Collapsed"
                     MediaDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
