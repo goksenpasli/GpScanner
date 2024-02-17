@@ -199,13 +199,17 @@
                                 <UniformGrid Grid.Row="2" Columns="2">
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
-                                        Content="MOZJPEG"
+                                        Content="PDF MOZJPEG"
                                         IsChecked="{Binding UseMozJpeg, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         IsEnabled="{Binding Source={x:Static mozjpeg:MozJpeg.MozJpegDllExists}}" />
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
-                                        Content="{twainctrl:Loc BW}"
-                                        IsChecked="{Binding BlackAndWhite, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        IsChecked="{Binding BlackAndWhite, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                        <TextBlock>
+                                            <Run Text="PDF" />
+                                            <Run Text="{twainctrl:Loc BW}" />
+                                        </TextBlock>
+                                    </CheckBox>
                                 </UniformGrid>
                             </Grid>
                         </Border>

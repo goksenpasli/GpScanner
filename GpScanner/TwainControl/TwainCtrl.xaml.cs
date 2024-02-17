@@ -1978,6 +1978,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                                   maximizedWindow.Content = null;
                                                   mediaViewer.ContextMenuEnabled=false;
                                                   mediaViewer.ControlVisible=Visibility.Visible;
+                                                  mediaViewer.SliderControlVisible=Visibility.Visible;
                                                   _ = grid.Children.Add(mediaViewer);
                                               };
                     maximizedWindow.Content = mediaViewer;

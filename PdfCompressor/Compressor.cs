@@ -63,22 +63,14 @@ public class Compressor : Control, INotifyPropertyChanged
                     foreach (BatchPdfData file in BatchPdfList)
                     {
                         string outputFile = $"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf";
-                        if (Path.GetExtension(file.Filename.ToLowerInvariant()) == ".pdf" && IsValidPdfFile(file.Filename))
-                        {
-                            using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(file.Filename);
-                            pdfDocument.Save(outputFile);
-                            ApplyDefaultPdfCompression(pdfDocument);
-                            file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
-                            file.Completed = true;
-                        }
-                        else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLowerInvariant())))
-                        {
-                            using PdfDocument pdfDocument = await GeneratePdf(file.Filename, Quality);
-                            ApplyDefaultPdfCompression(pdfDocument);
-                            pdfDocument.Save(outputFile);
-                            file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
-                            file.Completed = true;
-                        }
+                        bool isPdf = Path.GetExtension(file.Filename.ToLowerInvariant()) == ".pdf" && IsValidPdfFile(file.Filename);
+                        using PdfDocument pdfDocument = isPdf ? await CompressFilePdfDocumentAsync(file.Filename) : await GeneratePdfAsync(file.Filename, Quality);
+                        ApplyDefaultPdfCompression(pdfDocument);
+                        pdfDocument.Save(outputFile);
+                        long outputFileSize = new FileInfo(outputFile).Length;
+                        long originalFileSize = new FileInfo(file.Filename).Length;
+                        file.CompressionRatio = (double)outputFileSize / originalFileSize * 100;
+                        file.Completed = true;
                     }
                     CompressionProgress = 0;
                 }
@@ -195,7 +187,7 @@ public class Compressor : Control, INotifyPropertyChanged
         return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi, progress => CompressionProgress = progress);
     }
 
-    protected async Task<PdfDocument> GeneratePdf(string imagefile, int jpegquality = 80)
+    protected async Task<PdfDocument> GeneratePdfAsync(string imagefile, int jpegquality = 80)
     {
         using PdfDocument document = new();
         await Task.Run(

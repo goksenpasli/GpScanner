@@ -1111,7 +1111,7 @@
         Eyp="{StaticResource SimpleArchiveViewerEypViewerTemplate}"
         Img="{StaticResource SimpleArchiveViewerImgViewerTemplate}"
         Pdf="{StaticResource SimpleArchiveViewerPdfViewerTemplate}"
-        Vid="{StaticResource SimpleArchiveViewerEmptyTemplate}"
+        Vid="{StaticResource SimpleArchiveViewerVideoViewerTemplate}"
         Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
         Xml="{StaticResource SimpleArchiveViewerXmlViewerTemplate}"
         Xps="{StaticResource SimpleArchiveViewerXpsViewerTemplate}"

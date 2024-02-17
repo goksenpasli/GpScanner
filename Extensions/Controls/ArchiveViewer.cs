@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using static Extensions.ExtensionMethods;
 
 namespace Extensions
 {
@@ -86,6 +87,7 @@ namespace Extensions
                     if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     {
                         ExtractSelectedFiles(ArchivePath, Arşivİçerik.Where(z => z.IsChecked), dialog.SelectedPath);
+                        OpenFolderAndSelectItem(dialog.SelectedPath, string.Empty);
                     }
                 },
                 parameter => Arşivİçerik is not null && CollectionViewSource.GetDefaultView(Arşivİçerik).OfType<ArchiveData>().Count(z => z.IsChecked) > 0);
