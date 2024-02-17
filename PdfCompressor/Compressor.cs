@@ -73,9 +73,9 @@ public class Compressor : Control, INotifyPropertyChanged
                         }
                         else if (imagefileextensions.Contains(Path.GetExtension(file.Filename.ToLowerInvariant())))
                         {
-                            using PdfDocument pdfDocument = await GeneratePdf(file.Filename);
-                            pdfDocument.Save(outputFile);
+                            using PdfDocument pdfDocument = await GeneratePdf(file.Filename, Quality);
                             ApplyDefaultPdfCompression(pdfDocument);
+                            pdfDocument.Save(outputFile);
                             file.CompressionRatio = (double)new FileInfo(outputFile).Length / new FileInfo(file.Filename).Length * 100;
                             file.Completed = true;
                         }
@@ -195,7 +195,7 @@ public class Compressor : Control, INotifyPropertyChanged
         return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi, progress => CompressionProgress = progress);
     }
 
-    protected async Task<PdfDocument> GeneratePdf(string imagefile)
+    protected async Task<PdfDocument> GeneratePdf(string imagefile, int jpegquality = 80)
     {
         using PdfDocument document = new();
         await Task.Run(
@@ -205,7 +205,8 @@ public class Compressor : Control, INotifyPropertyChanged
                 {
                     PdfPage page = document.AddPage();
                     using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                    using XImage xImage = XImage.FromFile(imagefile);
+                    using MemoryStream ms = new(BitmapFrame.Create(new Uri(imagefile)).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
+                    using XImage xImage = XImage.FromStream(ms);
                     XSize size = PageSizeConverter.ToSize(page.Size);
                     if (xImage.PixelWidth < xImage.PixelHeight)
                     {

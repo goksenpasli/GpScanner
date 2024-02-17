@@ -11,6 +11,15 @@ namespace GpScanner
     {
         public PdfCompressorControl() { InitializeComponent(); }
 
+        private void ComboBox_CompressorListSourceUpdated(object sender, DataTransferEventArgs e)
+        {
+            if (e.Source is ComboBox comboBox && comboBox.DataContext is GpScannerViewModel gpScannerViewModel)
+            {
+                Compressor.Dpi = (int)gpScannerViewModel.SelectedCompressorProfile.Width;
+                Compressor.Quality = (int)gpScannerViewModel.SelectedCompressorProfile.Height;
+            }
+        }
+
         private void CompressFinishedButton_TargetUpdated(object sender, DataTransferEventArgs e)
         {
             if (e.Source is Button button && button.IsEnabled && button.DataContext is GpScannerViewModel gpScannerViewModel)

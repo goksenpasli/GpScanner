@@ -60,10 +60,26 @@
                                         SmallChange="1"
                                         Style="{DynamicResource Slider}"
                                         Value="{Binding Quality, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <TextBlock VerticalAlignment="Center">
-                                        <Run Text="{twainctrl:Loc ALL}" />
-                                        <Run Text="{twainctrl:Loc CLEARLIST}" />
-                                    </TextBlock>
+                                    <UniformGrid Columns="2">
+                                        <ComboBox ItemsSource="{Binding CompressorList}"
+                                            SelectedItem="{Binding Path=SelectedCompressorProfile, NotifyOnSourceUpdated=True}"
+                                            SourceUpdated="ComboBox_CompressorListSourceUpdated">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock>
+                                                        <Run Text="{Binding Width, Mode=OneWay}" />
+                                                        <Run Text="DPI" />
+                                                        <Run Text="{Binding Height, Mode=OneWay}" />
+                                                        <Run Text="{twainctrl:Loc JPEGQUALITY}" />
+                                                    </TextBlock>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run Text="{twainctrl:Loc ALL}" />
+                                            <Run Text="{twainctrl:Loc CLEARLIST}" />
+                                        </TextBlock>
+                                    </UniformGrid>
                                     <Button Command="{Binding ClearPdfCompressorBatchList}"
                                         CommandParameter="{Binding BatchPdfList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         IsEnabled="{Binding CompressFinished, RelativeSource={RelativeSource Mode=TemplatedParent}}">
@@ -100,7 +116,7 @@
                                     </Button>
                                     <Button VerticalContentAlignment="Stretch"
                                         Command="{Binding BatchCompressFile, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                        IsEnabled="{Binding CompressFinished, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                        IsEnabled="{Binding CompressFinished, NotifyOnTargetUpdated=True, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         TargetUpdated="CompressFinishedButton_TargetUpdated">
                                         <Grid>
                                             <ProgressBar Background="{x:Null}"
@@ -129,30 +145,41 @@
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <Hyperlink BaselineAlignment="Center"
-                                                            Command="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType={x:Type Compressor:Compressor}}}"
-                                                            CommandParameter="{Binding Mode=OneWay}"
-                                                            TextDecorations="None">
-                                                            <InlineUIContainer>
-                                                                <StackPanel Margin="1" Orientation="Horizontal">
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Shell32.dll" />
-                                                                                <Binding Source="131" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
-                                                                    <ProgressBar Width="32"
-                                                                        Background="{x:Null}"
-                                                                        Maximum="100"
-                                                                        Value="{Binding CompressionRatio, Mode=OneWay}" />
-                                                                </StackPanel>
-                                                            </InlineUIContainer>
-                                                        </Hyperlink>
-                                                        <Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" />
-                                                    </TextBlock>
+                                                    <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                                                        Background="Transparent"
+                                                        BorderBrush="Transparent"
+                                                        CopyButtonVisibility="Collapsed"
+                                                        Focusable="False"
+                                                        Foreground="{Binding Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}"
+                                                        PasteButtonVisibility="Collapsed"
+                                                        ResetButtonVisibility="Collapsed"
+                                                        Text="{Binding Filename, Mode=OneWay}"
+                                                        TextBoxVisibility="Collapsed">
+                                                        <TextBlock>
+                                                            <Hyperlink BaselineAlignment="Center"
+                                                                Command="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType={x:Type Compressor:Compressor}}}"
+                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                TextDecorations="None">
+                                                                <InlineUIContainer>
+                                                                    <StackPanel Margin="1" Orientation="Horizontal">
+                                                                        <Image Width="16" Height="16">
+                                                                            <Image.Source>
+                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                    <Binding Source="Shell32.dll" />
+                                                                                    <Binding Source="131" />
+                                                                                </MultiBinding>
+                                                                            </Image.Source>
+                                                                        </Image>
+                                                                        <ProgressBar Width="32"
+                                                                            Background="{x:Null}"
+                                                                            Maximum="100"
+                                                                            Value="{Binding CompressionRatio, Mode=OneWay}" />
+                                                                    </StackPanel>
+                                                                </InlineUIContainer>
+                                                            </Hyperlink>
+                                                            <Run Text="{Binding Filename, Mode=OneWay}" />
+                                                        </TextBlock>
+                                                    </Extensions:ButtonedTextBox>
                                                 </StackPanel>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
@@ -188,6 +215,8 @@
         </Style>
     </UserControl.Resources>
     <Grid>
-        <Compressor:Compressor BatchPdfList="{Binding CompressedFiles}" Style="{StaticResource CompressorStyle}" />
+        <Compressor:Compressor x:Name="Compressor"
+            BatchPdfList="{Binding CompressedFiles}"
+            Style="{StaticResource CompressorStyle}" />
     </Grid>
 </UserControl>

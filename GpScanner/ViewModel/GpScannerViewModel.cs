@@ -48,7 +48,7 @@ using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner.ViewModel;
 
-public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
+public class GpScannerViewModel : InpcBase, IDataErrorInfo
 {
     public static readonly string ErrorFile = "Error.log";
     public static readonly string ProfileFolder = $"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}";
@@ -128,6 +128,7 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string seçiliDil;
     private DateTime seçiliGün;
     private TessFiles selectedBatchFile;
+    private Size selectedCompressorProfile;
     private ContributionData selectedContribution;
     private int selectedContributionYear = DateTime.Now.Year;
     private string selectedFtp;
@@ -1421,6 +1422,8 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public List<Size> CompressorList { get; } = new List<Size>() { { new Size(72, 80) }, { new Size(96, 75) }, { new Size(120, 70) }, { new Size(150, 65) }, { new Size(200, 60) }, };
+
     public ObservableCollection<ContributionData> ContributionData
     {
         get => contributionData;
@@ -2016,6 +2019,19 @@ public partial class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 selectedBatchFile = value;
                 OnPropertyChanged(nameof(SelectedBatchFile));
+            }
+        }
+    }
+
+    public Size SelectedCompressorProfile
+    {
+        get => selectedCompressorProfile;
+        set
+        {
+            if (selectedCompressorProfile != value)
+            {
+                selectedCompressorProfile = value;
+                OnPropertyChanged(nameof(SelectedCompressorProfile));
             }
         }
     }
