@@ -49,6 +49,7 @@
                         FontFamily="Segoe UI"
                         Header="Dosya Aç"
                         Visibility="{Binding OpenButtonVisibility}" />
+                    <Separator />
                     <MenuItem>
                         <MenuItem.Template>
                             <ControlTemplate>
@@ -81,14 +82,6 @@
                                                 FontFamily="Webdings"
                                                 FontSize="18"
                                                 Foreground="Blue" />
-                                            <Button x:Name="Close"
-                                                Width="24"
-                                                Height="24"
-                                                Click="Close_Click"
-                                                Content="r"
-                                                FontFamily="Webdings"
-                                                FontSize="18"
-                                                Foreground="Red" />
                                         </StackPanel>
                                     </CheckBox>
                                     <CheckBox VerticalAlignment="Center"
@@ -100,13 +93,13 @@
                                             Maximum="{Binding EndTimeSpan, Converter={StaticResource TimespanToSecondsConverter}, Mode=OneWay}"
                                             Thumb.DragCompleted="Sld_DragCompleted"
                                             Thumb.DragStarted="Sld_DragStarted"
-                                            Visibility="{Binding SliderControlVisible}"
                                             Value="{Binding MediaPosition, Converter={StaticResource TimespanToSecondsConverter}, Mode=TwoWay}" />
                                     </CheckBox>
                                 </StackPanel>
                             </ControlTemplate>
                         </MenuItem.Template>
                     </MenuItem>
+                    <Separator />
                     <MenuItem FontFamily="Segoe UI"
                         Header="Ters Renk"
                         IsCheckable="True"
@@ -139,6 +132,7 @@
                         Header="360°"
                         IsCheckable="True"
                         IsChecked="{Binding PanoramaMode}" />
+                    <Separator />
                     <MenuItem>
                         <MenuItem.Template>
                             <ControlTemplate>
@@ -153,6 +147,10 @@
                             </ControlTemplate>
                         </MenuItem.Template>
                     </MenuItem>
+                    <Separator />
+                    <MenuItem Command="{Binding ClosePlayer}"
+                        FontFamily="Segoe UI"
+                        Header="ÇIKIŞ" />
                 </ContextMenu>
             </Grid.ContextMenu>
             <Grid Margin="{Binding VideoMargin}">

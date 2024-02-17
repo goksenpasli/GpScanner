@@ -163,6 +163,16 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             },
             parameter => true);
 
+        ClosePlayer = new RelayCommand<object>(
+            parameter =>
+            {
+                if (Parent is Window window)
+                {
+                    window?.Close();
+                }
+            },
+            parameter => Parent is Window);
+
         CaptureImage = new RelayCommand<object>(
             parameter =>
             {
@@ -419,6 +429,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public RelayCommand<object> CaptureImage { get; }
 
     public RelayCommand<object> CaptureThumbnail { get; }
+
+    public RelayCommand<object> ClosePlayer { get; }
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -1192,14 +1204,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             Player.Stop();
             OsdText = "Durdu";
-        }
-    }
-
-    private void Close_Click(object sender, RoutedEventArgs e)
-    {
-        if (Parent is Window window)
-        {
-            window?.Close();
         }
     }
 
