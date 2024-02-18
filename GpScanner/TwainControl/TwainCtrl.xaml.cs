@@ -3334,7 +3334,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 return;
             }
-            double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
+            double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filename);
             for (int i = 1; i <= totalpagecount; i++)
             {
                 using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);

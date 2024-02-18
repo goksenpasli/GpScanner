@@ -319,7 +319,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         string ocrtext = string.Empty;
                         if (Path.GetExtension(unIndexedFile.ToLowerInvariant()) == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile))
                         {
-                            double pagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(File.ReadAllBytes(unIndexedFile));
+                            double pagecount = PdfViewer.PdfViewer.PdfPageCount(unIndexedFile);
                             if (OcrAllPdfPages)
                             {
                                 for (int i = 1; i <= pagecount; i++)
@@ -380,7 +380,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         string ocrtext = string.Empty;
                         if (Path.GetExtension(unIndexedFile.ToLowerInvariant()) == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile))
                         {
-                            double pagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(File.ReadAllBytes(unIndexedFile));
+                            double pagecount = PdfViewer.PdfViewer.PdfPageCount(unIndexedFile);
                             if (OcrAllPdfPages)
                             {
                                 for (int j = 1; j <= pagecount; j++)

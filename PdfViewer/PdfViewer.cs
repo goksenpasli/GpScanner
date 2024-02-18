@@ -644,20 +644,16 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         return buffer?.SequenceEqual(pdfheader) == true;
     }
 
-    public static async Task<int> PdfPageCountAsync(byte[] stream)
+    public static int PdfPageCount(string pdffile)
     {
         try
         {
-            return stream?.Length == 0
-                   ? throw new ArgumentNullException(nameof(stream), "stream can not be null or length zero")
-                   : await Task.Run(
-                () =>
-                {
-                    using MemoryStream ms = new(stream);
-                    using PdfDocument pdfDoc = PdfDocument.Load(ms);
-                    stream = null;
-                    return (pdfDoc?.PageCount) ?? 0;
-                });
+            if (!IsValidPdfFile(pdffile))
+            {
+                return 0;
+            }
+            using PdfDocument pdfDoc = PdfDocument.Load(pdffile);
+            return pdfDoc.PageCount;
         }
         catch (Exception)
         {
