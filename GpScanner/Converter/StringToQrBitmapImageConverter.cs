@@ -15,6 +15,6 @@ public sealed class StringToQrBitmapImageConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is string data && !string.IsNullOrWhiteSpace(data) ? qrcode.GenerateQr(data, 200, 200) : null;
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => value is WriteableBitmap bitmapImage
-                                                                                                       ? qrcode.GetImageBarcodeResult(BitmapFrame.Create(bitmapImage.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg)))
+                                                                                                       ? qrcode.GetImageBarcodeResult(BitmapFrame.Create(bitmapImage.ToBitmapImage()))
                                                                                                        : null;
 }

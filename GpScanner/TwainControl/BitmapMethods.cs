@@ -249,7 +249,7 @@ public static class BitmapMethods
         return await Task.Run(
             () =>
             {
-                BitmapImage frame = BitmapFrame.Create(transformedBitmap).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
+                BitmapImage frame = BitmapFrame.Create(transformedBitmap).ToBitmapImage();
                 frame.Freeze();
                 transformedBitmap = null;
                 return frame;
@@ -258,18 +258,20 @@ public static class BitmapMethods
 
     public static BitmapFrame GenerateImageDocumentBitmapFrame(MemoryStream ms)
     {
-        BitmapImage image = new();
-        image.BeginInit();
-        _ = ms.Seek(0, SeekOrigin.Begin);
-        image.CacheOption = BitmapCacheOption.None;
-        image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
-        image.StreamSource = ms;
-        image.EndInit();
-        image.Freeze();
-        BitmapFrame bitmapFrame = BitmapFrame.Create(image.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
-        bitmapFrame.Freeze();
-        ms?.Dispose();
-        return bitmapFrame;
+        using (ms)
+        {
+            BitmapImage image = new();
+            image.BeginInit();
+            ms.Position = 0;
+            image.CacheOption = BitmapCacheOption.None;
+            image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile | BitmapCreateOptions.DelayCreation;
+            image.StreamSource = ms;
+            image.EndInit();
+            image.Freeze();
+            BitmapFrame bitmapFrame = BitmapFrame.Create(image.ToBitmapImage());
+            bitmapFrame.Freeze();
+            return bitmapFrame;
+        }
     }
 
     public static WriteableBitmap InvertBitmap(this BitmapSource bitmap)
@@ -418,7 +420,7 @@ public static class BitmapMethods
         return await Task.Run(
             () =>
             {
-                BitmapImage bitmapimage = transformedBitmap.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
+                BitmapImage bitmapimage = transformedBitmap.ToBitmapImage();
                 bitmapimage?.Freeze();
                 return bitmapimage;
             });
@@ -448,7 +450,7 @@ public static class BitmapMethods
                     RenderTargetBitmap rtb = new(bitmapSource.PixelWidth, bitmapSource.PixelHeight, 96, 96, PixelFormats.Default);
                     rtb.Render(dv);
                     rtb.Freeze();
-                    BitmapImage bitmapimage = rtb.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
+                    BitmapImage bitmapimage = rtb.ToBitmapImage();
                     bitmapimage.Freeze();
                     bitmapSource = null;
                     Source = null;
@@ -611,9 +613,6 @@ public static class BitmapMethods
     {
         [DllImport("user32.dll")]
         public static extern SafeIconHandle CreateIconIndirect(ref IconInfo icon);
-
-        [DllImport("user32.dll")]
-        public static extern bool DestroyIcon(IntPtr hIcon);
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]

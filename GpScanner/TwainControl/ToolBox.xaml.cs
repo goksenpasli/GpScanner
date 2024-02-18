@@ -37,7 +37,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
         PrintCroppedImage = new RelayCommand<object>(parameter => PdfViewer.PdfViewer.PrintImageSource(parameter as ImageSource), parameter => Scanner?.CroppedImage is not null);
 
-        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg), parameter => Scanner?.CroppedImage is not null);
+        InvertImage = new RelayCommand<object>(parameter => Scanner.CroppedImage = ((BitmapSource)Scanner.CroppedImage).InvertBitmap().ToBitmapImage(), parameter => Scanner?.CroppedImage is not null);
 
         AutoCropImage = new RelayCommand<object>(
             parameter =>
@@ -93,7 +93,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 {
                     foreach (CroppedBitmap bitmap in croppedBitmaps)
                     {
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmap.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+                        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmap.ToBitmapImage());
                         bitmapFrame.Freeze();
                         ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                         Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
@@ -442,6 +442,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 if (sourceRect.HasArea)
                 {
                     CroppedBitmap croppedBitmap = new(image, sourceRect);
+                    croppedBitmap.Freeze();
                     croppedBitmaps.Add(croppedBitmap);
                 }
             }

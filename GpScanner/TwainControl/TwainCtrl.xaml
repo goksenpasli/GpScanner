@@ -1827,7 +1827,8 @@
                                                                                             </Button>
                                                                                             <StackPanel Orientation="Horizontal">
                                                                                                 <ContentControl Content="{DynamicResource LeftRotate}" />
-                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                <Extensions:NumericUpDownControl Width="60"
+                                                                                                    IsReadOnly="True"
                                                                                                     Maximum="3"
                                                                                                     Minimum="-3"
                                                                                                     Orientation="Horizontal"

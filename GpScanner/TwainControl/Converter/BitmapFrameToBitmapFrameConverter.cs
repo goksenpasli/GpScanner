@@ -1,6 +1,5 @@
 ﻿using Extensions;
 using System;
-using System.Drawing.Imaging;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
@@ -13,7 +12,7 @@ public sealed class BitmapFrameToBitmapFrameConverter : IValueConverter
     {
         if (value is BitmapFrame bitmapFrame)
         {
-            BitmapFrame bf = BitmapFrame.Create(bitmapFrame.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+            BitmapFrame bf = BitmapFrame.Create(bitmapFrame.ToBitmapImage());
             bf.Freeze();
             return bf;
         }

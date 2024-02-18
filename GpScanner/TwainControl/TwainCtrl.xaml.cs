@@ -257,7 +257,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         return;
                     }
 
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                     bitmapFrame?.Freeze();
                     item.Resim = bitmapFrame;
                     bitmapFrame = null;
@@ -348,7 +348,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         continue;
                     }
 
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                     bitmapFrame?.Freeze();
                     item.Resim = bitmapFrame;
                     bitmapFrame = null;
@@ -2943,7 +2943,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public static BitmapFrame GenerateBitmapFrame(BitmapSource bitmapSource)
     {
         bitmapSource.Freeze();
-        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+        BitmapFrame bitmapFrame = BitmapFrame.Create(bitmapSource.ToBitmapImage());
         bitmapFrame.Freeze();
         return bitmapFrame;
     }
@@ -4388,7 +4388,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             if (Scanner.ApplyMedian)
             {
-                evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue).BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
+                evrak = evrak.MedianFilterBitmap(Settings.Default.MedianValue).ToBitmapImage();
             }
 
             if (Settings.Default.CropScan)
@@ -4404,7 +4404,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             if (Scanner.InvertImage)
             {
-                evrak = evrak.InvertBitmap().BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg);
+                evrak = evrak.InvertBitmap().ToBitmapImage();
             }
 
             evrak.Freeze();

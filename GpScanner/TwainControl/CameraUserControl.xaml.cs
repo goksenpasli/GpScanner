@@ -30,7 +30,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         Unloaded += CameraUserControl_Unloaded;
         PropertyChanged += CameraUserControl_PropertyChanged;
 
-        KameradanResimYükle = new RelayCommand<object>(parameter => ResimData = CameraEncodeBitmapImage().ToArray(), parameter => SeçiliKamera is not null);
+        KameradanResimYükle = new RelayCommand<object>(parameter => ResimData = CameraEncodeBitmapImage().ToArray(), parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
 
         Durdur = new RelayCommand<object>(parameter => Device?.Stop(), parameter => SeçiliKamera is not null && Device?.IsRunning == true);
 

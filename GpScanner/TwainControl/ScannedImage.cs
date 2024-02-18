@@ -137,6 +137,7 @@ public class ScannedImage : InpcBase
     {
         if (e.PropertyName is "RotationAngle" && RotationAngle != 0)
         {
+            Resim.Freeze();
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {
                 BitmapImage flippedimage = await Resim.FlipImageAsync(RotationAngle);
@@ -156,6 +157,7 @@ public class ScannedImage : InpcBase
         }
         if (e.PropertyName is "FlipAngle" && FlipAngle != 0)
         {
+            Resim.Freeze();
             BitmapImage flippedimage = await Resim.FlipImageAsync(FlipAngle);
             flippedimage?.Freeze();
             BitmapFrame bf = BitmapFrame.Create(flippedimage);
@@ -166,6 +168,7 @@ public class ScannedImage : InpcBase
         }
         if (e.PropertyName is "Resim" && Resim is not null)
         {
+            Resim.Freeze();
             ResimThumb = await Resim.ResizeAsync(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
         }
     }
