@@ -224,7 +224,7 @@
                                                                 SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                                                 VirtualizingPanel.CacheLengthUnit="Item"
                                                                 VirtualizingPanel.ScrollUnit="Pixel"
-                                                                VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                VirtualizingPanel.VirtualizationMode="Standard">
                                                                 <ListBox.ItemTemplate>
                                                                     <DataTemplate>
                                                                         <StackPanel HorizontalAlignment="Center">
