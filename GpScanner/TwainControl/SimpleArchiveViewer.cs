@@ -166,8 +166,11 @@ public class SimpleArchiveViewer : ArchiveViewer
     {
         using ArchiveFile archiveFile = new(ArchivePath);
         Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname);
-        string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(entryname)}";
-        entry?.Extract(extractpath);
+        string extractpath = $"{Path.GetTempPath()}{entryname}";
+        if (!File.Exists(extractpath))
+        {
+            entry?.Extract(extractpath);
+        }
         return extractpath;
     }
 

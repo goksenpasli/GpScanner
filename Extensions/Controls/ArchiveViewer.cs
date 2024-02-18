@@ -219,8 +219,11 @@ namespace Extensions
             if (archive != null)
             {
                 ZipArchiveEntry dosya = archive.GetEntry(entryname);
-                string extractpath = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(dosya.Name)}";
-                dosya?.ExtractToFile(extractpath, true);
+                string extractpath = $"{Path.GetTempPath()}{dosya.Name}";
+                if (!File.Exists(extractpath))
+                {
+                    dosya?.ExtractToFile(extractpath, true);
+                }
                 return extractpath;
             }
 

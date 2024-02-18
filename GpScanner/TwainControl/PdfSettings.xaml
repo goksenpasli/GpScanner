@@ -20,7 +20,7 @@
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
-            <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+            <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
@@ -54,103 +54,90 @@
                     IsEnabled="{Binding Scanner.PasswordProtect}"
                     PasswordChanged="PasswordBox_PasswordChanged" />
             </HeaderedContentControl>
-            <UniformGrid Columns="2">
-                <GroupBox>
-                    <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource NullableToBooleanConverter}}">
-                        <CheckBox local:Policy.PolicyName="AllowPrint"
-                            Content="{local:Loc ALLOWPRINT}"
-                            IsChecked="{Binding Scanner.AllowPrint}" />
-                        <CheckBox local:Policy.PolicyName="AllowCopy"
-                            Content="{local:Loc ALLOWCOPY}"
-                            IsChecked="{Binding Scanner.AllowCopy}" />
-                        <CheckBox local:Policy.PolicyName="AllowEdit"
-                            Content="{local:Loc ALLOWEDIT}"
-                            IsChecked="{Binding Scanner.AllowEdit}" />
-                    </StackPanel>
-                </GroupBox>
-                <GroupBox>
-                    <StackPanel>
-                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                            local:Policy.PolicyName="UserName"
-                            CopyButtonVisibility="Collapsed"
-                            OpenButtonVisibility="Collapsed"
-                            Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="UserCpl.dll" />
-                                        <Binding Source="0" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Extensions:ButtonedTextBox>
-                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                            local:Policy.PolicyName="CreatorAppName"
-                            CopyButtonVisibility="Collapsed"
-                            OpenButtonVisibility="Collapsed"
-                            Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="2" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Extensions:ButtonedTextBox>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="32" Height="32">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="1" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <UniformGrid Columns="2" Rows="2">
-                                <TextBlock VerticalAlignment="Center">
-                                    <Run Text="{local:Loc CWIDTH}" />
-                                    <Run Text="(cm)" />
-                                </TextBlock>
-                                <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
-                                <TextBlock VerticalAlignment="Center">
-                                    <Run Text="{local:Loc CHEIGHT}" />
-                                    <Run Text="(cm)" />
-                                </TextBlock>
-                                <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
-                            </UniformGrid>
-                        </StackPanel>
-                    </StackPanel>
-                </GroupBox>
-            </UniformGrid>
             <Separator />
-            <Grid local:Policy.PolicyName="SaveQuality">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="10" />
-                    <ColumnDefinition />
-                </Grid.ColumnDefinitions>
-                <Border Padding="1">
-                    <HeaderedContentControl>
-                        <HeaderedContentControl.Header>
-                            <TextBlock>
-                                <Run Text="{local:Loc RES}" />
-                                <Run Text="{Binding Path=ImgLoadResolution, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
+            <StackPanel IsEnabled="{Binding Scanner.PdfPassword, Converter={StaticResource StringNullableToBooleanConverter}}">
+                <CheckBox local:Policy.PolicyName="AllowPrint"
+                    Content="{local:Loc ALLOWPRINT}"
+                    IsChecked="{Binding Scanner.AllowPrint}" />
+                <CheckBox local:Policy.PolicyName="AllowCopy"
+                    Content="{local:Loc ALLOWCOPY}"
+                    IsChecked="{Binding Scanner.AllowCopy}" />
+                <CheckBox local:Policy.PolicyName="AllowEdit"
+                    Content="{local:Loc ALLOWEDIT}"
+                    IsChecked="{Binding Scanner.AllowEdit}" />
+            </StackPanel>
+            <GroupBox>
+                <StackPanel>
+                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                        local:Policy.PolicyName="UserName"
+                        CopyButtonVisibility="Collapsed"
+                        OpenButtonVisibility="Collapsed"
+                        Text="{Binding Scanner.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="UserCpl.dll" />
+                                    <Binding Source="0" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Extensions:ButtonedTextBox>
+                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                        local:Policy.PolicyName="CreatorAppName"
+                        CopyButtonVisibility="Collapsed"
+                        OpenButtonVisibility="Collapsed"
+                        Text="{Binding Scanner.CreatorAppName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="2" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Extensions:ButtonedTextBox>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="32" Height="32">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="1" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <UniformGrid Columns="2" Rows="2">
+                            <TextBlock VerticalAlignment="Center">
+                                <Run Text="{local:Loc CWIDTH}" />
+                                <Run Text="(cm)" />
                             </TextBlock>
-                        </HeaderedContentControl.Header>
-                        <Slider IsSnapToTickEnabled="True"
-                            Maximum="1200"
-                            Minimum="72"
-                            SmallChange="1"
-                            Style="{StaticResource Slider}"
-                            Ticks="{Binding ScanResolutionList, Mode=OneWay}"
-                            Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                    </HeaderedContentControl>
-                </Border>
-                <HeaderedContentControl Grid.Column="2">
+                            <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                            <TextBlock VerticalAlignment="Center">
+                                <Run Text="{local:Loc CHEIGHT}" />
+                                <Run Text="(cm)" />
+                            </TextBlock>
+                            <Extensions:NumericUpDownControl Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                        </UniformGrid>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+            <Separator />
+            <UniformGrid local:Policy.PolicyName="SaveQuality" Columns="2">
+                <HeaderedContentControl>
+                    <HeaderedContentControl.Header>
+                        <TextBlock>
+                            <Run Text="{local:Loc RES}" />
+                            <Run Text="{Binding Path=ImgLoadResolution, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
+                        </TextBlock>
+                    </HeaderedContentControl.Header>
+                    <Slider IsSnapToTickEnabled="True"
+                        Maximum="1200"
+                        Minimum="72"
+                        SmallChange="1"
+                        Style="{StaticResource Slider}"
+                        Ticks="{Binding ScanResolutionList, Mode=OneWay}"
+                        Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                </HeaderedContentControl>
+                <HeaderedContentControl>
                     <HeaderedContentControl.Header>
                         <TextBlock>
                             <Run Text="{local:Loc BW}" />
@@ -166,7 +153,7 @@
                         Style="{DynamicResource Slider}"
                         Value="{Binding Path=BwThreshold, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
-            </Grid>
+            </UniformGrid>
             <Separator />
             <CheckBox local:Policy.PolicyName="Deskew" IsChecked="{Binding Scanner.Deskew}">
                 <CheckBox.Content>
@@ -174,7 +161,10 @@
                         <Image Width="16"
                             Height="16"
                             Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                        <TextBlock Text="{local:Loc DESKEW}" />
+                        <TextBlock>
+                            <Run Text="PDF" />
+                            <Run Text="{local:Loc DESKEW}" />
+                        </TextBlock>
                     </StackPanel>
                 </CheckBox.Content>
             </CheckBox>

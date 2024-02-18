@@ -543,7 +543,7 @@ public static class PdfGeneration
     private static void ApplyPdfSecurity(this PdfDocument document)
     {
         PdfSecuritySettings securitySettings = document.SecuritySettings;
-        if (Scanner.PdfPassword is not null)
+        if (!string.IsNullOrWhiteSpace(Scanner.PdfPassword))
         {
             securitySettings.OwnerPassword = Scanner.PdfPassword;
             securitySettings.PermitModifyDocument = Scanner.AllowEdit;
