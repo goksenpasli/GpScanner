@@ -155,19 +155,6 @@
                 </HeaderedContentControl>
             </UniformGrid>
             <Separator />
-            <CheckBox local:Policy.PolicyName="Deskew" IsChecked="{Binding Scanner.Deskew}">
-                <CheckBox.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="16"
-                            Height="16"
-                            Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                        <TextBlock>
-                            <Run Text="PDF" />
-                            <Run Text="{local:Loc DESKEW}" />
-                        </TextBlock>
-                    </StackPanel>
-                </CheckBox.Content>
-            </CheckBox>
             <CheckBox local:Policy.PolicyName="ApplyPdfSaveOcr"
                 IsChecked="{Binding Scanner.ApplyPdfSaveOcr}"
                 IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">

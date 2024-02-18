@@ -256,7 +256,7 @@ public static class BitmapMethods
             });
     }
 
-    public static async Task<BitmapFrame> GenerateImageDocumentBitmapFrameAsync(MemoryStream ms, bool deskew = false)
+    public static BitmapFrame GenerateImageDocumentBitmapFrame(MemoryStream ms)
     {
         BitmapImage image = new();
         image.BeginInit();
@@ -266,16 +266,10 @@ public static class BitmapMethods
         image.StreamSource = ms;
         image.EndInit();
         image.Freeze();
-
-        BitmapImage skewedimage = null;
-        if (deskew)
-        {
-            double deskewAngle = Deskew.GetDeskewAngle(image);
-            skewedimage = await image.RotateImageAsync(deskewAngle, System.Windows.Media.Brushes.White);
-            skewedimage.Freeze();
-        }
-
-        return deskew ? BitmapFrame.Create(skewedimage) : BitmapFrame.Create(image);
+        BitmapFrame bitmapFrame = BitmapFrame.Create(image.BitmapSourceToBitmap().ToBitmapImage(ImageFormat.Jpeg));
+        bitmapFrame.Freeze();
+        ms?.Dispose();
+        return bitmapFrame;
     }
 
     public static WriteableBitmap InvertBitmap(this BitmapSource bitmap)

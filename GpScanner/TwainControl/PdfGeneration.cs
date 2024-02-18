@@ -308,6 +308,7 @@ public static class PdfGeneration
                 document.ApplyPdfSecurity();
             }
             document.ApplyDefaultPdfCompression();
+            ms?.Dispose();
             ms = null;
             data = null;
             bitmapframe = null;

@@ -10,7 +10,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl;
-using static GpScanner.ViewModel.GpScannerViewModel;
 
 namespace GpScanner.ViewModel;
 
@@ -52,18 +51,17 @@ public class DocumentViewerModel : InpcBase
             parameter => Index < DirectoryAllPdfFiles?.Count() - 1);
 
         AddFileToControlPanel = new RelayCommand<object>(
-            async parameter =>
+            parameter =>
             {
                 if (parameter is ImageSource imageSource)
                 {
-                    MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                    using MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = FilePath, Resim = bitmapFrame };
                     Scanner?.Resimler?.Add(scannedImage);
                     bitmapFrame = null;
                     scannedImage = null;
-                    ms = null;
                 }
             },
             parameter => true);

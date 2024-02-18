@@ -43,7 +43,6 @@ public class Scanner : InpcBase, IDataErrorInfo
     private BitmapSource croppedImageThumb;
     private double cropRight;
     private double cropTop;
-    private bool deskew;
     private bool detectEmptyPage;
     private bool detectPageSeperator;
     private bool duplex;
@@ -478,20 +477,6 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 cropTop = value;
                 OnPropertyChanged(nameof(CropTop));
-            }
-        }
-    }
-
-    public bool Deskew
-    {
-        get => deskew;
-
-        set
-        {
-            if (deskew != value)
-            {
-                deskew = value;
-                OnPropertyChanged(nameof(Deskew));
             }
         }
     }

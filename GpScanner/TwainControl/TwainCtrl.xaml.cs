@@ -160,7 +160,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.PropertyChanged += Scanner_PropertyChanged;
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += TwainCtrl_PropertyChangedAsync;
-        Camera.PropertyChanged += CameraUserControl_PropertyChangedAsync;
+        Camera.PropertyChanged += CameraUserControl_PropertyChanged;
         TranslationSource.Instance.PropertyChanged += Language_PropertyChanged;
         SelectedPaper = Settings.Default.LockSelectedPaper ? Papers.FirstOrDefault(z => z.PaperType == Settings.Default.DefaultPaper) : Papers.FirstOrDefault(z => z.PaperType == "A4");
 
@@ -1300,12 +1300,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
 
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Settings.Default.ImgLoadResolution);
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
-                    ms = null;
                     filedata = null;
                 }
             },
@@ -1621,9 +1620,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
-                    MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
-                    ms = null;
+                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     filedata = null;
                     using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue).GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution);
                     SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("PAGENUMBER")} {pdfViewer.Sayfa}.pdf" };
@@ -1972,13 +1970,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     mediaViewer.ContextMenuEnabled = true;
                     mediaViewer.ControlVisible = Visibility.Collapsed;
                     grid.Children.Remove(mediaViewer);
-                    maximizedWindow = new() { WindowStyle=WindowStyle.None, AllowsTransparency=true, ResizeMode = ResizeMode.NoResize, WindowState = WindowState.Maximized, ShowInTaskbar = false, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+                    maximizedWindow = new()
+                    {
+                        WindowStyle = WindowStyle.None,
+                        AllowsTransparency = true,
+                        ResizeMode = ResizeMode.NoResize,
+                        WindowState = WindowState.Maximized,
+                        ShowInTaskbar = false,
+                        Title = AppName,
+                        WindowStartupLocation = WindowStartupLocation.CenterOwner
+                    };
                     maximizedWindow.Closed += (s, e) =>
                                               {
                                                   maximizedWindow.Content = null;
-                                                  mediaViewer.ContextMenuEnabled=false;
-                                                  mediaViewer.ControlVisible=Visibility.Visible;
-                                                  mediaViewer.SliderControlVisible=Visibility.Visible;
+                                                  mediaViewer.ContextMenuEnabled = false;
+                                                  mediaViewer.ControlVisible = Visibility.Visible;
+                                                  mediaViewer.SliderControlVisible = Visibility.Visible;
                                                   _ = grid.Children.Add(mediaViewer);
                                               };
                     maximizedWindow.Content = mediaViewer;
@@ -1988,15 +1995,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => true);
 
         VideodanResimYükle = new RelayCommand<object>(
-            async parameter =>
+            parameter =>
             {
                 if (parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
                 {
-                    MemoryStream ms = new(grid.ToRenderTargetBitmap().ToTiffJpegByteArray(Format.Jpg));
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                    using MemoryStream ms = new(grid.ToRenderTargetBitmap().ToTiffJpegByteArray(Format.Jpg));
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     bitmapFrame.Freeze();
                     Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame });
-                    ms = null;
                 }
             },
             parameter => parameter is MediaViewer mediaViewer && !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
@@ -3329,11 +3335,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 return;
             }
             double totalpagecount = await PdfViewer.PdfViewer.PdfPageCountAsync(filedata);
-            MemoryStream ms;
             for (int i = 1; i <= totalpagecount; i++)
             {
-                ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
-                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms, Scanner.Deskew);
+                using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
+                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                 bitmapFrame.Freeze();
                 await Dispatcher.InvokeAsync(
                     () =>
@@ -3346,7 +3351,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
             _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
             filedata = null;
-            ms = null;
         }
     }
 
@@ -3442,17 +3446,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) => Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
 
-    private async void CameraUserControl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
+    private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (sender is CameraUserControl cameraUserControl)
         {
             if (e.PropertyName is "ResimData" && cameraUserControl.ResimData is not null)
             {
-                MemoryStream ms = new(cameraUserControl.ResimData);
-                BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                using MemoryStream ms = new(cameraUserControl.ResimData);
+                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                 bitmapFrame.Freeze();
                 Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame });
-                ms = null;
             }
 
             if (e.PropertyName is "DetectQRCode")
@@ -3742,7 +3745,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private async void ImgViewer_MouseMoveAsync(object sender, MouseEventArgs e)
+    private void ImgViewer_MouseMove(object sender, MouseEventArgs e)
     {
         if (e.OriginalSource is System.Windows.Controls.Image img && img.Parent is ScrollViewer scrollviewer)
         {
@@ -3809,8 +3812,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                     if (Keyboard.Modifiers == ModifierKeys.Shift && ImgData is not null)
                     {
-                        MemoryStream ms = new(ImgData);
-                        BitmapFrame bitmapframe = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                        using MemoryStream ms = new(ImgData);
+                        BitmapFrame bitmapframe = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                         bitmapframe.Freeze();
                         ScannedImage item = new() { Resim = bitmapframe };
                         Scanner.Resimler.Add(item);

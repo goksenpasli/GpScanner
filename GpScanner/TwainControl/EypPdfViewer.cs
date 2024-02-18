@@ -98,12 +98,11 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 if (parameter is int sayfa && DataContext is TwainCtrl twainCtrl)
                 {
                     byte[] filedata = await ReadAllFileAsync(PdfFilePath);
-                    MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = await BitmapMethods.GenerateImageDocumentBitmapFrameAsync(ms);
+                    using MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     twainCtrl?.Scanner?.Resimler.Add(scannedImage);
-                    ms = null;
                     filedata = null;
                 }
             },
@@ -255,7 +254,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             }
             catch (Exception ex)
             {
-                _ = Application.Current.Dispatcher.InvokeAsync(() => _ = MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
+                _ = Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
             }
         }
     }

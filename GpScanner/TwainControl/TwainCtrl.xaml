@@ -2204,7 +2204,7 @@
                             OpenButtonVisibility="Collapsed"
                             PanoramaButtonVisibility="Collapsed"
                             PreviewMouseDown="ImgViewer_MouseDown"
-                            PreviewMouseMove="ImgViewer_MouseMoveAsync"
+                            PreviewMouseMove="ImgViewer_MouseMove"
                             PreviewMouseWheel="ImgViewer_PreviewMouseWheel"
                             PrintButtonVisibility="Visible"
                             SnapTick="True"
