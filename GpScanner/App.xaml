@@ -386,6 +386,12 @@
             <DataTemplate x:Key="ZipViewerTemplate">
                 <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
             </DataTemplate>
+            <DataTemplate x:Key="DocumentViewerMonthPreviewZipViewerTemplate">
+                <twain:SimpleArchiveViewer Width="155"
+                    Height="155"
+                    ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+            </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
                 <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
@@ -471,6 +477,19 @@
             <DataTemplate x:Key="EypViewerTemplateFull">
                 <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="MonthPreviewSelectorEypViewerTemplate">
+                <twain:EypPdfViewer Width="155"
+                    Height="155"
+                    AutoFitContent="True"
+                    EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    ScrollBarVisible="Auto"
+                    ToolBarVisibility="Collapsed" />
+            </DataTemplate>
+            <DataTemplate x:Key="DocumentViewerMonthPreviewXlsxTemplate">
+                <twain:XlsxViewer Width="155"
+                    Height="155"
+                    XlsxDataFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
                 <Controls:MediaViewer Width="300"
                     Height="300"
@@ -495,6 +514,11 @@
             </DataTemplate>
             <DataTemplate x:Key="DocxViewerThumbTemplate">
                 <local:DocxViewer DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
+            <DataTemplate x:Key="DocumentViewerMonthPreviewDocxViewerTemplate">
+                <local:DocxViewer Width="155"
+                    Height="155"
+                    DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DvdBurnerZipViewerTemplate">
                 <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
@@ -743,15 +767,15 @@
                 Xps="{StaticResource EmptyViewerTemplate}"
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMonthPreviewSelector"
-                Docx="{StaticResource EmptyViewerTemplate}"
-                Eyp="{StaticResource EmptyViewerTemplate}"
+                Docx="{StaticResource DocumentViewerMonthPreviewDocxViewerTemplate}"
+                Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
                 Pdf="{StaticResource PdfViewerDocumentViewerMonthTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
-                Xlsx="{StaticResource EmptyViewerTemplate}"
+                Xlsx="{StaticResource DocumentViewerMonthPreviewXlsxTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
                 Xps="{StaticResource EmptyViewerTemplate}"
-                Zip="{StaticResource EmptyViewerTemplate}" />
+                Zip="{StaticResource DocumentViewerMonthPreviewZipViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="ThumbViewerSelector"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"

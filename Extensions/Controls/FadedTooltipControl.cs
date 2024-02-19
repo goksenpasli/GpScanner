@@ -1,10 +1,8 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Interop;
 using System.Windows.Markup;
 
 namespace Extensions
@@ -13,8 +11,8 @@ namespace Extensions
     [ContentProperty("TooltipContent")]
     public class FadedToolTipControl : Control
     {
-        public static readonly DependencyProperty AlwaysOnTopProperty =
-            DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(FadedToolTipControl), new PropertyMetadata(true, OnTopChanged));
+        public static readonly DependencyProperty AlwaysOnTopProperty = DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(FadedToolTipControl), new PropertyMetadata(true, OnTopChanged));
+        public static readonly DependencyProperty CloseDelayProperty = DependencyProperty.Register("CloseDelay", typeof(int), typeof(FadedToolTipControl), new PropertyMetadata(2000));
         public static readonly DependencyProperty PopupAnimationProperty = DependencyProperty.Register("PopupAnimation", typeof(PopupAnimation), typeof(FadedToolTipControl), new PropertyMetadata(PopupAnimation.Fade));
         public static readonly DependencyProperty PopupParentProperty = DependencyProperty.Register("PopupParent", typeof(FrameworkElement), typeof(FadedToolTipControl));
         public static readonly DependencyProperty PositionProperty = DependencyProperty.Register("Position", typeof(PlacementMode), typeof(FadedToolTipControl), new PropertyMetadata(PlacementMode.Center));
@@ -26,6 +24,8 @@ namespace Extensions
         private Popup popup;
 
         static FadedToolTipControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FadedToolTipControl), new FrameworkPropertyMetadata(typeof(FadedToolTipControl))); }
+
+        public int CloseDelay { get => (int)GetValue(CloseDelayProperty); set => SetValue(CloseDelayProperty, value); }
 
         public PopupAnimation PopupAnimation { get => (PopupAnimation)GetValue(PopupAnimationProperty); set => SetValue(PopupAnimationProperty, value); }
 
@@ -55,10 +55,10 @@ namespace Extensions
             {
                 if (Show)
                 {
-                    await ShowTooltipAsync();
+                    await ShowToolTipAsync();
                     return;
                 }
-                CloseTooltip();
+                await CloseToolTipAsync();
             }
         }
 
@@ -76,33 +76,33 @@ namespace Extensions
             {
                 if ((bool)e.NewValue)
                 {
-                    await fadedTooltipControl.ShowTooltipAsync();
+                    await fadedTooltipControl.ShowToolTipAsync();
                 }
                 else
                 {
-                    fadedTooltipControl.CloseTooltip();
+                    await fadedTooltipControl.CloseToolTipAsync();
                 }
             }
         }
 
-        private void CloseTooltip()
+        private async Task CloseToolTipAsync()
         {
-            if (popup is not null)
+            await Task.Delay(CloseDelay);
+            if (!Show)
             {
-                popup.IsOpen = false;
+                _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = false);
             }
         }
 
-        private async Task ShowTooltipAsync()
+        private async Task ShowToolTipAsync()
         {
-            if (popup is not null)
-            {
-                await Task.Delay(TimeToShow);
-                _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = true);
 
-                await Task.Delay(TimeToClose);
-                _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = false);
-            }
+            await Task.Delay(TimeToShow);
+            _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = true);
+
+            await Task.Delay(TimeToClose);
+            _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = false);
+
         }
     }
 }

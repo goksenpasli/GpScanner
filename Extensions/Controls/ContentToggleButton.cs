@@ -1,7 +1,5 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Interop;
 
 namespace Extensions;
 
@@ -48,7 +46,7 @@ public class ContentToggleButton : ToggleButton
     {
         if (d is Popup popup)
         {
-          ExtensionMethods.PopupOpened(f, popup);
+            ExtensionMethods.PopupOpened(f, popup);
         }
     }
 }

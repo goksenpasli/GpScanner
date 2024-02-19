@@ -552,21 +552,26 @@
                                                                     </Style.Triggers>
                                                                 </Style>
                                                             </Extensions:FadedToolTipControl.Style>
-                                                            <ListBox Width="720"
+                                                            <Extensions:ResizablePanel Width="720"
                                                                 Height="480"
-                                                                ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
-                                                                ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
-                                                                VirtualizingPanel.CacheLengthUnit="Item"
-                                                                VirtualizingPanel.ScrollUnit="Pixel"
-                                                                VirtualizingPanel.VirtualizationMode="Recycling">
-                                                                <ListBox.ItemsPanel>
-                                                                    <ItemsPanelTemplate>
-                                                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                                                            ItemSize="165,165"
-                                                                            SpacingMode="None" />
-                                                                    </ItemsPanelTemplate>
-                                                                </ListBox.ItemsPanel>
-                                                            </ListBox>
+                                                                MinWidth="360"
+                                                                MinHeight="240"
+                                                                Background="{x:Null}"
+                                                                BorderBrush="Transparent">
+                                                                <ListBox ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
+                                                                    ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
+                                                                    VirtualizingPanel.CacheLengthUnit="Item"
+                                                                    VirtualizingPanel.ScrollUnit="Pixel"
+                                                                    VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                    <ListBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                                                ItemSize="165,165"
+                                                                                SpacingMode="None" />
+                                                                        </ItemsPanelTemplate>
+                                                                    </ListBox.ItemsPanel>
+                                                                </ListBox>
+                                                            </Extensions:ResizablePanel>
                                                         </Extensions:FadedToolTipControl>
                                                     </Grid>
                                                 </DataTemplate>
@@ -739,6 +744,7 @@
                             Grid.Row="3"
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
+                            Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
                             d:ItemsSource="{d:SampleData ItemCount=5}"
                             twainctrl:Policy.PolicyName="SelectedDocument"
                             Background="{StaticResource BorderBackground}"
