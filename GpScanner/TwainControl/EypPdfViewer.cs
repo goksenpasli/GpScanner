@@ -118,7 +118,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     filedata = null;
                     using Image image = Image.FromStream(ms);
                     System.Windows.Forms.Clipboard.SetImage(image);
-                    _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                    _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), Window.GetWindow(this)?.Title, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             },
             parameter => true);

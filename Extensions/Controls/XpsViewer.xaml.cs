@@ -75,7 +75,7 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
                 paginator = new PageRangeDocumentPaginator(xpsViewer.Document.DocumentPaginator, dlg.PageRange);
             }
 
-            dlg.PrintDocument(paginator, "");
+            dlg.PrintDocument(paginator, string.Empty);
         }
     }
 }

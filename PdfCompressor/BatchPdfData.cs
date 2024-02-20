@@ -5,8 +5,8 @@ namespace PdfCompressor;
 public class BatchPdfData : InpcBase
 {
     private bool completed;
-    private string filename;
     private double compressionRatio;
+    private string filename;
 
     public bool Completed
     {
@@ -21,19 +21,6 @@ public class BatchPdfData : InpcBase
         }
     }
 
-    public string Filename
-    {
-        get => filename;
-        set
-        {
-            if (filename != value)
-            {
-                filename = value;
-                OnPropertyChanged(nameof(Filename));
-            }
-        }
-    }
-
     public double CompressionRatio
     {
         get => compressionRatio;
@@ -43,6 +30,19 @@ public class BatchPdfData : InpcBase
             {
                 compressionRatio = value;
                 OnPropertyChanged(nameof(CompressionRatio));
+            }
+        }
+    }
+
+    public string Filename
+    {
+        get => filename;
+        set
+        {
+            if (filename != value)
+            {
+                filename = value;
+                OnPropertyChanged(nameof(Filename));
             }
         }
     }

@@ -60,7 +60,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Printing" />
     <Reference Include="System.Web.Extensions" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="WindowsBase" />
@@ -106,6 +105,7 @@
     <Compile Include="Converters\StringToColorHexCodeConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
+    <Compile Include="FolderDialog.cs" />
     <Compile Include="IgnoreMouseWheelBehavior.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

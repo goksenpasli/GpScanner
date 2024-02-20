@@ -496,9 +496,13 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
         if (ScrollOwner != null)
         {
-            bool verticalScrollBarGotHidden = ScrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto && ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible && ScrollOwner.ComputedVerticalScrollBarVisibility != _previousVerticalScrollBarVisibility;
+            bool verticalScrollBarGotHidden = ScrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto &&
+            ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible &&
+            ScrollOwner.ComputedVerticalScrollBarVisibility != _previousVerticalScrollBarVisibility;
 
-            bool horizontalScrollBarGotHidden = ScrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto && ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible && ScrollOwner.ComputedHorizontalScrollBarVisibility != _previousHorizontalScrollBarVisibility;
+            bool horizontalScrollBarGotHidden = ScrollOwner.HorizontalScrollBarVisibility == ScrollBarVisibility.Auto &&
+            ScrollOwner.ComputedHorizontalScrollBarVisibility != Visibility.Visible &&
+            ScrollOwner.ComputedHorizontalScrollBarVisibility != _previousHorizontalScrollBarVisibility;
 
             _previousVerticalScrollBarVisibility = ScrollOwner.ComputedVerticalScrollBarVisibility;
             _previousHorizontalScrollBarVisibility = ScrollOwner.ComputedHorizontalScrollBarVisibility;
@@ -872,7 +876,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
             SpacingMode != SpacingMode.None && !double.IsInfinity(GetWidth(availableSize)) ? GetWidth(availableSize) : GetWidth(ChildSize) * ItemsPerRowCount;
         if (ItemsOwner is IHierarchicalVirtualizationAndScrollInfo)
         {
-            extentWidth =Orientation == Orientation.Vertical ? Math.Max(extentWidth - (Margin.Left + Margin.Right), 0) : Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
+            extentWidth = Orientation == Orientation.Vertical ? Math.Max(extentWidth - (Margin.Left + Margin.Right), 0) : Math.Max(extentWidth - (Margin.Top + Margin.Bottom), 0);
         }
 
         double extentHeight = GetHeight(ChildSize) * RowCount;
@@ -992,7 +996,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
     /// <summary>
     /// This virtual method is called when <see cref="Orientation"/> is changed.
     /// </summary>
-    protected virtual void OnOrientationChanged() => MouseWheelScrollDirection =Orientation == Orientation.Vertical ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
+    protected virtual void OnOrientationChanged() => MouseWheelScrollDirection = Orientation == Orientation.Vertical ? ScrollDirection.Vertical : ScrollDirection.Horizontal;
 
     /// <inheritdoc/>
     protected override ItemRange UpdateItemRange()
@@ -1043,7 +1047,7 @@ public class VirtualizingWrapPanel : VirtualizingPanelBase
                 double cacheAfterInPixel = Math.Min(CacheLength.CacheAfterViewport, GetHeight(Extent) - viewportHeight - offsetInPixel);
 
                 int rowCountInCacheBefore = (int)(cacheBeforeInPixel / GetHeight(ChildSize));
-                int rowCountInCacheAfter =((int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(ChildSize))) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(ChildSize));
+                int rowCountInCacheAfter = ((int)Math.Ceiling((offsetInPixel + viewportHeight + cacheAfterInPixel) / GetHeight(ChildSize))) - (int)Math.Ceiling((offsetInPixel + viewportHeight) / GetHeight(ChildSize));
 
                 startIndex = Math.Max(startIndex - (rowCountInCacheBefore * ItemsPerRowCount), 0);
                 endIndex = Math.Min(endIndex + (rowCountInCacheAfter * ItemsPerRowCount), Items.Count - 1);

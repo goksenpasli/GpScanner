@@ -12,7 +12,6 @@ public class RelayAsyncCommand<T> : RelayCommand<T>
     public RelayAsyncCommand(Action<T> execute) : base(execute)
     {
     }
-
     [DebuggerStepThrough]
     public RelayAsyncCommand(Action<T> execute, Predicate<T> canExecute) : base(execute, canExecute)
     {
@@ -91,7 +90,6 @@ public class RelayCommand : ICommand
     public RelayCommand(Action execute) : this(execute, null)
     {
     }
-
     [DebuggerStepThrough]
     public RelayCommand(Action execute, Func<bool> canExecute)
     {

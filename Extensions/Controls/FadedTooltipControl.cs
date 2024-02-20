@@ -96,13 +96,11 @@ namespace Extensions
 
         private async Task ShowToolTipAsync()
         {
-
             await Task.Delay(TimeToShow);
             _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = true);
 
             await Task.Delay(TimeToClose);
             _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = false);
-
         }
     }
 }

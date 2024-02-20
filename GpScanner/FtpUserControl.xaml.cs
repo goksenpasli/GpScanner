@@ -19,9 +19,10 @@ namespace GpScanner;
 /// </summary>
 public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 {
+    private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private double copyProgressValue;
     private DriveInfo selectedRemovableDrive;
-    private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
+
     public FtpUserControl()
     {
         InitializeComponent();
@@ -38,8 +39,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
                         return;
                     }
 
-                    if (MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("UPDATE")}",AppName, MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No) ==
-                    MessageBoxResult.Yes)
+                    if (MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("UPDATE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Exclamation, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
                         await CopyFileAsync(scanner.FileName, path, true, progress => CopyProgressValue = progress);
                     }

@@ -48,13 +48,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 if (parameter is ScannedImage scannedImage &&
-                MessageBox.Show(
-                    $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}",
-                    Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.No) ==
-                MessageBoxResult.Yes)
+                MessageBox.Show($"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}", Window.GetWindow(this)?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     scannedImage.Resim = SaveInkCanvasToImage();
                 }
@@ -64,7 +58,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         ClearTemporaryImage = new RelayCommand<object>(
             parameter =>
             {
-                if (MessageBox.Show($"{Translation.GetResStringValue("CLOSEFILE")}", Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show($"{Translation.GetResStringValue("CLOSEFILE")}", Window.GetWindow(this)?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Ink?.Strokes?.Clear();
                     TemporaryImage = null;

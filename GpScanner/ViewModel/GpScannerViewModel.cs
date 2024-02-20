@@ -693,10 +693,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchFolder = new RelayCommand<object>(
             parameter =>
             {
-                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", BatchImageFileExtensions.Where(z => z.Checked).Select(z => z.Name))}" };
-                if (dialog.ShowDialog() == DialogResult.OK)
+                string path = FolderDialog.SelectFolder(
+                    $"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", BatchImageFileExtensions.Where(z => z.Checked).Select(z => z.Name))}",
+                    new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle);
+                if (!string.IsNullOrEmpty(path))
                 {
-                    BatchFolder = dialog.SelectedPath;
+                    BatchFolder = path;
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -704,10 +706,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchSaveFolder = new RelayCommand<object>(
             parameter =>
             {
-                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("PDFFOLDER")}" };
-                if (dialog.ShowDialog() == DialogResult.OK)
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("PDFFOLDER")}", new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle);
+                if (!string.IsNullOrEmpty(path))
                 {
-                    Settings.Default.BatchSaveFolder = dialog.SelectedPath;
+                    Settings.Default.BatchSaveFolder = path;
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -751,15 +753,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchWatchFolder = new RelayCommand<object>(
             parameter =>
             {
-                FolderBrowserDialog dialog = new() { Description = Translation.GetResStringValue("BATCHDESC") };
-                if (dialog.ShowDialog() == DialogResult.OK)
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("BATCHDESC")}", new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle);
+                if (!string.IsNullOrEmpty(path))
                 {
-                    if (dialog.SelectedPath == Twainsettings.Settings.Default.AutoFolder)
+                    if (path == Twainsettings.Settings.Default.AutoFolder)
                     {
                         _ = MessageBox.Show(Translation.GetResStringValue("NO ACTION"), AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         return;
                     }
-                    Settings.Default.BatchFolder = dialog.SelectedPath;
+                    Settings.Default.BatchFolder = path;
                     Settings.Default.Save();
                 }
             },
@@ -1177,16 +1179,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetDbBackUpFolder = new RelayCommand<object>(
             parameter =>
             {
-                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}", SelectedPath = Settings.Default.DataBaseBackUpFolder };
-                if (dialog.ShowDialog() == DialogResult.OK)
+                string path = FolderDialog.SelectFolder(
+                    $"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}",
+                    new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle,
+                    Settings.Default.DataBaseBackUpFolder);
+                if (!string.IsNullOrEmpty(path))
                 {
-                    DriveInfo driveInfo = new(dialog.SelectedPath);
+                    DriveInfo driveInfo = new(path);
                     if (driveInfo.DriveType == DriveType.CDRom)
                     {
                         _ = MessageBox.Show($"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         return;
                     }
-                    Settings.Default.DataBaseBackUpFolder = dialog.SelectedPath;
+                    Settings.Default.DataBaseBackUpFolder = path;
                 }
             },
             parameter => true);

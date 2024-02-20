@@ -21,7 +21,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
@@ -270,14 +269,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 if (parameter is ScannedImage item &&
-                MessageBox.Show(
-                    Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(),
-                    $"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}",
-                    AppName,
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.No) ==
-                MessageBoxResult.Yes)
+                MessageBox.Show($"{Translation.GetResStringValue("DESKEW")} {Translation.GetResStringValue("APPLY")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     double deskewAngle = Deskew.GetDeskewAngle(item.Resim);
                     BitmapFrame bitmapFrame = BitmapFrame.Create(await item.Resim.RotateImageAsync(deskewAngle, Brushes.White));
@@ -531,18 +523,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         KayıtYoluBelirle = new RelayCommand<object>(
             parameter =>
             {
-                FolderBrowserDialog dialog = new() { Description = $"{Translation.GetResStringValue("FASTSCAN")}\n{Translation.GetResStringValue("AUTOFOLDER")}", SelectedPath = Settings.Default.AutoFolder };
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("FASTSCAN")}\n{Translation.GetResStringValue("AUTOFOLDER")}", new WindowInteropHelper(Window.GetWindow(this)).Handle, Settings.Default.AutoFolder);
                 string oldpath = Settings.Default.AutoFolder;
-                if (dialog.ShowDialog() == DialogResult.OK)
+                if (!string.IsNullOrEmpty(path))
                 {
-                    DriveInfo driveInfo = new(dialog.SelectedPath);
+                    DriveInfo driveInfo = new(path);
                     if (driveInfo.DriveType == DriveType.CDRom)
                     {
                         _ = MessageBox.Show($"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                         return;
                     }
-                    Settings.Default.AutoFolder = dialog.SelectedPath;
-                    Scanner.LocalizedPath = ShellIcon.GetDisplayName(dialog.SelectedPath);
+                    Settings.Default.AutoFolder = path;
+                    Scanner.LocalizedPath = ShellIcon.GetDisplayName(path);
                 }
 
                 if (!string.IsNullOrWhiteSpace(oldpath) && oldpath != Settings.Default.AutoFolder)
@@ -811,11 +803,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(), Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    _ = MessageBox.Show(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
 
-                if (MessageBox.Show(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(), Translation.GetResStringValue("LISTREMOVEWARN"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (MessageBox.Show(Window.GetWindow(this), Translation.GetResStringValue("LISTREMOVEWARN"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();
                     UndoImage = null;
@@ -3198,7 +3190,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (fileloadtask?.IsCompleted == false)
         {
-            _ = MessageBox.Show(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault(), Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
+            _ = MessageBox.Show(Window.GetWindow(this), Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
             return;
         }
 
