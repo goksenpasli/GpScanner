@@ -60,12 +60,10 @@
                                         </Image>
                                     </MenuItem.Icon>
                                     <MenuItem.Header>
-                                        <Extensions:NumericUpDownControl Width="100"
-                                            LargeChange="1"
+                                        <Extensions:NumericUpDown Width="100"
+                                            Interval="1"
                                             Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                             Minimum="1"
-                                            Orientation="Horizontal"
-                                            SmallChange="1"
                                             Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}"
                                             Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     </MenuItem.Header>
@@ -229,12 +227,10 @@
                                                 </Extensions:ResizablePanel>
                                             </Extensions:ContentToggleButton.OverContent>
                                         </Extensions:ContentToggleButton>
-                                        <Extensions:NumericUpDownControl Width="48"
-                                            LargeChange="1"
+                                        <Extensions:NumericUpDown Width="48"
+                                            Interval="1"
                                             Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                             Minimum="1"
-                                            Orientation="Horizontal"
-                                            SmallChange="1"
                                             Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     </StackPanel>
                                     <Extensions:SplitButton Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"

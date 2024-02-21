@@ -104,15 +104,14 @@
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
-                        <local:NumericUpDownControl x:Name="fontsize"
+                        <local:NumericUpDown x:Name="fontsize"
                             Grid.Column="7"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             IsReadOnly="True"
-                            LargeChange="1"
                             Minimum="1"
                             NumericUpdownTextBoxVisibility="Collapsed"
-                            SmallChange="1"
+                            Interval="1"
                             SnapsToDevicePixels="True"
                             Visibility="{Binding FontSizeButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                             Value="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}" />

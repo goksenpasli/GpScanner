@@ -242,13 +242,13 @@
                     <WrapPanel DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                         IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}"
                         Orientation="Horizontal">
-                        <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
+                        <Extensions:NumericUpDown Interval="1"
+                            Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1"
-                            SmallChange="1"
                             Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
-                        <Extensions:NumericUpDownControl Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
+                        <Extensions:NumericUpDown Interval="1"
+                            Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1"
-                            SmallChange="1"
                             Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
                         <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}">
                             <Image Width="16" Height="16">
@@ -350,10 +350,10 @@
                                 </Image>
                             </Button.Content>
                         </Button>
-                        <Extensions:NumericUpDownControl IsReadOnly="True"
+                        <Extensions:NumericUpDown Interval="1"
+                            IsReadOnly="True"
                             Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="0"
-                            SmallChange="1"
                             Value="{Binding PdfSplitCount}" />
                         <Button Command="{Binding SplitPdf}" CommandParameter="{Binding ElementName=PdfVwr}">
                             <Image Width="16" Height="16">

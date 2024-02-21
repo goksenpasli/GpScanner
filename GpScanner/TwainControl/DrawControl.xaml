@@ -155,9 +155,8 @@
                     </Image.Source>
                 </Image>
             </ToggleButton>
-            <Extension:NumericUpDownControl Minimum="0.5"
-                Orientation="Horizontal"
-                SmallChange="1"
+            <Extension:NumericUpDown Minimum="0.5"
+                Interval="1"
                 Value="{Binding StylusWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
             <ToggleButton IsChecked="{Binding Lock, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
                 <Image Width="24" Height="24">
@@ -169,9 +168,8 @@
                     </Image.Source>
                 </Image>
             </ToggleButton>
-            <Extension:NumericUpDownControl Minimum="0.5"
-                Orientation="Horizontal"
-                SmallChange="1"
+            <Extension:NumericUpDown Minimum="0.5"
+                Interval="1"
                 Value="{Binding StylusHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
             <Button local:Policy.PolicyName="SaveEditedImage"
                 Command="{Binding SaveEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"

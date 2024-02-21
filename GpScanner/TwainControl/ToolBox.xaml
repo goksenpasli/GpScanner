@@ -153,9 +153,9 @@
                                     Value="{Binding Scanner.CroppedImageAngle}" />
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
-                                    <Extensions:NumericUpDownControl Maximum="10"
+                                    <Extensions:NumericUpDown Interval="1"
+                                        Maximum="10"
                                         Minimum="0"
-                                        SmallChange="1"
                                         Value="{Binding Scanner.MedianValue, Delay=150, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                             </UniformGrid>
@@ -207,16 +207,16 @@
                         <UniformGrid Columns="2">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
-                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
+                                <Extensions:NumericUpDown Interval="1"
+                                    Maximum="{Binding SeçiliResim.Resim.PixelWidth}"
                                     Minimum="1"
-                                    SmallChange="1"
                                     Value="{Binding Scanner.EnAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc HEIGHTCOUNT}" />
-                                <Extensions:NumericUpDownControl Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
+                                <Extensions:NumericUpDown Interval="1"
+                                    Maximum="{Binding SeçiliResim.Resim.PixelHeight}"
                                     Minimum="1"
-                                    SmallChange="1"
                                     Value="{Binding Scanner.BoyAdet, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                             </StackPanel>
                         </UniformGrid>
@@ -248,16 +248,14 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Extensions:NumericUpDownControl IsReadOnly="True"
-                                LargeChange="1"
-                                Minimum="1"
-                                SmallChange="1"
-                                Value="{Binding Scanner.SliceCountWidth}" />
-                            <Extensions:NumericUpDownControl Grid.Column="1"
+                            <Extensions:NumericUpDown Interval="1"
                                 IsReadOnly="True"
-                                LargeChange="1"
                                 Minimum="1"
-                                SmallChange="1"
+                                Value="{Binding Scanner.SliceCountWidth}" />
+                            <Extensions:NumericUpDown Grid.Column="1"
+                                Interval="1"
+                                IsReadOnly="True"
+                                Minimum="1"
                                 Value="{Binding Scanner.SliceCountHeight}" />
                             <Button Grid.Column="2"
                                 local:Policy.PolicyName="SplitAllImage"
@@ -329,26 +327,23 @@
                                     </Image.Source>
                                 </Image>
                             </ToggleButton>
-                            <Extensions:NumericUpDownControl Grid.Column="3"
+                            <Extensions:NumericUpDown Grid.Column="3"
+                                Interval="1"
                                 IsReadOnly="True"
-                                LargeChange="1"
                                 Minimum="1"
-                                SmallChange="1"
                                 Value="{Binding Scanner.SliceCountWidth}" />
-                            <Extensions:NumericUpDownControl Grid.Column="4"
+                            <Extensions:NumericUpDown Grid.Column="4"
+                                Interval="1"
                                 IsReadOnly="True"
-                                LargeChange="1"
                                 Minimum="1"
-                                SmallChange="1"
                                 Value="{Binding Scanner.SliceCountHeight}" />
                             <Border Grid.Column="5"
                                 BorderBrush="White"
                                 BorderThickness="1">
-                                <Extensions:NumericUpDownControl IsEnabled="{Binding ResizeRatioImage, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                                <Extensions:NumericUpDown Interval="1"
+                                    IsEnabled="{Binding ResizeRatioImage, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                     IsReadOnly="True"
-                                    LargeChange="1"
                                     Minimum="0"
-                                    SmallChange="1"
                                     Value="{Binding BorderSize, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
                             </Border>
                             <Button Grid.Column="6"
@@ -462,10 +457,9 @@
                         <UniformGrid Columns="2">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <ContentControl Content="{DynamicResource LeftRotate}" />
-                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                <Extensions:NumericUpDown IsReadOnly="True"
                                     Maximum="3"
                                     Minimum="-3"
-                                    Orientation="Horizontal"
                                     Value="{Binding CustomDeskewAngle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                 <ContentControl Content="{DynamicResource RightRotate}" />
                             </StackPanel>

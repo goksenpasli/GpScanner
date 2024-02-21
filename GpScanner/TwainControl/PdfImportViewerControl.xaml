@@ -82,12 +82,10 @@
                                         </MenuItem>
                                         <MenuItem>
                                             <MenuItem.Header>
-                                                <Extensions:NumericUpDownControl Width="100"
-                                                    LargeChange="1"
+                                                <Extensions:NumericUpDown Width="100"
+                                                    Interval="1"
                                                     Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                     Minimum="1"
-                                                    Orientation="Horizontal"
-                                                    SmallChange="1"
                                                     Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                     Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                             </MenuItem.Header>
@@ -358,12 +356,10 @@
                                                             TextWrapping="Wrap" />
                                                     </Canvas>
                                                 </Extensions:ContentToggleButton>
-                                                <Extensions:NumericUpDownControl Width="48"
-                                                    LargeChange="1"
+                                                <Extensions:NumericUpDown Width="48"
+                                                    Interval="1"
                                                     Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                     Minimum="1"
-                                                    Orientation="Horizontal"
-                                                    SmallChange="1"
                                                     Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                             </StackPanel>
                                             <Extensions:SplitButton Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
@@ -699,15 +695,15 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Extensions:NumericUpDownControl IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
+            <Extensions:NumericUpDown Interval="1"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1"
-                SmallChange="1"
                 Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
-            <Extensions:NumericUpDownControl IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
+            <Extensions:NumericUpDown Interval="1"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1"
-                SmallChange="1"
                 Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
             <Button local:Policy.PolicyName="ExtractPdfFile"
                 Command="{Binding ExtractPdfFile}"
@@ -1011,10 +1007,10 @@
                             <UniformGrid Columns="2">
                                 <StackPanel>
                                     <TextBlock Text="{local:Loc TEXTSIZE}" />
-                                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                                    <Extensions:NumericUpDown Interval="1"
+                                        IsReadOnly="True"
                                         Maximum="512"
                                         Minimum="1"
-                                        SmallChange="1"
                                         Value="{Binding PdfWatermarkFontSize, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock Text="{local:Loc TEXTANGLE}" />
                                     <Slider Width="50"
@@ -1116,10 +1112,10 @@
                             </Extensions:ButtonedTextBox>
                             <UniformGrid Columns="2">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
-                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                <Extensions:NumericUpDown Interval="1"
+                                    IsReadOnly="True"
                                     Maximum="512"
                                     Minimum="1"
-                                    SmallChange="1"
                                     Value="{Binding Scanner.PdfPageNumberSize, UpdateSourceTrigger=PropertyChanged}" />
                             </UniformGrid>
                             <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding Scanner.PdfPageNumberAlignTextColor}">
@@ -1158,11 +1154,11 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Extensions:NumericUpDownControl IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
+            <Extensions:NumericUpDown Interval="1"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 IsReadOnly="True"
                 Maximum="10"
                 Minimum="0"
-                SmallChange="1"
                 Value="{Binding PdfMedianValue}" />
             <Button local:Policy.PolicyName="ApplyPdfMedianFilter"
                 Command="{Binding ApplyPdfMedianFilter}"
@@ -1174,11 +1170,11 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Extensions:NumericUpDownControl IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
+            <Extensions:NumericUpDown Interval="1"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 IsReadOnly="True"
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="0"
-                SmallChange="1"
                 Value="{Binding PdfSplitCount}" />
             <Button local:Policy.PolicyName="SplitPdf"
                 Command="{Binding SplitPdf}"
@@ -1468,10 +1464,10 @@
                                     <ComboBox VerticalContentAlignment="Center"
                                         ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineJoinLayout}}"
                                         SelectedItem="{Binding PenLineJoin}" />
-                                    <Extensions:NumericUpDownControl Width="40"
+                                    <Extensions:NumericUpDown Width="40"
+                                        Interval="0.5"
                                         Maximum="512"
                                         Minimum="0.5"
-                                        SmallChange="0.5"
                                         Value="{Binding PenWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 </StackPanel>
                             </Border>
@@ -1646,9 +1642,9 @@
                             </Canvas>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                    <Extensions:NumericUpDown Interval="1"
+                        IsReadOnly="True"
                         Minimum="3"
-                        SmallChange="1"
                         Value="{Binding PolygonCount, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
                     <Button Command="{Binding ClearLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Image Width="16"
@@ -1753,10 +1749,10 @@
                                             <SolidColorBrush Color="{Binding GraphObjectFillColor, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </TextBox.BorderBrush>
                                     </TextBox>
-                                    <Extensions:NumericUpDownControl Width="40"
+                                    <Extensions:NumericUpDown Width="40"
+                                        Interval="1"
                                         Maximum="512"
                                         Minimum="1"
-                                        SmallChange="1"
                                         Value="{Binding TextSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                     <ToggleButton IsChecked="{Binding DrawString}">
                                         <ToggleButton.Content>

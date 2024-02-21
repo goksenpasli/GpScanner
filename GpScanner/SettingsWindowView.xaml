@@ -371,16 +371,14 @@
                                     </ComboBox.ItemContainerStyle>
                                 </ComboBox>
                                 <UniformGrid Rows="2">
-                                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                                    <Extensions:NumericUpDown Interval="1"
+                                        IsReadOnly="True"
                                         Minimum="100"
-                                        Orientation="Horizontal"
-                                        SmallChange="1"
                                         ToolTip="{twainctrl:Loc CWIDTH}"
                                         Value="{Binding CustomWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                                    <Extensions:NumericUpDown Interval="1"
+                                        IsReadOnly="True"
                                         Minimum="100"
-                                        Orientation="Horizontal"
-                                        SmallChange="1"
                                         ToolTip="{twainctrl:Loc CHEIGHT}"
                                         Value="{Binding CustomHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 </UniformGrid>
@@ -414,21 +412,20 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <Extensions:NumericUpDownControl Canvas.Bottom="1"
+                                            <Extensions:NumericUpDown Canvas.Bottom="1"
                                                 FontWeight="Bold"
+                                                Interval="1"
                                                 Maximum="30"
                                                 Minimum="1"
-                                                SmallChange="1"
                                                 Value="{Binding NotifyCalendarDateValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                         </Canvas>
                                     </CheckBox>
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
-                                    <Extensions:NumericUpDownControl FontWeight="Bold"
+                                    <Extensions:NumericUpDown FontWeight="Bold"
+                                        Interval="1"
                                         IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                                         Maximum="10"
                                         Minimum="1"
-                                        Orientation="Horizontal"
-                                        SmallChange="1"
                                         Value="{Binding MagnifyValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                     <ToggleButton twainctrl:Policy.PolicyName="ShowMagnifier" IsChecked="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                         <Canvas Width="32" Height="32">
@@ -701,11 +698,11 @@
                                         <Run Text="{twainctrl:Loc Auto}" />
                                         <Run Text="{twainctrl:Loc UPDATE}" />
                                     </TextBlock>
-                                    <Extensions:NumericUpDownControl Foreground="{Binding Path=UpdateInterval, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource UpdateNumberRangeToColorConverter}}"
+                                    <Extensions:NumericUpDown Foreground="{Binding Path=UpdateInterval, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource UpdateNumberRangeToColorConverter}}"
+                                        Interval="1"
                                         IsEnabled="{Binding Path=CheckAppUpdate, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
                                         Maximum="120"
                                         Minimum="1"
-                                        SmallChange="1"
                                         Value="{Binding Path=UpdateInterval, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
                                 </StackPanel>

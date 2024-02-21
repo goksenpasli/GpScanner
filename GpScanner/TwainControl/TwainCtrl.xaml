@@ -627,12 +627,11 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanDelay"
+                                    <Extensions:NumericUpDown local:Policy.PolicyName="ScanDelay"
+                                        Interval="1"
                                         IsReadOnly="True"
                                         Maximum="120"
                                         Minimum="0"
-                                        Orientation="Horizontal"
-                                        SmallChange="1"
                                         Value="{Binding ScanDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -642,12 +641,11 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Extensions:NumericUpDownControl local:Policy.PolicyName="ScanBetweenDelay"
+                                    <Extensions:NumericUpDown local:Policy.PolicyName="ScanBetweenDelay"
+                                        Interval="1"
                                         IsReadOnly="True"
                                         Maximum="120"
                                         Minimum="0"
-                                        Orientation="Horizontal"
-                                        SmallChange="1"
                                         Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock VerticalAlignment="Center"
                                         Text="{local:Loc SECOND}"
@@ -1087,12 +1085,11 @@
                                         <CheckBox.Content>
                                             <StackPanel>
                                                 <TextBlock Text="{local:Loc EMPTYPAGE}" />
-                                                <Extensions:NumericUpDownControl HorizontalAlignment="Left"
+                                                <Extensions:NumericUpDown HorizontalAlignment="Left"
+                                                    Interval="1"
                                                     IsReadOnly="True"
                                                     Maximum="100"
                                                     Minimum="1"
-                                                    Orientation="Horizontal"
-                                                    SmallChange="1"
                                                     ToolTip="{local:Loc THRESHOLD}"
                                                     Value="{Binding EmptyThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                             </StackPanel>
@@ -1103,15 +1100,14 @@
                                         IsChecked="{Binding Scanner.ApplyMedian}">
                                         <StackPanel>
                                             <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
-                                            <Extensions:NumericUpDownControl HorizontalAlignment="Left"
+                                            <Extensions:NumericUpDown HorizontalAlignment="Left"
                                                 Background="{StaticResource Despeckle}"
                                                 FontWeight="Bold"
                                                 Foreground="Magenta"
+                                                Interval="1"
                                                 IsEnabled="{Binding Scanner.ApplyMedian}"
                                                 Maximum="10"
                                                 Minimum="0"
-                                                Orientation="Horizontal"
-                                                SmallChange="1"
                                                 Value="{Binding MedianValue, Source={x:Static properties:Settings.Default}}" />
                                         </StackPanel>
                                     </CheckBox>
@@ -1416,14 +1412,12 @@
                                             VerticalAlignment="Top"
                                             Text="{local:Loc ALL}" />
                                     </Grid>
-                                    <Extensions:NumericUpDownControl VerticalAlignment="Center"
+                                    <Extensions:NumericUpDown VerticalAlignment="Center"
                                         BorderBrush="Cyan"
-                                        LargeChange="1"
+                                        Interval="1"
                                         Maximum="1"
                                         Minimum="-1"
                                         NumericUpdownTextBoxVisibility="Collapsed"
-                                        Orientation="Horizontal"
-                                        SmallChange="1"
                                         Value="{Binding AllImageRotationAngle}" />
                                 </StackPanel>
                                 <Button local:Policy.PolicyName="InvertSelectedImage"
@@ -1540,11 +1534,10 @@
                                                 FontSize="18"
                                                 Text="F" />
                                         </Hyperlink><InlineUIContainer BaselineAlignment="Center">
-                                            <Extensions:NumericUpDownControl IsReadOnly="True"
+                                            <Extensions:NumericUpDown Interval="1"
+                                                IsReadOnly="True"
                                                 Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
                                                 Minimum="2"
-                                                Orientation="Horizontal"
-                                                SmallChange="1"
                                                 Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         </InlineUIContainer>
                                     </TextBlock>
@@ -1667,14 +1660,12 @@
                                                             GiveFeedback="StackPanel_GiveFeedback">
                                                             <TextBlock HorizontalAlignment="Center">
                                                                 <InlineUIContainer BaselineAlignment="Center">
-                                                                    <Extensions:NumericUpDownControl Height="25.6"
+                                                                    <Extensions:NumericUpDown Height="25.6"
                                                                         BorderBrush="Cyan"
-                                                                        LargeChange="1"
+                                                                        Interval="1"
                                                                         Maximum="1"
                                                                         Minimum="-1"
                                                                         NumericUpdownTextBoxVisibility="Collapsed"
-                                                                        Orientation="Horizontal"
-                                                                        SmallChange="1"
                                                                         Value="{Binding RotationAngle}" />
                                                                 </InlineUIContainer><InlineUIContainer BaselineAlignment="Center">
                                                                     <Extensions:SplitButton local:Policy.PolicyName="Kaydet"
@@ -1704,10 +1695,10 @@
                                                                                         <MenuItem.Header>
                                                                                             <StackPanel Orientation="Horizontal">
                                                                                                 <TextBlock VerticalAlignment="Center" Text="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                <Extensions:NumericUpDown Interval="1"
+                                                                                                    IsReadOnly="True"
                                                                                                     Maximum="95"
                                                                                                     Minimum="10"
-                                                                                                    SmallChange="1"
                                                                                                     Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                                                             </StackPanel>
                                                                                         </MenuItem.Header>
@@ -1722,10 +1713,10 @@
                                                                                                     <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                                                                                                     <Run Text="{local:Loc BW}" />
                                                                                                 </TextBlock>
-                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                <Extensions:NumericUpDown Interval="1"
+                                                                                                    IsReadOnly="True"
                                                                                                     Maximum="95"
                                                                                                     Minimum="10"
-                                                                                                    SmallChange="1"
                                                                                                     Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                                                             </StackPanel>
                                                                                         </MenuItem.Header>
@@ -1737,10 +1728,10 @@
                                                                                         <MenuItem.Header>
                                                                                             <StackPanel Orientation="Horizontal">
                                                                                                 <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                <Extensions:NumericUpDown Interval="1"
+                                                                                                    IsReadOnly="True"
                                                                                                     Maximum="95"
                                                                                                     Minimum="10"
-                                                                                                    SmallChange="1"
                                                                                                     Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                                                             </StackPanel>
                                                                                         </MenuItem.Header>
@@ -1762,10 +1753,10 @@
                                                                                         <MenuItem.Header>
                                                                                             <StackPanel Orientation="Horizontal">
                                                                                                 <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                                                                <Extensions:NumericUpDown Interval="1"
+                                                                                                    IsReadOnly="True"
                                                                                                     Maximum="95"
                                                                                                     Minimum="10"
-                                                                                                    SmallChange="1"
                                                                                                     Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                                                             </StackPanel>
                                                                                         </MenuItem.Header>
@@ -1827,11 +1818,10 @@
                                                                                             </Button>
                                                                                             <StackPanel Orientation="Horizontal">
                                                                                                 <ContentControl Content="{DynamicResource LeftRotate}" />
-                                                                                                <Extensions:NumericUpDownControl Width="60"
+                                                                                                <Extensions:NumericUpDown Width="60"
                                                                                                     IsReadOnly="True"
                                                                                                     Maximum="3"
                                                                                                     Minimum="-3"
-                                                                                                    Orientation="Horizontal"
                                                                                                     Value="{Binding DataContext.CustomDeskewAngle, Source={x:Reference UserControl}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                                                                                 <ContentControl Content="{DynamicResource RightRotate}" />
                                                                                             </StackPanel>
@@ -2001,10 +1991,10 @@
                                             <TextBlock>
                                                 <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                                                 <InlineUIContainer BaselineAlignment="Center">
-                                                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                    <Extensions:NumericUpDown Interval="1"
+                                                        IsReadOnly="True"
                                                         Maximum="95"
                                                         Minimum="10"
-                                                        SmallChange="1"
                                                         Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                 </InlineUIContainer>
                                             </TextBlock>
@@ -2019,10 +2009,10 @@
                                                 <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                                                 <Run Text="{local:Loc BW}" />
                                                 <InlineUIContainer BaselineAlignment="Center">
-                                                    <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                    <Extensions:NumericUpDown Interval="1"
+                                                        IsReadOnly="True"
                                                         Maximum="95"
                                                         Minimum="10"
-                                                        SmallChange="1"
                                                         Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                 </InlineUIContainer>
                                             </TextBlock>
@@ -2035,10 +2025,10 @@
                                         <MenuItem.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                <Extensions:NumericUpDown Interval="1"
+                                                    IsReadOnly="True"
                                                     Maximum="95"
                                                     Minimum="10"
-                                                    SmallChange="1"
                                                     Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
@@ -2048,10 +2038,10 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                <Extensions:NumericUpDown Interval="1"
+                                                    IsReadOnly="True"
                                                     Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
                                                     Minimum="1"
-                                                    SmallChange="1"
                                                     TextBlock.TextAlignment="Center"
                                                     Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </StackPanel>
@@ -2074,10 +2064,10 @@
                                         <MenuItem.Header>
                                             <StackPanel Orientation="Horizontal">
                                                 <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                <Extensions:NumericUpDown Interval="1"
+                                                    IsReadOnly="True"
                                                     Maximum="95"
                                                     Minimum="10"
-                                                    SmallChange="1"
                                                     Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
@@ -2087,10 +2077,10 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <Extensions:NumericUpDownControl IsReadOnly="True"
+                                                <Extensions:NumericUpDown Interval="1"
+                                                    IsReadOnly="True"
                                                     Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
                                                     Minimum="1"
-                                                    SmallChange="1"
                                                     TextBlock.TextAlignment="Center"
                                                     Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </StackPanel>
@@ -2187,12 +2177,12 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                            <Extensions:NumericUpDownControl IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
+                            <Extensions:NumericUpDown Interval="1"
+                                IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
                                 IsReadOnly="True"
                                 Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
                                 Minimum="0"
                                 NumericUpdownTextBoxVisibility="Collapsed"
-                                SmallChange="1"
                                 Value="{Binding SeekIndex}" />
                             <TextBlock VerticalAlignment="Center" Text="{Binding SeçiliResim.Index, Mode=OneWay}" />
                         </StackPanel>

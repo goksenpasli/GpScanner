@@ -84,6 +84,7 @@
     <Compile Include="Controls\MediaViewerSubtitleControl.xaml.cs">
       <DependentUpon>MediaViewerSubtitleControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PageRangeDocumentPaginator.cs" />
     <Compile Include="Controls\ResizablePanel.cs" />
     <Compile Include="Controls\ResizeDirections.cs" />
@@ -136,7 +137,6 @@
     <Compile Include="Converters\FilePathToIconConverter.cs" />
     <Compile Include="Controls\MaskedTextBox.cs" />
     <Compile Include="Converters\NullableToBooleanConverter.cs" />
-    <Compile Include="Controls\NumericUpDownControl.cs" />
     <Compile Include="Controls\SplitButton.cs" />
     <Compile Include="Converters\SystemFileIconConverter.cs" />
     <Compile Include="ExtensionMethods.cs" />
@@ -169,6 +169,10 @@
     <Page Include="Controls\MediaViewerSubtitleControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\NumericUpDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\TranslateView.xaml">
       <SubType>Designer</SubType>
@@ -207,10 +211,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ButtonedTextBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\NumericUpDownControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

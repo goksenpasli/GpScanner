@@ -19,13 +19,11 @@
                         <MenuItem.Header>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="Çizgi Grafik Göster" />
-                                <local:NumericUpDownControl IsEnabled="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"
+                                <local:NumericUpDown IsEnabled="{Binding LineGraphVisibility, Converter={StaticResource VisibilityToBooleanConverter}}"
                                     IsReadOnly="True"
-                                    LargeChange="1"
                                     Maximum="30"
                                     Minimum="1"
-                                    Orientation="Horizontal"
-                                    SmallChange="1"
+                                    Interval="1"
                                     Value="{Binding LineThickness}" />
                             </StackPanel>
                         </MenuItem.Header>

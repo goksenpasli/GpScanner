@@ -561,25 +561,25 @@
                                             FontFamily="Webdings"
                                             FontSize="20"
                                             Foreground="Blue" />
-                                        <local:NumericUpDownControl FontFamily="Segoe UI"
+                                        <local:NumericUpDown FontFamily="Segoe UI"
                                             FontSize="12"
                                             Maximum="20"
                                             Minimum="1"
-                                            SmallChange="1"
+                                            Interval="1"
                                             Value="{Binding ThumbWidthCount}" />
-                                        <local:NumericUpDownControl FontFamily="Segoe UI"
+                                        <local:NumericUpDown FontFamily="Segoe UI"
                                             FontSize="12"
                                             Maximum="20"
                                             Minimum="1"
-                                            SmallChange="1"
+                                            Interval="1"
                                             Value="{Binding ThumbHeightCount}" />
-                                        <local:NumericUpDownControl BorderBrush="White"
+                                        <local:NumericUpDown BorderBrush="White"
                                             BorderThickness="2"
                                             FontFamily="Segoe UI"
                                             FontSize="12"
                                             Maximum="30"
                                             Minimum="0"
-                                            SmallChange="1"
+                                            Interval="1"
                                             Value="{Binding ThumbMargin, Converter={StaticResource DoubleToThicknessConverter}}" />
                                         <ToggleButton Content=""
                                             FontFamily="Webdings"
@@ -791,7 +791,7 @@
                         <ToggleButton Content="360°"
                             Foreground="Blue"
                             IsChecked="{Binding PanoramaMode}" />
-                        <local:NumericUpDownControl Foreground="Blue"
+                        <local:NumericUpDown Foreground="Blue"
                             IsReadOnly="True"
                             Minimum="0.1"
                             Value="{Binding SpeedRatio, ElementName=Player}" />

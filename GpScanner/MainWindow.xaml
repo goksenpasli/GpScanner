@@ -467,9 +467,9 @@
                                     <LineBreak />
                                     <Run Text="{twainctrl:Loc PAGENUMBER}" />
                                 </TextBlock>
-                                <Extensions:NumericUpDownControl twainctrl:Policy.PolicyName="AllPdfPage"
+                                <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
+                                    Interval="1"
                                     Minimum="1"
-                                    SmallChange="1"
                                     Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
@@ -1313,13 +1313,11 @@
                                             <DataTemplate>
                                                 <StackPanel Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
                                                     <TextBlock HorizontalAlignment="Center"><InlineUIContainer>
-                                                            <Extensions:NumericUpDownControl Height="20"
-                                                                LargeChange="1"
+                                                            <Extensions:NumericUpDown Height="20"
+                                                                Interval="1"
                                                                 Maximum="1"
                                                                 Minimum="-1"
                                                                 NumericUpdownTextBoxVisibility="Collapsed"
-                                                                Orientation="Horizontal"
-                                                                SmallChange="1"
                                                                 Value="{Binding RotationAngle}" />
                                                         </InlineUIContainer><Run AllowDrop="True"
                                                             Cursor="SizeAll"
@@ -1608,15 +1606,14 @@
                                                                             </MultiBinding>
                                                                         </Image.Source>
                                                                     </Image>
-                                                                    <Extensions:NumericUpDownControl Canvas.Top="7"
+                                                                    <Extensions:NumericUpDown Canvas.Top="7"
                                                                         Width="44"
                                                                         FontWeight="Bold"
                                                                         Foreground="{Binding ProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
+                                                                        Interval="1"
                                                                         IsReadOnly="True"
                                                                         Maximum="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
                                                                         Minimum="1"
-                                                                        Orientation="Horizontal"
-                                                                        SmallChange="1"
                                                                         TextBlock.TextAlignment="Center"
                                                                         Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                                                 </Canvas>

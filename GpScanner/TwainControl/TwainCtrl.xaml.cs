@@ -2002,7 +2002,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public static System.Windows.Input.Cursor DragCursor { get; set; }
+    public static Cursor DragCursor { get; set; }
 
     public RelayCommand<object> AddActiveVisibleContentImage { get; }
 

@@ -6,7 +6,7 @@
         <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/SplitButton.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/ResizablePanel.xaml" />
-        <ResourceDictionary Source="/Extensions;component/Controls/NumericUpDownControl.xaml" />
+        <ResourceDictionary Source="/Extensions;component/Controls/NumericUpDown.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/MaskedTextBox.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/ImageViewer.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/GraphControl.xaml" />
