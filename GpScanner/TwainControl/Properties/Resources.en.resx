@@ -727,4 +727,7 @@ TO FILE</value>
   <data name="ORİGİNAL" xml:space="preserve">
     <value>ORIGINAL</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF works as JPG. This reduces loading on memory, but JPG files are recorded in the windowsun temporary directory, as there is a decrease in disk size. It is better to use only if memory is filled in files containing too much (1000) pages.</value>
+  </data>
 </root>

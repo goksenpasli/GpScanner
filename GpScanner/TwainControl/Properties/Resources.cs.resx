@@ -720,4 +720,7 @@
   <data name="ORİGİNAL" xml:space="preserve">
     <value>ORIGINÁL</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF funguje jako JPG. To snižuje načítání paměti, ale soubory JPG jsou zaznamenány v dočasném adresáři WindowsUn, protože dochází ke snížení velikosti disku. Je lepší použít pouze v případě, že paměť je vyplněna v souborech obsahujících příliš mnoho (1000) stránek.</value>
+  </data>
 </root>

@@ -914,6 +914,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string PDFTOJPEGDESC {
+            get {
+                return ResourceManager.GetString("PDFTOJPEGDESC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PDFWARN {
             get {
                 return ResourceManager.GetString("PDFWARN", resourceCulture);

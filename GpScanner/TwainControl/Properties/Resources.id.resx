@@ -723,4 +723,7 @@
   <data name="ORİGİNAL" xml:space="preserve">
     <value>ASLI</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF berfungsi sebagai jpg. Ini mengurangi pemuatan pada memori, tetapi file JPG direkam dalam direktori sementara Windowsun, karena ada penurunan ukuran disk. Lebih baik digunakan hanya jika memori diisi dalam file yang berisi terlalu banyak (1000) halaman.</value>
+  </data>
 </root>

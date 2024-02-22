@@ -720,4 +720,7 @@
   <data name="ORİGİNAL" xml:space="preserve">
     <value>ORIGINAL</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF funktioniert als JPG. Dies reduziert das Laden des Speichers, aber JPG -Dateien werden im temporären Windowsun -Verzeichnis aufgezeichnet, da die Festplattengröße abnimmt. Es ist besser nur zu verwenden, wenn Speicher in Dateien mit zu viel (1000) Seiten ausgefüllt wird.</value>
+  </data>
 </root>

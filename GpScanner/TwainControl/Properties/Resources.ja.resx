@@ -720,4 +720,7 @@
   <data name="ORİGİNAL" xml:space="preserve">
     <value>オリジナル</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDFはJPGとして機能します。これにより、メモリへの読み込みが削減されますが、ディスクサイズが減少するため、JPGファイルはWindowsun一時ディレクトリに記録されます。メモリが（1000）ページが多すぎるファイルに入力された場合にのみ使用する方が良いでしょう。</value>
+  </data>
 </root>

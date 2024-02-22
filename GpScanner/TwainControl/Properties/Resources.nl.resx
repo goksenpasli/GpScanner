@@ -720,4 +720,7 @@
   <data name="ORİGİNAL" xml:space="preserve">
     <value>ORIGINEEL</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF werkt als JPG. Dit vermindert het laden op geheugen, maar JPG -bestanden worden opgenomen in de Windowsun -tijdelijke map, omdat er een afname van de schijfgrootte is. Het is beter om alleen te gebruiken als het geheugen in bestanden met te veel (1000) pagina's wordt ingevuld.</value>
+  </data>
 </root>

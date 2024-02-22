@@ -11,6 +11,7 @@ using PdfSharp.Pdf.Security;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -537,6 +538,38 @@ public static class PdfGeneration
                 throw new ArgumentException(ex?.Message);
             }
         }
+    }
+
+    public static async Task<string[]> WritePdfToJpgFileAsync(string pdffilepath, int dpi, Action<double> progresscallback)
+    {
+        if (!PdfViewer.PdfViewer.IsValidPdfFile(pdffilepath))
+        {
+            return null;
+        }
+        List<string> jpgfiles = [];
+        string filename = Path.GetFileNameWithoutExtension(pdffilepath);
+        await Task.Run(
+            () =>
+            {
+                using PdfiumViewer.PdfDocument pdfDoc = PdfiumViewer.PdfDocument.Load(pdffilepath);
+                for (int i = 0; i < pdfDoc.PageCount; i++)
+                {
+                    string outfilename = $"{Path.GetTempPath()}{filename}{i}.jpg";
+                    if (File.Exists(outfilename))
+                    {
+                        jpgfiles.Add(outfilename);
+                        progresscallback((i + 1) / (double)pdfDoc.PageCount);
+                        continue;
+                    }
+                    int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
+                    Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
+                    image.Save(outfilename, ImageFormat.Jpeg);
+                    jpgfiles.Add(outfilename);
+                    progresscallback((i + 1) / (double)pdfDoc.PageCount);
+                }
+            });
+        return [.. jpgfiles];
     }
 
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) => new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);

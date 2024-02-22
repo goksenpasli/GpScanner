@@ -3027,7 +3027,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         switch (Path.GetExtension(filename.ToLowerInvariant()))
                         {
                             case ".pdf":
-                                await AddPdfFiles(filename);
+                                if (Settings.Default.UsePdfJpgFiles)
+                                {
+                                    string[] jpgoutputfiles = await PdfGeneration.WritePdfToJpgFileAsync(filename, Settings.Default.ImgLoadResolution, progress => Dispatcher.InvokeAsync(() => PdfLoadProgressValue = progress));
+                                    if (jpgoutputfiles is not null)
+                                    {
+                                        await AddFiles(jpgoutputfiles, decodeheight);
+                                    }
+                                }
+                                else
+                                {
+                                    await AddPdfFiles(filename);
+                                }
 
                                 break;
 

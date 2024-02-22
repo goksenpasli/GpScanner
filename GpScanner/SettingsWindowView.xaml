@@ -540,6 +540,34 @@
                                         </StackPanel>
                                     </CheckBox.Content>
                                 </CheckBox>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
+                                <CheckBox VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    twainctrl:Policy.PolicyName="UsePdfJpgFiles"
+                                    IsChecked="{Binding UsePdfJpgFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                    <CheckBox.ToolTip>
+                                        <TextBlock Width="200"
+                                            FontWeight="Bold"
+                                            Foreground="Red"
+                                            Text="{twainctrl:Loc PDFTOJPEGDESC}"
+                                            TextWrapping="Wrap" />
+                                    </CheckBox.ToolTip>
+                                    <CheckBox.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="32"
+                                                Height="32"
+                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                FontFamily="Wingdings 3"
+                                                Text="â" />
+                                            <Image Width="32"
+                                                Height="32"
+                                                Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                        </StackPanel>
+                                    </CheckBox.Content>
+                                </CheckBox>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>

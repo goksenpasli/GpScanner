@@ -723,4 +723,7 @@
   <data name="ORİGİNAL" xml:space="preserve">
     <value>IZVORNIK</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF radi kao JPG. To smanjuje učitavanje memorije, ali JPG datoteke bilježe se u privremenom direktoriju WindowsUn, jer dođe do smanjenja veličine diska. Bolje je koristiti samo ako je memorija popunjena u datotekama koje sadrže previše (1000) stranica.</value>
+  </data>
 </root>

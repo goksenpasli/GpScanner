@@ -723,4 +723,7 @@
   <data name="ORİGİNAL" xml:space="preserve">
     <value>ORIGINAL</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF fungerer som JPG. Dette reducerer belastningen på hukommelsen, men JPG -filer registreres i Windowsun midlertidigt bibliotek, da der er et fald i diskstørrelse. Det er bedre at kun bruge, hvis hukommelsen er udfyldt i filer, der indeholder for meget (1000) sider.</value>
+  </data>
 </root>

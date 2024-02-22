@@ -720,4 +720,7 @@
   <data name="ORİGİNAL" xml:space="preserve">
     <value>ORIGINAL</value>
   </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF fonctionne comme JPG. Cela réduit le chargement sur la mémoire, mais les fichiers JPG sont enregistrés dans le répertoire temporaire de Windowsun, car il y a une diminution de la taille du disque. Il est préférable d'utiliser uniquement si la mémoire est remplie de fichiers contenant trop de pages (1000).</value>
+  </data>
 </root>
