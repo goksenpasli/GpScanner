@@ -723,4 +723,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value>PDF JPG kimi işləyir. Bu, yaddaşda yüklənməni azaldır, lakin JPG sənədləri, Windowsun müvəqqəti qovluğunda qeyd olunur, çünki disk ölçüsündə azalma halında. Yalnız yaddaş çox (1000) səhifə olan fayllarda doldurulduqda istifadə etmək daha yaxşıdır.</value>
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>YAPIŞDIR</value>
+  </data>
 </root>

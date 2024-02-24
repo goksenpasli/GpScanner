@@ -723,4 +723,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value>PDF funciona como JPG. Esto reduce la carga en la memoria, pero los archivos JPG se registran en el directorio temporal de Windowsun, ya que hay una disminución en el tamaño del disco. Es mejor usar solo si la memoria se llena en archivos que contienen demasiado (1000) páginas.</value>
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>PEGAR</value>
+  </data>
 </root>

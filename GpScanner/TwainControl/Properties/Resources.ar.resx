@@ -723,4 +723,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value>PDF يعمل كما JPG. هذا يقلل من التحميل على الذاكرة ، ولكن يتم تسجيل ملفات JPG في دليل Windowsun المؤقت ، حيث يوجد انخفاض في حجم القرص. من الأفضل استخدام فقط إذا تم ملء الذاكرة في الملفات التي تحتوي على الكثير من الصفحات (1000).</value>
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>معجون</value>
+  </data>
 </root>

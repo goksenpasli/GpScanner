@@ -723,4 +723,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value>PDF funktioniert als JPG. Dies reduziert das Laden des Speichers, aber JPG -Dateien werden im temporären Windowsun -Verzeichnis aufgezeichnet, da die Festplattengröße abnimmt. Es ist besser nur zu verwenden, wenn Speicher in Dateien mit zu viel (1000) Seiten ausgefüllt wird.</value>
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>PASTE</value>
+  </data>
 </root>

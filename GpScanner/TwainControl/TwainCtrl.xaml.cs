@@ -979,15 +979,23 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter => PdfSplitCount > 0);
 
         AddFromClipBoard = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 System.Windows.Forms.IDataObject clipboardData = Clipboard.GetDataObject();
                 if (clipboardData?.GetDataPresent(DataFormats.Bitmap) == true)
                 {
                     Scanner?.Resimler?.Add(new ScannedImage { Seçili = true, Resim = CreateBitmapFromClipBoard(clipboardData) });
-                    clipboardData = null;
-                    Clipboard.Clear();
                 }
+                if (clipboardData?.GetDataPresent(DataFormats.FileDrop) == true)
+                {
+                    string[] clipboardFiles = (string[])clipboardData.GetData(System.Windows.DataFormats.FileDrop);
+                    if (clipboardFiles?.Length > 0)
+                    {
+                        await AddFiles(clipboardFiles, DecodeHeight);
+                    }
+                }
+                clipboardData = null;
+                Clipboard.Clear();
             },
             parameter => true);
 

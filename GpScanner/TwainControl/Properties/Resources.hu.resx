@@ -726,4 +726,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value>A PDF JPG -ként működik. Ez csökkenti a memória betöltését, de a JPG fájlokat a Windowsun ideiglenes könyvtárban rögzítik, mivel csökken a lemezméret. Jobb, ha csak akkor használja, ha a memória túl sok (1000) oldalt tartalmazó fájlokat tölt be.</value>
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>PASZTA</value>
+  </data>
 </root>

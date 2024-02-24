@@ -723,4 +723,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value>PDF用作JPG。这减少了内存上的加载，但是JPG文件记录在Windows临时目录中，因为磁盘尺寸的减小。只有在包含过多（1000）页的文件中填充内存时，最好才能使用。</value>
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>粘贴</value>
+  </data>
 </root>

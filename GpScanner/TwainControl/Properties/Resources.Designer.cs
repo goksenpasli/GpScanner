@@ -887,6 +887,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string PASTE {
+            get {
+                return ResourceManager.GetString("PASTE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PDFFOLDER {
             get {
                 return ResourceManager.GetString("PDFFOLDER", resourceCulture);

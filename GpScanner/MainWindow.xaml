@@ -54,6 +54,9 @@
         <KeyBinding Key="Delete"
             Command="{Binding ListeTemizle, ElementName=twainCtrl}"
             Modifiers="Shift" />
+        <KeyBinding Key="V"
+            Command="{Binding InsertClipBoardImage, ElementName=twainCtrl}"
+            Modifiers="Ctrl" />
     </Window.InputBindings>
     <Window.Resources>
         <ViewModel:FoldEffect x:Key="Fold"
@@ -193,6 +196,14 @@
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                             <Binding Source="Shell32.dll" />
                             <Binding Source="139" />
+                        </MultiBinding>
+                    </ThumbButtonInfo.ImageSource>
+                </ThumbButtonInfo>
+                <ThumbButtonInfo Command="{Binding InsertClipBoardImage, Mode=OneWay, ElementName=twainCtrl}" Description="{twainctrl:Loc PASTE}">
+                    <ThumbButtonInfo.ImageSource>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="260" />
                         </MultiBinding>
                     </ThumbButtonInfo.ImageSource>
                 </ThumbButtonInfo>

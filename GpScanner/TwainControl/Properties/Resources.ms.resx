@@ -726,4 +726,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value>PDF berfungsi sebagai JPG. Ini mengurangkan pemuatan pada ingatan, tetapi fail JPG direkodkan dalam direktori sementara Windowsun, kerana terdapat penurunan saiz cakera. Lebih baik digunakan hanya jika memori diisi dalam fail yang mengandungi terlalu banyak (1000) halaman.</value>
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>Tampal</value>
+  </data>
 </root>

@@ -761,4 +761,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value />
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value />
+  </data>
 </root>

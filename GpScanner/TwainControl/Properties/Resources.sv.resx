@@ -726,4 +726,7 @@
   <data name="PDFTOJPEGDESC" xml:space="preserve">
     <value>PDF fungerar som JPG. Detta minskar belastningen på minnet, men JPG -filer spelas in i Windowsun tillfälliga katalogen, eftersom det finns en minskning av diskstorleken. Det är bättre att bara använda om minnet fylls i filer som innehåller för mycket (1000) sidor.</value>
   </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>KLISTRA</value>
+  </data>
 </root>
