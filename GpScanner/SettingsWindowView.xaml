@@ -374,11 +374,13 @@
                                     <Extensions:NumericUpDown Interval="1"
                                         IsReadOnly="True"
                                         Minimum="100"
+                                        StringFormat="{}{0} Pixel"
                                         ToolTip="{twainctrl:Loc CWIDTH}"
                                         Value="{Binding CustomWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                     <Extensions:NumericUpDown Interval="1"
                                         IsReadOnly="True"
                                         Minimum="100"
+                                        StringFormat="{}{0} Pixel"
                                         ToolTip="{twainctrl:Loc CHEIGHT}"
                                         Value="{Binding CustomHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                 </UniformGrid>

@@ -106,16 +106,14 @@
                             </Image.Source>
                         </Image>
                         <UniformGrid Columns="2" Rows="2">
-                            <TextBlock VerticalAlignment="Center">
-                                <Run Text="{local:Loc CWIDTH}" />
-                                <Run Text="(cm)" />
-                            </TextBlock>
-                            <Extensions:NumericUpDown Minimum="1" Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
-                            <TextBlock VerticalAlignment="Center">
-                                <Run Text="{local:Loc CHEIGHT}" />
-                                <Run Text="(cm)" />
-                            </TextBlock>
-                            <Extensions:NumericUpDown Minimum="1" Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, StringFormat=N2}" />
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CWIDTH}" />
+                            <Extensions:NumericUpDown Minimum="1"
+                                StringFormat="{}{0} CM"
+                                Value="{Binding Path=CustomPaperWidth, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc CHEIGHT}" />
+                            <Extensions:NumericUpDown Minimum="1"
+                                StringFormat="{}{0} CM"
+                                Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </UniformGrid>
                     </StackPanel>
                 </StackPanel>

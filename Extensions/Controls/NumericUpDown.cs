@@ -1,28 +1,35 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace Extensions
 {
-    public class NumericUpDown : Control
+    public class NumericUpDown : Control, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty IntervalProperty =
-            DependencyProperty.Register("Interval", typeof(decimal), typeof(NumericUpDown), new PropertyMetadata(1m));
-        public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(NumericUpDown), new PropertyMetadata(false));
-        public static readonly DependencyProperty MaximumProperty =
-            DependencyProperty.Register("Maximum", typeof(decimal), typeof(NumericUpDown), new PropertyMetadata(decimal.MaxValue));
-        public static readonly DependencyProperty MinimumProperty =
-            DependencyProperty.Register("Minimum", typeof(decimal), typeof(NumericUpDown), new PropertyMetadata(decimal.MinValue));
-        public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty =
-            DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDown), new PropertyMetadata(Visibility.Visible));
-        public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(decimal), typeof(NumericUpDown), new FrameworkPropertyMetadata(0m, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+        public static readonly DependencyProperty ContentTextProperty = DependencyProperty.Register("ContentText", typeof(string), typeof(NumericUpDown), new PropertyMetadata("0", OnValueChanged));
+        public static readonly DependencyProperty IntervalProperty = DependencyProperty.Register("Interval", typeof(decimal), typeof(NumericUpDown), new PropertyMetadata(1m));
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(NumericUpDown), new PropertyMetadata(false));
+        public static readonly DependencyProperty MaximumProperty = DependencyProperty.Register("Maximum", typeof(decimal), typeof(NumericUpDown), new PropertyMetadata(decimal.MaxValue));
+        public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(decimal), typeof(NumericUpDown), new PropertyMetadata(decimal.MinValue));
+        public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty = DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDown), new PropertyMetadata(Visibility.Visible));
+        public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register("StringFormat", typeof(string), typeof(NumericUpDown), new PropertyMetadata(null));
+        public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(decimal), typeof(NumericUpDown), new FrameworkPropertyMetadata(0m, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
+        private bool mouseSelectAllText = true;
 
         static NumericUpDown() { DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDown), new FrameworkPropertyMetadata(typeof(NumericUpDown))); }
+
+        public NumericUpDown()
+        {
+            NumberIncrease = new RelayCommand<object>(parameter => AdjustValue(Interval), parameter => Value < Maximum);
+            NumberDecrease = new RelayCommand<object>(parameter => AdjustValue(-Interval), parameter => Value > Minimum);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public string ContentText { get => (string)GetValue(ContentTextProperty); set => SetValue(ContentTextProperty, value); }
 
         public decimal Interval { get => (decimal)GetValue(IntervalProperty); set => SetValue(IntervalProperty, value); }
 
@@ -32,33 +39,62 @@ namespace Extensions
 
         public decimal Minimum { get => (decimal)GetValue(MinimumProperty); set => SetValue(MinimumProperty, value); }
 
+        public bool MouseSelectAllText
+        {
+            get => mouseSelectAllText;
+            set
+            {
+                if (mouseSelectAllText != value)
+                {
+                    mouseSelectAllText = value;
+                    OnPropertyChanged(nameof(MouseSelectAllText));
+                }
+            }
+        }
+
+        public RelayCommand<object> NumberDecrease { get; }
+
+        public RelayCommand<object> NumberIncrease { get; }
+
         public Visibility NumericUpdownTextBoxVisibility { get => (Visibility)GetValue(NumericUpdownTextBoxVisibilityProperty); set => SetValue(NumericUpdownTextBoxVisibilityProperty, value); }
+
+        public string StringFormat { get => (string)GetValue(StringFormatProperty); set => SetValue(StringFormatProperty, value); }
 
         public decimal Value { get => (decimal)GetValue(ValueProperty); set => SetValue(ValueProperty, value); }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
-            if (GetTemplateChild("PART_TextBox") is TextBox textBox && GetTemplateChild("PART_UpButton") is RepeatButton upButton && GetTemplateChild("PART_DownButton") is RepeatButton downButton)
+            if (GetTemplateChild("PART_TextBox") is TextBox textBox)
             {
-                upButton.Click += UpButton_Click;
-                downButton.Click += DownButton_Click;
                 textBox.PreviewTextInput += TextBox_PreviewTextInput;
                 textBox.PreviewKeyDown += TextBox_PreviewKeyDown;
+                if (MouseSelectAllText && !IsReadOnly)
+                {
+                    textBox.PreviewMouseUp += TextBox_PreviewMouseUp;
+                }
             }
         }
 
+        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
         private static void OnValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is NumericUpDown numericUpDown && e.NewValue is decimal number)
+            if (d is NumericUpDown numericUpDown)
             {
-                numericUpDown.Value = Math.Max(numericUpDown.Minimum, Math.Min(numericUpDown.Maximum, number));
+                if (e.NewValue is decimal number)
+                {
+                    numericUpDown.Value = Math.Max(numericUpDown.Minimum, Math.Min(numericUpDown.Maximum, number));
+                    numericUpDown.UpdateText(numericUpDown.Value);
+                }
+                if (e.NewValue is string stringnumber && decimal.TryParse(stringnumber, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal value))
+                {
+                    numericUpDown.UpdateText(value);
+                }
             }
         }
 
         private void AdjustValue(decimal delta) => Value += delta;
-
-        private void DownButton_Click(object sender, RoutedEventArgs e) => AdjustValue(-Interval);
 
         private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -74,15 +110,17 @@ namespace Extensions
             {
                 AdjustValue(-Interval);
             }
-            if (e.Key == Key.Enter && decimal.TryParse((sender as TextBox)?.Text, NumberStyles.AllowDecimalPoint | NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out decimal value))
+            if (e.Key == Key.Enter && decimal.TryParse((sender as TextBox)?.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal value))
             {
                 SetValue(ValueProperty, value);
             }
         }
 
+        private void TextBox_PreviewMouseUp(object sender, MouseButtonEventArgs e) => (sender as TextBox)?.SelectAll();
+
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (char.IsDigit(e.Text, e.Text.Length - 1) || e.Text == "." || e.Text == "-")
+            if (char.IsDigit(e.Text, e.Text.Length - 1) || e.Text == CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator || e.Text == "-")
             {
                 return;
             }
@@ -90,6 +128,26 @@ namespace Extensions
             e.Handled = true;
         }
 
-        private void UpButton_Click(object sender, RoutedEventArgs e) => AdjustValue(Interval);
+        private void UpdateText(decimal value)
+        {
+            if (!string.IsNullOrWhiteSpace(StringFormat))
+            {
+                try
+                {
+                    ContentText = string.Format(StringFormat, value);
+                    Value = value;
+                }
+                catch (FormatException)
+                {
+                    ContentText = value.ToString();
+                    Value = value;
+                }
+            }
+            else
+            {
+                ContentText = value.ToString();
+                Value = value;
+            }
+        }
     }
 }
