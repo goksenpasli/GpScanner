@@ -1195,6 +1195,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
             },
             parameter => true);
+
+        SetDateToday = new RelayCommand<object>(parameter => SeçiliGün = DateTime.Today, parameter => SeçiliGün != DateTime.Today);
     }
 
     public ICommand AddFtpSites { get; }
@@ -2113,6 +2115,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> SetBatchSaveFolder { get; }
 
     public ICommand SetBatchWatchFolder { get; }
+
+    public RelayCommand<object> SetDateToday { get; }
 
     public RelayCommand<object> SetDbBackUpFolder { get; }
 

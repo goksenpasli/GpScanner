@@ -691,14 +691,15 @@
                         </StackPanel>
                         <Grid Grid.Row="2" Background="{StaticResource BorderBackground}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
                                 <RepeatButton twainctrl:Policy.PolicyName="DateBack"
@@ -711,7 +712,17 @@
                                     DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
                                     Language="{Binding CalendarLang}"
                                     SelectedDate="{Binding SeçiliGün}" />
-                                <RepeatButton Grid.Column="2"
+                                <Button Grid.Column="2" Command="{Binding SetDateToday}">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="TimeDate.cpl" />
+                                                <Binding Source="0" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <RepeatButton Grid.Column="3"
                                     twainctrl:Policy.PolicyName="DateForward"
                                     Command="{Binding DateForward}"
                                     Content="è"
@@ -1097,6 +1108,8 @@
                     <TextBlock VerticalAlignment="Center"
                         FontWeight="Bold"
                         Foreground="Red">
+                        <Run Text="{Binding Mode=OneWay, Path=CheckedPdfCount}" />
+                        <sys:String>/</sys:String>
                         <Run Text="{Binding Mode=OneWay, ElementName=LbDoc, Path=Items.Count}" />
                         <Run Text="{twainctrl:Loc DOCUMENT}" />
                     </TextBlock>

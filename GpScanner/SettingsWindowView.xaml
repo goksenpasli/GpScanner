@@ -115,7 +115,7 @@
                                                 FlowDirection="LeftToRight"
                                                 Source="{Binding Key, Converter={StaticResource StringToCountryFlagImageConverter}}">
                                                 <Image.CacheMode>
-                                                    <BitmapCache RenderAtScale="2" />
+                                                    <BitmapCache RenderAtScale="1.5" />
                                                 </Image.CacheMode>
                                             </Image>
                                             <TextBlock HorizontalAlignment="Center"

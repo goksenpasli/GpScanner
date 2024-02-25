@@ -108,10 +108,10 @@
                             Grid.Column="7"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
+                            Interval="1"
                             IsReadOnly="True"
                             Minimum="1"
                             NumericUpdownTextBoxVisibility="Collapsed"
-                            Interval="1"
                             SnapsToDevicePixels="True"
                             Visibility="{Binding FontSizeButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                             Value="{Binding FontSize, RelativeSource={RelativeSource TemplatedParent}}" />
