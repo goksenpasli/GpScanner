@@ -579,7 +579,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="70" />
-                                    <ColumnDefinition Width="84.8" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <ListBox local:Policy.PolicyName="Mode"
