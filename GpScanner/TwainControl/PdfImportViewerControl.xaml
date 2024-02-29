@@ -164,6 +164,8 @@
                                 <ScrollBar x:Name="ScrollVwrAllPage"
                                     Grid.Row="0"
                                     Grid.Column="1"
+                                    local:ScrollBarHelper.PdfFilePath="{Binding Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:EypPdfViewer}, Path=PdfFilePath}"
+                                    local:ScrollBarHelper.PdfToolTip="true"
                                     Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
                                     Minimum="1"
                                     Orientation="Vertical"

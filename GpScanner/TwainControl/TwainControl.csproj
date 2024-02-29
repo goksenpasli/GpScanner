@@ -263,6 +263,7 @@
     <Compile Include="Resolution.cs" />
     <Compile Include="SafeIconHandle.cs" />
     <Compile Include="ScannedImage.cs" />
+    <Compile Include="ScrollBarHelper.cs" />
     <Compile Include="SimpleArchiveViewer.cs" />
     <Compile Include="ToolBox.xaml.cs">
       <DependentUpon>ToolBox.xaml</DependentUpon>
