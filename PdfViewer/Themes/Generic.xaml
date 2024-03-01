@@ -134,7 +134,6 @@
                             Grid.Column="1"
                             local:ScrollBarHelper.PdfFilePath="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=PdfFilePath}"
                             local:ScrollBarHelper.PdfToolTip="true"
-                            local:ScrollBarHelper.ThumbSize="105"
                             Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
                             Minimum="1"
                             Orientation="Vertical"
