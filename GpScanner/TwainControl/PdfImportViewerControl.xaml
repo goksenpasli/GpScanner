@@ -220,8 +220,6 @@
                                                             MinWidth="460"
                                                             MinHeight="300">
                                                             <ListBox VerticalContentAlignment="Center"
-                                                                Pdfviewer:ScrollBarHelper.PdfFilePath="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=PdfFilePath}"
-                                                                Pdfviewer:ScrollBarHelper.PdfToolTip="{Binding IsMouseOver, RelativeSource={RelativeSource Mode=Self}}"
                                                                 ItemsSource="{Binding Pages, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                                 SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
                                                                 VirtualizingPanel.CacheLengthUnit="Item"
