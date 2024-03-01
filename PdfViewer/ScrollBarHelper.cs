@@ -36,7 +36,7 @@ namespace PdfViewer
                 return;
             }
             int thumbsize = GetThumbSize(control);
-            PdfDocument pdfDoc = PdfDocument.Load(GetPdfFilePath(control));
+            using PdfDocument pdfDoc = PdfDocument.Load(GetPdfFilePath(control));
             using Bitmap bitmap = pdfDoc.Render(pagenumber, 12, 12, false) as Bitmap;
             BitmapImage bitmapImage = bitmap.ToBitmapImage(ImageFormat.Jpeg, thumbsize);
             bitmapImage.Freeze();
