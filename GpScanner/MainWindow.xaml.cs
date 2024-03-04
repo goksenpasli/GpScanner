@@ -1,6 +1,8 @@
-﻿using GpScanner.Properties;
+﻿using Extensions;
+using GpScanner.Properties;
 using GpScanner.ViewModel;
 using Ocr;
+using PdfViewer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -135,6 +138,23 @@ public partial class MainWindow : Window
             e.UseDefaultCursors = true;
         }
         e.Handled = true;
+    }
+
+    private async void LbDoc_Scroll(object sender, ScrollEventArgs e)
+    {
+        if (e.OriginalSource is ScrollBar scrollBar &&
+        scrollBar.DataContext is GpScannerViewModel &&
+        sender is ListBox listBox &&
+        !ScrollViewer.GetIsDeferredScrollingEnabled(listBox) &&
+        e.ScrollEventType == ScrollEventType.ThumbTrack &&
+        listBox.GetFirstVisualChild<ScrollViewer>() is ScrollViewer scrollViewer)
+        {
+            int lbindex = (int)(scrollViewer.VerticalOffset / scrollViewer.ExtentHeight * listBox.Items.Count);
+            if (listBox.ItemContainerGenerator.ContainerFromIndex(lbindex) is ListBoxItem firstlistboxitem && firstlistboxitem.DataContext is Scanner scanner)
+            {
+                await ScrollBarHelper.GenerateThumb(listBox, 0, scanner.FileName);
+            }
+        }
     }
 
     private async void ListBox_DropAsync(object sender, DragEventArgs e) => await twainCtrl.ListBoxDropFileAsync(e);

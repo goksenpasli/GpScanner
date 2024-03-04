@@ -773,6 +773,7 @@
                             BorderThickness="2"
                             IsSynchronizedWithCurrentItem="False"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
+                            ScrollBar.Scroll="LbDoc_Scroll"
                             ScrollViewer.IsDeferredScrollingEnabled="{Binding IsChecked, ElementName=TbExpandDocument}"
                             SelectionMode="Extended"
                             Style="{StaticResource ListBoxAnimationStyle}"
