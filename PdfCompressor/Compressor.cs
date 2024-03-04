@@ -181,9 +181,8 @@ public class Compressor : Control, INotifyPropertyChanged
 
     protected async Task<PdfDocument> CompressFilePdfDocumentAsync(string path)
     {
-        PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(path);
+        using PdfiumViewer.PdfDocument loadedpdfdoc = PdfiumViewer.PdfDocument.Load(path);
         List<BitmapImage> images = await AddToListAsync(loadedpdfdoc, Dpi);
-        loadedpdfdoc?.Dispose();
         return await GeneratePdfAsync(images, UseMozJpeg, BlackAndWhite, Quality, Dpi, progress => CompressionProgress = progress);
     }
 
