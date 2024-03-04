@@ -1,7 +1,4 @@
 ﻿using Extensions;
-using PdfiumViewer;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,34 +14,25 @@ namespace PdfViewer
         public static readonly DependencyProperty ThumbSizeProperty = DependencyProperty.RegisterAttached("ThumbSize", typeof(int), typeof(ScrollBarHelper), new PropertyMetadata(210));
         private static readonly ToolTip tooltip = new();
 
+        public static async Task CloseToolTip(FrameworkElement frameworkelement)
+        {
+            await Task.Delay(GetDuration(frameworkelement));
+            tooltip.IsOpen = false;
+        }
+
         public static async Task GenerateThumb(Control control, int pagenumber, string pdfpath = null)
         {
-            if (tooltip.IsOpen)
-            {
-                return;
-            }
             string file = pdfpath ?? GetPdfFilePath(control);
-            if (!PdfViewer.IsValidPdfFile(file))
-            {
-                return;
-            }
             int thumbsize = GetThumbSize(control);
             tooltip.HorizontalOffset = -thumbsize - 40;
-            BitmapImage bitmapImage = await Task.Run(
-                () =>
-                {
-                    using PdfDocument pdfDoc = PdfDocument.Load(file);
-                    using Bitmap bitmap = pdfDoc.Render(pagenumber, 12, 12, false) as Bitmap;
-                    return bitmap.ToBitmapImage(ImageFormat.Jpeg, thumbsize);
-                });
-            bitmapImage.Freeze();
-            tooltip.Content = new System.Windows.Controls.Image { Source = bitmapImage, Width = thumbsize, Height = thumbsize };
-            control.ToolTip = tooltip;
-            tooltip.IsOpen = true;
-            await Task.Delay(GetDuration(control));
-            tooltip.IsOpen = false;
-            tooltip.Content = null;
-            control.ToolTip = null;
+            BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(file, pagenumber, 16);
+            if (bitmapImage != null)
+            {
+                bitmapImage.Freeze();
+                tooltip.Content = new Image { Source = bitmapImage, Width = thumbsize, Height = thumbsize };
+                control.ToolTip = tooltip;
+                tooltip.IsOpen = true;
+            }
         }
 
         public static int GetDuration(DependencyObject obj) => (int)obj.GetValue(DurationProperty);
@@ -69,7 +57,8 @@ namespace PdfViewer
                                         {
                                             if (args.ScrollEventType == ScrollEventType.ThumbTrack)
                                             {
-                                                await GenerateThumb(scrollBar, (int)args.NewValue - 1);
+                                                await GenerateThumb(scrollBar, (int)args.NewValue);
+                                                await CloseToolTip(scrollBar);
                                             }
                                         };
                 }
@@ -83,8 +72,9 @@ namespace PdfViewer
                                                       {
                                                           if (scrollViewer.ScrollableHeight > 0)
                                                           {
-                                                              double index = scrollViewer.VerticalOffset / scrollViewer.ExtentHeight * listBox.Items.Count;
+                                                              double index = scrollViewer.ContentVerticalOffset / scrollViewer.ScrollableHeight * listBox.Items.Count;
                                                               await GenerateThumb(listBox, (int)index);
+                                                              await CloseToolTip(listBox);
                                                           }
                                                       };
                     }

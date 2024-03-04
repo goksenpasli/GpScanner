@@ -140,19 +140,15 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    private async void LbDoc_Scroll(object sender, ScrollEventArgs e)
+    private async void LbDoc_DragDelta(object sender, DragDeltaEventArgs e)
     {
-        if (e.OriginalSource is ScrollBar scrollBar &&
-        scrollBar.DataContext is GpScannerViewModel &&
-        sender is ListBox listBox &&
-        !ScrollViewer.GetIsDeferredScrollingEnabled(listBox) &&
-        e.ScrollEventType == ScrollEventType.ThumbTrack &&
-        listBox.GetFirstVisualChild<ScrollViewer>() is ScrollViewer scrollViewer)
+        if (e.OriginalSource is Thumb thumb && thumb.DataContext is GpScannerViewModel && sender is ListBox listBox && listBox.GetFirstVisualChild<ScrollViewer>() is ScrollViewer scrollViewer)
         {
-            int lbindex = (int)(scrollViewer.VerticalOffset / scrollViewer.ExtentHeight * listBox.Items.Count);
+            int lbindex = (int)(scrollViewer.ContentVerticalOffset / scrollViewer.ScrollableHeight * listBox.Items.Count);
             if (listBox.ItemContainerGenerator.ContainerFromIndex(lbindex) is ListBoxItem firstlistboxitem && firstlistboxitem.DataContext is Scanner scanner)
             {
-                await ScrollBarHelper.GenerateThumb(listBox, 0, scanner.FileName);
+                await ScrollBarHelper.GenerateThumb(listBox, 1, scanner.FileName);
+                await ScrollBarHelper.CloseToolTip(listBox);
             }
         }
     }
