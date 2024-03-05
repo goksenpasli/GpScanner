@@ -1,9 +1,4 @@
-﻿using Extensions;
-using GpScanner.Properties;
-using GpScanner.ViewModel;
-using Ocr;
-using PdfViewer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -11,10 +6,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
+using Extensions;
+using GpScanner.Properties;
+using GpScanner.ViewModel;
+using Ocr;
+using PdfViewer;
 using TwainControl;
 using static Extensions.ExtensionMethods;
 using static GpScanner.ViewModel.GpScannerViewModel;
@@ -141,15 +142,21 @@ public partial class MainWindow : Window
 
     private async void LbDoc_ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
-        if (Settings.Default.ShowListBoxPreview && sender is ListBox listBox && e.VerticalOffset != 0 && listBox.IsMouseOver)
+        if (sender is not ListBox listBox || !Settings.Default.ShowListBoxPreview || e.VerticalOffset == 0)
         {
-            int lbindex = (int)(e.VerticalOffset / e.ExtentHeight * listBox.Items.Count);
-            if (listBox.ItemContainerGenerator.ContainerFromIndex(lbindex) is ListBoxItem firstlistboxitem && firstlistboxitem.DataContext is Scanner scanner)
-            {
-                await ScrollBarHelper.GenerateThumb(listBox, 1, scanner.FileName);
-                await ScrollBarHelper.CloseToolTip(listBox);
-            }
+            return;
         }
+        int lbindex = (int)(e.VerticalOffset / e.ExtentHeight * listBox.Items.Count);
+        if (!(listBox.ItemContainerGenerator.ContainerFromIndex(lbindex) is ListBoxItem firstlistboxitem && firstlistboxitem.DataContext is Scanner scanner))
+        {
+            return;
+        }
+        if (listBox.FindVisualChildren<Thumb>().FirstOrDefault()?.IsMouseOver != true)
+        {
+            return;
+        }
+        await ScrollBarHelper.GenerateThumb(listBox, 1, scanner.FileName);
+        await ScrollBarHelper.CloseToolTip(listBox);
     }
 
     private async void ListBox_DropAsync(object sender, DragEventArgs e) => await twainCtrl.ListBoxDropFileAsync(e);

@@ -43,6 +43,18 @@
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
         <viewmodel:RippleEffect x:Key="FlagRippleEffect" Progress="{Binding FlagProgress}" />
+        <Image x:Key="tick"
+            Width="16"
+            Height="16"
+            x:Shared="false"
+            Visibility="{Binding Mode=OneWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Image.Source>
+                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                    <Binding Source="Comres.dll" />
+                    <Binding Source="8" />
+                </MultiBinding>
+            </Image.Source>
+        </Image>
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="Pause" Command="{Binding StopFlagAnimation}" />
@@ -88,7 +100,7 @@
                                 <ListBox.Resources>
                                     <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
-                                        <Setter Property="Margin" Value="2,0,2,0" />
+                                        <Setter Property="Margin" Value="1,0,1,0" />
                                         <Setter Property="Padding" Value="0" />
                                         <Style.Triggers>
                                             <Trigger Property="IsSelected" Value="True">
@@ -109,8 +121,8 @@
                                 </ListBox.ItemsPanel>
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel>
-                                            <Image Width="60"
+                                        <Canvas Width="70" Height="60">
+                                            <Image Width="70"
                                                 Effect="{StaticResource FlagRippleEffect}"
                                                 FlowDirection="LeftToRight"
                                                 Source="{Binding Key, Converter={StaticResource StringToCountryFlagImageConverter}}">
@@ -118,10 +130,12 @@
                                                     <BitmapCache RenderAtScale="1.5" />
                                                 </Image.CacheMode>
                                             </Image>
-                                            <TextBlock HorizontalAlignment="Center"
+                                            <TextBlock Canvas.Bottom="0"
+                                                HorizontalAlignment="Center"
                                                 FontSize="11"
-                                                Text="{Binding Key}" />
-                                        </StackPanel>
+                                                Text="{Binding Mode=OneWay, Path=Key}" />
+                                            <ContentPresenter Content="{StaticResource tick}" />
+                                        </Canvas>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
