@@ -827,112 +827,115 @@
                                                             </TransformGroup>
                                                         </Border.RenderTransform>
                                                         <Grid GiveFeedback="Grid_GiveFeedback" MouseLeftButtonDown="DocumentGrid_MouseLeftButtonDown">
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition />
+                                                                <ColumnDefinition />
+                                                                <ColumnDefinition />
+                                                            </Grid.ColumnDefinitions>
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="16" />
                                                                 <RowDefinition Height="19.2" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
-                                                            <Grid>
-                                                                <Grid.ColumnDefinitions>
-                                                                    <ColumnDefinition />
-                                                                    <ColumnDefinition Width="Auto" />
-                                                                </Grid.ColumnDefinitions>
-                                                                <TextBlock>
-                                                                    <Run Cursor="SizeAll"
-                                                                        FontFamily="Wingdings"
-                                                                        FontSize="15"
+                                                            <TextBlock Grid.ColumnSpan="2">
+                                                                <Run Cursor="SizeAll"
+                                                                    FontFamily="Wingdings"
+                                                                    FontSize="15"
+                                                                    FontWeight="Bold"
+                                                                    Text="B" />
+                                                                <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
+                                                                <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
+                                                                <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
+                                                            </TextBlock>
+                                                            <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                                                                <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                                                                    Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                    CommandParameter="{Binding Mode=OneWay, Path=FileName}"
+                                                                    TextDecorations="None">
+                                                                    <Run FontFamily="Wingdings 2"
+                                                                        FontSize="18"
                                                                         FontWeight="Bold"
-                                                                        Text="B" />
-                                                                    <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
-                                                                    <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
-                                                                    <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
-                                                                </TextBlock>
-                                                                <TextBlock Grid.Column="1">
-                                                                    <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
-                                                                        Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                                        CommandParameter="{Binding Mode=OneWay, Path=FileName}"
-                                                                        TextDecorations="None">
-                                                                        <Run FontFamily="Wingdings 2"
-                                                                            FontSize="18"
-                                                                            FontWeight="Bold"
-                                                                            Text="4" />
-                                                                    </Hyperlink>
-                                                                </TextBlock>
-                                                            </Grid>
-                                                            <UniformGrid Grid.Row="1" Columns="3">
-                                                                <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch">
-                                                                    <Extensions:ContentToggleButton.Style>
-                                                                        <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">
-                                                                            <Style.Triggers>
-                                                                                <Trigger Property="IsChecked" Value="False">
-                                                                                    <Setter Property="OverContent" Value="{x:Null}" />
-                                                                                </Trigger>
-                                                                                <Trigger Property="IsChecked" Value="True">
-                                                                                    <Setter Property="OverContent">
-                                                                                        <Setter.Value>
-                                                                                            <local:FtpUserControl Width="400" Height="200" />
-                                                                                        </Setter.Value>
-                                                                                    </Setter>
-                                                                                </Trigger>
-                                                                            </Style.Triggers>
-                                                                        </Style>
-                                                                    </Extensions:ContentToggleButton.Style>
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Imageres.dll" />
-                                                                                <Binding Source="68" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
-                                                                </Extensions:ContentToggleButton>
-                                                                <Button Command="{Binding DataContext.UploadSharePoint, RelativeSource={RelativeSource AncestorType={x:Type Window}}}" CommandParameter="{Binding Mode=OneWay}">
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="Shell32.dll" />
-                                                                                <Binding Source="135" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
-                                                                </Button>
-                                                                <Extensions:ContentToggleButton>
-                                                                    <Extensions:ContentToggleButton.OverContent>
-                                                                        <GroupBox Width="300" Header="{twainctrl:Loc CALENDAR}">
-                                                                            <StackPanel>
-                                                                                <Extensions:ButtonedTextBox Height="100"
-                                                                                    AcceptsReturn="True"
-                                                                                    Description="{twainctrl:Loc TEXT}"
-                                                                                    OpenButtonVisibility="Collapsed"
-                                                                                    ResetButtonVisibility="Collapsed"
-                                                                                    Text="{Binding DataContext.CalendarDesc, Source={x:Reference Window}, UpdateSourceTrigger=PropertyChanged}"
-                                                                                    TextWrapping="Wrap"
-                                                                                    TitleCaseMenuVisibility="Visible" />
-                                                                                <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding DataContext.NotifyDate, Source={x:Reference Window}, UpdateSourceTrigger=PropertyChanged}" />
-                                                                                <Button Command="{Binding DataContext.AddToCalendar, Source={x:Reference Window}}" CommandParameter="{Binding Mode=OneWay}">
-                                                                                    <Image Width="32" Height="32">
-                                                                                        <Image.Source>
-                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                <Binding Source="TimeDate.cpl" />
-                                                                                                <Binding Source="0" />
-                                                                                            </MultiBinding>
-                                                                                        </Image.Source>
-                                                                                    </Image>
-                                                                                </Button>
-                                                                            </StackPanel>
-                                                                        </GroupBox>
-                                                                    </Extensions:ContentToggleButton.OverContent>
-                                                                    <Image Width="16" Height="16">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="TimeDate.cpl" />
-                                                                                <Binding Source="0" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
-                                                                </Extensions:ContentToggleButton>
-                                                            </UniformGrid>
+                                                                        Text="4" />
+                                                                </Hyperlink>
+                                                            </TextBlock>
+                                                            <Extensions:ContentToggleButton Grid.Row="1"
+                                                                HorizontalContentAlignment="Stretch"
+                                                                VerticalContentAlignment="Stretch">
+                                                                <Extensions:ContentToggleButton.Style>
+                                                                    <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">
+                                                                        <Style.Triggers>
+                                                                            <Trigger Property="IsChecked" Value="False">
+                                                                                <Setter Property="OverContent" Value="{x:Null}" />
+                                                                            </Trigger>
+                                                                            <Trigger Property="IsChecked" Value="True">
+                                                                                <Setter Property="OverContent">
+                                                                                    <Setter.Value>
+                                                                                        <local:FtpUserControl Width="400" Height="200" />
+                                                                                    </Setter.Value>
+                                                                                </Setter>
+                                                                            </Trigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Extensions:ContentToggleButton.Style>
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Imageres.dll" />
+                                                                            <Binding Source="68" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Extensions:ContentToggleButton>
+                                                            <Button Grid.Row="1"
+                                                                Grid.Column="1"
+                                                                Command="{Binding DataContext.UploadSharePoint, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                                                                CommandParameter="{Binding Mode=OneWay}">
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="135" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Button>
+                                                            <Extensions:ContentToggleButton Grid.Row="1" Grid.Column="2">
+                                                                <Extensions:ContentToggleButton.OverContent>
+                                                                    <GroupBox Width="300" Header="{twainctrl:Loc CALENDAR}">
+                                                                        <StackPanel>
+                                                                            <Extensions:ButtonedTextBox Height="100"
+                                                                                AcceptsReturn="True"
+                                                                                Description="{twainctrl:Loc TEXT}"
+                                                                                OpenButtonVisibility="Collapsed"
+                                                                                ResetButtonVisibility="Collapsed"
+                                                                                Text="{Binding DataContext.CalendarDesc, Source={x:Reference Window}, UpdateSourceTrigger=PropertyChanged}"
+                                                                                TextWrapping="Wrap"
+                                                                                TitleCaseMenuVisibility="Visible" />
+                                                                            <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding DataContext.NotifyDate, Source={x:Reference Window}, UpdateSourceTrigger=PropertyChanged}" />
+                                                                            <Button Command="{Binding DataContext.AddToCalendar, Source={x:Reference Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                                <Image Width="32" Height="32">
+                                                                                    <Image.Source>
+                                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                            <Binding Source="TimeDate.cpl" />
+                                                                                            <Binding Source="0" />
+                                                                                        </MultiBinding>
+                                                                                    </Image.Source>
+                                                                                </Image>
+                                                                            </Button>
+                                                                        </StackPanel>
+                                                                    </GroupBox>
+                                                                </Extensions:ContentToggleButton.OverContent>
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="TimeDate.cpl" />
+                                                                            <Binding Source="0" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </Extensions:ContentToggleButton>
                                                             <ContentControl Grid.Row="2"
+                                                                Grid.ColumnSpan="3"
                                                                 Extensions:IgnoreMouseWheelBehavior.IgnoreMouseWheel="True"
                                                                 d:ContentTemplate="{StaticResource PdfViewerTemplateFull}"
                                                                 d:ContentTemplateSelector="{StaticResource ThumbViewerSelector}"

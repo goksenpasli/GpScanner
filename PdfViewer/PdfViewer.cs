@@ -595,6 +595,33 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    public static async Task<BitmapSource> ConvertToBitmapSourceAsync(string pdffilepath, int page, int dpi = 72)
+    {
+        try
+        {
+            return !IsValidPdfFile(pdffilepath)
+                   ? throw new ArgumentNullException(nameof(pdffilepath), "pdf is not valid")
+                   : await Task.Run(
+                async () =>
+                {
+                    using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
+                    if (pdfDoc is null)
+                    {
+                        return null;
+                    }
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                    BitmapSource bitmapsource = await RenderPdf(pdfDoc, dpi, page - 1, width, height);
+                    bitmapsource.Freeze();
+                    return bitmapsource;
+                });
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
     public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] pdffilestream, int page, int dpi)
     {
         try
