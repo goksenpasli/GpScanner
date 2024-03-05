@@ -18,6 +18,7 @@ namespace PdfViewer
         {
             await Task.Delay(GetDuration(frameworkelement));
             tooltip.IsOpen = false;
+            ToolTipService.SetIsEnabled(frameworkelement, tooltip.IsOpen);
         }
 
         public static async Task GenerateThumb(Control control, int pagenumber, string pdfpath = null)

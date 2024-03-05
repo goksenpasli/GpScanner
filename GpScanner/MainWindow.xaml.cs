@@ -11,7 +11,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -140,11 +139,11 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    private async void LbDoc_DragDelta(object sender, DragDeltaEventArgs e)
+    private async void LbDoc_ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
-        if (e.OriginalSource is Thumb thumb && thumb.DataContext is GpScannerViewModel && sender is ListBox listBox && listBox.GetFirstVisualChild<ScrollViewer>() is ScrollViewer scrollViewer)
+        if (sender is ListBox listBox && e.VerticalOffset != 0)
         {
-            int lbindex = (int)(scrollViewer.ContentVerticalOffset / scrollViewer.ScrollableHeight * listBox.Items.Count);
+            int lbindex = (int)(e.VerticalOffset / e.ExtentHeight * listBox.Items.Count);
             if (listBox.ItemContainerGenerator.ContainerFromIndex(lbindex) is ListBoxItem firstlistboxitem && firstlistboxitem.DataContext is Scanner scanner)
             {
                 await ScrollBarHelper.GenerateThumb(listBox, 1, scanner.FileName);
