@@ -141,7 +141,7 @@ public partial class MainWindow : Window
 
     private async void LbDoc_ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
-        if (sender is ListBox listBox && e.VerticalOffset != 0)
+        if (Settings.Default.ShowListBoxPreview && sender is ListBox listBox && e.VerticalOffset != 0 && listBox.IsMouseOver)
         {
             int lbindex = (int)(e.VerticalOffset / e.ExtentHeight * listBox.Items.Count);
             if (listBox.ItemContainerGenerator.ContainerFromIndex(lbindex) is ListBoxItem firstlistboxitem && firstlistboxitem.DataContext is Scanner scanner)

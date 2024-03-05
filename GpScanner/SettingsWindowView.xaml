@@ -449,6 +449,31 @@
                                             </Image>
                                         </Canvas>
                                     </ToggleButton>
+                                    <ToggleButton twainctrl:Policy.PolicyName="ShowListBoxPreview"
+                                        IsChecked="{Binding ShowListBoxPreview, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                        ToolTip="{twainctrl:Loc PREVIEWFILE}">
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="254" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Canvas.Right="0"
+                                                Canvas.Bottom="5"
+                                                Width="16"
+                                                Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="1" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
+                                    </ToggleButton>
                                 </StackPanel>
                             </UniformGrid>
                             <Separator Margin="0,1,0,1" />
