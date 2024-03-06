@@ -239,7 +239,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <WrapPanel DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
+                    <WrapPanel ViewModel:AllPdfViewerControl.HideAllPdfControls="{Binding DataContext.ShowAllPdfControl, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"
+                        DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                         IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}"
                         Orientation="Horizontal">
                         <Extensions:NumericUpDown Interval="1"
@@ -372,6 +373,7 @@
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
                         ViewModel:AllPdfViewerControl.AllPageNumber="{Binding DataContext.AllPdfPage, RelativeSource={RelativeSource AncestorType=Window}}"
+                        ViewModel:AllPdfViewerControl.HideAllPdfControls="{Binding DataContext.ShowAllPdfControl, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"
                         AllowDrop="True"
                         AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"

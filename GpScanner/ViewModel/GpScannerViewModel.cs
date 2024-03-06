@@ -104,6 +104,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string ftpSite = string.Empty;
     private string ftpUserName = string.Empty;
     private ObservableCollection<Size> getPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
+    private bool showAllPdfControl=true;
     private int ındexedFileCount;
     private bool ısAdministrator;
     private bool ısSqlQuery = true;
@@ -1636,6 +1637,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
+
+    public bool ShowAllPdfControl
+    {
+        get => showAllPdfControl;
+        set
+        {
+            if (showAllPdfControl != value)
+            {
+                showAllPdfControl = value;
+                OnPropertyChanged(nameof(ShowAllPdfControl));
+            }
+        }
+    }
 
     public int IndexedFileCount
     {

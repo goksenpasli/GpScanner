@@ -50,24 +50,21 @@
                     </MultiBinding>
                 </Image.Source>
             </Image>
-            <Image x:Key="tick"
-                Width="16"
-                Height="16"
-                x:Shared="false"
-                Visibility="{Binding Mode=OneWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
-                <Image.Source>
-                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                        <Binding Source="Comres.dll" />
-                        <Binding Source="8" />
-                    </MultiBinding>
-                </Image.Source>
-            </Image>
             <TextBlock x:Key="bw"
                 Margin="0,1,0,1"
                 VerticalAlignment="Center"
                 FontWeight="Bold">
                 <InlineUIContainer BaselineAlignment="Center">
-                    <ContentPresenter Content="{StaticResource tick}" />
+                    <Image Width="16"
+                        Height="16"
+                        Visibility="{Binding Mode=OneWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Comres.dll" />
+                                <Binding Source="8" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
                 </InlineUIContainer><Run Text="{local:Loc BW}" />
             </TextBlock>
             <TextBlock x:Key="grey"
@@ -77,7 +74,16 @@
                 FontWeight="Bold"
                 Foreground="Gray">
                 <InlineUIContainer BaselineAlignment="Center">
-                    <ContentPresenter Content="{StaticResource tick}" />
+                    <Image Width="16"
+                        Height="16"
+                        Visibility="{Binding Mode=OneWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Comres.dll" />
+                                <Binding Source="8" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
                 </InlineUIContainer><Run Text="{local:Loc GRAY}" />
             </TextBlock>
             <TextBlock x:Key="color"
@@ -87,7 +93,16 @@
                 FontWeight="Bold"
                 Foreground="{StaticResource Colorfull}">
                 <InlineUIContainer BaselineAlignment="Center">
-                    <ContentPresenter Content="{StaticResource tick}" />
+                    <Image Width="16"
+                        Height="16"
+                        Visibility="{Binding Mode=OneWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Comres.dll" />
+                                <Binding Source="8" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
                 </InlineUIContainer><Run Text="{local:Loc COLOR}" />
             </TextBlock>
             <Style x:Key="ToggleButtonAnimationStyle" TargetType="{x:Type ToggleButton}">

@@ -472,16 +472,31 @@
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                     </StackPanel>
                                 </Extensions:SplitButton>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <TextBlock VerticalAlignment="Center">
                                     <Run Text="PDF" />
                                     <Run Text="{twainctrl:Loc ALL}" />
                                     <LineBreak />
                                     <Run Text="{twainctrl:Loc PAGENUMBER}" />
                                 </TextBlock>
-                                <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
-                                    Interval="1"
-                                    Minimum="1"
-                                    Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                <UniformGrid Rows="2">
+                                    <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
+                                        Interval="1"
+                                        Minimum="1"
+                                        Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    <ToggleButton twainctrl:Policy.PolicyName="ShowAllPdfControl"
+                                        Content="N"
+                                        FontFamily="Webdings"
+                                        FontSize="16"
+                                        FontWeight="Bold"
+                                        Foreground="Green"
+                                        IsChecked="{Binding ShowAllPdfControl}" />
+                                </UniformGrid>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfBirleştir"
@@ -595,6 +610,9 @@
                                         </ItemsControl>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <Canvas Width="32" Height="32">
                                         <Image Width="32" Height="32">
@@ -834,7 +852,7 @@
                                                             </Grid.ColumnDefinitions>
                                                             <Grid.RowDefinitions>
                                                                 <RowDefinition Height="16" />
-                                                                <RowDefinition Height="19.2" />
+                                                                <RowDefinition Height="Auto" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
                                                             <TextBlock Grid.ColumnSpan="2">
