@@ -47,7 +47,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         DependencyProperty.Register("BwAmount", typeof(double), typeof(MediaViewer), new PropertyMetadata(0.6D));
     public static readonly DependencyProperty ContextMenuEnabledProperty = DependencyProperty.Register("ContextMenuEnabled", typeof(bool), typeof(MediaViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty ControlVisibleProperty = DependencyProperty.Register("ControlVisible", typeof(Visibility), typeof(MediaViewer), new PropertyMetadata(Visibility.Visible));
-    public static readonly DependencyProperty EndTimeSpanProperty = DependencyProperty.Register("EndTimeSpan", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero));
+    public static readonly DependencyPropertyKey EndTimeSpanProperty = DependencyProperty.RegisterReadOnly("EndTimeSpan", typeof(TimeSpan), typeof(MediaViewer), new PropertyMetadata(TimeSpan.Zero));
     public static readonly DependencyProperty FlipXProperty =
         DependencyProperty.Register("FlipX", typeof(double), typeof(MediaViewer), new PropertyMetadata(1.0d));
     public static readonly DependencyProperty FlipYProperty =
@@ -445,7 +445,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public string ÇevrilenDil { get; set; } = "en";
     [Description("Video Controls")]
     [Category("Controls")]
-    public TimeSpan EndTimeSpan { get => (TimeSpan)GetValue(EndTimeSpanProperty); set => SetValue(EndTimeSpanProperty, value); }
+    public TimeSpan EndTimeSpan => (TimeSpan)GetValue(EndTimeSpanProperty.DependencyProperty);
 
     [Description("Video Controls")]
     [Category("Controls")]
@@ -897,7 +897,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 {
                     if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
                     {
-                        viewer.EndTimeSpan = mediaelement.NaturalDuration.TimeSpan;
+                        viewer.SetValue(EndTimeSpanProperty, mediaelement.NaturalDuration.TimeSpan);
                         timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
                         timer.Start();
                         viewer.SetOsdInfo();

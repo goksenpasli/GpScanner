@@ -86,8 +86,8 @@
                     <GroupBox>
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
                                 <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <ListBox Margin="1"
                                 VerticalContentAlignment="Center"

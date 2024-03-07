@@ -53,7 +53,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}"
                 IsEnabled="{Binding IsFolderWritable, ValidatesOnDataErrors=True}"

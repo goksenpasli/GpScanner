@@ -162,6 +162,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Camera.PropertyChanged += CameraUserControl_PropertyChanged;
         TranslationSource.Instance.PropertyChanged += Language_PropertyChanged;
         SelectedPaper = Settings.Default.LockSelectedPaper ? Papers.FirstOrDefault(z => z.PaperType == Settings.Default.DefaultPaper) : Papers.FirstOrDefault(z => z.PaperType == "A4");
+        DependencyPropertyDescriptor.FromProperty(MediaViewer.MediaPositionProperty, typeof(MediaViewer))?.AddValueChanged(mediaViewer, OnMediaPositionChanged);
 
         ScanImage = new RelayCommand<object>(
             async parameter =>
@@ -1980,6 +1981,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         Title = AppName,
                         WindowStartupLocation = WindowStartupLocation.CenterOwner
                     };
+                    maximizedWindow.KeyDown += (s, e) =>
+                                               {
+                                                   if (e.Key == Key.Escape)
+                                                   {
+                                                       maximizedWindow?.Close();
+                                                   }
+                                               };
                     maximizedWindow.Closed += (s, e) =>
                                               {
                                                   maximizedWindow.Content = null;
@@ -3916,6 +3924,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
         return mixedList;
+    }
+
+    private void OnMediaPositionChanged(object sender, EventArgs e)
+    {
+        Scanner.ProgressState = TaskbarItemProgressState.Normal;
+        Scanner.PdfSaveProgressValue = (double)mediaViewer.MediaPosition.Ticks / mediaViewer.EndTimeSpan.Ticks;
     }
 
     private async Task PdfPageRangeSaveFileAsync(string loadfilename, string savefilename, int start, int end)
