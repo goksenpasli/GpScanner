@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using PdfCompressor;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -122,29 +123,7 @@ public static class BitmapMethods
         return croppedimage;
     }
 
-    public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource)
-    {
-        if (bitmapsource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapsource));
-        }
-
-        FormatConvertedBitmap src = new();
-        src.BeginInit();
-        src.Source = bitmapsource;
-        src.DestinationFormat = PixelFormats.Bgra32;
-        src.EndInit();
-        src.Freeze();
-        Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-        BitmapData data = bitmap.LockBits(new Rectangle(System.Drawing.Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-        if (data != null)
-        {
-            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-            bitmap.UnlockBits(data);
-        }
-
-        return bitmap;
-    }
+    public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource) => Compressor.BitmapSourceToBitmap(bitmapsource);
 
     public static byte[] CaptureScreen(double coordx, double coordy, double selectionwidth, double selectionheight, ScrollViewer scrollviewer, BitmapFrame bitmapFrame)
     {

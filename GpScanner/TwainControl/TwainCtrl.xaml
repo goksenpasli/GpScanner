@@ -390,11 +390,13 @@
                         <Border>
                             <Grid HorizontalAlignment="{Binding HorizontalAlignment, Mode=OneWayToSource, RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}">
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition />
-                                    <RowDefinition />
+                                    <RowDefinition Height="28" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
@@ -426,7 +428,7 @@
                                     ItemStringFormat="{}{0} Dpi"
                                     ItemsSource="{Binding ScanResolutionList, Mode=OneWay}"
                                     SelectedItem="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                <Extensions:ContentToggleButton Grid.Column="3" ArrowVisibility="Collapsed">
+                                <Extensions:ContentToggleButton Grid.Column="2" ArrowVisibility="Collapsed">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -439,8 +441,27 @@
                                         <local:PageCropControl />
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
+                                <ListBox Grid.RowSpan="2"
+                                    Grid.Column="3"
+                                    VerticalContentAlignment="Center"
+                                    local:Policy.PolicyName="SelectedRotation"
+                                    Background="{DynamicResource BorderBackground}"
+                                    SelectedValue="{Binding SelectedRotation}"
+                                    SelectedValuePath="Tag">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <VirtualizingStackPanel Orientation="Vertical" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
+                                    <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
+                                    <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
+                                </ListBox>
                                 <UniformGrid Grid.Row="1"
-                                    Grid.ColumnSpan="4"
+                                    Grid.ColumnSpan="3"
                                     Columns="4">
                                     <ToggleButton IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ToggleButton.Style>
@@ -562,57 +583,41 @@
                                         </StackPanel>
                                     </Button>
                                 </UniformGrid>
-                            </Grid>
-                        </Border>
-                    </Expander.Header>
-                    <ScrollViewer Background="{StaticResource BorderBackground}"
-                        HorizontalScrollBarVisibility="Auto"
-                        VerticalScrollBarVisibility="Auto">
-                        <StackPanel VerticalAlignment="Top">
-                            <StackPanel.Resources>
-                                <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
-                                    <Setter Property="VerticalAlignment" Value="Center" />
-                                    <Setter Property="VerticalContentAlignment" Value="Center" />
-                                </Style>
-                            </StackPanel.Resources>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <ListBox local:Policy.PolicyName="Mode"
-                                    Background="{x:Null}"
-                                    SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBoxItem HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        HorizontalContentAlignment="Stretch"
-                                        VerticalContentAlignment="Center"
-                                        Content="{DynamicResource bw}" />
-                                    <ListBoxItem HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        HorizontalContentAlignment="Stretch"
-                                        VerticalContentAlignment="Center"
-                                        Content="{DynamicResource grey}" />
-                                    <ListBoxItem HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Center"
-                                        HorizontalContentAlignment="Stretch"
-                                        VerticalContentAlignment="Center"
-                                        Content="{DynamicResource color}" />
-                                </ListBox>
-                                <StackPanel Grid.Column="1">
-                                    <ComboBox Grid.Column="2"
-                                        Height="53"
+                                <Grid Grid.Row="2" Grid.ColumnSpan="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition MinWidth="44" />
+                                        <ColumnDefinition Width="27.2" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <ListBox local:Policy.PolicyName="Mode"
+                                        Background="{DynamicResource BorderBackground}"
+                                        SelectedIndex="{Binding Mode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBoxItem HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Center"
+                                            Content="{DynamicResource bw}" />
+                                        <ListBoxItem HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Center"
+                                            Content="{DynamicResource grey}" />
+                                        <ListBoxItem HorizontalAlignment="Stretch"
+                                            VerticalAlignment="Center"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Center"
+                                            Content="{DynamicResource color}" />
+                                    </ListBox>
+                                    <ComboBox Grid.Column="1"
                                         VerticalContentAlignment="Center"
                                         local:Policy.PolicyName="SelectedPaper"
                                         ItemContainerStyle="{StaticResource ScanTypeLbItem}"
@@ -706,7 +711,32 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-                                    <Extensions:ContentToggleButton local:Policy.PolicyName="ScanProfiles" ArrowVisibility="Collapsed">
+                                    <ToggleButton Grid.Column="2" IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                        <Grid>
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="1" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Width="12"
+                                                Height="12"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Bottom">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="47" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Grid>
+                                    </ToggleButton>
+                                    <Extensions:ContentToggleButton Grid.Column="3"
+                                        local:Policy.PolicyName="ScanProfiles"
+                                        ArrowVisibility="Collapsed">
                                         <Extensions:ContentToggleButton.OverContent>
                                             <GroupBox>
                                                 <StackPanel>
@@ -831,78 +861,31 @@
                                                 <Run Text="{local:Loc SETTİNGS}" /></TextBlock>
                                         </StackPanel>
                                     </Extensions:ContentToggleButton>
-                                </StackPanel>
-                                <ListBox Grid.Column="2"
-                                    VerticalContentAlignment="Center"
-                                    local:Policy.PolicyName="SelectedFlip"
-                                    Background="{DynamicResource BorderBackground}"
-                                    SelectedValue="{Binding SelectedFlip}"
-                                    SelectedValuePath="Tag">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Vertical" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageFlips}}">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="1" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </ListBoxItem>
-                                    <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageFlips}}">
-                                        <Image Width="16"
-                                            Height="16"
-                                            RenderTransformOrigin="0.5,0.5">
-                                            <Image.RenderTransform>
-                                                <TransformGroup>
-                                                    <RotateTransform Angle="-90" />
-                                                </TransformGroup>
-                                            </Image.RenderTransform>
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="252" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </ListBoxItem>
-                                    <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageFlips}}">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="252" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </ListBoxItem>
-                                </ListBox>
-                                <ListBox Grid.Column="3"
-                                    VerticalContentAlignment="Center"
-                                    local:Policy.PolicyName="SelectedRotation"
-                                    Background="{DynamicResource BorderBackground}"
-                                    SelectedValue="{Binding SelectedRotation}"
-                                    SelectedValuePath="Tag">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Vertical" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
-                                    <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
-                                    <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
-                                </ListBox>
-                                <UniformGrid Grid.Column="4" Rows="2">
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Expander.Header>
+                    <ScrollViewer Background="{StaticResource BorderBackground}"
+                        HorizontalScrollBarVisibility="Auto"
+                        VerticalScrollBarVisibility="Auto">
+                        <StackPanel VerticalAlignment="Top">
+                            <StackPanel.Resources>
+                                <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
+                                    <Setter Property="VerticalAlignment" Value="Center" />
+                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                </Style>
+                            </StackPanel.Resources>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <UniformGrid Grid.ColumnSpan="3" Columns="2">
                                     <ComboBox x:Name="CbFolderFormat"
                                         VerticalContentAlignment="Center"
                                         local:Policy.PolicyName="FolderDateFormat"
@@ -973,9 +956,21 @@
                                             Minimum="0"
                                             ToolTip="{local:Loc SECOND}"
                                             Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                        <ToggleButton Grid.Column="3" IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                            <Grid>
-                                                <Image Width="24" Height="24">
+                                        <ListBox VerticalContentAlignment="Center"
+                                            local:Policy.PolicyName="SelectedFlip"
+                                            Background="{DynamicResource BorderBackground}"
+                                            SelectedValue="{Binding SelectedFlip}"
+                                            SelectedValuePath="Tag">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <VirtualizingStackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageFlips}}">
+                                                <Image Width="16" Height="16">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
@@ -983,19 +978,35 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <Image Width="12"
-                                                    Height="12"
-                                                    HorizontalAlignment="Right"
-                                                    VerticalAlignment="Bottom">
+                                            </ListBoxItem>
+                                            <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageFlips}}">
+                                                <Image Width="16"
+                                                    Height="16"
+                                                    RenderTransformOrigin="0.5,0.5">
+                                                    <Image.RenderTransform>
+                                                        <TransformGroup>
+                                                            <RotateTransform Angle="-90" />
+                                                        </TransformGroup>
+                                                    </Image.RenderTransform>
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
-                                                            <Binding Source="47" />
+                                                            <Binding Source="252" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                            </Grid>
-                                        </ToggleButton>
+                                            </ListBoxItem>
+                                            <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageFlips}}">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="252" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </ListBoxItem>
+                                        </ListBox>
                                     </StackPanel>
                                 </UniformGrid>
                             </Grid>
@@ -1082,6 +1093,7 @@
                                                 IsReadOnly="True"
                                                 Maximum="100"
                                                 Minimum="1"
+                                                StringFormat="%{0}"
                                                 ToolTip="{local:Loc THRESHOLD}"
                                                 Value="{Binding EmptyThreshold, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                         </StackPanel>

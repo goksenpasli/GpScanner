@@ -144,6 +144,30 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public bool UseMozJpeg { get => (bool)GetValue(UseMozJpegProperty); set => SetValue(UseMozJpegProperty, value); }
 
+    public static Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
+    {
+        if (bitmapsource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapsource));
+        }
+
+        FormatConvertedBitmap src = new();
+        src.BeginInit();
+        src.Source = bitmapsource;
+        src.DestinationFormat = PixelFormats.Bgra32;
+        src.EndInit();
+        src.Freeze();
+        Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
+        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+        if (data != null)
+        {
+            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+            bitmap.UnlockBits(data);
+        }
+
+        return bitmap;
+    }
+
     public bool IsValidPdfFile(string filename)
     {
         if (File.Exists(filename))
@@ -275,30 +299,6 @@ public class Compressor : Control, INotifyPropertyChanged
                 }
             });
         return images;
-    }
-
-    private Bitmap BitmapSourceToBitmap(BitmapSource bitmapsource)
-    {
-        if (bitmapsource is null)
-        {
-            throw new ArgumentNullException(nameof(bitmapsource));
-        }
-
-        FormatConvertedBitmap src = new();
-        src.BeginInit();
-        src.Source = bitmapsource;
-        src.DestinationFormat = PixelFormats.Bgra32;
-        src.EndInit();
-        src.Freeze();
-        Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
-        BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-        if (data != null)
-        {
-            src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
-            bitmap.UnlockBits(data);
-        }
-
-        return bitmap;
     }
 
     private async Task<PdfDocument> GeneratePdfAsync(List<BitmapImage> bitmapFrames, bool UseMozJpegEncoding, bool bw, int jpegquality = 80, int dpi = 200, Action<double> progresscallback = null)
