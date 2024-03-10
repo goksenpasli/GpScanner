@@ -1139,10 +1139,23 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Command="{Binding NumberDecrease, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                            Content="{DynamicResource LeftRotate}"
                             FontFamily="Wingdings 3"
                             FontSize="12"
-                            FontWeight="Bold" />
+                            FontWeight="Bold">
+                            <Image Width="16"
+                                Height="16"
+                                RenderTransformOrigin="0.5,0.5">
+                                <Image.RenderTransform>
+                                    <ScaleTransform ScaleX="-1" ScaleY="-1" />
+                                </Image.RenderTransform>
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Comres.dll" />
+                                        <Binding Source="4" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </RepeatButton>
                         <TextBox x:Name="PART_TextBox"
                             Grid.Column="1"
                             HorizontalContentAlignment="Center"
@@ -1159,10 +1172,23 @@
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             Command="{Binding NumberIncrease, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                            Content="{DynamicResource RightRotate}"
                             FontFamily="Wingdings 3"
                             FontSize="12"
-                            FontWeight="Bold" />
+                            FontWeight="Bold">
+                            <Image Width="16"
+                                Height="16"
+                                RenderTransformOrigin="0.5,0.5">
+                                <Image.RenderTransform>
+                                    <ScaleTransform ScaleY="-1" />
+                                </Image.RenderTransform>
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Comres.dll" />
+                                        <Binding Source="4" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </RepeatButton>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsEnabled" Value="False">

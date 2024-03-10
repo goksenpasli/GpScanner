@@ -1592,15 +1592,11 @@
                                                                                                     Foreground="Black"
                                                                                                     Text="[" />
                                                                                             </Button>
-                                                                                            <StackPanel Orientation="Horizontal">
-                                                                                                <ContentControl Content="{DynamicResource LeftRotate}" />
-                                                                                                <Extensions:NumericUpDown Width="60"
-                                                                                                    IsReadOnly="True"
-                                                                                                    Maximum="3"
-                                                                                                    Minimum="-3"
-                                                                                                    Value="{Binding DataContext.CustomDeskewAngle, Source={x:Reference UserControl}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                                                                <ContentControl Content="{DynamicResource RightRotate}" />
-                                                                                            </StackPanel>
+                                                                                            <Extensions:NumericUpDown Width="60"
+                                                                                                IsReadOnly="True"
+                                                                                                Maximum="3"
+                                                                                                Minimum="-3"
+                                                                                                Value="{Binding DataContext.CustomDeskewAngle, Source={x:Reference UserControl}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                                                                                             <Button local:Policy.PolicyName="ManualDeskewImage"
                                                                                                 Command="{Binding DataContext.ManualDeskewImage, Source={x:Reference UserControl}}"
                                                                                                 CommandParameter="{Binding Mode=OneWay}"

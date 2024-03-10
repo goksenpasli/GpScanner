@@ -11,7 +11,7 @@
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
     d:DesignHeight="588"
-    d:DesignWidth="420"
+    d:DesignWidth="640"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded"
     UseLayoutRounding="True"
@@ -26,6 +26,7 @@
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Converter:FontSizeConverter x:Key="FontSizeConverter" />
             <Style BasedOn="{StaticResource Slider}" TargetType="Slider" />
+            <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
             <ObjectDataProvider x:Key="PageRotations"
                 MethodName="GetValues"
                 ObjectType="{x:Type System:Enum}">
@@ -455,14 +456,10 @@
                             Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                             Content="{local:Loc DRAWTEXT}" />
                         <UniformGrid Columns="2">
-                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <ContentControl Content="{DynamicResource LeftRotate}" />
-                                <Extensions:NumericUpDown IsReadOnly="True"
-                                    Maximum="3"
-                                    Minimum="-3"
-                                    Value="{Binding CustomDeskewAngle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                <ContentControl Content="{DynamicResource RightRotate}" />
-                            </StackPanel>
+                            <Extensions:NumericUpDown IsReadOnly="True"
+                                Maximum="3"
+                                Minimum="-3"
+                                Value="{Binding CustomDeskewAngle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
                             <Button local:Policy.PolicyName="ToolBoxManualDeskewImage"
                                 Command="{Binding ToolBoxManualDeskewImage}"
                                 CommandParameter="{Binding Scanner.CroppedImage}"
