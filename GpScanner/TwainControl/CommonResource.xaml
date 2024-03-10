@@ -788,33 +788,11 @@
     <Image x:Key="RightRotate"
         Width="16"
         Height="16"
-        x:Shared="false"
-        RenderTransformOrigin="0.5,0.5">
-        <Image.RenderTransform>
-            <ScaleTransform ScaleY="-1" />
-        </Image.RenderTransform>
-        <Image.Source>
-            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                <Binding Source="Comres.dll" />
-                <Binding Source="4" />
-            </MultiBinding>
-        </Image.Source>
-    </Image>
+        Source="/TwainControl;component/Icons/rotate.png" />
     <Image x:Key="LeftRotate"
         Width="16"
         Height="16"
-        x:Shared="false"
-        RenderTransformOrigin="0.5,0.5">
-        <Image.RenderTransform>
-            <ScaleTransform ScaleX="-1" ScaleY="-1" />
-        </Image.RenderTransform>
-        <Image.Source>
-            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                <Binding Source="Comres.dll" />
-                <Binding Source="4" />
-            </MultiBinding>
-        </Image.Source>
-    </Image>
+        Source="/TwainControl;component/Icons/left.png" />
     <DataTemplate x:Key="EmptyTemplate">
         <StackPanel>
             <TextBlock Width="210"
@@ -1144,17 +1122,7 @@
                             FontWeight="Bold">
                             <Image Width="16"
                                 Height="16"
-                                RenderTransformOrigin="0.5,0.5">
-                                <Image.RenderTransform>
-                                    <ScaleTransform ScaleX="-1" ScaleY="-1" />
-                                </Image.RenderTransform>
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Comres.dll" />
-                                        <Binding Source="4" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
+                                Source="/TwainControl;component/Icons/left.png" />
                         </RepeatButton>
                         <TextBox x:Name="PART_TextBox"
                             Grid.Column="1"
@@ -1177,17 +1145,7 @@
                             FontWeight="Bold">
                             <Image Width="16"
                                 Height="16"
-                                RenderTransformOrigin="0.5,0.5">
-                                <Image.RenderTransform>
-                                    <ScaleTransform ScaleY="-1" />
-                                </Image.RenderTransform>
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Comres.dll" />
-                                        <Binding Source="4" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
+                                Source="/TwainControl;component/Icons/rotate.png" />
                         </RepeatButton>
                     </Grid>
                     <ControlTemplate.Triggers>
