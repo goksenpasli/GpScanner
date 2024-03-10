@@ -142,7 +142,7 @@ public partial class MainWindow : Window
 
     private async void LbDoc_ScrollChanged(object sender, ScrollChangedEventArgs e)
     {
-        if (sender is not ListBox listBox || !Settings.Default.ShowListBoxPreview || e.VerticalOffset == 0)
+        if (!Settings.Default.ShowListBoxPreview || sender is not ListBox listBox || e.VerticalOffset == 0)
         {
             return;
         }

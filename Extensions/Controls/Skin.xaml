@@ -256,6 +256,66 @@
             </Grid>
         </Border>
     </ControlTemplate>
+    <ControlTemplate x:Key="HorizontalScrollViewerTemplate" TargetType="{x:Type ScrollViewer}">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <RepeatButton x:Name="LeftButton"
+                Grid.Column="0"
+                Command="{x:Static ScrollBar.LineLeftCommand}"
+                CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                Content="ç"
+                FontFamily="Wingdings"
+                Visibility="Collapsed" />
+            <ScrollContentPresenter Grid.Column="1" Content="{TemplateBinding Content}" />
+            <RepeatButton x:Name="RightButton"
+                Grid.Column="2"
+                Command="{x:Static ScrollBar.LineRightCommand}"
+                CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                Content="è"
+                FontFamily="Wingdings"
+                Visibility="Collapsed" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ScrollViewer.ComputedHorizontalScrollBarVisibility" Value="Visible">
+                <Setter TargetName="LeftButton" Property="Visibility" Value="Visible" />
+                <Setter TargetName="RightButton" Property="Visibility" Value="Visible" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    <ControlTemplate x:Key="VerticalScrollViewerTemplate" TargetType="{x:Type ScrollViewer}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <RepeatButton x:Name="UpButton"
+                Grid.Row="0"
+                Command="{x:Static ScrollBar.LineUpCommand}"
+                CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                Content="é"
+                FontFamily="Wingdings"
+                Visibility="Collapsed" />
+            <ScrollContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
+            <RepeatButton x:Name="DownButton"
+                Grid.Row="2"
+                Command="{x:Static ScrollBar.LineDownCommand}"
+                CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                Content="ê"
+                FontFamily="Wingdings"
+                Visibility="Collapsed" />
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="ScrollViewer.ComputedVerticalScrollBarVisibility" Value="Visible">
+                <Setter TargetName="UpButton" Property="Visibility" Value="Visible" />
+                <Setter TargetName="DownButton" Property="Visibility" Value="Visible" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
     <Style x:Key="Slider" TargetType="Slider">
         <Setter Property="Focusable" Value="False" />
         <Setter Property="OverridesDefaultStyle" Value="true" />

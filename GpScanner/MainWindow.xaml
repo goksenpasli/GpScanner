@@ -426,7 +426,9 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                            Template="{StaticResource HorizontalScrollViewerTemplate}"
+                            VerticalScrollBarVisibility="Disabled">
                             <StackPanel Background="{StaticResource BorderBackground}" Orientation="Horizontal">
                                 <Extensions:SplitButton twainctrl:Policy.PolicyName="Tümünüİşaretle"
                                     BorderBrush="Cyan"

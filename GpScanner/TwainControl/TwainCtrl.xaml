@@ -866,10 +866,10 @@
                             </Grid>
                         </Border>
                     </Expander.Header>
-                    <ScrollViewer Background="{StaticResource BorderBackground}"
-                        HorizontalScrollBarVisibility="Auto"
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                        Template="{DynamicResource HorizontalScrollViewerTemplate}"
                         VerticalScrollBarVisibility="Auto">
-                        <StackPanel VerticalAlignment="Top">
+                        <StackPanel VerticalAlignment="Top" Background="{StaticResource BorderBackground}">
                             <StackPanel.Resources>
                                 <Style BasedOn="{StaticResource {x:Type CheckBox}}" TargetType="{x:Type CheckBox}">
                                     <Setter Property="VerticalAlignment" Value="Center" />
@@ -1680,7 +1680,9 @@
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                 </ListBox>
-                                <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
+                                <ScrollViewer Grid.Column="2"
+                                    Template="{DynamicResource VerticalScrollViewerTemplate}"
+                                    VerticalScrollBarVisibility="Auto">
                                     <StackPanel>
                                         <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
                                             <Image Width="24"

@@ -349,7 +349,9 @@
                     </Style.Triggers>
                 </Style>
             </ContentControl.Style>
-            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                Template="{StaticResource HorizontalScrollViewerTemplate}"
+                VerticalScrollBarVisibility="Disabled">
                 <Grid Background="{StaticResource GroupBoxBackGround}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -563,23 +565,23 @@
                                             Foreground="Blue" />
                                         <local:NumericUpDown FontFamily="Segoe UI"
                                             FontSize="12"
+                                            Interval="1"
                                             Maximum="20"
                                             Minimum="1"
-                                            Interval="1"
                                             Value="{Binding ThumbWidthCount}" />
                                         <local:NumericUpDown FontFamily="Segoe UI"
                                             FontSize="12"
+                                            Interval="1"
                                             Maximum="20"
                                             Minimum="1"
-                                            Interval="1"
                                             Value="{Binding ThumbHeightCount}" />
                                         <local:NumericUpDown BorderBrush="White"
                                             BorderThickness="2"
                                             FontFamily="Segoe UI"
                                             FontSize="12"
+                                            Interval="1"
                                             Maximum="30"
                                             Minimum="0"
-                                            Interval="1"
                                             Value="{Binding ThumbMargin, Converter={StaticResource DoubleToThicknessConverter}}" />
                                         <ToggleButton Content=""
                                             FontFamily="Webdings"
