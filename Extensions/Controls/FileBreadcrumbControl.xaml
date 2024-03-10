@@ -20,6 +20,7 @@
                 <ControlTemplate TargetType="{x:Type local:FileBreadCrumbControl}">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                         ScrollViewer.CanContentScroll="True"
+                        Template="{DynamicResource HorizontalScrollViewerTemplate}"
                         VerticalScrollBarVisibility="Hidden">
                         <Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}">
                             <Grid.ColumnDefinitions>

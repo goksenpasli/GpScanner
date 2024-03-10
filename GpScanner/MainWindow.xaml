@@ -237,6 +237,46 @@
             <ColumnDefinition Width="{Binding MainWindowDocumentGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="2*" />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="twainCtrl" twainctrl:Policy.PolicyName="TwainCtrl" />
+        <Extensions:SystemTrayIcon d:IsHidden="True"
+            IconUri="scanner.ico"
+            SingleClickCommand="{Binding AppBringToFront}"
+            ToolTipText="GPSCANNER">
+            <Extensions:SystemTrayIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{Binding CheckUpdate}" Header="{twainctrl:Loc UPDATE}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="13" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding OpenSettings}" Header="{twainctrl:Loc SETTİNGS}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="21" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Command="{Binding CloseApp}" Header="{twainctrl:Loc EXIT}">
+                        <MenuItem.Icon>
+                            <Image Width="16"
+                                Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </Extensions:SystemTrayIcon.ContextMenu>
+        </Extensions:SystemTrayIcon>
         <GridSplitter Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"

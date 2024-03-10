@@ -91,6 +91,7 @@
     <Compile Include="Controls\RGB.cs" />
     <Compile Include="Controls\SelectableTextBlock.cs" />
     <Compile Include="Controls\SubtitleContent.cs" />
+    <Compile Include="Controls\SystemTrayIcon.cs" />
     <Compile Include="Controls\TranslateView.xaml.cs">
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>

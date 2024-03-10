@@ -35,12 +35,10 @@ using WebPWrapper;
 using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
 using Application = System.Windows.Application;
-using ContextMenu = System.Windows.Forms.ContextMenu;
 using File = System.IO.File;
 using FlowDirection = System.Windows.FlowDirection;
 using InpcBase = Extensions.InpcBase;
 using ListBox = System.Windows.Controls.ListBox;
-using MenuItem = System.Windows.Forms.MenuItem;
 using MessageBox = System.Windows.MessageBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
@@ -104,7 +102,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string ftpSite = string.Empty;
     private string ftpUserName = string.Empty;
     private ObservableCollection<Size> getPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
-    private bool showAllPdfControl=true;
     private int ındexedFileCount;
     private bool ısAdministrator;
     private bool ısSqlQuery = true;
@@ -135,6 +132,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string selectedFtp;
     private ReminderData selectedReminder;
     private Size selectedSize;
+    private bool showAllPdfControl = true;
     private bool shutdown;
     private List<Data> sqlQueryData;
     private string sqlText = string.Empty;
@@ -159,7 +157,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         GenerateAnimationTimer();
-        GenerateSystemTrayMenu();
         GenerateJumpList();
         _ = LoadRemainderDatas();
 
@@ -1198,6 +1195,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             parameter => true);
 
         SetDateToday = new RelayCommand<object>(parameter => SeçiliGün = DateTime.Today, parameter => SeçiliGün != DateTime.Today);
+
+        CloseApp = new RelayCommand<object>(parameter => Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault().Close(), parameter => true);
+
+        AppBringToFront = new RelayCommand<object>(
+            parameter =>
+            {
+                Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Show();
+                Application.Current.Windows.Cast<Window>().FirstOrDefault().WindowState = WindowState.Maximized;
+            },
+            parameter => true);
     }
 
     public ICommand AddFtpSites { get; }
@@ -1219,6 +1226,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     }
+
+    public RelayCommand<object> AppBringToFront { get; }
 
     public RelayCommand<object> ApplyCalendarData { get; }
 
@@ -1415,6 +1424,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public ICommand CheckUpdate { get; }
 
     public RelayCommand<object> ClearPdfCompressorBatchList { get; }
+
+    public RelayCommand<object> CloseApp { get; }
 
     public ObservableCollection<BatchPdfData> CompressedFiles
     {
@@ -1637,19 +1648,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
-
-    public bool ShowAllPdfControl
-    {
-        get => showAllPdfControl;
-        set
-        {
-            if (showAllPdfControl != value)
-            {
-                showAllPdfControl = value;
-                OnPropertyChanged(nameof(ShowAllPdfControl));
-            }
-        }
-    }
 
     public int IndexedFileCount
     {
@@ -2137,6 +2135,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
 
     public int[] SettingsPagePictureResizeList { get; } = Enumerable.Range(5, 100).Where(z => z % 5 == 0).ToArray();
+
+    public bool ShowAllPdfControl
+    {
+        get => showAllPdfControl;
+        set
+        {
+            if (showAllPdfControl != value)
+            {
+                showAllPdfControl = value;
+                OnPropertyChanged(nameof(ShowAllPdfControl));
+            }
+        }
+    }
 
     public bool Shutdown
     {
@@ -2824,55 +2835,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             list.JumpItems.Add(update);
             list.JumpItems.Add(scan);
             list.Apply();
-        }
-    }
-
-    private void GenerateSystemTrayMenu()
-    {
-        try
-        {
-            MenuItem closeMenuItem = new(Translation.GetResStringValue("EXIT"));
-            MenuItem settingsMenuItem = new(Translation.GetResStringValue("SETTİNGS"));
-            MenuItem updateMenuItem = new(Translation.GetResStringValue("UPDATE"));
-            closeMenuItem.Click += (s, e) => Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault().Close();
-            settingsMenuItem.Click += (s, e) =>
-                                      {
-                                          if (OpenSettings.CanExecute(null))
-                                          {
-                                              OpenSettings.Execute(null);
-                                          }
-                                      };
-            updateMenuItem.Click += (s, e) =>
-                                    {
-                                        if (CheckUpdate.CanExecute(null))
-                                        {
-                                            CheckUpdate.Execute(null);
-                                        }
-                                    };
-            ContextMenu menu = new();
-            _ = menu.MenuItems.Add(settingsMenuItem);
-            _ = menu.MenuItems.Add(updateMenuItem);
-            _ = menu.MenuItems.Add("-");
-            _ = menu.MenuItems.Add(closeMenuItem);
-            AppNotifyIcon = new()
-            {
-                BalloonTipText = $"{AppName} Sistem Tepsisine Gönderildi.",
-                BalloonTipTitle = AppName,
-                Text = AppName,
-                Visible = true,
-                ContextMenu = menu,
-                Icon = new System.Drawing.Icon(Application.GetResourceStream(new Uri("pack://application:,,,/GpScanner;component/scanner.ico")).Stream),
-            };
-
-            AppNotifyIcon.MouseClick += (s, e) =>
-                                        {
-                                            Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Show();
-                                            Application.Current.Windows.Cast<Window>().FirstOrDefault().WindowState = WindowState.Maximized;
-                                        };
-        }
-        catch (Exception ex)
-        {
-            throw new ArgumentException(ex?.Message);
         }
     }
 
