@@ -248,6 +248,7 @@
             <Style TargetType="{x:Type ToggleButton}">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>
+            <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
             <Style x:Key="BorderGroupStyleContainerStyle" TargetType="{x:Type GroupItem}">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -884,8 +885,11 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
-
-                                <UniformGrid Grid.ColumnSpan="3" Columns="2">
+                                <Grid Grid.ColumnSpan="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
                                     <ComboBox x:Name="CbFolderFormat"
                                         VerticalContentAlignment="Center"
                                         local:Policy.PolicyName="FolderDateFormat"
@@ -1008,7 +1012,7 @@
                                             </ListBoxItem>
                                         </ListBox>
                                     </StackPanel>
-                                </UniformGrid>
+                                </Grid>
                             </Grid>
                             <Separator />
                             <Grid>
@@ -1020,7 +1024,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="22.4" />
                                     <RowDefinition Height="15.2" />
-                                    <RowDefinition Height="32.8" />
+                                    <RowDefinition Height="34.4" />
                                 </Grid.RowDefinitions>
                                 <CheckBox Grid.ColumnSpan="2"
                                     VerticalContentAlignment="Center"
@@ -1687,7 +1691,9 @@
                                                 Height="24"
                                                 Source="/TwainControl;component/Icons/undo.png" />
                                         </Button>
-                                        <Extensions:ContentToggleButton local:Policy.PolicyName="RemoveFiles" ArrowVisibility="Collapsed">
+                                        <Extensions:ContentToggleButton local:Policy.PolicyName="RemoveFiles"
+                                            ArrowVisibility="Collapsed"
+                                            IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
                                             <Extensions:ContentToggleButton.OverContent>
                                                 <Border Background="{StaticResource BorderBackground}"
                                                     BorderBrush="{StaticResource GroupBoxBackGround}"
@@ -1746,7 +1752,7 @@
                                                 <TextBlock>
                                                     <Run Text="{local:Loc EMPTYPAGE}" />
                                                     <Run Text="{local:Loc THRESHOLD}" />
-                                                    <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                                    <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat=%{0}}" />
                                                 </TextBlock>
                                             </Button.ToolTip>
                                             <Canvas Width="24" Height="24">
@@ -1837,26 +1843,21 @@
                                             </Image>
                                         </Button>
                                         <Separator />
-                                        <StackPanel>
-                                            <Grid>
-                                                <ProgressBar Background="{x:Null}"
-                                                    BorderBrush="{x:Null}"
-                                                    Foreground="Yellow"
-                                                    Maximum="1"
-                                                    Value="{Binding AllRotateProgressValue}" />
-                                                <StackPanel Orientation="Horizontal">
-                                                    <ContentControl Content="{DynamicResource LeftRotate}" />
-                                                    <ContentControl Content="{DynamicResource RightRotate}" />
-                                                </StackPanel>
-                                            </Grid>
+                                        <Grid>
+                                            <ProgressBar Background="{x:Null}"
+                                                BorderBrush="{x:Null}"
+                                                Foreground="Yellow"
+                                                Maximum="1"
+                                                Value="{Binding AllRotateProgressValue}" />
                                             <Extensions:NumericUpDown VerticalAlignment="Center"
                                                 BorderBrush="Cyan"
                                                 Interval="1"
+                                                IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
                                                 Maximum="1"
                                                 Minimum="-1"
                                                 NumericUpdownTextBoxVisibility="Collapsed"
                                                 Value="{Binding AllImageRotationAngle}" />
-                                        </StackPanel>
+                                        </Grid>
                                         <Button local:Policy.PolicyName="InvertSelectedImage"
                                             BorderBrush="Cyan"
                                             Command="{Binding InvertSelectedImage}"

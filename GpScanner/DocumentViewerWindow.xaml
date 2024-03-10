@@ -17,6 +17,7 @@
     WindowState="Maximized"
     mc:Ignorable="d">
     <Window.Resources>
+        <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
         <converter:PdfFileNameToInfoConverter x:Key="PdfFileNameToInfoConverter" IsEnabled="{Binding Path=ShowPdfInfo, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
     </Window.Resources>
     <Grid>

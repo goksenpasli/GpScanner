@@ -42,6 +42,7 @@
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
+        <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
         <viewmodel:RippleEffect x:Key="FlagRippleEffect" Progress="{Binding FlagProgress}" />
         <Image x:Key="tick"
             Width="16"
@@ -417,7 +418,7 @@
                                         VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="NotifyCalendar"
                                         IsChecked="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                        <Canvas Width="32"
+                                        <Canvas Width="52"
                                             Height="32"
                                             IsEnabled="{Binding NotifyCalendar, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                             <Image Width="32" Height="32">
@@ -428,7 +429,7 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <Extensions:NumericUpDown Canvas.Bottom="1"
+                                            <Extensions:NumericUpDown Canvas.Bottom="6"
                                                 FontWeight="Bold"
                                                 Interval="1"
                                                 Maximum="30"
@@ -436,7 +437,6 @@
                                                 Value="{Binding NotifyCalendarDateValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                         </Canvas>
                                     </CheckBox>
-                                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DAY}" />
                                     <Extensions:NumericUpDown FontWeight="Bold"
                                         Interval="1"
                                         IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
@@ -458,31 +458,6 @@
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                         <Binding Source="Shell32.dll" />
                                                         <Binding Source="22" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Canvas>
-                                    </ToggleButton>
-                                    <ToggleButton twainctrl:Policy.PolicyName="ShowListBoxPreview"
-                                        IsChecked="{Binding ShowListBoxPreview, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                        ToolTip="{twainctrl:Loc PREVIEWFILE}">
-                                        <Canvas Width="32" Height="32">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="254" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <Image Canvas.Right="0"
-                                                Canvas.Bottom="5"
-                                                Width="16"
-                                                Height="16">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
@@ -581,6 +556,31 @@
                                         </StackPanel>
                                     </CheckBox.Content>
                                 </CheckBox>
+                                <ToggleButton twainctrl:Policy.PolicyName="ShowListBoxPreview"
+                                    IsChecked="{Binding ShowListBoxPreview, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                    ToolTip="{twainctrl:Loc PREVIEWFILE}">
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="254" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Image Canvas.Right="0"
+                                            Canvas.Bottom="5"
+                                            Width="16"
+                                            Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                </ToggleButton>
                                 <StackPanel Orientation="Horizontal">
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 </StackPanel>

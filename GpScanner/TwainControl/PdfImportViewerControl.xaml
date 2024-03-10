@@ -356,7 +356,7 @@
                                                             TextWrapping="Wrap" />
                                                     </Canvas>
                                                 </Extensions:ContentToggleButton>
-                                                <Extensions:NumericUpDown Width="48"
+                                                <Extensions:NumericUpDown Width="65"
                                                     Interval="1"
                                                     Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                                     Minimum="1"

@@ -1123,4 +1123,55 @@
         Vid="{StaticResource VideoViewerTemplateMini}"
         Xlsx="{StaticResource EypSimpleXlsxTemplate}"
         Zip="{StaticResource ZipViewerTemplate}" />
+    <Style x:Key="NumericUpDownStyle" TargetType="{x:Type Extensions:NumericUpDown}">
+        <Setter Property="Background" Value="{x:Null}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Extensions:NumericUpDown}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <RepeatButton x:Name="PART_DownButton"
+                            Grid.Column="0"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Command="{Binding NumberDecrease, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Content="{DynamicResource LeftRotate}"
+                            FontFamily="Wingdings 3"
+                            FontSize="12"
+                            FontWeight="Bold" />
+                        <TextBox x:Name="PART_TextBox"
+                            Grid.Column="1"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="1"
+                            Foreground="{TemplateBinding Foreground}"
+                            IsReadOnly="{Binding IsReadOnly, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Text="{Binding ContentText, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Visibility="{Binding NumericUpdownTextBoxVisibility, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        <RepeatButton x:Name="PART_UpButton"
+                            Grid.Column="2"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Command="{Binding NumberIncrease, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Content="{DynamicResource RightRotate}"
+                            FontFamily="Wingdings 3"
+                            FontSize="12"
+                            FontWeight="Bold" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="PART_UpButton" Property="Background" Value="Gray" />
+                            <Setter TargetName="PART_DownButton" Property="Background" Value="Gray" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

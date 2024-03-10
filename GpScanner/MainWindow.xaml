@@ -179,6 +179,7 @@
         <Style TargetType="{x:Type Extensions:SplitButton}">
             <Setter Property="Background" Value="{StaticResource BorderBackground}" />
         </Style>
+        <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
     </Window.Resources>
     <Window.TaskbarItemInfo>
         <TaskbarItemInfo ProgressState="{Binding Scanner.ProgressState, ElementName=twainCtrl}" ProgressValue="{Binding Scanner.PdfSaveProgressValue, ElementName=twainCtrl, Mode=OneWay}">
@@ -472,9 +473,6 @@
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                     </StackPanel>
                                 </Extensions:SplitButton>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
                                 <TextBlock VerticalAlignment="Center">
                                     <Run Text="PDF" />
                                     <Run Text="{twainctrl:Loc ALL}" />
@@ -494,9 +492,6 @@
                                         Foreground="Green"
                                         IsChecked="{Binding ShowAllPdfControl}" />
                                 </UniformGrid>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfBirleştir"
@@ -610,9 +605,6 @@
                                         </ItemsControl>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
                                 <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <Canvas Width="32" Height="32">
                                         <Image Width="32" Height="32">
@@ -1630,7 +1622,7 @@
                                                         </UniformGrid>
                                                         <GroupBox Grid.Row="1">
                                                             <StackPanel Orientation="Horizontal">
-                                                                <Canvas Width="44" Height="32">
+                                                                <Canvas Width="50" Height="32">
                                                                     <Image Canvas.Left="6"
                                                                         Width="32"
                                                                         Height="32">
@@ -1653,7 +1645,7 @@
                                                                         </Image.Source>
                                                                     </Image>
                                                                     <Extensions:NumericUpDown Canvas.Top="7"
-                                                                        Width="44"
+                                                                        Width="50"
                                                                         FontWeight="Bold"
                                                                         Foreground="{Binding ProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
                                                                         Interval="1"
