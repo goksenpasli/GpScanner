@@ -58,6 +58,7 @@ namespace Extensions
             _ = Shell_NotifyIcon(NIM_ADD, ref _notifyIconData);
             streamInfo.Stream.Dispose();
             hwndSource.AddHook(WndProc);
+            Window.GetWindow(this).Closing += (s, e) => icon?.Dispose();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)

@@ -50,7 +50,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 {
     public static readonly string ErrorFile = "Error.log";
     public static readonly string ProfileFolder = $"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}";
-    public static NotifyIcon AppNotifyIcon;
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
     private const string MinimumVcVersion = "14.21.27702";

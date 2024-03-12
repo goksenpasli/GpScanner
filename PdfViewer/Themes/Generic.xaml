@@ -227,7 +227,7 @@
                                                 </Extensions:ResizablePanel>
                                             </Extensions:ContentToggleButton.OverContent>
                                         </Extensions:ContentToggleButton>
-                                        <Extensions:NumericUpDown Width="48"
+                                        <Extensions:NumericUpDown Width="64"
                                             Interval="1"
                                             Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                             Minimum="1"

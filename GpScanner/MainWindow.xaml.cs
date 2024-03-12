@@ -419,7 +419,6 @@ public partial class MainWindow : Window
             e.Cancel = true;
             return;
         }
-        AppNotifyIcon?.Dispose();
         BackupDatabaseFile();
         StillImageHelper.KillServer();
     }
