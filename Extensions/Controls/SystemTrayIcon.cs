@@ -7,23 +7,29 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Markup;
 using System.Windows.Resources;
 using static Extensions.NativeMethods;
 
 namespace Extensions
 {
+    [DefaultProperty("Content")]
+    [ContentProperty("Content")]
     public class SystemTrayIcon : Control
     {
+        public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(UIElement), typeof(SystemTrayIcon), new PropertyMetadata(null));
         public static readonly DependencyProperty DoubleClickCommandProperty = DependencyProperty.Register("DoubleClickCommand", typeof(ICommand), typeof(SystemTrayIcon));
         public static readonly DependencyProperty IconUriProperty = DependencyProperty.Register("IconUri", typeof(Uri), typeof(SystemTrayIcon));
         public static readonly DependencyProperty SingleClickCommandProperty = DependencyProperty.Register("SingleClickCommand", typeof(ICommand), typeof(SystemTrayIcon));
         public static readonly DependencyProperty ToolTipTextProperty = DependencyProperty.Register("ToolTipText", typeof(string), typeof(SystemTrayIcon));
+        private const int WM_DESTROY = 0x0002;
         private const int WM_LBUTTONDBLCLK = 0x0203;
         private const int WM_LBUTTONDOWN = 0x0201;
         private const int WM_RBUTTONDOWN = 0x0204;
         private const int WM_TASKBARCREATED = 0x8000;
         private const int WM_TRAYICON = WM_USER + 1;
         private const int WM_USER = 0x0400;
+        private readonly Popup popup = new();
         private NOTIFYICONDATA _notifyIconData;
 
         static SystemTrayIcon() { DefaultStyleKeyProperty.OverrideMetadata(typeof(SystemTrayIcon), new FrameworkPropertyMetadata(typeof(SystemTrayIcon))); }
@@ -33,6 +39,8 @@ namespace Extensions
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
         }
+
+        public UIElement Content { get => (UIElement)GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         public ICommand DoubleClickCommand { get => (ICommand)GetValue(DoubleClickCommandProperty); set => SetValue(DoubleClickCommandProperty, value); }
 
@@ -58,7 +66,6 @@ namespace Extensions
             _ = Shell_NotifyIcon(NIM_ADD, ref _notifyIconData);
             streamInfo.Stream.Dispose();
             hwndSource.AddHook(WndProc);
-            Window.GetWindow(this).Closing += (s, e) => icon?.Dispose();
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -82,6 +89,19 @@ namespace Extensions
             }
         }
 
+        private void ShowPopup()
+        {
+            if (popup == null || Content == null)
+            {
+                return;
+            }
+            popup.Child = Content;
+            popup.AllowsTransparency = true;
+            popup.IsOpen = true;
+            popup.PlacementTarget = this;
+            popup.Placement = PlacementMode.MousePoint;
+        }
+
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             switch (msg)
@@ -89,9 +109,29 @@ namespace Extensions
                 case WM_TASKBARCREATED:
                     InitializeNotifyIcon();
                     break;
+                case WM_DESTROY:
+                    _ = Shell_NotifyIcon(NIM_DELETE, ref _notifyIconData);
+                    break;
+                case WM_LBUTTONDOWN:
+                    if (Content is not null && popup is not null)
+                    {
+                        popup.IsOpen = false;
+                    }
+                    break;
                 case WM_TRAYICON:
                     if (lParam.ToInt32() is WM_LBUTTONDOWN)
                     {
+                        if (popup is not null)
+                        {
+                            if (!popup.IsOpen)
+                            {
+                                ShowPopup();
+                            }
+                            else
+                            {
+                                popup.IsOpen = false;
+                            }
+                        }
                         SingleClickCommand?.Execute(null);
                         handled = true;
                         break;
