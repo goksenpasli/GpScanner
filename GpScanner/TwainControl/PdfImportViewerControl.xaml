@@ -36,6 +36,7 @@
             <Style TargetType="ComboBox">
                 <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
             </Style>
+            <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
             <Image x:Key="PdfImage"
                 Width="16"
                 Height="16"

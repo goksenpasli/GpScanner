@@ -541,8 +541,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\SevenZipExtractor.1.0.17\build\SevenZipExtractor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SevenZipExtractor.1.0.17\build\SevenZipExtractor.targets'))" />
-    <Error Condition="!Exists('..\..\packages\bblanchon.PDFium.Win32.124.0.6350\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\bblanchon.PDFium.Win32.124.0.6350\build\net461\bblanchon.PDFium.Win32.targets'))" />
+    <Error Condition="!Exists('..\..\packages\bblanchon.PDFium.Win32.124.0.6365\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\bblanchon.PDFium.Win32.124.0.6365\build\net461\bblanchon.PDFium.Win32.targets'))" />
   </Target>
   <Import Project="..\..\packages\SevenZipExtractor.1.0.17\build\SevenZipExtractor.targets" Condition="Exists('..\..\packages\SevenZipExtractor.1.0.17\build\SevenZipExtractor.targets')" />
-  <Import Project="..\..\packages\bblanchon.PDFium.Win32.124.0.6350\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\..\packages\bblanchon.PDFium.Win32.124.0.6350\build\net461\bblanchon.PDFium.Win32.targets')" />
+  <Import Project="..\..\packages\bblanchon.PDFium.Win32.124.0.6365\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\..\packages\bblanchon.PDFium.Win32.124.0.6365\build\net461\bblanchon.PDFium.Win32.targets')" />
 </Project>
