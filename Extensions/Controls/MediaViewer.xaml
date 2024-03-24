@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
     d:DesignHeight="384"
-    d:DesignWidth="530"
+    d:DesignWidth="550"
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
@@ -430,31 +430,12 @@
                             Height="24"
                             Margin="0,0,1,0"
                             Checked="Mute_Checked"
+                            Content="U"
+                            FontFamily="Webdings"
                             FontSize="18"
                             Foreground="Blue"
                             IsThreeState="False"
-                            Unchecked="Mute_Unchecked">
-                            <ToggleButton.Style>
-                                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsChecked" Value="True">
-                                            <Setter Property="Content">
-                                                <Setter.Value>
-                                                    <TextBlock FontFamily="Webdings" Text="V" />
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Trigger>
-                                        <Trigger Property="IsChecked" Value="False">
-                                            <Setter Property="Content">
-                                                <Setter.Value>
-                                                    <TextBlock FontFamily="Webdings" Text="U" />
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ToggleButton.Style>
-                        </ToggleButton>
+                            Unchecked="Mute_Unchecked" />
                     </StackPanel>
                     <Slider x:Name="Volume"
                         Grid.Column="1"

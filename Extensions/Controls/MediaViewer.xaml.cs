@@ -288,8 +288,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     {
                         SubtitleContent item = translatedsubtitle[i];
                         _ = saveFileDialog.FilterIndex == 1
-                            ? sb.Append(i + 1).Append('\n').Append(item.StartTime.ToString().Replace('.', ',')).Append(" --> ").Append(item.EndTime.ToString().Replace('.', ',')).Append("\r\n").Append(item.Text).Append("\r\n\r\n")
-                            : sb.Append(item.StartTime.ToString()).Append(" --> ").Append(item.EndTime.ToString()).Append("\r\n").Append(item.Text).Append("\r\n\r\n");
+                            ? sb.Append(i + 1).Append('\n').Append(item.StartTime.ToString().Replace('.', ',')).Append(" --> ").Append(item.EndTime.ToString().Replace('.', ',')).Append(Environment.NewLine).Append(item.Text).Append("\r\n\r\n")
+                            : sb.Append(item.StartTime.ToString()).Append(" --> ").Append(item.EndTime.ToString()).Append(Environment.NewLine).Append(item.Text).Append("\r\n\r\n");
                     }
                     using StreamWriter streamWriter = new(saveFileDialog.FileName, false, Encoding.UTF8);
                     streamWriter.WriteLine(sb.ToString().Trim());
@@ -1089,12 +1089,14 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Mute_Checked(object sender, RoutedEventArgs e)
     {
+        Mute.Content = "V";
         MediaVolume = 0;
         OsdText = "Ses Kısıldı";
     }
 
     private void Mute_Unchecked(object sender, RoutedEventArgs e)
     {
+        Mute.Content = "U";
         MediaVolume = 1;
         OsdText = "Ses Açıldı";
     }

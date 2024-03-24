@@ -383,20 +383,22 @@
                     <RowDefinition Height="35.2" />
                 </Grid.RowDefinitions>
                 <Expander Grid.Row="0"
-                    Background="{StaticResource GroupBoxBackGround}"
+                    Background="{StaticResource BorderBackground}"
                     BorderBrush="Black"
                     IsEnabled="{Binding Scanner.ArayüzEtkin}"
                     IsExpanded="{Binding ScanSettingsExpanderIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                     <Expander.Header>
-                        <Border>
-                            <Grid HorizontalAlignment="{Binding HorizontalAlignment, Mode=OneWayToSource, RelativeSource={RelativeSource AncestorType={x:Type ContentPresenter}}}">
+                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                            Template="{DynamicResource HorizontalScrollViewerTemplate}"
+                            VerticalScrollBarVisibility="Auto">
+                            <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition />
                                     <RowDefinition Height="28" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -461,9 +463,13 @@
                                     <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
                                     <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
                                 </ListBox>
-                                <UniformGrid Grid.Row="1"
-                                    Grid.ColumnSpan="3"
-                                    Columns="4">
+                                <Grid Grid.Row="1" Grid.ColumnSpan="3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
                                     <ToggleButton IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                         <ToggleButton.Style>
                                             <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
@@ -472,8 +478,7 @@
                                                         <Setter Property="Content">
                                                             <Setter.Value>
                                                                 <Grid>
-                                                                    <Image Width="68"
-                                                                        Height="32"
+                                                                    <Image Height="32"
                                                                         Source="/TwainControl;component/Icons/adf.png"
                                                                         Visibility="{Binding Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock VerticalAlignment="Center"
@@ -489,9 +494,7 @@
                                                         <Setter Property="Content">
                                                             <Setter.Value>
                                                                 <Grid>
-                                                                    <Image Width="68"
-                                                                        Height="32"
-                                                                        Source="/TwainControl;component/Icons/flatbed.png" />
+                                                                    <Image Height="32" Source="/TwainControl;component/Icons/flatbed.png" />
                                                                     <TextBlock VerticalAlignment="Center"
                                                                         FontWeight="Bold"
                                                                         Text="{local:Loc FLATBED}"
@@ -504,7 +507,9 @@
                                             </Style>
                                         </ToggleButton.Style>
                                     </ToggleButton>
-                                    <Extensions:SplitButton local:Policy.PolicyName="ScanImage" Command="{Binding ScanImage}">
+                                    <Extensions:SplitButton Grid.Column="1"
+                                        local:Policy.PolicyName="ScanImage"
+                                        Command="{Binding ScanImage}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="32" Height="32">
                                                 <Image.Source>
@@ -514,7 +519,9 @@
                                                     </MultiBinding>
                                                 </Image.Source>
                                             </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SCAN}" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                Text="{local:Loc SCAN}"
+                                                TextWrapping="Wrap" />
                                         </StackPanel>
                                         <Extensions:SplitButton.InternalContent>
                                             <Border Background="{StaticResource BorderBackground}"
@@ -532,7 +539,9 @@
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
-                                    <Extensions:SplitButton local:Policy.PolicyName="FastScanImage" Command="{Binding FastScanImage}">
+                                    <Extensions:SplitButton Grid.Column="2"
+                                        local:Policy.PolicyName="FastScanImage"
+                                        Command="{Binding FastScanImage}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="32" Height="32">
                                                 <Image Width="32" Height="32">
@@ -564,6 +573,7 @@
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
                                     <Button x:Name="AutoScanPathBtn"
+                                        Grid.Column="3"
                                         local:Policy.PolicyName="KayıtYoluBelirle"
                                         Command="{Binding KayıtYoluBelirle}">
                                         <StackPanel Orientation="Horizontal">
@@ -577,17 +587,16 @@
                                                     Height="20"
                                                     Source="/TwainControl;component/Icons/save.png" />
                                             </Canvas>
-                                            <TextBlock Width="80"
-                                                VerticalAlignment="Center"
+                                            <TextBlock VerticalAlignment="Center"
                                                 Text="{local:Loc AUTOPATH}"
                                                 TextWrapping="Wrap" />
                                         </StackPanel>
                                     </Button>
-                                </UniformGrid>
+                                </Grid>
                                 <Grid Grid.Row="2" Grid.ColumnSpan="4">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition MinWidth="44" />
+                                        <ColumnDefinition />
                                         <ColumnDefinition Width="27.2" />
                                         <ColumnDefinition Width="Auto" />
                                     </Grid.ColumnDefinitions>
@@ -864,7 +873,7 @@
                                     </Extensions:ContentToggleButton>
                                 </Grid>
                             </Grid>
-                        </Border>
+                        </ScrollViewer>
                     </Expander.Header>
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                         Template="{DynamicResource HorizontalScrollViewerTemplate}"
