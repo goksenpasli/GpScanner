@@ -242,7 +242,16 @@
             SingleClickCommand="{Binding AppBringToFront}"
             ToolTipText="GPSCANNER">
             <Extensions:SystemTrayIcon.ContextMenu>
-                <ContextMenu>
+                <ContextMenu Padding="0"
+                    Background="#2C3238"
+                    BorderBrush="#494E52">
+                    <ContextMenu.Resources>
+                        <Style TargetType="MenuItem">
+                            <Setter Property="Background" Value="#2C3238" />
+                            <Setter Property="BorderBrush" Value="#2C3238" />
+                            <Setter Property="Foreground" Value="White" />
+                        </Style>
+                    </ContextMenu.Resources>
                     <MenuItem Command="{Binding CheckUpdate}" Header="{twainctrl:Loc UPDATE}">
                         <MenuItem.Icon>
                             <Image Width="16" Height="16">

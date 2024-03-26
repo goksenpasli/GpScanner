@@ -446,6 +446,7 @@
                                 </Extensions:ContentToggleButton>
                                 <ListBox Grid.RowSpan="2"
                                     Grid.Column="3"
+                                    HorizontalContentAlignment="Center"
                                     VerticalContentAlignment="Center"
                                     local:Policy.PolicyName="SelectedRotation"
                                     Background="{DynamicResource BorderBackground}"

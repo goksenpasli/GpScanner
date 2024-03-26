@@ -1175,10 +1175,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetDbBackUpFolder = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder(
-                    $"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}",
-                    new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle,
-                    Settings.Default.DataBaseBackUpFolder);
+                if (parameter is not Window window)
+                {
+                    return;
+                }
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}", new WindowInteropHelper(window).Handle, Settings.Default.DataBaseBackUpFolder);
                 if (!string.IsNullOrEmpty(path))
                 {
                     DriveInfo driveInfo = new(path);

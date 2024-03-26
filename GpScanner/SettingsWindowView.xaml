@@ -140,7 +140,8 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
-                            <Button HorizontalAlignment="Right"
+                            <Button Margin="0,0,20,0"
+                                HorizontalAlignment="Right"
                                 VerticalAlignment="Bottom"
                                 Background="{x:Null}"
                                 BorderBrush="{x:Null}"
@@ -786,7 +787,9 @@
                                     Text="{twainctrl:Loc BACKUPDB}"
                                     TextWrapping="Wrap" />
                             </CheckBox>
-                            <Button Command="{Binding SetDbBackUpFolder}" IsEnabled="{Binding Path=BackUpDatabase, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                            <Button Command="{Binding SetDbBackUpFolder}"
+                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
+                                IsEnabled="{Binding Path=BackUpDatabase, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
