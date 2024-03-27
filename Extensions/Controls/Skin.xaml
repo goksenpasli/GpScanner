@@ -270,7 +270,9 @@
                 Content="ç"
                 FontFamily="Wingdings"
                 Visibility="Collapsed" />
-            <ScrollContentPresenter Grid.Column="1" Content="{TemplateBinding Content}" />
+            <ScrollContentPresenter Grid.Column="1"
+                Margin="1"
+                Content="{TemplateBinding Content}" />
             <RepeatButton x:Name="RightButton"
                 Grid.Column="2"
                 Command="{x:Static ScrollBar.LineRightCommand}"
@@ -300,7 +302,9 @@
                 Content="é"
                 FontFamily="Wingdings"
                 Visibility="Collapsed" />
-            <ScrollContentPresenter Grid.Row="1" Content="{TemplateBinding Content}" />
+            <ScrollContentPresenter Grid.Row="1"
+                Margin="1"
+                Content="{TemplateBinding Content}" />
             <RepeatButton x:Name="DownButton"
                 Grid.Row="2"
                 Command="{x:Static ScrollBar.LineDownCommand}"

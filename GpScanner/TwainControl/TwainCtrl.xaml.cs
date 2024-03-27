@@ -3172,7 +3172,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             string[] profiles = new string[6];
             string[] dpiValues = ["96", "200", "300"];
-            string[] colorModes = ["COLOR", "BW"];
+            string[] colorModes = ["BW", "COLOR"];
             for (int i = 0; i < 2; i++)
             {
                 for (int j = 0; j < dpiValues.Length; j++)

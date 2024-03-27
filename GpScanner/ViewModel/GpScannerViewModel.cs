@@ -2665,13 +2665,20 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private void CreateEmptySqliteDatabase()
     {
-        if (!File.Exists(Settings.Default.DatabaseFile))
+        string databaseFilePath = Settings.Default.DatabaseFile;
+        if (!File.Exists(databaseFilePath))
         {
-            Settings.Default.DatabaseFile = $@"{ProfileFolder}\Data.db";
-            using AppDbContext context = new();
-            _ = context.Database
-            .ExecuteSqlCommand(
-                """
+            databaseFilePath = $@"{ProfileFolder}\Data.db";
+            Settings.Default.DatabaseFile = databaseFilePath;
+        }
+        if (File.Exists(databaseFilePath))
+        {
+            return;
+        }
+        using AppDbContext context = new();
+        _ = context.Database
+        .ExecuteSqlCommand(
+            """
                 CREATE TABLE "Data" (
                 	"Id"	INTEGER UNIQUE,
                 	"FileName"	TEXT,
@@ -2680,17 +2687,17 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 	PRIMARY KEY("Id")
                 )
                 """);
-            _ = context.Database
-            .ExecuteSqlCommand(
-                """
+        _ = context.Database
+        .ExecuteSqlCommand(
+            """
                 CREATE INDEX "index" ON "Data" (
                 	"FileContent",
                 	"FileName"	ASC
                 );
                 """);
-            _ = context.Database
-            .ExecuteSqlCommand(
-                """
+        _ = context.Database
+        .ExecuteSqlCommand(
+            """
                 CREATE TABLE "ReminderDatas" (
                 	"Id"	INTEGER UNIQUE,
                 	"Açıklama"	TEXT,
@@ -2700,8 +2707,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 	PRIMARY KEY("Id")
                 )
                 """);
-            Settings.Default.Save();
-        }
+        Settings.Default.Save();
     }
 
     private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription, string applicationPath, int iconindex = 0)
