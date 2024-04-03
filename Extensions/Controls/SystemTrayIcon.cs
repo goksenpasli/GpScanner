@@ -81,12 +81,13 @@ namespace Extensions
 
         private void ShowContextMenu()
         {
-            if (ContextMenu != null)
+            if (ContextMenu == null)
             {
-                ContextMenu.PlacementTarget = this;
-                ContextMenu.Placement = PlacementMode.MousePoint;
-                ContextMenu.IsOpen = true;
+                return;
             }
+            ContextMenu.PlacementTarget = this;
+            ContextMenu.Placement = PlacementMode.MousePoint;
+            ContextMenu.IsOpen = true;
         }
 
         private void ShowPopup()

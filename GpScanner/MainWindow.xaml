@@ -283,6 +283,21 @@
                                 Source="/TwainControl;component/Icons/delete.png" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <Separator Margin="5,-1,0,0" />
+                    <MenuItem Command="{Binding WebAdreseGit, Source={x:Reference twainCtrl}}"
+                        CommandParameter="https://github.com/goksenpasli"
+                        Header="{twainctrl:Loc ABOUT}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="14" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </ContextMenu>
             </Extensions:SystemTrayIcon.ContextMenu>
         </Extensions:SystemTrayIcon>
