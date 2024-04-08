@@ -271,7 +271,7 @@
                 FontFamily="Wingdings"
                 Visibility="Collapsed" />
             <ScrollContentPresenter Grid.Column="1"
-                Margin="1"
+                Margin="{TemplateBinding Margin}"
                 Content="{TemplateBinding Content}" />
             <RepeatButton x:Name="RightButton"
                 Grid.Column="2"
@@ -303,7 +303,7 @@
                 FontFamily="Wingdings"
                 Visibility="Collapsed" />
             <ScrollContentPresenter Grid.Row="1"
-                Margin="1"
+                Margin="{TemplateBinding Margin}"
                 Content="{TemplateBinding Content}" />
             <RepeatButton x:Name="DownButton"
                 Grid.Row="2"

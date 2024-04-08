@@ -391,14 +391,13 @@
                         <ScrollViewer HorizontalScrollBarVisibility="Auto"
                             Template="{DynamicResource HorizontalScrollViewerTemplate}"
                             VerticalScrollBarVisibility="Auto">
-                            <Grid>
+                            <Grid Margin="1,0,1,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition />
                                     <RowDefinition Height="28" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="Auto" />
@@ -444,26 +443,6 @@
                                         <local:PageCropControl />
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
-                                <ListBox Grid.RowSpan="2"
-                                    Grid.Column="3"
-                                    HorizontalContentAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    local:Policy.PolicyName="SelectedRotation"
-                                    Background="{DynamicResource BorderBackground}"
-                                    SelectedValue="{Binding SelectedRotation}"
-                                    SelectedValuePath="Tag">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Vertical" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBox.ItemContainerStyle>
-                                        <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
-                                    <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
-                                    <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
-                                </ListBox>
                                 <Grid Grid.Row="1" Grid.ColumnSpan="3">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
@@ -531,11 +510,33 @@
                                                 <StackPanel>
                                                     <MenuItem Header="{local:Loc SEPERATE}"
                                                         IsCheckable="True"
-                                                        IsChecked="{Binding Scanner.ScanSeperate}" />
+                                                        IsChecked="{Binding Scanner.ScanSeperate}">
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="250" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
                                                     <MenuItem Header="{local:Loc SEPERATOR}"
                                                         IsCheckable="True"
                                                         IsChecked="{Binding Scanner.UsePageSeperator}"
-                                                        IsEnabled="{Binding Scanner.ScanSeperate}" />
+                                                        IsEnabled="{Binding Scanner.ScanSeperate}">
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="251" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
                                                 </StackPanel>
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
@@ -569,7 +570,18 @@
                                                 BorderThickness="1">
                                                 <MenuItem Header="{local:Loc SHOWFILE}"
                                                     IsCheckable="True"
-                                                    IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}" />
+                                                    IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="1" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </MenuItem.Icon>
+                                                </MenuItem>
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
@@ -970,6 +982,24 @@
                                             Minimum="0"
                                             ToolTip="{local:Loc SECOND}"
                                             Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                        <ListBox HorizontalContentAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            local:Policy.PolicyName="SelectedRotation"
+                                            Background="{DynamicResource BorderBackground}"
+                                            SelectedValue="{Binding SelectedRotation}"
+                                            SelectedValuePath="Tag">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <VirtualizingStackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <ListBox.ItemContainerStyle>
+                                                <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
+                                            <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
+                                            <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
+                                        </ListBox>
                                         <ListBox VerticalContentAlignment="Center"
                                             local:Policy.PolicyName="SelectedFlip"
                                             Background="{DynamicResource BorderBackground}"
