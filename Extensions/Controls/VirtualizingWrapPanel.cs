@@ -137,10 +137,8 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// The ItemsControl (e.g. ListView) or if the ItemsControl is grouping a GroupItem.
     /// </summary>
-    protected DependencyObject ItemsOwner
-    {
-        get
-        {
+    protected DependencyObject ItemsOwner {
+        get {
             if (_itemsOwner is not null)
             {
                 return _itemsOwner;
@@ -167,10 +165,8 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Items container.
     /// </summary>
-    protected new IRecyclingItemContainerGenerator ItemContainerGenerator
-    {
-        get
-        {
+    protected new IRecyclingItemContainerGenerator ItemContainerGenerator {
+        get {
             if (_itemContainerGenerator is not null)
             {
                 return _itemContainerGenerator;

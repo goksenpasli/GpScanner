@@ -11,12 +11,10 @@ public class SubtitleContent : InpcBase
     private TimeSpan startTime;
     private string text;
 
-    public SolidColorBrush BackgroundColor
-    {
+    public SolidColorBrush BackgroundColor {
         get => backgroundColor;
 
-        set
-        {
+        set {
             if (backgroundColor != value)
             {
                 backgroundColor = value;
@@ -25,12 +23,10 @@ public class SubtitleContent : InpcBase
         }
     }
 
-    public TimeSpan EndTime
-    {
+    public TimeSpan EndTime {
         get => endTime;
 
-        set
-        {
+        set {
             if (endTime != value)
             {
                 endTime = value;
@@ -39,11 +35,9 @@ public class SubtitleContent : InpcBase
         }
     }
 
-    public string Segment
-    {
+    public string Segment {
         get => segment;
-        set
-        {
+        set {
             if (segment != value)
             {
                 segment = value;
@@ -52,12 +46,10 @@ public class SubtitleContent : InpcBase
         }
     }
 
-    public TimeSpan StartTime
-    {
+    public TimeSpan StartTime {
         get => startTime;
 
-        set
-        {
+        set {
             if (startTime != value)
             {
                 startTime = value;
@@ -66,12 +58,10 @@ public class SubtitleContent : InpcBase
         }
     }
 
-    public string Text
-    {
+    public string Text {
         get => text;
 
-        set
-        {
+        set {
             if (text != value)
             {
                 text = value;

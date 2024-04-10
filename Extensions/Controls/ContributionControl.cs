@@ -64,11 +64,9 @@ namespace Extensions
         public ObservableCollection<ContributionData> Contributions { get => (ObservableCollection<ContributionData>)GetValue(ContributionsProperty); set => SetValue(ContributionsProperty, value); }
 
         [Browsable(false)]
-        public IEnumerable<string> Days
-        {
+        public IEnumerable<string> Days {
             get => days;
-            set
-            {
+            set {
                 if (days != value)
                 {
                     days = value;
@@ -78,11 +76,9 @@ namespace Extensions
         }
 
         [Browsable(false)]
-        public int MaxContribution
-        {
+        public int MaxContribution {
             get => maxContribution;
-            set
-            {
+            set {
                 if (maxContribution != value)
                 {
                     maxContribution = value;
@@ -93,12 +89,10 @@ namespace Extensions
 
         [Browsable(false)]
 
-        public int? MonthDateTotalContribution
-        {
+        public int? MonthDateTotalContribution {
             get => monthDateTotalContribution;
 
-            set
-            {
+            set {
                 if (monthDateTotalContribution != value)
                 {
                     monthDateTotalContribution = value;
@@ -108,11 +102,9 @@ namespace Extensions
         }
 
         [Browsable(false)]
-        public IEnumerable<string> Months
-        {
+        public IEnumerable<string> Months {
             get => months;
-            set
-            {
+            set {
                 if (months != value)
                 {
                     months = value;
@@ -122,11 +114,9 @@ namespace Extensions
         }
 
         [Browsable(false)]
-        public int? MonthTotalContribution
-        {
+        public int? MonthTotalContribution {
             get => monthTotalContribution;
-            set
-            {
+            set {
                 if (monthTotalContribution != value)
                 {
                     monthTotalContribution = value;
@@ -140,11 +130,9 @@ namespace Extensions
         public ContributionData SelectedContribution { get => (ContributionData)GetValue(SelectedContributionProperty); set => SetValue(SelectedContributionProperty, value); }
 
         [Browsable(false)]
-        public string SelectedDay
-        {
+        public string SelectedDay {
             get => selectedDay;
-            set
-            {
+            set {
                 if (selectedDay != value)
                 {
                     selectedDay = value;
@@ -154,11 +142,9 @@ namespace Extensions
         }
 
         [Browsable(false)]
-        public string SelectedMonth
-        {
+        public string SelectedMonth {
             get => selectedMonth;
-            set
-            {
+            set {
                 if (selectedMonth != value)
                 {
                     selectedMonth = value;

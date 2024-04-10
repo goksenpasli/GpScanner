@@ -8,11 +8,9 @@ public class BatchPdfData : InpcBase
     private double compressionRatio;
     private string filename;
 
-    public bool Completed
-    {
+    public bool Completed {
         get => completed;
-        set
-        {
+        set {
             if (completed != value)
             {
                 completed = value;
@@ -21,11 +19,9 @@ public class BatchPdfData : InpcBase
         }
     }
 
-    public double CompressionRatio
-    {
+    public double CompressionRatio {
         get => compressionRatio;
-        set
-        {
+        set {
             if (compressionRatio != value)
             {
                 compressionRatio = value;
@@ -34,11 +30,9 @@ public class BatchPdfData : InpcBase
         }
     }
 
-    public string Filename
-    {
+    public string Filename {
         get => filename;
-        set
-        {
+        set {
             if (filename != value)
             {
                 filename = value;

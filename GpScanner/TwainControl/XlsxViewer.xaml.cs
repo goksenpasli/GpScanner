@@ -1,11 +1,11 @@
-﻿using ExcelDataReader;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using ExcelDataReader;
 
 namespace TwainControl
 {
@@ -25,12 +25,10 @@ namespace TwainControl
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public DataTableCollection Tablolar
-        {
+        public DataTableCollection Tablolar {
             get => tablolar;
 
-            set
-            {
+            set {
                 if (tablolar != value)
                 {
                     tablolar = value;

@@ -40,11 +40,9 @@ namespace Extensions
 
         public decimal Minimum { get => (decimal)GetValue(MinimumProperty); set => SetValue(MinimumProperty, value); }
 
-        public bool MouseSelectAllText
-        {
+        public bool MouseSelectAllText {
             get => mouseSelectAllText;
-            set
-            {
+            set {
                 if (mouseSelectAllText != value)
                 {
                     mouseSelectAllText = value;

@@ -8,12 +8,10 @@ public class Chart : InpcBase
     private double chartValue;
     private string description = string.Empty;
 
-    public Brush ChartBrush
-    {
+    public Brush ChartBrush {
         get => chartBrush;
 
-        set
-        {
+        set {
             if (chartBrush != value)
             {
                 chartBrush = value;
@@ -22,12 +20,10 @@ public class Chart : InpcBase
         }
     }
 
-    public double ChartValue
-    {
+    public double ChartValue {
         get => chartValue;
 
-        set
-        {
+        set {
             if (chartValue != value)
             {
                 chartValue = value;
@@ -36,12 +32,10 @@ public class Chart : InpcBase
         }
     }
 
-    public string Description
-    {
+    public string Description {
         get => description;
 
-        set
-        {
+        set {
             if (description != value)
             {
                 description = value;

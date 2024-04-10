@@ -15,12 +15,10 @@ public class ArchiveData : InpcBase
     private long sıkıştırılmışBoyut;
     private string tamYol;
 
-    public long Boyut
-    {
+    public long Boyut {
         get => boyut;
 
-        set
-        {
+        set {
             if (boyut != value)
             {
                 boyut = value;
@@ -29,11 +27,9 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public string Crc
-    {
+    public string Crc {
         get => crc;
-        set
-        {
+        set {
             if (crc != value)
             {
                 crc = value;
@@ -42,12 +38,10 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public string DosyaAdı
-    {
+    public string DosyaAdı {
         get => dosyaAdı;
 
-        set
-        {
+        set {
             if (dosyaAdı != value)
             {
                 dosyaAdı = value;
@@ -56,11 +50,9 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public string DosyaTipi
-    {
+    public string DosyaTipi {
         get => GetFileType(DosyaAdı, new SHFILEINFO());
-        set
-        {
+        set {
             if (dosyaTipi != value)
             {
                 dosyaTipi = value;
@@ -69,12 +61,10 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public DateTime DüzenlenmeZamanı
-    {
+    public DateTime DüzenlenmeZamanı {
         get => düzenlenmeZamanı;
 
-        set
-        {
+        set {
             if (düzenlenmeZamanı != value)
             {
                 düzenlenmeZamanı = value;
@@ -83,11 +73,9 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public bool IsChecked
-    {
+    public bool IsChecked {
         get => ısChecked;
-        set
-        {
+        set {
             if (ısChecked != value)
             {
                 ısChecked = value;
@@ -96,12 +84,10 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public float Oran
-    {
+    public float Oran {
         get => oran;
 
-        set
-        {
+        set {
             if (oran != value)
             {
                 oran = value;
@@ -110,12 +96,10 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public long SıkıştırılmışBoyut
-    {
+    public long SıkıştırılmışBoyut {
         get => sıkıştırılmışBoyut;
 
-        set
-        {
+        set {
             if (sıkıştırılmışBoyut != value)
             {
                 sıkıştırılmışBoyut = value;
@@ -124,12 +108,10 @@ public class ArchiveData : InpcBase
         }
     }
 
-    public string TamYol
-    {
+    public string TamYol {
         get => tamYol;
 
-        set
-        {
+        set {
             if (tamYol != value)
             {
                 tamYol = value;

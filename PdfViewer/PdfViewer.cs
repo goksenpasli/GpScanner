@@ -1,6 +1,4 @@
-﻿using Extensions;
-using PdfiumViewer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,6 +17,8 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Xps;
+using Extensions;
+using PdfiumViewer;
 using static Extensions.ExtensionMethods;
 using Control = System.Windows.Controls.Control;
 using DataFormats = System.Windows.DataFormats;
@@ -233,12 +233,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
 
-    public bool AutoFitContent
-    {
+    public bool AutoFitContent {
         get => autoFitContent;
 
-        set
-        {
+        set {
             if (autoFitContent != value)
             {
                 autoFitContent = value;
@@ -247,12 +245,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility BookmarkContentVisibility
-    {
+    public Visibility BookmarkContentVisibility {
         get => bookmarkContentVisibility;
 
-        set
-        {
+        set {
             if (bookmarkContentVisibility != value)
             {
                 bookmarkContentVisibility = value;
@@ -269,12 +265,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
 
-    public Visibility DpiListVisibility
-    {
+    public Visibility DpiListVisibility {
         get => dpiListVisibility;
 
-        set
-        {
+        set {
             if (dpiListVisibility != value)
             {
                 dpiListVisibility = value;
@@ -285,12 +279,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public RelayCommand<object> GoPdfBookMarkPage { get; }
 
-    public bool MatchCase
-    {
+    public bool MatchCase {
         get => matchCase;
 
-        set
-        {
+        set {
             if (matchCase != value)
             {
                 matchCase = value;
@@ -299,12 +291,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility OpenButtonVisibility
-    {
+    public Visibility OpenButtonVisibility {
         get => openButtonVisibility;
 
-        set
-        {
+        set {
             if (openButtonVisibility != value)
             {
                 openButtonVisibility = value;
@@ -316,12 +306,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public FitImageOrientation Orientation { get => (FitImageOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
     [Browsable(false)]
-    public IEnumerable<int> Pages
-    {
+    public IEnumerable<int> Pages {
         get => pages;
 
-        set
-        {
+        set {
             if (pages != value)
             {
                 pages = value;
@@ -330,12 +318,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public PdfBookmarkCollection PdfBookmarks
-    {
+    public PdfBookmarkCollection PdfBookmarks {
         get => pdfBookmarks;
 
-        set
-        {
+        set {
             if (pdfBookmarks != value)
             {
                 pdfBookmarks = value;
@@ -344,12 +330,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public byte[] PdfData
-    {
+    public byte[] PdfData {
         get => pdfData;
 
-        set
-        {
+        set {
             if (pdfData != value)
             {
                 pdfData = value;
@@ -360,12 +344,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public string PdfFilePath { get => (string)GetValue(PdfFilePathProperty); set => SetValue(PdfFilePathProperty, value); }
 
-    public ObservableCollection<PdfMatch> PdfMatches
-    {
+    public ObservableCollection<PdfMatch> PdfMatches {
         get => pdfMatches;
 
-        set
-        {
+        set {
             if (pdfMatches != value)
             {
                 pdfMatches = value;
@@ -374,12 +356,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public string PdfTextContent
-    {
+    public string PdfTextContent {
         get => pdfTextContent;
 
-        set
-        {
+        set {
             if (pdfTextContent != value)
             {
                 pdfTextContent = value;
@@ -388,12 +368,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility PdfTextContentVisibility
-    {
+    public Visibility PdfTextContentVisibility {
         get => pdfTextContentVisibility;
 
-        set
-        {
+        set {
             if (pdfTextContentVisibility != value)
             {
                 pdfTextContentVisibility = value;
@@ -402,12 +380,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility PrintButtonVisibility
-    {
+    public Visibility PrintButtonVisibility {
         get => printButtonVisibility;
 
-        set
-        {
+        set {
             if (printButtonVisibility != value)
             {
                 printButtonVisibility = value;
@@ -418,11 +394,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int PrintDpi { get => (int)GetValue(PrintDpiProperty); set => SetValue(PrintDpiProperty, value); }
 
-    public bool PrintDpiSettingsListEnabled
-    {
+    public bool PrintDpiSettingsListEnabled {
         get => printDpiSettingsListEnabled;
-        set
-        {
+        set {
             if (printDpiSettingsListEnabled != value)
             {
                 printDpiSettingsListEnabled = value;
@@ -447,12 +421,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public RelayCommand<object> ScrollToCurrentPage { get; }
 
-    public PdfMatch SearchPdfMatch
-    {
+    public PdfMatch SearchPdfMatch {
         get => searchPdfMatch;
 
-        set
-        {
+        set {
             if (searchPdfMatch != value)
             {
                 searchPdfMatch = value;
@@ -463,12 +435,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public RelayCommand<object> SearchPdfText { get; }
 
-    public string SearchTextContent
-    {
+    public string SearchTextContent {
         get => searchTextContent;
 
-        set
-        {
+        set {
             if (searchTextContent != value)
             {
                 searchTextContent = value;
@@ -477,12 +447,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility SearchTextContentVisibility
-    {
+    public Visibility SearchTextContentVisibility {
         get => searchTextContentVisibility;
 
-        set
-        {
+        set {
             if (searchTextContentVisibility != value)
             {
                 searchTextContentVisibility = value;
@@ -491,12 +459,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility SliderZoomAngleVisibility
-    {
+    public Visibility SliderZoomAngleVisibility {
         get => sliderZoomAngleVisibility;
 
-        set
-        {
+        set {
             if (sliderZoomAngleVisibility != value)
             {
                 sliderZoomAngleVisibility = value;
@@ -511,12 +477,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public bool ThumbsVisible { get => (bool)GetValue(ThumbsVisibleProperty); set => SetValue(ThumbsVisibleProperty, value); }
 
-    public Visibility TifNavigasyonButtonEtkin
-    {
+    public Visibility TifNavigasyonButtonEtkin {
         get => tifNavigasyonButtonEtkin;
 
-        set
-        {
+        set {
             if (tifNavigasyonButtonEtkin != value)
             {
                 tifNavigasyonButtonEtkin = value;
@@ -528,12 +492,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public Visibility ToolBarVisibility { get => (Visibility)GetValue(ToolBarVisibilityProperty); set => SetValue(ToolBarVisibilityProperty, value); }
 
     [Browsable(false)]
-    public int ToplamSayfa
-    {
+    public int ToplamSayfa {
         get => toplamSayfa;
 
-        set
-        {
+        set {
             if (toplamSayfa != value)
             {
                 toplamSayfa = value;
@@ -542,12 +504,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool WholeWord
-    {
+    public bool WholeWord {
         get => wholeWord;
 
-        set
-        {
+        set {
             if (wholeWord != value)
             {
                 wholeWord = value;

@@ -1,11 +1,11 @@
-﻿using Extensions;
-using GpScanner.Properties;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Windows.Input;
+using Extensions;
+using GpScanner.Properties;
 
 namespace GpScanner.ViewModel;
 
@@ -77,12 +77,10 @@ public class TranslateViewModel : InpcBase
 
     public RelayCommand<object> Aktar { get; }
 
-    public string Çeviri
-    {
+    public string Çeviri {
         get => çeviri;
 
-        set
-        {
+        set {
             if (çeviri != value)
             {
                 çeviri = value;
@@ -91,12 +89,10 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    public string ÇevrilenDil
-    {
+    public string ÇevrilenDil {
         get => çevrilenDil;
 
-        set
-        {
+        set {
             if (çevrilenDil != value)
             {
                 çevrilenDil = value;
@@ -108,12 +104,10 @@ public class TranslateViewModel : InpcBase
 
     public ICommand Değiştir { get; }
 
-    public string Metin
-    {
+    public string Metin {
         get => metin;
 
-        set
-        {
+        set {
             if (metin != value)
             {
                 metin = value;
@@ -122,12 +116,10 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    public bool MetinBoxIsreadOnly
-    {
+    public bool MetinBoxIsreadOnly {
         get => metinBoxIsreadOnly;
 
-        set
-        {
+        set {
             if (metinBoxIsreadOnly != value)
             {
                 metinBoxIsreadOnly = value;
@@ -136,12 +128,10 @@ public class TranslateViewModel : InpcBase
         }
     }
 
-    public string MevcutDil
-    {
+    public string MevcutDil {
         get => mevcutDil;
 
-        set
-        {
+        set {
             if (mevcutDil != value)
             {
                 mevcutDil = value;
@@ -153,12 +143,10 @@ public class TranslateViewModel : InpcBase
 
     public ICommand Oku { get; }
 
-    public string OkumaDili
-    {
+    public string OkumaDili {
         get => okumaDili;
 
-        set
-        {
+        set {
             if (okumaDili != value)
             {
                 okumaDili = value;
@@ -169,12 +157,10 @@ public class TranslateViewModel : InpcBase
 
     public ICommand Sıfırla { get; }
 
-    public ObservableCollection<string> TaramaGeçmiş
-    {
+    public ObservableCollection<string> TaramaGeçmiş {
         get => taramaGeçmiş;
 
-        set
-        {
+        set {
             if (taramaGeçmiş != value)
             {
                 taramaGeçmiş = value;

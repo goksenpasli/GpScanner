@@ -1,7 +1,4 @@
-﻿using Extensions;
-using GpScanner.Properties;
-using Ocr;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,6 +9,9 @@ using System.Net;
 using System.Net.Http;
 using System.Windows;
 using System.Windows.Input;
+using Extensions;
+using GpScanner.Properties;
+using Ocr;
 using TwainControl;
 using InpcBase = Extensions.InpcBase;
 
@@ -139,11 +139,9 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public List<TessFiles> CheckedFiles
-    {
+    public List<TessFiles> CheckedFiles {
         get => checkedFiles;
-        set
-        {
+        set {
             if (checkedFiles != value)
             {
                 checkedFiles = value;
@@ -154,11 +152,9 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string Error => string.Empty;
 
-    public bool IsFolderWritable
-    {
+    public bool IsFolderWritable {
         get => ısFolderWritable;
-        set
-        {
+        set {
             if (ısFolderWritable != value)
             {
                 ısFolderWritable = value;
@@ -171,11 +167,9 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> ResetTesseractFilter { get; }
 
-    public string SeçiliDil
-    {
+    public string SeçiliDil {
         get => seçiliDil;
-        set
-        {
+        set {
             if (seçiliDil != value)
             {
                 seçiliDil = value;
@@ -184,11 +178,9 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public bool ShowHelpDesc
-    {
+    public bool ShowHelpDesc {
         get => showHelpDesc;
-        set
-        {
+        set {
             if (showHelpDesc != value)
             {
                 showHelpDesc = value;
@@ -197,12 +189,10 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public string Tessdatafolder
-    {
+    public string Tessdatafolder {
         get => tessdatafolder;
 
-        set
-        {
+        set {
             if (tessdatafolder != value)
             {
                 tessdatafolder = value;
@@ -215,12 +205,10 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public ICommand TesseractDownload { get; }
 
-    public ObservableCollection<TessFiles> TesseractFiles
-    {
+    public ObservableCollection<TessFiles> TesseractFiles {
         get => tesseractFiles;
 
-        set
-        {
+        set {
             if (tesseractFiles != value)
             {
                 tesseractFiles = value;

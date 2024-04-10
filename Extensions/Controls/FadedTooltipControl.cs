@@ -24,8 +24,11 @@ namespace Extensions
         private Popup popup;
 
         static FadedToolTipControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FadedToolTipControl), new FrameworkPropertyMetadata(typeof(FadedToolTipControl))); }
+        public FadedToolTipControl() { ClosePopupWindow = new RelayCommand<object>(async parameter => await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = false), parameter => true); }
 
         public int CloseDelay { get => (int)GetValue(CloseDelayProperty); set => SetValue(CloseDelayProperty, value); }
+
+        public RelayCommand<object> ClosePopupWindow { get; }
 
         public PopupAnimation PopupAnimation { get => (PopupAnimation)GetValue(PopupAnimationProperty); set => SetValue(PopupAnimationProperty, value); }
 

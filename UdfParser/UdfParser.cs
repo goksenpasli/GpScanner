@@ -49,25 +49,25 @@ public static class UdfParser
         return paragraph is null
                ? null
                : new Content
-        {
-            Background = paragraph.Content.FirstOrDefault().Background,
-            Alignment = paragraph.Alignment,
-            Bold = paragraph.Content.FirstOrDefault().Bold,
-            Bulleted = paragraph.Bulleted,
-            Description = paragraph.Content.FirstOrDefault().Description,
-            Family = paragraph.Content.FirstOrDefault().Family,
-            Foreground = paragraph.Content.FirstOrDefault().Foreground,
-            Italic = paragraph.Content.FirstOrDefault().Italic,
-            LeftIndent = paragraph.LeftIndent,
-            StartOffset = paragraph.Content.FirstOrDefault().StartOffset,
-            Strikethrough = paragraph.Content.FirstOrDefault().Strikethrough,
-            Length = paragraph.Content.FirstOrDefault().Length,
-            RightIndent = paragraph.Content.FirstOrDefault().RightIndent,
-            Size = paragraph.Content.FirstOrDefault().Size,
-            Superscript = paragraph.Content.FirstOrDefault().Superscript,
-            Underline = paragraph.Content.FirstOrDefault().Underline,
-            Subscript = paragraph.Content.FirstOrDefault().Subscript
-        };
+               {
+                   Background = paragraph.Content.FirstOrDefault().Background,
+                   Alignment = paragraph.Alignment,
+                   Bold = paragraph.Content.FirstOrDefault().Bold,
+                   Bulleted = paragraph.Bulleted,
+                   Description = paragraph.Content.FirstOrDefault().Description,
+                   Family = paragraph.Content.FirstOrDefault().Family,
+                   Foreground = paragraph.Content.FirstOrDefault().Foreground,
+                   Italic = paragraph.Content.FirstOrDefault().Italic,
+                   LeftIndent = paragraph.LeftIndent,
+                   StartOffset = paragraph.Content.FirstOrDefault().StartOffset,
+                   Strikethrough = paragraph.Content.FirstOrDefault().Strikethrough,
+                   Length = paragraph.Content.FirstOrDefault().Length,
+                   RightIndent = paragraph.Content.FirstOrDefault().RightIndent,
+                   Size = paragraph.Content.FirstOrDefault().Size,
+                   Superscript = paragraph.Content.FirstOrDefault().Superscript,
+                   Underline = paragraph.Content.FirstOrDefault().Underline,
+                   Subscript = paragraph.Content.FirstOrDefault().Subscript
+               };
     }
 
     private static Run[,] Getcellcontent(Table table, Template content, int genişlik, int yükseklik)

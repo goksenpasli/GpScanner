@@ -18,7 +18,7 @@ public class Resizer : Thumb
     private static double ResizeBottom(DragDeltaEventArgs e, Control designerItem)
     {
         double deltaVertical = Math.Min(-e.VerticalChange, designerItem.ActualHeight - designerItem.MinHeight);
-        designerItem.Height -= deltaVertical;
+        designerItem.Height = Math.Abs(designerItem.Height - deltaVertical);
         return deltaVertical;
     }
 
@@ -26,14 +26,14 @@ public class Resizer : Thumb
     {
         double deltaHorizontal = Math.Min(e.HorizontalChange, designerItem.ActualWidth - designerItem.MinWidth);
         Canvas.SetLeft(designerItem, Canvas.GetLeft(designerItem) + deltaHorizontal);
-        designerItem.Width -= deltaHorizontal;
+        designerItem.Width = Math.Abs(designerItem.Width - deltaHorizontal);
         return deltaHorizontal;
     }
 
     private static double ResizeRight(DragDeltaEventArgs e, Control designerItem)
     {
         double deltaHorizontal = Math.Min(-e.HorizontalChange, designerItem.ActualWidth - designerItem.MinWidth);
-        designerItem.Width -= deltaHorizontal;
+        designerItem.Width = Math.Abs(designerItem.Width - deltaHorizontal);
         return deltaHorizontal;
     }
 
@@ -41,7 +41,7 @@ public class Resizer : Thumb
     {
         double deltaVertical = Math.Min(e.VerticalChange, designerItem.ActualHeight - designerItem.MinHeight);
         Canvas.SetTop(designerItem, Canvas.GetTop(designerItem) + deltaVertical);
-        designerItem.Height -= deltaVertical;
+        designerItem.Height = Math.Abs(designerItem.Height - deltaVertical);
         return deltaVertical;
     }
 

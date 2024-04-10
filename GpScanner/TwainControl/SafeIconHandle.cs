@@ -1,5 +1,5 @@
-﻿using Microsoft.Win32.SafeHandles;
-using System;
+﻿using System;
+using Microsoft.Win32.SafeHandles;
 using static Extensions.ShellIcon;
 
 namespace TwainControl;

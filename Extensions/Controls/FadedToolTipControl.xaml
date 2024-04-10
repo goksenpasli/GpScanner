@@ -24,12 +24,14 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
-                                <ToggleButton HorizontalAlignment="Right"
+                                <Button HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
+                                    Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
+                                    Command="{Binding ClosePopupWindow, RelativeSource={RelativeSource TemplatedParent}}"
                                     Content="X"
                                     FontWeight="Bold"
                                     Foreground="Blue"
-                                    IsChecked="{Binding Show, RelativeSource={RelativeSource TemplatedParent}}"
                                     Visibility="{Binding ShowCloseButton, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <ContentPresenter Grid.Row="1" Content="{Binding TooltipContent, RelativeSource={RelativeSource TemplatedParent}}" />
                             </Grid>

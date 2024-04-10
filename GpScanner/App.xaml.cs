@@ -1,5 +1,4 @@
-﻿using GpScanner.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -8,6 +7,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Threading;
+using GpScanner.ViewModel;
 
 namespace GpScanner;
 

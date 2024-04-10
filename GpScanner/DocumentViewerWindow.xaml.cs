@@ -1,6 +1,6 @@
-﻿using Extensions;
+﻿using System.Windows;
+using Extensions;
 using GpScanner.ViewModel;
-using System.Windows;
 
 namespace GpScanner;
 

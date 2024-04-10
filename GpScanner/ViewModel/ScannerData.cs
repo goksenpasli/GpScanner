@@ -1,5 +1,5 @@
-﻿using Extensions;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
+using Extensions;
 
 namespace GpScanner.ViewModel;
 
@@ -8,11 +8,9 @@ public class ScannerData : InpcBase
     private ObservableCollection<ReminderData> görülenReminder = [];
     private ObservableCollection<ReminderData> reminder = [];
 
-    public ObservableCollection<ReminderData> GörülenReminder
-    {
+    public ObservableCollection<ReminderData> GörülenReminder {
         get => görülenReminder;
-        set
-        {
+        set {
             if (görülenReminder != value)
             {
                 görülenReminder = value;
@@ -21,11 +19,9 @@ public class ScannerData : InpcBase
         }
     }
 
-    public ObservableCollection<ReminderData> Reminder
-    {
+    public ObservableCollection<ReminderData> Reminder {
         get => reminder;
-        set
-        {
+        set {
             if (reminder != value)
             {
                 reminder = value;

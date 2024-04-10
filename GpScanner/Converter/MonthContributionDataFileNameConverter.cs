@@ -1,9 +1,9 @@
-﻿using Extensions;
-using GpScanner.ViewModel;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using Extensions;
+using GpScanner.ViewModel;
 
 namespace GpScanner.Converter;
 

@@ -1,9 +1,4 @@
-﻿using Extensions;
-using Microsoft.Win32;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
@@ -13,6 +8,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using Extensions;
+using Microsoft.Win32;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -158,11 +158,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public new RelayCommand<object> DosyaAç { get; }
 
-    public ObservableCollection<string> EypAttachments
-    {
+    public ObservableCollection<string> EypAttachments {
         get => eypAttachments;
-        set
-        {
+        set {
             if (eypAttachments != value)
             {
                 eypAttachments = value;
@@ -173,11 +171,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public string EypFilePath { get => (string)GetValue(EypFilePathProperty); set => SetValue(EypFilePathProperty, value); }
 
-    public ObservableCollection<string> EypNonSuportedAttachments
-    {
+    public ObservableCollection<string> EypNonSuportedAttachments {
         get => eypNonSuportedAttachments;
-        set
-        {
+        set {
             if (eypNonSuportedAttachments != value)
             {
                 eypNonSuportedAttachments = value;

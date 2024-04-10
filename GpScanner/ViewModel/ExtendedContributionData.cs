@@ -1,5 +1,5 @@
-﻿using Extensions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Extensions;
 
 namespace GpScanner.ViewModel;
 
@@ -7,11 +7,9 @@ public class ExtendedContributionData : ContributionData
 {
     private IEnumerable<string> name;
 
-    public IEnumerable<string> Name
-    {
+    public IEnumerable<string> Name {
         get => name;
-        set
-        {
+        set {
             if (name != value)
             {
                 name = value;

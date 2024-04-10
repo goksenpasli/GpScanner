@@ -7,12 +7,10 @@ public class TesseractOcrData : InpcBase
     private string ocrName;
     private double progressValue;
 
-    public bool IsEnabled
-    {
+    public bool IsEnabled {
         get => ısEnabled;
 
-        set
-        {
+        set {
             if (ısEnabled != value)
             {
                 ısEnabled = value;
@@ -21,11 +19,9 @@ public class TesseractOcrData : InpcBase
         }
     }
 
-    public string OcrLangName
-    {
+    public string OcrLangName {
         get => ocrLangName;
-        set
-        {
+        set {
             if (ocrLangName != value)
             {
                 ocrLangName = value;
@@ -34,12 +30,10 @@ public class TesseractOcrData : InpcBase
         }
     }
 
-    public string OcrName
-    {
+    public string OcrName {
         get => ocrName;
 
-        set
-        {
+        set {
             if (ocrName != value)
             {
                 ocrName = value;
@@ -48,12 +42,10 @@ public class TesseractOcrData : InpcBase
         }
     }
 
-    public double ProgressValue
-    {
+    public double ProgressValue {
         get => progressValue;
 
-        set
-        {
+        set {
             if (progressValue != value)
             {
                 progressValue = value;

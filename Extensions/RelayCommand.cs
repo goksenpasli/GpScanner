@@ -97,18 +97,15 @@ public class RelayCommand : ICommand
         this.canExecute = canExecute;
     }
 
-    public event EventHandler CanExecuteChanged
-    {
-        add
-        {
+    public event EventHandler CanExecuteChanged {
+        add {
             if (canExecute != null)
             {
                 CommandManager.RequerySuggested += value;
             }
         }
 
-        remove
-        {
+        remove {
             if (canExecute != null)
             {
                 CommandManager.RequerySuggested -= value;

@@ -141,6 +141,7 @@
     <Compile Include="Converter\PageSizePreviewHeightConverter.cs" />
     <Compile Include="Converter\PageSizePreviewWidthConverter.cs" />
     <Compile Include="Converter\PdfFileNameToInfoConverter.cs" />
+    <Compile Include="Converter\PdfMultiplePageToThumbImageConverter.cs" />
     <Compile Include="Converter\SelectedSizeToCacheLengthConverter.cs" />
     <Compile Include="Converter\StringToCountryFlagImageConverter.cs" />
     <Compile Include="Converter\StringToQrBitmapImageConverter.cs" />

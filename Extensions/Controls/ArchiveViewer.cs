@@ -1,5 +1,4 @@
-﻿using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interop;
+using Microsoft.Win32;
 using static Extensions.ExtensionMethods;
 
 namespace Extensions
@@ -100,12 +100,10 @@ namespace Extensions
 
         public RelayCommand<object> ArşivDosyaEkle { get; }
 
-        public ObservableCollection<ArchiveData> Arşivİçerik
-        {
+        public ObservableCollection<ArchiveData> Arşivİçerik {
             get => arşivİçerik;
 
-            set
-            {
+            set {
                 if (arşivİçerik != value)
                 {
                     arşivİçerik = value;
@@ -116,11 +114,9 @@ namespace Extensions
 
         public RelayCommand<object> ArşivTekDosyaÇıkar { get; }
 
-        public string Search
-        {
+        public string Search {
             get => search;
-            set
-            {
+            set {
                 if (search != value)
                 {
                     search = value;
@@ -131,11 +127,9 @@ namespace Extensions
 
         public RelayCommand<object> SeçiliAyıkla { get; }
 
-        public ArchiveData SelectedFile
-        {
+        public ArchiveData SelectedFile {
             get => selectedFile;
-            set
-            {
+            set {
                 if (selectedFile != value)
                 {
                     selectedFile = value;
@@ -144,11 +138,9 @@ namespace Extensions
             }
         }
 
-        public string[] SelectedFiles
-        {
+        public string[] SelectedFiles {
             get => selectedFiles;
-            set
-            {
+            set {
                 if (selectedFiles != value)
                 {
                     selectedFiles = value;
@@ -157,22 +149,18 @@ namespace Extensions
             }
         }
 
-        public double ToplamOran
-        {
+        public double ToplamOran {
             get => toplamOran;
 
-            set
-            {
+            set {
                 toplamOran = value;
                 OnPropertyChanged(nameof(ToplamOran));
             }
         }
 
-        public int TotalFilesCount
-        {
+        public int TotalFilesCount {
             get => totalFilesCount;
-            set
-            {
+            set {
                 if (totalFilesCount != value)
                 {
                     totalFilesCount = value;

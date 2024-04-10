@@ -1,7 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -23,12 +22,10 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public IDocumentPaginatorSource Document
-    {
+    public IDocumentPaginatorSource Document {
         get => document;
 
-        set
-        {
+        set {
             if (document != value)
             {
                 document = value;

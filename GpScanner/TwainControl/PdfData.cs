@@ -7,12 +7,10 @@ public class PdfData : InpcBase
     private int pageNumber;
     private bool selected;
 
-    public int PageNumber
-    {
+    public int PageNumber {
         get => pageNumber;
 
-        set
-        {
+        set {
             if (pageNumber != value)
             {
                 pageNumber = value;
@@ -21,12 +19,10 @@ public class PdfData : InpcBase
         }
     }
 
-    public bool Selected
-    {
+    public bool Selected {
         get => selected;
 
-        set
-        {
+        set {
             if (selected != value)
             {
                 selected = value;

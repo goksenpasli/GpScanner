@@ -34,8 +34,7 @@ namespace WebPWrapper
     {
         private const int WEBP_MAX_DIMENSION = 16383;
 
-        public static bool WebpDllExists
-        {
+        public static bool WebpDllExists {
             get;
         } = Environment.Is64BitProcess
             ? File.Exists($@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\libwebp_x64.dll")
@@ -1029,14 +1028,14 @@ namespace WebPWrapper
     [SuppressUnmanagedCodeSecurity]
     internal sealed class UnsafeNativeMethods
     {
-/// <summary>
-/// The writer type for output compress data
-/// </summary>
-/// <param name="data">Data returned</param>
-/// <param name="data_size">Size of data returned</param>
-/// <param name="wpic">Picture structure</param>
-/// <returns></returns>
-[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        /// <summary>
+        /// The writer type for output compress data
+        /// </summary>
+        /// <param name="data">Data returned</param>
+        /// <param name="data_size">Size of data returned</param>
+        /// <param name="wpic">Picture structure</param>
+        /// <returns></returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int WebPMemoryWrite([In] IntPtr data, UIntPtr data_size, ref WebPPicture wpic);
 
         [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]

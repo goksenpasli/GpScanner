@@ -78,14 +78,7 @@ namespace Extensions.Controls
                 return;
             }
 
-            if (displayTextBuilder.ToString().StartsWith("-"))
-            {
-                _ = displayTextBuilder.Remove(0, 1);
-            }
-            else
-            {
-                _ = displayTextBuilder.Insert(0, '-');
-            }
+            _ = displayTextBuilder.ToString().StartsWith("-") ? displayTextBuilder.Remove(0, 1) : displayTextBuilder.Insert(0, '-');
 
             InputTextBox.Text = displayTextBuilder.ToString();
         }

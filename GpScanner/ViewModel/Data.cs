@@ -1,6 +1,6 @@
-﻿using Extensions;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Extensions;
 
 namespace GpScanner.ViewModel;
 
@@ -11,12 +11,10 @@ public class Data : InpcBase
     private int ıd;
     private string qrData;
 
-    public string FileContent
-    {
+    public string FileContent {
         get => fileContent;
 
-        set
-        {
+        set {
             if (fileContent != value)
             {
                 fileContent = value;
@@ -25,12 +23,10 @@ public class Data : InpcBase
         }
     }
 
-    public string FileName
-    {
+    public string FileName {
         get => fileName;
 
-        set
-        {
+        set {
             if (fileName != value)
             {
                 fileName = value;
@@ -41,12 +37,10 @@ public class Data : InpcBase
 
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int Id
-    {
+    public int Id {
         get => ıd;
 
-        set
-        {
+        set {
             if (ıd != value)
             {
                 ıd = value;
@@ -55,12 +49,10 @@ public class Data : InpcBase
         }
     }
 
-    public string QrData
-    {
+    public string QrData {
         get => qrData;
 
-        set
-        {
+        set {
             if (qrData != value)
             {
                 qrData = value;

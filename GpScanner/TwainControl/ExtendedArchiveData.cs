@@ -1,5 +1,5 @@
-﻿using Extensions;
-using System.IO;
+﻿using System.IO;
+using Extensions;
 
 namespace TwainControl;
 
@@ -9,11 +9,9 @@ public class ExtendedArchiveData : ArchiveData
     private string hostOs;
     private string method;
 
-    public FileAttributes Attributes
-    {
+    public FileAttributes Attributes {
         get => attributes;
-        set
-        {
+        set {
             if (attributes != value)
             {
                 attributes = value;
@@ -22,11 +20,9 @@ public class ExtendedArchiveData : ArchiveData
         }
     }
 
-    public string HostOs
-    {
+    public string HostOs {
         get => hostOs;
-        set
-        {
+        set {
             if (hostOs != value)
             {
                 hostOs = value;
@@ -35,11 +31,9 @@ public class ExtendedArchiveData : ArchiveData
         }
     }
 
-    public string Method
-    {
+    public string Method {
         get => method;
-        set
-        {
+        set {
             if (method != value)
             {
                 method = value;

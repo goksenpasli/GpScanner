@@ -1,10 +1,4 @@
-﻿using Extensions;
-using Extensions.Controls;
-using Ocr;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -31,6 +25,12 @@ using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Extensions;
+using Extensions.Controls;
+using Ocr;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.IO;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -2032,12 +2032,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> AddSplitListsIndex { get; }
 
-    public double AllImageRotationAngle
-    {
+    public double AllImageRotationAngle {
         get => allImageRotationAngle;
 
-        set
-        {
+        set {
             if (allImageRotationAngle != value)
             {
                 allImageRotationAngle = value;
@@ -2046,11 +2044,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public double AllRotateProgressValue
-    {
+    public double AllRotateProgressValue {
         get => allRotateProgressValue;
-        set
-        {
+        set {
             if (allRotateProgressValue != value)
             {
                 allRotateProgressValue = value;
@@ -2069,12 +2065,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> AutoDeskewImage { get; }
 
-    public byte[] CameraQRCodeData
-    {
+    public byte[] CameraQRCodeData {
         get => cameraQRCodeData;
 
-        set
-        {
+        set {
             if (cameraQRCodeData != value)
             {
                 cameraQRCodeData = value;
@@ -2083,12 +2077,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool CanUndoImage
-    {
+    public bool CanUndoImage {
         get => canUndoImage;
 
-        set
-        {
+        set {
             if (canUndoImage != value)
             {
                 canUndoImage = value;
@@ -2125,12 +2117,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CopyPdfBitmapFile { get; }
 
-    public CroppedBitmap CroppedOcrBitmap
-    {
+    public CroppedBitmap CroppedOcrBitmap {
         get => croppedOcrBitmap;
 
-        set
-        {
+        set {
             if (croppedOcrBitmap != value)
             {
                 croppedOcrBitmap = value;
@@ -2139,11 +2129,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public double CustomDeskewAngle
-    {
+    public double CustomDeskewAngle {
         get => customDeskewAngle;
-        set
-        {
+        set {
             if (customDeskewAngle != value)
             {
                 customDeskewAngle = value;
@@ -2154,12 +2142,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CycleSelectedDocuments { get; }
 
-    public byte[] DataBaseQrData
-    {
+    public byte[] DataBaseQrData {
         get => dataBaseQrData;
 
-        set
-        {
+        set {
             if (dataBaseQrData != value)
             {
                 dataBaseQrData = value;
@@ -2168,12 +2154,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ObservableCollection<OcrData> DataBaseTextData
-    {
+    public ObservableCollection<OcrData> DataBaseTextData {
         get => dataBaseTextData;
 
-        set
-        {
+        set {
             if (dataBaseTextData != value)
             {
                 dataBaseTextData = value;
@@ -2182,12 +2166,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int DecodeHeight
-    {
+    public int DecodeHeight {
         get => decodeHeight;
 
-        set
-        {
+        set {
             if (decodeHeight != value)
             {
                 decodeHeight = value;
@@ -2198,12 +2180,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> DetectEmptyPages { get; }
 
-    public string DistinctImages
-    {
+    public string DistinctImages {
         get => distinctImages;
 
-        set
-        {
+        set {
             if (distinctImages != value)
             {
                 distinctImages = value;
@@ -2212,12 +2192,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public GridLength DocumentGridLength
-    {
+    public GridLength DocumentGridLength {
         get => documentGridLength;
 
-        set
-        {
+        set {
             if (documentGridLength != value)
             {
                 documentGridLength = value;
@@ -2226,12 +2204,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool DocumentPreviewIsExpanded
-    {
+    public bool DocumentPreviewIsExpanded {
         get => documentPreviewIsExpanded;
 
-        set
-        {
+        set {
             if (documentPreviewIsExpanded != value)
             {
                 documentPreviewIsExpanded = value;
@@ -2240,12 +2216,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool DragMoveStarted
-    {
+    public bool DragMoveStarted {
         get => dragMoveStarted;
 
-        set
-        {
+        set {
             if (dragMoveStarted != value)
             {
                 dragMoveStarted = value;
@@ -2280,11 +2254,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
 
-    public int GroupSplitCount
-    {
+    public int GroupSplitCount {
         get => groupSplitCount;
-        set
-        {
+        set {
             if (groupSplitCount != value)
             {
                 groupSplitCount = value;
@@ -2293,11 +2265,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool HelpIsOpened
-    {
+    public bool HelpIsOpened {
         get => helpIsOpened;
-        set
-        {
+        set {
             if (helpIsOpened != value)
             {
                 helpIsOpened = value;
@@ -2306,11 +2276,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool IgnoreImageWidthHeight
-    {
+    public bool IgnoreImageWidthHeight {
         get => ıgnoreImageWidthHeight;
-        set
-        {
+        set {
             if (ıgnoreImageWidthHeight != value)
             {
                 ıgnoreImageWidthHeight = value;
@@ -2323,12 +2291,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> ImageViewerFullScreen { get; }
 
-    public byte[] ImgData
-    {
+    public byte[] ImgData {
         get => ımgData;
 
-        set
-        {
+        set {
             if (ımgData != value)
             {
                 ımgData = value;
@@ -2369,11 +2335,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> OpenHelpDialog { get; }
 
-    public int PageHeight
-    {
+    public int PageHeight {
         get => pageHeight;
-        set
-        {
+        set {
             if (pageHeight != value)
             {
                 pageHeight = value;
@@ -2382,11 +2346,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int PageWidth
-    {
+    public int PageWidth {
         get => pageWidth;
-        set
-        {
+        set {
             if (pageWidth != value)
             {
                 pageWidth = value;
@@ -2395,12 +2357,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ObservableCollection<Paper> Papers
-    {
+    public ObservableCollection<Paper> Papers {
         get => papers;
 
-        set
-        {
+        set {
             if (papers != value)
             {
                 papers = value;
@@ -2415,12 +2375,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> PdfImportViewerTümünüİşaretle { get; }
 
-    public double PdfLoadProgressValue
-    {
+    public double PdfLoadProgressValue {
         get => pdfLoadProgressValue;
 
-        set
-        {
+        set {
             if (pdfLoadProgressValue != value)
             {
                 pdfLoadProgressValue = value;
@@ -2429,12 +2387,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int PdfMedianValue
-    {
+    public int PdfMedianValue {
         get => pdfMedianValue;
 
-        set
-        {
+        set {
             if (pdfMedianValue != value)
             {
                 pdfMedianValue = value;
@@ -2443,12 +2399,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ObservableCollection<PdfData> PdfPages
-    {
+    public ObservableCollection<PdfData> PdfPages {
         get => pdfPages;
 
-        set
-        {
+        set {
             if (pdfPages != value)
             {
                 pdfPages = value;
@@ -2457,12 +2411,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int PdfSplitCount
-    {
+    public int PdfSplitCount {
         get => pdfSplitCount;
 
-        set
-        {
+        set {
             if (pdfSplitCount != value)
             {
                 pdfSplitCount = value;
@@ -2475,12 +2427,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand PdfWaterMark { get; }
 
-    public SolidColorBrush PdfWatermarkColor
-    {
+    public SolidColorBrush PdfWatermarkColor {
         get => pdfWatermarkColor;
 
-        set
-        {
+        set {
             if (pdfWatermarkColor != value)
             {
                 pdfWatermarkColor = value;
@@ -2489,12 +2439,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public string PdfWatermarkFont
-    {
+    public string PdfWatermarkFont {
         get => pdfWatermarkFont;
 
-        set
-        {
+        set {
             if (pdfWatermarkFont != value)
             {
                 pdfWatermarkFont = value;
@@ -2503,12 +2451,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public double PdfWatermarkFontAngle
-    {
+    public double PdfWatermarkFontAngle {
         get => pdfWatermarkFontAngle;
 
-        set
-        {
+        set {
             if (pdfWatermarkFontAngle != value)
             {
                 pdfWatermarkFontAngle = value;
@@ -2517,12 +2463,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public double PdfWatermarkFontSize
-    {
+    public double PdfWatermarkFontSize {
         get => pdfWatermarkFontSize;
 
-        set
-        {
+        set {
             if (pdfWatermarkFontSize != value)
             {
                 pdfWatermarkFontSize = value;
@@ -2531,12 +2475,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public string PdfWaterMarkText
-    {
+    public string PdfWaterMarkText {
         get => pdfWaterMarkText;
 
-        set
-        {
+        set {
             if (pdfWaterMarkText != value)
             {
                 pdfWaterMarkText = value;
@@ -2549,11 +2491,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ReadPdfTag { get; }
 
-    public bool RefreshDocumentList
-    {
+    public bool RefreshDocumentList {
         get => refreshDocumentList;
-        set
-        {
+        set {
             if (refreshDocumentList != value)
             {
                 refreshDocumentList = value;
@@ -2616,12 +2556,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> SaveSingleXpsFile { get; }
 
-    public int SayfaBaşlangıç
-    {
+    public int SayfaBaşlangıç {
         get => sayfaBaşlangıç;
 
-        set
-        {
+        set {
             if (sayfaBaşlangıç != value)
             {
                 sayfaBaşlangıç = value;
@@ -2630,12 +2568,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int SayfaBitiş
-    {
+    public int SayfaBitiş {
         get => sayfaBitiş;
 
-        set
-        {
+        set {
             if (sayfaBitiş != value)
             {
                 sayfaBitiş = value;
@@ -2646,12 +2582,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ScanImage { get; }
 
-    public Scanner Scanner
-    {
+    public Scanner Scanner {
         get => scanner;
 
-        set
-        {
+        set {
             if (scanner != value)
             {
                 scanner = value;
@@ -2668,12 +2602,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SeçiliListeTemizle { get; }
 
-    public ScannedImage SeçiliResim
-    {
+    public ScannedImage SeçiliResim {
         get => seçiliResim;
 
-        set
-        {
+        set {
             if (seçiliResim != value)
             {
                 seçiliResim = value;
@@ -2682,12 +2614,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int SeekIndex
-    {
+    public int SeekIndex {
         get => seekIndex;
 
-        set
-        {
+        set {
             if (seekIndex != value)
             {
                 seekIndex = value;
@@ -2696,12 +2626,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Tuple<string, int, double, bool, double> SelectedCompressionProfile
-    {
+    public Tuple<string, int, double, bool, double> SelectedCompressionProfile {
         get => selectedCompressionProfile;
 
-        set
-        {
+        set {
             if (selectedCompressionProfile != value)
             {
                 selectedCompressionProfile = value;
@@ -2710,11 +2638,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public PageFlip SelectedFlip
-    {
+    public PageFlip SelectedFlip {
         get => selectedFlip;
-        set
-        {
+        set {
             if (selectedFlip != value)
             {
                 selectedFlip = value;
@@ -2723,11 +2649,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool SelectedImageWidthHeightIsEqual
-    {
+    public bool SelectedImageWidthHeightIsEqual {
         get => selectedImageWidthHeightIsEqual;
-        set
-        {
+        set {
             if (selectedImageWidthHeightIsEqual != value)
             {
                 selectedImageWidthHeightIsEqual = value;
@@ -2736,12 +2660,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Orientation SelectedOrientation
-    {
+    public Orientation SelectedOrientation {
         get => selectedOrientation;
 
-        set
-        {
+        set {
             if (selectedOrientation != value)
             {
                 selectedOrientation = value;
@@ -2750,12 +2672,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public Paper SelectedPaper
-    {
+    public Paper SelectedPaper {
         get => selectedPaper;
 
-        set
-        {
+        set {
             if (selectedPaper != value)
             {
                 selectedPaper = value;
@@ -2764,12 +2684,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public PageRotation SelectedRotation
-    {
+    public PageRotation SelectedRotation {
         get => selectedRotation;
 
-        set
-        {
+        set {
             if (selectedRotation != value)
             {
                 selectedRotation = value;
@@ -2778,11 +2696,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int SelectedTabIndex
-    {
+    public int SelectedTabIndex {
         get => selectedTabIndex;
-        set
-        {
+        set {
             if (selectedTabIndex != value)
             {
                 selectedTabIndex = value;
@@ -2801,11 +2717,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand SplitPdf { get; }
 
-    public List<ScannedImage[]> SplittedIndexImages
-    {
+    public List<ScannedImage[]> SplittedIndexImages {
         get => splittedIndexImages;
-        set
-        {
+        set {
             if (splittedIndexImages != value)
             {
                 splittedIndexImages = value;
@@ -2816,11 +2730,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand Tersiniİşaretle { get; }
 
-    public string TextSplitList
-    {
+    public string TextSplitList {
         get => textSplitList;
-        set
-        {
+        set {
             if (textSplitList != value)
             {
                 textSplitList = value;
@@ -2839,12 +2751,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand TümününİşaretiniKaldır { get; }
 
-    public GridLength TwainGuiControlLength
-    {
+    public GridLength TwainGuiControlLength {
         get => twainGuiControlLength;
 
-        set
-        {
+        set {
             if (twainGuiControlLength != value)
             {
                 twainGuiControlLength = value;
@@ -2853,12 +2763,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ScannedImage UndoImage
-    {
+    public ScannedImage UndoImage {
         get => undoImage;
 
-        set
-        {
+        set {
             if (undoImage != value)
             {
                 undoImage = value;
@@ -2867,12 +2775,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public int? UndoImageIndex
-    {
+    public int? UndoImageIndex {
         get => undoImageIndex;
 
-        set
-        {
+        set {
             if (undoImageIndex != value)
             {
                 undoImageIndex = value;

@@ -1,10 +1,10 @@
-﻿using Extensions;
-using System;
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Extensions;
 
 namespace PdfViewer;
 
@@ -12,12 +12,10 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
 {
     private int dpi = 16;
 
-    public int Dpi
-    {
+    public int Dpi {
         get => dpi;
 
-        set
-        {
+        set {
             if (dpi != value)
             {
                 dpi = value;
