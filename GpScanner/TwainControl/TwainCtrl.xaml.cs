@@ -149,6 +149,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private ScannedImage undoImage;
     private int? undoImageIndex;
     private double width;
+    private int printDpi = 300;
 
     public TwainCtrl()
     {
@@ -2028,7 +2029,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 };
                 if (printdialog.ShowDialog() == true)
                 {
-                    FixedDocument fixedDocument = ImageViewer.PrintMultipleFixedDocumentPages(printdialog, 0, (int)(GetSelectedImagesCount() - 1), GetSelectedImages().Select(z => z.Resim));
+                    FixedDocument fixedDocument = ImageViewer.PrintMultipleFixedDocumentPages(printdialog, 0, (int)(GetSelectedImagesCount() - 1), GetSelectedImages().Select(z => z.Resim), PrintDpi);
                     XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(printdialog.PrintQueue);
                     xpsWriter.WriteAsync(fixedDocument, printdialog.PrintTicket);
                     fixedDocument = null;
@@ -2509,6 +2510,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public RelayCommand<object> PrepareCropCurrentImage { get; }
+
+    public int PrintDpi {
+        get => printDpi;
+
+        set {
+            if (printDpi != value)
+            {
+                printDpi = value;
+                OnPropertyChanged(nameof(PrintDpi));
+            }
+        }
+    }
 
     public ICommand ReadPdfTag { get; }
 
