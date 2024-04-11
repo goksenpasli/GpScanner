@@ -10,6 +10,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Media;
+using System.Printing;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -2014,6 +2015,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => parameter is MediaViewer mediaViewer && !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
+
+        PrintSelectedDocuments = new RelayCommand<object>(
+            parameter =>
+            {
+                PrintDialog printdialog = new()
+                {
+                    PageRangeSelection = PageRangeSelection.AllPages,
+                    UserPageRangeEnabled = false,
+                    MaxPage = (uint)GetSelectedImagesCount(),
+                    MinPage = 1
+                };
+                if (printdialog.ShowDialog() == true)
+                {
+                    FixedDocument fixedDocument = ImageViewer.PrintMultipleFixedDocumentPages(printdialog, 0, (int)(GetSelectedImagesCount() - 1), GetSelectedImages().Select(z => z.Resim));
+                    XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(printdialog.PrintQueue);
+                    xpsWriter.WriteAsync(fixedDocument, printdialog.PrintTicket);
+                    fixedDocument = null;
+                }
+            },
+            parameter => GetSelectedImagesCount() > 0);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -2790,7 +2811,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public FileVersionInfo Version => FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess()?.MainModule?.FileName);
 
     public RelayCommand<object> VideodanResimYükle { get; }
-
+    public RelayCommand<object> PrintSelectedDocuments { get; }
     public RelayCommand<object> VideoViewerFullScreen { get; }
 
     public ICommand WebAdreseGit { get; }

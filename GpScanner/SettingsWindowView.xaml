@@ -467,150 +467,154 @@
                                 </StackPanel>
                             </UniformGrid>
                             <Separator Margin="0,1,0,1" />
-                            <StackPanel Orientation="Horizontal">
-                                <CheckBox VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="DirectOpenPdfFile"
-                                    IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="32"
-                                                Height="32"
-                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PDFOPEN}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                Template="{StaticResource HorizontalScrollViewerTemplate}"
+                                VerticalScrollBarVisibility="Disabled">
                                 <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="DirectOpenPdfFile"
+                                        IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32"
+                                                    Height="32"
+                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PDFOPEN}" />
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="DirectOpenEypFile"
+                                        IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32"
+                                                    Height="32"
+                                                    Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Hyperlink Command="{Binding AssociateExtension}">
+                                                        <Run Text="{twainctrl:Loc EYPOPEN}" />
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="ContributionIsImageMode"
+                                        IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Canvas Width="32" Height="32">
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="19" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock Canvas.Bottom="2"
+                                                        FontFamily="Webdings"
+                                                        FontSize="26"
+                                                        FontWeight="Bold"
+                                                        Foreground="GreenYellow"
+                                                        Text="" />
+                                                </Canvas>
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="ShowArchiveViewerThumbs"
+                                        IsChecked="{Binding ShowArchiveViewerThumbs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Canvas Width="32" Height="32">
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="ZipFldr.dll" />
+                                                                <Binding Source="0" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock FontFamily="Webdings"
+                                                        FontSize="24"
+                                                        Foreground="Green"
+                                                        Text="N" />
+                                                </Canvas>
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
+                                    <ToggleButton twainctrl:Policy.PolicyName="ShowListBoxPreview"
+                                        IsChecked="{Binding ShowListBoxPreview, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                        ToolTip="{twainctrl:Loc PREVIEWFILE}">
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="254" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Canvas.Right="0"
+                                                Canvas.Bottom="5"
+                                                Width="16"
+                                                Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="1" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
+                                    </ToggleButton>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <CheckBox VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        twainctrl:Policy.PolicyName="UsePdfJpgFiles"
+                                        IsChecked="{Binding UsePdfJpgFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                        <CheckBox.ToolTip>
+                                            <TextBlock Width="200"
+                                                FontWeight="Bold"
+                                                Foreground="Red"
+                                                Text="{twainctrl:Loc PDFTOJPEGDESC}"
+                                                TextWrapping="Wrap" />
+                                        </CheckBox.ToolTip>
+                                        <CheckBox.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32"
+                                                    Height="32"
+                                                    Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                                <TextBlock VerticalAlignment="Center"
+                                                    FontFamily="Wingdings 3"
+                                                    Text="â" />
+                                                <Image Width="32"
+                                                    Height="32"
+                                                    Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                            </StackPanel>
+                                        </CheckBox.Content>
+                                    </CheckBox>
                                 </StackPanel>
-                                <CheckBox VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="DirectOpenEypFile"
-                                    IsChecked="{Binding DirectOpenEypFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="32"
-                                                Height="32"
-                                                Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Hyperlink Command="{Binding AssociateExtension}">
-                                                    <Run Text="{twainctrl:Loc EYPOPEN}" />
-                                                </Hyperlink>
-                                            </TextBlock>
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
-                                <CheckBox VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="ContributionIsImageMode"
-                                    IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Canvas Width="32" Height="32">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="19" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock Canvas.Bottom="2"
-                                                    FontFamily="Webdings"
-                                                    FontSize="26"
-                                                    FontWeight="Bold"
-                                                    Foreground="GreenYellow"
-                                                    Text="" />
-                                            </Canvas>
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
-                                <CheckBox VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="ShowArchiveViewerThumbs"
-                                    IsChecked="{Binding ShowArchiveViewerThumbs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Canvas Width="32" Height="32">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="ZipFldr.dll" />
-                                                            <Binding Source="0" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock FontFamily="Webdings"
-                                                    FontSize="24"
-                                                    Foreground="Green"
-                                                    Text="N" />
-                                            </Canvas>
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                                <ToggleButton twainctrl:Policy.PolicyName="ShowListBoxPreview"
-                                    IsChecked="{Binding ShowListBoxPreview, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                    ToolTip="{twainctrl:Loc PREVIEWFILE}">
-                                    <Canvas Width="32" Height="32">
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="254" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <Image Canvas.Right="0"
-                                            Canvas.Bottom="5"
-                                            Width="16"
-                                            Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="1" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Canvas>
-                                </ToggleButton>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
-                                <CheckBox VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="UsePdfJpgFiles"
-                                    IsChecked="{Binding UsePdfJpgFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
-                                    <CheckBox.ToolTip>
-                                        <TextBlock Width="200"
-                                            FontWeight="Bold"
-                                            Foreground="Red"
-                                            Text="{twainctrl:Loc PDFTOJPEGDESC}"
-                                            TextWrapping="Wrap" />
-                                    </CheckBox.ToolTip>
-                                    <CheckBox.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="32"
-                                                Height="32"
-                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
-                                            <TextBlock VerticalAlignment="Center"
-                                                FontFamily="Wingdings 3"
-                                                Text="â" />
-                                            <Image Width="32"
-                                                Height="32"
-                                                Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
-                                        </StackPanel>
-                                    </CheckBox.Content>
-                                </CheckBox>
-                            </StackPanel>
+                            </ScrollViewer>
                         </StackPanel>
                     </GroupBox>
                     <GroupBox Grid.Row="3" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">

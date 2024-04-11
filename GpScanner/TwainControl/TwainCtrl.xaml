@@ -1887,6 +1887,16 @@
                                                 </Image.Source>
                                             </Image>
                                         </Button>
+                                        <Button local:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding PrintSelectedDocuments}">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="16" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button>
                                         <Separator />
                                         <Grid>
                                             <ProgressBar Background="{x:Null}"
@@ -2195,7 +2205,6 @@
                             d:Source="/GpScanner;component/splash.png"
                             d:Zoom="1"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            OpenButtonVisibility="Collapsed"
                             PanoramaButtonVisibility="Collapsed"
                             PreviewMouseDown="ImgViewer_MouseDown"
                             PreviewMouseMove="ImgViewer_MouseMove"
