@@ -367,6 +367,7 @@
                         AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
+                        Orientation="Height"
                         PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible"
                         ScrollBarVisible="Hidden"

@@ -476,7 +476,7 @@
                             ArrowVisibility="Collapsed"
                             Content="("
                             FontFamily="Webdings"
-                            FontSize="18"
+                            FontSize="20"
                             Foreground="Blue"
                             StaysOpen="True"
                             TopMost="False">

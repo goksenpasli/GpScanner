@@ -539,6 +539,9 @@
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                     </StackPanel>
                                 </Extensions:SplitButton>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <TextBlock VerticalAlignment="Center">
                                     <Run Text="PDF" />
                                     <Run Text="{twainctrl:Loc ALL}" />
@@ -558,6 +561,9 @@
                                         Foreground="Green"
                                         IsChecked="{Binding ShowAllPdfControl}" />
                                 </UniformGrid>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfBirleştir"
@@ -567,6 +573,9 @@
                                         Height="32"
                                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                 </Button>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfZipBirleştir"
@@ -673,6 +682,9 @@
                                         </Border>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                     <Canvas Width="32" Height="32">
                                         <Image Width="32" Height="32">
@@ -712,6 +724,9 @@
                                         </StackPanel>
                                     </ToggleButton.ToolTip>
                                 </ToggleButton>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="DvdBurnerControl" ArrowVisibility="Collapsed">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
@@ -1212,10 +1227,13 @@
                         BorderBrush="{x:Null}"
                         IsChecked="{Binding CalendarPanelIsExpanded, Mode=OneWay}">
                         <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox Width="420" Height="480">
-                                <GroupBox.Resources>
+                            <Extensions:ResizablePanel Width="420"
+                                Height="480"
+                                MinWidth="420"
+                                MinHeight="480">
+                                <Extensions:ResizablePanel.Resources>
                                     <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="48" />
-                                </GroupBox.Resources>
+                                </Extensions:ResizablePanel.Resources>
                                 <TabControl Background="{StaticResource BorderBackground}">
                                     <TabItem>
                                         <TabItem.Header>
@@ -1301,7 +1319,7 @@
                                         </Grid>
                                     </TabItem>
                                 </TabControl>
-                            </GroupBox>
+                            </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                         <Image Width="16" Height="16">
                             <Image.Source>
@@ -2093,8 +2111,20 @@
                             </StackPanel>
                         </Grid>
                         <Extensions:ContentToggleButton.OverContent>
-                            <StackPanel>
-                                <UniformGrid Columns="2">
+                            <Extensions:ResizablePanel Width="800"
+                                Height="400"
+                                MinWidth="800"
+                                MinHeight="400">
+                                <Grid Background="{StaticResource BorderBackground}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
                                     <ToggleButton IsChecked="{Binding Shutdown}">
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="32" Height="32">
@@ -2125,7 +2155,9 @@
                                                 Text="{twainctrl:Loc CLOSECOMP}" />
                                         </StackPanel>
                                     </ToggleButton>
-                                    <ToggleButton IsChecked="{Binding OcrAllPdfPages}" ToolTip="{twainctrl:Loc OCRALL}">
+                                    <ToggleButton Grid.Column="1"
+                                        IsChecked="{Binding OcrAllPdfPages}"
+                                        ToolTip="{twainctrl:Loc OCRALL}">
                                         <ToggleButton.Content>
                                             <StackPanel Orientation="Horizontal">
                                                 <Image Width="32"
@@ -2139,63 +2171,26 @@
                                             </StackPanel>
                                         </ToggleButton.Content>
                                     </ToggleButton>
-                                </UniformGrid>
-                                <UniformGrid Width="800"
-                                    Height="400"
-                                    Columns="2">
-                                    <GroupBox>
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition />
-                                                <RowDefinition Height="Auto" />
-                                            </Grid.RowDefinitions>
-                                            <ListBox x:Name="LbUnindexed"
-                                                d:ItemsSource="{d:SampleData ItemCount=5}"
-                                                ItemsSource="{Binding UnIndexedFiles}">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock VerticalAlignment="Center">
-                                                            <InlineUIContainer BaselineAlignment="Center">
-                                                                <Image Width="16"
-                                                                    Height="16"
-                                                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
-                                                            </InlineUIContainer>
-                                                            <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                                            <Hyperlink BaselineAlignment="Center"
-                                                                Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                                                                CommandParameter="{Binding Mode=OneWay}"
-                                                                TextDecorations="None">
-                                                                <Image Width="16" Height="16">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="171" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
-                                                            </Hyperlink>
-                                                        </TextBlock>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                            <Button Grid.Row="1"
-                                                HorizontalContentAlignment="Stretch"
-                                                VerticalContentAlignment="Stretch"
-                                                Command="{Binding UnindexedAllFilesOcr}">
-                                                <Grid>
-                                                    <ProgressBar Background="{x:Null}"
-                                                        BorderBrush="{x:Null}"
-                                                        Maximum="1"
-                                                        Value="{Binding OcrAllPdfPagesProgress}" />
-                                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                            <Run d:Text="0"
-                                                                Foreground="LawnGreen"
-                                                                Text="{Binding IndexedFileCount}" />
-                                                            <Run Text="/" />
-                                                            <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
-                                                        </TextBlock>
-                                                        <Image Width="32" Height="32">
+                                    <ListBox x:Name="LbUnindexed"
+                                        Grid.Row="1"
+                                        Margin="1"
+                                        d:ItemsSource="{d:SampleData ItemCount=5}"
+                                        Background="{StaticResource BorderBackground}"
+                                        ItemsSource="{Binding UnIndexedFiles}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <Image Width="16"
+                                                            Height="16"
+                                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                                    </InlineUIContainer>
+                                                    <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
+                                                    <Hyperlink BaselineAlignment="Center"
+                                                        Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        TextDecorations="None">
+                                                        <Image Width="16" Height="16">
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                     <Binding Source="Shell32.dll" />
@@ -2203,20 +2198,51 @@
                                                                 </MultiBinding>
                                                             </Image.Source>
                                                         </Image>
-                                                        <TextBlock VerticalAlignment="Center">
-                                                            <Run Text="{twainctrl:Loc ALL}" />
-                                                            <Run Text="{twainctrl:Loc UNINDEXED}" />
-                                                        </TextBlock>
-                                                    </StackPanel>
-                                                </Grid>
-                                            </Button>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                    <ContentControl Grid.Row="1"
+                                        Grid.Column="1"
+                                        Margin="1"
+                                        Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
+                                        ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                    <Button Grid.Row="2"
+                                        Grid.ColumnSpan="2"
+                                        HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
+                                        Command="{Binding UnindexedAllFilesOcr}">
+                                        <Grid>
+                                            <ProgressBar Background="{x:Null}"
+                                                BorderBrush="{x:Null}"
+                                                Maximum="1"
+                                                Value="{Binding OcrAllPdfPagesProgress}" />
+                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                    <Run d:Text="0"
+                                                        Foreground="LawnGreen"
+                                                        Text="{Binding IndexedFileCount}" />
+                                                    <Run Text="/" />
+                                                    <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
+                                                </TextBlock>
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="171" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Run Text="{twainctrl:Loc ALL}" />
+                                                    <Run Text="{twainctrl:Loc UNINDEXED}" />
+                                                </TextBlock>
+                                            </StackPanel>
                                         </Grid>
-                                    </GroupBox>
-                                    <GroupBox>
-                                        <ContentControl Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}" ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
-                                    </GroupBox>
-                                </UniformGrid>
-                            </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
                 </StackPanel>

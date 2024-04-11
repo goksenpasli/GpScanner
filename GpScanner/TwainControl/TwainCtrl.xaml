@@ -951,6 +951,7 @@
                                     </ComboBox>
                                     <StackPanel x:Name="SpDelay"
                                         Grid.Column="1"
+                                        Background="{StaticResource BorderBackground}"
                                         Orientation="Horizontal">
                                         <Image Width="16" Height="16">
                                             <Image.Source>
@@ -982,6 +983,9 @@
                                             Minimum="0"
                                             ToolTip="{local:Loc SECOND}"
                                             Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                        <StackPanel Orientation="Horizontal">
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        </StackPanel>
                                         <ListBox HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             local:Policy.PolicyName="SelectedRotation"
@@ -1000,6 +1004,9 @@
                                             <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
                                             <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
                                         </ListBox>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        </StackPanel>
                                         <ListBox VerticalContentAlignment="Center"
                                             local:Policy.PolicyName="SelectedFlip"
                                             Background="{DynamicResource BorderBackground}"
