@@ -211,13 +211,8 @@
                     Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}"
                     Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
                     <PdfViewer:PdfShadowedImage.Tag>
-                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                        <MultiBinding Converter="{StaticResource PdfMultiplePageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
-                            <Binding Mode="OneWay">
-                                <Binding.Source>
-                                    <System:Int32>1</System:Int32>
-                                </Binding.Source>
-                            </Binding>
                         </MultiBinding>
                     </PdfViewer:PdfShadowedImage.Tag>
                 </PdfViewer:PdfShadowedImage>

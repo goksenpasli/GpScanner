@@ -366,6 +366,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>AssemblyInfo.cs</LastGenOutput>
     </Content>
+    <Resource Include="Resources\flag_of_iran.png" />
     <Resource Include="Resources\Flag_of_Malaysia.png" />
     <Resource Include="Resources\flag-of-finland.png" />
     <Resource Include="Resources\flag-of-sweden.png" />

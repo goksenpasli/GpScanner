@@ -388,7 +388,8 @@
                     IsEnabled="{Binding Scanner.ArayüzEtkin}"
                     IsExpanded="{Binding ScanSettingsExpanderIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                     <Expander.Header>
-                        <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                        <ScrollViewer HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWayToSource}"
+                            HorizontalScrollBarVisibility="Auto"
                             Template="{DynamicResource HorizontalScrollViewerTemplate}"
                             VerticalScrollBarVisibility="Auto">
                             <Grid Margin="1,0,1,0">
@@ -398,9 +399,9 @@
                                     <RowDefinition Height="28" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <ComboBox local:Policy.PolicyName="SeçiliTarayıcı"
                                     ItemsSource="{Binding Scanner.Tarayıcılar}"
@@ -608,10 +609,10 @@
                                 </Grid>
                                 <Grid Grid.Row="2" Grid.ColumnSpan="4">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
-                                        <ColumnDefinition Width="27.2" />
-                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <ListBox local:Policy.PolicyName="Mode"
                                         Background="{DynamicResource BorderBackground}"

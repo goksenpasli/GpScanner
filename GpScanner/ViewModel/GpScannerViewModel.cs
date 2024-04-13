@@ -2517,6 +2517,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 TesseractViewModel.SeçiliDil = "Malay";
 
                 break;
+
+            case "ایرانی":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("fa");
+                CalendarLang = XmlLanguage.GetLanguage("fa");
+                TesseractViewModel.SeçiliDil = "Persian";
+
+                LangFlowDirection = FlowDirection.RightToLeft;
+                break;
         }
     }
 
