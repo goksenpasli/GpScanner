@@ -2525,6 +2525,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
                 LangFlowDirection = FlowDirection.RightToLeft;
                 break;
+
+            case "МАКЕДОНСКИ":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("mk");
+                CalendarLang = XmlLanguage.GetLanguage("mk");
+                TesseractViewModel.SeçiliDil = "Macedonian";
+
+                break;
         }
     }
 
