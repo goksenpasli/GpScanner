@@ -604,7 +604,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
-                            await SaveJpgImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
+                            await SaveJpgImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount, progress => Scanner.PdfSaveProgressValue = progress);
                         });
                     await RemoveProcessedImages();
                 }
@@ -682,7 +682,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
-                            await SaveTxtFileAsync(seçiliresimler, fileName);
+                            await SaveTxtFileAsync(seçiliresimler, fileName, progress => Scanner.PdfSaveProgressValue = progress);
                         });
                     await RemoveProcessedImages();
                 }
@@ -708,7 +708,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
-                            await SaveWebpImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount);
+                            await SaveWebpImageAsync(seçiliresimler, fileName, Settings.Default.WebPJpgFileProcessorCount, progress => Scanner.PdfSaveProgressValue = progress);
                         });
                     await RemoveProcessedImages();
                 }
@@ -734,7 +734,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
-                            SaveZipImage(seçiliresimler, fileName);
+                            SaveZipImage(seçiliresimler, fileName, progress => Scanner.PdfSaveProgressValue = progress);
                         });
                     await RemoveProcessedImages();
                 }
@@ -3956,7 +3956,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void SaveJpgImage(BitmapFrame scannedImage, string filename) => Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality)));
 
-    private async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, int parallelDegree = 1)
+    private async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, int parallelDegree = 1, Action<double> progressCallback = null)
     {
         string directory = Path.GetDirectoryName(filename);
         await Task.Run(
@@ -3982,6 +3982,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             scannedimage.Resim = null;
                         }
+                        progressCallback?.Invoke((i + 1) / (double)images.Count);
                     });
             });
     }
@@ -4082,7 +4083,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName)
+    private async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName, Action<double> progressCallback = null)
     {
         if (images is not null && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
         {
@@ -4093,6 +4094,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
                         File.WriteAllText(Path.Combine(Path.GetDirectoryName(fileName), $"{Path.GetFileNameWithoutExtension(fileName)}{i}.txt"), string.Join(" ", ocrtext.Select(z => z.Text)));
+                        progressCallback?.Invoke((i + 1) / (double)images.Count);
                     });
             }
         }
@@ -4100,7 +4102,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void SaveWebpImage(BitmapFrame scannedImage, string filename) => Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality)));
 
-    private async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, int parallelDegree = 1)
+    private async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, int parallelDegree = 1, Action<double> progressCallback = null)
     {
         string directory = Path.GetDirectoryName(filename);
         await Task.Run(
@@ -4126,6 +4128,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         {
                             scannedimage.Resim = null;
                         }
+                        progressCallback?.Invoke((i + 1) / (double)images.Count);
                     });
             });
     }
@@ -4146,7 +4149,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    private void SaveZipImage(List<ScannedImage> seçiliresimler, string fileName)
+    private void SaveZipImage(List<ScannedImage> seçiliresimler, string fileName, Action<double> progressCallback = null)
     {
         using ZipArchive archive = ZipFile.Open(fileName, ZipArchiveMode.Update);
         for (int i = 0; i < seçiliresimler.Count; i++)
@@ -4155,6 +4158,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             File.WriteAllBytes(fPath, seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
             _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
             File.Delete(fPath);
+            progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
         }
     }
 

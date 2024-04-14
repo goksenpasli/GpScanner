@@ -91,7 +91,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private async Task CopyFileAsync(string sourceFilePath, string destinationFilePath, bool overwrite, Action<double> progressCallback)
+    private async Task CopyFileAsync(string sourceFilePath, string destinationFilePath, bool overwrite, Action<double> progressCallback = null)
     {
         try
         {
@@ -108,7 +108,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
             {
                 await destinationStream.WriteAsync(buffer, 0, bytesRead);
                 totalBytesRead += bytesRead;
-                progressCallback(totalBytesRead / (double)fileSize);
+                progressCallback?.Invoke(totalBytesRead / (double)fileSize);
             }
             buffer = null;
         }

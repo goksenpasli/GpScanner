@@ -359,11 +359,7 @@ public class Compressor : Control, INotifyPropertyChanged
                                 gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
                             }
                         }
-
-                        if (progresscallback is not null)
-                        {
-                            progresscallback((i + 1) / (double)bitmapFrames.Count);
-                        }
+                        progresscallback?.Invoke((i + 1) / (double)bitmapFrames.Count);
                     }
 
                     ApplyDefaultPdfCompression(document);

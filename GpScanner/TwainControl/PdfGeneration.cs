@@ -540,7 +540,7 @@ public static class PdfGeneration
         }
     }
 
-    public static async Task<string[]> WritePdfToJpgFileAsync(string pdffilepath, int dpi, Action<double> progresscallback)
+    public static async Task<string[]> WritePdfToJpgFileAsync(string pdffilepath, int dpi, Action<double> progresscallback = null)
     {
         if (!PdfViewer.PdfViewer.IsValidPdfFile(pdffilepath))
         {
@@ -558,7 +558,7 @@ public static class PdfGeneration
                     if (File.Exists(outfilename))
                     {
                         jpgfiles.Add(outfilename);
-                        progresscallback((i + 1) / (double)pdfDoc.PageCount);
+                        progresscallback?.Invoke((i + 1) / (double)pdfDoc.PageCount);
                         continue;
                     }
                     int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
@@ -566,7 +566,7 @@ public static class PdfGeneration
                     Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
                     image.Save(outfilename, ImageFormat.Jpeg);
                     jpgfiles.Add(outfilename);
-                    progresscallback((i + 1) / (double)pdfDoc.PageCount);
+                    progresscallback?.Invoke((i + 1) / (double)pdfDoc.PageCount);
                 }
             });
         return [.. jpgfiles];
