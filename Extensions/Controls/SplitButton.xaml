@@ -14,7 +14,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition Width="14" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Border x:Name="border"
                             Background="{TemplateBinding Panel.Background}"
@@ -53,23 +53,25 @@
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=SplitContentPartIsEnabled}"
                             IsTabStop="{TemplateBinding IsTabStop}">
-                            <Path x:Name="path"
-                                Margin="0,2,0,0"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Data="{DynamicResource ArrowGeometry}"
-                                Fill="#606060"
-                                Focusable="False">
-                                <Path.Style>
-                                    <Style TargetType="Path">
-                                        <Style.Triggers>
-                                            <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Fill" Value="#BFBFBF" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Path.Style>
-                            </Path>
+                            <ToggleButton.Style>
+                                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="ToggleButton">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=SplitPartContent}" Value="{x:Null}">
+                                            <Setter Property="Content">
+                                                <Setter.Value>
+                                                    <Path Margin="1,2,1,0"
+                                                        HorizontalAlignment="Center"
+                                                        VerticalAlignment="Center"
+                                                        Data="{DynamicResource ArrowGeometry}"
+                                                        Fill="#606060"
+                                                        Focusable="False" />
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                    <Setter Property="Content" Value="{Binding Path=SplitPartContent, RelativeSource={RelativeSource AncestorType=local:SplitButton}}" />
+                                </Style>
+                            </ToggleButton.Style>
                         </ToggleButton>
                     </Grid>
                     <ControlTemplate.Triggers>
@@ -89,7 +91,6 @@
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="False">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#ADB2B5" />
-                            <Setter TargetName="path" Property="Fill" Value="#BFBFBF" />
                             <Setter TargetName="border" Property="Panel.Background" Value="#F4F4F4" />
                             <Setter Property="TextElement.Foreground" Value="#838383" />
                         </Trigger>

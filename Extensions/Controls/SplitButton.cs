@@ -8,6 +8,7 @@ namespace Extensions;
 [TemplatePart(Name = "_PART_Popup", Type = typeof(Popup))]
 public class SplitButton : ButtonBase
 {
+    public static readonly DependencyProperty SplitPartContentProperty = DependencyProperty.Register("SplitPartContent", typeof(object), typeof(SplitButton), new PropertyMetadata(null));
     public static readonly DependencyProperty AlwaysOnTopProperty = DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(SplitButton), new PropertyMetadata(true, OnTopChanged));
     public static readonly DependencyProperty ContentHorizontalOffsetProperty = DependencyProperty.Register("ContentHorizontalOffset", typeof(double), typeof(SplitButton), new PropertyMetadata(0d));
     public static readonly DependencyProperty ContentVerticalOffsetProperty = DependencyProperty.Register("ContentVerticalOffset", typeof(double), typeof(SplitButton), new PropertyMetadata(0d));
@@ -36,6 +37,8 @@ public class SplitButton : ButtonBase
     public PopupAnimation PopupAnimation { get => (PopupAnimation)GetValue(PopupAnimationProperty); set => SetValue(PopupAnimationProperty, value); }
 
     public bool SplitContentPartIsEnabled { get => (bool)GetValue(SplitContentPartIsEnabledProperty); set => SetValue(SplitContentPartIsEnabledProperty, value); }
+
+    public object SplitPartContent { get => GetValue(SplitPartContentProperty); set => SetValue(SplitPartContentProperty, value); }
 
     public bool StayOpen { get => (bool)GetValue(StayOpenProperty); set => SetValue(StayOpenProperty, value); }
 

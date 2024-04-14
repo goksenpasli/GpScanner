@@ -49,6 +49,7 @@
                                             CommandParameter="{Binding Mode=OneWay, Path=FullPath}"
                                             Content="{Binding Mode=OneWay, Path=Path}"
                                             Opacity="0.8"
+                                            SplitPartContent="≻"
                                             TopMost="False">
                                             <local:SplitButton.InternalContent>
                                                 <ItemsControl MaxHeight="250"
