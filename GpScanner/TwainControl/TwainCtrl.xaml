@@ -341,13 +341,18 @@
                                 </GroupBox>
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
-                        <Extensions:SplitButton Background="{x:Null}"
+                        <Extensions:ContentToggleButton Background="{x:Null}"
                             BorderBrush="{x:Null}"
-                            Command="{Binding WebAdreseGit}"
-                            CommandParameter="https://github.com/goksenpasli">
-                            <Extensions:SplitButton.InternalContent>
-                                <local:AboutView />
-                            </Extensions:SplitButton.InternalContent>
+                            StaysOpen="True"
+                            TopMost="False">
+                            <Extensions:ContentToggleButton.OverContent>
+                                <Extensions:ResizablePanel Width="500"
+                                    Height="400"
+                                    MinWidth="500"
+                                    MinHeight="400">
+                                    <local:AboutView />
+                                </Extensions:ResizablePanel>
+                            </Extensions:ContentToggleButton.OverContent>
                             <Image Width="16" Height="16">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -356,7 +361,7 @@
                                     </MultiBinding>
                                 </Image.Source>
                             </Image>
-                        </Extensions:SplitButton>
+                        </Extensions:ContentToggleButton>
                         <Extensions:ContentToggleButton local:Policy.PolicyName="PdfSettingsPage"
                             ArrowVisibility="Collapsed"
                             Background="{x:Null}"

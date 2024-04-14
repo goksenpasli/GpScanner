@@ -28,6 +28,10 @@ public class TranslateViewModel : InpcBase
             object parsedObj = JSS.DeserializeObject(page);
             string çeviri = string.Empty;
             object[] data = parsedObj as object[];
+            if (data[0] is null)
+            {
+                return string.Empty;
+            }
             foreach (object firstnodeItem in data[0] as object[])
             {
                 çeviri += (firstnodeItem as object[])?[0].ToString();

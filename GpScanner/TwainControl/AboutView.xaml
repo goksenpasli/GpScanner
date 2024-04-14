@@ -1,15 +1,14 @@
 ﻿<UserControl x:Class="TwainControl.AboutView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Controls="clr-namespace:Extensions.Controls;assembly=Extensions"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
-    Width="500"
-    Height="350"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="350"
+    d:DesignHeight="400"
     d:DesignWidth="500"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
@@ -28,7 +27,11 @@
                 <TextBlock HorizontalAlignment="Right" Text="{Binding Version.FileVersion}" />
             </UniformGrid>
         </GroupBox.Header>
-        <UniformGrid Columns="2">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
             <StackPanel>
                 <TextBlock FontSize="20" TextWrapping="Wrap">
                     <Hyperlink local:Policy.PolicyName="WebAdreseGit"
@@ -145,14 +148,40 @@
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
-            <Extensions:ButtonedTextBox HorizontalScrollBarVisibility="Auto"
-                IsReadOnly="True"
-                OpenButtonVisibility="Collapsed"
-                PasteButtonVisibility="Collapsed"
-                PrintButtonVisibility="Visible"
-                ResetButtonVisibility="Collapsed"
-                Text="{local:Loc LICENSE}"
-                VerticalScrollBarVisibility="Auto" />
-        </UniformGrid>
+            <Grid Grid.Column="1">
+                <Grid.DataContext>
+                    <local:AboutViewTranslateViewModel />
+                </Grid.DataContext>
+                <Extensions:ButtonedTextBox Margin="0,8,0,0"
+                    HorizontalScrollBarVisibility="Auto"
+                    IsReadOnly="True"
+                    OpenButtonVisibility="Collapsed"
+                    PasteButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Visible"
+                    ResetButtonVisibility="Collapsed"
+                    Text="{local:Loc LICENSE}"
+                    VerticalScrollBarVisibility="Auto" />
+                <Extensions:ContentToggleButton HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Extensions:ContentToggleButton.OverContent>
+                        <GroupBox>
+                            <StackPanel>
+                                <Controls:TranslateView />
+                                <Extensions:ButtonedTextBox Width="250"
+                                    Height="320"
+                                    HorizontalScrollBarVisibility="Disabled"
+                                    IsReadOnly="True"
+                                    OpenButtonVisibility="Collapsed"
+                                    PasteButtonVisibility="Collapsed"
+                                    PrintButtonVisibility="Visible"
+                                    ResetButtonVisibility="Collapsed"
+                                    Text="{Binding Çeviri, Mode=OneWay}"
+                                    TextWrapping="Wrap"
+                                    VerticalScrollBarVisibility="Auto" />
+                            </StackPanel>
+                        </GroupBox>
+                    </Extensions:ContentToggleButton.OverContent>
+                </Extensions:ContentToggleButton>
+            </Grid>
+        </Grid>
     </GroupBox>
 </UserControl>
