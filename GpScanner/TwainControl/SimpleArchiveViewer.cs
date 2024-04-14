@@ -114,8 +114,8 @@ public class SimpleArchiveViewer : ArchiveViewer
                     using ArchiveFile archive = new(ArchiveFilePath);
                     if (archive != null)
                     {
-                        TotalFilesCount = archive.Entries.Count;
-                        foreach (Entry item in archive.Entries)
+                        TotalFilesCount = archive.Entries?.Count(z => z.Size > 0) ?? 0;
+                        foreach (Entry item in archive.Entries?.Where(z => z.Size > 0))
                         {
                             ExtendedArchiveData archiveData = new()
                             {
@@ -130,6 +130,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                                 Method = item.Method,
                                 Attributes = (FileAttributes)item.Attributes,
                             };
+                            archiveData.PropertyChanged += ArchiveData_PropertyChanged;
                             await Dispatcher.InvokeAsync(() => Arşivİçerik.Add(archiveData));
                         }
                     }
@@ -143,6 +144,14 @@ public class SimpleArchiveViewer : ArchiveViewer
             });
         cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
         return Arşivİçerik;
+    }
+
+    private void ArchiveData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "IsChecked")
+        {
+            CheckedCount = Arşivİçerik?.Count(z => z.IsChecked) ?? 0;
+        }
     }
 
     private new void ExtractSelectedFiles(string archivepath, IEnumerable<ArchiveData> list, string destinationfolder)

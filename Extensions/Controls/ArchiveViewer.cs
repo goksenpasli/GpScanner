@@ -27,6 +27,7 @@ namespace Extensions
         private string[] selectedFiles;
         private double toplamOran;
         private int totalFilesCount;
+        private int checkedCount;
 
         static ArchiveViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ArchiveViewer), new FrameworkPropertyMetadata(typeof(ArchiveViewer))); }
 
@@ -171,6 +172,16 @@ namespace Extensions
 
         public RelayCommand<object> TümünüSeç { get; }
 
+        public int CheckedCount {
+            get => checkedCount; set {
+                if (checkedCount != value)
+                {
+                    checkedCount = value;
+                    OnPropertyChanged(nameof(CheckedCount));
+                }
+            }
+        }
+
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -273,8 +284,8 @@ namespace Extensions
                         using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
                         if (archive != null)
                         {
-                            TotalFilesCount = archive.Entries.Count;
-                            foreach (ZipArchiveEntry item in archive.Entries)
+                            TotalFilesCount = archive.Entries?.Count(z => z.Length > 0) ?? 0;
+                            foreach (ZipArchiveEntry item in archive.Entries?.Where(z => z.Length > 0))
                             {
                                 ArchiveData archiveData = new()
                                 {
@@ -286,6 +297,7 @@ namespace Extensions
                                     DüzenlenmeZamanı = item.LastWriteTime.Date,
                                     Crc = null
                                 };
+                                archiveData.PropertyChanged += ArchiveData_PropertyChanged;
                                 await Dispatcher.InvokeAsync(() => Arşivİçerik.Add(archiveData));
                             }
                         }
@@ -299,6 +311,14 @@ namespace Extensions
                 });
             cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
             return Arşivİçerik;
+        }
+
+        private void ArchiveData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "IsChecked")
+            {
+                CheckedCount = Arşivİçerik?.Count(z => z.IsChecked) ?? 0;
+            }
         }
 
         private static async void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)

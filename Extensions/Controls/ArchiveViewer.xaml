@@ -182,7 +182,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
-                                    <Run Text="{Binding Path=Arşivİçerik.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />
+                                    <Run Text="{Binding Path=CheckedCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />
                                     <System:String>/</System:String>
                                     <Run Text="{Binding TotalFilesCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" />
                                 </TextBlock>

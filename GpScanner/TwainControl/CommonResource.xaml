@@ -230,7 +230,11 @@
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
-                                    </TextBlock.Style><Run Text="{Binding Arşivİçerik.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" /><Run Text=" " /><Run Text="/" /><Run Text=" " /><Run Text="{Binding TotalFilesCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" /></TextBlock>
+                                    </TextBlock.Style>
+                                    <Run Text="{Binding CheckedCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />
+                                    <System:String>/</System:String>
+                                    <Run Text="{Binding TotalFilesCount, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />
+                                </TextBlock>
                             </StatusBarItem>
                         </StatusBar>
                     </Grid>
