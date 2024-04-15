@@ -152,7 +152,8 @@
                 <Grid.DataContext>
                     <local:AboutViewTranslateViewModel />
                 </Grid.DataContext>
-                <Extensions:ButtonedTextBox Margin="0,8,0,0"
+                <Extensions:ButtonedTextBox x:Name="TbLic"
+                    Margin="0,8,0,0"
                     HorizontalScrollBarVisibility="Auto"
                     IsReadOnly="True"
                     OpenButtonVisibility="Collapsed"
@@ -163,11 +164,14 @@
                     VerticalScrollBarVisibility="Auto" />
                 <Extensions:ContentToggleButton HorizontalAlignment="Left" VerticalAlignment="Top">
                     <Extensions:ContentToggleButton.OverContent>
-                        <GroupBox>
-                            <StackPanel>
-                                <Controls:TranslateView />
-                                <Extensions:ButtonedTextBox Width="250"
-                                    Height="320"
+                        <GroupBox Width="{Binding Path=ActualWidth, Source={x:Reference TbLic}}" Height="{Binding Path=ActualHeight, Source={x:Reference TbLic}}">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition />
+                                </Grid.RowDefinitions>
+                                <Controls:TranslateView SourceLangIsEnabled="False" />
+                                <Extensions:ButtonedTextBox Grid.Row="1"
                                     HorizontalScrollBarVisibility="Disabled"
                                     IsReadOnly="True"
                                     OpenButtonVisibility="Collapsed"
@@ -177,7 +181,7 @@
                                     Text="{Binding Çeviri, Mode=OneWay}"
                                     TextWrapping="Wrap"
                                     VerticalScrollBarVisibility="Auto" />
-                            </StackPanel>
+                            </Grid>
                         </GroupBox>
                     </Extensions:ContentToggleButton.OverContent>
                 </Extensions:ContentToggleButton>

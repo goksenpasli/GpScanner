@@ -8,14 +8,14 @@
                 <ControlTemplate TargetType="local:NumericUpDown">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="*" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <RepeatButton x:Name="PART_UpButton"
                             Background="{TemplateBinding Background}"
@@ -50,9 +50,9 @@
                             <Setter TargetName="PART_DownButton" Property="Background" Value="Gray" />
                         </Trigger>
                         <Trigger Property="Orientation" Value="Vertical">
-                            <Setter TargetName="PART_DownButton" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="0" />
-                            <Setter TargetName="PART_UpButton" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="PART_DownButton" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="PART_UpButton" Property="Grid.Column" Value="1" />
                             <Setter TargetName="PART_UpButton" Property="Grid.Row" Value="0" />
                             <Setter TargetName="PART_TextBox" Property="Grid.Row" Value="1" />
                             <Setter TargetName="PART_DownButton" Property="Grid.Row" Value="2" />
@@ -61,9 +61,9 @@
                             <Setter TargetName="PART_DownButton" Property="Grid.Column" Value="0" />
                             <Setter TargetName="PART_TextBox" Property="Grid.Column" Value="1" />
                             <Setter TargetName="PART_UpButton" Property="Grid.Column" Value="2" />
-                            <Setter TargetName="PART_TextBox" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="PART_DownButton" Property="Grid.Row" Value="0" />
-                            <Setter TargetName="PART_UpButton" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="PART_TextBox" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="PART_DownButton" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="PART_UpButton" Property="Grid.Row" Value="1" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
