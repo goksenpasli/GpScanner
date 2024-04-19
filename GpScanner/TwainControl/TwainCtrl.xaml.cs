@@ -11,6 +11,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Media;
 using System.Printing;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -28,6 +29,7 @@ using System.Xml.Linq;
 using System.Xml.Serialization;
 using Extensions;
 using Extensions.Controls;
+using Microsoft.Win32;
 using Ocr;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
@@ -150,6 +152,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int? undoImageIndex;
     private double width;
     private int printDpi = 300;
+    private bool ısAdministrator;
 
     public TwainCtrl()
     {
@@ -899,15 +902,23 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new() { Filter = "NuGet Package (*.nupkg)|*.nupkg", Multiselect = false };
                 if (openFileDialog.ShowDialog() == true)
                 {
+                    string dllpath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\x86\pdfium.dll";
                     try
                     {
-                        string dllpath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\x86\pdfium.dll";
                         ZipExtractSingleFile(openFileDialog.FileName, "runtimes/win-x86/native/pdfium.dll", dllpath);
                         _ = MessageBox.Show($"{Translation.GetResStringValue("INSTALLED")}\n{Translation.GetResStringValue("RESTARTAPP")}", AppName);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        throw new ArgumentException(ex?.Message);
+                        if (IsAdministrator)
+                        {
+                            string sourcedllpath = Path.GetTempPath() + "pdfium.dll";
+                            ZipExtractSingleFile(openFileDialog.FileName, "runtimes/win-x86/native/pdfium.dll", sourcedllpath);
+                            AddPendingFileRenameOperation(sourcedllpath, dllpath);
+                            _ = MessageBox.Show($"{Translation.GetResStringValue("RESTARTCOMP")}", AppName);
+                            return;
+                        }
+                        _ = MessageBox.Show($"{Translation.GetResStringValue("FOLDERACCESS")}", AppName);
                     }
                 }
             },
@@ -2322,6 +2333,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 ımgData = value;
                 OnPropertyChanged(nameof(ImgData));
             }
+        }
+    }
+
+    public bool IsAdministrator {
+        get {
+            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new(identity);
+            ısAdministrator = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            return ısAdministrator;
         }
     }
 
@@ -4473,29 +4493,30 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(this))
+        try
         {
-            try
+            twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
+            if (twain is null)
             {
-                twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
-                Scanner.Tarayıcılar = twain.SourceNames;
-                twain.TransferImage += Twain_TransferImage;
-                twain.ScanningComplete += Twain_ScanningComplete;
-                switch (Scanner?.Tarayıcılar?.Count)
-                {
-                    case 0:
-                        Settings.Default.SeçiliTarayıcı = string.Empty;
-                        return;
+                return;
+            }
+            Scanner.Tarayıcılar = twain.SourceNames;
+            twain.TransferImage += Twain_TransferImage;
+            twain.ScanningComplete += Twain_ScanningComplete;
+            switch (Scanner?.Tarayıcılar?.Count)
+            {
+                case 0:
+                    Settings.Default.SeçiliTarayıcı = string.Empty;
+                    return;
 
-                    case 1:
-                        Settings.Default.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
-                        break;
-                }
+                case 1:
+                    Settings.Default.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
+                    break;
             }
-            catch (Exception)
-            {
-                Scanner.ArayüzEtkin = false;
-            }
+        }
+        catch (Exception)
+        {
+            Scanner.ArayüzEtkin = false;
         }
     }
 
@@ -4503,5 +4524,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         using ZipArchive archive = ZipFile.OpenRead(zipfileName);
         archive.Entries?.FirstOrDefault(z => z.FullName == zipcontentfilename)?.ExtractToFile(destinationfilename, true);
+    }
+
+    private void AddPendingFileRenameOperation(string sourceFilePath, string targetFilePath)
+    {
+        const string registryKeyPath = @"SYSTEM\CurrentControlSet\Control\Session Manager";
+        const string valueName = "PendingFileRenameOperations";
+
+        using RegistryKey key = Registry.LocalMachine.OpenSubKey(registryKeyPath, true);
+        if (key != null)
+        {
+            string[] newValue = key.GetValue(valueName) is string[] currentValue ? (string[])currentValue.Clone() : [];
+            Array.Resize(ref newValue, newValue.Length + 2);
+            newValue[newValue.Length - 2] = sourceFilePath;
+            newValue[newValue.Length - 1] = targetFilePath;
+            key.SetValue(valueName, newValue, RegistryValueKind.MultiString);
+        }
+        else
+        {
+            throw new Exception("Registry key not found.");
+        }
     }
 }
