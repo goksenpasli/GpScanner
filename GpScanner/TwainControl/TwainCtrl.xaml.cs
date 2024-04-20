@@ -146,13 +146,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int selectedTabIndex;
     private List<ScannedImage[]> splittedIndexImages;
     private string textSplitList;
-    private Twain twain;
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
     private ScannedImage undoImage;
     private int? undoImageIndex;
     private double width;
     private int printDpi = 300;
-    private bool ısAdministrator;
+    private static bool ısAdministrator;
+    private Twain twain;
 
     public TwainCtrl()
     {
@@ -168,16 +168,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         TranslationSource.Instance.PropertyChanged += Language_PropertyChanged;
         SelectedPaper = Settings.Default.LockSelectedPaper ? Papers.FirstOrDefault(z => z.PaperType == Settings.Default.DefaultPaper) : Papers.FirstOrDefault(z => z.PaperType == "A4");
         DependencyPropertyDescriptor.FromProperty(MediaViewer.MediaPositionProperty, typeof(MediaViewer))?.AddValueChanged(mediaViewer, OnMediaPositionChanged);
-
+        Loaded += TwainCtrl_Loaded;
         ScanImage = new RelayCommand<object>(
             async parameter =>
             {
                 GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 ScanCommonSettings();
-                twain.SelectSource(Settings.Default.SeçiliTarayıcı);
-                twain.StartScanning(_settings);
-                twain.ScanningComplete += ScanComplete;
+                Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
+                Twain.StartScanning(_settings);
+                Twain.ScanningComplete += ScanComplete;
             },
             parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy(nameof(ScanImage)));
 
@@ -195,9 +195,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Scanner.Resimler = [];
                 Scanner.Resimler.CollectionChanged -= Scanner.Resimler_CollectionChanged;
                 Scanner.Resimler.CollectionChanged += Scanner.Resimler_CollectionChanged;
-                twain.SelectSource(Settings.Default.SeçiliTarayıcı);
-                twain.StartScanning(_settings);
-                twain.ScanningComplete += FastScanComplete;
+                Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
+                Twain.StartScanning(_settings);
+                Twain.ScanningComplete += FastScanComplete;
             },
             parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Scanner?.AutoSave == true && FileNameValid(Scanner?.FileName) && Policy.CheckPolicy(nameof(FastScanImage)));
 
@@ -1926,7 +1926,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfImportViewerControl.PdfViewer.EypFilePath = file;
                 }
                 pdfImportViewerControl.DataContext = this;
-                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -1948,7 +1948,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 ImageViewer imageViewer = new() { PanoramaButtonVisibility = Visibility.Collapsed, PrintButtonVisibility = Visibility.Visible, ImageFilePath = parameter as string };
-                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -1965,7 +1965,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 XmlViewerControl xmlViewerControl = new();
                 XmlViewerControlModel.SetXmlContent(xmlViewerControl, parameter as string);
-                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -1992,6 +1992,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         WindowState = WindowState.Maximized,
                         ShowInTaskbar = false,
                         Title = AppName,
+                        UseLayoutRounding = true,
                         WindowStartupLocation = WindowStartupLocation.CenterOwner
                     };
                     maximizedWindow.KeyDown += (s, e) =>
@@ -2048,6 +2049,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => GetSelectedImagesCount() > 0);
     }
+
+    private void TwainCtrl_Loaded(object sender, RoutedEventArgs e) => InitializeTwainControl();
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -2336,7 +2339,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public bool IsAdministrator {
+    public static bool IsAdministrator {
         get {
             using WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new(identity);
@@ -2817,6 +2820,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public Twain Twain {
+        get => twain;
+        set {
+            if (twain != value)
+            {
+                twain = value;
+                OnPropertyChanged(nameof(Twain));
+            }
+        }
+    }
+
     public ScannedImage UndoImage {
         get => undoImage;
 
@@ -3251,7 +3265,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if (disposing)
             {
                 Scanner.Resimler = null;
-                twain = null;
+                Twain = null;
                 Scanner.CroppedImage = null;
                 Scanner.CopyCroppedImage = null;
             }
@@ -3630,7 +3644,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.Resimler.Clear();
         DataBaseTextData = null;
         PdfFileOcrData = null;
-        twain.ScanningComplete -= FastScanComplete;
+        Twain.ScanningComplete -= FastScanComplete;
         Scanner.ArayüzEtkin = true;
     }
 
@@ -4225,7 +4239,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             PlayNotificationSound(Settings.Default.AudioFilePath);
         }
         DataBaseTextData = null;
-        twain.ScanningComplete -= ScanComplete;
+        Twain.ScanningComplete -= ScanComplete;
     }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -4491,26 +4505,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private void UserControl_Loaded(object sender, RoutedEventArgs e)
+    private void InitializeTwainControl()
     {
         try
         {
-            twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
-            if (twain is null)
+            Twain = new Twain(new WindowMessageHook(Window.GetWindow(Parent)));
+            if (Twain?.SourceNames?.Count == 0)
             {
                 return;
             }
-            Scanner.Tarayıcılar = twain.SourceNames;
-            twain.TransferImage += Twain_TransferImage;
-            twain.ScanningComplete += Twain_ScanningComplete;
-            switch (Scanner?.Tarayıcılar?.Count)
+            Scanner.Tarayıcılar = Twain.SourceNames;
+            Twain.TransferImage += Twain_TransferImage;
+            Twain.ScanningComplete += Twain_ScanningComplete;
+            switch (Scanner.Tarayıcılar.Count)
             {
                 case 0:
                     Settings.Default.SeçiliTarayıcı = string.Empty;
                     return;
 
                 case 1:
-                    Settings.Default.SeçiliTarayıcı = Scanner.Tarayıcılar[0];
+                    Settings.Default.SeçiliTarayıcı = Twain.DefaultSourceName;
                     break;
             }
         }

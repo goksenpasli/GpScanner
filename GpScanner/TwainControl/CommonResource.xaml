@@ -176,6 +176,10 @@
                                         Extensions:GridViewSort.PropertyName="Attributes"
                                         DisplayMemberBinding="{Binding Attributes}"
                                         Header="ÖZNİTELİK" />
+                                    <GridViewColumn Width="70"
+                                        Extensions:GridViewSort.PropertyName="Encrypted"
+                                        DisplayMemberBinding="{Binding Encrypted}"
+                                        Header="ŞİFRELİ" />
                                 </GridView>
                             </ListView.View>
                         </ListView>
@@ -200,7 +204,27 @@
                                 </ItemsPanelTemplate>
                             </StatusBar.ItemsPanel>
                             <StatusBarItem Grid.Column="0">
-                                <TextBlock Text="{Binding SelectedFile.DosyaAdı, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="47" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                        <Image.Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Visibility" Value="Collapsed" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding SelectedItem.Encrypted, Mode=OneWay, ElementName=Lv}" Value="true">
+                                                        <Setter Property="Visibility" Value="Visible" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Image.Style>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding SelectedFile.DosyaAdı, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />
+                                </StackPanel>
                             </StatusBarItem>
                             <StatusBarItem Grid.Column="1">
                                 <TextBlock Text="{Binding SelectedFile.DüzenlenmeZamanı, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />

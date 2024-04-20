@@ -47,7 +47,7 @@
                 <ContextMenu>
                     <MenuItem Command="{Binding OpenFile}"
                         FontFamily="Segoe UI"
-                        Header="Dosya Aç"
+                        Header="DOSYA AÇ"
                         Visibility="{Binding OpenButtonVisibility}" />
                     <Separator />
                     <MenuItem>
@@ -100,52 +100,62 @@
                         </MenuItem.Template>
                     </MenuItem>
                     <Separator />
-                    <MenuItem FontFamily="Segoe UI"
-                        Header="Ters Renk"
-                        IsCheckable="True"
-                        IsChecked="{Binding InvertColor}" />
-                    <MenuItem FontFamily="Segoe UI"
-                        Header="Keskinlik"
-                        IsCheckable="True"
-                        IsChecked="{Binding ApplySharpen}" />
-                    <MenuItem FontFamily="Segoe UI"
-                        Header="Emboss"
-                        IsCheckable="True"
-                        IsChecked="{Binding ApplyEmboss}" />
-                    <MenuItem FontFamily="Segoe UI"
-                        Header="Pikselleştir"
-                        IsCheckable="True"
-                        IsChecked="{Binding ApplyPixelate}" />
-                    <MenuItem FontFamily="Segoe UI"
-                        Header="Siyah Beyaz"
-                        IsCheckable="True"
-                        IsChecked="{Binding ApplyBw}" />
-                    <MenuItem FontFamily="Segoe UI"
-                        Header="Gri"
-                        IsCheckable="True"
-                        IsChecked="{Binding ApplyGrayscale}" />
-                    <MenuItem FontFamily="Segoe UI"
-                        Header="Blur"
-                        IsCheckable="True"
-                        IsChecked="{Binding BlurColor}" />
-                    <MenuItem FontFamily="Segoe UI"
-                        Header="360°"
-                        IsCheckable="True"
-                        IsChecked="{Binding PanoramaMode}" />
+                    <MenuItem Header="EFEKT">
+                        <MenuItem FontFamily="Segoe UI"
+                            Header="TERS RENK"
+                            IsCheckable="True"
+                            IsChecked="{Binding InvertColor}"
+                            StaysOpenOnClick="True" />
+                        <MenuItem FontFamily="Segoe UI"
+                            Header="KESKİNLİK"
+                            IsCheckable="True"
+                            IsChecked="{Binding ApplySharpen}"
+                            StaysOpenOnClick="True" />
+                        <MenuItem FontFamily="Segoe UI"
+                            Header="EMBOSS"
+                            IsCheckable="True"
+                            IsChecked="{Binding ApplyEmboss}"
+                            StaysOpenOnClick="True" />
+                        <MenuItem FontFamily="Segoe UI"
+                            Header="PİKSELLEŞTİR"
+                            IsCheckable="True"
+                            IsChecked="{Binding ApplyPixelate}"
+                            StaysOpenOnClick="True" />
+                        <MenuItem FontFamily="Segoe UI"
+                            Header="SİYAH BEYAZ"
+                            IsCheckable="True"
+                            IsChecked="{Binding ApplyBw}"
+                            StaysOpenOnClick="True" />
+                        <MenuItem FontFamily="Segoe UI"
+                            Header="GRİ"
+                            IsCheckable="True"
+                            IsChecked="{Binding ApplyGrayscale}"
+                            StaysOpenOnClick="True" />
+                        <MenuItem FontFamily="Segoe UI"
+                            Header="BLUR"
+                            IsCheckable="True"
+                            IsChecked="{Binding BlurColor}"
+                            StaysOpenOnClick="True" />
+                        <MenuItem FontFamily="Segoe UI"
+                            Header="360°"
+                            IsCheckable="True"
+                            IsChecked="{Binding PanoramaMode}"
+                            StaysOpenOnClick="True" />
+                    </MenuItem>
                     <Separator />
-                    <MenuItem>
-                        <MenuItem.Template>
-                            <ControlTemplate>
-                                <ListBox Margin="32,0,0,0"
-                                    SelectedValue="{Binding VideoStretch}"
-                                    SelectedValuePath="Tag">
-                                    <ListBoxItem Content="Orijinal Boyut" Tag="{x:Static Stretch.None}" />
-                                    <ListBoxItem Content="Doldur" Tag="{x:Static Stretch.Fill}" />
-                                    <ListBoxItem Content="En Boy" Tag="{x:Static Stretch.Uniform}" />
-                                    <ListBoxItem Content="En Boy Doldur" Tag="{x:Static Stretch.UniformToFill}" />
-                                </ListBox>
-                            </ControlTemplate>
-                        </MenuItem.Template>
+                    <MenuItem Header="BOYUT">
+                        <MenuItem>
+                            <MenuItem.Template>
+                                <ControlTemplate>
+                                    <ListBox SelectedValue="{Binding VideoStretch}" SelectedValuePath="Tag">
+                                        <ListBoxItem Content="ORİJİNAL BOYUT" Tag="{x:Static Stretch.None}" />
+                                        <ListBoxItem Content="DOLDUR" Tag="{x:Static Stretch.Fill}" />
+                                        <ListBoxItem Content="EN BOY" Tag="{x:Static Stretch.Uniform}" />
+                                        <ListBoxItem Content="EN BOY DOLDUR" Tag="{x:Static Stretch.UniformToFill}" />
+                                    </ListBox>
+                                </ControlTemplate>
+                            </MenuItem.Template>
+                        </MenuItem>
                     </MenuItem>
                     <Separator />
                     <MenuItem Command="{Binding ClosePlayer}"

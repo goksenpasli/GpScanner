@@ -47,7 +47,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                     throw new ArgumentException(ex?.Message);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(ArchivePath));
+            parameter => !string.IsNullOrWhiteSpace(ArchivePath) && !((ExtendedArchiveData)SelectedFile).Encrypted);
 
         SeçiliAyıkla = new RelayCommand<object>(
             parameter =>
@@ -59,7 +59,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                     OpenFolderAndSelectItem(path, string.Empty);
                 }
             },
-            parameter => Arşivİçerik is not null && CollectionViewSource.GetDefaultView(Arşivİçerik).OfType<ArchiveData>().Count(z => z.IsChecked) > 0);
+            parameter => Arşivİçerik is not null && CollectionViewSource.GetDefaultView(Arşivİçerik).OfType<ArchiveData>().Count(z => z.IsChecked) > 0 && !((ExtendedArchiveData)SelectedFile).Encrypted);
     }
 
     public new RelayCommand<object> ArşivTekDosyaÇıkar { get; }
@@ -129,6 +129,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                                 HostOs = item.HostOS,
                                 Method = item.Method,
                                 Attributes = (FileAttributes)item.Attributes,
+                                Encrypted = item.IsEncrypted
                             };
                             archiveData.PropertyChanged += ArchiveData_PropertyChanged;
                             await Dispatcher.InvokeAsync(() => Arşivİçerik.Add(archiveData));
@@ -187,7 +188,7 @@ public class SimpleArchiveViewer : ArchiveViewer
             if (Settings.Default.ShowArchiveViewerThumbs)
             {
                 PreviewPanelWidth = double.PositiveInfinity;
-                ThumbFile = SelectedFile is not null ? ExtractToFile(SelectedFile.DosyaAdı) : null;
+                ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? ExtractToFile(SelectedFile.DosyaAdı) : null;
             }
             else
             {

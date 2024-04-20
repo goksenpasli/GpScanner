@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
+using TwainControl;
 
 namespace GpScanner.ViewModel;
 
@@ -29,7 +30,6 @@ public static class StillImageHelper
     private const string REGKEY_STI_EVENT_SCANBUTTON =
         @"SYSTEM\CurrentControlSet\Control\StillImage\Events\ScanButton\{143762b8-772a-47af-bae6-08e0a1d0ca89}";
     private const int TIMEOUT = 1000;
-    private static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private static bool _serverRunning;
 
     public static bool FirstLanuchScan { get; set; }
@@ -68,7 +68,7 @@ public static class StillImageHelper
             using RegistryKey key1 = Registry.LocalMachine.CreateSubKey(REGKEY_AUTOPLAY_HANDLER_GPSCANNER);
             if (key1 != null)
             {
-                key1.SetValue("Action", "Scan with GpScanner");
+                key1.SetValue("Action", $"GPSCANNER {Translation.GetResStringValue("SCAN")}");
                 key1.SetValue("CLSID", "{A55803CC-4D53-404c-8557-FD63DBA95D24}");
                 key1.SetValue("DefaultIcon", "sti.dll,0");
                 key1.SetValue("InitCmdLine", $"/WiaCmd;{exe} /StiDevice:%1 /StiEvent:%2;");
@@ -82,7 +82,7 @@ public static class StillImageHelper
             if (key3 != null)
             {
                 key3.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
-                key3.SetValue("Desc", "Scan with GpScanner");
+                key3.SetValue("Desc", $"GPSCANNER {Translation.GetResStringValue("SCAN")}");
                 key3.SetValue("Icon", "sti.dll,0");
                 key3.SetValue("Name", "GpScanner");
             }
@@ -91,7 +91,7 @@ public static class StillImageHelper
             if (key4 != null)
             {
                 key4.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
-                key4.SetValue("Desc", "Scan with GpScanner");
+                key4.SetValue("Desc", $"GPSCANNER {Translation.GetResStringValue("SCAN")}");
                 key4.SetValue("Icon", "sti.dll,0");
                 key4.SetValue("Name", "GpScanner");
             }
@@ -114,7 +114,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex?.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         return false;

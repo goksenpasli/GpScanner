@@ -8,6 +8,7 @@ public class ExtendedArchiveData : ArchiveData
     private FileAttributes attributes;
     private string hostOs;
     private string method;
+    private bool encrypted;
 
     public FileAttributes Attributes {
         get => attributes;
@@ -38,6 +39,18 @@ public class ExtendedArchiveData : ArchiveData
             {
                 method = value;
                 OnPropertyChanged(nameof(Method));
+            }
+        }
+    }
+
+    public bool Encrypted {
+        get => encrypted;
+
+        set {
+            if (encrypted != value)
+            {
+                encrypted = value;
+                OnPropertyChanged(nameof(Encrypted));
             }
         }
     }
