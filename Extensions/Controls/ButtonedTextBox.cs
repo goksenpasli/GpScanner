@@ -16,6 +16,8 @@ namespace Extensions;
 [ContentProperty("Description")]
 public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
+    public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(ButtonedTextBox));
     public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
     private Visibility copyButtonVisibility = Visibility.Visible;
     private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
@@ -35,7 +37,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand, ResetCanExecute));
         _ = CommandBindings.Add(new CommandBinding(Copy, CopyCommand, CanExecute));
         _ = CommandBindings.Add(new CommandBinding(Print, PrintCommand, CanExecute));
-        _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, CanExecute));
+        _ = CommandBindings.Add(new CommandBinding(Open, OpenCommand, OpenCanExecute));
         _ = CommandBindings.Add(new CommandBinding(UpperCase, UpperCaseCommand, CanCaseExecute));
         _ = CommandBindings.Add(new CommandBinding(TitleCase, TitleCaseCommand, CanCaseExecute));
         _ = CommandBindings.Add(new CommandBinding(LowerCase, LowerCaseCommand, CanCaseExecute));
@@ -44,6 +46,10 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public ICommand Command { get => (ICommand)GetValue(CommandProperty); set => SetValue(CommandProperty, value); }
+
+    public object CommandParameter { get => GetValue(CommandParameterProperty); set => SetValue(CommandParameterProperty, value); }
 
     public new ICommand Copy { get; } = new RoutedCommand();
 
@@ -231,10 +237,28 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void LowerCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, SelectedText.ToLower());
 
+    private void OpenCanExecute(object sender, CanExecuteRoutedEventArgs e)
+    {
+        if (Command?.CanExecute(CommandParameter) == true)
+        {
+            e.CanExecute = true;
+            return;
+        }
+        if (!string.IsNullOrWhiteSpace(Text))
+        {
+            e.CanExecute = true;
+        }
+    }
+
     private void OpenCommand(object sender, ExecutedRoutedEventArgs e)
     {
         try
         {
+            if (Command?.CanExecute(CommandParameter) == true)
+            {
+                Command.Execute(CommandParameter);
+                return;
+            }
             _ = Process.Start(Text);
         }
         catch (Exception ex)

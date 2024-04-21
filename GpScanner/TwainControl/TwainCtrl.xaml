@@ -2372,29 +2372,24 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Button local:Policy.PolicyName="LoadArchiveFile" Command="{Binding LoadArchiveFile}">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="32"
-                                        Height="32"
-                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
-                                    <TextBlock VerticalAlignment="Center"
-                                        FontWeight="Bold"
-                                        Text="{local:Loc FILE}" />
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
-                        <Extensions:ButtonedTextBox Grid.Row="1"
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                             d:Text="ArchivePath"
-                            Description="{Binding ElementName=ArchiveVwr, Path=ArchivePath, Mode=OneWay}"
+                            local:Policy.PolicyName="LoadArchiveFile"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding LoadArchiveFile}"
                             PasteButtonVisibility="Collapsed"
-                            Text="{Binding ElementName=ArchiveVwr, Path=ArchivePath, UpdateSourceTrigger=PropertyChanged}"
-                            TextBoxVisibility="Collapsed" />
+                            Text="{Binding ElementName=ArchiveVwr, Path=ArchivePath, UpdateSourceTrigger=PropertyChanged}">
+                            <Extensions:ButtonedTextBox.Description>
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
+                            </Extensions:ButtonedTextBox.Description>
+                        </Extensions:ButtonedTextBox>
                         <local:SimpleArchiveViewer x:Name="ArchiveVwr"
-                            Grid.Row="2"
+                            Grid.Row="1"
                             AllowDrop="True"
                             Style="{StaticResource SimpleArchiveViewerStyle}" />
                     </Grid>
@@ -2484,26 +2479,23 @@
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Button local:Policy.PolicyName="LoadXlsFile" Command="{Binding LoadXlsFile}">
-                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Image Width="32"
-                                    Height="32"
-                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xls}" />
-                                <TextBlock VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Text="{local:Loc FILE}" />
-                            </StackPanel>
-                        </Button>
-                        <Extensions:ButtonedTextBox Grid.Row="1"
-                            d:Text="ArchivePath"
-                            Description="{Binding ElementName=xlsxViewer, Path=XlsxDataFilePath, Mode=OneWay}"
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            d:Text="XlsPath"
+                            local:Policy.PolicyName="LoadXlsFile"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding LoadXlsFile}"
                             PasteButtonVisibility="Collapsed"
-                            Text="{Binding ElementName=xlsxViewer, Path=XlsxDataFilePath, UpdateSourceTrigger=PropertyChanged}"
-                            TextBoxVisibility="Collapsed" />
-                        <local:XlsxViewer x:Name="xlsxViewer" Grid.Row="2" />
+                            Text="{Binding ElementName=xlsxViewer, Path=XlsxDataFilePath, UpdateSourceTrigger=PropertyChanged}">
+                            <Extensions:ButtonedTextBox.Description>
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xls}" />
+                            </Extensions:ButtonedTextBox.Description>
+                        </Extensions:ButtonedTextBox>
+                        <local:XlsxViewer x:Name="xlsxViewer" Grid.Row="1" />
                     </Grid>
                 </TabItem>
                 <TabItem>

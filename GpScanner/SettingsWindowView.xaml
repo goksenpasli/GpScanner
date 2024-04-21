@@ -1169,15 +1169,22 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Width="300"
-                                    Binding="{Binding FileContent, Mode=OneWay}"
-                                    Header="{twainctrl:Loc CONTENT}">
-                                    <DataGridTextColumn.ElementStyle>
-                                        <Style>
-                                            <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
-                                        </Style>
-                                    </DataGridTextColumn.ElementStyle>
-                                </DataGridTextColumn>
+                                <DataGridTemplateColumn Width="300" Header="{twainctrl:Loc CONTENT}">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Extensions:ButtonedTextBox Background="{x:Null}"
+                                                BorderBrush="{x:Null}"
+                                                CopyButtonVisibility="Collapsed"
+                                                IsReadOnly="True"
+                                                OpenButtonVisibility="Collapsed"
+                                                PasteButtonVisibility="Collapsed"
+                                                PrintButtonVisibility="Visible"
+                                                ResetButtonVisibility="Collapsed"
+                                                Text="{Binding FileContent, Mode=OneWay}"
+                                                TextWrapping="Wrap" />
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
                     </Grid>
