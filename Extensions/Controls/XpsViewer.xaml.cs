@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Packaging;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Xps.Packaging;
+using System.Windows.Xps.Serialization;
 
 namespace Extensions.Controls;
 
@@ -37,6 +39,21 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
     }
 
     public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
+
+    public FixedDocumentSequence WriteXPS(FlowDocument flowDocument)
+    {
+        Package package = Package.Open(new MemoryStream(), FileMode.Create, FileAccess.ReadWrite);
+        Uri packUri = new("pack://temp.xps");
+        PackageStore.RemovePackage(packUri);
+        PackageStore.AddPackage(packUri, package);
+        using XpsDocument xpsDocument = new(package, CompressionOption.SuperFast, packUri.ToString());
+        DocumentPaginator paginator = ((IDocumentPaginatorSource)flowDocument).DocumentPaginator;
+        using (XpsSerializationManager xpsSerializationManager = new(new XpsPackagingPolicy(xpsDocument), false))
+        {
+            xpsSerializationManager.SaveAsXaml(paginator);
+        }
+        return xpsDocument.GetFixedDocumentSequence();
+    }
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 

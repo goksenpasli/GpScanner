@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions.Controls;
+using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -254,15 +255,26 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void PrintCommand(object sender, ExecutedRoutedEventArgs e)
     {
-        PrintDialog printDialog = new();
-
-        if (printDialog.ShowDialog() == true)
+        try
         {
-            FlowDocument fd = new(new Paragraph(new Run(Text)));
-            IDocumentPaginatorSource idocument = fd;
-            fd.IsOptimalParagraphEnabled = true;
-            fd.ColumnWidth = printDialog.PrintableAreaWidth;
-            printDialog.PrintDocument(idocument.DocumentPaginator, "Print");
+            Window printwindow = new()
+            {
+                Owner = Window.GetWindow(this),
+                WindowState = WindowState.Maximized,
+                ShowInTaskbar = false,
+                Title = Window.GetWindow(this)?.Title,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                UseLayoutRounding = true
+            };
+            XpsViewer xpsviewer = new();
+            printwindow.Content = xpsviewer;
+            FlowDocument fd = new(new Paragraph(new Run(Text))) { IsOptimalParagraphEnabled = true, ColumnWidth = double.MaxValue };
+            xpsviewer.Document = xpsviewer.WriteXPS(fd);
+            printwindow.Show();
+        }
+        catch (Exception ex)
+        {
+            _ = MessageBox.Show(ex.Message);
         }
     }
 
