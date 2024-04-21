@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Extensions;
+using Ocr;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.IO;
@@ -9,11 +14,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
-using Ocr;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
@@ -290,9 +290,11 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> AutoCropImage { get; }
 
-    public bool AutoRotate {
+    public bool AutoRotate
+    {
         get => autoRotate;
-        set {
+        set
+        {
             if (autoRotate != value)
             {
                 autoRotate = value;
@@ -303,10 +305,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public ICommand BlackAndWhiteImage { get; }
 
-    public double BorderSize {
+    public double BorderSize
+    {
         get => borderSize;
 
-        set {
+        set
+        {
             if (borderSize != value)
             {
                 borderSize = value;
@@ -315,10 +319,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         }
     }
 
-    public bool CompressImage {
+    public bool CompressImage
+    {
         get => compressImage;
 
-        set {
+        set
+        {
             if (compressImage != value)
             {
                 compressImage = value;
@@ -337,10 +343,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public ICommand ResetCroppedImage { get; }
 
-    public bool ResizeRatioImage {
+    public bool ResizeRatioImage
+    {
         get => resizeRatioImage;
 
-        set {
+        set
+        {
             if (resizeRatioImage != value)
             {
                 resizeRatioImage = value;
@@ -349,9 +357,11 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         }
     }
 
-    public PageRotation SelectedRotation {
+    public PageRotation SelectedRotation
+    {
         get => selectedRotation;
-        set {
+        set
+        {
             if (selectedRotation != value)
             {
                 selectedRotation = value;
@@ -366,10 +376,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public ICommand SplitImage { get; }
 
-    public double ToolBoxPdfMergeProgressValue {
+    public double ToolBoxPdfMergeProgressValue
+    {
         get => toolBoxPdfMergeProgressValue;
 
-        set {
+        set
+        {
             if (toolBoxPdfMergeProgressValue != value)
             {
                 toolBoxPdfMergeProgressValue = value;

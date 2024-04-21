@@ -95,10 +95,12 @@ public class TranslationSource : INotifyPropertyChanged
 
     public static TranslationSource Instance { get; } = new();
 
-    public CultureInfo CurrentCulture {
+    public CultureInfo CurrentCulture
+    {
         get => currentCulture;
 
-        set {
+        set
+        {
             if (currentCulture != value)
             {
                 currentCulture = value;
@@ -108,8 +110,10 @@ public class TranslationSource : INotifyPropertyChanged
         }
     }
 
-    public string this[string key] {
-        get {
+    public string this[string key]
+    {
+        get
+        {
             string translation = null;
             if (resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
             {

@@ -18,10 +18,12 @@ namespace TwainWpf.Wpf
 
         public FilterMessage FilterMessageCallback { get; set; }
 
-        public bool UseFilter {
+        public bool UseFilter
+        {
             get => _usingFilter;
 
-            set {
+            set
+            {
                 if (!_usingFilter && value)
                 {
                     _source.AddHook(FilterMessage);

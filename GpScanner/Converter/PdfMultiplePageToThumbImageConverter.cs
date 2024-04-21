@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
@@ -6,7 +7,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
 
 namespace GpScanner.Converter;
 
@@ -14,9 +14,11 @@ public sealed class PdfMultiplePageToThumbImageConverter : InpcBase, IMultiValue
 {
     private uint maxPageCount = 2;
 
-    public uint MaxPageCount {
+    public uint MaxPageCount
+    {
         get => maxPageCount;
-        set {
+        set
+        {
             if (maxPageCount != value)
             {
                 maxPageCount = value;

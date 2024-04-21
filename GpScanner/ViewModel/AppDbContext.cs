@@ -1,6 +1,6 @@
-﻿using System.Data.Entity;
+﻿using GpScanner.Properties;
+using System.Data.Entity;
 using System.Data.SQLite;
-using GpScanner.Properties;
 
 namespace GpScanner.ViewModel;
 

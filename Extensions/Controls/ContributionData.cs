@@ -9,9 +9,11 @@ namespace Extensions
         private int count;
         private Brush stroke;
 
-        public DateTime? ContrubutionDate {
+        public DateTime? ContrubutionDate
+        {
             get => contrubutionDate;
-            set {
+            set
+            {
                 if (contrubutionDate != value)
                 {
                     contrubutionDate = value;
@@ -20,9 +22,11 @@ namespace Extensions
             }
         }
 
-        public int Count {
+        public int Count
+        {
             get => count;
-            set {
+            set
+            {
                 if (count != value)
                 {
                     count = value;
@@ -31,9 +35,11 @@ namespace Extensions
             }
         }
 
-        public Brush Stroke {
+        public Brush Stroke
+        {
             get => stroke;
-            set {
+            set
+            {
                 if (stroke != value)
                 {
                     stroke = value;

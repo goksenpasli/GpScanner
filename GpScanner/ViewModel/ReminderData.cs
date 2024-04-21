@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Extensions;
 
 namespace GpScanner.ViewModel
 {
@@ -13,9 +13,11 @@ namespace GpScanner.ViewModel
         private bool seen;
         private DateTime tarih;
 
-        public string Açıklama {
+        public string Açıklama
+        {
             get => açıklama;
-            set {
+            set
+            {
                 if (açıklama != value)
                 {
                     açıklama = value;
@@ -24,9 +26,11 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public string FileName {
+        public string FileName
+        {
             get => fileName;
-            set {
+            set
+            {
                 if (fileName != value)
                 {
                     fileName = value;
@@ -37,9 +41,11 @@ namespace GpScanner.ViewModel
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id {
+        public int Id
+        {
             get => ıd;
-            set {
+            set
+            {
                 if (ıd != value)
                 {
                     ıd = value;
@@ -48,9 +54,11 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public bool Seen {
+        public bool Seen
+        {
             get => seen;
-            set {
+            set
+            {
                 if (seen != value)
                 {
                     seen = value;
@@ -59,9 +67,11 @@ namespace GpScanner.ViewModel
             }
         }
 
-        public DateTime Tarih {
+        public DateTime Tarih
+        {
             get => tarih;
-            set {
+            set
+            {
                 if (tarih != value)
                 {
                     tarih = value;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Extensions;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.IO;
@@ -8,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -71,10 +71,12 @@ public class DocumentViewerModel : InpcBase
 
     public ICommand Back { get; }
 
-    public IEnumerable<string> DirectoryAllPdfFiles {
+    public IEnumerable<string> DirectoryAllPdfFiles
+    {
         get => directoryAllPdfFiles;
 
-        set {
+        set
+        {
             if (directoryAllPdfFiles != value)
             {
                 directoryAllPdfFiles = value;
@@ -83,10 +85,12 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string FilePath {
+    public string FilePath
+    {
         get => filePath;
 
-        set {
+        set
+        {
             if (filePath != value)
             {
                 filePath = value;
@@ -98,10 +102,12 @@ public class DocumentViewerModel : InpcBase
 
     public ICommand Forward { get; }
 
-    public int Index {
+    public int Index
+    {
         get => ındex;
 
-        set {
+        set
+        {
             if (ındex != value)
             {
                 ındex = value;
@@ -110,10 +116,12 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string OcrText {
+    public string OcrText
+    {
         get => ocrText;
 
-        set {
+        set
+        {
             if (ocrText != value)
             {
                 ocrText = value;
@@ -122,10 +130,12 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string PdfFileContent {
+    public string PdfFileContent
+    {
         get => pdfFileContent;
 
-        set {
+        set
+        {
             if (pdfFileContent != value)
             {
                 pdfFileContent = value;
@@ -134,10 +144,12 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public Scanner Scanner {
+    public Scanner Scanner
+    {
         get => scanner;
 
-        set {
+        set
+        {
             if (scanner != value)
             {
                 scanner = value;
@@ -146,10 +158,12 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public string Title {
+    public string Title
+    {
         get => Path.GetFileName(FilePath);
 
-        set {
+        set
+        {
             if (title != value)
             {
                 title = value;

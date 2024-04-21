@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions.Properties;
+using Microsoft.Win32;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -15,8 +17,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
-using Extensions.Properties;
-using Microsoft.Win32;
 
 namespace Extensions.Controls;
 
@@ -512,10 +512,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     [Browsable(false)]
-    public ObservableCollection<SubtitleContent> ParsedSubtitle {
+    public ObservableCollection<SubtitleContent> ParsedSubtitle
+    {
         get => parsedSubtitle;
 
-        set {
+        set
+        {
             if (parsedSubtitle != value)
             {
                 parsedSubtitle = value;
@@ -544,9 +546,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> SaveTranslatedSubtitle { get; }
 
-    public string SaveTranslateLanguage {
+    public string SaveTranslateLanguage
+    {
         get => saveTranslateLanguage;
-        set {
+        set
+        {
             if (saveTranslateLanguage != value)
             {
                 saveTranslateLanguage = value;
@@ -555,10 +559,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    public string SearchSubtitle {
+    public string SearchSubtitle
+    {
         get => searchSubtitle;
 
-        set {
+        set
+        {
             if (searchSubtitle != value)
             {
                 searchSubtitle = value;
@@ -567,9 +573,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    public int SelectedEncodingCodePage {
+    public int SelectedEncodingCodePage
+    {
         get => selectedEncodingCodePage;
-        set {
+        set
+        {
             if (selectedEncodingCodePage != value)
             {
                 selectedEncodingCodePage = value;
@@ -586,9 +594,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Category("Effects")]
     public double SharpenAmount { get => (double)GetValue(SharpenAmountProperty); set => SetValue(SharpenAmountProperty, value); }
 
-    public bool ShowOsdInfo {
+    public bool ShowOsdInfo
+    {
         get => showOsdInfo;
-        set {
+        set
+        {
             if (showOsdInfo != value)
             {
                 showOsdInfo = value;
@@ -670,9 +680,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
-    public bool Translate {
+    public bool Translate
+    {
         get => translate;
-        set {
+        set
+        {
             if (translate != value)
             {
                 translate = value;
@@ -681,9 +693,11 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    public int TranslateSaveProgress {
+    public int TranslateSaveProgress
+    {
         get => translateSaveProgress;
-        set {
+        set
+        {
             if (translateSaveProgress != value)
             {
                 translateSaveProgress = value;

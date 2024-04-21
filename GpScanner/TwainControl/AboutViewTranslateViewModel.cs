@@ -1,31 +1,33 @@
 ﻿using Extensions;
+using System.ComponentModel;
 
 namespace TwainControl
 {
     public class AboutViewTranslateViewModel : InpcBase
     {
-        private string çevrilenDil;
         private string çeviri;
+        private string çevrilenDil;
 
-        public AboutViewTranslateViewModel()
-        {
-            PropertyChanged += AboutViewTranslateViewModel_PropertyChanged;
-        }
+        public AboutViewTranslateViewModel() { PropertyChanged += AboutViewTranslateViewModel_PropertyChanged; }
 
-        private async void AboutViewTranslateViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        public string Çeviri
         {
-            if (e.PropertyName is "ÇevrilenDil")
+            get => çeviri;
+            set
             {
-                string licensetext = Translation.GetResStringValue("LICENSE").Replace("\r", string.Empty).Replace("\n", string.Empty);
-                Çeviri = await TranslateViewModel.DileÇevirAsync(licensetext, "auto", ÇevrilenDil);
+                if (çeviri != value)
+                {
+                    çeviri = value;
+                    OnPropertyChanged(nameof(Çeviri));
+                }
             }
         }
 
-        public string MevcutDil { get; set; } = "auto";
-
-        public string ÇevrilenDil {
+        public string ÇevrilenDil
+        {
             get => çevrilenDil;
-            set {
+            set
+            {
                 if (çevrilenDil != value)
                 {
                     çevrilenDil = value;
@@ -34,14 +36,14 @@ namespace TwainControl
             }
         }
 
-        public string Çeviri {
-            get => çeviri;
-            set {
-                if (çeviri != value)
-                {
-                    çeviri = value;
-                    OnPropertyChanged(nameof(Çeviri));
-                }
+        public string MevcutDil { get; set; } = "auto";
+
+        private async void AboutViewTranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "ÇevrilenDil")
+            {
+                string licensetext = Translation.GetResStringValue("LICENSE").Replace("\r", string.Empty).Replace("\n", string.Empty);
+                Çeviri = await TranslateViewModel.DileÇevirAsync(licensetext, "auto", ÇevrilenDil);
             }
         }
     }

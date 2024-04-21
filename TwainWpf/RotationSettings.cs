@@ -19,10 +19,12 @@ namespace TwainWpf
         /// <value>
         /// <c>true</c> if [automatic border detection]; otherwise, <c>false</c>.
         /// </value>
-        public bool AutomaticBorderDetection {
+        public bool AutomaticBorderDetection
+        {
             get => _automaticBorderDetection;
 
-            set {
+            set
+            {
                 if (value != _automaticBorderDetection)
                 {
                     _automaticBorderDetection = value;
@@ -35,10 +37,12 @@ namespace TwainWpf
         /// Gets or sets a value indicating whether [automatic deskew].
         /// </summary>
         /// <value><c>true</c> if [automatic deskew]; otherwise, <c>false</c>.</value>
-        public bool AutomaticDeskew {
+        public bool AutomaticDeskew
+        {
             get => _automaticDeskew;
 
-            set {
+            set
+            {
                 if (value != _automaticDeskew)
                 {
                     _automaticDeskew = value;
@@ -51,10 +55,12 @@ namespace TwainWpf
         /// Gets or sets a value indicating whether [automatic rotate].
         /// </summary>
         /// <value><c>true</c> if [automatic rotate]; otherwise, <c>false</c>.</value>
-        public bool AutomaticRotate {
+        public bool AutomaticRotate
+        {
             get => _automaticRotate;
 
-            set {
+            set
+            {
                 if (value != _automaticRotate)
                 {
                     _automaticRotate = value;
@@ -67,10 +73,12 @@ namespace TwainWpf
         /// Gets or sets the flip side rotation.
         /// </summary>
         /// <value>The flip side rotation.</value>
-        public FlipRotation FlipSideRotation {
+        public FlipRotation FlipSideRotation
+        {
             get => _flipSideRotation;
 
-            set {
+            set
+            {
                 if (value != _flipSideRotation)
                 {
                     _flipSideRotation = value;
@@ -85,6 +93,6 @@ namespace TwainWpf
         };
 
         protected void OnPropertyChanged(string propertyName) => PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        #endregion INotifyPropertyChanged Members
+    #endregion INotifyPropertyChanged Members
     }
 }

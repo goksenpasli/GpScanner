@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Extensions;
 
 namespace GpScanner.Converter;
 

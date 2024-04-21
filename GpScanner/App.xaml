@@ -365,7 +365,6 @@
                         Orientation="Height"
                         PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible"
-                        ScrollBarVisible="Hidden"
                         SliderZoomAngleVisibility="Collapsed"
                         SnapTick="True" />
                 </Grid>

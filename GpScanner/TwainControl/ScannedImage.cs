@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
-using Extensions;
 using TwainControl.Properties;
 
 namespace TwainControl;
@@ -20,10 +20,12 @@ public class ScannedImage : InpcBase
 
     public ScannedImage() { PropertyChanged += ScannedImage_PropertyChangedAsync; }
 
-    public bool Animate {
+    public bool Animate
+    {
         get => animate;
 
-        set {
+        set
+        {
             if (animate != value)
             {
                 animate = value;
@@ -32,10 +34,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public string FilePath {
+    public string FilePath
+    {
         get => filePath;
 
-        set {
+        set
+        {
             if (filePath != value)
             {
                 filePath = value;
@@ -44,9 +48,11 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public double FlipAngle {
+    public double FlipAngle
+    {
         get => flipAngle;
-        set {
+        set
+        {
             if (flipAngle != value)
             {
                 flipAngle = value;
@@ -55,10 +61,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public int Index {
+    public int Index
+    {
         get => ındex;
 
-        set {
+        set
+        {
             if (ındex == value)
             {
                 return;
@@ -69,10 +77,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public BitmapFrame Resim {
+    public BitmapFrame Resim
+    {
         get => resim;
 
-        set {
+        set
+        {
             if (resim != value)
             {
                 resim = value;
@@ -81,10 +91,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public BitmapSource ResimThumb {
+    public BitmapSource ResimThumb
+    {
         get => resimThumb;
 
-        set {
+        set
+        {
             if (resimThumb != value)
             {
                 resimThumb = value;
@@ -93,10 +105,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public double RotationAngle {
+    public double RotationAngle
+    {
         get => rotationAngle;
 
-        set {
+        set
+        {
             if (rotationAngle != value)
             {
                 rotationAngle = value;
@@ -105,10 +119,12 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public bool Seçili {
+    public bool Seçili
+    {
         get => seçili;
 
-        set {
+        set
+        {
             if (seçili != value)
             {
                 seçili = value;

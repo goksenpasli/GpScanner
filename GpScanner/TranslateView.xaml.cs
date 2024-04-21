@@ -1,5 +1,5 @@
-﻿using System.Windows.Controls;
-using GpScanner.ViewModel;
+﻿using GpScanner.ViewModel;
+using System.Windows.Controls;
 
 namespace GpScanner;
 

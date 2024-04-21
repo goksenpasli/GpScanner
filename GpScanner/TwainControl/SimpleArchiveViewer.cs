@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions;
+using SevenZipExtractor;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,8 +11,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Interop;
-using Extensions;
-using SevenZipExtractor;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
@@ -64,10 +64,12 @@ public class SimpleArchiveViewer : ArchiveViewer
 
     public new RelayCommand<object> ArşivTekDosyaÇıkar { get; }
 
-    public double PreviewPanelWidth {
+    public double PreviewPanelWidth
+    {
         get => previewPanelWidth;
 
-        set {
+        set
+        {
             if (previewPanelWidth != value)
             {
                 previewPanelWidth = value;
@@ -78,9 +80,11 @@ public class SimpleArchiveViewer : ArchiveViewer
 
     public new RelayCommand<object> SeçiliAyıkla { get; }
 
-    public string ThumbFile {
+    public string ThumbFile
+    {
         get => thumbFile;
-        set {
+        set
+        {
             if (thumbFile != value)
             {
                 thumbFile = value;

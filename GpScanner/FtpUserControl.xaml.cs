@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.Properties;
+using GpScanner.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -7,9 +10,6 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Extensions;
-using GpScanner.Properties;
-using GpScanner.ViewModel;
 using TwainControl;
 
 namespace GpScanner;
@@ -61,9 +61,11 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public double CopyProgressValue {
+    public double CopyProgressValue
+    {
         get => copyProgressValue;
-        set {
+        set
+        {
             if (copyProgressValue != value)
             {
                 copyProgressValue = value;
@@ -76,9 +78,11 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 
     public IEnumerable<DriveInfo> RemovableDrives { get; } = DriveInfo.GetDrives()?.Where(z => z.DriveType == DriveType.Removable);
 
-    public DriveInfo SelectedRemovableDrive {
+    public DriveInfo SelectedRemovableDrive
+    {
         get => selectedRemovableDrive;
-        set {
+        set
+        {
             if (selectedRemovableDrive != value)
             {
                 selectedRemovableDrive = value;

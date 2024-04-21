@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions;
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
@@ -9,7 +10,6 @@ using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Extensions;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using Rectangle = System.Windows.Shapes.Rectangle;
@@ -70,10 +70,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> ClearTemporaryImage { get; }
 
-    public bool DrawControlContextMenu {
+    public bool DrawControlContextMenu
+    {
         get => drawControlContextMenu;
 
-        set {
+        set
+        {
             if (drawControlContextMenu != value)
             {
                 drawControlContextMenu = value;
@@ -82,10 +84,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public Cursor DrawCursor {
+    public Cursor DrawCursor
+    {
         get => drawCursor;
 
-        set {
+        set
+        {
             if (drawCursor != value)
             {
                 drawCursor = value;
@@ -96,10 +100,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public BitmapFrame EditingImage { get => (BitmapFrame)GetValue(EditingImageProperty); set => SetValue(EditingImageProperty, value); }
 
-    public Ellipse Ellipse {
+    public Ellipse Ellipse
+    {
         get => ellipse;
 
-        set {
+        set
+        {
             if (ellipse != value)
             {
                 ellipse = value;
@@ -108,10 +114,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public bool Highlighter {
+    public bool Highlighter
+    {
         get => highlighter;
 
-        set {
+        set
+        {
             if (highlighter != value)
             {
                 highlighter = value;
@@ -120,10 +128,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public bool IgnorePressure {
+    public bool IgnorePressure
+    {
         get => ıgnorePressure;
 
-        set {
+        set
+        {
             if (ıgnorePressure != value)
             {
                 ıgnorePressure = value;
@@ -132,10 +142,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public bool Lock {
+    public bool Lock
+    {
         get => @lock;
 
-        set {
+        set
+        {
             if (@lock != value)
             {
                 @lock = value;
@@ -144,10 +156,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public Rectangle Rectangle {
+    public Rectangle Rectangle
+    {
         get => rectangle;
 
-        set {
+        set
+        {
             if (rectangle != value)
             {
                 rectangle = value;
@@ -158,10 +172,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> SaveEditedImage { get; }
 
-    public SolidColorBrush SelectedBrush {
+    public SolidColorBrush SelectedBrush
+    {
         get => selectedBrush;
 
-        set {
+        set
+        {
             if (selectedBrush != value)
             {
                 selectedBrush = value;
@@ -170,10 +186,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public string SelectedColor {
+    public string SelectedColor
+    {
         get => selectedColor;
 
-        set {
+        set
+        {
             if (selectedColor != value)
             {
                 selectedColor = value;
@@ -184,10 +202,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public StylusTip SelectedStylus {
+    public StylusTip SelectedStylus
+    {
         get => selectedStylus;
 
-        set {
+        set
+        {
             if (selectedStylus != value)
             {
                 selectedStylus = value;
@@ -198,10 +218,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public bool Smooth {
+    public bool Smooth
+    {
         get => smooth;
 
-        set {
+        set
+        {
             if (smooth != value)
             {
                 smooth = value;
@@ -210,10 +232,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public double StylusHeight {
+    public double StylusHeight
+    {
         get => stylusHeight;
 
-        set {
+        set
+        {
             if (stylusHeight != value)
             {
                 stylusHeight = value;
@@ -222,10 +246,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public double StylusWidth {
+    public double StylusWidth
+    {
         get => stylusWidth;
 
-        set {
+        set
+        {
             if (stylusWidth != value)
             {
                 stylusWidth = value;

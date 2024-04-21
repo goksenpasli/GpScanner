@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions;
+using PdfCompressor;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -12,8 +14,6 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Extensions;
-using PdfCompressor;
 using WebPWrapper;
 using static Extensions.ExtensionMethods;
 using static TwainControl.DrawControl;

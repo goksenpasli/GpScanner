@@ -18,8 +18,10 @@ namespace TwainWpf
 
         ~DataSource() { Dispose(false); }
 
-        public bool PaperDetectable {
-            get {
+        public bool PaperDetectable
+        {
+            get
+            {
                 try
                 {
                     return Capability.GetBoolCapability(Capabilities.FeederLoaded, _applicationId, SourceId);
@@ -33,8 +35,10 @@ namespace TwainWpf
 
         public Identity SourceId { get; }
 
-        public bool SupportsDuplex {
-            get {
+        public bool SupportsDuplex
+        {
+            get
+            {
                 try
                 {
                     Capability cap = new Capability(Capabilities.Duplex, TwainType.Int16, _applicationId, SourceId);
@@ -47,8 +51,10 @@ namespace TwainWpf
             }
         }
 
-        public bool SupportsFilmScanner {
-            get {
+        public bool SupportsFilmScanner
+        {
+            get
+            {
                 try
                 {
                     _ = new Capability(Capabilities.Lightpath, TwainType.Int16, _applicationId, SourceId);

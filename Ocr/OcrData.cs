@@ -7,10 +7,12 @@ public class OcrData : InpcBase
     private Rect rect;
     private string text;
 
-    public Rect Rect {
+    public Rect Rect
+    {
         get => rect;
 
-        set {
+        set
+        {
             if (rect != value)
             {
                 rect = value;
@@ -19,10 +21,12 @@ public class OcrData : InpcBase
         }
     }
 
-    public string Text {
+    public string Text
+    {
         get => text;
 
-        set {
+        set
+        {
             if (text != value)
             {
                 text = value;

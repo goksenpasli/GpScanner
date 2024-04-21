@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.ViewModel;
+using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -6,8 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using Extensions;
-using GpScanner.ViewModel;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
 using Color = System.Windows.Media.Color;

@@ -1,13 +1,13 @@
-﻿using System.ComponentModel;
+﻿using CatenaLogic.Windows.Presentation.WebcamPlayer;
+using Extensions;
+using Microsoft.Win32;
+using System.ComponentModel;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using CatenaLogic.Windows.Presentation.WebcamPlayer;
-using Extensions;
-using Microsoft.Win32;
 
 namespace TwainControl;
 
@@ -50,10 +50,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public bool DetectQRCode {
+    public bool DetectQRCode
+    {
         get => detectQRCode;
 
-        set {
+        set
+        {
             if (detectQRCode != value)
             {
                 detectQRCode = value;
@@ -62,10 +64,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public CapDevice Device {
+    public CapDevice Device
+    {
         get => device;
 
-        set {
+        set
+        {
             if (device != value)
             {
                 device = value;
@@ -80,10 +84,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public ICommand Kaydet { get; }
 
-    public FilterInfo[] Liste {
+    public FilterInfo[] Liste
+    {
         get => liste;
 
-        set {
+        set
+        {
             if (liste != value)
             {
                 liste = value;
@@ -94,10 +100,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public ICommand Oynat { get; }
 
-    public byte[] ResimData {
+    public byte[] ResimData
+    {
         get => resimData;
 
-        set {
+        set
+        {
             if (resimData != value)
             {
                 resimData = value;
@@ -106,10 +114,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public double Rotation {
+    public double Rotation
+    {
         get => rotation;
 
-        set {
+        set
+        {
             if (rotation != value)
             {
                 rotation = value;
@@ -118,10 +128,12 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public FilterInfo SeçiliKamera {
+    public FilterInfo SeçiliKamera
+    {
         get => seçiliKamera;
 
-        set {
+        set
+        {
             if (seçiliKamera != value)
             {
                 seçiliKamera = value;

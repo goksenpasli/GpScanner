@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions.Controls;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -14,8 +16,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Xps;
-using Extensions.Controls;
-using Microsoft.Win32;
 
 namespace Extensions;
 
@@ -98,13 +98,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         Yazdır = new RelayCommand<object>(
             parameter =>
             {
-                PrintDialog printdialog = new()
-                {
-                    PageRangeSelection = PageRangeSelection.AllPages,
-                    UserPageRangeEnabled = true,
-                    MaxPage = (uint)(TiffDecoder?.Frames?.Count ?? 1),
-                    MinPage = 1
-                };
+                PrintDialog printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)(TiffDecoder?.Frames?.Count ?? 1), MinPage = 1 };
                 if (printdialog.ShowDialog() == true)
                 {
                     if (TiffDecoder == null)
@@ -146,37 +140,6 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         PropertyChanged += ImageViewer_PropertyChanged;
     }
 
-    public static FixedDocument PrintMultipleFixedDocumentPages(PrintDialog printdialog, int başlangıç, int bitiş, IEnumerable<BitmapFrame> bitmappages, int dpi = 300)
-    {
-        FixedDocument fixedDocument = new();
-        for (int i = başlangıç; i <= bitiş; i++)
-        {
-            PageContent pageContent = new();
-            FixedPage fixedPage = new();
-            BitmapSource imagesource = bitmappages.ElementAtOrDefault(i);
-            if (imagesource.Width < imagesource.Height)
-            {
-                fixedPage.Width = printdialog.PrintableAreaWidth;
-                fixedPage.Height = printdialog.PrintableAreaHeight;
-                imagesource = imagesource.Resize(printdialog.PrintableAreaWidth, printdialog.PrintableAreaHeight, null, dpi, dpi);
-            }
-            else
-            {
-                fixedPage.Width = printdialog.PrintableAreaHeight;
-                fixedPage.Height = printdialog.PrintableAreaWidth;
-                imagesource = imagesource.Resize(printdialog.PrintableAreaHeight, printdialog.PrintableAreaWidth, null, dpi, dpi);
-            }
-            imagesource.Freeze();
-            Image image = new() { Source = imagesource, Width = fixedPage.Width, Height = fixedPage.Height };
-            _ = fixedPage.Children.Add(image);
-            ((IAddChild)pageContent).AddChild(fixedPage);
-            _ = fixedDocument.Pages.Add(pageContent);
-            GC.Collect();
-        }
-
-        return fixedDocument;
-    }
-
     public event PropertyChangedEventHandler PropertyChanged;
 
     public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
@@ -191,10 +154,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public string ImageFilePath { get => (string)GetValue(ImageFilePathProperty); set => SetValue(ImageFilePathProperty, value); }
 
-    public Visibility OpenButtonVisibility {
+    public Visibility OpenButtonVisibility
+    {
         get => openButtonVisibility;
 
-        set {
+        set
+        {
             if (openButtonVisibility != value)
             {
                 openButtonVisibility = value;
@@ -210,10 +175,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public int OriginalPixelWidth { get => (int)GetValue(OriginalPixelWidthProperty); set => SetValue(OriginalPixelWidthProperty, value); }
 
     [Browsable(false)]
-    public IEnumerable<int> Pages {
+    public IEnumerable<int> Pages
+    {
         get => pages;
 
-        set {
+        set
+        {
             if (pages != value)
             {
                 pages = value;
@@ -222,10 +189,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility PanoramaButtonVisibility {
+    public Visibility PanoramaButtonVisibility
+    {
         get => panoramaButtonVisibility;
 
-        set {
+        set
+        {
             if (panoramaButtonVisibility != value)
             {
                 panoramaButtonVisibility = value;
@@ -236,10 +205,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public bool PanoramaMode { get => (bool)GetValue(PanoramaModeProperty); set => SetValue(PanoramaModeProperty, value); }
 
-    public Visibility PrintButtonVisibility {
+    public Visibility PrintButtonVisibility
+    {
         get => printButtonVisibility;
 
-        set {
+        set
+        {
             if (printButtonVisibility != value)
             {
                 printButtonVisibility = value;
@@ -258,10 +229,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public double RotateY { get => (double)GetValue(RotateYProperty); set => SetValue(RotateYProperty, value); }
 
-    public int Sayfa {
+    public int Sayfa
+    {
         get => sayfa;
 
-        set {
+        set
+        {
             if (sayfa != value)
             {
                 sayfa = value;
@@ -276,10 +249,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public Geometry3D SphereModel { get; set; } = MediaViewer.CreateGeometry();
     [Browsable(false)]
-    public TiffBitmapDecoder TiffDecoder {
+    public TiffBitmapDecoder TiffDecoder
+    {
         get => tiffdecoder;
 
-        set {
+        set
+        {
             if (tiffdecoder != value)
             {
                 tiffdecoder = value;
@@ -288,10 +263,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility TifNavigasyonButtonEtkin {
+    public Visibility TifNavigasyonButtonEtkin
+    {
         get => tifNavigasyonButtonEtkin;
 
-        set {
+        set
+        {
             if (tifNavigasyonButtonEtkin != value)
             {
                 tifNavigasyonButtonEtkin = value;
@@ -300,10 +277,12 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool ToolBarIsEnabled {
+    public bool ToolBarIsEnabled
+    {
         get => toolBarIsEnabled;
 
-        set {
+        set
+        {
             if (toolBarIsEnabled != value)
             {
                 toolBarIsEnabled = value;
@@ -341,6 +320,37 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
                 return image;
             });
+    }
+
+    public static FixedDocument PrintMultipleFixedDocumentPages(PrintDialog printdialog, int başlangıç, int bitiş, IEnumerable<BitmapFrame> bitmappages, int dpi = 300)
+    {
+        FixedDocument fixedDocument = new();
+        for (int i = başlangıç; i <= bitiş; i++)
+        {
+            PageContent pageContent = new();
+            FixedPage fixedPage = new();
+            BitmapSource imagesource = bitmappages.ElementAtOrDefault(i);
+            if (imagesource.Width < imagesource.Height)
+            {
+                fixedPage.Width = printdialog.PrintableAreaWidth;
+                fixedPage.Height = printdialog.PrintableAreaHeight;
+                imagesource = imagesource.Resize(printdialog.PrintableAreaWidth, printdialog.PrintableAreaHeight, null, dpi, dpi);
+            }
+            else
+            {
+                fixedPage.Width = printdialog.PrintableAreaHeight;
+                fixedPage.Height = printdialog.PrintableAreaWidth;
+                imagesource = imagesource.Resize(printdialog.PrintableAreaHeight, printdialog.PrintableAreaWidth, null, dpi, dpi);
+            }
+            imagesource.Freeze();
+            Image image = new() { Source = imagesource, Width = fixedPage.Width, Height = fixedPage.Height };
+            _ = fixedPage.Children.Add(image);
+            ((IAddChild)pageContent).AddChild(fixedPage);
+            _ = fixedDocument.Pages.Add(pageContent);
+            GC.Collect();
+        }
+
+        return fixedDocument;
     }
 
     public void Dispose()

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using GpScanner.ViewModel;
+using System;
 using System.Globalization;
 using System.Windows.Data;
-using GpScanner.ViewModel;
 
 namespace GpScanner.Converter;
 

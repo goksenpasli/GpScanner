@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -11,7 +12,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interop;
-using Microsoft.Win32;
 using static Extensions.ExtensionMethods;
 
 namespace Extensions
@@ -21,13 +21,13 @@ namespace Extensions
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
         protected ICollectionView cvs;
         private ObservableCollection<ArchiveData> arşivİçerik;
+        private int checkedCount;
         private bool disposedValue;
         private string search = string.Empty;
         private ArchiveData selectedFile;
         private string[] selectedFiles;
         private double toplamOran;
         private int totalFilesCount;
-        private int checkedCount;
 
         static ArchiveViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ArchiveViewer), new FrameworkPropertyMetadata(typeof(ArchiveViewer))); }
 
@@ -101,10 +101,12 @@ namespace Extensions
 
         public RelayCommand<object> ArşivDosyaEkle { get; }
 
-        public ObservableCollection<ArchiveData> Arşivİçerik {
+        public ObservableCollection<ArchiveData> Arşivİçerik
+        {
             get => arşivİçerik;
 
-            set {
+            set
+            {
                 if (arşivİçerik != value)
                 {
                     arşivİçerik = value;
@@ -115,9 +117,24 @@ namespace Extensions
 
         public RelayCommand<object> ArşivTekDosyaÇıkar { get; }
 
-        public string Search {
+        public int CheckedCount
+        {
+            get => checkedCount;
+            set
+            {
+                if (checkedCount != value)
+                {
+                    checkedCount = value;
+                    OnPropertyChanged(nameof(CheckedCount));
+                }
+            }
+        }
+
+        public string Search
+        {
             get => search;
-            set {
+            set
+            {
                 if (search != value)
                 {
                     search = value;
@@ -128,9 +145,11 @@ namespace Extensions
 
         public RelayCommand<object> SeçiliAyıkla { get; }
 
-        public ArchiveData SelectedFile {
+        public ArchiveData SelectedFile
+        {
             get => selectedFile;
-            set {
+            set
+            {
                 if (selectedFile != value)
                 {
                     selectedFile = value;
@@ -139,9 +158,11 @@ namespace Extensions
             }
         }
 
-        public string[] SelectedFiles {
+        public string[] SelectedFiles
+        {
             get => selectedFiles;
-            set {
+            set
+            {
                 if (selectedFiles != value)
                 {
                     selectedFiles = value;
@@ -150,18 +171,22 @@ namespace Extensions
             }
         }
 
-        public double ToplamOran {
+        public double ToplamOran
+        {
             get => toplamOran;
 
-            set {
+            set
+            {
                 toplamOran = value;
                 OnPropertyChanged(nameof(ToplamOran));
             }
         }
 
-        public int TotalFilesCount {
+        public int TotalFilesCount
+        {
             get => totalFilesCount;
-            set {
+            set
+            {
                 if (totalFilesCount != value)
                 {
                     totalFilesCount = value;
@@ -171,16 +196,6 @@ namespace Extensions
         }
 
         public RelayCommand<object> TümünüSeç { get; }
-
-        public int CheckedCount {
-            get => checkedCount; set {
-                if (checkedCount != value)
-                {
-                    checkedCount = value;
-                    OnPropertyChanged(nameof(CheckedCount));
-                }
-            }
-        }
 
         public void Dispose()
         {
@@ -313,14 +328,6 @@ namespace Extensions
             return Arşivİçerik;
         }
 
-        private void ArchiveData_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName is "IsChecked")
-            {
-                CheckedCount = Arşivİçerik?.Count(z => z.IsChecked) ?? 0;
-            }
-        }
-
         private static async void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is ArchiveViewer archiveViewer && e.NewValue is string path)
@@ -349,6 +356,14 @@ namespace Extensions
             {
                 FileInfo fileInfo = new(file);
                 _ = zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
+            }
+        }
+
+        private void ArchiveData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "IsChecked")
+            {
+                CheckedCount = Arşivİçerik?.Count(z => z.IsChecked) ?? 0;
             }
         }
 

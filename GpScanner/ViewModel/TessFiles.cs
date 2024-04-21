@@ -10,10 +10,12 @@ public class TessFiles : InpcBase
     private double fileSize;
     private string name;
 
-    public bool Checked {
+    public bool Checked
+    {
         get => @checked;
 
-        set {
+        set
+        {
             if (@checked != value)
             {
                 @checked = value;
@@ -22,9 +24,11 @@ public class TessFiles : InpcBase
         }
     }
 
-    public string DisplayName {
+    public string DisplayName
+    {
         get => displayName;
-        set {
+        set
+        {
             if (displayName != value)
             {
                 displayName = value;
@@ -33,9 +37,11 @@ public class TessFiles : InpcBase
         }
     }
 
-    public bool Enabled {
+    public bool Enabled
+    {
         get => enabled;
-        set {
+        set
+        {
             if (enabled != value)
             {
                 enabled = value;
@@ -44,9 +50,11 @@ public class TessFiles : InpcBase
         }
     }
 
-    public double FileSize {
+    public double FileSize
+    {
         get => fileSize;
-        set {
+        set
+        {
             if (fileSize != value)
             {
                 fileSize = value;
@@ -55,10 +63,12 @@ public class TessFiles : InpcBase
         }
     }
 
-    public string Name {
+    public string Name
+    {
         get => name;
 
-        set {
+        set
+        {
             if (name != value)
             {
                 name = value;

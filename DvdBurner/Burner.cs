@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Extensions;
+using IMAPI2;
+using IMAPI2FS;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -8,10 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Extensions;
-using IMAPI2;
-using IMAPI2FS;
-using Microsoft.Win32;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
 using MessageBox = System.Windows.MessageBox;
@@ -220,10 +220,12 @@ namespace DvdBurner
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string ActionText {
+        public string ActionText
+        {
             get => actionText;
 
-            set {
+            set
+            {
                 if (actionText != value)
                 {
                     actionText = value;
@@ -232,10 +234,12 @@ namespace DvdBurner
             }
         }
 
-        public SolidColorBrush ActionTextForeground {
+        public SolidColorBrush ActionTextForeground
+        {
             get => actionTextForeground;
 
-            set {
+            set
+            {
                 if (actionTextForeground != value)
                 {
                     actionTextForeground = value;
@@ -246,10 +250,12 @@ namespace DvdBurner
 
         public RelayCommand<object> BurnDvd { get; }
 
-        public string CdLabel {
+        public string CdLabel
+        {
             get => cdLabel;
 
-            set {
+            set
+            {
                 if (cdLabel != value)
                 {
                     cdLabel = value;
@@ -258,9 +264,11 @@ namespace DvdBurner
             }
         }
 
-        public long DiscMaxSize {
+        public long DiscMaxSize
+        {
             get => discMaxSize;
-            set {
+            set
+            {
                 if (discMaxSize != value)
                 {
                     discMaxSize = value;
@@ -269,9 +277,11 @@ namespace DvdBurner
             }
         }
 
-        public Dictionary<string, string> Drives {
+        public Dictionary<string, string> Drives
+        {
             get => drives;
-            set {
+            set
+            {
                 if (drives != value)
                 {
                     drives = value;
@@ -280,10 +290,12 @@ namespace DvdBurner
             }
         }
 
-        public bool Eject {
+        public bool Eject
+        {
             get => eject;
 
-            set {
+            set
+            {
                 if (eject != value)
                 {
                     eject = value;
@@ -298,9 +310,11 @@ namespace DvdBurner
 
         public RelayCommand<object> GetSupportedDiscFormats { get; }
 
-        public bool IsCdWriterAvailable {
+        public bool IsCdWriterAvailable
+        {
             get => ısCdWriterAvailable;
-            set {
+            set
+            {
                 if (ısCdWriterAvailable != value)
                 {
                     ısCdWriterAvailable = value;
@@ -309,9 +323,11 @@ namespace DvdBurner
             }
         }
 
-        public Brush ProgressForegroundBrush {
+        public Brush ProgressForegroundBrush
+        {
             get => progressForegroundBrush;
-            set {
+            set
+            {
                 if (progressForegroundBrush != value)
                 {
                     progressForegroundBrush = value;
@@ -320,10 +336,12 @@ namespace DvdBurner
             }
         }
 
-        public bool ProgressIndeterminate {
+        public bool ProgressIndeterminate
+        {
             get => progressIndeterminate;
 
-            set {
+            set
+            {
                 if (progressIndeterminate != value)
                 {
                     progressIndeterminate = value;
@@ -332,10 +350,12 @@ namespace DvdBurner
             }
         }
 
-        public double ProgressValue {
+        public double ProgressValue
+        {
             get => progressValue;
 
-            set {
+            set
+            {
                 if (progressValue != value)
                 {
                     progressValue = value;
@@ -350,9 +370,11 @@ namespace DvdBurner
 
         public RelayCommand<object> SelectBurnDir { get; }
 
-        public DiscSizes SelectedDiscSize {
+        public DiscSizes SelectedDiscSize
+        {
             get => selectedDiscSize;
-            set {
+            set
+            {
                 if (selectedDiscSize != value)
                 {
                     selectedDiscSize = value;
@@ -361,9 +383,11 @@ namespace DvdBurner
             }
         }
 
-        public dynamic SelectedDrive {
+        public dynamic SelectedDrive
+        {
             get => selectedDrive;
-            set {
+            set
+            {
                 if (selectedDrive != value)
                 {
                     selectedDrive = value;
@@ -372,9 +396,11 @@ namespace DvdBurner
             }
         }
 
-        public long TotalFileSize {
+        public long TotalFileSize
+        {
             get => totalFileSize;
-            set {
+            set
+            {
                 if (totalFileSize != value)
                 {
                     totalFileSize = value;

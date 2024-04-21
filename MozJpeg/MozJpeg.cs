@@ -276,7 +276,8 @@ namespace MozJpeg
         private IntPtr _decompressHandle = IntPtr.Zero;
         private bool _isDisposed;
 
-        public static bool MozJpegDllExists {
+        public static bool MozJpegDllExists
+        {
             get;
         } = Environment.Is64BitProcess
             ? File.Exists($@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\turbojpeg_x64.dll")

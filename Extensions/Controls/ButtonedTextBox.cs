@@ -46,10 +46,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public new ICommand Copy { get; } = new RoutedCommand();
 
-    public Visibility CopyButtonVisibility {
+    public Visibility CopyButtonVisibility
+    {
         get => copyButtonVisibility;
 
-        set {
+        set
+        {
             if (copyButtonVisibility != value)
             {
                 copyButtonVisibility = value;
@@ -60,9 +62,11 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public object Description { get => GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
 
-    public Visibility FontSizeButtonVisibility {
+    public Visibility FontSizeButtonVisibility
+    {
         get => fontSizeButtonVisibility;
-        set {
+        set
+        {
             if (fontSizeButtonVisibility != value)
             {
                 fontSizeButtonVisibility = value;
@@ -75,10 +79,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ICommand Open { get; } = new RoutedCommand();
 
-    public Visibility OpenButtonVisibility {
+    public Visibility OpenButtonVisibility
+    {
         get => openButtonVisibility;
 
-        set {
+        set
+        {
             if (openButtonVisibility != value)
             {
                 openButtonVisibility = value;
@@ -89,10 +95,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public new ICommand Paste { get; } = new RoutedCommand();
 
-    public Visibility PasteButtonVisibility {
+    public Visibility PasteButtonVisibility
+    {
         get => pasteButtonVisibility;
 
-        set {
+        set
+        {
             if (pasteButtonVisibility != value)
             {
                 pasteButtonVisibility = value;
@@ -103,9 +111,11 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ICommand Print { get; } = new RoutedCommand();
 
-    public Visibility PrintButtonVisibility {
+    public Visibility PrintButtonVisibility
+    {
         get => printButtonVisibility;
-        set {
+        set
+        {
             if (printButtonVisibility != value)
             {
                 printButtonVisibility = value;
@@ -114,9 +124,11 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public Visibility RemainingLengthVisibility {
+    public Visibility RemainingLengthVisibility
+    {
         get => remainingLengthVisibility;
-        set {
+        set
+        {
             if (remainingLengthVisibility != value)
             {
                 remainingLengthVisibility = value;
@@ -125,10 +137,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public int RemainingTextLength {
+    public int RemainingTextLength
+    {
         get => remainingTextLength;
 
-        set {
+        set
+        {
             if (remainingTextLength != value)
             {
                 remainingTextLength = value;
@@ -139,10 +153,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ICommand Reset { get; } = new RoutedCommand();
 
-    public Visibility ResetButtonVisibility {
+    public Visibility ResetButtonVisibility
+    {
         get => resetButtonVisibility;
 
-        set {
+        set
+        {
             if (resetButtonVisibility != value)
             {
                 resetButtonVisibility = value;
@@ -151,9 +167,11 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    public Visibility TextBoxVisibility {
+    public Visibility TextBoxVisibility
+    {
         get => textBoxVisibility;
-        set {
+        set
+        {
             if (textBoxVisibility != value)
             {
                 textBoxVisibility = value;
@@ -164,9 +182,11 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public ICommand TitleCase { get; } = new RoutedCommand();
 
-    public Visibility TitleCaseMenuVisibility {
+    public Visibility TitleCaseMenuVisibility
+    {
         get => titleCaseMenuVisibility;
-        set {
+        set
+        {
             if (titleCaseMenuVisibility != value)
             {
                 titleCaseMenuVisibility = value;

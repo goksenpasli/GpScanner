@@ -1,18 +1,20 @@
-﻿using System.IO;
-using Extensions;
+﻿using Extensions;
+using System.IO;
 
 namespace TwainControl;
 
 public class ExtendedArchiveData : ArchiveData
 {
     private FileAttributes attributes;
+    private bool encrypted;
     private string hostOs;
     private string method;
-    private bool encrypted;
 
-    public FileAttributes Attributes {
+    public FileAttributes Attributes
+    {
         get => attributes;
-        set {
+        set
+        {
             if (attributes != value)
             {
                 attributes = value;
@@ -21,9 +23,25 @@ public class ExtendedArchiveData : ArchiveData
         }
     }
 
-    public string HostOs {
+    public bool Encrypted
+    {
+        get => encrypted;
+
+        set
+        {
+            if (encrypted != value)
+            {
+                encrypted = value;
+                OnPropertyChanged(nameof(Encrypted));
+            }
+        }
+    }
+
+    public string HostOs
+    {
         get => hostOs;
-        set {
+        set
+        {
             if (hostOs != value)
             {
                 hostOs = value;
@@ -32,25 +50,15 @@ public class ExtendedArchiveData : ArchiveData
         }
     }
 
-    public string Method {
+    public string Method
+    {
         get => method;
-        set {
+        set
+        {
             if (method != value)
             {
                 method = value;
                 OnPropertyChanged(nameof(Method));
-            }
-        }
-    }
-
-    public bool Encrypted {
-        get => encrypted;
-
-        set {
-            if (encrypted != value)
-            {
-                encrypted = value;
-                OnPropertyChanged(nameof(Encrypted));
             }
         }
     }

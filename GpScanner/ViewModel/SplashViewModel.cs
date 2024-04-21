@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using Extensions;
+﻿using Extensions;
 using GpScanner.Properties;
+using System;
+using System.Collections.Generic;
 
 namespace GpScanner.ViewModel
 {
@@ -48,9 +48,11 @@ namespace GpScanner.ViewModel
 
         public SplashViewModel() { FlagUri = GetFlag(Settings.Default.DefaultLang); }
 
-        public Uri FlagUri {
+        public Uri FlagUri
+        {
             get => flagUri;
-            set {
+            set
+            {
                 if (flagUri != value)
                 {
                     flagUri = value;
