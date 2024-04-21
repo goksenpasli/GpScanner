@@ -1430,6 +1430,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         "FileName" when string.IsNullOrWhiteSpace(FileName) => "EMPTY",
         "FileName" when !TwainCtrl.FileNameValid(FileName) => "INVALIDFILENAME",
         "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "EMPTY",
+        "AutoSave" when !AutoSave => "AUTOFOLDER",
         _ => null
     };
 

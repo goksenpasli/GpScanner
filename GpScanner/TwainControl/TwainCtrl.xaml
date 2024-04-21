@@ -550,7 +550,10 @@
                                         local:Policy.PolicyName="FastScanImage"
                                         Command="{Binding FastScanImage}">
                                         <StackPanel Orientation="Horizontal">
-                                            <Canvas Width="32" Height="32">
+                                            <Canvas Width="32"
+                                                Height="32"
+                                                IsEnabled="{Binding Scanner.AutoSave, ValidatesOnDataErrors=True}"
+                                                Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                                                 <Image Width="32" Height="32">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

@@ -116,7 +116,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     GenerateDocument(printdialog, pdfDocument, startPage, endPage, PrintDpi);
                 }
             },
-            parameter => PdfFilePath is not null && File.Exists(PdfFilePath));
+            parameter => File.Exists(PdfFilePath));
 
         PrintSinglePage = new RelayCommand<object>(
             parameter =>
@@ -128,7 +128,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     GenerateDocument(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
                 }
             },
-            parameter => PdfFilePath is not null && File.Exists(PdfFilePath));
+            parameter => File.Exists(PdfFilePath));
 
         DeleteSinglePage = new RelayCommand<object>(
             parameter =>
@@ -149,7 +149,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     }
                 }
             },
-            parameter => PdfFilePath is not null && Pages?.Count() > 1);
+            parameter => Pages?.Count() > 1 && File.Exists(PdfFilePath));
 
         SaveImage = new RelayCommand<object>(
             async parameter =>
@@ -170,7 +170,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     }
                 }
             },
-            parameter => PdfFilePath is not null);
+            parameter => File.Exists(PdfFilePath));
 
         Resize = new RelayCommand<object>(
             delegate
@@ -181,7 +181,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     Zoom = 1;
                 }
             },
-            parameter => Source is not null);
+            parameter => Source is not null && File.Exists(PdfFilePath));
 
         ReadPdfText = new RelayCommand<object>(
             delegate
@@ -189,7 +189,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
             },
-            parameter => Source is not null);
+            parameter => File.Exists(PdfFilePath));
 
         ReadPdfBookmarks = new RelayCommand<object>(
             delegate
@@ -197,7 +197,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfBookmarks = pdfDocument.Bookmarks;
             },
-            parameter => Source is not null);
+            parameter => File.Exists(PdfFilePath));
 
         GoPdfBookMarkPage = new RelayCommand<object>(
             parameter =>
@@ -206,7 +206,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     Sayfa = pagenumber + 1;
                 }
-            });
+            },
+            parameter => File.Exists(PdfFilePath));
 
         ScrollToCurrentPage = new RelayCommand<object>(
             parameter =>
@@ -215,7 +216,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 {
                     listBox.ScrollIntoView(Sayfa);
                 }
-            });
+            },
+            parameter => File.Exists(PdfFilePath));
 
         SearchPdfText = new RelayCommand<object>(
             delegate
@@ -224,7 +226,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
                 PdfMatches = [.. matches.Items];
             },
-            parameter => Source is not null && !string.IsNullOrWhiteSpace(SearchTextContent));
+            parameter => !string.IsNullOrWhiteSpace(SearchTextContent) && File.Exists(PdfFilePath));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

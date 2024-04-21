@@ -529,7 +529,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         KayıtYoluBelirle = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("FASTSCAN")}\n{Translation.GetResStringValue("AUTOFOLDER")}", new WindowInteropHelper(Window.GetWindow(this)).Handle, Settings.Default.AutoFolder);
+                string path = FolderDialog.SelectFolder(Translation.GetResStringValue("AUTOFOLDER"), new WindowInteropHelper(Window.GetWindow(this)).Handle, Settings.Default.AutoFolder);
                 string oldpath = Settings.Default.AutoFolder;
                 if (!string.IsNullOrEmpty(path))
                 {
