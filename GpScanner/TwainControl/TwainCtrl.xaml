@@ -2414,25 +2414,23 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Controls:XpsViewer x:Name="xpsViewer" x:FieldModifier="public" />
-                        <UniformGrid Grid.Row="1" Columns="2">
-                            <Button local:Policy.PolicyName="LoadSingleUdfFile"
-                                Command="{Binding LoadSingleUdfFile}"
-                                CommandParameter="{Binding ElementName=xpsViewer}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="32"
-                                        Height="32"
-                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
-                                </StackPanel>
-                            </Button>
-                            <TextBlock VerticalAlignment="Center"
-                                FontSize="16"
-                                Foreground="Red"
-                                TextWrapping="Wrap">
-                                <Run Text="UDF" />
-                                <Run Text="{local:Loc LIMITED}" />
-                            </TextBlock>
-                        </UniformGrid>
+                        <Button Grid.Row="1"
+                            local:Policy.PolicyName="LoadSingleUdfFile"
+                            Command="{Binding LoadSingleUdfFile}"
+                            CommandParameter="{Binding ElementName=xpsViewer}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="32"
+                                    Height="32"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
+                                <TextBlock VerticalAlignment="Center"
+                                    FontSize="16"
+                                    Foreground="Red"
+                                    TextWrapping="Wrap">
+                                    <Run Text="UDF" />
+                                    <Run Text="{local:Loc LIMITED}" />
+                                </TextBlock>
+                            </StackPanel>
+                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem>

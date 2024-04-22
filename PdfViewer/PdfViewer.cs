@@ -859,7 +859,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         FixedDocument fixedDocument = new();
         for (int i = startPage; i <= endPage; i++)
         {
-            RenderPageContents(document, Dpi, pd.PrintableAreaWidth, pd.PrintableAreaHeight, fixedDocument, i);
+            RenderPageContents(document, fixedDocument, i, Dpi);
         }
         XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
         xpsWriter.WriteAsync(fixedDocument, pd.PrintTicket);
@@ -881,19 +881,16 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void RenderPageContents(PdfDocument pdfiumdocument, int Dpi, double printwidth, double printheight, FixedDocument fixedDocument, int pagenumber)
+    private void RenderPageContents(PdfDocument pdfiumdocument, FixedDocument fixedDocument, int pagenumber, int Dpi)
     {
-        PageContent pageContent = new();
-        FixedPage fixedPage = new();
-        int width = (int)(pdfiumdocument.PageSizes[pagenumber - 1].Width / 72 * Dpi);
-        int height = (int)(pdfiumdocument.PageSizes[pagenumber - 1].Height / 72 * Dpi);
-        using Bitmap bitmap = pdfiumdocument.Render(pagenumber - 1, width, height, Dpi, Dpi, true) as Bitmap;
+        SizeF pageSize = pdfiumdocument.PageSizes[pagenumber - 1];
+        using Bitmap bitmap = pdfiumdocument.Render(pagenumber - 1, (int)(pageSize.Width / 72 * Dpi), (int)(pageSize.Height / 72 * Dpi), Dpi, Dpi, true) as Bitmap;
         BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
         bitmapimage.Freeze();
-        System.Windows.Controls.Image image = new() { Source = bitmapimage };
-        fixedPage.Width = width < height ? printwidth : printheight;
-        fixedPage.Height = width > height ? printwidth : printheight;
+        System.Windows.Controls.Image image = new() { Source = bitmapimage, Width = bitmapimage.Width, Height = bitmapimage.Height };
+        FixedPage fixedPage = new() { Width = bitmapimage.Width, Height = bitmapimage.Height };
         _ = fixedPage.Children.Add(image);
+        PageContent pageContent = new();
         ((IAddChild)pageContent).AddChild(fixedPage);
         _ = fixedDocument.Pages.Add(pageContent);
         GC.Collect();
