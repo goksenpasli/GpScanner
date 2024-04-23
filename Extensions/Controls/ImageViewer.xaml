@@ -179,6 +179,7 @@
                                     Minimum="0.01"
                                     SmallChange="1"
                                     Style="{DynamicResource Slider}"
+                                    Visibility="{Binding ZoomButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                     Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <Slider Grid.Column="5"
                                     Margin="2"
@@ -189,6 +190,7 @@
                                     SmallChange="1"
                                     Style="{DynamicResource Slider}"
                                     Ticks="0, 90, 180, 270, 360"
+                                    Visibility="{Binding AngleButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                     Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <ToggleButton Grid.Column="6"
                                     Content="360°"

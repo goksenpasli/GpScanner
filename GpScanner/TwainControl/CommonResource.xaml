@@ -5,6 +5,7 @@
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
     xmlns:PresentationOptions="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
+    xmlns:Printing="clr-namespace:System.Drawing.Printing;assembly=System.Drawing"
     xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:TwainControl"
@@ -890,6 +891,19 @@
     <DataTemplate x:Key="DvdBurnerXlsxTemplate">
         <local:XlsxViewer XlsxDataFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
+    <StackPanel x:Key="EypPrintSplitButtonInternalContent" Orientation="Horizontal">
+        <ListBox FontFamily="Segoe UI"
+            FontSize="12"
+            FontWeight="Regular"
+            ItemsSource="{x:Static Printing:PrinterSettings.InstalledPrinters}"
+            SelectedItem="{Binding SelectedPrinter}" />
+        <ListBox FontFamily="Segoe UI"
+            FontSize="12"
+            FontWeight="Regular"
+            ItemStringFormat="{}{0} Dpi"
+            ItemsSource="{x:Static PdfViewer:PdfViewer.DpiList}"
+            SelectedItem="{Binding PrintDpi}" />
+    </StackPanel>
     <DataTemplate x:Key="EypImgViewerTemplate">
         <Grid>
             <Grid.RowDefinitions>
@@ -923,11 +937,13 @@
             <Extensions:ImageViewer Grid.Row="1"
                 Width="210"
                 Height="297"
+                AngleButtonVisibility="Collapsed"
                 DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                 ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                 OpenButtonVisibility="Collapsed"
                 PanoramaButtonVisibility="Collapsed"
-                PrintButtonVisibility="Visible" />
+                PrintButtonVisibility="Visible"
+                ZoomButtonVisibility="Collapsed" />
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="SimpleArchiveViewerImgViewerTemplate">
@@ -947,12 +963,22 @@
             <StackPanel HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
+                <Extensions:SplitButton Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    Command="{Binding PrintEypPackageSelectedDocuments}"
+                    CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    Content="7"
+                    FontFamily="Wingdings 2"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
+                    InternalContent="{StaticResource EypPrintSplitButtonInternalContent}" />
                 <TextBlock>
                     <Hyperlink Command="{Binding PdfViewerFullScreen}"
                         CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         TextDecorations="None">
                         <Run FontFamily="Wingdings 2"
-                            FontSize="18"
+                            FontSize="24"
                             FontWeight="Bold"
                             Text="4" />
                     </Hyperlink>
@@ -962,8 +988,8 @@
                         Command="{Binding EypPdfSeçiliDosyaSil}"
                         CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         TextDecorations="None">
-                        <Image Width="16"
-                            Height="16"
+                        <Image Width="24"
+                            Height="24"
                             Source="/TwainControl;component/Icons/delete.png" />
                     </Hyperlink>
                 </TextBlock>
@@ -1000,12 +1026,22 @@
             <StackPanel HorizontalAlignment="Right"
                 VerticalAlignment="Center"
                 Orientation="Horizontal">
+                <Extensions:SplitButton Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    Command="{Binding PrintEypPackageSelectedDocuments}"
+                    CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    Content="7"
+                    FontFamily="Wingdings 2"
+                    FontSize="22"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
+                    InternalContent="{StaticResource EypPrintSplitButtonInternalContent}" />
                 <TextBlock>
                     <Hyperlink Command="{Binding PdfViewerFullScreen}"
                         CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         TextDecorations="None">
                         <Run FontFamily="Wingdings 2"
-                            FontSize="18"
+                            FontSize="24"
                             FontWeight="Bold"
                             Text="4" />
                     </Hyperlink>
@@ -1015,8 +1051,8 @@
                         Command="{Binding EypPdfSeçiliDosyaSil}"
                         CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         TextDecorations="None">
-                        <Image Width="16"
-                            Height="16"
+                        <Image Width="24"
+                            Height="24"
                             Source="/TwainControl;component/Icons/delete.png" />
                     </Hyperlink>
                 </TextBlock>

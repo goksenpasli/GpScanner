@@ -42,7 +42,8 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 
     public FixedDocumentSequence WriteXPS(FlowDocument flowDocument)
     {
-        Package package = Package.Open(new MemoryStream(), FileMode.Create, FileAccess.ReadWrite);
+        MemoryStream ms = new();
+        Package package = Package.Open(ms, FileMode.Create, FileAccess.ReadWrite);
         Uri packUri = new("pack://temp.xps");
         PackageStore.RemovePackage(packUri);
         PackageStore.AddPackage(packUri, package);
@@ -52,6 +53,7 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
         {
             xpsSerializationManager.SaveAsXaml(paginator);
         }
+        ms = null;
         return xpsDocument.GetFixedDocumentSequence();
     }
 

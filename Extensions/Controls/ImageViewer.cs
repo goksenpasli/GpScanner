@@ -23,6 +23,7 @@ namespace Extensions;
 [TemplatePart(Name = "panoramaBrush", Type = typeof(DiffuseMaterial))]
 public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 {
+    public static readonly DependencyProperty AngleButtonVisibilityProperty = DependencyProperty.Register("AngleButtonVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register("DecodeHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(300, DecodeHeightChangedAsync));
     public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
@@ -38,6 +39,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(ImageViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(ImageViewer), new PropertyMetadata(null, SourceChanged));
     public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ZoomButtonVisibilityProperty = DependencyProperty.Register("ZoomButtonVisibility", typeof(Visibility), typeof(ImageViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(1.0), ZoomValidateCallBack);
     private bool _isOnDrag;
     private DiffuseMaterial _panoramaBrush;
@@ -143,6 +145,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public event PropertyChangedEventHandler PropertyChanged;
 
     public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
+
+    public Visibility AngleButtonVisibility { get => (Visibility)GetValue(AngleButtonVisibilityProperty); set => SetValue(AngleButtonVisibilityProperty, value); }
 
     public int DecodeHeight { get => (int)GetValue(DecodeHeightProperty); set => SetValue(DecodeHeightProperty, value); }
 
@@ -300,6 +304,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public ICommand Yazdır { get; }
 
     public double Zoom { get => (double)GetValue(ZoomProperty); set => SetValue(ZoomProperty, value); }
+
+    public Visibility ZoomButtonVisibility { get => (Visibility)GetValue(ZoomButtonVisibilityProperty); set => SetValue(ZoomButtonVisibilityProperty, value); }
 
     public static async Task<BitmapImage> LoadImageAsync(string imagePath, int decodepixelheight = 0)
     {

@@ -421,15 +421,24 @@
                                             <Border Background="{StaticResource BorderBackground}"
                                                 BorderBrush="Gray"
                                                 BorderThickness="1">
-                                                <Slider Height="96"
-                                                    AutoToolTipPlacement="TopLeft"
-                                                    IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    Maximum="360"
-                                                    Orientation="Vertical"
-                                                    SmallChange="1"
-                                                    Style="{DynamicResource Slider}"
-                                                    Ticks="0, 90, 180, 270, 360"
-                                                    Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                <StackPanel>
+                                                    <ToggleButton Background="{x:Null}"
+                                                        BorderBrush="{x:Null}"
+                                                        Content="B"
+                                                        FontFamily="Wingdings"
+                                                        FontSize="16"
+                                                        FontWeight="Bold"
+                                                        IsChecked="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    <Slider Height="96"
+                                                        AutoToolTipPlacement="TopLeft"
+                                                        IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        Maximum="360"
+                                                        Orientation="Vertical"
+                                                        SmallChange="1"
+                                                        Style="{DynamicResource Slider}"
+                                                        Ticks="0, 90, 180, 270, 360"
+                                                        Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                </StackPanel>
                                             </Border>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>

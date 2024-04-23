@@ -45,7 +45,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
     public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
     public static readonly DependencyProperty SnapTickProperty =
-        DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
+        DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
     public static readonly DependencyProperty ThumbsVisibleProperty =
         DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
@@ -659,6 +659,17 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    public static void GenerateDocument(PrintDialog pd, PdfDocument document, int startPage, int endPage, int Dpi)
+    {
+        FixedDocument fixedDocument = new();
+        for (int i = startPage; i <= endPage; i++)
+        {
+            RenderPageContents(document, fixedDocument, i, Dpi);
+        }
+        XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
+        xpsWriter.WriteAsync(fixedDocument, pd.PrintTicket);
+    }
+
     public static bool IsValidPdfFile(string filename)
     {
         if (!File.Exists(filename))
@@ -810,6 +821,21 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    private static void RenderPageContents(PdfDocument pdfiumdocument, FixedDocument fixedDocument, int pagenumber, int Dpi)
+    {
+        SizeF pageSize = pdfiumdocument.PageSizes[pagenumber - 1];
+        using Bitmap bitmap = pdfiumdocument.Render(pagenumber - 1, (int)(pageSize.Width / 72 * Dpi), (int)(pageSize.Height / 72 * Dpi), Dpi, Dpi, true) as Bitmap;
+        BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
+        bitmapimage.Freeze();
+        System.Windows.Controls.Image image = new() { Source = bitmapimage, Width = bitmapimage.Width, Height = bitmapimage.Height };
+        FixedPage fixedPage = new() { Width = bitmapimage.Width, Height = bitmapimage.Height };
+        _ = fixedPage.Children.Add(image);
+        PageContent pageContent = new();
+        ((IAddChild)pageContent).AddChild(fixedPage);
+        _ = fixedDocument.Pages.Add(pageContent);
+        GC.Collect();
+    }
+
     private static Task<BitmapSource> RenderPdf(PdfDocument pdfDoc, int dpi, int page, int width, int height)
     {
         return Task.Run(
@@ -854,17 +880,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void GenerateDocument(PrintDialog pd, PdfDocument document, int startPage, int endPage, int Dpi)
-    {
-        FixedDocument fixedDocument = new();
-        for (int i = startPage; i <= endPage; i++)
-        {
-            RenderPageContents(document, fixedDocument, i, Dpi);
-        }
-        XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
-        xpsWriter.WriteAsync(fixedDocument, pd.PrintTicket);
-    }
-
     private void PdfViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
@@ -879,21 +894,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         {
             Resize.Execute(null);
         }
-    }
-
-    private void RenderPageContents(PdfDocument pdfiumdocument, FixedDocument fixedDocument, int pagenumber, int Dpi)
-    {
-        SizeF pageSize = pdfiumdocument.PageSizes[pagenumber - 1];
-        using Bitmap bitmap = pdfiumdocument.Render(pagenumber - 1, (int)(pageSize.Width / 72 * Dpi), (int)(pageSize.Height / 72 * Dpi), Dpi, Dpi, true) as Bitmap;
-        BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
-        bitmapimage.Freeze();
-        System.Windows.Controls.Image image = new() { Source = bitmapimage, Width = bitmapimage.Width, Height = bitmapimage.Height };
-        FixedPage fixedPage = new() { Width = bitmapimage.Width, Height = bitmapimage.Height };
-        _ = fixedPage.Children.Add(image);
-        PageContent pageContent = new();
-        ((IAddChild)pageContent).AddChild(fixedPage);
-        _ = fixedDocument.Pages.Add(pageContent);
-        GC.Collect();
     }
 
     private void Scrollvwr_Drop(object sender, DragEventArgs e)

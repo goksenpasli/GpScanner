@@ -12,6 +12,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Drawing.Printing;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -144,6 +145,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private bool selectedImageWidthHeightIsEqual;
     private Orientation selectedOrientation = Orientation.Default;
     private Paper selectedPaper;
+    private string selectedPrinter = new PrinterSettings()?.PrinterName;
     private PageRotation selectedRotation = PageRotation.NONE;
     private int selectedTabIndex;
     private List<ScannedImage[]> splittedIndexImages;
@@ -2042,6 +2044,41 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => GetSelectedImagesCount() > 0);
+
+        PrintEypPackageSelectedDocuments = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is string filepath)
+                {
+                    PrintDialog printdialog = null;
+                    LocalPrintServer localPrintServer = new();
+                    string extension = Path.GetExtension(filepath)?.ToLowerInvariant();
+                    if (imagefileextensions.Contains(extension))
+                    {
+                        printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = false, MaxPage = 1, MinPage = 1, PrintQueue = localPrintServer.GetPrintQueue(SelectedPrinter) };
+                        BitmapFrame bitmapframe = BitmapFrame.Create(new Uri(filepath));
+                        bitmapframe?.Freeze();
+                        FixedDocument fixedDocument = ImageViewer.PrintMultipleFixedDocumentPages(printdialog, 0, 0, [bitmapframe], PrintDpi);
+                        XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(printdialog.PrintQueue);
+                        xpsWriter.WriteAsync(fixedDocument, printdialog.PrintTicket);
+                        fixedDocument = null;
+                        bitmapframe = null;
+                        return;
+                    }
+                    if (extension == ".eyp")
+                    {
+                        List<string> eypfilelist = EypFileExtract(filepath);
+                        filepath = eypfilelist?.FirstOrDefault(z => Path.GetExtension(z.ToLowerInvariant()) == ".pdf");
+                    }
+                    if (PdfViewer.PdfViewer.IsValidPdfFile(filepath))
+                    {
+                        using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(filepath);
+                        printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = false, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1, PrintQueue = localPrintServer.GetPrintQueue(SelectedPrinter) };
+                        PdfViewer.PdfViewer.GenerateDocument(printdialog, pdfDocument, (int)printdialog.MinPage, (int)printdialog.MaxPage, PrintDpi);
+                    }
+                }
+            },
+            parameter => true);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -2600,6 +2637,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public RelayCommand<object> PrintEypPackageSelectedDocuments { get; }
+
     public RelayCommand<object> PrintSelectedDocuments { get; }
 
     public ICommand ReadPdfTag { get; }
@@ -2815,6 +2854,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 selectedPaper = value;
                 OnPropertyChanged(nameof(SelectedPaper));
+            }
+        }
+    }
+
+    public string SelectedPrinter
+    {
+        get => selectedPrinter;
+        set
+        {
+            if (selectedPrinter != value)
+            {
+                selectedPrinter = value;
+                OnPropertyChanged(nameof(SelectedPrinter));
             }
         }
     }
@@ -3670,7 +3722,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             ShouldTransferAllPages = true,
             UseFilmScanner = Scanner.UseFilmScanner,
             Resolution = new ResolutionSettings { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = IsBlackAndWhiteMode() ? ColourSetting.BlackAndWhite : ColourSetting.Colour },
-            Page = new PageSettings { Orientation = SelectedOrientation },
+            Page = new TwainWpf.PageSettings { Orientation = SelectedOrientation },
             Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true },
         };
         scansettings.Page.Size = SelectedPaper.PaperType switch
