@@ -661,13 +661,9 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public static void GenerateDocument(PrintDialog pd, PdfDocument document, int startPage, int endPage, int Dpi)
     {
-        FixedDocument fixedDocument = new();
-        for (int i = startPage; i <= endPage; i++)
-        {
-            RenderPageContents(document, fixedDocument, i, Dpi);
-        }
+        FixedDocument fixeddocument = RenderPageContents(pd, document, startPage, endPage, Dpi);
         XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
-        xpsWriter.WriteAsync(fixedDocument, pd.PrintTicket);
+        xpsWriter.WriteAsync(fixeddocument, pd.PrintTicket);
     }
 
     public static bool IsValidPdfFile(string filename)
@@ -821,19 +817,28 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static void RenderPageContents(PdfDocument pdfiumdocument, FixedDocument fixedDocument, int pagenumber, int Dpi)
+    private static FixedDocument RenderPageContents(PrintDialog printdialog, PdfDocument pdfiumdocument, int start, int end, int Dpi)
     {
-        SizeF pageSize = pdfiumdocument.PageSizes[pagenumber - 1];
-        using Bitmap bitmap = pdfiumdocument.Render(pagenumber - 1, (int)(pageSize.Width / 72 * Dpi), (int)(pageSize.Height / 72 * Dpi), Dpi, Dpi, true) as Bitmap;
-        BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
-        bitmapimage.Freeze();
-        System.Windows.Controls.Image image = new() { Source = bitmapimage, Width = bitmapimage.Width, Height = bitmapimage.Height };
-        FixedPage fixedPage = new() { Width = bitmapimage.Width, Height = bitmapimage.Height };
-        _ = fixedPage.Children.Add(image);
-        PageContent pageContent = new();
-        ((IAddChild)pageContent).AddChild(fixedPage);
-        _ = fixedDocument.Pages.Add(pageContent);
-        GC.Collect();
+        FixedDocument fixedDocument = new();
+        for (int i = start; i <= end; i++)
+        {
+            SizeF pageSize = pdfiumdocument.PageSizes[i - 1];
+            using Bitmap bitmap = pdfiumdocument.Render(i - 1, (int)(pageSize.Width / 72 * Dpi), (int)(pageSize.Height / 72 * Dpi), Dpi, Dpi, true) as Bitmap;
+            if (pageSize.Width > pageSize.Height)
+            {
+                bitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+            }
+            BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
+            bitmapimage.Freeze();
+            FixedPage fixedPage = new();
+            System.Windows.Controls.Image image = new() { Source = bitmapimage, Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
+            _ = fixedPage.Children.Add(image);
+            PageContent pageContent = new();
+            ((IAddChild)pageContent).AddChild(fixedPage);
+            _ = fixedDocument.Pages.Add(pageContent);
+            GC.Collect();
+        }
+        return fixedDocument;
     }
 
     private static Task<BitmapSource> RenderPdf(PdfDocument pdfDoc, int dpi, int page, int width, int height)

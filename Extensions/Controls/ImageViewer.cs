@@ -333,24 +333,16 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         FixedDocument fixedDocument = new();
         for (int i = başlangıç; i <= bitiş; i++)
         {
-            PageContent pageContent = new();
-            FixedPage fixedPage = new();
             BitmapSource imagesource = bitmappages.ElementAtOrDefault(i);
-            if (imagesource.Width < imagesource.Height)
+            if (imagesource.Width > imagesource.Height)
             {
-                fixedPage.Width = printdialog.PrintableAreaWidth;
-                fixedPage.Height = printdialog.PrintableAreaHeight;
-                imagesource = imagesource.Resize(printdialog.PrintableAreaWidth, printdialog.PrintableAreaHeight, null, dpi, dpi);
-            }
-            else
-            {
-                fixedPage.Width = printdialog.PrintableAreaHeight;
-                fixedPage.Height = printdialog.PrintableAreaWidth;
-                imagesource = imagesource.Resize(printdialog.PrintableAreaHeight, printdialog.PrintableAreaWidth, null, dpi, dpi);
+                imagesource = imagesource.Resize(printdialog.PrintableAreaHeight, printdialog.PrintableAreaWidth, -90, dpi, dpi);
             }
             imagesource.Freeze();
-            Image image = new() { Source = imagesource, Width = fixedPage.Width, Height = fixedPage.Height };
+            FixedPage fixedPage = new();
+            Image image = new() { Source = imagesource, Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
             _ = fixedPage.Children.Add(image);
+            PageContent pageContent = new();
             ((IAddChild)pageContent).AddChild(fixedPage);
             _ = fixedDocument.Pages.Add(pageContent);
             GC.Collect();
