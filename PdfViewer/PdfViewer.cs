@@ -823,14 +823,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         for (int i = start; i <= end; i++)
         {
             SizeF pageSize = pdfiumdocument.PageSizes[i - 1];
-            using Bitmap bitmap = pdfiumdocument.Render(i - 1, (int)(pageSize.Width / 72 * Dpi), (int)(pageSize.Height / 72 * Dpi), Dpi, Dpi, true) as Bitmap;
+            using Bitmap bitmap = pdfiumdocument.Render(i - 1, (int)(pageSize.Width / 72 * Dpi), (int)(pageSize.Height / 72 * Dpi), Dpi, Dpi, PdfRenderFlags.ForPrinting) as Bitmap;
             if (pageSize.Width > pageSize.Height)
             {
                 bitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
             }
             BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
             bitmapimage.Freeze();
-            FixedPage fixedPage = new();
+            FixedPage fixedPage = new() { Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
             System.Windows.Controls.Image image = new() { Source = bitmapimage, Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
             _ = fixedPage.Children.Add(image);
             PageContent pageContent = new();

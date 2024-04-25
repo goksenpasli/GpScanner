@@ -339,7 +339,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                 imagesource = imagesource.Resize(printdialog.PrintableAreaHeight, printdialog.PrintableAreaWidth, -90, dpi, dpi);
             }
             imagesource.Freeze();
-            FixedPage fixedPage = new();
+            FixedPage fixedPage = new() { Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
             Image image = new() { Source = imagesource, Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
             _ = fixedPage.Children.Add(image);
             PageContent pageContent = new();
