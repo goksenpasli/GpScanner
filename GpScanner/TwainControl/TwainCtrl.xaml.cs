@@ -12,13 +12,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Drawing.Printing;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Media;
 using System.Printing;
+using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
@@ -82,7 +82,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private double allRotateProgressValue;
     private byte[] cameraQRCodeData;
     private bool canUndoImage;
+    private int cropBottomMargin;
     private CroppedBitmap croppedOcrBitmap;
+    private int cropRightMargin;
     private double customDeskewAngle;
     private byte[] dataBaseQrData;
     private ObservableCollection<OcrData> dataBaseTextData;
@@ -145,7 +147,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private bool selectedImageWidthHeightIsEqual;
     private Orientation selectedOrientation = Orientation.Default;
     private Paper selectedPaper;
-    private string selectedPrinter = new PrinterSettings()?.PrinterName;
     private PageRotation selectedRotation = PageRotation.NONE;
     private int selectedTabIndex;
     private List<ScannedImage[]> splittedIndexImages;
@@ -2201,6 +2202,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CopyPdfBitmapFile { get; }
 
+    public int CropBottomMargin
+    {
+        get => cropBottomMargin;
+        set
+        {
+            if (cropBottomMargin != value)
+            {
+                cropBottomMargin = value;
+                OnPropertyChanged(nameof(CropBottomMargin));
+            }
+        }
+    }
+
     public CroppedBitmap CroppedOcrBitmap
     {
         get => croppedOcrBitmap;
@@ -2211,6 +2225,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 croppedOcrBitmap = value;
                 OnPropertyChanged(nameof(CroppedOcrBitmap));
+            }
+        }
+    }
+
+    public int CropRightMargin
+    {
+        get => cropRightMargin;
+        set
+        {
+            if (cropRightMargin != value)
+            {
+                cropRightMargin = value;
+                OnPropertyChanged(nameof(CropRightMargin));
             }
         }
     }
@@ -3076,6 +3103,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return bitmapFrame;
     }
 
+    [DllImport("winspool.drv", CharSet = CharSet.Unicode, SetLastError = true)]
+    public static extern bool GetDefaultPrinter(StringBuilder pszBuffer, ref int pcchBuffer);
+
     public static void GotoPage(string path)
     {
         if (!string.IsNullOrWhiteSpace(path))
@@ -3432,6 +3462,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return true;
     }
 
+    private static string GetDefaultPrinterName()
+    {
+        int bufferSize = 256;
+        StringBuilder printerNameBuffer = new(bufferSize);
+        return GetDefaultPrinter(printerNameBuffer, ref bufferSize) ? (printerNameBuffer?.ToString()) : null;
+    }
+
     private async Task AddAttachmentFileAsync(string[] files, string loadfilename, string savefilename)
     {
         await Task.Run(
@@ -3707,6 +3744,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             paper.Height = Settings.Default.CustomPaperHeight;
         }
 
+        if (e.PropertyName is "Right" or "Bottom")
+        {
+            CropRightMargin = PageWidth - Settings.Default.Right;
+            CropBottomMargin = PageHeight - Settings.Default.Bottom;
+        }
+
         Settings.Default.Save();
     }
 
@@ -3722,7 +3765,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             ShouldTransferAllPages = true,
             UseFilmScanner = Scanner.UseFilmScanner,
             Resolution = new ResolutionSettings { Dpi = (int)Settings.Default.Çözünürlük, ColourSetting = IsBlackAndWhiteMode() ? ColourSetting.BlackAndWhite : ColourSetting.Colour },
-            Page = new TwainWpf.PageSettings { Orientation = SelectedOrientation },
+            Page = new PageSettings { Orientation = SelectedOrientation },
             Rotation = new RotationSettings { AutomaticBorderDetection = true, AutomaticRotate = true, AutomaticDeskew = true },
         };
         scansettings.Page.Size = SelectedPaper.PaperType switch
@@ -4707,4 +4750,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         using ZipArchive archive = ZipFile.OpenRead(zipfileName);
         archive.Entries?.FirstOrDefault(z => z.FullName == zipcontentfilename)?.ExtractToFile(destinationfilename, true);
     }
+
+    private string selectedPrinter = GetDefaultPrinterName();
 }

@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Converter="clr-namespace:TwainControl.Converter"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -221,11 +222,22 @@
                     </UniformGrid>
                 </UniformGrid>
                 <Separator />
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Run d:Text="PageWidth" Text="{Binding PageWidth, Mode=OneWay}" />
-                    <Run Text="X" />
-                    <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
-                </TextBlock>
+                <UniformGrid Columns="2">
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
+                        <Run d:Text="PageWidth" Text="{Binding PageWidth, Mode=OneWay}" />
+                        <System:String>X</System:String>
+                        <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
+                    </TextBlock>
+                    <TextBlock HorizontalAlignment="Center">
+                        <Run Text="{Binding Left, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                        <System:String>,</System:String>
+                        <Run Text="{Binding Top, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                        <System:String>,</System:String>
+                        <Run d:Text="0" Text="{Binding CropRightMargin, Mode=OneWay}" />
+                        <System:String>,</System:String>
+                        <Run d:Text="0" Text="{Binding CropBottomMargin, Mode=OneWay}" />
+                    </TextBlock>
+                </UniformGrid>
             </StackPanel>
         </GroupBox.Header>
         <Grid>
@@ -265,7 +277,8 @@
                         Orientation="Vertical"
                         Style="{DynamicResource Slider}"
                         Value="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                    <Canvas Grid.Row="1"
+                    <Canvas x:Name="Cnv"
+                        Grid.Row="1"
                         Grid.Column="1"
                         Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
@@ -286,13 +299,12 @@
                                 </Style>
                             </Border.Style>
                         </Border>
-                        <Image x:Name="Img"
-                            Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                        <Image Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                             Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                             d:Height="295"
                             d:Width="242"
                             Source="{Binding SeçiliResim.ResimThumb}" />
-                        <Extensions:Magnifier ContentPanel="{Binding ElementName=Img}" />
+                        <Extensions:Magnifier ContentPanel="{Binding ElementName=Cnv}" />
                         <Line Canvas.Left="{Binding Value, ElementName=LeftCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
                             d:Canvas.Left="20"
                             d:Y2="295"
