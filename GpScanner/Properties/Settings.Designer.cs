@@ -539,17 +539,5 @@ namespace GpScanner.Properties {
                 this["DataBaseBackUpFolder"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool ShowListBoxPreview {
-            get {
-                return ((bool)(this["ShowListBoxPreview"]));
-            }
-            set {
-                this["ShowListBoxPreview"] = value;
-            }
-        }
     }
 }

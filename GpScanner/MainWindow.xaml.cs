@@ -140,25 +140,6 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    private async void LbDoc_ScrollChanged(object sender, ScrollChangedEventArgs e)
-    {
-        if (!Settings.Default.ShowListBoxPreview || sender is not ListBox listBox || e.VerticalOffset == 0)
-        {
-            return;
-        }
-        int lbindex = (int)(e.VerticalOffset / e.ExtentHeight * listBox.Items.Count);
-        if (!(listBox.ItemContainerGenerator.ContainerFromIndex(lbindex) is ListBoxItem firstlistboxitem && firstlistboxitem.DataContext is Scanner scanner))
-        {
-            return;
-        }
-        if (listBox.FindVisualChildren<Thumb>().FirstOrDefault()?.IsMouseOver != true)
-        {
-            return;
-        }
-        await ScrollBarHelper.GenerateThumb(listBox, 1, scanner.FileName);
-        await ScrollBarHelper.CloseToolTip(listBox);
-    }
-
     private async void ListBox_DropAsync(object sender, DragEventArgs e) => await twainCtrl.ListBoxDropFileAsync(e);
 
     private void MiniDocumentRun_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

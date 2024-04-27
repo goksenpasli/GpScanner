@@ -4743,6 +4743,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             AllRotateProgressValue = 0;
             AllImageRotationAngle = 0;
         }
+
+        if (e.PropertyName is "SeçiliResim" && SeçiliResim is null)
+        {
+            Scanner.CropDialogExpanded = false;
+        }
     }
 
     private void ZipExtractSingleFile(string zipfileName, string zipcontentfilename, string destinationfilename)

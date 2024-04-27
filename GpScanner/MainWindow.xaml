@@ -867,7 +867,6 @@
                             IsSynchronizedWithCurrentItem="False"
                             ItemsSource="{Binding Mode=OneWay, Source={StaticResource Veriler}}"
                             ScrollViewer.IsDeferredScrollingEnabled="{Binding IsChecked, ElementName=TbExpandDocument}"
-                            ScrollViewer.ScrollChanged="LbDoc_ScrollChanged"
                             SelectionMode="Extended"
                             Style="{StaticResource ListBoxAnimationStyle}"
                             VirtualizingPanel.CacheLength="{Binding SelectedSize, Converter={StaticResource SelectedSizeToCacheLengthConverter}, Mode=OneWay}"
@@ -926,8 +925,8 @@
                                                                 <ColumnDefinition />
                                                             </Grid.ColumnDefinitions>
                                                             <Grid.RowDefinitions>
-                                                                <RowDefinition Height="16" />
-                                                                <RowDefinition Height="Auto" />
+                                                                <RowDefinition Height="19.2" />
+                                                                <RowDefinition Height="19.2" />
                                                                 <RowDefinition />
                                                             </Grid.RowDefinitions>
                                                             <TextBlock Grid.ColumnSpan="2">

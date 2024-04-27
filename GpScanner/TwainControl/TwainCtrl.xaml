@@ -1698,7 +1698,9 @@
                                                                             <TranslateTransform />
                                                                         </TransformGroup>
                                                                     </ToggleButton.RenderTransform>
-                                                                    <PdfViewer:PdfShadowedImage d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                    <PdfViewer:PdfShadowedImage Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                        Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                        d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
                                                                         d:Source="/GpScanner;component/scanner.ico"
                                                                         d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
                                                                         <PdfViewer:PdfShadowedImage.Source>

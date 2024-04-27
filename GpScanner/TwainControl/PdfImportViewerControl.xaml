@@ -1234,7 +1234,8 @@
                                 RemainingLengthVisibility="Collapsed"
                                 ResetButtonVisibility="Collapsed"
                                 Text="{Binding OcrText, Mode=OneWay}"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto" />
                             <controls:TranslateView Grid.Row="1" />
                             <Extensions:ButtonedTextBox Grid.Row="2"
                                 FontSizeButtonVisibility="Visible"
@@ -1244,7 +1245,8 @@
                                 RemainingLengthVisibility="Collapsed"
                                 ResetButtonVisibility="Collapsed"
                                 Text="{Binding Çeviri, Mode=OneWay}"
-                                TextWrapping="Wrap" />
+                                TextWrapping="Wrap"
+                                VerticalScrollBarVisibility="Auto" />
                             <Extensions:ButtonedTextBox Grid.Row="3"
                                 IsReadOnly="True"
                                 PasteButtonVisibility="Collapsed"
