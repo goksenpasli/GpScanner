@@ -971,7 +971,7 @@
                     FontFamily="Wingdings 2"
                     FontSize="22"
                     FontWeight="Bold"
-                    Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
+                    Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
                     InternalContent="{StaticResource EypPrintSplitButtonInternalContent}" />
                 <TextBlock>
                     <Hyperlink Command="{Binding PdfViewerFullScreen}"
@@ -1034,7 +1034,7 @@
                     FontFamily="Wingdings 2"
                     FontSize="22"
                     FontWeight="Bold"
-                    Foreground="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"
+                    Foreground="{DynamicResource {x:Static SystemColors.HotTrackBrushKey}}"
                     InternalContent="{StaticResource EypPrintSplitButtonInternalContent}" />
                 <TextBlock>
                     <Hyperlink Command="{Binding PdfViewerFullScreen}"
