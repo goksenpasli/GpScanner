@@ -37,7 +37,8 @@
                         </Image>
                         <TextBlock>
                             <Run Text="{local:Loc SCAN}" />
-                            <Run Text="{local:Loc TRIMIMAGE}" />
+                            <Run Text="{local:Loc TRIMIMAGE}" /><Run Text="" />
+                            <Run Text="{Binding ElementName=TbMargin, Path=Text, Mode=OneWay}" />
                         </TextBlock>
                     </StackPanel>
                 </CheckBox>
@@ -57,14 +58,13 @@
                             <Run Text="{local:Loc SCAN}" />
                             <Run Text="{local:Loc TRIMIMAGE}" />
                         </TextBlock>
-                        <Extensions:ContentToggleButton Background="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                        <Extensions:ContentToggleButton Background="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Content="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ColorPicker Width="350"
                                     Height="250"
                                     HexCode="{Binding AutoCropColor, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
                                     PredefinedColorVisibility="Visible" />
                             </Extensions:ContentToggleButton.OverContent>
-                            <TextBlock d:Text="Black" Text="{Binding AutoCropColor, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                         </Extensions:ContentToggleButton>
                     </StackPanel>
                 </CheckBox>
@@ -228,7 +228,7 @@
                         <System:String>X</System:String>
                         <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
                     </TextBlock>
-                    <TextBlock HorizontalAlignment="Center">
+                    <TextBlock x:Name="TbMargin" HorizontalAlignment="Center">
                         <Run Text="{Binding Left, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                         <System:String>,</System:String>
                         <Run Text="{Binding Top, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />

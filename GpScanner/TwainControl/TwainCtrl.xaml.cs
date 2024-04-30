@@ -1144,7 +1144,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is PdfViewer.PdfViewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
                 seçiliresimler.Any() &&
-                MessageBox.Show($"{Translation.GetResStringValue("SAVESELECTED")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                MessageBox.Show($"{seçiliresimler.Count} {Translation.GetResStringValue("DOCUMENT")}\n{Translation.GetResStringValue("SAVESELECTED")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     string pdfFilePath = pdfviewer.PdfFilePath;
                     string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
@@ -1627,6 +1627,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     SelectedTabIndex = 1;
                     drawControl.TemporaryImage = drawControl.EditingImage = scannedImage.Resim;
                     drawControl.Ink.CurrentZoom = ActualHeight / scannedImage.Resim.PixelHeight;
+                    TümününİşaretiniKaldır?.Execute(null);
+                    scannedImage.Seçili = true;
                 }
             },
             parameter => true);
@@ -3748,6 +3750,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             CropRightMargin = PageWidth - Settings.Default.Right;
             CropBottomMargin = PageHeight - Settings.Default.Bottom;
+        }
+
+        if (e.PropertyName is "CropScan" && Settings.Default.CropScan)
+        {
+            Settings.Default.AutoCropImage = false;
+        }
+        else if (e.PropertyName is "AutoCropImage" && Settings.Default.AutoCropImage)
+        {
+            Settings.Default.CropScan = false;
         }
 
         Settings.Default.Save();

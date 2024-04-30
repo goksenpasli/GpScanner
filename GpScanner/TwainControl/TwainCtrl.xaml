@@ -2274,7 +2274,7 @@
                             </Image.Source>
                         </Image>
                     </TabItem.Header>
-                    <local:DrawControl x:Name="drawControl" />
+                    <local:DrawControl x:Name="drawControl" AllowDrop="True" />
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>

@@ -294,6 +294,20 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         return image;
     }
 
+    protected override void OnDrop(DragEventArgs e)
+    {
+        if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && scannedImage?.Resim is not null)
+        {
+            TemporaryImage = EditingImage = scannedImage.Resim;
+            Ink.CurrentZoom = ActualHeight / scannedImage.Resim.PixelHeight;
+            if (DataContext is TwainCtrl twainCtrl)
+            {
+                twainCtrl.TümününİşaretiniKaldır?.Execute(null);
+            }
+            scannedImage.Seçili = true;
+        }
+    }
+
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private void DrawControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
