@@ -726,4 +726,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>PEGAR</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Mostrar ícono de systemtray</value>
+  </data>
 </root>

@@ -733,4 +733,7 @@ TO FILE</value>
   <data name="PASTE" xml:space="preserve">
     <value>PASTE</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Show SystemTray Icon</value>
+  </data>
 </root>

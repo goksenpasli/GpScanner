@@ -726,4 +726,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>COLAR</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Mostre o ícone Systemtray</value>
+  </data>
 </root>

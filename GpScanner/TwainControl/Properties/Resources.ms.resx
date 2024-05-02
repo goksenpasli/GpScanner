@@ -729,4 +729,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>Tampal</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Tunjukkan Ikon Systemtray</value>
+  </data>
 </root>

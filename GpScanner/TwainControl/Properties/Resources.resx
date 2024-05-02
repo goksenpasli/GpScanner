@@ -764,4 +764,7 @@
   <data name="PASTE" xml:space="preserve">
     <value />
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value />
+  </data>
 </root>

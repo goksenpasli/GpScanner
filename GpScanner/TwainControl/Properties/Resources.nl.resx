@@ -726,4 +726,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>PLAKKEN</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Toon SystemTray -pictogram</value>
+  </data>
 </root>

@@ -739,4 +739,7 @@ BELGE EKLE</value>
   <data name="PASTE" xml:space="preserve">
     <value>YAPIŞTIR</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>System Tepsisinde Uygulama Simgesini Göster</value>
+  </data>
 </root>

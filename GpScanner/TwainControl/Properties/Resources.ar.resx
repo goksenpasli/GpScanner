@@ -726,4 +726,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>معجون</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>عرض أيقونة SystemTray</value>
+  </data>
 </root>

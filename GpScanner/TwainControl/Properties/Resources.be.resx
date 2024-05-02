@@ -729,4 +729,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>Праставаць</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Паказаць значок SystemTray</value>
+  </data>
 </root>

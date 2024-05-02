@@ -1202,6 +1202,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SHOWTRAYICON {
+            get {
+                return ResourceManager.GetString("SHOWTRAYICON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SLICE {
             get {
                 return ResourceManager.GetString("SLICE", resourceCulture);

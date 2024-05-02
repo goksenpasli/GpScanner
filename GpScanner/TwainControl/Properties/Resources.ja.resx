@@ -726,4 +726,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>ペースト</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>SystemTrayアイコンを表示します</value>
+  </data>
 </root>

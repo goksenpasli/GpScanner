@@ -50,12 +50,21 @@
         <KeyBinding Key="A"
             Command="{Binding Tümünüİşaretle, ElementName=twainCtrl}"
             Modifiers="Ctrl" />
+        <KeyBinding Key="D"
+            Command="{Binding TümününİşaretiniKaldır, ElementName=twainCtrl}"
+            Modifiers="Ctrl" />
         <KeyBinding Key="Delete" Command="{Binding SeçiliListeTemizle, ElementName=twainCtrl}" />
         <KeyBinding Key="Delete"
             Command="{Binding ListeTemizle, ElementName=twainCtrl}"
             Modifiers="Shift" />
         <KeyBinding Key="V"
             Command="{Binding InsertClipBoardImage, ElementName=twainCtrl}"
+            Modifiers="Ctrl" />
+        <KeyBinding Key="P"
+            Command="{Binding PrintSelectedDocuments, ElementName=twainCtrl}"
+            Modifiers="Ctrl" />
+        <KeyBinding Key="Z"
+            Command="{Binding ResimSilGeriAl, ElementName=twainCtrl}"
             Modifiers="Ctrl" />
     </Window.InputBindings>
     <Window.Resources>
@@ -246,7 +255,8 @@
         <Extensions:SystemTrayIcon d:IsHidden="True"
             IconUri="scanner.ico"
             SingleClickCommand="{Binding AppBringToFront}"
-            ToolTipText="GPSCANNER">
+            ToolTipText="GPSCANNER"
+            TrayIconActive="{Binding ShowTrayIcon, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
             <Extensions:SystemTrayIcon.ContextMenu>
                 <ContextMenu Padding="0"
                     Background="#2C3238"

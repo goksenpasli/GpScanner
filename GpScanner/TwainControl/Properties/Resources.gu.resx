@@ -726,4 +726,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>લપેટવું</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>સિસ્ટમટ્રે ચિહ્ન બતાવો</value>
+  </data>
 </root>

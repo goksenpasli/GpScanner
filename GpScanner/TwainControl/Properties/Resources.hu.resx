@@ -729,4 +729,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>PASZTA</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>A SystemTray ikon megjelenítése</value>
+  </data>
 </root>

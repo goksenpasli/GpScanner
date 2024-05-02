@@ -729,4 +729,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>Մածուկ</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Show ույց տալ Systemstray պատկերակը</value>
+  </data>
 </root>

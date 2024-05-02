@@ -729,4 +729,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>KLISTRA</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Visa systemTray -ikon</value>
+  </data>
 </root>

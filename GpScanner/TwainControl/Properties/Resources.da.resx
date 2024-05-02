@@ -729,4 +729,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>SÆT IND</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Vis systemtray -ikon</value>
+  </data>
 </root>

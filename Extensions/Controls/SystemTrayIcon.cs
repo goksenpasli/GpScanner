@@ -22,14 +22,15 @@ namespace Extensions
         public static readonly DependencyProperty IconUriProperty = DependencyProperty.Register("IconUri", typeof(Uri), typeof(SystemTrayIcon));
         public static readonly DependencyProperty SingleClickCommandProperty = DependencyProperty.Register("SingleClickCommand", typeof(ICommand), typeof(SystemTrayIcon));
         public static readonly DependencyProperty ToolTipTextProperty = DependencyProperty.Register("ToolTipText", typeof(string), typeof(SystemTrayIcon));
+        public static readonly DependencyProperty TrayIconActiveProperty = DependencyProperty.Register("TrayIconActive", typeof(bool), typeof(SystemTrayIcon), new PropertyMetadata(true, TrayIconActiveChanged));
         private const int WM_DESTROY = 0x0002;
         private const int WM_LBUTTONDBLCLK = 0x0203;
         private const int WM_LBUTTONDOWN = 0x0201;
         private const int WM_RBUTTONDOWN = 0x0204;
-        private const int WM_TASKBARCREATED = 0x8000;
         private const int WM_TRAYICON = WM_USER + 1;
         private const int WM_USER = 0x0400;
         private readonly Popup popup = new();
+        private readonly uint WM_TASKBARCREATED = RegisterWindowMessage("TaskbarCreated");
         private NOTIFYICONDATA _notifyIconData;
 
         static SystemTrayIcon() { DefaultStyleKeyProperty.OverrideMetadata(typeof(SystemTrayIcon), new FrameworkPropertyMetadata(typeof(SystemTrayIcon))); }
@@ -50,9 +51,26 @@ namespace Extensions
 
         public string ToolTipText { get => (string)GetValue(ToolTipTextProperty); set => SetValue(ToolTipTextProperty, value); }
 
+        public bool TrayIconActive { get => (bool)GetValue(TrayIconActiveProperty); set => SetValue(TrayIconActiveProperty, value); }
+
+        private static void TrayIconActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is SystemTrayIcon systemTrayIcon)
+            {
+                if ((bool)e.NewValue)
+                {
+                    systemTrayIcon.InitializeNotifyIcon();
+                }
+                else
+                {
+                    systemTrayIcon.UnInitializeNotifyIcon();
+                }
+            }
+        }
+
         private void InitializeNotifyIcon()
         {
-            if (IconUri == null)
+            if (IconUri == null || !TrayIconActive)
             {
                 return;
             }
@@ -77,7 +95,7 @@ namespace Extensions
             InitializeNotifyIcon();
         }
 
-        private void OnUnloaded(object sender, RoutedEventArgs e) => Shell_NotifyIcon(NIM_DELETE, ref _notifyIconData);
+        private void OnUnloaded(object sender, RoutedEventArgs e) => UnInitializeNotifyIcon();
 
         private void ShowContextMenu()
         {
@@ -103,13 +121,16 @@ namespace Extensions
             popup.Placement = PlacementMode.MousePoint;
         }
 
+        private void UnInitializeNotifyIcon() => Shell_NotifyIcon(NIM_DELETE, ref _notifyIconData);
+
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
+            if (msg == WM_TASKBARCREATED)
+            {
+                InitializeNotifyIcon();
+            }
             switch (msg)
             {
-                case WM_TASKBARCREATED:
-                    InitializeNotifyIcon();
-                    break;
                 case WM_DESTROY:
                     _ = Shell_NotifyIcon(NIM_DELETE, ref _notifyIconData);
                     break;
@@ -169,6 +190,9 @@ namespace Extensions
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         internal static extern IntPtr LoadImage(int Hinstance, string name, int type, int width, int height, int load);
+
+        [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        internal static extern uint RegisterWindowMessage(string msgString);
 
         [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
         internal static extern IntPtr Shell_NotifyIcon(int nMessage, ref NOTIFYICONDATA pnid);

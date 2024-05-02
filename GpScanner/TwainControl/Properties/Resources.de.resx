@@ -726,4 +726,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>PASTE</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Systemtray -Symbol anzeigen</value>
+  </data>
 </root>

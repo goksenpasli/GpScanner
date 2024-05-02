@@ -726,4 +726,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>粘贴</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>显示SystemTray图标</value>
+  </data>
 </root>

@@ -729,4 +729,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>Поставете</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Показване на иконата на SystemTray</value>
+  </data>
 </root>

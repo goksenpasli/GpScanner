@@ -729,4 +729,7 @@
   <data name="PASTE" xml:space="preserve">
     <value>PASTĂ</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Afișați pictograma SystemTray</value>
+  </data>
 </root>

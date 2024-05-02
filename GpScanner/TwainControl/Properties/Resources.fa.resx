@@ -741,4 +741,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>هر کنترل رنگی شیشه ای با یک یا چند کلیدهای CTRL تغییر پایین متفاوت کار می کند!</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>نماد SystemTray را نشان دهید</value>
+  </data>
 </root>
