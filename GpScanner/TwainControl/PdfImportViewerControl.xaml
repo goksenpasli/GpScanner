@@ -755,14 +755,30 @@
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
                 StaysOpen="True"
                 TopMost="False">
-                <Image Width="16" Height="16">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="54" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
+                <Canvas Width="16" Height="16">
+                    <Image Canvas.Left="2"
+                        Canvas.Top="-2"
+                        Width="16"
+                        Height="16">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="54" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <Image Canvas.Left="-2"
+                        Canvas.Top="2"
+                        Width="16"
+                        Height="16">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="54" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Canvas>
                 <Extensions:ContentToggleButton.OverContent>
                     <Extensions:ResizablePanel Width="460"
                         Height="300"
@@ -783,9 +799,12 @@
                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Selected}">
                                             <CheckBox.Content>
                                                 <StackPanel>
+                                                    <Extensions:NumericUpDown Maximum="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                        Minimum="1"
+                                                        Value="{Binding PageNumber}" />
                                                     <TextBlock HorizontalAlignment="Center">
                                                         <Run d:Text="PAGENUMBER" Text="{local:Loc PAGENUMBER}" />
-                                                        <Run Text="{Binding PageNumber}" />
+                                                        <Run Text="{Binding PageNumber, Mode=OneTime}" />
                                                     </TextBlock>
                                                     <Pdfviewer:ShadowedImage Width="96"
                                                         Height="96"

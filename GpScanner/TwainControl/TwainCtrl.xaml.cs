@@ -4215,6 +4215,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
+    private async Task<BitmapFrame> RotateImage(ScannedImage image, double angle)
+    {
+        BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.RotateImageAsync(angle));
+        bitmapframe.Freeze();
+        return bitmapframe;
+    }
+
     private void Run_EypPreviewMouseMove(object sender, MouseEventArgs e)
     {
         if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
@@ -4727,8 +4734,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 count = Scanner.Resimler.Count(z => z.Seçili);
                 foreach (ScannedImage image in GetSelectedImages())
                 {
-                    BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
-                    bitmapframe.Freeze();
+                    BitmapFrame bitmapframe = await RotateImage(image, AllImageRotationAngle);
                     image.Resim = bitmapframe;
                     bitmapframe = null;
                     index++;
@@ -4743,8 +4749,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             count = Scanner.Resimler.Count;
             foreach (ScannedImage image in Scanner.Resimler)
             {
-                BitmapFrame bitmapframe = BitmapFrame.Create(await image.Resim.RotateImageAsync(AllImageRotationAngle));
-                bitmapframe.Freeze();
+                BitmapFrame bitmapframe = await RotateImage(image, AllImageRotationAngle);
                 image.Resim = bitmapframe;
                 bitmapframe = null;
                 index++;

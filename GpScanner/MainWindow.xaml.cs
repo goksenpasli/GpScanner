@@ -45,7 +45,7 @@ public partial class MainWindow : Window
 
     protected override void OnStateChanged(EventArgs e)
     {
-        if (Settings.Default.MinimizeTray && WindowState == WindowState.Minimized)
+        if (Settings.Default.MinimizeTray && Settings.Default.ShowTrayIcon && WindowState == WindowState.Minimized)
         {
             Hide();
         }

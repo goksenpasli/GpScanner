@@ -205,23 +205,7 @@ public static class ExtensionMethods
 
     public static Brush RandomColor() => new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)_random.Next(0, 256), (byte)_random.Next(0, 256), (byte)_random.Next(0, 256)));
 
-    public static BitmapSource Resize(this BitmapSource bfPhoto, double oran)
-    {
-        if (bfPhoto is null)
-        {
-            return null;
-        }
-
-        ScaleTransform newTransform = new(oran, oran);
-        newTransform.Freeze();
-        TransformedBitmap tb = new();
-        tb.BeginInit();
-        tb.Source = bfPhoto;
-        tb.Transform = newTransform;
-        tb.EndInit();
-        tb.Freeze();
-        return tb;
-    }
+    public static BitmapSource Resize(this BitmapSource bfPhoto, double oran) => bfPhoto is null ? null : (BitmapSource)ConvertTransformedBitmap(bfPhoto, oran);
 
     public static BitmapSource Resize(this BitmapSource bfPhoto, double nWidth, double nHeight, double? rotate = null, int dpiX = 96, int dpiY = 96)
     {
@@ -246,26 +230,7 @@ public static class ExtensionMethods
         return tb;
     }
 
-    public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran)
-    {
-        return bfPhoto is null
-               ? null
-               : await Task.Run(
-            () =>
-            {
-                ScaleTransform newTransform = new(oran, oran);
-                newTransform.Freeze();
-
-                TransformedBitmap tb = new();
-                tb.BeginInit();
-                tb.Source = bfPhoto;
-                tb.Transform = newTransform;
-                tb.EndInit();
-                tb.Freeze();
-
-                return tb;
-            });
-    }
+    public static async Task<BitmapSource> ResizeAsync(this BitmapSource bfPhoto, double oran) => bfPhoto is null ? null : await Task.Run(() => ConvertTransformedBitmap(bfPhoto, oran));
 
     public static string SetUniqueFile(this string path, string file, string extension, string seperator = "_")
     {
@@ -413,5 +378,18 @@ public static class ExtensionMethods
         {
             throw new ArgumentException(ex?.Message);
         }
+    }
+
+    private static TransformedBitmap ConvertTransformedBitmap(BitmapSource bfPhoto, double oran)
+    {
+        ScaleTransform newTransform = new(oran, oran);
+        newTransform.Freeze();
+        TransformedBitmap tb = new();
+        tb.BeginInit();
+        tb.Source = bfPhoto;
+        tb.Transform = newTransform;
+        tb.EndInit();
+        tb.Freeze();
+        return tb;
     }
 }
