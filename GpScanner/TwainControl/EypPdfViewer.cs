@@ -78,20 +78,6 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             },
             parameter => true);
 
-        RemoveSelectedPage = new RelayCommand<object>(
-            async parameter =>
-            {
-                if (parameter is int sayfa)
-                {
-                    string path = PdfFilePath;
-                    await TwainCtrl.RemovePdfPageAsync(path, sayfa, sayfa);
-                    await Task.Delay(1000);
-                    PdfFilePath = null;
-                    PdfFilePath = path;
-                }
-            },
-            parameter => ToplamSayfa > 1);
-
         AddAllFileToControlPanel = new RelayCommand<object>(
             async parameter =>
             {
@@ -187,8 +173,6 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     }
 
     public RelayCommand<object> FlipPdfPage { get; }
-
-    public RelayCommand<object> RemoveSelectedPage { get; }
 
     public RelayCommand<object> RotateSelectedPage { get; }
 
