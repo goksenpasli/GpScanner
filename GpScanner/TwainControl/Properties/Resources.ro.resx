@@ -732,4 +732,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Afișați pictograma SystemTray</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>FEL</value>
+  </data>
 </root>

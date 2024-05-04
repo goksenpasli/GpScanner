@@ -729,4 +729,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>عرض أيقونة SystemTray</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>نوع</value>
+  </data>
 </root>

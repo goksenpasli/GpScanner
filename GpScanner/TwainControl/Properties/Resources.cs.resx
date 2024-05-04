@@ -729,4 +729,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Zobrazit ikonu SystemTray</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Třídit</value>
+  </data>
 </root>

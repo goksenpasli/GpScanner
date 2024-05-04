@@ -729,4 +729,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>显示SystemTray图标</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>种类</value>
+  </data>
 </root>

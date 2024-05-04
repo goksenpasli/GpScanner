@@ -732,4 +732,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Показване на иконата на SystemTray</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>ВИД</value>
+  </data>
 </root>

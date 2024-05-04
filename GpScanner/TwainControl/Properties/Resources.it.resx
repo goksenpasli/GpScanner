@@ -729,4 +729,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Mostra icona Systemtray</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>ORDINARE</value>
+  </data>
 </root>

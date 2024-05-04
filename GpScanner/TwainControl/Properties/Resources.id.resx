@@ -732,4 +732,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Tampilkan ikon SystemTray</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>MENYORTIR</value>
+  </data>
 </root>

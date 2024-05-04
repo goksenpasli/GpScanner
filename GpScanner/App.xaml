@@ -239,33 +239,6 @@
                             Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
                             Minimum="1"
                             Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
-                        <Button Command="{Binding ExtractPdfFile}" CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Grid}}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="68" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Button>
-                        <Button Command="{Binding ArrangePdfFile}" CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="263" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Button>
-                        <Button BorderBrush="Cyan"
-                            Command="{Binding RotateSelectedPage}"
-                            CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16"
-                                Height="16"
-                                Source="/TwainControl;component/Icons/rotate.png" />
-                        </Button>
                         <Button BorderBrush="Cyan"
                             Command="{Binding AddAllFileToControlPanel}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
@@ -274,6 +247,16 @@
                                     FontSize="16"
                                     Text="ç" />
                             </Button.Content>
+                        </Button>
+                        <StackPanel Orientation="Horizontal">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+                        <Button BorderBrush="Cyan"
+                            Command="{Binding RotateSelectedPage}"
+                            CommandParameter="{Binding ElementName=PdfVwr}">
+                            <Image Width="16"
+                                Height="16"
+                                Source="/TwainControl;component/Icons/rotate.png" />
                         </Button>
                         <Button BorderBrush="Cyan"
                             Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"

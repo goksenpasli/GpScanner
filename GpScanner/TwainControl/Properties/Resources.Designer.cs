@@ -1220,6 +1220,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SORT {
+            get {
+                return ResourceManager.GetString("SORT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SOURCELANG {
             get {
                 return ResourceManager.GetString("SOURCELANG", resourceCulture);

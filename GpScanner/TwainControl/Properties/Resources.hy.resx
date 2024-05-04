@@ -732,4 +732,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Show ույց տալ Systemstray պատկերակը</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Տեսակավորել</value>
+  </data>
 </root>

@@ -729,4 +729,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Εμφάνιση εικονιδίου SystemTray</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>ΕΙΔΟΣ</value>
+  </data>
 </root>

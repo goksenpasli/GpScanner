@@ -729,4 +729,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>સિસ્ટમટ્રે ચિહ્ન બતાવો</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>પ્રકાર</value>
+  </data>
 </root>

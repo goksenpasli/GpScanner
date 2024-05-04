@@ -767,4 +767,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value />
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value />
+  </data>
 </root>

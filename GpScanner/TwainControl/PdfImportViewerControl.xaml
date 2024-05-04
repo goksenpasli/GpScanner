@@ -715,17 +715,15 @@
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="1"
                 Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
-            <Button local:Policy.PolicyName="ExtractPdfFile"
-                Command="{Binding ExtractPdfFile}"
-                CommandParameter="{Binding PdfFilePath, ElementName=PdfViewer, Mode=OneWay}">
-                <Image Width="16" Height="16">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="68" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
+            <Button local:Policy.PolicyName="AddAllFileToControlPanel"
+                BorderBrush="Cyan"
+                Command="{Binding AddAllFileToControlPanel}"
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                <Button.Content>
+                    <TextBlock FontFamily="Wingdings"
+                        FontSize="16"
+                        Text="ç" />
+                </Button.Content>
             </Button>
             <Button local:Policy.PolicyName="RemoveSelectedPage"
                 BorderBrush="Cyan"
@@ -734,18 +732,6 @@
                 <Image Width="16"
                     Height="16"
                     Source="/TwainControl;component/Icons/delete.png" />
-            </Button>
-            <Button local:Policy.PolicyName="ArrangePdfFile"
-                Command="{Binding ArrangePdfFile}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
-                <Image Width="16" Height="16">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="263" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
             </Button>
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -780,9 +766,9 @@
                     </Image>
                 </Canvas>
                 <Extensions:ContentToggleButton.OverContent>
-                    <Extensions:ResizablePanel Width="460"
+                    <Extensions:ResizablePanel Width="500"
                         Height="300"
-                        MinWidth="460"
+                        MinWidth="500"
                         MinHeight="300">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -831,7 +817,7 @@
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
-                            <UniformGrid Grid.Row="1" Columns="3">
+                            <UniformGrid Grid.Row="1" Columns="4">
                                 <Button Command="{Binding PdfImportViewerTümünüİşaretle}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24"
@@ -862,7 +848,31 @@
                                                 Height="24"
                                                 VerticalAlignment="Bottom"
                                                 Source="/TwainControl;component/Icons/save.png" />
-                                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
+                                            <TextBlock VerticalAlignment="Center"
+                                                Text="{local:Loc SAVESELECTED}"
+                                                TextWrapping="Wrap" />
+                                        </StackPanel>
+                                    </Grid>
+                                </Button>
+                                <Button HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Command="{Binding LoadArrangedPdfFile}"
+                                    CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                    <Grid>
+                                        <ProgressBar Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Maximum="1"
+                                            Value="{Binding Scanner.PdfSaveProgressValue}" />
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Image Width="24"
+                                                Height="24"
+                                                VerticalAlignment="Bottom"
+                                                Source="/TwainControl;component/Icons/save.png" />
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Run Text="{local:Loc SORT}" />
+                                                <LineBreak />
+                                                <Run Text="{local:Loc SAVEPDF}" />
+                                            </TextBlock>
                                         </StackPanel>
                                     </Grid>
                                 </Button>
@@ -942,16 +952,6 @@
                         </MultiBinding>
                     </Image.Source>
                 </Image>
-            </Button>
-            <Button local:Policy.PolicyName="AddAllFileToControlPanel"
-                BorderBrush="Cyan"
-                Command="{Binding AddAllFileToControlPanel}"
-                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
-                <Button.Content>
-                    <TextBlock FontFamily="Wingdings"
-                        FontSize="16"
-                        Text="ç" />
-                </Button.Content>
             </Button>
             <Button local:Policy.PolicyName="ReadPdfTag"
                 BorderBrush="Cyan"

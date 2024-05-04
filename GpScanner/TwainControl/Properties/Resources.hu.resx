@@ -732,4 +732,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>A SystemTray ikon megjelenítése</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>FAJTA</value>
+  </data>
 </root>

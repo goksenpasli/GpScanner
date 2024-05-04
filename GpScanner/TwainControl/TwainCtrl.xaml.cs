@@ -1364,23 +1364,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
-        ArrangePdfFile = new RelayCommand<object>(
-            async parameter =>
-            {
-                if (parameter is PdfViewer.PdfViewer pdfviewer &&
-                File.Exists(pdfviewer.PdfFilePath) &&
-                MessageBox.Show($"{Translation.GetResStringValue("REPLACEPAGE")} {SayfaBaşlangıç}-{SayfaBitiş}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                {
-                    string oldpdfpath = pdfviewer.PdfFilePath;
-                    int start = SayfaBaşlangıç - 1;
-                    int end = SayfaBitiş - 1;
-                    await ArrangeFileAsync(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath, start, end);
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = oldpdfpath;
-                }
-            },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && SayfaBaşlangıç != SayfaBitiş);
-
         ReversePdfFile = new RelayCommand<object>(
             async parameter =>
             {
@@ -1557,23 +1540,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && pdfviewer.ToplamSayfa > 1 && SayfaBaşlangıç <= SayfaBitiş && SayfaBitiş - SayfaBaşlangıç + 1 < pdfviewer.ToplamSayfa);
 
-        ExtractPdfFile = new RelayCommand<object>(
-            async parameter =>
-            {
-                if (parameter is string loadfilename && File.Exists(loadfilename))
-                {
-                    SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Path.GetFileNameWithoutExtension(loadfilename)} {Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş}.pdf" };
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        string savefilename = saveFileDialog.FileName;
-                        int start = SayfaBaşlangıç;
-                        int end = SayfaBitiş;
-                        await PdfPageRangeSaveFileAsync(loadfilename, savefilename, start, end);
-                    }
-                }
-            },
-            parameter => parameter is string loadfilename && File.Exists(loadfilename) && SayfaBaşlangıç <= SayfaBitiş);
-
         LoadPdfExtractFile = new RelayCommand<object>(
             parameter =>
             {
@@ -1656,7 +1622,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ExtractMultiplePdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
+                if (parameter is PdfViewer.PdfViewer pdfViewer && PdfViewer.PdfViewer.IsValidPdfFile(pdfViewer.PdfFilePath))
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     List<string> files = [];
@@ -1670,7 +1636,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         files.Add(savefilename);
                         Scanner.PdfSaveProgressValue = (i + 1) / pagecount;
                     }
-
                     if (currentpages.Count > 1 && MessageBox.Show($"{Translation.GetResStringValue("MERGEPDF")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
                         using PdfDocument mergedPdf = files.ToArray().MergePdf();
@@ -1682,6 +1647,37 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => PdfPages?.Any(z => z.Selected) == true);
+
+        LoadArrangedPdfFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfViewer && PdfViewer.PdfViewer.IsValidPdfFile(pdfViewer.PdfFilePath))
+                {
+                    string oldpdfpath = pdfViewer.PdfFilePath;
+                    string savefolder = Path.GetTempPath();
+                    List<string> files = [];
+                    List<PdfData> currentpages = PdfPages?.ToList();
+                    double pagecount = currentpages.Count;
+                    for (int i = 0; i < pagecount; i++)
+                    {
+                        PdfData currentpage = currentpages[i];
+                        string savefilename = $@"{savefolder}\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {currentpage.PageNumber}.pdf";
+                        await PdfPageRangeSaveFileAsync(pdfViewer.PdfFilePath, savefilename, currentpage.PageNumber, currentpage.PageNumber);
+                        files.Add(savefilename);
+                        Scanner.PdfSaveProgressValue = (i + 1) / pagecount;
+                    }
+                    using PdfDocument mergedPdf = files.ToArray().MergePdf();
+                    mergedPdf.Save(pdfViewer.PdfFilePath);
+                    Scanner.PdfSaveProgressValue = 0;
+                    pdfViewer.PdfFilePath = null;
+                    pdfViewer.PdfFilePath = oldpdfpath;
+                    pdfViewer.Sayfa = 1;
+                    LoadPdfExtractFile?.Execute(pdfViewer);
+                    files.Where(z => File.Exists(z)).ToList().ForEach(z => File.Delete(z));
+                    files = null;
+                }
+            },
+            parameter => PdfPages?.Count > 1);
 
         AddPageNumber = new RelayCommand<object>(
             async parameter =>
@@ -2144,8 +2140,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ApplyPdfMedianFilter { get; }
 
-    public ICommand ArrangePdfFile { get; }
-
     public RelayCommand<object> AutoDeskewImage { get; }
 
     public byte[] CameraQRCodeData
@@ -2365,8 +2359,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> ExtractNugetPackage { get; }
 
-    public ICommand ExtractPdfFile { get; }
-
     public ICommand EypPdfDosyaEkle { get; }
 
     public ICommand EypPdfİçerikBirleştir { get; }
@@ -2455,6 +2447,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand ListeTemizle { get; }
 
     public RelayCommand<object> LoadArchiveFile { get; }
+
+    public RelayCommand<object> LoadArrangedPdfFile { get; }
 
     public ICommand LoadCroppedImage { get; }
 

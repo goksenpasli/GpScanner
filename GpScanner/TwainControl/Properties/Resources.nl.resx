@@ -729,4 +729,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Toon SystemTray -pictogram</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>SOORT</value>
+  </data>
 </root>

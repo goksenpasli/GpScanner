@@ -736,4 +736,7 @@ TO FILE</value>
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Show SystemTray Icon</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>SORT</value>
+  </data>
 </root>

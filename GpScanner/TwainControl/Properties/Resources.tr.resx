@@ -742,4 +742,7 @@ BELGE EKLE</value>
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>System Tepsisinde Uygulama Simgesini Göster</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>SIRALA</value>
+  </data>
 </root>

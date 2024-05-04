@@ -744,4 +744,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>Покажете ја иконата SystemTray</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Сортирај</value>
+  </data>
 </root>

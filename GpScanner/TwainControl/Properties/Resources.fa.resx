@@ -744,4 +744,7 @@
   <data name="SHOWTRAYICON" xml:space="preserve">
     <value>نماد SystemTray را نشان دهید</value>
   </data>
+  <data name="SORT" xml:space="preserve">
+    <value>مرتب سازی</value>
+  </data>
 </root>
