@@ -1510,36 +1510,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 return GetSelectedImagesCount() > 1 && selected?.Count() == end - start + 1;
             });
 
-        RemoveSelectedPage = new RelayCommand<object>(
-            async parameter =>
-            {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
-                {
-                    string path = pdfviewer.PdfFilePath;
-                    int currentpage = pdfviewer.Sayfa;
-                    if (Keyboard.Modifiers == ModifierKeys.Alt)
-                    {
-                        if (MessageBox.Show($"{Translation.GetResStringValue("PAGENUMBER")} {SayfaBaşlangıç}-{SayfaBitiş} {Translation.GetResStringValue("DELETE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) ==
-                        MessageBoxResult.Yes)
-                        {
-                            await RemovePdfPageAsync(path, SayfaBaşlangıç, SayfaBitiş);
-                            pdfviewer.Sayfa = 1;
-                            pdfviewer.PdfFilePath = null;
-                            pdfviewer.PdfFilePath = path;
-                            SayfaBaşlangıç = SayfaBitiş = 1;
-                        }
-                        return;
-                    }
-
-                    await RemovePdfPageAsync(path, currentpage, currentpage);
-                    await Task.Delay(1000);
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = path;
-                    pdfviewer.Sayfa = currentpage;
-                }
-            },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && pdfviewer.ToplamSayfa > 1 && SayfaBaşlangıç <= SayfaBitiş && SayfaBitiş - SayfaBaşlangıç + 1 < pdfviewer.ToplamSayfa);
-
         LoadPdfExtractFile = new RelayCommand<object>(
             parameter =>
             {
@@ -1678,6 +1648,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => PdfPages?.Count > 1);
+
+        RemoveArrangedPdfFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfViewer &&
+                PdfViewer.PdfViewer.IsValidPdfFile(pdfViewer.PdfFilePath) &&
+                MessageBox.Show($"{Translation.GetResStringValue("REMOVESELECTED")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    string oldpdfpath = pdfViewer.PdfFilePath;
+                    using PdfDocument inputDocument = PdfReader.Open(pdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                    foreach (PdfData item in PdfPages?.Where(z => z.Selected)?.OrderByDescending(z => z.PageNumber))
+                    {
+                        inputDocument.Pages.RemoveAt(item.PageNumber - 1);
+                    }
+                    inputDocument.Save(pdfViewer.PdfFilePath);
+                    pdfViewer.PdfFilePath = null;
+                    pdfViewer.PdfFilePath = oldpdfpath;
+                    pdfViewer.Sayfa = 1;
+                    LoadPdfExtractFile?.Execute(pdfViewer);
+                }
+            },
+            parameter => PdfPages?.Count(z => z.Selected) > 0 && PdfPages?.All(z => z.Selected) == false);
 
         AddPageNumber = new RelayCommand<object>(
             async parameter =>
@@ -2679,9 +2671,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public ICommand RemoveProfile { get; }
+    public RelayCommand<object> RemoveArrangedPdfFile { get; }
 
-    public ICommand RemoveSelectedPage { get; }
+    public ICommand RemoveProfile { get; }
 
     public RelayCommand<object> RemoveSplitListsIndex { get; }
 

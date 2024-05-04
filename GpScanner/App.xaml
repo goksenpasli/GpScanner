@@ -322,21 +322,6 @@
                                 </Image>
                             </Button.Content>
                         </Button>
-                        <Extensions:NumericUpDown Interval="1"
-                            IsReadOnly="True"
-                            Maximum="{Binding ElementName=PdfVwr, Path=ToplamSayfa}"
-                            Minimum="0"
-                            Value="{Binding PdfSplitCount}" />
-                        <Button Command="{Binding SplitPdf}" CommandParameter="{Binding ElementName=PdfVwr}">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="96" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Button>
                     </WrapPanel>
                     <Extensions:Magnifier ContentPanel="{Binding ElementName=PdfVwr}"
                         IsActive="{Binding ShowMagnifier, Mode=OneWay, Source={x:Static properties:Settings.Default}}"

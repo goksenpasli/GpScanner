@@ -601,7 +601,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 () =>
                 {
                     using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                    if (pdfDoc is null)
+                    if (pdfDoc?.PageCount < page)
                     {
                         return null;
                     }

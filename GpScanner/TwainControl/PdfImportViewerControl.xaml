@@ -725,14 +725,6 @@
                         Text="ç" />
                 </Button.Content>
             </Button>
-            <Button local:Policy.PolicyName="RemoveSelectedPage"
-                BorderBrush="Cyan"
-                Command="{Binding RemoveSelectedPage}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
-                <Image Width="16"
-                    Height="16"
-                    Source="/TwainControl;component/Icons/delete.png" />
-            </Button>
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
@@ -817,7 +809,7 @@
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
-                            <UniformGrid Grid.Row="1" Columns="4">
+                            <UniformGrid Grid.Row="1" Columns="5">
                                 <Button Command="{Binding PdfImportViewerTümünüİşaretle}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24"
@@ -839,19 +831,18 @@
                                     Command="{Binding ExtractMultiplePdfFile}"
                                     CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                     <Grid>
-                                        <ProgressBar Background="{x:Null}"
-                                            BorderBrush="{x:Null}"
-                                            Maximum="1"
-                                            Value="{Binding Scanner.PdfSaveProgressValue}" />
-                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                            <Image Width="24"
-                                                Height="24"
-                                                VerticalAlignment="Bottom"
-                                                Source="/TwainControl;component/Icons/save.png" />
-                                            <TextBlock VerticalAlignment="Center"
-                                                Text="{local:Loc SAVESELECTED}"
-                                                TextWrapping="Wrap" />
-                                        </StackPanel>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="24"
+                                            Height="24"
+                                            VerticalAlignment="Bottom"
+                                            Source="/TwainControl;component/Icons/save.png" />
+                                        <TextBlock Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            Text="{local:Loc SAVESELECTED}"
+                                            TextWrapping="Wrap" />
                                     </Grid>
                                 </Button>
                                 <Button HorizontalContentAlignment="Stretch"
@@ -875,6 +866,18 @@
                                             </TextBlock>
                                         </StackPanel>
                                     </Grid>
+                                </Button>
+                                <Button HorizontalContentAlignment="Stretch"
+                                    VerticalContentAlignment="Stretch"
+                                    Command="{Binding RemoveArrangedPdfFile}"
+                                    CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="24"
+                                            Height="24"
+                                            VerticalAlignment="Center"
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc DELETE}" />
+                                    </StackPanel>
                                 </Button>
                             </UniformGrid>
                         </Grid>
