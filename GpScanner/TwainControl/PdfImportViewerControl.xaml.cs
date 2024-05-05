@@ -13,7 +13,6 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,6 +23,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using TwainControl.Converter;
 using TwainControl.Properties;
+using Viewer = PdfViewer.PdfViewer;
 
 namespace TwainControl;
 
@@ -235,17 +235,12 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             parameter => true);
 
         SaveRefreshPdfPage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 if (parameter is PdfDocument pdfDocument && pdfDocument is not null)
                 {
-                    int currentpage = PdfViewer.Sayfa;
-                    string oldpdfpath = PdfViewer.PdfFilePath;
                     pdfDocument.Save(PdfViewer.PdfFilePath);
-                    PdfViewer.PdfFilePath = null;
-                    PdfViewer.PdfFilePath = oldpdfpath;
-                    PdfViewer.Sayfa = currentpage;
-                    Thread.Sleep(1500);
+                    PdfViewer.Source = await Viewer.ConvertToImgAsync(PdfViewer.PdfFilePath, PdfViewer.Sayfa, PdfViewer.Dpi);
                 }
             },
             parameter => true);

@@ -180,7 +180,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     {
         if (!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
         {
-            _ = Settings.Default.PdfLoadHistory.Add(pdffilepath);
+            Settings.Default.PdfLoadHistory.Insert(0, pdffilepath);
             Settings.Default.Save();
             Settings.Default.Reload();
         }
