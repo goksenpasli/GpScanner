@@ -49,6 +49,8 @@
                         </Popup>
                         <ToggleButton x:Name="Tb"
                             Grid.Column="1"
+                            HorizontalContentAlignment="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType=local:SplitButton}}"
+                            VerticalContentAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=local:SplitButton}}"
                             Background="{TemplateBinding Panel.Background}"
                             BorderBrush="{TemplateBinding Border.BorderBrush}"
                             IsEnabled="{Binding RelativeSource={RelativeSource AncestorType=local:SplitButton}, Path=SplitContentPartIsEnabled}"

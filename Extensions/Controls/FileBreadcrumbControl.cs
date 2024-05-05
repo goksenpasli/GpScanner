@@ -10,15 +10,12 @@ namespace Extensions
 {
     public class FileBreadCrumbControl : Control
     {
-        public static readonly DependencyProperty FilePathProperty =
-            DependencyProperty.Register("FilePath", typeof(string), typeof(FileBreadCrumbControl), new PropertyMetadata(string.Empty, OnFilePathChanged));
-        public static readonly DependencyProperty IsIndeterminateProperty =
-            DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(FileBreadCrumbControl), new PropertyMetadata(false));
-        public static readonly DependencyProperty PathSegmentsProperty =
-            DependencyProperty.Register("PathSegments", typeof(ObservableCollection<Data>), typeof(FileBreadCrumbControl), new PropertyMetadata(new ObservableCollection<Data>()));
+        public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register("FilePath", typeof(string), typeof(FileBreadCrumbControl), new PropertyMetadata(string.Empty, OnFilePathChanged));
+        public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(FileBreadCrumbControl), new PropertyMetadata(false));
+        public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(FileBreadCrumbControl), new PropertyMetadata(Orientation.Horizontal));
+        public static readonly DependencyProperty PathSegmentsProperty = DependencyProperty.Register("PathSegments", typeof(ObservableCollection<Data>), typeof(FileBreadCrumbControl), new PropertyMetadata(new ObservableCollection<Data>()));
         public static readonly DependencyProperty ProgressValueProperty = DependencyProperty.Register("ProgressValue", typeof(double), typeof(FileBreadCrumbControl), new PropertyMetadata(0d));
-        public static readonly DependencyProperty ShowFileNameProperty =
-            DependencyProperty.Register("ShowFileName", typeof(Visibility), typeof(FileBreadCrumbControl), new PropertyMetadata(Visibility.Collapsed, VisibilityChanged));
+        public static readonly DependencyProperty ShowFileNameProperty = DependencyProperty.Register("ShowFileName", typeof(Visibility), typeof(FileBreadCrumbControl), new PropertyMetadata(Visibility.Collapsed, VisibilityChanged));
 
         static FileBreadCrumbControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FileBreadCrumbControl), new FrameworkPropertyMetadata(typeof(FileBreadCrumbControl))); }
 
@@ -46,6 +43,8 @@ namespace Extensions
         public bool IsIndeterminate { get => (bool)GetValue(IsIndeterminateProperty); set => SetValue(IsIndeterminateProperty, value); }
 
         public RelayCommand<object> Navigate { get; }
+
+        public Orientation Orientation { get => (Orientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
         public ObservableCollection<Data> PathSegments { get => (ObservableCollection<Data>)GetValue(PathSegmentsProperty); set => SetValue(PathSegmentsProperty, value); }
 

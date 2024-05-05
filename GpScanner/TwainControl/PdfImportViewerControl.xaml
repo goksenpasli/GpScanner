@@ -114,21 +114,21 @@
                                             </MultiBinding>
                                         </Image.Tag>
                                     </Pdfviewer:PdfShadowedImage>
-                                    <Extensions:ButtonedTextBox Width="100"
-                                        VerticalAlignment="Center"
+                                    <Extensions:FileBreadCrumbControl VerticalAlignment="Center"
                                         Background="{x:Null}"
-                                        BorderBrush="{x:Null}"
-                                        CopyButtonVisibility="Visible"
+                                        FilePath="{Binding Mode=OneWay}"
                                         IsEnabled="{Binding ElementName=PdfImg, Path=Source, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
-                                        IsReadOnly="True"
-                                        PasteButtonVisibility="Collapsed"
-                                        PrintButtonVisibility="Collapsed"
-                                        RemainingLengthVisibility="Collapsed"
-                                        ResetButtonVisibility="Collapsed"
-                                        Text="{Binding Mode=OneWay}"
-                                        TextWrapping="Wrap"
-                                        TitleCaseMenuVisibility="Collapsed" />
+                                        Orientation="Vertical" />
                                     <TextBlock>
+                                        <Hyperlink Command="{Binding DataContext.PdfViewerFullScreen, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
+                                            CommandParameter="{Binding Mode=OneWay}"
+                                            IsEnabled="{Binding ElementName=PdfImg, Path=Source, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
+                                            TextDecorations="None">
+                                            <Run FontFamily="Wingdings 2"
+                                                FontSize="17"
+                                                FontWeight="Bold"
+                                                Text="4" />
+                                        </Hyperlink>
                                         <Hyperlink Command="{Binding RemovePdfHistoryFile, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
                                             CommandParameter="{Binding Mode=OneWay}"
                                             TextDecorations="None">

@@ -34,17 +34,20 @@
                                 Minimum="0"
                                 Value="{Binding ProgressValue, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
                             <ItemsControl Grid.Column="0"
-                                VerticalAlignment="Stretch"
-                                VerticalContentAlignment="Stretch"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                 ItemsSource="{TemplateBinding PathSegments}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel Orientation="Horizontal" />
+                                        <VirtualizingStackPanel Orientation="{Binding Orientation, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <local:SplitButton BorderBrush="{x:Null}"
+                                        <local:SplitButton VerticalAlignment="{Binding VerticalAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+                                            VerticalContentAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+                                            Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+                                            BorderBrush="{x:Null}"
                                             Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                             CommandParameter="{Binding Mode=OneWay, Path=FullPath}"
                                             Content="{Binding Mode=OneWay, Path=Path}"
@@ -84,7 +87,8 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <local:ButtonedTextBox Grid.Column="1"
-                                VerticalAlignment="Center"
+                                VerticalAlignment="{Binding VerticalAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+                                VerticalContentAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                 CopyButtonVisibility="Visible"
                                 Description="{Binding FileName, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                 FontSizeButtonVisibility="Collapsed"
@@ -102,5 +106,7 @@
             </Setter.Value>
         </Setter>
         <Setter Property="UseLayoutRounding" Value="True" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
     </Style>
 </ResourceDictionary>
