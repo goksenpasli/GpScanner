@@ -732,4 +732,10 @@
   <data name="SORT" xml:space="preserve">
     <value>СОРТИРОВАТЬ</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Добавить к началу</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Добавить к концу</value>
+  </data>
 </root>

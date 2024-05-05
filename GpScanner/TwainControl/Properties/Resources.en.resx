@@ -739,4 +739,10 @@ TO FILE</value>
   <data name="SORT" xml:space="preserve">
     <value>SORT</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Add to the beginning</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Add to the end</value>
+  </data>
 </root>

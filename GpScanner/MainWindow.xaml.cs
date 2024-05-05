@@ -2,7 +2,6 @@
 using GpScanner.Properties;
 using GpScanner.ViewModel;
 using Ocr;
-using PdfViewer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +10,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -197,7 +195,7 @@ public partial class MainWindow : Window
             {
                 if (Settings.Default.DirectOpenEypFile && extension == ".eyp")
                 {
-                    twainCtrl.SelectedTabIndex = 4;
+                    twainCtrl.SelectedTabIndex = 3;
                     EypPdfViewer eypPdfViewer = twainCtrl.PdfImportViewer.PdfViewer;
                     eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
                     return;
@@ -205,7 +203,7 @@ public partial class MainWindow : Window
 
                 if (Settings.Default.DirectOpenPdfFile && extension == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(filePath))
                 {
-                    twainCtrl.SelectedTabIndex = 4;
+                    twainCtrl.SelectedTabIndex = 3;
                     EypPdfViewer eypPdfViewer = twainCtrl.PdfImportViewer.PdfViewer;
                     eypPdfViewer.PdfFilePath = filePath;
                     eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
@@ -214,7 +212,7 @@ public partial class MainWindow : Window
 
                 if (Settings.Default.DirectOpenUdfFile && extension == ".udf")
                 {
-                    twainCtrl.SelectedTabIndex = 5;
+                    twainCtrl.SelectedTabIndex = 4;
                     twainCtrl.xpsViewer.XpsDataFilePath = twainCtrl.LoadUdfFile(filePath);
                     return;
                 }

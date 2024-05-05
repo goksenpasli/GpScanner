@@ -732,4 +732,10 @@
   <data name="SORT" xml:space="preserve">
     <value>CÜR</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Başına əlavə edin</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Bir sonuna əlavə edin</value>
+  </data>
 </root>

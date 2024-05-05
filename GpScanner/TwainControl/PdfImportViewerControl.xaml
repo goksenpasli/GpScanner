@@ -188,6 +188,100 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+                <Grid>
+                    <Image Width="16" Height="16">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="70" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                    <Image Width="12"
+                        Height="12"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                </Grid>
+                <Extensions:ContentToggleButton.OverContent>
+                    <Extensions:ResizablePanel Width="720"
+                        Height="480"
+                        MinWidth="360"
+                        MinHeight="200">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <ListBox ItemsSource="{Binding Scanner.MergePdfFiles}"
+                                VirtualizingPanel.CacheLengthUnit="Item"
+                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                VirtualizingPanel.ScrollUnit="Pixel"
+                                VirtualizingPanel.VirtualizationMode="Recycling">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate>
+                                                    <ContentPresenter d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
+                                                        d:Height="315"
+                                                        d:Width="315"
+                                                        Content="{Binding Mode=OneWay}"
+                                                        ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                            ItemSize="230,330"
+                                            SpacingMode="None" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock>
+                                            <Hyperlink Command="{Binding DataContext.MergePdfListRemoveFile, RelativeSource={RelativeSource AncestorType=ListBox}}" CommandParameter="{Binding Mode=OneWay}">
+                                                <Run Text="{Binding Mode=OneWay}" />
+                                            </Hyperlink>
+                                        </TextBlock>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <CheckBox Grid.Row="1"
+                                Content="{local:Loc ADDFIRST}"
+                                IsChecked="{Binding MergePdfFileToFirst}" />
+                            <UniformGrid Grid.Row="2" Columns="2">
+                                <Button Command="{Binding MergePdfListAddFile}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32"
+                                            Height="32"
+                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding MergePdfListToCurrentFile}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Imageres.dll" />
+                                                    <Binding Source="166" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
+                                    </StackPanel>
+                                </Button>
+                            </UniformGrid>
+                        </Grid>
+                    </Extensions:ResizablePanel>
+                </Extensions:ContentToggleButton.OverContent>
+            </Extensions:ContentToggleButton>
             <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                 Command="{Binding LoadPdfExtractFile}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"

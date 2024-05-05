@@ -747,4 +747,10 @@
   <data name="SORT" xml:space="preserve">
     <value>Сортирај</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Додај на почетокот</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Додадете на крај</value>
+  </data>
 </root>

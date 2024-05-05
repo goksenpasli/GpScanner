@@ -735,4 +735,10 @@
   <data name="SORT" xml:space="preserve">
     <value>Տեսակավորել</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Ավելացնել սկզբին</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Ավելացնել ավարտին</value>
+  </data>
 </root>

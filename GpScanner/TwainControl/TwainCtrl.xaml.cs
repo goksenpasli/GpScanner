@@ -103,6 +103,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private bool isMouseDown;
     private bool isRightMouseDown;
     private Window maximizedWindow;
+    private bool mergePdfFileToFirst;
     private Point mousedowncoord;
     private int pageHeight;
     private int pageWidth;
@@ -1057,20 +1058,32 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
-        EypPdfİçerikBirleştir = new RelayCommand<object>(
-            async parameter =>
+        MergePdfListToCurrentFile = new RelayCommand<object>(
+            parameter =>
             {
-                string[] files = Scanner?.UnsupportedFiles?.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
+                string currentfile = PdfImportViewer.PdfViewer.PdfFilePath;
+                if (MergePdfFileToFirst)
+                {
+                    Scanner?.MergePdfFiles?.Add(currentfile);
+                }
+                else
+                {
+                    Scanner?.MergePdfFiles?.Insert(0, currentfile);
+                }
+                string[] files = Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
                 if (files?.Length > 0)
                 {
-                    await files.SavePdfFilesAsync();
+                    files.MergePdf().Save(currentfile);
+                    Scanner?.MergePdfFiles?.Clear();
+                    PdfImportViewer.PdfViewer.PdfFilePath = null;
+                    PdfImportViewer.PdfViewer.PdfFilePath = currentfile;
                 }
             },
-            parameter => true);
+            parameter => Scanner?.MergePdfFiles?.Count > 0 && File.Exists(PdfImportViewer.PdfViewer.PdfFilePath));
 
-        EypPdfSeçiliDosyaSil = new RelayCommand<object>(parameter => Scanner?.UnsupportedFiles?.Remove(parameter as string), parameter => true);
+        MergePdfListRemoveFile = new RelayCommand<object>(parameter => Scanner?.MergePdfFiles?.Remove(parameter as string), parameter => true);
 
-        EypPdfDosyaEkle = new RelayCommand<object>(
+        MergePdfListAddFile = new RelayCommand<object>(
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", Multiselect = true };
@@ -1079,7 +1092,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string[] files = openFileDialog.FileNames;
                     foreach (string item in files?.Where(z => PdfViewer.PdfViewer.IsValidPdfFile(z)))
                     {
-                        Scanner?.UnsupportedFiles?.Add(item);
+                        Scanner?.MergePdfFiles?.Add(item);
                     }
                 }
             },
@@ -1294,7 +1307,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt))
                     {
                         PdfImportViewer.PdfViewer.PdfFilePath = pdfviewer.PdfFilePath;
-                        SelectedTabIndex = 4;
+                        SelectedTabIndex = 3;
                         return;
                     }
 
@@ -2351,12 +2364,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> ExtractNugetPackage { get; }
 
-    public ICommand EypPdfDosyaEkle { get; }
-
-    public ICommand EypPdfİçerikBirleştir { get; }
-
-    public ICommand EypPdfSeçiliDosyaSil { get; }
-
     public ICommand FastScanImage { get; }
 
     public RelayCommand<object> FirstLastGroup { get; }
@@ -2455,6 +2462,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> LoadXlsFile { get; }
 
     public RelayCommand<object> ManualDeskewImage { get; }
+
+    public bool MergePdfFileToFirst
+    {
+        get => mergePdfFileToFirst;
+        set
+        {
+            if (mergePdfFileToFirst != value)
+            {
+                mergePdfFileToFirst = value;
+                OnPropertyChanged(nameof(MergePdfFileToFirst));
+            }
+        }
+    }
+
+    public ICommand MergePdfListAddFile { get; }
+
+    public ICommand MergePdfListRemoveFile { get; }
+
+    public RelayCommand<object> MergePdfListToCurrentFile { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
 
@@ -3241,7 +3267,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {
-                                        SelectedTabIndex = 3;
+                                        SelectedTabIndex = 2;
                                         ArchiveVwr.ArchivePath = filename;
                                     });
                                 break;
@@ -3261,7 +3287,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {
-                                        SelectedTabIndex = 6;
+                                        SelectedTabIndex = 5;
                                         mediaViewer.MediaDataFilePath = filename;
                                     });
                                 break;
@@ -3273,7 +3299,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {
-                                        SelectedTabIndex = 7;
+                                        SelectedTabIndex = 6;
                                         xlsxViewer.XlsxDataFilePath = filename;
                                     });
                                 break;
@@ -3522,7 +3548,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         foreach (string file in droppedfiles.Where(file => string.Equals(Path.GetExtension(file), ".pdf", StringComparison.OrdinalIgnoreCase)))
         {
-            Scanner?.UnsupportedFiles?.Add(file);
+            Scanner?.MergePdfFiles?.Add(file);
         }
     }
 
@@ -4208,14 +4234,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return bitmapframe;
     }
 
-    private void Run_EypPreviewMouseMove(object sender, MouseEventArgs e)
-    {
-        if (sender is Run run && e.LeftButton == MouseButtonState.Pressed)
-        {
-            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
-        }
-    }
-
     private void Run_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (sender is Run run)
@@ -4573,29 +4591,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     private void StackPanel_Drop(object sender, DragEventArgs e) => DropFile(sender, e);
-
-    private void StackPanel_EypDrop(object sender, DragEventArgs e)
-    {
-        if (sender is StackPanel stackpanel && e.Data.GetData(typeof(string)) is string droppedData && stackpanel.DataContext is string target)
-        {
-            int removedIdx = Scanner.UnsupportedFiles.IndexOf(droppedData);
-            int targetIdx = Scanner.UnsupportedFiles.IndexOf(target);
-
-            if (removedIdx < targetIdx)
-            {
-                Scanner.UnsupportedFiles.Insert(targetIdx + 1, droppedData);
-                Scanner.UnsupportedFiles.RemoveAt(removedIdx);
-                return;
-            }
-
-            int remIdx = removedIdx + 1;
-            if (Scanner.UnsupportedFiles.Count + 1 > remIdx)
-            {
-                Scanner.UnsupportedFiles.Insert(targetIdx, droppedData);
-                Scanner.UnsupportedFiles.RemoveAt(remIdx);
-            }
-        }
-    }
 
     private void StackPanel_GiveFeedback(object sender, System.Windows.GiveFeedbackEventArgs e)
     {

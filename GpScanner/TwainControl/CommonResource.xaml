@@ -829,7 +829,7 @@
                 Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}, ConverterParameter='fileext'}"
                 TextWrapping="Wrap">
                 <Hyperlink BaselineAlignment="Center"
-                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                    Command="{Binding Path=DataContext.MergePdfListRemoveFile, RelativeSource={RelativeSource AncestorType=ListBox}}"
                     CommandParameter="{Binding Mode=OneWay}"
                     TextDecorations="None">
                     <Image Width="16"
@@ -866,7 +866,7 @@
                 Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}, ConverterParameter='fileext'}"
                 TextWrapping="Wrap">
                 <Hyperlink BaselineAlignment="Center"
-                    Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                    Command="{Binding Path=DataContext.MergePdfListRemoveFile, RelativeSource={RelativeSource AncestorType=ListBox}}"
                     CommandParameter="{Binding Mode=OneWay}"
                     TextDecorations="None">
                     <Image Width="16"
@@ -925,7 +925,7 @@
                 </TextBlock>
                 <TextBlock>
                     <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                        Command="{Binding Path=DataContext.MergePdfListRemoveFile, RelativeSource={RelativeSource AncestorType=ListBox}}"
                         CommandParameter="{Binding Mode=OneWay}"
                         TextDecorations="None">
                         <Image Width="16"
@@ -985,7 +985,7 @@
                 </TextBlock>
                 <TextBlock>
                     <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding EypPdfSeçiliDosyaSil}"
+                        Command="{Binding MergePdfListRemoveFile}"
                         CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         TextDecorations="None">
                         <Image Width="24"
@@ -1048,7 +1048,7 @@
                 </TextBlock>
                 <TextBlock>
                     <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding EypPdfSeçiliDosyaSil}"
+                        Command="{Binding MergePdfListRemoveFile}"
                         CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         TextDecorations="None">
                         <Image Width="24"
@@ -1086,7 +1086,7 @@
                 </TextBlock>
                 <TextBlock>
                     <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding Path=DataContext.EypPdfSeçiliDosyaSil, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                        Command="{Binding Path=DataContext.MergePdfListRemoveFile, RelativeSource={RelativeSource AncestorType=ListBox}}"
                         CommandParameter="{Binding Mode=OneWay}"
                         TextDecorations="None">
                         <Image Width="16"

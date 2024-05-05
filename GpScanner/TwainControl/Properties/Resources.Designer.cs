@@ -72,6 +72,24 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ADDFIRST {
+            get {
+                return ResourceManager.GetString("ADDFIRST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ADDLAST {
+            get {
+                return ResourceManager.GetString("ADDLAST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string ADF {
             get {
                 return ResourceManager.GetString("ADF", resourceCulture);

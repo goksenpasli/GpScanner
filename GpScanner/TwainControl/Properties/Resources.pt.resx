@@ -732,4 +732,10 @@
   <data name="SORT" xml:space="preserve">
     <value>ORGANIZAR</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Adicionar ao começo</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Adicionar ao fim</value>
+  </data>
 </root>

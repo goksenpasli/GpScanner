@@ -59,6 +59,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private double lightness = 1;
     private string localizedPath;
     private int medianValue;
+    private ObservableCollection<string> mergePdfFiles = [];
     private bool paperBackScan;
     private bool passwordProtect;
     private bool pdfBatchNumberIsFirst;
@@ -98,7 +99,6 @@ public class Scanner : InpcBase, IDataErrorInfo
     private double threshold;
     private int toolBarBwThreshold = 160;
     private CultureInfo uiLanguage;
-    private ObservableCollection<string> unsupportedFiles = [];
     private bool useFilmScanner;
     private bool useMozJpegEncoding;
     private bool usePageSeperator;
@@ -728,6 +728,20 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
+    public ObservableCollection<string> MergePdfFiles
+    {
+        get => mergePdfFiles;
+
+        set
+        {
+            if (mergePdfFiles != value)
+            {
+                mergePdfFiles = value;
+                OnPropertyChanged(nameof(mergePdfFiles));
+            }
+        }
+    }
+
     public bool PaperBackScan
     {
         get => paperBackScan;
@@ -1282,20 +1296,6 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 uiLanguage = value;
                 OnPropertyChanged(nameof(UiLanguage));
-            }
-        }
-    }
-
-    public ObservableCollection<string> UnsupportedFiles
-    {
-        get => unsupportedFiles;
-
-        set
-        {
-            if (unsupportedFiles != value)
-            {
-                unsupportedFiles = value;
-                OnPropertyChanged(nameof(UnsupportedFiles));
             }
         }
     }

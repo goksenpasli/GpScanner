@@ -735,4 +735,10 @@
   <data name="SORT" xml:space="preserve">
     <value>SORTERA</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Lägg till början</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Lägg till ett slut</value>
+  </data>
 </root>

@@ -747,4 +747,10 @@
   <data name="SORT" xml:space="preserve">
     <value>مرتب سازی</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>به ابتدا اضافه کنید</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>به یک پایان اضافه کنید</value>
+  </data>
 </root>

@@ -735,4 +735,10 @@
   <data name="SORT" xml:space="preserve">
     <value>MENYORTIR</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Tambahkan ke awal</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Tambahkan ke Akhir</value>
+  </data>
 </root>

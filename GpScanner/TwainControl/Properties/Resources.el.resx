@@ -732,4 +732,10 @@
   <data name="SORT" xml:space="preserve">
     <value>ΕΙΔΟΣ</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Προσθήκη στην αρχή</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Προσθέστε στο τέλος</value>
+  </data>
 </root>

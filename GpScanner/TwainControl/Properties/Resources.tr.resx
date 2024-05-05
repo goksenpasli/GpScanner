@@ -745,4 +745,10 @@ BELGE EKLE</value>
   <data name="SORT" xml:space="preserve">
     <value>SIRALA</value>
   </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>BAŞA EKLE</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>SONA EKLE</value>
+  </data>
 </root>

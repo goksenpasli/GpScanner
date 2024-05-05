@@ -743,27 +743,14 @@
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
                                     <ToggleButton Grid.Column="2" IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                        <Grid>
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="1" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <Image Width="12"
-                                                Height="12"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Bottom">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="47" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Grid>
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="certmgr.dll" />
+                                                    <Binding Source="9" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
                                     </ToggleButton>
                                     <Extensions:ContentToggleButton Grid.Column="3"
                                         local:Policy.PolicyName="ScanProfiles"
@@ -2275,95 +2262,6 @@
                         </Image>
                     </TabItem.Header>
                     <local:DrawControl x:Name="drawControl" AllowDrop="True" />
-                </TabItem>
-                <TabItem>
-                    <TabItem.Header>
-                        <Image Width="32" Height="32">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="96" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </TabItem.Header>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <ListBox x:Name="LbEypContent"
-                            Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
-                            d:ItemsSource="{d:SampleData ItemCount=5}"
-                            local:Policy.PolicyName="EypPdfDosyaEkle"
-                            AllowDrop="True"
-                            Background="{StaticResource BorderBackground}"
-                            Drop="LbEypContent_Drop"
-                            ItemsSource="{Binding Scanner.UnsupportedFiles}"
-                            VirtualizingPanel.CacheLengthUnit="Item"
-                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                            VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Recycling">
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Template">
-                                        <Setter.Value>
-                                            <ControlTemplate>
-                                                <StackPanel Drop="StackPanel_EypDrop" Orientation="Horizontal">
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <Run AllowDrop="True"
-                                                            BaselineAlignment="Center"
-                                                            Cursor="SizeAll"
-                                                            FontFamily="Wingdings"
-                                                            FontSize="24"
-                                                            FontWeight="Bold"
-                                                            PreviewMouseMove="Run_EypPreviewMouseMove"
-                                                            Text="B" />
-                                                    </TextBlock>
-                                                    <ContentPresenter d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
-                                                        d:Height="315"
-                                                        d:Width="315"
-                                                        Content="{Binding Mode=OneWay}"
-                                                        ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
-                                                </StackPanel>
-                                            </ControlTemplate>
-                                        </Setter.Value>
-                                    </Setter>
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                        ItemSize="230,330"
-                                        SpacingMode="None" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                        </ListBox>
-                        <UniformGrid Grid.Row="1" Columns="2">
-                            <Button local:Policy.PolicyName="EypPdfDosyaEkle" Command="{Binding EypPdfDosyaEkle}">
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Image Width="32"
-                                        Height="32"
-                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
-                                </StackPanel>
-                            </Button>
-                            <Button HorizontalContentAlignment="Stretch"
-                                VerticalContentAlignment="Stretch"
-                                local:Policy.PolicyName="EypPdfİçerikBirleştir"
-                                Command="{Binding EypPdfİçerikBirleştir}">
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Image Width="32"
-                                        Height="32"
-                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                    <TextBlock VerticalAlignment="Center">
-                                        <Run Text="{local:Loc ALL}" />
-                                        <Run Text="{local:Loc MERGE}" />
-                                    </TextBlock>
-                                </StackPanel>
-                            </Button>
-                        </UniformGrid>
-                    </Grid>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
