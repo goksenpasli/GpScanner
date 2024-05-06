@@ -14,7 +14,9 @@
                         AllowsTransparency="True"
                         Placement="{TemplateBinding Position}"
                         PlacementTarget="{TemplateBinding PopupParent}"
-                        PopupAnimation="{TemplateBinding PopupAnimation}">
+                        PopupAnimation="{TemplateBinding PopupAnimation}"
+                        SnapsToDevicePixels="True"
+                        UseLayoutRounding="True">
                         <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"

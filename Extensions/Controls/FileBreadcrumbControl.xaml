@@ -14,26 +14,33 @@
     </ControlTemplate>
     <Style TargetType="local:FileBreadCrumbControl">
         <Setter Property="Background" Value="{DynamicResource BorderBackground}" />
+        <Setter Property="InternalBackground" Value="Gray" />
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:FileBreadCrumbControl}">
                     <ScrollViewer HorizontalScrollBarVisibility="Auto"
                         ScrollViewer.CanContentScroll="True"
+                        SnapsToDevicePixels="True"
                         Template="{DynamicResource HorizontalScrollViewerTemplate}"
+                        UseLayoutRounding="True"
                         VerticalScrollBarVisibility="Hidden">
                         <Grid Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
                             <ProgressBar Background="{x:Null}"
                                 BorderBrush="{x:Null}"
                                 IsIndeterminate="{Binding IsIndeterminate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                 Maximum="1"
                                 Minimum="0"
                                 Value="{Binding ProgressValue, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
-                            <ItemsControl Grid.Column="0"
+                            <ItemsControl x:Name="Items"
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                 ItemsSource="{TemplateBinding PathSegments}">
@@ -50,8 +57,7 @@
                                             BorderBrush="{x:Null}"
                                             Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                             CommandParameter="{Binding Mode=OneWay, Path=FullPath}"
-                                            Content="{Binding Mode=OneWay, Path=Path}"
-                                            Opacity="0.8"
+                                            Content="{Binding Mode=OneWay, Path=FullPath, Converter={StaticResource FolderPathToLocalizedNameConverter}}"
                                             SplitPartContent="≻"
                                             TopMost="False">
                                             <local:SplitButton.InternalContent>
@@ -77,7 +83,7 @@
                                                     </ItemsControl.ItemTemplate>
                                                     <ItemsControl.ItemsPanel>
                                                         <ItemsPanelTemplate>
-                                                            <VirtualizingStackPanel Background="{DynamicResource BorderBackground}" />
+                                                            <VirtualizingStackPanel Background="{Binding InternalBackground, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
                                                         </ItemsPanelTemplate>
                                                     </ItemsControl.ItemsPanel>
                                                 </ItemsControl>
@@ -86,9 +92,12 @@
                                     </DataTemplate>
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
-                            <local:ButtonedTextBox Grid.Column="1"
-                                VerticalAlignment="{Binding VerticalAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
-                                VerticalContentAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+                            <local:ButtonedTextBox x:Name="FileNameBtn"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
                                 CopyButtonVisibility="Visible"
                                 Description="{Binding FileName, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
                                 FontSizeButtonVisibility="Collapsed"
@@ -102,6 +111,20 @@
                                 Visibility="{Binding ShowFileName, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
                         </Grid>
                     </ScrollViewer>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Orientation" Value="Vertical">
+                            <Setter TargetName="Items" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="FileNameBtn" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="Items" Property="Grid.Row" Value="0" />
+                            <Setter TargetName="FileNameBtn" Property="Grid.Row" Value="1" />
+                        </Trigger>
+                        <Trigger Property="Orientation" Value="Horizontal">
+                            <Setter TargetName="Items" Property="Grid.Column" Value="0" />
+                            <Setter TargetName="FileNameBtn" Property="Grid.Column" Value="1" />
+                            <Setter TargetName="Items" Property="Grid.Row" Value="1" />
+                            <Setter TargetName="FileNameBtn" Property="Grid.Row" Value="1" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

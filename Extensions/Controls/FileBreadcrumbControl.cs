@@ -5,12 +5,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Extensions
 {
     public class FileBreadCrumbControl : Control
     {
         public static readonly DependencyProperty FilePathProperty = DependencyProperty.Register("FilePath", typeof(string), typeof(FileBreadCrumbControl), new PropertyMetadata(string.Empty, OnFilePathChanged));
+        public static readonly DependencyProperty InternalBackgroundProperty = DependencyProperty.Register("InternalBackground", typeof(Brush), typeof(FileBreadCrumbControl), new PropertyMetadata(Brushes.Gray));
         public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(FileBreadCrumbControl), new PropertyMetadata(false));
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(FileBreadCrumbControl), new PropertyMetadata(Orientation.Horizontal));
         public static readonly DependencyProperty PathSegmentsProperty = DependencyProperty.Register("PathSegments", typeof(ObservableCollection<Data>), typeof(FileBreadCrumbControl), new PropertyMetadata(new ObservableCollection<Data>()));
@@ -39,6 +41,8 @@ namespace Extensions
         public string FileName { get; private set; }
 
         public string FilePath { get => (string)GetValue(FilePathProperty); set => SetValue(FilePathProperty, value); }
+
+        public Brush InternalBackground { get => (Brush)GetValue(InternalBackgroundProperty); set => SetValue(InternalBackgroundProperty, value); }
 
         public bool IsIndeterminate { get => (bool)GetValue(IsIndeterminateProperty); set => SetValue(IsIndeterminateProperty, value); }
 

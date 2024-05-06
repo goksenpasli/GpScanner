@@ -7,7 +7,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ImageViewer">
-                    <Grid>
+                    <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
                         <Grid.RowDefinitions>
                             <RowDefinition />
                             <RowDefinition Height="Auto" />

@@ -26,7 +26,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ResizablePanel">
-                    <Grid Background="{TemplateBinding Background}" DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}">
+                    <Grid Background="{TemplateBinding Background}"
+                        DataContext="{Binding RelativeSource={RelativeSource TemplatedParent}}"
+                        SnapsToDevicePixels="True"
+                        UseLayoutRounding="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3" />
                             <ColumnDefinition Width="*" />

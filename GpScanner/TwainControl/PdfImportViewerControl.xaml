@@ -117,8 +117,10 @@
                                     <Extensions:FileBreadCrumbControl VerticalAlignment="Center"
                                         Background="{x:Null}"
                                         FilePath="{Binding Mode=OneWay}"
+                                        InternalBackground="{StaticResource BorderBackground}"
                                         IsEnabled="{Binding ElementName=PdfImg, Path=Source, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
-                                        Orientation="Vertical" />
+                                        Orientation="Vertical"
+                                        ShowFileName="Visible" />
                                     <TextBlock>
                                         <Hyperlink Command="{Binding DataContext.PdfViewerFullScreen, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
                                             CommandParameter="{Binding Mode=OneWay}"

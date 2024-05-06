@@ -1361,9 +1361,7 @@
                                     <StackPanel Orientation="Horizontal">
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     </StackPanel>
-                                    <Extensions:SplitButton VerticalContentAlignment="Bottom"
-                                        local:Policy.PolicyName="AddSplitListsIndex"
-                                        Command="{Binding AddSplitListsIndex}">
+                                    <Extensions:SplitButton local:Policy.PolicyName="AddSplitListsIndex" Command="{Binding AddSplitListsIndex}">
                                         <TextBlock FontFamily="Wingdings 2"
                                             FontSize="16"
                                             Text="Ë" />

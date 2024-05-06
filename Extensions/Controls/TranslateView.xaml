@@ -7,6 +7,7 @@
     d:DataContext="{d:DesignInstance Type=local:MediaViewer}"
     d:DesignHeight="100"
     d:DesignWidth="200"
+    SnapsToDevicePixels="True"
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <Grid>

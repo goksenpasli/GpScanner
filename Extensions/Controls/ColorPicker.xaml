@@ -21,7 +21,10 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ColorPicker">
-                    <Grid Background="{DynamicResource BorderBackground}" IsEnabled="{TemplateBinding IsEnabled}">
+                    <Grid Background="{DynamicResource BorderBackground}"
+                        IsEnabled="{TemplateBinding IsEnabled}"
+                        SnapsToDevicePixels="True"
+                        UseLayoutRounding="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="{Binding SelectorLength, RelativeSource={RelativeSource TemplatedParent}}" />
                             <ColumnDefinition Width="Auto" />
