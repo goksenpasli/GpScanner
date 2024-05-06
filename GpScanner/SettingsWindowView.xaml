@@ -1101,9 +1101,10 @@
                             CanUserDeleteRows="True"
                             IsReadOnly="True"
                             ItemsSource="{Binding SqlQueryData}"
-                            VirtualizingPanel.CacheLengthUnit="Item"
+                            VirtualizingPanel.CacheLengthUnit="Pixel"
+                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                             VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Recycling">
+                            VirtualizingPanel.VirtualizationMode="Standard">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>

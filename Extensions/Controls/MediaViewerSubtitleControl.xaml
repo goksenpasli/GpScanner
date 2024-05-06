@@ -106,11 +106,10 @@
                     Background="{DynamicResource BorderBackground}"
                     IsSynchronizedWithCurrentItem="False"
                     ItemsSource="{Binding Mode=OneWay, Source={StaticResource Subtitle}}"
-                    VirtualizingPanel.CacheLength="3,3"
-                    VirtualizingPanel.CacheLengthUnit="Item"
+                    VirtualizingPanel.CacheLengthUnit="Pixel"
                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                     VirtualizingPanel.ScrollUnit="Pixel"
-                    VirtualizingPanel.VirtualizationMode="Recycling">
+                    VirtualizingPanel.VirtualizationMode="Standard">
                     <ListBox.ItemContainerStyle>
                         <Style TargetType="ListBoxItem">
                             <Setter Property="Background" Value="{Binding BackgroundColor}" />

@@ -40,10 +40,10 @@
                 EnableColumnVirtualization="True"
                 IsReadOnly="True"
                 ItemsSource="{Binding SelectedItem.DefaultView, ElementName=LbSayfalar, Mode=OneWay}"
-                VirtualizingPanel.CacheLengthUnit="Item"
-                VirtualizingPanel.IsVirtualizing="True"
+                VirtualizingPanel.CacheLengthUnit="Pixel"
+                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                 VirtualizingPanel.ScrollUnit="Pixel"
-                VirtualizingPanel.VirtualizationMode="Recycling" />
+                VirtualizingPanel.VirtualizationMode="Standard" />
         </Grid>
     </Grid>
 </UserControl>

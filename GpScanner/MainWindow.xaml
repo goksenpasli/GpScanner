@@ -673,9 +673,10 @@
                                                                     BorderBrush="Transparent">
                                                                     <ListBox ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
                                                                         ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
-                                                                        VirtualizingPanel.CacheLengthUnit="Item"
+                                                                        VirtualizingPanel.CacheLengthUnit="Pixel"
+                                                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                                                         VirtualizingPanel.ScrollUnit="Pixel"
-                                                                        VirtualizingPanel.VirtualizationMode="Recycling">
+                                                                        VirtualizingPanel.VirtualizationMode="Standard">
                                                                         <ListBox.ItemsPanel>
                                                                             <ItemsPanelTemplate>
                                                                                 <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
@@ -886,10 +887,10 @@
                             SelectionMode="Extended"
                             Style="{StaticResource ListBoxAnimationStyle}"
                             VirtualizingPanel.CacheLength="{Binding SelectedSize, Converter={StaticResource SelectedSizeToCacheLengthConverter}, Mode=OneWay}"
-                            VirtualizingPanel.CacheLengthUnit="Item"
+                            VirtualizingPanel.CacheLengthUnit="Pixel"
                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                             VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Recycling">
+                            VirtualizingPanel.VirtualizationMode="Standard">
                             <ListBox.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
@@ -1431,10 +1432,10 @@
                                         Background="{StaticResource BorderBackground}"
                                         Drop="ListBox_DropAsync"
                                         ItemsSource="{Binding Scanner.Resimler, Source={x:Reference twainCtrl}}"
-                                        VirtualizingPanel.CacheLengthUnit="Item"
+                                        VirtualizingPanel.CacheLengthUnit="Pixel"
                                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                         VirtualizingPanel.ScrollUnit="Pixel"
-                                        VirtualizingPanel.VirtualizationMode="Recycling">
+                                        VirtualizingPanel.VirtualizationMode="Standard">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
@@ -1839,10 +1840,10 @@
                                                             ItemsPanel="{StaticResource ListBoxWrapItemsPanel}"
                                                             ItemsSource="{Binding BatchFolderProcessedFileList, Mode=OneWay}"
                                                             SelectedItem="{Binding SelectedBatchFile}"
-                                                            VirtualizingPanel.CacheLengthUnit="Item"
+                                                            VirtualizingPanel.CacheLengthUnit="Pixel"
                                                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                                             VirtualizingPanel.ScrollUnit="Pixel"
-                                                            VirtualizingPanel.VirtualizationMode="Recycling">
+                                                            VirtualizingPanel.VirtualizationMode="Standard">
                                                             <ListBox.ItemTemplate>
                                                                 <DataTemplate>
                                                                     <CheckBox VerticalContentAlignment="Center"

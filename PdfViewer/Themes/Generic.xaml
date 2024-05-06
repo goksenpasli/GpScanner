@@ -115,7 +115,7 @@
                         <ScrollViewer x:Name="ScrollVwr"
                             Grid.Row="0"
                             AllowDrop="True"
-                            HorizontalScrollBarVisibility="Visible"
+                            HorizontalScrollBarVisibility="Auto"
                             VerticalScrollBarVisibility="Hidden">
                             <Image RenderTransformOrigin="0.5,0.5"
                                 ScrollViewer.CanContentScroll="True"
@@ -207,7 +207,8 @@
                                                     ItemTemplate="{StaticResource PdfThumbItemTemplate}"
                                                     ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
                                                     SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                                    VirtualizingPanel.CacheLengthUnit="Item"
+                                                    VirtualizingPanel.CacheLengthUnit="Pixel"
+                                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                                     VirtualizingPanel.ScrollUnit="Pixel"
                                                     VirtualizingPanel.VirtualizationMode="Standard">
                                                     <ListBox.ItemContainerStyle>

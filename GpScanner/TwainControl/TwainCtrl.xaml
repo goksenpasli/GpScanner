@@ -1462,7 +1462,7 @@
                                     SelectedIndex="{Binding SeekIndex}"
                                     SelectedItem="{Binding SeçiliResim}"
                                     SelectionMode="Extended"
-                                    VirtualizingPanel.CacheLengthUnit="Item"
+                                    VirtualizingPanel.CacheLengthUnit="Pixel"
                                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                     VirtualizingPanel.ScrollUnit="Pixel"
                                     VirtualizingPanel.VirtualizationMode="Recycling">

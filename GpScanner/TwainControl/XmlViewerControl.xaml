@@ -110,8 +110,11 @@
             Margin="1"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             ItemTemplate="{StaticResource treeViewTemplate}"
-            VirtualizingStackPanel.IsVirtualizing="True"
-            VirtualizingStackPanel.VirtualizationMode="Standard">
+            VirtualizingPanel.CacheLengthUnit="Pixel"
+            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+            VirtualizingPanel.ScrollUnit="Pixel"
+            VirtualizingPanel.VirtualizationMode="Standard"
+            VirtualizingStackPanel.IsVirtualizing="True">
             <TreeView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}">
                     <Setter Property="IsExpanded" Value="{Binding ElementName=Tb, Path=IsChecked}" />

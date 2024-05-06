@@ -592,9 +592,10 @@
                         ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                         ScrollViewer.VerticalScrollBarVisibility="Hidden"
                         SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource TemplatedParent}}"
-                        VirtualizingPanel.CacheLengthUnit="Item"
+                        VirtualizingPanel.CacheLengthUnit="Pixel"
+                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                         VirtualizingPanel.ScrollUnit="Pixel"
-                        VirtualizingPanel.VirtualizationMode="Recycling">
+                        VirtualizingPanel.VirtualizationMode="Standard">
                         <ListBox.ItemContainerStyle>
                             <Style TargetType="ListBoxItem">
                                 <Setter Property="Margin" Value="0" />
@@ -651,9 +652,10 @@
                                                     ItemsSource="{Binding Name}"
                                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                                    VirtualizingPanel.CacheLengthUnit="Item"
+                                                    VirtualizingPanel.CacheLengthUnit="Pixel"
+                                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                                     VirtualizingPanel.ScrollUnit="Pixel"
-                                                    VirtualizingPanel.VirtualizationMode="Recycling">
+                                                    VirtualizingPanel.VirtualizationMode="Standard">
                                                     <ListBox.Style>
                                                         <Style TargetType="ListBox">
                                                             <Style.Triggers>
