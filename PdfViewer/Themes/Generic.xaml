@@ -115,7 +115,7 @@
                         <ScrollViewer x:Name="ScrollVwr"
                             Grid.Row="0"
                             AllowDrop="True"
-                            HorizontalScrollBarVisibility="{Binding ScrollBarVisible, RelativeSource={RelativeSource TemplatedParent}}"
+                            HorizontalScrollBarVisibility="Visible"
                             VerticalScrollBarVisibility="Hidden">
                             <Image RenderTransformOrigin="0.5,0.5"
                                 ScrollViewer.CanContentScroll="True"
@@ -176,63 +176,63 @@
                                                 Text="G" />
                                         </ListBoxItem>
                                     </ListBox>
-                                    <StackPanel Orientation="Horizontal" Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                        <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
-                                            Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}"
-                                            CommandParameter="{Binding OverContent, RelativeSource={RelativeSource Mode=Self}}">
-                                            <Canvas Width="24" Height="16">
-                                                <Image Canvas.Left="4"
-                                                    Width="16"
-                                                    Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="19" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock Width="24"
-                                                    Height="16"
-                                                    HorizontalAlignment="Center"
-                                                    VerticalAlignment="Center"
-                                                    Text="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    TextWrapping="Wrap" />
-                                            </Canvas>
-                                            <Extensions:ContentToggleButton.OverContent>
-                                                <Extensions:ResizablePanel Width="460"
-                                                    Height="300"
-                                                    MinWidth="460"
-                                                    MinHeight="300">
-                                                    <ListBox VerticalContentAlignment="Center"
-                                                        ItemTemplate="{StaticResource PdfThumbItemTemplate}"
-                                                        ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
-                                                        VirtualizingPanel.CacheLengthUnit="Item"
-                                                        VirtualizingPanel.ScrollUnit="Pixel"
-                                                        VirtualizingPanel.VirtualizationMode="Standard">
-                                                        <ListBox.ItemContainerStyle>
-                                                            <Style TargetType="ListBoxItem">
-                                                                <Setter Property="HorizontalContentAlignment" Value="Center" />
-                                                                <Setter Property="Margin" Value="1" />
-                                                            </Style>
-                                                        </ListBox.ItemContainerStyle>
-                                                        <ListBox.ItemsPanel>
-                                                            <ItemsPanelTemplate>
-                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                                                    ItemSize="140,140"
-                                                                    StretchItems="False" />
-                                                            </ItemsPanelTemplate>
-                                                        </ListBox.ItemsPanel>
-                                                    </ListBox>
-                                                </Extensions:ResizablePanel>
-                                            </Extensions:ContentToggleButton.OverContent>
-                                        </Extensions:ContentToggleButton>
-                                        <Extensions:NumericUpDown Width="64"
-                                            Interval="1"
-                                            Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                            Minimum="1"
-                                            Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                                    </StackPanel>
+                                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
+                                        Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}"
+                                        CommandParameter="{Binding OverContent, RelativeSource={RelativeSource Mode=Self}}"
+                                        Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Canvas Width="24" Height="16">
+                                            <Image Canvas.Left="4"
+                                                Width="16"
+                                                Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="19" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock Width="24"
+                                                Height="16"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                TextWrapping="Wrap" />
+                                        </Canvas>
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <Extensions:ResizablePanel Width="460"
+                                                Height="300"
+                                                MinWidth="460"
+                                                MinHeight="300">
+                                                <ListBox VerticalContentAlignment="Center"
+                                                    ItemTemplate="{StaticResource PdfThumbItemTemplate}"
+                                                    ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    SelectedItem="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}"
+                                                    VirtualizingPanel.CacheLengthUnit="Item"
+                                                    VirtualizingPanel.ScrollUnit="Pixel"
+                                                    VirtualizingPanel.VirtualizationMode="Standard">
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                                            <Setter Property="Margin" Value="1" />
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                    <ListBox.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                                ItemSize="140,140"
+                                                                StretchItems="False" />
+                                                        </ItemsPanelTemplate>
+                                                    </ListBox.ItemsPanel>
+                                                </ListBox>
+                                            </Extensions:ResizablePanel>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
+                                    <Extensions:NumericUpDown Width="64"
+                                        Interval="1"
+                                        Maximum="{Binding ToplamSayfa, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Minimum="1"
+                                        Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     <Extensions:SplitButton Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                         SplitContentPartIsEnabled="{Binding PrintDpiSettingsListEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">

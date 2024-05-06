@@ -43,7 +43,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty PrintDpiProperty = DependencyProperty.Register("PrintDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(300));
     public static readonly DependencyProperty SayfaProperty =
         DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
-    public static readonly DependencyProperty ScrollBarVisibleProperty = DependencyProperty.Register("ScrollBarVisible", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
@@ -444,8 +443,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public ICommand SaveImage { get; }
 
     public int Sayfa { get => (int)GetValue(SayfaProperty); set => SetValue(SayfaProperty, value); }
-
-    public ScrollBarVisibility ScrollBarVisible { get => (ScrollBarVisibility)GetValue(ScrollBarVisibleProperty); set => SetValue(ScrollBarVisibleProperty, value); }
 
     public RelayCommand<object> ScrollToCurrentPage { get; }
 
