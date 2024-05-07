@@ -1789,6 +1789,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
+        CompressPdfFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is PdfViewer.PdfViewer pdfviewer &&
+                MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("COMPRESS")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    string oldpath = pdfviewer.PdfFilePath;
+                    PdfCompressor pdfcompressor = new();
+                    using PdfDocument pdfdocument = await pdfcompressor.Compress(pdfviewer.PdfFilePath);
+                    if (pdfdocument == null)
+                    {
+                        return;
+                    }
+                    pdfdocument.Save(pdfviewer.PdfFilePath);
+                    pdfviewer.PdfFilePath = null;
+                    pdfviewer.PdfFilePath = oldpath;
+                    _ = MessageBox.Show($"{Translation.GetResStringValue("SUCCESS")}", AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            },
+            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
+
         ResetPreviewSize = new RelayCommand<object>(parameter => Settings.Default.PreviewWidth = 155, parameter => true);
 
         ApplyCropCurrentImage = new RelayCommand<object>(
@@ -2196,6 +2217,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.High, false, (double)Quality.High),
         new Tuple<string, int, double, bool, double>(Translation.GetResStringValue("COLOR"), 2, (double)Resolution.Ultra, false, (double)Quality.Ultra)
     ];
+
+    public RelayCommand<object> CompressPdfFile { get; }
 
     public RelayCommand<object> CopyCurrentImageToClipBoard { get; }
 

@@ -125,6 +125,7 @@
     </Compile>
     <Compile Include="PageFlip.cs" />
     <Compile Include="PageRotation.cs" />
+    <Compile Include="PdfCompressor.cs" />
     <Compile Include="PdfData.cs" />
     <Compile Include="PdfGeneration.cs" />
     <Compile Include="PdfImportViewerControl.xaml.cs">

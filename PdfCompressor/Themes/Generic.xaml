@@ -23,6 +23,7 @@
                             </Grid.RowDefinitions>
                             <UniformGrid Grid.Row="0"
                                 Grid.Column="0"
+                                Grid.ColumnSpan="2"
                                 Rows="2">
                                 <TextBlock VerticalAlignment="Center">
                                     <Run Text="{Binding Dpi, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -48,18 +49,6 @@
                                     Style="{DynamicResource Slider}"
                                     Value="{Binding Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                             </UniformGrid>
-                            <Button Grid.Row="0"
-                                Grid.Column="1"
-                                Command="{Binding CompressFile, RelativeSource={RelativeSource TemplatedParent}}">
-                                <Image Width="24" Height="24">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Zipfldr.dll" />
-                                            <Binding Source="0" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </Button>
                             <ListBox x:Name="ListBox"
                                 Grid.Row="1"
                                 Grid.Column="0"

@@ -953,6 +953,16 @@
                     </Extensions:ResizablePanel>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
+            <Button Command="{Binding CompressPdfFile}" CommandParameter="{Binding Mode=OneWay, Source={x:Reference PdfViewer}}">
+                <Image Width="16" Height="16">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Zipfldr.dll" />
+                            <Binding Source="0" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </Button>
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
