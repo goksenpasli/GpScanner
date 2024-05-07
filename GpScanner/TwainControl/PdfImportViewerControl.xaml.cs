@@ -82,11 +82,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private string text = string.Empty;
     private double textSize = 12d;
     private double transparentLevel = 1;
+    private XImage xImage;
 
     public PdfImportViewerControl()
     {
         InitializeComponent();
         PropertyChanged += PdfImportViewerControl_PropertyChanged;
+
         LoadDrawImage = new RelayCommand<object>(
             parameter =>
             {
@@ -99,7 +101,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     };
                     if (openFileDialog.ShowDialog() == true)
                     {
-                        DrawnImage = XImage.FromFile(openFileDialog.FileName);
+                        xImage = XImage.FromFile(openFileDialog.FileName);
+                        DrawnImage = xImage;
                     }
                 }
                 catch (Exception ex)
@@ -117,7 +120,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     RenderTargetBitmap renderTargetBitmap = new((int)Ink.DesiredSize.Width, (int)Ink.DesiredSize.Height, 96, 96, PixelFormats.Default);
                     renderTargetBitmap.Render(Ink);
                     renderTargetBitmap.Freeze();
-                    DrawnImage = XImage.FromBitmapSource(renderTargetBitmap);
+                    xImage = XImage.FromBitmapSource(renderTargetBitmap);
+                    DrawnImage = xImage;
                     DrawImage = true;
                 }
                 catch (Exception ex)
@@ -135,6 +139,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     Ink?.Strokes?.Clear();
                     DrawImage = false;
                     DrawnImage = null;
+                    xImage?.Dispose();
                 }
                 catch (Exception ex)
                 {
@@ -943,6 +948,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         if (DrawImage && DrawnImage is not null)
         {
             gfx.DrawImage(DrawnImage, rect);
+            DrawnImage = null;
+            xImage?.Dispose();
         }
     }
 
@@ -1301,7 +1308,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         mousedowncoord.X = mousedowncoord.Y = 0;
         isDrawMouseDown = false;
         Cursor = Cursors.Arrow;
-        DrawnImage = null;
     }
 
     private XBrush SetBrush(XKnownColor fillColor, XKnownColor firstgradient, XKnownColor secondgradient, double transparentlevel = 1, Rect rect = default, bool isLinearColor = false)
