@@ -43,7 +43,7 @@
                 VirtualizingPanel.CacheLengthUnit="Pixel"
                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                 VirtualizingPanel.ScrollUnit="Pixel"
-                VirtualizingPanel.VirtualizationMode="Standard" />
+                VirtualizingPanel.VirtualizationMode="Recycling" />
         </Grid>
     </Grid>
 </UserControl>

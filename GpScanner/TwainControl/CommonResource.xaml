@@ -67,7 +67,11 @@
                             ItemsSource="{Binding Arşivİçerik, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}"
                             ScrollViewer.IsDeferredScrollingEnabled="False"
                             SelectedItem="{Binding SelectedFile, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}"
-                            SelectionMode="Single">
+                            SelectionMode="Single"
+                            VirtualizingPanel.CacheLengthUnit="Pixel"
+                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                            VirtualizingPanel.ScrollUnit="Pixel"
+                            VirtualizingPanel.VirtualizationMode="Recycling">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="{x:Type ListViewItem}">
                                     <Setter Property="ContextMenu">
