@@ -1246,10 +1246,107 @@
                     </ScrollViewer>
                 </Expander>
                 <GroupBox Grid.Row="1">
-                    <TabControl Background="{StaticResource BorderBackground}">
-                        <TabItem>
-                            <TabItem.Header>
-                                <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ScrollViewer Template="{DynamicResource VerticalScrollViewerTemplate}" VerticalScrollBarVisibility="Auto">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="238.4" />
+                                    <RowDefinition MinHeight="100" />
+                                    <RowDefinition Height="19.2" />
+                                </Grid.RowDefinitions>
+                                <StackPanel>
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        TextAlignment="Center">
+                                        <Run d:Text="0"
+                                            BaselineAlignment="Center"
+                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" /><Run d:Text="/"
+                                            BaselineAlignment="Center"
+                                            Text="/" /><Run d:Text="0"
+                                            BaselineAlignment="Center"
+                                            Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
+                                        <LineBreak />
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding ReverseData}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc REVERSE}">
+                                            <Run BaselineAlignment="Center"
+                                                FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                Text="E" />
+                                        </Hyperlink>
+                                        <LineBreak />
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding ReverseDataHorizontal}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc HORIZONTAL}">
+                                            <Run BaselineAlignment="Center"
+                                                FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                Text="D" />
+                                        </Hyperlink>
+                                        <LineBreak />
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding FirstLastSortSequenceData}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc FIRSTLAST}">
+                                            <InlineUIContainer>
+                                                <Border BorderBrush="Cyan" BorderThickness="1">
+                                                    <TextBlock FontFamily="Wingdings 3"
+                                                        FontSize="16"
+                                                        Text="G" />
+                                                </Border>
+                                            </InlineUIContainer>
+                                        </Hyperlink>
+                                        <LineBreak />
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding ShuffleData}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc RANDOM}">
+                                            <Canvas Width="16"
+                                                Height="16"
+                                                Background="Transparent">
+                                                <Canvas.Resources>
+                                                    <Style TargetType="Ellipse">
+                                                        <Setter Property="Fill" Value="Orange" />
+                                                        <Setter Property="Height" Value="4" />
+                                                        <Setter Property="Width" Value="4" />
+                                                    </Style>
+                                                </Canvas.Resources>
+                                                <Ellipse Canvas.Left="6" Canvas.Top="6" />
+                                                <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
+                                                <Ellipse Canvas.Left="10.5" Canvas.Top="10.5" />
+                                                <Ellipse Canvas.Left="10.5" Canvas.Top="2" />
+                                                <Ellipse Canvas.Left="1.5" Canvas.Top="10.5" />
+                                            </Canvas>
+                                        </Hyperlink>
+                                        <LineBreak />
+                                        <Run BaselineAlignment="Center" Text="1" />
+                                        <LineBreak />
+                                        <Hyperlink BaselineAlignment="Center"
+                                            Command="{Binding FirstLastGroup}"
+                                            TextDecorations="None"
+                                            ToolTip="{local:Loc SPLITSORT}">
+                                            <Run BaselineAlignment="Center"
+                                                FontFamily="Wingdings 3"
+                                                FontSize="18"
+                                                Text="F" />
+                                        </Hyperlink>
+                                        <LineBreak />
+                                        <InlineUIContainer BaselineAlignment="Center">
+                                            <Extensions:NumericUpDown Interval="1"
+                                                IsReadOnly="True"
+                                                Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
+                                                Minimum="2"
+                                                Orientation="Vertical"
+                                                Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        </InlineUIContainer>
+                                    </TextBlock>
                                     <Button local:Policy.PolicyName="InsertClipBoardImage"
                                         BorderBrush="Cyan"
                                         Command="{Binding InsertClipBoardImage}">
@@ -1272,95 +1369,6 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="19" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center"
-                                        FontWeight="Bold"
-                                        TextAlignment="Center">
-                                        <Run d:Text="0"
-                                            BaselineAlignment="Center"
-                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                        <Run d:Text="/"
-                                            BaselineAlignment="Center"
-                                            Text="/" />
-                                        <Run d:Text="0"
-                                            BaselineAlignment="Center"
-                                            Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
-                                        <Hyperlink BaselineAlignment="Center"
-                                            Command="{Binding ReverseData}"
-                                            TextDecorations="None"
-                                            ToolTip="{local:Loc REVERSE}">
-                                            <Run BaselineAlignment="Center"
-                                                FontFamily="Wingdings 3"
-                                                FontSize="16"
-                                                Text="E" />
-                                        </Hyperlink>
-                                        <Hyperlink BaselineAlignment="Center"
-                                            Command="{Binding ReverseDataHorizontal}"
-                                            TextDecorations="None"
-                                            ToolTip="{local:Loc HORIZONTAL}">
-                                            <Run BaselineAlignment="Center"
-                                                FontFamily="Wingdings 3"
-                                                FontSize="16"
-                                                Text="D" />
-                                        </Hyperlink>
-                                        <Hyperlink BaselineAlignment="Center"
-                                            Command="{Binding FirstLastSortSequenceData}"
-                                            TextDecorations="None"
-                                            ToolTip="{local:Loc FIRSTLAST}">
-                                            <InlineUIContainer>
-                                                <Border BorderBrush="Cyan" BorderThickness="1">
-                                                    <TextBlock FontFamily="Wingdings 3"
-                                                        FontSize="16"
-                                                        Text="G" />
-                                                </Border>
-                                            </InlineUIContainer>
-                                        </Hyperlink>
-                                        <Hyperlink BaselineAlignment="Center"
-                                            Command="{Binding ShuffleData}"
-                                            TextDecorations="None"
-                                            ToolTip="{local:Loc RANDOM}">
-                                            <Canvas Width="16"
-                                                Height="16"
-                                                Background="Transparent">
-                                                <Canvas.Resources>
-                                                    <Style TargetType="Ellipse">
-                                                        <Setter Property="Fill" Value="Orange" />
-                                                        <Setter Property="Height" Value="4" />
-                                                        <Setter Property="Width" Value="4" />
-                                                    </Style>
-                                                </Canvas.Resources>
-                                                <Ellipse Canvas.Left="6" Canvas.Top="6" />
-                                                <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
-                                                <Ellipse Canvas.Left="10.5" Canvas.Top="10.5" />
-                                                <Ellipse Canvas.Left="10.5" Canvas.Top="2" />
-                                                <Ellipse Canvas.Left="1.5" Canvas.Top="10.5" />
-                                            </Canvas>
-                                        </Hyperlink><Run BaselineAlignment="Center" Text="1" /><Hyperlink BaselineAlignment="Center"
-                                            Command="{Binding FirstLastGroup}"
-                                            TextDecorations="None"
-                                            ToolTip="{local:Loc SPLITSORT}">
-                                            <Run BaselineAlignment="Center"
-                                                FontFamily="Wingdings 3"
-                                                FontSize="18"
-                                                Text="F" />
-                                        </Hyperlink><InlineUIContainer BaselineAlignment="Center">
-                                            <Extensions:NumericUpDown Interval="1"
-                                                IsReadOnly="True"
-                                                Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
-                                                Minimum="2"
-                                                Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        </InlineUIContainer>
-                                    </TextBlock>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    </StackPanel>
                                     <Extensions:SplitButton local:Policy.PolicyName="AddSplitListsIndex" Command="{Binding AddSplitListsIndex}">
                                         <TextBlock FontFamily="Wingdings 2"
                                             FontSize="16"
@@ -1421,517 +1429,506 @@
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
                                 </StackPanel>
-                            </TabItem.Header>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Slider AutoToolTipPlacement="TopLeft"
-                                        Maximum="400"
-                                        Minimum="85"
-                                        Orientation="Vertical"
-                                        SmallChange="1"
-                                        Style="{StaticResource Slider}"
-                                        ToolTip="{local:Loc PREVIEWSIZE}"
-                                        Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
-                                    <Button Grid.Row="1"
-                                        Background="{x:Null}"
-                                        BorderBrush="{x:Null}"
-                                        Command="{Binding ResetPreviewSize}">
-                                        <Image Width="16"
-                                            Height="16"
-                                            Source="/TwainControl;component/Icons/delete.png" />
-                                    </Button>
-                                </Grid>
-                                <ListBox x:Name="Lb"
-                                    Grid.Column="1"
-                                    Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
-                                    local:Policy.PolicyName="LoadImage"
-                                    AllowDrop="True"
-                                    Background="{StaticResource BorderBackground}"
-                                    Drop="ListBox_DropAsync"
-                                    ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
-                                    PreviewMouseWheel="ListBox_PreviewMouseWheel"
-                                    SelectedIndex="{Binding SeekIndex}"
-                                    SelectedItem="{Binding SeçiliResim}"
-                                    SelectionMode="Extended"
-                                    VirtualizingPanel.CacheLengthUnit="Pixel"
-                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                    VirtualizingPanel.ScrollUnit="Pixel"
-                                    VirtualizingPanel.VirtualizationMode="Recycling">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="{x:Type ListBoxItem}">
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate>
-                                                        <StackPanel Background="{TemplateBinding Background}"
-                                                            Drop="StackPanel_Drop"
-                                                            GiveFeedback="StackPanel_GiveFeedback">
-                                                            <TextBlock HorizontalAlignment="Center">
-                                                                <InlineUIContainer BaselineAlignment="Center">
-                                                                    <Extensions:NumericUpDown Height="25.6"
-                                                                        BorderBrush="Cyan"
-                                                                        Interval="1"
-                                                                        Maximum="1"
-                                                                        Minimum="-1"
-                                                                        NumericUpdownTextBoxVisibility="Collapsed"
-                                                                        Value="{Binding RotationAngle}" />
-                                                                </InlineUIContainer><InlineUIContainer BaselineAlignment="Center">
-                                                                    <Extensions:SplitButton local:Policy.PolicyName="Kaydet"
-                                                                        Background="{x:Null}"
-                                                                        Command="{Binding SaveSinglePdfFile, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
-                                                                        CommandParameter="{Binding Mode=OneWay}">
-                                                                        <Image Width="24"
-                                                                            Height="24"
-                                                                            Source="/TwainControl;component/Icons/save.png" />
-                                                                        <Extensions:SplitButton.InternalContent>
-                                                                            <Border Background="{StaticResource BorderBackground}"
-                                                                                BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                                                BorderThickness="1">
-                                                                                <StackPanel>
-                                                                                    <StackPanel.Resources>
-                                                                                        <Style TargetType="MenuItem">
-                                                                                            <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
-                                                                                            <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                                                                            <Setter Property="VerticalContentAlignment" Value="Center" />
-                                                                                        </Style>
-                                                                                        <Style TargetType="Image">
-                                                                                            <Setter Property="Height" Value="16" />
-                                                                                            <Setter Property="Width" Value="16" />
-                                                                                        </Style>
-                                                                                    </StackPanel.Resources>
-                                                                                    <MenuItem Command="{Binding SaveSinglePdfFile, Source={x:Reference UserControl}}">
-                                                                                        <MenuItem.Header>
-                                                                                            <StackPanel Orientation="Horizontal">
-                                                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                <Extensions:NumericUpDown Interval="1"
-                                                                                                    IsReadOnly="True"
-                                                                                                    Maximum="95"
-                                                                                                    Minimum="10"
-                                                                                                    Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                            </StackPanel>
-                                                                                        </MenuItem.Header>
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <MenuItem Command="{Binding SaveSingleBwPdfFile, Source={x:Reference UserControl}}">
-                                                                                        <MenuItem.Header>
-                                                                                            <StackPanel Orientation="Horizontal">
-                                                                                                <TextBlock VerticalAlignment="Center">
-                                                                                                    <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                    <Run Text="{local:Loc BW}" />
-                                                                                                </TextBlock>
-                                                                                                <Extensions:NumericUpDown Interval="1"
-                                                                                                    IsReadOnly="True"
-                                                                                                    Maximum="95"
-                                                                                                    Minimum="10"
-                                                                                                    Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                            </StackPanel>
-                                                                                        </MenuItem.Header>
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <MenuItem Command="{Binding SaveSingleJpgFile, Source={x:Reference UserControl}}">
-                                                                                        <MenuItem.Header>
-                                                                                            <StackPanel Orientation="Horizontal">
-                                                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                <Extensions:NumericUpDown Interval="1"
-                                                                                                    IsReadOnly="True"
-                                                                                                    Maximum="95"
-                                                                                                    Minimum="10"
-                                                                                                    Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                            </StackPanel>
-                                                                                        </MenuItem.Header>
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <MenuItem Command="{Binding SaveSingleTifFile, Source={x:Reference UserControl}}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <MenuItem Command="{Binding SaveSingleXpsFile, Source={x:Reference UserControl}}" Header="{Binding Source='.xps', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <MenuItem Command="{Binding SaveSingleWebpFile, Source={x:Reference UserControl}}" IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
-                                                                                        <MenuItem.Header>
-                                                                                            <StackPanel Orientation="Horizontal">
-                                                                                                <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                <Extensions:NumericUpDown Interval="1"
-                                                                                                    IsReadOnly="True"
-                                                                                                    Maximum="95"
-                                                                                                    Minimum="10"
-                                                                                                    Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                            </StackPanel>
-                                                                                        </MenuItem.Header>
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <MenuItem Command="{Binding SaveSingleTxtFile, Source={x:Reference UserControl}}"
-                                                                                        Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                                                                        IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <Separator />
-                                                                                    <MenuItem Command="{Binding CopyCurrentImageToClipBoard, Source={x:Reference UserControl}}" Header="{local:Loc COPY}">
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Width="16" Height="16">
-                                                                                                <Image.Source>
-                                                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                        <Binding Source="Shell32.dll" />
-                                                                                                        <Binding Source="134" />
-                                                                                                    </MultiBinding>
-                                                                                                </Image.Source>
-                                                                                            </Image>
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <MenuItem Command="{Binding CopyCurrentImageToImageEditor, Source={x:Reference UserControl}}" Header="{local:Loc GRAPH}">
-                                                                                        <MenuItem.Icon>
-                                                                                            <Image Width="16" Height="16">
-                                                                                                <Image.Source>
-                                                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                        <Binding Source="pifmgr.dll" />
-                                                                                                        <Binding Source="16" />
-                                                                                                    </MultiBinding>
-                                                                                                </Image.Source>
-                                                                                            </Image>
-                                                                                        </MenuItem.Icon>
-                                                                                    </MenuItem>
-                                                                                    <Separator />
-                                                                                    <Expander Header="{local:Loc DESKEW}">
-                                                                                        <StackPanel>
-                                                                                            <Button local:Policy.PolicyName="AutoDeskewImage"
-                                                                                                Command="{Binding DataContext.AutoDeskewImage, Source={x:Reference UserControl}}"
-                                                                                                CommandParameter="{Binding Mode=OneWay}">
-                                                                                                <TextBlock FontFamily="Wingdings 3"
-                                                                                                    FontSize="22"
-                                                                                                    Foreground="Black"
-                                                                                                    Text="R" />
-                                                                                            </Button>
-                                                                                            <Button local:Policy.PolicyName="InvertImage"
-                                                                                                BorderBrush="Cyan"
-                                                                                                Command="{Binding DataContext.InvertImage, Source={x:Reference UserControl}}"
-                                                                                                CommandParameter="{Binding Mode=OneWay}">
-                                                                                                <TextBlock FontFamily="Wingdings"
-                                                                                                    FontSize="26"
-                                                                                                    Foreground="Black"
-                                                                                                    Text="[" />
-                                                                                            </Button>
-                                                                                            <Extensions:NumericUpDown Width="60"
-                                                                                                IsReadOnly="True"
-                                                                                                Maximum="3"
-                                                                                                Minimum="-3"
-                                                                                                Value="{Binding DataContext.CustomDeskewAngle, Source={x:Reference UserControl}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
-                                                                                            <Button local:Policy.PolicyName="ManualDeskewImage"
-                                                                                                Command="{Binding DataContext.ManualDeskewImage, Source={x:Reference UserControl}}"
-                                                                                                CommandParameter="{Binding Mode=OneWay}"
-                                                                                                Content="{local:Loc DESKEW}" />
-                                                                                        </StackPanel>
-                                                                                    </Expander>
-                                                                                </StackPanel>
-                                                                            </Border>
-                                                                        </Extensions:SplitButton.InternalContent>
-                                                                    </Extensions:SplitButton>
-                                                                </InlineUIContainer><Run Cursor="SizeAll"
-                                                                    FontFamily="Wingdings"
-                                                                    FontSize="24"
-                                                                    FontWeight="Bold"
-                                                                    MouseLeftButtonDown="Run_MouseLeftButtonDown"
-                                                                    Text="B" /><Hyperlink local:Policy.PolicyName="ResimSil"
-                                                                    BaselineAlignment="Center"
-                                                                    Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
-                                                                    CommandParameter="{Binding Mode=OneWay}"
-                                                                    FontFamily="Segoe UI Black"
-                                                                    TextDecorations="None">
-                                                                    <InlineUIContainer>
-                                                                        <Image Width="24"
-                                                                            Height="24"
-                                                                            Source="/TwainControl;component/Icons/delete.png" />
-                                                                    </InlineUIContainer>
-                                                                </Hyperlink>
-                                                            </TextBlock>
-                                                            <Canvas Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                                <ToggleButton Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                    Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                    VerticalAlignment="Center"
-                                                                    VerticalContentAlignment="Center"
-                                                                    Background="{x:Null}"
-                                                                    BorderBrush="{x:Null}"
-                                                                    IsChecked="{Binding Seçili}"
-                                                                    RenderTransformOrigin="0.5,0.5"
-                                                                    Style="{StaticResource ToggleButtonAnimationStyle}">
-                                                                    <ToggleButton.RenderTransform>
-                                                                        <TransformGroup>
-                                                                            <ScaleTransform />
-                                                                            <SkewTransform />
-                                                                            <RotateTransform />
-                                                                            <TranslateTransform />
-                                                                        </TransformGroup>
-                                                                    </ToggleButton.RenderTransform>
-                                                                    <PdfViewer:PdfShadowedImage Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                        Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                        d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                                        d:Source="/GpScanner;component/scanner.ico"
-                                                                        d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                                        <PdfViewer:PdfShadowedImage.Source>
-                                                                            <PriorityBinding>
-                                                                                <Binding IsAsync="True"
-                                                                                    Mode="OneWay"
-                                                                                    Path="ResimThumb" />
-                                                                                <Binding Converter="{StaticResource ListFilePathToIconConverter}" Path="FilePath" />
-                                                                            </PriorityBinding>
-                                                                        </PdfViewer:PdfShadowedImage.Source>
-                                                                    </PdfViewer:PdfShadowedImage>
-                                                                </ToggleButton>
-                                                                <TextBlock Canvas.Left="0"
-                                                                    Canvas.Bottom="0"
-                                                                    FontWeight="Bold"
-                                                                    Text="{Binding Index, Mode=OneWay}"
-                                                                    Visibility="{Binding DocumentNumberVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}" />
-                                                            </Canvas>
-                                                        </StackPanel>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Seçili}" Value="true">
-                                                    <Setter Property="Background" Value="MediumSeaGreen" />
-                                                    <Setter Property="IsSelected" Value="True" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                </ListBox>
-                                <ScrollViewer Grid.Column="2"
-                                    Template="{DynamicResource VerticalScrollViewerTemplate}"
-                                    VerticalScrollBarVisibility="Auto">
-                                    <StackPanel>
-                                        <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/undo.png" />
-                                        </Button>
-                                        <Extensions:ContentToggleButton local:Policy.PolicyName="RemoveFiles"
-                                            ArrowVisibility="Collapsed"
-                                            IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
-                                            <Extensions:ContentToggleButton.OverContent>
-                                                <Border Background="{StaticResource BorderBackground}"
-                                                    BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                    BorderThickness="1">
-                                                    <StackPanel>
-                                                        <MenuItem Command="{Binding ListeTemizle}">
-                                                            <MenuItem.Icon>
-                                                                <Image Width="16"
-                                                                    Height="16"
-                                                                    Source="/TwainControl;component/Icons/delete.png" />
-                                                            </MenuItem.Icon>
-                                                            <MenuItem.Header>
-                                                                <TextBlock VerticalAlignment="Center">
-                                                                    <Run Text="{local:Loc ALL}" />
-                                                                    <Run Text="{local:Loc CLEARLIST}" />
-                                                                </TextBlock>
-                                                            </MenuItem.Header>
-                                                        </MenuItem>
-                                                        <MenuItem Command="{Binding SeçiliListeTemizle}">
-                                                            <MenuItem.Icon>
-                                                                <Image Width="16"
-                                                                    Height="16"
-                                                                    Source="/TwainControl;component/Icons/delete.png" />
-                                                            </MenuItem.Icon>
-                                                            <MenuItem.Header>
-                                                                <TextBlock VerticalAlignment="Center">
-                                                                    <Run Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                                                    <Run Text="{local:Loc FILE}" />
-                                                                    <Run Text="{local:Loc CLEARLIST}" />
-                                                                </TextBlock>
-                                                            </MenuItem.Header>
-                                                        </MenuItem>
-                                                        <Separator />
-                                                        <MenuItem IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
-                                                            <MenuItem.Header>
-                                                                <TextBlock>
-                                                                    <Run Text="{local:Loc FILE}" />
-                                                                    <Run Text="{local:Loc DELETE}" />
-                                                                </TextBlock>
-                                                            </MenuItem.Header>
-                                                        </MenuItem>
-                                                        <MenuItem FontWeight="Bold"
-                                                            Foreground="Red"
-                                                            Header="{local:Loc REMOVEPROCESSEDIMAGE}"
-                                                            IsCheckable="True"
-                                                            IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
-                                                    </StackPanel>
-                                                </Border>
-                                            </Extensions:ContentToggleButton.OverContent>
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/delete.png" />
-                                        </Extensions:ContentToggleButton>
-                                        <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
-                                            <Button.ToolTip>
-                                                <TextBlock>
-                                                    <Run Text="{local:Loc EMPTYPAGE}" />
-                                                    <Run Text="{local:Loc THRESHOLD}" />
-                                                    <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat=%{0}}" />
-                                                </TextBlock>
-                                            </Button.ToolTip>
-                                            <Canvas Width="24" Height="24">
-                                                <Image Width="24" Height="24">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="0" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock Canvas.Left="4"
-                                                    d:Text="0"
-                                                    FontSize="9"
-                                                    Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                                <Image Canvas.Left="4"
-                                                    Canvas.Top="8"
-                                                    Width="16"
-                                                    Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="32" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Canvas>
-                                        </Button>
-                                        <Separator />
-                                        <Button local:Policy.PolicyName="Tümünüİşaretle"
-                                            BorderBrush="Cyan"
-                                            Command="{Binding Tümünüİşaretle}"
-                                            ToolTip="{local:Loc ALL}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/selectall.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="TümününİşaretiniKaldır"
-                                            Command="{Binding TümününİşaretiniKaldır}"
-                                            ToolTip="{local:Loc NONE}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/none.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="Tersiniİşaretle"
-                                            Command="{Binding Tersiniİşaretle}"
-                                            ToolTip="{local:Loc REVERSE}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/inverse.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/portrait.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/landscape.png" />
-                                        </Button>
-                                        <Separator />
-                                        <Button local:Policy.PolicyName="CycleSelectedDocuments"
-                                            Command="{Binding CycleSelectedDocuments}"
-                                            CommandParameter="{Binding ElementName=Lb}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="22" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/save.png" />
-                                        </Button>
-                                        <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
-                                            <Image Width="24" Height="24">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="70" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                        </Button>
-                                        <Extensions:SplitButton local:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding PrintSelectedDocuments}">
-                                            <Canvas Width="24" Height="24">
-                                                <Image Width="24" Height="24">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="16" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock Canvas.Bottom="0"
-                                                    d:Text="0"
-                                                    FontSize="11"
-                                                    FontWeight="Bold"
-                                                    Foreground="Red"
-                                                    Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                            </Canvas>
-                                            <Extensions:SplitButton.InternalContent>
-                                                <ListBox ItemStringFormat="{}{0} Dpi"
-                                                    ItemsSource="{Binding DpiList, Source={x:Reference ImgViewer}}"
-                                                    SelectedItem="{Binding PrintDpi}" />
-                                            </Extensions:SplitButton.InternalContent>
-                                        </Extensions:SplitButton>
-                                        <Separator />
-                                        <Grid>
-                                            <ProgressBar Background="{x:Null}"
-                                                BorderBrush="{x:Null}"
-                                                Foreground="Yellow"
-                                                Maximum="1"
-                                                Value="{Binding AllRotateProgressValue}" />
-                                            <Extensions:NumericUpDown VerticalAlignment="Center"
-                                                BorderBrush="Cyan"
-                                                Interval="1"
-                                                IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
-                                                Maximum="1"
-                                                Minimum="-1"
-                                                NumericUpdownTextBoxVisibility="Collapsed"
-                                                Value="{Binding AllImageRotationAngle}" />
-                                        </Grid>
-                                        <Button local:Policy.PolicyName="InvertSelectedImage"
-                                            BorderBrush="Cyan"
-                                            Command="{Binding InvertSelectedImage}"
-                                            Content="["
-                                            FontFamily="Wingdings"
-                                            FontSize="23" />
-                                    </StackPanel>
-                                </ScrollViewer>
+                                <Slider Grid.Row="1"
+                                    HorizontalAlignment="Center"
+                                    AutoToolTipPlacement="TopLeft"
+                                    Maximum="400"
+                                    Minimum="85"
+                                    Orientation="Vertical"
+                                    SmallChange="1"
+                                    Style="{StaticResource Slider}"
+                                    ToolTip="{local:Loc PREVIEWSIZE}"
+                                    Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
+                                <Button Grid.Row="2"
+                                    Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
+                                    Command="{Binding ResetPreviewSize}">
+                                    <Image Width="16"
+                                        Height="16"
+                                        Source="/TwainControl;component/Icons/delete.png" />
+                                </Button>
                             </Grid>
-                        </TabItem>
-                    </TabControl>
+                        </ScrollViewer>
+                        <ListBox x:Name="Lb"
+                            Grid.Column="1"
+                            Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
+                            local:Policy.PolicyName="LoadImage"
+                            AllowDrop="True"
+                            Background="{StaticResource BorderBackground}"
+                            Drop="ListBox_DropAsync"
+                            ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
+                            PreviewMouseWheel="ListBox_PreviewMouseWheel"
+                            SelectedIndex="{Binding SeekIndex}"
+                            SelectedItem="{Binding SeçiliResim}"
+                            SelectionMode="Extended"
+                            VirtualizingPanel.CacheLengthUnit="Pixel"
+                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                            VirtualizingPanel.ScrollUnit="Pixel"
+                            VirtualizingPanel.VirtualizationMode="Recycling">
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="{x:Type ListBoxItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <StackPanel Background="{TemplateBinding Background}"
+                                                    Drop="StackPanel_Drop"
+                                                    GiveFeedback="StackPanel_GiveFeedback">
+                                                    <TextBlock HorizontalAlignment="Center">
+                                                        <InlineUIContainer BaselineAlignment="Center">
+                                                            <Extensions:NumericUpDown Height="25.6"
+                                                                BorderBrush="Cyan"
+                                                                Interval="1"
+                                                                Maximum="1"
+                                                                Minimum="-1"
+                                                                NumericUpdownTextBoxVisibility="Collapsed"
+                                                                Value="{Binding RotationAngle}" />
+                                                        </InlineUIContainer><InlineUIContainer BaselineAlignment="Center">
+                                                            <Extensions:SplitButton local:Policy.PolicyName="Kaydet"
+                                                                Background="{x:Null}"
+                                                                Command="{Binding SaveSinglePdfFile, RelativeSource={RelativeSource AncestorType=local:TwainCtrl}}"
+                                                                CommandParameter="{Binding Mode=OneWay}">
+                                                                <Image Width="24"
+                                                                    Height="24"
+                                                                    Source="/TwainControl;component/Icons/save.png" />
+                                                                <Extensions:SplitButton.InternalContent>
+                                                                    <Border Background="{StaticResource BorderBackground}"
+                                                                        BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                                        BorderThickness="1">
+                                                                        <StackPanel>
+                                                                            <StackPanel.Resources>
+                                                                                <Style TargetType="MenuItem">
+                                                                                    <Setter Property="CommandParameter" Value="{Binding Mode=OneWay}" />
+                                                                                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                                                                    <Setter Property="VerticalContentAlignment" Value="Center" />
+                                                                                </Style>
+                                                                                <Style TargetType="Image">
+                                                                                    <Setter Property="Height" Value="16" />
+                                                                                    <Setter Property="Width" Value="16" />
+                                                                                </Style>
+                                                                            </StackPanel.Resources>
+                                                                            <MenuItem Command="{Binding SaveSinglePdfFile, Source={x:Reference UserControl}}">
+                                                                                <MenuItem.Header>
+                                                                                    <StackPanel Orientation="Horizontal">
+                                                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Source='.pdf', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                        <Extensions:NumericUpDown Interval="1"
+                                                                                            IsReadOnly="True"
+                                                                                            Maximum="95"
+                                                                                            Minimum="10"
+                                                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                    </StackPanel>
+                                                                                </MenuItem.Header>
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <MenuItem Command="{Binding SaveSingleBwPdfFile, Source={x:Reference UserControl}}">
+                                                                                <MenuItem.Header>
+                                                                                    <StackPanel Orientation="Horizontal">
+                                                                                        <TextBlock VerticalAlignment="Center">
+                                                                                            <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                            <Run Text="{local:Loc BW}" />
+                                                                                        </TextBlock>
+                                                                                        <Extensions:NumericUpDown Interval="1"
+                                                                                            IsReadOnly="True"
+                                                                                            Maximum="95"
+                                                                                            Minimum="10"
+                                                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                    </StackPanel>
+                                                                                </MenuItem.Header>
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <MenuItem Command="{Binding SaveSingleJpgFile, Source={x:Reference UserControl}}">
+                                                                                <MenuItem.Header>
+                                                                                    <StackPanel Orientation="Horizontal">
+                                                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                        <Extensions:NumericUpDown Interval="1"
+                                                                                            IsReadOnly="True"
+                                                                                            Maximum="95"
+                                                                                            Minimum="10"
+                                                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                    </StackPanel>
+                                                                                </MenuItem.Header>
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <MenuItem Command="{Binding SaveSingleTifFile, Source={x:Reference UserControl}}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <MenuItem Command="{Binding SaveSingleXpsFile, Source={x:Reference UserControl}}" Header="{Binding Source='.xps', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <MenuItem Command="{Binding SaveSingleWebpFile, Source={x:Reference UserControl}}" IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
+                                                                                <MenuItem.Header>
+                                                                                    <StackPanel Orientation="Horizontal">
+                                                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                        <Extensions:NumericUpDown Interval="1"
+                                                                                            IsReadOnly="True"
+                                                                                            Maximum="95"
+                                                                                            Minimum="10"
+                                                                                            Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                    </StackPanel>
+                                                                                </MenuItem.Header>
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <MenuItem Command="{Binding SaveSingleTxtFile, Source={x:Reference UserControl}}"
+                                                                                Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                                                                IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <Separator />
+                                                                            <MenuItem Command="{Binding CopyCurrentImageToClipBoard, Source={x:Reference UserControl}}" Header="{local:Loc COPY}">
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Width="16" Height="16">
+                                                                                        <Image.Source>
+                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                <Binding Source="Shell32.dll" />
+                                                                                                <Binding Source="134" />
+                                                                                            </MultiBinding>
+                                                                                        </Image.Source>
+                                                                                    </Image>
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <MenuItem Command="{Binding CopyCurrentImageToImageEditor, Source={x:Reference UserControl}}" Header="{local:Loc GRAPH}">
+                                                                                <MenuItem.Icon>
+                                                                                    <Image Width="16" Height="16">
+                                                                                        <Image.Source>
+                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                                <Binding Source="pifmgr.dll" />
+                                                                                                <Binding Source="16" />
+                                                                                            </MultiBinding>
+                                                                                        </Image.Source>
+                                                                                    </Image>
+                                                                                </MenuItem.Icon>
+                                                                            </MenuItem>
+                                                                            <Separator />
+                                                                            <Expander Header="{local:Loc DESKEW}">
+                                                                                <StackPanel>
+                                                                                    <Button local:Policy.PolicyName="AutoDeskewImage"
+                                                                                        Command="{Binding DataContext.AutoDeskewImage, Source={x:Reference UserControl}}"
+                                                                                        CommandParameter="{Binding Mode=OneWay}">
+                                                                                        <TextBlock FontFamily="Wingdings 3"
+                                                                                            FontSize="22"
+                                                                                            Foreground="Black"
+                                                                                            Text="R" />
+                                                                                    </Button>
+                                                                                    <Button local:Policy.PolicyName="InvertImage"
+                                                                                        BorderBrush="Cyan"
+                                                                                        Command="{Binding DataContext.InvertImage, Source={x:Reference UserControl}}"
+                                                                                        CommandParameter="{Binding Mode=OneWay}">
+                                                                                        <TextBlock FontFamily="Wingdings"
+                                                                                            FontSize="26"
+                                                                                            Foreground="Black"
+                                                                                            Text="[" />
+                                                                                    </Button>
+                                                                                    <Extensions:NumericUpDown Width="60"
+                                                                                        IsReadOnly="True"
+                                                                                        Maximum="3"
+                                                                                        Minimum="-3"
+                                                                                        Value="{Binding DataContext.CustomDeskewAngle, Source={x:Reference UserControl}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" />
+                                                                                    <Button local:Policy.PolicyName="ManualDeskewImage"
+                                                                                        Command="{Binding DataContext.ManualDeskewImage, Source={x:Reference UserControl}}"
+                                                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                                                        Content="{local:Loc DESKEW}" />
+                                                                                </StackPanel>
+                                                                            </Expander>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </Extensions:SplitButton.InternalContent>
+                                                            </Extensions:SplitButton>
+                                                        </InlineUIContainer><Run Cursor="SizeAll"
+                                                            FontFamily="Wingdings"
+                                                            FontSize="24"
+                                                            FontWeight="Bold"
+                                                            MouseLeftButtonDown="Run_MouseLeftButtonDown"
+                                                            Text="B" /><Hyperlink local:Policy.PolicyName="ResimSil"
+                                                            BaselineAlignment="Center"
+                                                            Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
+                                                            CommandParameter="{Binding Mode=OneWay}"
+                                                            FontFamily="Segoe UI Black"
+                                                            TextDecorations="None">
+                                                            <InlineUIContainer>
+                                                                <Image Width="24"
+                                                                    Height="24"
+                                                                    Source="/TwainControl;component/Icons/delete.png" />
+                                                            </InlineUIContainer>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                    <Canvas Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}" Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                        <ToggleButton Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                            Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                            VerticalAlignment="Center"
+                                                            VerticalContentAlignment="Center"
+                                                            Background="{x:Null}"
+                                                            BorderBrush="{x:Null}"
+                                                            IsChecked="{Binding Seçili}"
+                                                            RenderTransformOrigin="0.5,0.5"
+                                                            Style="{StaticResource ToggleButtonAnimationStyle}">
+                                                            <ToggleButton.RenderTransform>
+                                                                <TransformGroup>
+                                                                    <ScaleTransform />
+                                                                    <SkewTransform />
+                                                                    <RotateTransform />
+                                                                    <TranslateTransform />
+                                                                </TransformGroup>
+                                                            </ToggleButton.RenderTransform>
+                                                            <PdfViewer:PdfShadowedImage Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                d:Source="/GpScanner;component/scanner.ico"
+                                                                d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                                <PdfViewer:PdfShadowedImage.Source>
+                                                                    <PriorityBinding>
+                                                                        <Binding IsAsync="True"
+                                                                            Mode="OneWay"
+                                                                            Path="ResimThumb" />
+                                                                        <Binding Converter="{StaticResource ListFilePathToIconConverter}" Path="FilePath" />
+                                                                    </PriorityBinding>
+                                                                </PdfViewer:PdfShadowedImage.Source>
+                                                            </PdfViewer:PdfShadowedImage>
+                                                        </ToggleButton>
+                                                        <TextBlock Canvas.Left="0"
+                                                            Canvas.Bottom="0"
+                                                            FontWeight="Bold"
+                                                            Text="{Binding Index, Mode=OneWay}"
+                                                            Visibility="{Binding DocumentNumberVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}" />
+                                                    </Canvas>
+                                                </StackPanel>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Seçili}" Value="true">
+                                            <Setter Property="Background" Value="MediumSeaGreen" />
+                                            <Setter Property="IsSelected" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                        </ListBox>
+                        <ScrollViewer Grid.Column="2"
+                            Template="{DynamicResource VerticalScrollViewerTemplate}"
+                            VerticalScrollBarVisibility="Auto">
+                            <StackPanel>
+                                <Button local:Policy.PolicyName="ResimSilGeriAl" Command="{Binding ResimSilGeriAl}">
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/undo.png" />
+                                </Button>
+                                <Extensions:ContentToggleButton local:Policy.PolicyName="RemoveFiles"
+                                    ArrowVisibility="Collapsed"
+                                    IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <Border Background="{StaticResource BorderBackground}"
+                                            BorderBrush="{StaticResource GroupBoxBackGround}"
+                                            BorderThickness="1">
+                                            <StackPanel>
+                                                <MenuItem Command="{Binding ListeTemizle}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16"
+                                                            Height="16"
+                                                            Source="/TwainControl;component/Icons/delete.png" />
+                                                    </MenuItem.Icon>
+                                                    <MenuItem.Header>
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Run Text="{local:Loc ALL}" />
+                                                            <Run Text="{local:Loc CLEARLIST}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <MenuItem Command="{Binding SeçiliListeTemizle}">
+                                                    <MenuItem.Icon>
+                                                        <Image Width="16"
+                                                            Height="16"
+                                                            Source="/TwainControl;component/Icons/delete.png" />
+                                                    </MenuItem.Icon>
+                                                    <MenuItem.Header>
+                                                        <TextBlock VerticalAlignment="Center">
+                                                            <Run Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                                            <Run Text="{local:Loc FILE}" />
+                                                            <Run Text="{local:Loc CLEARLIST}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <Separator />
+                                                <MenuItem IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock>
+                                                            <Run Text="{local:Loc FILE}" />
+                                                            <Run Text="{local:Loc DELETE}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <MenuItem FontWeight="Bold"
+                                                    Foreground="Red"
+                                                    Header="{local:Loc REMOVEPROCESSEDIMAGE}"
+                                                    IsCheckable="True"
+                                                    IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
+                                            </StackPanel>
+                                        </Border>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/delete.png" />
+                                </Extensions:ContentToggleButton>
+                                <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
+                                    <Button.ToolTip>
+                                        <TextBlock>
+                                            <Run Text="{local:Loc EMPTYPAGE}" />
+                                            <Run Text="{local:Loc THRESHOLD}" />
+                                            <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat=%{0}}" />
+                                        </TextBlock>
+                                    </Button.ToolTip>
+                                    <Canvas Width="24" Height="24">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="0" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Canvas.Left="4"
+                                            d:Text="0"
+                                            FontSize="9"
+                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                        <Image Canvas.Left="4"
+                                            Canvas.Top="8"
+                                            Width="16"
+                                            Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="32" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Canvas>
+                                </Button>
+                                <Separator />
+                                <Button local:Policy.PolicyName="Tümünüİşaretle"
+                                    BorderBrush="Cyan"
+                                    Command="{Binding Tümünüİşaretle}"
+                                    ToolTip="{local:Loc ALL}">
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/selectall.png" />
+                                </Button>
+                                <Button local:Policy.PolicyName="TümününİşaretiniKaldır"
+                                    Command="{Binding TümününİşaretiniKaldır}"
+                                    ToolTip="{local:Loc NONE}">
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/none.png" />
+                                </Button>
+                                <Button local:Policy.PolicyName="Tersiniİşaretle"
+                                    Command="{Binding Tersiniİşaretle}"
+                                    ToolTip="{local:Loc REVERSE}">
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/inverse.png" />
+                                </Button>
+                                <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/portrait.png" />
+                                </Button>
+                                <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/landscape.png" />
+                                </Button>
+                                <Separator />
+                                <Button local:Policy.PolicyName="CycleSelectedDocuments"
+                                    Command="{Binding CycleSelectedDocuments}"
+                                    CommandParameter="{Binding ElementName=Lb}">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="22" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <Button local:Policy.PolicyName="SaveFileList" Command="{Binding SaveFileList}">
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/save.png" />
+                                </Button>
+                                <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="70" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </Button>
+                                <Extensions:SplitButton local:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding PrintSelectedDocuments}">
+                                    <Canvas Width="24" Height="24">
+                                        <Image Width="24" Height="24">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="16" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock Canvas.Bottom="0"
+                                            d:Text="0"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="Red"
+                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                    </Canvas>
+                                    <Extensions:SplitButton.InternalContent>
+                                        <ListBox ItemStringFormat="{}{0} Dpi"
+                                            ItemsSource="{Binding DpiList, Source={x:Reference ImgViewer}}"
+                                            SelectedItem="{Binding PrintDpi}" />
+                                    </Extensions:SplitButton.InternalContent>
+                                </Extensions:SplitButton>
+                                <Separator />
+                                <Grid>
+                                    <ProgressBar Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        Foreground="Yellow"
+                                        Maximum="1"
+                                        Value="{Binding AllRotateProgressValue}" />
+                                    <Extensions:NumericUpDown VerticalAlignment="Center"
+                                        BorderBrush="Cyan"
+                                        Interval="1"
+                                        IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
+                                        Maximum="1"
+                                        Minimum="-1"
+                                        NumericUpdownTextBoxVisibility="Collapsed"
+                                        Value="{Binding AllImageRotationAngle}" />
+                                </Grid>
+                                <Button local:Policy.PolicyName="InvertSelectedImage"
+                                    BorderBrush="Cyan"
+                                    Command="{Binding InvertSelectedImage}"
+                                    Content="["
+                                    FontFamily="Wingdings"
+                                    FontSize="23" />
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
                 </GroupBox>
                 <UniformGrid Grid.Row="2" Columns="3">
                     <Button HorizontalContentAlignment="Stretch"
