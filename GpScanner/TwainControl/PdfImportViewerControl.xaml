@@ -345,7 +345,7 @@
                                                         <Run Text="{Binding PageNumber, Mode=OneTime}" />
                                                         <LineBreak />
                                                         <Hyperlink local:Policy.PolicyName="CopyPdfBitmapFile"
-                                                            Command="{Binding Tag. CopyPdfBitmapFile, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                            Command="{Binding Tag.CopyPdfBitmapFile, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                                             CommandParameter="{Binding PageNumber, Mode=OneWay}"
                                                             TextDecorations="None">
                                                             <InlineUIContainer BaselineAlignment="Center">

@@ -233,6 +233,9 @@
                                     </ComboBox.ItemContainerStyle>
                                 </ComboBox>
                                 <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
                                     <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="MinimizeTray">
                                         <Grid>
                                             <Image Width="32" Height="32">
@@ -268,6 +271,9 @@
                                             </Border>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
                                     <ToggleButton IsChecked="{Binding Path=DocumentNumberVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}" ToolTip="{twainctrl:Loc PAGENUMBER}">
                                         <Canvas Width="16" Height="16">
                                             <TextBlock Canvas.Top="0"
@@ -283,6 +289,9 @@
                                                 Text="3" />
                                         </Canvas>
                                     </ToggleButton>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="PlayNotificationAudio"
@@ -388,6 +397,9 @@
                                     </ComboBox.ItemTemplate>
                                 </ComboBox>
                                 <StackPanel Orientation="Horizontal">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="NotifyCalendar"
@@ -411,6 +423,9 @@
                                                 Value="{Binding NotifyCalendarDateValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                         </Canvas>
                                     </CheckBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
                                     <Extensions:NumericUpDown FontWeight="Bold"
                                         Interval="1"
                                         IsEnabled="{Binding ShowMagnifier, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
@@ -609,6 +624,48 @@
                                             </StackPanel>
                                         </CheckBox.Content>
                                     </CheckBox>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    </StackPanel>
+                                    <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Canvas.Left="2"
+                                                Canvas.Top="2"
+                                                Width="32"
+                                                Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
+                                        <ToggleButton.ToolTip>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="77" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <TextBlock VerticalAlignment="Center"
+                                                    FontWeight="Bold"
+                                                    Foreground="Red"
+                                                    Text="{twainctrl:Loc THUMBMULTIPLEOCR}" />
+                                            </StackPanel>
+                                        </ToggleButton.ToolTip>
+                                    </ToggleButton>
                                 </StackPanel>
                             </ScrollViewer>
                         </StackPanel>

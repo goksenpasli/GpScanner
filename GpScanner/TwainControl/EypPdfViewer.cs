@@ -9,7 +9,6 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
@@ -61,7 +60,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             });
 
         RotateSelectedPage = new RelayCommand<object>(
-            async parameter =>
+            parameter =>
             {
                 if (parameter is int sayfa)
                 {
@@ -70,7 +69,6 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     if (inputDocument != null)
                     {
                         TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
-                        await Task.Delay(1000);
                         PdfFilePath = null;
                         PdfFilePath = path;
                     }
@@ -128,10 +126,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         document.Save(PdfFilePath);
                         image = null;
                         bitmapImage = null;
-                        await Task.Delay(1000);
                         PdfFilePath = null;
                         PdfFilePath = oldpdfpath;
-                        Sayfa = currentpage;
                     }
                 }
             },

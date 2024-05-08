@@ -62,6 +62,7 @@ using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
 using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 using UserControl = System.Windows.Controls.UserControl;
+using Viewer = PdfViewer.PdfViewer;
 
 namespace TwainControl;
 
@@ -987,7 +988,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SplitPdf = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     SplitPdfPageCount(pdfviewer.PdfFilePath, savefolder, PdfSplitCount);
@@ -1090,7 +1091,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (openFileDialog.ShowDialog() == true)
                 {
                     string[] files = openFileDialog.FileNames;
-                    foreach (string item in files?.Where(z => PdfViewer.PdfViewer.IsValidPdfFile(z)))
+                    foreach (string item in files?.Where(z => Viewer.IsValidPdfFile(z)))
                     {
                         Scanner?.MergePdfFiles?.Add(item);
                     }
@@ -1118,9 +1119,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         PdfWaterMark = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
-                    int currentpage = pdfViewer.Sayfa;
                     string oldpdfpath = pdfViewer.PdfFilePath;
                     using (PdfDocument pdfdocument = PdfReader.Open(oldpdfpath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider))
                     {
@@ -1142,19 +1142,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             document.Save(oldpdfpath);
                         }
                     }
-                    await Task.Delay(1000);
-                    pdfViewer.PdfFilePath = null;
-                    pdfViewer.PdfFilePath = oldpdfpath;
-                    pdfViewer.Sayfa = currentpage;
+                    pdfViewer.Source = await Viewer.ConvertToImgAsync(pdfViewer.PdfFilePath, pdfViewer.Sayfa, pdfViewer.Dpi);
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath) && !string.IsNullOrWhiteSpace(PdfWaterMarkText));
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath) && !string.IsNullOrWhiteSpace(PdfWaterMarkText));
 
         MergeSelectedImagesToPdfFile = new RelayCommand<object>(
             async parameter =>
             {
                 List<ScannedImage> seçiliresimler = GetSelectedImages();
-                if (parameter is PdfViewer.PdfViewer pdfviewer &&
+                if (parameter is Viewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
                 seçiliresimler.Any() &&
                 MessageBox.Show($"{seçiliresimler.Count} {Translation.GetResStringValue("DOCUMENT")}\n{Translation.GetResStringValue("SAVESELECTED")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
@@ -1177,12 +1174,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
+            parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         PasteFileToPdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     System.Windows.Forms.IDataObject clipboardData = Clipboard.GetDataObject();
                     if (clipboardData is null)
@@ -1258,7 +1255,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Clipboard.Clear();
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
+            parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         ReadPdfTag = new RelayCommand<object>(
             parameter =>
@@ -1302,7 +1299,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         AddAllFileToControlPanel = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt))
                     {
@@ -1329,8 +1326,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         return;
                     }
 
-                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Settings.Default.ImgLoadResolution);
+                    byte[] filedata = await Viewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
+                    using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Settings.Default.ImgLoadResolution);
                     BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
@@ -1338,15 +1335,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     filedata = null;
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
+            parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         RotateSelectedPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
+                if (parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
                     string path = pdfviewer.PdfFilePath;
-                    int currentpage = pdfviewer.Sayfa;
                     using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
                     if (pdfdocument == null)
                     {
@@ -1369,18 +1365,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
 
                     SavePageRotated(path, pdfdocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
-                    await Task.Delay(1000);
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = path;
-                    pdfviewer.Sayfa = currentpage;
+                    pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
+            parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         ReversePdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer &&
+                if (parameter is Viewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
                 MessageBox.Show($"{Translation.GetResStringValue("SAVEPDF")} {Translation.GetResStringValue("REVERSE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
@@ -1390,12 +1383,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfviewer.PdfFilePath = oldpdfpath;
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && pdfviewer.ToplamSayfa > 1);
+            parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath) && pdfviewer.ToplamSayfa > 1);
 
         AddPdfAttachmentFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer &&
+                if (parameter is Viewer pdfviewer &&
                 File.Exists(pdfviewer.PdfFilePath) &&
                 MessageBox.Show($"{Translation.GetResStringValue("ADDDOC")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
@@ -1409,7 +1402,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
+            parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         LoadArchiveFile = new RelayCommand<object>(
             parameter =>
@@ -1526,7 +1519,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         LoadPdfExtractFile = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     PdfPages = [];
                     for (int i = 1; i <= pdfViewer.ToplamSayfa; i++)
@@ -1535,26 +1528,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
         CopyPdfBitmapFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
                     if (Keyboard.Modifiers == ModifierKeys.Alt)
                     {
                         Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
                         return;
                     }
-                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
-                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
+                    byte[] filedata = await Viewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
+                    using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
                     filedata = null;
                     using Image image = Image.FromStream(ms);
                     Clipboard.SetImage(image);
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
         CopyCurrentImageToClipBoard = new RelayCommand<object>(
             parameter =>
@@ -1585,10 +1578,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ApplyPdfMedianFilter = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
+                if (parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
                 {
-                    byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
-                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
+                    byte[] filedata = await Viewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
+                    using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
                     BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     filedata = null;
                     using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue).GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution);
@@ -1600,12 +1593,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                 }
             },
-            parameter => PdfMedianValue > 0 && parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+            parameter => PdfMedianValue > 0 && parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
         ExtractMultiplePdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && PdfViewer.PdfViewer.IsValidPdfFile(pdfViewer.PdfFilePath))
+                if (parameter is Viewer pdfViewer && Viewer.IsValidPdfFile(pdfViewer.PdfFilePath))
                 {
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     List<string> files = [];
@@ -1634,7 +1627,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         LoadArrangedPdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer && PdfViewer.PdfViewer.IsValidPdfFile(pdfViewer.PdfFilePath))
+                if (parameter is Viewer pdfViewer && Viewer.IsValidPdfFile(pdfViewer.PdfFilePath))
                 {
                     string oldpdfpath = pdfViewer.PdfFilePath;
                     string savefolder = Path.GetTempPath();
@@ -1665,8 +1658,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         RemoveArrangedPdfFile = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfViewer &&
-                PdfViewer.PdfViewer.IsValidPdfFile(pdfViewer.PdfFilePath) &&
+                if (parameter is Viewer pdfViewer &&
+                Viewer.IsValidPdfFile(pdfViewer.PdfFilePath) &&
                 MessageBox.Show($"{Translation.GetResStringValue("REMOVESELECTED")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     string oldpdfpath = pdfViewer.PdfFilePath;
@@ -1687,10 +1680,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         AddPageNumber = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer)
+                if (parameter is Viewer pdfviewer)
                 {
                     string oldpdfpath = pdfviewer.PdfFilePath;
-                    int currentpage = pdfviewer.Sayfa;
                     using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
                     if (pdfdocument == null)
                     {
@@ -1728,20 +1720,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         PdfGeneration.GetPdfTextLayout(page, textwidth)[1],
                         Scanner.PdfPageNumberSize);
                     pdfdocument.Save(pdfviewer.PdfFilePath);
-                    await Task.Delay(1000);
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = oldpdfpath;
-                    pdfviewer.Sayfa = currentpage;
+                    pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
         FlipPdfPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer)
+                if (parameter is Viewer pdfviewer)
                 {
-                    string oldpdfpath = pdfviewer.PdfFilePath;
                     int currentpage = pdfviewer.Sayfa;
                     using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
                     if (pdfdocument != null)
@@ -1750,21 +1738,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
                         XPoint center = new(page.Width / 2, page.Height / 2);
                         gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
-                        BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage, pdfviewer.Dpi);
+                        BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage, pdfviewer.Dpi);
                         XImage image = XImage.FromBitmapSource(bitmapImage);
                         gfx.DrawImage(image, 0, 0);
                         pdfdocument.Save(pdfviewer.PdfFilePath);
+                        pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
                         image = null;
                         bitmapImage = null;
                     }
-
-                    await Task.Delay(1000);
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = oldpdfpath;
-                    pdfviewer.Sayfa = currentpage;
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
         ClearPdfHistory = new RelayCommand<object>(
             parameter =>
@@ -1792,7 +1776,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         CompressPdfFile = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is PdfViewer.PdfViewer pdfviewer &&
+                if (parameter is Viewer pdfviewer &&
                 MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("COMPRESS")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     string oldpath = pdfviewer.PdfFilePath;
@@ -1808,7 +1792,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     _ = MessageBox.Show($"{Translation.GetResStringValue("SUCCESS")}", AppName, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             },
-            parameter => parameter is PdfViewer.PdfViewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
+            parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
         ResetPreviewSize = new RelayCommand<object>(parameter => Settings.Default.PreviewWidth = 155, parameter => true);
 
@@ -2095,11 +2079,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         List<string> eypfilelist = EypFileExtract(filepath);
                         filepath = eypfilelist?.FirstOrDefault(z => Path.GetExtension(z.ToLowerInvariant()) == ".pdf");
                     }
-                    if (PdfViewer.PdfViewer.IsValidPdfFile(filepath))
+                    if (Viewer.IsValidPdfFile(filepath))
                     {
                         using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(filepath);
                         printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = false, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1, PrintQueue = localPrintServer.GetPrintQueue(SelectedPrinter) };
-                        PdfViewer.PdfViewer.GenerateDocument(printdialog, pdfDocument, (int)printdialog.MinPage, (int)printdialog.MaxPage, PrintDpi);
+                        Viewer.GenerateDocument(printdialog, pdfDocument, (int)printdialog.MinPage, (int)printdialog.MaxPage, PrintDpi);
                     }
                 }
             },
@@ -3158,7 +3142,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public static void NotifyPdfChange(PdfViewer.PdfViewer pdfviewer, string temporarypdf, string pdfFilePath)
+    public static void NotifyPdfChange(Viewer pdfviewer, string temporarypdf, string pdfFilePath)
     {
         File.Delete(temporarypdf);
         pdfviewer.PdfFilePath = null;
@@ -3540,17 +3524,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private async Task AddPdfFiles(string filename)
     {
-        if (PdfViewer.PdfViewer.IsValidPdfFile(filename))
+        if (Viewer.IsValidPdfFile(filename))
         {
-            byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(filename);
+            byte[] filedata = await Viewer.ReadAllFileAsync(filename);
             if (filedata == null)
             {
                 return;
             }
-            double totalpagecount = PdfViewer.PdfViewer.PdfPageCount(filename);
+            double totalpagecount = Viewer.PdfPageCount(filename);
             for (int i = 1; i <= totalpagecount; i++)
             {
-                using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
+                using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, i, Settings.Default.ImgLoadResolution);
                 BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                 bitmapFrame.Freeze();
                 await Dispatcher.InvokeAsync(
