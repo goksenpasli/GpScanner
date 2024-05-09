@@ -3235,6 +3235,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
+    public static PdfDocument RenderPdfPage(Viewer pdfviewer, BitmapImage image) => PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider)?.GenerateFromBitmapSourcePdf(pdfviewer.Sayfa - 1, image);
+
     public static void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
     {
         foreach (PdfPage page in inputDocument.Pages)
@@ -3538,8 +3540,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         StringBuilder printerNameBuffer = new(bufferSize);
         return GetDefaultPrinter(printerNameBuffer, ref bufferSize) ? (printerNameBuffer?.ToString()) : null;
     }
-
-    private static PdfDocument RenderPdfPage(Viewer pdfviewer, BitmapImage image) => PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider)?.GenerateFromBitmapSourcePdf(pdfviewer.Sayfa - 1, image);
 
     private async Task AddAttachmentFileAsync(string[] files, string loadfilename, string savefilename)
     {

@@ -383,6 +383,14 @@
                                                                     Height="16"
                                                                     Source="/TwainControl;component/Icons/rotate.png" />
                                                             </InlineUIContainer>
+                                                        </Hyperlink><Hyperlink local:Policy.PolicyName="InvertSelectedPage"
+                                                            BaselineAlignment="Center"
+                                                            Command="{Binding Tag.InvertSelectedPage, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                            CommandParameter="{Binding PageNumber, Mode=OneWay}"
+                                                            TextDecorations="None">
+                                                            <Run FontFamily="Wingdings"
+                                                                FontSize="18"
+                                                                Text="[" />
                                                         </Hyperlink>
                                                     </TextBlock>
                                                     <Pdfviewer:ShadowedImage Width="96"

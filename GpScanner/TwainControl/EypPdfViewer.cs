@@ -92,6 +92,24 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             },
             parameter => true);
 
+        InvertSelectedPage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is int currentpage && MessageBox.Show($"{Translation.GetResStringValue("INVERTCOLOR")}", "GPSCANNER", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    string oldpdfpath = PdfFilePath;
+                    BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage, Dpi);
+                    BitmapImage image = bitmapImage.InvertBitmap().ToBitmapImage();
+                    using PdfDocument pdfdocument = TwainCtrl.RenderPdfPage(this, image);
+                    pdfdocument.Save(PdfFilePath);
+                    image = null;
+                    bitmapImage = null;
+                    PdfFilePath = null;
+                    PdfFilePath = oldpdfpath;
+                }
+            },
+            parameter => true);
+
         CopyPdfBitmapFile = new RelayCommand<object>(
             async parameter =>
             {
@@ -169,6 +187,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     }
 
     public RelayCommand<object> FlipPdfPage { get; }
+
+    public RelayCommand<object> InvertSelectedPage { get; }
 
     public RelayCommand<object> RotateSelectedPage { get; }
 
