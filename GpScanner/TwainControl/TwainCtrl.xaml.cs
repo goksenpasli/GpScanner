@@ -1481,6 +1481,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
+        ShufflePdfPages = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show($"{Translation.GetResStringValue("RANDOM")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    Random random = new();
+                    PdfPages = Shuffle(PdfPages, random);
+                }
+            },
+            parameter => PdfPages?.Count > 1);
+
         FirstLastSortSequenceData = new RelayCommand<object>(
             parameter =>
             {
@@ -2951,6 +2962,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand ShowDateFolderHelp { get; }
 
     public RelayCommand<object> ShuffleData { get; }
+
+    public RelayCommand<object> ShufflePdfPages { get; }
 
     public RelayCommand<object> SplitImagesByIndex { get; }
 

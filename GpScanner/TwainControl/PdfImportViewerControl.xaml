@@ -410,7 +410,9 @@
                                     </ItemsPanelTemplate>
                                 </ListBox.ItemsPanel>
                             </ListBox>
-                            <UniformGrid Grid.Row="1" Columns="5">
+                            <UniformGrid Grid.Row="1"
+                                Columns="3"
+                                Rows="2">
                                 <Button Command="{Binding PdfImportViewerTümünüİşaretle}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="24"
@@ -425,6 +427,23 @@
                                             Height="24"
                                             Source="/TwainControl;component/Icons/inverse.png" />
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc REVERSE}" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding ShufflePdfPages}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Canvas Width="16"
+                                            Height="16"
+                                            Background="Transparent">
+                                            <Canvas.Resources>
+                                                <Style BasedOn="{StaticResource RandomDiceStyle}" TargetType="Ellipse" />
+                                            </Canvas.Resources>
+                                            <Ellipse Canvas.Left="6" Canvas.Top="6" />
+                                            <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
+                                            <Ellipse Canvas.Left="10.5" Canvas.Top="10.5" />
+                                            <Ellipse Canvas.Left="10.5" Canvas.Top="2" />
+                                            <Ellipse Canvas.Left="1.5" Canvas.Top="10.5" />
+                                        </Canvas>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc RANDOM}" />
                                     </StackPanel>
                                 </Button>
                                 <Button HorizontalContentAlignment="Stretch"

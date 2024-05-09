@@ -20,6 +20,11 @@
     <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
     <Extensions:FilePathToIconConverter x:Key="FilePathToIconLargeConverter" IconSize="jumbo" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <Style x:Key="RandomDiceStyle" TargetType="Ellipse">
+        <Setter Property="Fill" Value="Orange" />
+        <Setter Property="Height" Value="4" />
+        <Setter Property="Width" Value="4" />
+    </Style>
     <Style x:Key="TextBlockPdfLayout" TargetType="TextBlock">
         <Style.Triggers>
             <DataTrigger Binding="{Binding}" Value="Left">

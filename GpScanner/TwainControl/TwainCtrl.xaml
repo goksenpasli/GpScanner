@@ -1312,11 +1312,7 @@
                                                 Height="16"
                                                 Background="Transparent">
                                                 <Canvas.Resources>
-                                                    <Style TargetType="Ellipse">
-                                                        <Setter Property="Fill" Value="Orange" />
-                                                        <Setter Property="Height" Value="4" />
-                                                        <Setter Property="Width" Value="4" />
-                                                    </Style>
+                                                    <Style BasedOn="{StaticResource RandomDiceStyle}" TargetType="Ellipse" />
                                                 </Canvas.Resources>
                                                 <Ellipse Canvas.Left="6" Canvas.Top="6" />
                                                 <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
