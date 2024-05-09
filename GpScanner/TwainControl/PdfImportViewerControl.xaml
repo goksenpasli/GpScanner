@@ -803,6 +803,22 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+                <TextBlock FontFamily="Wingdings"
+                    FontSize="16"
+                    Text="[" />
+                <Extensions:ContentToggleButton.OverContent>
+                    <StackPanel>
+                        <Button Command="{Binding BlackAndWhitePdfPage}"
+                            CommandParameter="{Binding Source={x:Reference PdfViewer}}"
+                            Content="{local:Loc BW}" />
+                        <Button Command="{Binding InvertPdfPage}"
+                            CommandParameter="{Binding Source={x:Reference PdfViewer}}"
+                            Content="{local:Loc INVERTCOLOR}" />
+                    </StackPanel>
+                </Extensions:ContentToggleButton.OverContent>
+            </Extensions:ContentToggleButton>
+
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>

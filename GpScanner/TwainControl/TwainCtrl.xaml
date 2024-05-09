@@ -1255,7 +1255,7 @@
                         <ScrollViewer Template="{DynamicResource VerticalScrollViewerTemplate}" VerticalScrollBarVisibility="Auto">
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="238.4" />
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition MinHeight="100" />
                                     <RowDefinition Height="19.2" />
                                 </Grid.RowDefinitions>

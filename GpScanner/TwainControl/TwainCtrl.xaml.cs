@@ -1761,6 +1761,38 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
+        BlackAndWhitePdfPage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is Viewer pdfviewer && MessageBox.Show($"{Translation.GetResStringValue("BW")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
+                    BitmapImage image = bitmapImage.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
+                    using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image);
+                    pdfdocument.Save(pdfviewer.PdfFilePath);
+                    pdfviewer.Source = image;
+                    image = null;
+                    bitmapImage = null;
+                }
+            },
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+
+        InvertPdfPage = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (parameter is Viewer pdfviewer && MessageBox.Show($"{Translation.GetResStringValue("INVERTCOLOR")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
+                    BitmapImage image = bitmapImage.InvertBitmap().ToBitmapImage();
+                    using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image);
+                    pdfdocument.Save(pdfviewer.PdfFilePath);
+                    pdfviewer.Source = image;
+                    image = null;
+                    bitmapImage = null;
+                }
+            },
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+
         ClearPdfHistory = new RelayCommand<object>(
             parameter =>
             {
@@ -2163,6 +2195,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> AutoDeskewImage { get; }
 
+    public RelayCommand<object> BlackAndWhitePdfPage { get; }
+
     public byte[] CameraQRCodeData
     {
         get => cameraQRCodeData;
@@ -2456,6 +2490,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand InsertFileNamePlaceHolder { get; }
 
     public RelayCommand<object> InvertImage { get; }
+
+    public RelayCommand<object> InvertPdfPage { get; }
 
     public RelayCommand<object> InvertSelectedImage { get; }
 
@@ -3502,6 +3538,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         StringBuilder printerNameBuffer = new(bufferSize);
         return GetDefaultPrinter(printerNameBuffer, ref bufferSize) ? (printerNameBuffer?.ToString()) : null;
     }
+
+    private static PdfDocument RenderPdfPage(Viewer pdfviewer, BitmapImage image) => PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider)?.GenerateFromBitmapSourcePdf(pdfviewer.Sayfa - 1, image);
 
     private async Task AddAttachmentFileAsync(string[] files, string loadfilename, string savefilename)
     {

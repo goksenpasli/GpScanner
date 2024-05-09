@@ -118,6 +118,14 @@ public static class PdfGeneration
         return null;
     }
 
+    public static PdfDocument GenerateFromBitmapSourcePdf(this PdfDocument pdfdocument, int sayfa, BitmapSource bitmapSource)
+    {
+        PdfPage page = pdfdocument.Pages[sayfa];
+        using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+        gfx.DrawImage(XImage.FromBitmapSource(bitmapSource), 0, 0, page.Width, page.Height);
+        return pdfdocument;
+    }
+
     public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
     {
         if (imagefiles?.Count == 0)
