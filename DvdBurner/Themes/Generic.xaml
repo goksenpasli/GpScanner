@@ -164,7 +164,7 @@
                                             </Hyperlink>
                                             <Image Width="16"
                                                 Height="16"
-                                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay}" />
                                             <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay, Converter={StaticResource FilePathToFileNameConverter}}" />
                                         </TextBlock>
                                     </DataTemplate>

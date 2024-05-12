@@ -1158,10 +1158,10 @@
                             CanUserDeleteRows="True"
                             IsReadOnly="True"
                             ItemsSource="{Binding SqlQueryData}"
-                            VirtualizingPanel.CacheLengthUnit="Pixel"
+                            VirtualizingPanel.CacheLengthUnit="Item"
                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                            VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Standard">
+                            VirtualizingPanel.ScrollUnit="Item"
+                            VirtualizingPanel.VirtualizationMode="Recycling">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>
@@ -1174,7 +1174,7 @@
                                                     <InlineUIContainer>
                                                         <Image Width="16"
                                                             Height="16"
-                                                            Source="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource FilePathToIconConverter}}">
+                                                            Source="{Binding Mode=OneWay, IsAsync=True, Path=FileName, Converter={StaticResource FilePathToIconConverter}}">
                                                             <Image.ToolTip>
                                                                 <ToolTip>
                                                                     <UniformGrid Columns="2">
@@ -1234,7 +1234,7 @@
                                                 PasteButtonVisibility="Collapsed"
                                                 PrintButtonVisibility="Visible"
                                                 ResetButtonVisibility="Collapsed"
-                                                Text="{Binding FileContent, Mode=OneWay}"
+                                                Text="{Binding FileContent, IsAsync=True, Mode=OneWay}"
                                                 TextWrapping="Wrap" />
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

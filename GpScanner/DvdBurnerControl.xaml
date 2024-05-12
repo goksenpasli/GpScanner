@@ -159,7 +159,7 @@
                                     </Hyperlink><InlineUIContainer>
                                         <Image Width="16"
                                             Height="16"
-                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                            Source="{Binding IsAsync=True, Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
                                     </InlineUIContainer><Run d:Text="FileName"
                                         BaselineAlignment="Center"
                                         Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" /></TextBlock>

@@ -281,7 +281,7 @@
                             IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                             <Image Width="16"
                                 Height="16"
-                                Source="{Binding Source='.docx', Converter={StaticResource FilePathToIconConverter}}" />
+                                Source="{Binding Source='.docx', IsAsync=True, Converter={StaticResource FilePathToIconConverter}}" />
                         </Button>
                         <Button BorderBrush="Cyan"
                             Command="{Binding MergeSelectedImagesToPdfFile}"

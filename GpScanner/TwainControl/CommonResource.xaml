@@ -127,7 +127,7 @@
                                                 <CheckBox IsChecked="{Binding IsChecked}">
                                                     <Image Width="16"
                                                         Height="16"
-                                                        Source="{Binding DosyaAdı, Converter={StaticResource FilePathToIconConverter}}" />
+                                                        Source="{Binding DosyaAdı, IsAsync=True, Converter={StaticResource FilePathToIconConverter}}" />
                                                 </CheckBox>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
@@ -166,7 +166,7 @@
                                                 <ProgressBar Width="32"
                                                     Maximum="1"
                                                     Style="{Binding Mode=OneWay, Source={StaticResource ProgressBarStyle}}"
-                                                    Value="{Binding Oran}" />
+                                                    Value="{Binding Oran, Mode=OneWay}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>

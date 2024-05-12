@@ -1431,7 +1431,9 @@
                                                                 <Binding IsAsync="True"
                                                                     Mode="OneWay"
                                                                     Path="ResimThumb" />
-                                                                <Binding Converter="{StaticResource FilePathToIconConverter}" Path="FilePath" />
+                                                                <Binding Converter="{StaticResource FilePathToIconConverter}"
+                                                                    IsAsync="True"
+                                                                    Path="FilePath" />
                                                             </PriorityBinding>
                                                         </PdfViewer:PdfShadowedImage.Source>
                                                     </PdfViewer:PdfShadowedImage>

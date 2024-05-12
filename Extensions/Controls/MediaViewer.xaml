@@ -526,7 +526,7 @@
                                                     <StackPanel Orientation="Horizontal">
                                                         <Image Width="16"
                                                             Height="16"
-                                                            Source="{Binding Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                                                            Source="{Binding Mode=OneWay, IsAsync=True, Converter={StaticResource FilePathToIconConverter}}" />
                                                         <TextBlock Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" />
                                                     </StackPanel>
                                                 </DataTemplate>
