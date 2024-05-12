@@ -131,7 +131,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
-        ResetTesseractFilter = new RelayCommand<object>(parameter => TesseractView.cvs.View.Filter = null, parameter => TesseractView.cvs is not null);
+        ResetTesseractFilter = new RelayCommand<object>(
+            parameter =>
+            {
+                TesseractView.cvs.View.Filter = null;
+                SeçiliDil = string.Empty;
+            },
+            parameter => TesseractView.cvs is not null);
 
         if (PdfGeneration.Scanner is not null)
         {

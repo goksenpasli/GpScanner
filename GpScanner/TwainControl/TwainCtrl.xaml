@@ -384,7 +384,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    <RowDefinition Height="35.2" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Expander Grid.Row="0"
                     Background="{StaticResource BorderBackground}"

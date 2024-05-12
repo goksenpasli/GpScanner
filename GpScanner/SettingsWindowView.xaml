@@ -740,10 +740,10 @@
                                 </Button>
                                 <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                     CopyButtonVisibility="Collapsed"
-                                    Description="{twainctrl:Loc STARTUPMSG}"
                                     OpenButtonVisibility="Collapsed"
                                     PasteButtonVisibility="Collapsed"
-                                    Text="{Binding StartupMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                    Text="{Binding StartupMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                    Watermark="{twainctrl:Loc STARTUPMSG}" />
                             </UniformGrid>
                             <ListBox Grid.Column="1"
                                 Background="{x:Null}"
@@ -1013,15 +1013,13 @@
                         Columns="3"
                         IsEnabled="{Binding DetectBarCode}">
                         <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                            d:Text="PatchFileName"
-                            Description="{twainctrl:Loc FILENAME}"
                             OpenButtonVisibility="Collapsed"
-                            Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding PatchFileName, UpdateSourceTrigger=PropertyChanged}"
+                            Watermark="{twainctrl:Loc FILENAME}" />
                         <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                            d:Text="PatchTag"
-                            Description="{twainctrl:Loc TAG}"
                             OpenButtonVisibility="Collapsed"
-                            Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding PatchTag, UpdateSourceTrigger=PropertyChanged}"
+                            Watermark="{twainctrl:Loc TAG}" />
                         <Button twainctrl:Policy.PolicyName="SavePatchProfile" Command="{Binding SavePatchProfile}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="16"

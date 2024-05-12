@@ -621,7 +621,7 @@
                     </Image>
                 </Extensions:ContentToggleButton.Content>
                 <Extensions:ContentToggleButton.OverContent>
-                    <GroupBox MaxWidth="250" Header="{local:Loc WATERMARK}">
+                    <GroupBox MaxWidth="250">
                         <StackPanel>
                             <Extensions:ButtonedTextBox VerticalAlignment="Center"
                                 VerticalContentAlignment="Center"
@@ -633,7 +633,8 @@
                                 RemainingLengthVisibility="Collapsed"
                                 ResetButtonVisibility="Collapsed"
                                 Text="{Binding PdfWaterMarkText, UpdateSourceTrigger=PropertyChanged}"
-                                TitleCaseMenuVisibility="Visible" />
+                                TitleCaseMenuVisibility="Visible"
+                                Watermark="{local:Loc WATERMARK}" />
                             <UniformGrid Columns="2">
                                 <ComboBox Height="22.4"
                                     VerticalContentAlignment="Center"
@@ -769,6 +770,26 @@
                                         FontFamily="Wingdings 3"
                                         IsChecked="{Binding Scanner.PdfBatchNumberIsFirst}" />
                                 </Extensions:ButtonedTextBox.Description>
+                                <Extensions:ButtonedTextBox.Style>
+                                    <Style BasedOn="{StaticResource {x:Type Extensions:ButtonedTextBox}}" TargetType="Extensions:ButtonedTextBox">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Scanner.PdfBatchNumberIsFirst}" Value="true" />
+                                                    <Condition Binding="{Binding Scanner.PdfBatchNumberText}" Value="" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Watermark" Value="{local:Loc ADDLAST}" />
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Scanner.PdfBatchNumberIsFirst}" Value="false" />
+                                                    <Condition Binding="{Binding Scanner.PdfBatchNumberText}" Value="" />
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Watermark" Value="{local:Loc ADDFIRST}" />
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Extensions:ButtonedTextBox.Style>
                             </Extensions:ButtonedTextBox>
                             <UniformGrid Columns="2">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />

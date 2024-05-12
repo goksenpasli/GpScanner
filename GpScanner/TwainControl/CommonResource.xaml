@@ -140,6 +140,8 @@
                                             <TextBlock VerticalAlignment="Center" Text="DOSYA&#xA;ADI" />
                                             <Extensions:ButtonedTextBox Width="60"
                                                 VerticalContentAlignment="Center"
+                                                Background="{x:Null}"
+                                                BorderBrush="{x:Null}"
                                                 CopyButtonVisibility="Collapsed"
                                                 OpenButtonVisibility="Collapsed"
                                                 PasteButtonVisibility="Collapsed"

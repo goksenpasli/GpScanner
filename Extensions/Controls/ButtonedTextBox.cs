@@ -19,6 +19,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(ButtonedTextBox));
     public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register("Watermark", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
     private Visibility copyButtonVisibility = Visibility.Visible;
     private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
     private Visibility openButtonVisibility = Visibility.Visible;
@@ -205,6 +206,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     public ICommand UpperCase { get; } = new RoutedCommand();
 
     public ICommand UpperLowerCase { get; } = new RoutedCommand();
+
+    public string Watermark { get => (string)GetValue(WatermarkProperty); set => SetValue(WatermarkProperty, value); }
 
     protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 

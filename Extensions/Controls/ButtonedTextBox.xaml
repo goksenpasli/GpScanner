@@ -36,10 +36,18 @@
                         <Border Name="border"
                             Grid.Column="1"
                             Visibility="{Binding TextBoxVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                            <ScrollViewer Name="PART_ContentHost"
-                                Focusable="False"
-                                HorizontalScrollBarVisibility="Hidden"
-                                VerticalScrollBarVisibility="Hidden" />
+                            <Grid>
+                                <TextBlock x:Name="PART_Watermark"
+                                    Margin="4,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Foreground="Gray"
+                                    Text="{Binding Watermark, RelativeSource={RelativeSource TemplatedParent}}"
+                                    Visibility="Collapsed" />
+                                <ScrollViewer Name="PART_ContentHost"
+                                    Focusable="False"
+                                    HorizontalScrollBarVisibility="Hidden"
+                                    VerticalScrollBarVisibility="Hidden" />
+                            </Grid>
                         </Border>
                         <Border Name="remaintext"
                             Grid.Column="2"
@@ -192,6 +200,13 @@
                             <Setter TargetName="title" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="printborder" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False" />
+                                <Condition Property="TextBlock.Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible" />
+                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
