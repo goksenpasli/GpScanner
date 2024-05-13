@@ -58,7 +58,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static DispatcherTimer timer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
-    private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
+    private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
     private int allPdfPage = 1;
     private string aramaMetni;
     private ObservableCollection<string> barcodeList = [];
@@ -307,14 +307,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 try
                 {
-                    if (parameter is string unIndexedFile)
+                    string unIndexedFile = parameter as string;
+                    OcrIsBusy = true;
+                    BitmapImage bitmapImage = null;
+                    ObservableCollection<OcrData> ocrdata = null;
+                    string ocrtext = string.Empty;
+                    switch (Path.GetExtension(unIndexedFile.ToLowerInvariant()))
                     {
-                        OcrIsBusy = true;
-                        BitmapImage bitmapImage = null;
-                        ObservableCollection<OcrData> ocrdata = null;
-                        string ocrtext = string.Empty;
-                        if (Path.GetExtension(unIndexedFile.ToLowerInvariant()) == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile))
-                        {
+                        case ".pdf" when PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile):
                             double pagecount = PdfViewer.PdfViewer.PdfPageCount(unIndexedFile);
                             if (OcrAllPdfPages)
                             {
@@ -332,24 +332,32 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                 ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
                                 ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
                             }
-                        }
-                        else
-                        {
+
+                            break;
+
+                        case ".docx":
+                            using (DocX document = DocX.Load(unIndexedFile))
+                            {
+                                ocrtext = document.Text;
+                            }
+                            break;
+
+                        default:
                             ocrdata = await unIndexedFile.OcrAsync(Settings.Default.DefaultTtsLang);
                             ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
-                        }
-
-                        using (AppDbContext context = new())
-                        {
-                            _ = context.Data.Add(new Data { FileName = unIndexedFile, FileContent = ocrtext });
-                            _ = context.SaveChanges();
-                        }
-
-                        ocrdata = null;
-                        ocrtext = null;
-                        OcrIsBusy = false;
-                        _ = UnIndexedFiles?.Remove(unIndexedFile);
+                            break;
                     }
+
+                    using (AppDbContext context = new())
+                    {
+                        _ = context.Data.Add(new Data { FileName = unIndexedFile, FileContent = ocrtext });
+                        _ = context.SaveChanges();
+                    }
+
+                    ocrdata = null;
+                    ocrtext = null;
+                    OcrIsBusy = false;
+                    _ = UnIndexedFiles?.Remove(unIndexedFile);
                 }
                 catch (Exception ex)
                 {
@@ -374,30 +382,40 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         BitmapImage bitmapImage = null;
                         ObservableCollection<OcrData> ocrdata;
                         string ocrtext = string.Empty;
-                        if (Path.GetExtension(unIndexedFile.ToLowerInvariant()) == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile))
+                        switch (Path.GetExtension(unIndexedFile.ToLowerInvariant()))
                         {
-                            double pagecount = PdfViewer.PdfViewer.PdfPageCount(unIndexedFile);
-                            if (OcrAllPdfPages)
-                            {
-                                for (int j = 1; j <= pagecount; j++)
+                            case ".pdf" when PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile):
+                                double pagecount = PdfViewer.PdfViewer.PdfPageCount(unIndexedFile);
+                                if (OcrAllPdfPages)
                                 {
-                                    bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, j, Twainsettings.Settings.Default.ImgLoadResolution);
-                                    ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
-                                    ocrtext += string.Join(" ", ocrdata?.Select(z => z.Text));
-                                    OcrAllPdfPagesProgress = j / pagecount;
+                                    for (int j = 1; j <= pagecount; j++)
+                                    {
+                                        bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, j, Twainsettings.Settings.Default.ImgLoadResolution);
+                                        ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                                        ocrtext += string.Join(" ", ocrdata?.Select(z => z.Text));
+                                        OcrAllPdfPagesProgress = j / pagecount;
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
-                                ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                                else
+                                {
+                                    bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
+                                    ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                                    ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
+                                }
+
+                                break;
+
+                            case ".docx":
+                                using (DocX document = DocX.Load(unIndexedFile))
+                                {
+                                    ocrtext = document.Text;
+                                }
+                                break;
+
+                            default:
+                                ocrdata = await unIndexedFile.OcrAsync(Settings.Default.DefaultTtsLang);
                                 ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
-                            }
-                        }
-                        else
-                        {
-                            ocrdata = await unIndexedFile.OcrAsync(Settings.Default.DefaultTtsLang);
-                            ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
+                                break;
                         }
 
                         using (AppDbContext context = new())
