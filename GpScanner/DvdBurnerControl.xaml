@@ -123,7 +123,11 @@
                         Background="{DynamicResource BorderBackground}"
                         BorderBrush="{x:Null}"
                         ContextMenuService.IsEnabled="{Binding HasItems, RelativeSource={RelativeSource Mode=Self}}"
-                        ItemsSource="{Binding Files, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                        ItemsSource="{Binding Files, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        VirtualizingPanel.CacheLengthUnit="Item"
+                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                        VirtualizingPanel.ScrollUnit="Item"
+                        VirtualizingPanel.VirtualizationMode="Recycling">
                         <ListBox.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Command="{Binding RemoveAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="TÜMÜNÜ SİL">

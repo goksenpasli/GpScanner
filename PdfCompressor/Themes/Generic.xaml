@@ -54,7 +54,11 @@
                                 Grid.Column="0"
                                 AllowDrop="True"
                                 IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource TemplatedParent}}"
-                                ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource TemplatedParent}}">
+                                ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource TemplatedParent}}"
+                                VirtualizingPanel.CacheLengthUnit="Item"
+                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                VirtualizingPanel.ScrollUnit="Item"
+                                VirtualizingPanel.VirtualizationMode="Recycling">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
