@@ -551,5 +551,17 @@ namespace GpScanner.Properties {
                 this["ShowTrayIcon"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool OcrContentUseInternalPdfContent {
+            get {
+                return ((bool)(this["OcrContentUseInternalPdfContent"]));
+            }
+            set {
+                this["OcrContentUseInternalPdfContent"] = value;
+            }
+        }
     }
 }

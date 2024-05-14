@@ -738,4 +738,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Přidat na konec</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Namísto výsledku OCR použijte text obsahu PDF. Nedoporučuje se povolit funkci THTS.</value>
+  </data>
 </root>

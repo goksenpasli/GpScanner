@@ -738,4 +738,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Bir sonuna əlavə edin</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>OCR nəticəsi əvəzinə PDF məzmun mətnindən istifadə edin. THİS funksiyasını aktivləşdirmək tövsiyə edilmir.</value>
+  </data>
 </root>

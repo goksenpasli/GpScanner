@@ -741,4 +741,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Adăugați la sfârșit</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Utilizați textul de conținut PDF în loc de rezultatul OCR. Nu este recomandat să activați funcția THiS.</value>
+  </data>
 </root>

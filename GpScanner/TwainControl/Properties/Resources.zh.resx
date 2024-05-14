@@ -738,4 +738,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>add</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>使用PDF内容文本而不是OCR结果。不建议启用thís功能。</value>
+  </data>
 </root>

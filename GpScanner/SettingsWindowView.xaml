@@ -666,6 +666,24 @@
                                             </StackPanel>
                                         </ToggleButton.ToolTip>
                                     </ToggleButton>
+                                    <ToggleButton twainctrl:Policy.PolicyName="OcrContentUseInternalPdfContent"
+                                        IsChecked="{Binding Path=OcrContentUseInternalPdfContent, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        ToolTip="{twainctrl:Loc OCRUSEINTERNALPDFCONTENT}">
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="70" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Canvas.Bottom="0"
+                                                Width="16"
+                                                Height="16"
+                                                Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
+                                        </Canvas>
+                                    </ToggleButton>
                                 </StackPanel>
                             </ScrollViewer>
                         </StackPanel>

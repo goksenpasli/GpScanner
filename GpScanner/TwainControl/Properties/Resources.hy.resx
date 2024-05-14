@@ -741,4 +741,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Ավելացնել ավարտին</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>OCR- ի արդյունքի փոխարեն օգտագործեք PDF բովանդակության տեքստ: Առաջարկվում է միացնել Thi̇s- ի գործառույթը:</value>
+  </data>
 </root>

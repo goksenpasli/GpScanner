@@ -738,4 +738,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Voeg toe aan een einde</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Gebruik PDF -inhoudstekst in plaats van OCR -resultaat. Het wordt niet aanbevolen om de functie mogelijk te maken.</value>
+  </data>
 </root>

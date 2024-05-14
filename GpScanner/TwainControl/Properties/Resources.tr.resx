@@ -751,4 +751,7 @@ BELGE EKLE</value>
   <data name="ADDLAST" xml:space="preserve">
     <value>SONA EKLE</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>OCR sonucu yerine PDF içerik metni kullanın. Bu işlevi etkinleştirmeniz önerilmez.</value>
+  </data>
 </root>

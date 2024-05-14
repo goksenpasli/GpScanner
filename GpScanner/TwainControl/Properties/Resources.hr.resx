@@ -741,4 +741,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Dodaj kraju</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Upotrijebite PDF sadržaj teksta umjesto OCR rezultata. Ne preporučuje se omogućiti funkciju This.</value>
+  </data>
 </root>

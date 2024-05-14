@@ -738,4 +738,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Добавить к концу</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Используйте текст контента PDF вместо результата OCR. Не рекомендуется включить функцию THiS.</value>
+  </data>
 </root>

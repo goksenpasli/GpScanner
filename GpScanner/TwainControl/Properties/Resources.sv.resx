@@ -741,4 +741,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Lägg till ett slut</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Använd PDF -innehållstext istället för OCR -resultat. Det rekommenderas inte att aktivera THİS -funktionen.</value>
+  </data>
 </root>

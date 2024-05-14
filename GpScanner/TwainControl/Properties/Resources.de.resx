@@ -738,4 +738,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Zu Ende hinzufügen</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Verwenden Sie PDF -Inhaltstext anstelle des OCR -Ergebniss. Es wird nicht empfohlen, die Funktion der Th 50 zu ermöglichen.</value>
+  </data>
 </root>

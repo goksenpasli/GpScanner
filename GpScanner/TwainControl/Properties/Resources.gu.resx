@@ -738,4 +738,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>અંત માં ઉમેરો</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>ઓસીઆર પરિણામને બદલે પીડીએફ સામગ્રી ટેક્સ્ટનો ઉપયોગ કરો. ThiS ફંક્શનને સક્ષમ કરવાની ભલામણ કરવામાં આવતી નથી.</value>
+  </data>
 </root>

@@ -860,6 +860,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string OCRUSEINTERNALPDFCONTENT {
+            get {
+                return ResourceManager.GetString("OCRUSEINTERNALPDFCONTENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string ORİGİNAL {
             get {
                 return ResourceManager.GetString("ORİGİNAL", resourceCulture);

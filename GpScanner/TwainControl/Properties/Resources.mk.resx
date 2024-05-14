@@ -753,4 +753,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Додадете на крај</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Користете го текстот на содржината на PDF наместо резултатот од OCR. Не се препорачува да се овозможи функцијата на This.</value>
+  </data>
 </root>

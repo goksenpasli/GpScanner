@@ -320,17 +320,33 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                             {
                                 for (int i = 1; i <= pagecount; i++)
                                 {
-                                    bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, i, Twainsettings.Settings.Default.ImgLoadResolution);
-                                    ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
-                                    ocrtext += string.Join(" ", ocrdata?.Select(z => z.Text));
+                                    if (Settings.Default.OcrContentUseInternalPdfContent)
+                                    {
+                                        using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
+                                        ocrtext += pdfDocument.GetPdfText(i - 1);
+                                    }
+                                    else
+                                    {
+                                        bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, i, Twainsettings.Settings.Default.ImgLoadResolution);
+                                        ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                                        ocrtext += string.Join(" ", ocrdata?.Select(z => z.Text));
+                                    }
                                     OcrAllPdfPagesProgress = i / pagecount;
                                 }
                             }
                             else
                             {
-                                bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
-                                ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
-                                ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
+                                if (Settings.Default.OcrContentUseInternalPdfContent)
+                                {
+                                    using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
+                                    ocrtext = pdfDocument.GetPdfText(0);
+                                }
+                                else
+                                {
+                                    bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
+                                    ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                                    ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
+                                }
                             }
 
                             break;
@@ -390,17 +406,33 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                 {
                                     for (int j = 1; j <= pagecount; j++)
                                     {
-                                        bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, j, Twainsettings.Settings.Default.ImgLoadResolution);
-                                        ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
-                                        ocrtext += string.Join(" ", ocrdata?.Select(z => z.Text));
+                                        if (Settings.Default.OcrContentUseInternalPdfContent)
+                                        {
+                                            using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
+                                            ocrtext += pdfDocument.GetPdfText(j - 1);
+                                        }
+                                        else
+                                        {
+                                            bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, j, Twainsettings.Settings.Default.ImgLoadResolution);
+                                            ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                                            ocrtext += string.Join(" ", ocrdata?.Select(z => z.Text));
+                                        }
                                         OcrAllPdfPagesProgress = j / pagecount;
                                     }
                                 }
                                 else
                                 {
-                                    bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
-                                    ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
-                                    ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
+                                    if (Settings.Default.OcrContentUseInternalPdfContent)
+                                    {
+                                        using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
+                                        ocrtext = pdfDocument.GetPdfText(0);
+                                    }
+                                    else
+                                    {
+                                        bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
+                                        ocrdata = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                                        ocrtext = string.Join(" ", ocrdata?.Select(z => z.Text));
+                                    }
                                 }
 
                                 break;

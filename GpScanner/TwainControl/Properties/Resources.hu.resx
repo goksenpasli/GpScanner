@@ -741,4 +741,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Hozzáadás a végéhez</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Az OCR eredmény helyett használja a PDF tartalom szövegét. Nem ajánlott a THİS funkció engedélyezése.</value>
+  </data>
 </root>

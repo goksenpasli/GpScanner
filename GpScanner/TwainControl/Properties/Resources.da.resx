@@ -741,4 +741,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Føj til en ende</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Brug PDF -indholdstekst i stedet for OCR -resultat. Det anbefales ikke at aktivere den funktion.</value>
+  </data>
 </root>

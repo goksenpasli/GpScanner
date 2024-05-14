@@ -738,4 +738,7 @@
   <data name="ADDLAST" xml:space="preserve">
     <value>Adicionar ao fim</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Use texto de conteúdo em PDF em vez do resultado do OCR. Não é recomendável ativar a função Thila.</value>
+  </data>
 </root>

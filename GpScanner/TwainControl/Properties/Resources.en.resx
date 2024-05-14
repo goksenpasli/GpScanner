@@ -745,4 +745,7 @@ TO FILE</value>
   <data name="ADDLAST" xml:space="preserve">
     <value>Add to the end</value>
   </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Use Pdf Content Text Instead Of Ocr Result. It's Not Recommended To Enable Thıs Functıon.</value>
+  </data>
 </root>
