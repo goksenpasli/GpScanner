@@ -2140,14 +2140,18 @@
                                         Margin="1"
                                         d:ItemsSource="{d:SampleData ItemCount=5}"
                                         Background="{StaticResource BorderBackground}"
-                                        ItemsSource="{Binding UnIndexedFiles}">
+                                        ItemsSource="{Binding UnIndexedFiles}"
+                                        VirtualizingPanel.CacheLengthUnit="Item"
+                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                        VirtualizingPanel.ScrollUnit="Item"
+                                        VirtualizingPanel.VirtualizationMode="Recycling">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock VerticalAlignment="Center">
                                                     <InlineUIContainer BaselineAlignment="Center">
                                                         <Image Width="16"
                                                             Height="16"
-                                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay}" />
+                                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, IsAsync=True}" />
                                                     </InlineUIContainer>
                                                     <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
                                                     <Hyperlink BaselineAlignment="Center"
