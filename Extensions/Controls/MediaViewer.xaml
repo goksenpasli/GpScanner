@@ -6,9 +6,10 @@
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:Extensions.Properties"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
     d:DesignHeight="384"
-    d:DesignWidth="550"
+    d:DesignWidth="570"
     SnapsToDevicePixels="True"
     UseLayoutRounding="True"
     mc:Ignorable="d">
@@ -493,6 +494,50 @@
                             TopMost="False">
                             <local:ContentToggleButton.OverContent>
                                 <Controls:MediaViewerSubtitleControl x:Name="MediaViewerSubtitleControl" Width="480" />
+                            </local:ContentToggleButton.OverContent>
+                        </local:ContentToggleButton>
+                        <local:ContentToggleButton ArrowVisibility="Collapsed"
+                            Content="6"
+                            FontFamily="Wingdings"
+                            FontSize="20"
+                            Foreground="Blue">
+                            <local:ContentToggleButton.OverContent>
+                                <GroupBox>
+                                    <ListBox Width="350"
+                                        Height="250"
+                                        FontFamily="Segoe UI"
+                                        FontSize="12"
+                                        ItemsSource="{Binding MediaHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                                        SelectedItem="{Binding MediaDataFilePath}">
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="16"
+                                                        Height="16"
+                                                        Source="{Binding Mode=OneWay, IsAsync=True, Converter={StaticResource FilePathToIconConverter}}" />
+                                                    <TextBlock>
+                                                        <Run BaselineAlignment="Center" Text="{Binding Converter={StaticResource FilePathToFileNameConverter}, Mode=OneWay}" />
+                                                        <Hyperlink BaselineAlignment="Center"
+                                                            Command="{Binding RemoveHistoryFile, RelativeSource={RelativeSource AncestorType=Controls:MediaViewer}}"
+                                                            CommandParameter="{Binding Mode=OneWay}"
+                                                            TextDecorations="None">
+                                                            <InlineUIContainer BaselineAlignment="Center">
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="131" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </InlineUIContainer>
+                                                        </Hyperlink>
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </GroupBox>
                             </local:ContentToggleButton.OverContent>
                         </local:ContentToggleButton>
                         <local:ContentToggleButton ArrowVisibility="Collapsed"

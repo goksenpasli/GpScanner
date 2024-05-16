@@ -369,6 +369,18 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 }
             },
             parameter => true);
+
+        RemoveHistoryFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is string filepath)
+                {
+                    Settings.Default.MediaHistory.Remove(filepath);
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
+                }
+            },
+            parameter => true);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -444,6 +456,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Translate")]
     [Category("Translate")]
     public string ÇevrilenDil { get; set; } = "en";
+
     [Description("Video Controls")]
     [Category("Controls")]
     public TimeSpan EndTimeSpan => (TimeSpan)GetValue(EndTimeSpanProperty.DependencyProperty);
@@ -459,6 +472,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Video Controls")]
     [Category("Controls")]
     public int ForwardBackwardSkipSecond { get; set; } = 30;
+
     [Description("Video Controls")]
     [Category("Controls")]
     public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
@@ -486,6 +500,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Translate")]
     [Category("Translate")]
     public string MevcutDil { get; set; } = "auto";
+
     [Description("Video Controls")]
     [Category("Controls")]
     public Visibility OpenButtonVisibility { get => (Visibility)GetValue(OpenButtonVisibilityProperty); set => SetValue(OpenButtonVisibilityProperty, value); }
@@ -534,6 +549,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Category("Controls")]
     [Browsable(false)]
     public ObservableCollection<string> PlayList { get; set; } = [];
+
+    public RelayCommand<object> RemoveHistoryFile { get; }
+
     [Description("Video Controls")]
     [Category("Controls")]
     [Browsable(false)]
@@ -612,6 +630,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public Visibility SliderControlVisible { get => (Visibility)GetValue(SliderControlVisibleProperty); set => SetValue(SliderControlVisibleProperty, value); }
 
     public Geometry3D SphereModel { get; set; } = CreateGeometry();
+
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     [Browsable(false)]
@@ -622,6 +641,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     public Brush SubTitleColor { get => (Brush)GetValue(SubTitleColorProperty); set => SetValue(SubTitleColorProperty, value); }
 
     public EncodingInfo[] SubtitleEncodings { get; } = Encoding.GetEncodings();
+
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public string SubtitleFilePath { get => (string)GetValue(SubtitleFilePathProperty); set => SetValue(SubtitleFilePathProperty, value); }
@@ -899,6 +919,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     if (f is MediaElement mediaelement && mediaelement.NaturalDuration.HasTimeSpan)
                     {
                         viewer.SetValue(EndTimeSpanProperty, mediaelement.NaturalDuration.TimeSpan);
+                        viewer.AddToHistoryList(viewer.MediaDataFilePath);
                         timer = new DispatcherTimer(TimeSpan.FromSeconds(1), DispatcherPriority.Normal, (s, _) => viewer.MediaPosition = mediaelement.Position, Dispatcher.CurrentDispatcher);
                         timer.Start();
                         viewer.SetOsdInfo();
@@ -998,6 +1019,16 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue is string file)
         {
             viewer.ParsedSubtitle = viewer.GetParserSubtitleContent(file);
+        }
+    }
+
+    private void AddToHistoryList(string mediapath)
+    {
+        if (!Settings.Default.MediaHistory.Contains(mediapath))
+        {
+            Settings.Default.MediaHistory.Insert(0, mediapath);
+            Settings.Default.Save();
+            Settings.Default.Reload();
         }
     }
 
