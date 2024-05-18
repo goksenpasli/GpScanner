@@ -679,7 +679,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 if (parameter is Window window)
                 {
-                    string folderpath = FolderDialog.SelectFolder(Translation.GetResStringValue("GRAPHFOLDER"), new WindowInteropHelper(window).Handle);
+                    string folderpath = FolderDialog.SelectFolder($"{Translation.GetResStringValue("GRAPHFOLDER")}\n{Translation.GetResStringValue("UNINDEXED")}", new WindowInteropHelper(window).Handle);
                     if (!string.IsNullOrEmpty(folderpath) && !Settings.Default.AdditionalIndexFolders.Contains(folderpath))
                     {
                         _ = Settings.Default.AdditionalIndexFolders.Add(folderpath);
@@ -2951,7 +2951,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 if (Directory.Exists(path))
                 {
-                    List<string> files = FastFileSearch.EnumerateFilepaths(path).Where(s => unindexedfileextensions.Contains(Path.GetExtension(s).ToLowerInvariant())).ToList();
+                    List<string> files = FastFileSearch.EnumerateFilepaths(path).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLowerInvariant())).ToList();
                     allFiles.AddRange(files);
                 }
             }
@@ -3010,7 +3010,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             ObservableCollection<Scanner> list = [];
             try
             {
-                List<string> files = FastFileSearch.EnumerateFilepaths(Twainsettings.Settings.Default.AutoFolder).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLowerInvariant())).ToList();
+                List<string> allfilepaths =
+                [
+                    .. Settings.Default.AdditionalIndexFolders.OfType<string>(),
+                    Twainsettings.Settings.Default.AutoFolder,
+                ];
+
+                List<string> files = GetAllFilesFromPaths(allfilepaths).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLowerInvariant())).ToList();
                 files.Sort(new StrCmpLogicalComparer());
                 foreach (string dosya in files)
                 {
@@ -3033,14 +3039,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         try
         {
-            List<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).Select(z => z.FileName).ToList();
+            List<string> scannerunindexedfiles = GetScannerFileData()?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).Select(z => z.FileName).ToList();
             using AppDbContext context = new();
             List<string> scannedDatabaseFiles = (await context.Data.AsNoTracking().ToListAsync())?.Select(x => x.FileName).ToList();
-
             if (scannerunindexedfiles != null && scannedDatabaseFiles != null)
             {
-                List<string> additionalfoldersfiles = GetAllFilesFromPaths(Settings.Default.AdditionalIndexFolders.OfType<string>().ToList());
-                scannerunindexedfiles.AddRange(additionalfoldersfiles);
                 return new ObservableCollection<string>(scannerunindexedfiles.Except(scannedDatabaseFiles));
             }
         }
