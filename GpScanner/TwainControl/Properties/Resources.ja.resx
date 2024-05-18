@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>OCRの結果の代わりにPDFコンテンツテキストを使用します。 ths機能を有効にすることはお勧めしません。</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>インデックス操作が完了した後にフォルダを削除して負荷のパフォーマンスを獲得します</value>
+  </data>
 </root>

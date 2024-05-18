@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Verwenden Sie PDF -Inhaltstext anstelle des OCR -Ergebniss. Es wird nicht empfohlen, die Funktion der Th 50 zu ermöglichen.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Entfernen Sie die Ordner nach Abschluss der Indexoperationen, um die Lastleistung zu erhalten</value>
+  </data>
 </root>

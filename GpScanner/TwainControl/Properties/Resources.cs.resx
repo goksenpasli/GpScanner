@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Namísto výsledku OCR použijte text obsahu PDF. Nedoporučuje se povolit funkci THTS.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Po dokončení indexových operací odstraňte složky, abyste získali výkon zatížení</value>
+  </data>
 </root>

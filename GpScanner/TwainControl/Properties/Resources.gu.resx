@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>ઓસીઆર પરિણામને બદલે પીડીએફ સામગ્રી ટેક્સ્ટનો ઉપયોગ કરો. ThiS ફંક્શનને સક્ષમ કરવાની ભલામણ કરવામાં આવતી નથી.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>લોડ પરફોર્મન્સ મેળવવા માટે અનુક્રમણિકા કામગીરી પૂર્ણ થયા પછી ફોલ્ડર્સને દૂર કરો</value>
+  </data>
 </root>

@@ -674,6 +674,36 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
+        AddAdditionalIndexFolder = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is Window window)
+                {
+                    string folderpath = FolderDialog.SelectFolder(Translation.GetResStringValue("GRAPHFOLDER"), new WindowInteropHelper(window).Handle);
+                    if (!string.IsNullOrEmpty(folderpath) && !Settings.Default.AdditionalIndexFolders.Contains(folderpath))
+                    {
+                        _ = Settings.Default.AdditionalIndexFolders.Add(folderpath);
+                        Settings.Default.Save();
+                        Settings.Default.Reload();
+                    }
+                }
+                ;
+            },
+            parameter => true);
+
+        RemoveAdditionalIndexFolder = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show($"{Translation.GetResStringValue("DELETE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    string folderpath = parameter as string;
+                    Settings.Default.AdditionalIndexFolders?.Remove(folderpath);
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
+                }
+            },
+            parameter => Settings.Default.AdditionalIndexFolders?.Count > 0);
+
         UploadSharePoint = new RelayCommand<object>(
             parameter =>
             {
@@ -1255,6 +1285,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
     }
+
+    public RelayCommand<object> AddAdditionalIndexFolder { get; }
 
     public ICommand AddFtpSites { get; }
 
@@ -2002,6 +2034,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     }
 
     public ICommand RegisterSti { get; }
+
+    public RelayCommand<object> RemoveAdditionalIndexFolder { get; }
 
     public ICommand RemovePatchProfile { get; }
 
@@ -2908,6 +2942,27 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    private List<string> GetAllFilesFromPaths(List<string> paths)
+    {
+        List<string> allFiles = [];
+        try
+        {
+            foreach (string path in paths)
+            {
+                if (Directory.Exists(path))
+                {
+                    List<string> files = FastFileSearch.EnumerateFilepaths(path).Where(s => unindexedfileextensions.Contains(Path.GetExtension(s).ToLowerInvariant())).ToList();
+                    allFiles.AddRange(files);
+                }
+            }
+            return allFiles;
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return allFiles;
+        }
+    }
+
     private async Task<ObservableCollection<ContributionData>> GetContributionData(List<ScannerFileDatas> files, DateTime first, DateTime last)
     {
         try
@@ -2978,16 +3033,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         try
         {
-            if (Dosyalar is not null)
-            {
-                List<string> unindexedfiles = Dosyalar.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).Select(z => z.FileName).ToList();
-                using AppDbContext context = new();
-                List<string> scannedFiles = (await context.Data.AsNoTracking().ToListAsync())?.Select(x => x.FileName).ToList();
+            List<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).Select(z => z.FileName).ToList();
+            using AppDbContext context = new();
+            List<string> scannedDatabaseFiles = (await context.Data.AsNoTracking().ToListAsync())?.Select(x => x.FileName).ToList();
 
-                if (unindexedfiles != null && scannedFiles != null)
-                {
-                    return new ObservableCollection<string>(unindexedfiles.Except(scannedFiles));
-                }
+            if (scannerunindexedfiles != null && scannedDatabaseFiles != null)
+            {
+                List<string> additionalfoldersfiles = GetAllFilesFromPaths(Settings.Default.AdditionalIndexFolders.OfType<string>().ToList());
+                scannerunindexedfiles.AddRange(additionalfoldersfiles);
+                return new ObservableCollection<string>(scannerunindexedfiles.Except(scannedDatabaseFiles));
             }
         }
         catch (Exception)

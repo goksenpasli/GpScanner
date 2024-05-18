@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>OCR nəticəsi əvəzinə PDF məzmun mətnindən istifadə edin. THİS funksiyasını aktivləşdirmək tövsiyə edilmir.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Yük performansını qazanmaq üçün indeks əməliyyatları tamamlandıqdan sonra qovluqları çıxarın</value>
+  </data>
 </root>

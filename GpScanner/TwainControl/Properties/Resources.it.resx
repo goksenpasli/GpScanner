@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Utilizzare il testo del contenuto PDF anziché il risultato OCR. Non è consigliabile abilitare la funzione di THiS.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Rimuovere le cartelle dopo le operazioni dell'indice completate per ottenere prestazioni di carico</value>
+  </data>
 </root>

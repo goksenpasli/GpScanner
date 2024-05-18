@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Gebruik PDF -inhoudstekst in plaats van OCR -resultaat. Het wordt niet aanbevolen om de functie mogelijk te maken.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Verwijder mappen nadat indexbewerkingen zijn voltooid om de belastingprestaties te verkrijgen</value>
+  </data>
 </root>

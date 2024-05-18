@@ -744,4 +744,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Az OCR eredmény helyett használja a PDF tartalom szövegét. Nem ajánlott a THİS funkció engedélyezése.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Távolítsa el a mappákat az index műveletek befejezése után a betöltési teljesítmény elérése érdekében</value>
+  </data>
 </root>

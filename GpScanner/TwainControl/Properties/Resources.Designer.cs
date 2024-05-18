@@ -648,6 +648,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string INDEXWARN {
+            get {
+                return ResourceManager.GetString("INDEXWARN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string INSTALLED {
             get {
                 return ResourceManager.GetString("INSTALLED", resourceCulture);

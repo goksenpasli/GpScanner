@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Χρησιμοποιήστε κείμενο περιεχομένου PDF αντί για αποτέλεσμα OCR. Δεν συνιστάται η ενεργοποίηση της λειτουργίας της λειτουργίας.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Αφαιρέστε τους φακέλους μετά την ολοκλήρωση των λειτουργιών ευρετηρίου για να αποκτήσετε απόδοση φορτίου</value>
+  </data>
 </root>

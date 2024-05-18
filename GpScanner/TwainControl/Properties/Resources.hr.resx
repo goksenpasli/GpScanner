@@ -744,4 +744,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Upotrijebite PDF sadržaj teksta umjesto OCR rezultata. Ne preporučuje se omogućiti funkciju This.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Uklonite mape nakon završetka indeksnih operacija kako biste postigli učinak opterećenja</value>
+  </data>
 </root>

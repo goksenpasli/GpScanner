@@ -744,4 +744,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Utilizați textul de conținut PDF în loc de rezultatul OCR. Nu este recomandat să activați funcția THiS.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Eliminați folderele după operațiunile de index finalizate pentru a obține performanță de încărcare</value>
+  </data>
 </root>

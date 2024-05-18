@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Use texto de conteúdo em PDF em vez do resultado do OCR. Não é recomendável ativar a função Thila.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Remova as pastas após as operações de índice concluídas para obter o desempenho da carga</value>
+  </data>
 </root>

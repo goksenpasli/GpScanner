@@ -754,4 +754,7 @@ BELGE EKLE</value>
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>OCR sonucu yerine PDF içerik metni kullanın. Bu işlevi etkinleştirmeniz önerilmez.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>İndekslenmemiş dosyalar penceresinin açılışında daha iyi performans elde etmek için dizin işlemleri tamamlandıktan sonra klasörleri silin</value>
+  </data>
 </root>

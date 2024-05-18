@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Використовуйте текст вмісту PDF замість результату OCR. Не рекомендується забезпечити функцію this.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Видаліть папки після закінчення індексу, щоб отримати продуктивність навантаження</value>
+  </data>
 </root>

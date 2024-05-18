@@ -744,4 +744,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Använd PDF -innehållstext istället för OCR -resultat. Det rekommenderas inte att aktivera THİS -funktionen.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Ta bort mappar efter att indexoperationer har slutförts för att få lastprestanda</value>
+  </data>
 </root>

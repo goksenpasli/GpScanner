@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Use el texto de contenido PDF en lugar del resultado OCR. No se recomienda habilitar la función de este.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Eliminar las carpetas después de que las operaciones de índice completaron para obtener el rendimiento de la carga</value>
+  </data>
 </root>

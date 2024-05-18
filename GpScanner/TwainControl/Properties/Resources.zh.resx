@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>使用PDF内容文本而不是OCR结果。不建议启用thís功能。</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>索引操作完成后删除文件夹以获得负载性能</value>
+  </data>
 </root>

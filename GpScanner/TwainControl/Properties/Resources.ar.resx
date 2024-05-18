@@ -741,4 +741,7 @@
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>استخدم نص محتوى PDF بدلاً من نتيجة OCR. لا ينصح بتمكين وظيفة this.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>قم بإزالة المجلدات بعد الانتهاء من عمليات الفهرس للحصول على أداء الحمل</value>
+  </data>
 </root>

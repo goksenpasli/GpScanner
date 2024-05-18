@@ -748,4 +748,7 @@ TO FILE</value>
   <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
     <value>Use Pdf Content Text Instead Of Ocr Result. It's Not Recommended To Enable Thıs Functıon.</value>
   </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>After Index Operations Completed Remove Folders To Gain Load Performance</value>
+  </data>
 </root>
