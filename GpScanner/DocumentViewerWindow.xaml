@@ -48,7 +48,11 @@
             d:ItemsSource="{d:SampleData ItemCount=15}"
             ItemsSource="{Binding DirectoryAllPdfFiles}"
             SelectedIndex="{Binding Index}"
-            SelectedItem="{Binding FilePath}">
+            SelectedItem="{Binding FilePath}"
+            VirtualizingPanel.CacheLengthUnit="Pixel"
+            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+            VirtualizingPanel.ScrollUnit="Pixel"
+            VirtualizingPanel.VirtualizationMode="Recycling">
             <ListBox.Resources>
                 <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
             </ListBox.Resources>
