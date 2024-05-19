@@ -116,6 +116,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string patchFileName;
     private string patchProfileName;
     private string patchTag;
+    private PdfViewer.FitImageOrientation pdfAllPageOrientation = PdfViewer.FitImageOrientation.Width;
     private bool pdfBatchRunning;
     private double pdfMergeProgressValue;
     private Brush progressBarForegroundBrush = Brushes.Green;
@@ -130,7 +131,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string selectedFtp;
     private ReminderData selectedReminder;
     private Size selectedSize;
-    private bool showAllPdfControl = true;
     private bool shutdown;
     private List<Data> sqlQueryData;
     private string sqlText = string.Empty;
@@ -1973,6 +1973,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public PdfViewer.FitImageOrientation PdfAllPageOrientation
+    {
+        get => pdfAllPageOrientation;
+        set
+        {
+            if (pdfAllPageOrientation != value)
+            {
+                pdfAllPageOrientation = value;
+                OnPropertyChanged(nameof(PdfAllPageOrientation));
+            }
+        }
+    }
+
     public bool PdfBatchRunning
     {
         get => pdfBatchRunning;
@@ -2211,19 +2224,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int[] SettingsPagePictureResizeList { get; } = Enumerable.Range(5, 100).Where(z => z % 5 == 0).ToArray();
 
-    public bool ShowAllPdfControl
-    {
-        get => showAllPdfControl;
-        set
-        {
-            if (showAllPdfControl != value)
-            {
-                showAllPdfControl = value;
-                OnPropertyChanged(nameof(ShowAllPdfControl));
-            }
-        }
-    }
-
     public bool Shutdown
     {
         get => shutdown;
@@ -2331,7 +2331,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> UploadSharePoint { get; }
 
-    public IWindowService WindowService { get;}
+    public IWindowService WindowService { get; }
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
 

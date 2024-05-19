@@ -226,7 +226,7 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <WrapPanel ViewModel:AllPdfViewerControl.HideAllPdfControls="{Binding DataContext.ShowAllPdfControl, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"
+                    <WrapPanel ViewModel:AllPdfViewerControl.HideAllPdfControls="{Binding ShowAllPdfControl, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}"
                         DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}"
                         IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfVwr}"
                         Orientation="Horizontal">
@@ -328,12 +328,13 @@
                     <PdfViewer:PdfViewer x:Name="PdfVwr"
                         Grid.Row="1"
                         ViewModel:AllPdfViewerControl.AllPageNumber="{Binding DataContext.AllPdfPage, RelativeSource={RelativeSource AncestorType=Window}}"
-                        ViewModel:AllPdfViewerControl.HideAllPdfControls="{Binding DataContext.ShowAllPdfControl, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=Window}}"
+                        ViewModel:AllPdfViewerControl.AllPageOrientation="{Binding DataContext.PdfAllPageOrientation, RelativeSource={RelativeSource AncestorType=Window}}"
+                        ViewModel:AllPdfViewerControl.HideAllPdfControls="{Binding ShowAllPdfControl, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}"
                         AllowDrop="True"
                         AutoFitContent="True"
                         Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
                         OpenButtonVisibility="Collapsed"
-                        Orientation="Height"
+                        Orientation="Width"
                         PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible"
                         SliderZoomAngleVisibility="Collapsed"

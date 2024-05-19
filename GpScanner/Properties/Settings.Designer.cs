@@ -576,5 +576,17 @@ namespace GpScanner.Properties {
                 this["AdditionalIndexFolders"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowAllPdfControl {
+            get {
+                return ((bool)(this["ShowAllPdfControl"]));
+            }
+            set {
+                this["ShowAllPdfControl"] = value;
+            }
+        }
     }
 }

@@ -565,18 +565,42 @@
                                     <LineBreak />
                                     <Run Text="{twainctrl:Loc PAGENUMBER}" />
                                 </TextBlock>
-                                <UniformGrid Rows="2">
-                                    <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
-                                        Interval="1"
-                                        Minimum="1"
-                                        Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                    <ToggleButton twainctrl:Policy.PolicyName="ShowAllPdfControl"
-                                        Content="N"
-                                        FontFamily="Webdings"
-                                        FontSize="16"
-                                        FontWeight="Bold"
-                                        Foreground="Green"
-                                        IsChecked="{Binding ShowAllPdfControl}" />
+                                <UniformGrid Columns="2">
+                                    <StackPanel>
+                                        <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
+                                            Interval="1"
+                                            Minimum="1"
+                                            Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <ToggleButton twainctrl:Policy.PolicyName="ShowAllPdfControl"
+                                            Content="N"
+                                            FontFamily="Webdings"
+                                            FontSize="16"
+                                            FontWeight="Bold"
+                                            Foreground="Green"
+                                            IsChecked="{Binding ShowAllPdfControl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
+                                    </StackPanel>
+                                    <ListBox VerticalContentAlignment="Center"
+                                        Background="{StaticResource BorderBackground}"
+                                        SelectedValue="{Binding PdfAllPageOrientation}"
+                                        SelectedValuePath="Tag">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                        <ListBoxItem Tag="Width">
+                                            <TextBlock FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="F" />
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="Height">
+                                            <TextBlock FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="G" />
+                                        </ListBoxItem>
+                                    </ListBox>
                                 </UniformGrid>
                                 <StackPanel Orientation="Horizontal">
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
