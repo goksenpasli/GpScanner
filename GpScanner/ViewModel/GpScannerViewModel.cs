@@ -687,7 +687,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         Settings.Default.Reload();
                     }
                 }
-                ;
             },
             parameter => true);
 
@@ -2942,7 +2941,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private List<string> GetAllFilesFromPaths(List<string> paths)
+    private List<string> GetAllFilesFromPaths(List<string> paths, Func<string, bool> filter = null)
     {
         List<string> allFiles = [];
         try
@@ -2951,8 +2950,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 if (Directory.Exists(path))
                 {
-                    List<string> files = FastFileSearch.EnumerateFilepaths(path).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLowerInvariant())).ToList();
+                    IEnumerable<string> files = FastFileSearch.EnumerateFilepaths(path);
+                    if (filter != null)
+                    {
+                        files = files.Where(filter);
+                    }
                     allFiles.AddRange(files);
+                    files = null;
                 }
             }
             return allFiles;
@@ -3016,7 +3020,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     Twainsettings.Settings.Default.AutoFolder,
                 ];
 
-                List<string> files = GetAllFilesFromPaths(allfilepaths).Where(s => supportedfilesextension.Contains(Path.GetExtension(s).ToLowerInvariant())).ToList();
+                List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
                 files.Sort(new StrCmpLogicalComparer());
                 foreach (string dosya in files)
                 {
