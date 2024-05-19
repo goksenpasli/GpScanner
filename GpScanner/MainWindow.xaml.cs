@@ -21,10 +21,6 @@ using static TwainControl.DrawControl;
 using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner;
-
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
     public static CollectionViewSource cvs;
@@ -33,7 +29,8 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         cvs = TryFindResource("Veriler") as CollectionViewSource;
-        DataContext = new GpScannerViewModel();
+        IWindowService windowService = new WindowService();
+        DataContext = new GpScannerViewModel(windowService);
         twainCtrl.PropertyChanged += TwainCtrl_PropertyChangedAsync;
         twainCtrl.Scanner.PropertyChanged += Scanner_PropertyChanged;
         TwainCtrl = twainCtrl;

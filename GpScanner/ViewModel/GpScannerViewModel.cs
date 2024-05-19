@@ -53,9 +53,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public CancellationTokenSource ocrcancellationToken;
     private const string MinimumVcVersion = "14.21.27702";
     private const int NetFxMinVersion = 461808;
-    private static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
+    private readonly string AppName;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
@@ -141,15 +141,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private double zipProgress;
     private bool zipProgressIndeterminate;
 
-    public GpScannerViewModel()
+    public GpScannerViewModel(IWindowService windowService)
     {
+        WindowService = windowService;
         CreateEmptySqliteDatabase();
         RegisterSimplePdfFileWatcher();
-        TesseractViewModel = new TesseractViewModel();
+        TesseractViewModel = new TesseractViewModel(windowService);
         TranslateViewModel = new TranslateViewModel();
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
-
+        AppName = windowService.GetFirstWindow().Title;
         Dosyalar = GetScannerFileData();
         SeçiliDil = Settings.Default.DefaultLang;
         SeçiliGün = DateTime.Today;
@@ -522,7 +523,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     DocumentViewerWindow documentViewerWindow = new();
                     if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                     {
-                        documentViewerWindow.Owner = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault();
+                        documentViewerWindow.Owner = windowService.GetFirstWindow();
                         documentViewerModel.Scanner = ToolBox.Scanner;
                         documentViewerModel.FilePath = filepath;
                         List<string> files = MainWindow.cvs?.View?.OfType<Scanner>()?.Select(z => z.FileName)?.ToList();
@@ -637,7 +638,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
                 _ = Process.Start(
                     $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\twux32.exe",
-                    $"/w:{new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                    $"/w:{new WindowInteropHelper(windowService.GetFirstWindow()).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -677,15 +678,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         AddAdditionalIndexFolder = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is Window window)
+                string folderpath = FolderDialog.SelectFolder($"{Translation.GetResStringValue("GRAPHFOLDER")}\n{Translation.GetResStringValue("UNINDEXED")}", new WindowInteropHelper(windowService.GetActiveWindow()).Handle);
+                if (!string.IsNullOrEmpty(folderpath) && !Settings.Default.AdditionalIndexFolders.Contains(folderpath))
                 {
-                    string folderpath = FolderDialog.SelectFolder($"{Translation.GetResStringValue("GRAPHFOLDER")}\n{Translation.GetResStringValue("UNINDEXED")}", new WindowInteropHelper(window).Handle);
-                    if (!string.IsNullOrEmpty(folderpath) && !Settings.Default.AdditionalIndexFolders.Contains(folderpath))
-                    {
-                        _ = Settings.Default.AdditionalIndexFolders.Add(folderpath);
-                        Settings.Default.Save();
-                        Settings.Default.Reload();
-                    }
+                    _ = Settings.Default.AdditionalIndexFolders.Add(folderpath);
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
                 }
             },
             parameter => true);
@@ -770,7 +768,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 string path = FolderDialog.SelectFolder(
                     $"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", BatchImageFileExtensions.Where(z => z.Checked).Select(z => z.Name))}",
-                    new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle);
+                    new WindowInteropHelper(windowService.GetFirstWindow()).Handle);
                 if (!string.IsNullOrEmpty(path))
                 {
                     BatchFolder = path;
@@ -781,7 +779,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchSaveFolder = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("PDFFOLDER")}", new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle);
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("PDFFOLDER")}", new WindowInteropHelper(windowService.GetFirstWindow()).Handle);
                 if (!string.IsNullOrEmpty(path))
                 {
                     Settings.Default.BatchSaveFolder = path;
@@ -828,7 +826,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchWatchFolder = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("BATCHDESC")}", new WindowInteropHelper(Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()).Handle);
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("BATCHDESC")}", new WindowInteropHelper(windowService.GetFirstWindow()).Handle);
                 if (!string.IsNullOrEmpty(path))
                 {
                     if (path == Twainsettings.Settings.Default.AutoFolder)
@@ -1112,11 +1110,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         OpenSettings = new RelayCommand<object>(
             parameter =>
             {
-                Window mainWindow = Application.Current?.Windows?.OfType<Window>()?.FirstOrDefault();
-                if (mainWindow.DataContext is GpScannerViewModel gpScannerViewModel)
+                if (windowService.GetFirstWindow().DataContext is GpScannerViewModel gpScannerViewModel)
                 {
                     gpScannerViewModel.GenerateFlagAnimation();
-                    SettingsWindowView settingswindow = new() { Owner = mainWindow, DataContext = gpScannerViewModel };
+                    SettingsWindowView settingswindow = new() { Owner = windowService.GetFirstWindow(), DataContext = gpScannerViewModel };
                     settingswindow.Closed += (s, e) => gpScannerViewModel.StopFlagAnimation.Execute(null);
                     _ = settingswindow.ShowDialog();
                 }
@@ -1254,11 +1251,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetDbBackUpFolder = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is not Window window)
-                {
-                    return;
-                }
-                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}", new WindowInteropHelper(window).Handle, Settings.Default.DataBaseBackUpFolder);
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}", new WindowInteropHelper(windowService.GetActiveWindow()).Handle, Settings.Default.DataBaseBackUpFolder);
                 if (!string.IsNullOrEmpty(path))
                 {
                     DriveInfo driveInfo = new(path);
@@ -1274,13 +1267,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         SetDateToday = new RelayCommand<object>(parameter => SeçiliGün = DateTime.Today, parameter => SeçiliGün != DateTime.Today);
 
-        CloseApp = new RelayCommand<object>(parameter => Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault().Close(), parameter => true);
+        CloseApp = new RelayCommand<object>(parameter => windowService.GetFirstWindow().Close(), parameter => true);
 
         AppBringToFront = new RelayCommand<object>(
             parameter =>
             {
-                Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Show();
-                Application.Current.Windows.Cast<Window>().FirstOrDefault().WindowState = WindowState.Maximized;
+                windowService.GetFirstWindow()?.Show();
+                windowService.GetFirstWindow().WindowState = WindowState.Maximized;
             },
             parameter => true);
     }
@@ -2337,6 +2330,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public ICommand UnRegisterSti { get; }
 
     public RelayCommand<object> UploadSharePoint { get; }
+
+    public IWindowService WindowService { get;}
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
 

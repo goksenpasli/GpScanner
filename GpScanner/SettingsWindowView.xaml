@@ -862,9 +862,7 @@
                                     Text="{twainctrl:Loc BACKUPDB}"
                                     TextWrapping="Wrap" />
                             </CheckBox>
-                            <Button Command="{Binding SetDbBackUpFolder}"
-                                CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"
-                                IsEnabled="{Binding Path=BackUpDatabase, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                            <Button Command="{Binding SetDbBackUpFolder}" IsEnabled="{Binding Path=BackUpDatabase, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
@@ -904,7 +902,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Button Command="{Binding AddAdditionalIndexFolder}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">
+                <Button Command="{Binding AddAdditionalIndexFolder}">
                     <StackPanel Orientation="Horizontal">
                         <Image Width="32" Height="32">
                             <Image.Source>
@@ -1134,14 +1132,14 @@
                         <Button twainctrl:Policy.PolicyName="SaveQrImage"
                             Command="{Binding SaveQrImage}"
                             CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
-                            <Image Width="24"
-                                Height="24"
+                            <Image Width="32"
+                                Height="32"
                                 Source="/TwainControl;component/Icons/save.png" />
                         </Button>
                         <Button twainctrl:Policy.PolicyName="PrintImage"
                             Command="{Binding PrintImage}"
                             CommandParameter="{Binding Path=Source, ElementName=Img, Mode=OneWay}">
-                            <Image Width="24" Height="24">
+                            <Image Width="32" Height="32">
                                 <Image.Source>
                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                         <Binding Source="Shell32.dll" />

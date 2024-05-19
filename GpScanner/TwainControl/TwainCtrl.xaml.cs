@@ -1980,7 +1980,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfImportViewerControl.PdfViewer.EypFilePath = file;
                 }
                 pdfImportViewerControl.DataContext = this;
-                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
+                maximizedWindow = new() { Owner = Window.GetWindow(this), WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -2002,7 +2002,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 ImageViewer imageViewer = new() { PanoramaButtonVisibility = Visibility.Collapsed, PrintButtonVisibility = Visibility.Visible, ImageFilePath = parameter as string };
-                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
+                maximizedWindow = new() { Owner = Window.GetWindow(this), WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -2019,7 +2019,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 XmlViewerControl xmlViewerControl = new();
                 XmlViewerControlModel.SetXmlContent(xmlViewerControl, parameter as string);
-                maximizedWindow = new() { WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
+                maximizedWindow = new() { Owner = Window.GetWindow(this), WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -2046,6 +2046,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         WindowState = WindowState.Maximized,
                         ShowInTaskbar = false,
                         Title = AppName,
+                        Owner = Window.GetWindow(this),
                         UseLayoutRounding = true,
                         WindowStartupLocation = WindowStartupLocation.CenterOwner
                     };

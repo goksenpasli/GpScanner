@@ -20,7 +20,6 @@ namespace GpScanner.ViewModel;
 public class TesseractViewModel : InpcBase, IDataErrorInfo
 
 {
-    private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private List<TessFiles> checkedFiles;
     private bool ısFolderWritable;
     private string seçiliDil;
@@ -28,7 +27,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     private string tessdatafolder;
     private ObservableCollection<TessFiles> tesseractFiles;
 
-    public TesseractViewModel()
+    public TesseractViewModel(IWindowService windowService)
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         Tessdatafolder = $@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\tessdata";
@@ -37,6 +36,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         OcrDatas = TesseractDownloadData();
         ShowHelpDesc = TesseractFiles?.Count == 0;
         PropertyChanged += TesseractViewModel_PropertyChanged;
+        WindowService = windowService;
         TesseractDataFilesDownloadLink = new RelayCommand<object>(
             parameter =>
             {
@@ -61,7 +61,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                 if (parameter is TessFiles tessFile)
                 {
                     string filepath = $"{Tessdatafolder}\\{tessFile.Name}.traineddata";
-                    if (File.Exists(filepath) && MessageBox.Show(Translation.GetResStringValue("DELETE"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                    if (File.Exists(filepath) && MessageBox.Show(Translation.GetResStringValue("DELETE"), windowService.GetFirstWindow().Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                     {
                         try
                         {
@@ -110,7 +110,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     }
                     catch (Exception ex)
                     {
-                        _ = MessageBox.Show(ex?.Message, AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                        _ = MessageBox.Show(ex?.Message, windowService.GetFirstWindow().Title, MessageBoxButton.OK, MessageBoxImage.Error);
                         if (File.Exists(datafile))
                         {
                             File.Delete(datafile);
@@ -122,7 +122,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         string file = Path.Combine(tessdatafolder, ocrData.OcrName);
                         if (File.Exists(file) && new FileInfo(file).Length == 0)
                         {
-                            _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", AppName, MessageBoxButton.OK, MessageBoxImage.Error);
+                            _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", windowService.GetFirstWindow().Title, MessageBoxButton.OK, MessageBoxImage.Error);
                             File.Delete(file);
                             TesseractFiles = GetTesseractFiles(Tessdatafolder);
                         }
@@ -236,6 +236,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     }
 
     public RelayCommand<object> TesseractRemove { get; }
+
+    public IWindowService WindowService { get; }
 
     public string this[string columnName] => columnName switch
     {
