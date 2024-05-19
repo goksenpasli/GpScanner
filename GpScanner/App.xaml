@@ -407,29 +407,24 @@
                     Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverterEmptyViewerTemplate}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
-                <Extensions:ImageViewer Width="150"
+                <PdfViewer:ShadowedImage Width="150"
                     Height="150"
-                    DecodeHeight="150"
-                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     IsHitTestVisible="False"
-                    OpenButtonVisibility="Collapsed"
-                    PanoramaButtonVisibility="Collapsed"
-                    PrintButtonVisibility="Collapsed"
-                    TifNavigasyonButtonEtkin="Collapsed"
-                    ToolBarVisibility="Collapsed" />
+                    ShowShadow="True">
+                    <PdfViewer:ShadowedImage.Source>
+                        <BitmapImage DecodePixelHeight="150" UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    </PdfViewer:ShadowedImage.Source>
+                </PdfViewer:ShadowedImage>
             </DataTemplate>
             <DataTemplate x:Key="ContributionViewerImgTemplateMini">
-                <Extensions:ImageViewer Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                <PdfViewer:ShadowedImage Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
                     Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                    DecodeHeight="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     IsHitTestVisible="False"
-                    OpenButtonVisibility="Collapsed"
-                    Orientation="Height"
-                    PanoramaButtonVisibility="Collapsed"
-                    PrintButtonVisibility="Collapsed"
-                    TifNavigasyonButtonEtkin="Collapsed"
-                    ToolBarVisibility="Collapsed" />
+                    ShowShadow="True">
+                    <PdfViewer:ShadowedImage.Source>
+                        <BitmapImage DecodePixelHeight="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    </PdfViewer:ShadowedImage.Source>
+                </PdfViewer:ShadowedImage>
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
