@@ -18,7 +18,6 @@ public class DocumentViewerModel : InpcBase
     private IEnumerable<string> directoryAllPdfFiles;
     private string filePath;
     private int ındex;
-    private string ocrText;
     private string pdfFileContent;
     private Scanner scanner;
     private string title;
@@ -112,20 +111,6 @@ public class DocumentViewerModel : InpcBase
             {
                 ındex = value;
                 OnPropertyChanged(nameof(Index));
-            }
-        }
-    }
-
-    public string OcrText
-    {
-        get => ocrText;
-
-        set
-        {
-            if (ocrText != value)
-            {
-                ocrText = value;
-                OnPropertyChanged(nameof(OcrText));
             }
         }
     }

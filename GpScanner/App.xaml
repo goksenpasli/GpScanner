@@ -361,19 +361,21 @@
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="2*" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Extensions:ImageViewer x:Name="ImgVwr"
-                        DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
-                        ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PanoramaButtonVisibility="Collapsed"
-                        PrintButtonVisibility="Visible" />
+                    <Button Command="{Binding DataContext.AddFileToControlPanel, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" CommandParameter="{Binding ElementName=ImgVwr, Path=Source}">
+                        <Button.Content>
+                            <TextBlock FontFamily="Wingdings"
+                                FontSize="16"
+                                Text="ç" />
+                        </Button.Content>
+                    </Button>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Slider LargeChange="1"
                             Maximum="{Binding ElementName=ImgVwr, Path=OriginalPixelHeight}"
@@ -381,13 +383,14 @@
                             SmallChange="1"
                             Style="{StaticResource Slider}"
                             Value="{Binding ElementName=ImgVwr, Path=DecodeHeight, Delay=100}" />
-                        <local:TranslateView Grid.Row="1" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}" />
-                        <TextBox Grid.Row="2"
-                            Background="{StaticResource BorderBackground}"
-                            IsReadOnly="True"
-                            Text="{Binding DataContext.OcrText, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}"
-                            TextWrapping="Wrap" />
+                        <Extensions:ImageViewer x:Name="ImgVwr"
+                            Grid.Row="1"
+                            DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
+                            ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            PanoramaButtonVisibility="Collapsed"
+                            PrintButtonVisibility="Visible" />
                     </Grid>
+                    <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="DvdBurnerEmptyViewerTemplate">
