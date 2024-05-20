@@ -81,6 +81,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private bool singlePage = true;
     private string text = string.Empty;
     private double textSize = 12d;
+    private bool toolBoxIsExpanded;
     private double transparentLevel = 1;
     private XImage xImage;
 
@@ -891,6 +892,19 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
+    public bool ToolBoxIsExpanded
+    {
+        get => toolBoxIsExpanded;
+        set
+        {
+            if (toolBoxIsExpanded != value)
+            {
+                toolBoxIsExpanded = value;
+                OnPropertyChanged(nameof(ToolBoxIsExpanded));
+            }
+        }
+    }
+
     public double TransparentLevel
     {
         get => transparentLevel;
@@ -1286,16 +1300,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private void PdfViewer_PreviewKeyDown(object sender, KeyEventArgs e)
-    {
-        if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Shift))
-        {
-            Cursor = Cursors.Cross;
-        }
-    }
-
-    private void PdfViewer_PreviewKeyUp(object sender, KeyEventArgs e) => Cursor = Cursors.Arrow;
-
     private void RemovePdfFromHistoryList(string filepath)
     {
         Settings.Default.PdfLoadHistory.Remove(filepath);
@@ -1336,4 +1340,12 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e) => EscToolTip = new() { Content = Translation.GetResStringValue("ESCTOCANCEL") };
+
+    private void UserControl_PreviewKeyDown(object sender, KeyEventArgs e)
+    {
+        if (Keyboard.Modifiers == ModifierKeys.Shift)
+        {
+            ToolBoxIsExpanded = true;
+        }
+    }
 }
