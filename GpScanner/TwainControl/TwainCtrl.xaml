@@ -328,7 +328,7 @@
                                                 </Rectangle>
                                                 <Run Text="{local:Loc AUTOFOLDERHELP}" />
                                                 <LineBreak />
-                                                <Rectangle Width="120" Height="35">
+                                                <Rectangle Width="240" Height="35">
                                                     <Rectangle.Fill>
                                                         <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference SpDelay}}" />
                                                     </Rectangle.Fill>

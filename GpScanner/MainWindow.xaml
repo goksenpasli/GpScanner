@@ -936,6 +936,7 @@
                                                                 <Run FontFamily="Wingdings 2"
                                                                     FontSize="18"
                                                                     FontWeight="Bold"
+                                                                    Foreground="Cyan"
                                                                     Text="4" />
                                                             </Hyperlink>
                                                         </TextBlock>
@@ -2173,12 +2174,24 @@
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <TextBlock VerticalAlignment="Center">
+                                                    <Hyperlink BaselineAlignment="Center"
+                                                        Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        TextDecorations="None">
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="3" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Hyperlink>
                                                     <InlineUIContainer BaselineAlignment="Center">
                                                         <Image Width="16"
                                                             Height="16"
                                                             Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, IsAsync=True}" />
                                                     </InlineUIContainer>
-                                                    <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
                                                     <Hyperlink BaselineAlignment="Center"
                                                         Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
                                                         CommandParameter="{Binding Mode=OneWay}"
@@ -2192,6 +2205,7 @@
                                                             </Image.Source>
                                                         </Image>
                                                     </Hyperlink>
+                                                    <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
                                                 </TextBlock>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>

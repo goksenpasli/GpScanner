@@ -3020,7 +3020,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 foreach (string dosya in files)
                 {
                     FileInfo fi = new(dosya);
+                    if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
+                    {
                     list.Add(new Scanner { FileName = dosya, FolderName = fi.Directory.Name, FileSize = fi.Length / 1048576F });
+                    }
                 }
                 files = null;
                 return list;

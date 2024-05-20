@@ -431,7 +431,11 @@
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplateFull">
-                <twain:EypPdfViewer AutoFitContent="True" EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <twain:EypPdfViewer ViewModel:AllPdfViewerControl.AllPageNumber="{Binding DataContext.AllPdfPage, RelativeSource={RelativeSource AncestorType=Window}}"
+                    ViewModel:AllPdfViewerControl.AllPageOrientation="{Binding DataContext.PdfAllPageOrientation, RelativeSource={RelativeSource AncestorType=Window}}"
+                    ViewModel:AllPdfViewerControl.HideAllPdfControls="{Binding ShowAllPdfControl, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}"
+                    AutoFitContent="True"
+                    EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="MonthPreviewSelectorEypViewerTemplate">
                 <twain:EypPdfViewer Width="155"
