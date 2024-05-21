@@ -16,7 +16,7 @@
     d:DesignHeight="600"
     d:DesignWidth="420"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
-    FocusManager.FocusedElement="{Binding ElementName=grid}"
+    FocusManager.FocusedElement="{Binding Source={x:Reference grid}}"
     Loaded="UserControl_Loaded"
     PreviewKeyDown="UserControl_PreviewKeyDown"
     UseLayoutRounding="True"

@@ -1127,6 +1127,17 @@
             Grid.ColumnSpan="3"
             twainctrl:Policy.PolicyName="StatusBar"
             Background="Black">
+            <StatusBarItem>
+                <Grid>
+                    <ProgressBar Width="96"
+                        Height="16"
+                        Maximum="1"
+                        Value="{Binding FileLoadProgress, Mode=OneWay}" />
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding FileLoadProgress, StringFormat={}{0:P0}, Mode=OneWay}" />
+                </Grid>
+            </StatusBarItem>
             <StatusBarItem Visibility="{Binding Scanner.PasswordProtect, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=twainCtrl}">
                 <Image Width="16" Height="16">
                     <Image.Source>

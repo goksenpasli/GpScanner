@@ -952,6 +952,7 @@
                                 <Extensions:FileBreadCrumbControl d:FilePath="FolderPath"
                                     Background="{x:Null}"
                                     FilePath="{Binding Mode=OneWay}"
+                                    InternalBackground="{StaticResource BorderBackground}"
                                     ShowFileName="Visible" />
                             </StackPanel>
                         </DataTemplate>

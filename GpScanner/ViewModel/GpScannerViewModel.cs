@@ -93,6 +93,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private bool documentPanelIsExpanded;
     private ObservableCollection<Scanner> dosyalar;
     private string errorLogPath;
+    private double fileLoadProgress;
     private ObservableCollection<string> fileSystemWatcherProcessedFileList;
     private int flagProgress;
     private double fold = 0.3;
@@ -151,7 +152,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
         AppName = windowService.GetFirstWindow().Title;
-        Dosyalar = GetScannerFileData();
+        LoadFiles = new RelayCommand<object>(async parameter => Dosyalar = await GetScannerFileData(), parameter => true);
+        LoadFiles.Execute(null);
         SeçiliDil = Settings.Default.DefaultLang;
         SeçiliGün = DateTime.Today;
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
@@ -684,6 +686,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     _ = Settings.Default.AdditionalIndexFolders.Add(folderpath);
                     Settings.Default.Save();
                     Settings.Default.Reload();
+                    _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
                 }
             },
             parameter => true);
@@ -1621,6 +1624,20 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand ExploreFile { get; }
 
+    public double FileLoadProgress
+    {
+        get => fileLoadProgress;
+
+        set
+        {
+            if (fileLoadProgress != value)
+            {
+                fileLoadProgress = value;
+                OnPropertyChanged(nameof(FileLoadProgress));
+            }
+        }
+    }
+
     public ObservableCollection<string> FileSystemWatcherProcessedFileList
     {
         get => fileSystemWatcherProcessedFileList;
@@ -1798,6 +1815,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> LoadContributionData { get; }
 
     public RelayCommand<object> LoadErrorEvents { get; }
+
+    public RelayCommand<object> LoadFiles { get; }
 
     public RelayCommand<object> LoadGroupFilesMonth { get; }
 
@@ -2463,9 +2482,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public void ReloadFileDatas(bool dateapplytoday = true)
+    public async void ReloadFileDatas(bool dateapplytoday = true)
     {
-        Dosyalar = GetScannerFileData();
+        Dosyalar = await GetScannerFileData();
         if (dateapplytoday)
         {
             SeçiliGün = DateTime.Today;
@@ -3002,7 +3021,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         .ToList();
     }
 
-    private ObservableCollection<Scanner> GetScannerFileData()
+    private async Task<ObservableCollection<Scanner>> GetScannerFileData()
     {
         if (Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
         {
@@ -3015,18 +3034,23 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     Twainsettings.Settings.Default.AutoFolder,
                 ];
 
-                List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
-                files.Sort(new StrCmpLogicalComparer());
-                foreach (string dosya in files)
-                {
-                    FileInfo fi = new(dosya);
-                    if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
+                return await Task.Run(
+                    () =>
                     {
-                    list.Add(new Scanner { FileName = dosya, FolderName = fi.Directory.Name, FileSize = fi.Length / 1048576F });
-                    }
-                }
-                files = null;
-                return list;
+                        List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
+                        files.Sort(new StrCmpLogicalComparer());
+                        for (int i = 0; i < files.Count; i++)
+                        {
+                            string dosya = files[i];
+                            FileInfo fi = new(dosya);
+                            if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
+                            {
+                                list.Add(new Scanner { FileName = dosya, FolderName = fi.Directory.Name, FileSize = fi.Length / 1048576F });
+                            }
+                            FileLoadProgress = (i + 1) / (double)files.Count;
+                        }
+                        return list;
+                    });
             }
             catch (UnauthorizedAccessException)
             {
@@ -3041,7 +3065,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         try
         {
-            List<string> scannerunindexedfiles = GetScannerFileData()?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).Select(z => z.FileName).ToList();
+            List<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).Select(z => z.FileName).ToList();
             using AppDbContext context = new();
             List<string> scannedDatabaseFiles = (await context.Data.AsNoTracking().ToListAsync())?.Select(x => x.FileName).ToList();
             if (scannerunindexedfiles != null && scannedDatabaseFiles != null)
@@ -3223,7 +3247,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             try
             {
                 FileSystemWatcher watcher = new(autoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
-                watcher.Renamed += (s, e) =>
+                watcher.Renamed += async (s, e) =>
                                    {
                                        using (AppDbContext context = new())
                                        {
@@ -3233,7 +3257,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                            }
                                            _ = context.SaveChanges();
                                        }
-                                       Dosyalar = GetScannerFileData();
+                                       Dosyalar = await GetScannerFileData();
                                    };
             }
             catch (Exception ex)

@@ -948,6 +948,9 @@
                                         Grid.Column="1"
                                         Background="{StaticResource BorderBackground}"
                                         Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal">
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        </StackPanel>
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
