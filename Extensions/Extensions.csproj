@@ -80,6 +80,7 @@
     <Compile Include="Controls\Chart.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="Controls\HSV.cs" />
+    <Compile Include="Controls\KeyboardControl.cs" />
     <Compile Include="Controls\Magnifier.cs" />
     <Compile Include="Controls\MediaViewerSubtitleControl.xaml.cs">
       <DependentUpon>MediaViewerSubtitleControl.xaml</DependentUpon>
@@ -158,6 +159,10 @@
     <Page Include="Controls\Calculator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\KeyboardControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\FileBreadCrumbControl.xaml">
       <Generator>MSBuild:Compile</Generator>

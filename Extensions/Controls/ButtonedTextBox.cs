@@ -22,6 +22,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register("Watermark", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
     private Visibility copyButtonVisibility = Visibility.Visible;
     private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
+    private Visibility keyBoardButtonVisibility = Visibility.Collapsed;
     private Visibility openButtonVisibility = Visibility.Visible;
     private Visibility pasteButtonVisibility = Visibility.Visible;
     private Visibility printButtonVisibility = Visibility.Collapsed;
@@ -79,6 +80,19 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
             {
                 fontSizeButtonVisibility = value;
                 OnPropertyChanged(nameof(FontSizeButtonVisibility));
+            }
+        }
+    }
+
+    public Visibility KeyBoardButtonVisibility
+    {
+        get => keyBoardButtonVisibility;
+        set
+        {
+            if (keyBoardButtonVisibility != value)
+            {
+                keyBoardButtonVisibility = value;
+                OnPropertyChanged(nameof(KeyBoardButtonVisibility));
             }
         }
     }

@@ -820,6 +820,7 @@
                                 d:Text="AramaMetni"
                                 twainctrl:Policy.PolicyName="AramaMetni"
                                 CopyButtonVisibility="Collapsed"
+                                KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
                             <StackPanel Grid.Column="2" Orientation="Horizontal">

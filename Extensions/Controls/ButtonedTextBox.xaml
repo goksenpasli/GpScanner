@@ -2,6 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Extensions">
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+    <local:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
     <Style TargetType="local:ButtonedTextBox">
         <Setter Property="Border.BorderBrush" Value="#ABADB3" />
         <Setter Property="Border.BorderThickness" Value="1" />
@@ -13,6 +14,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
@@ -164,6 +166,30 @@
                                 </Hyperlink>
                             </TextBlock>
                         </Border>
+                        <Border Name="keyboardborder"
+                            Grid.Column="10"
+                            Width="26"
+                            Visibility="{Binding KeyBoardButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <local:ContentToggleButton ArrowVisibility="Collapsed"
+                                Background="{x:Null}"
+                                BorderBrush="{x:Null}"
+                                DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:ButtonedTextBox}}"
+                                IsEnabled="{Binding IsReadOnly, RelativeSource={RelativeSource AncestorType=local:ButtonedTextBox}, Converter={StaticResource ReverseBooleanConverter}}">
+                                <TextBlock FontFamily="Wingdings"
+                                    FontSize="16"
+                                    FontWeight="Bold"
+                                    Foreground="{StaticResource {x:Static SystemColors.HotTrackBrushKey}}"
+                                    Text="7" />
+                                <local:ContentToggleButton.OverContent>
+                                    <local:ResizablePanel Width="400"
+                                        Height="80"
+                                        MinWidth="400"
+                                        MinHeight="80">
+                                        <local:KeyboardControl KeyboardAttachedTextBox="{Binding Mode=OneWay}" />
+                                    </local:ResizablePanel>
+                                </local:ContentToggleButton.OverContent>
+                            </local:ContentToggleButton>
+                        </Border>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="UIElement.IsEnabled" Value="False">
@@ -177,6 +203,7 @@
                             <Setter TargetName="remaintext" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="title" Property="UIElement.Opacity" Value="0.56" />
                             <Setter TargetName="printborder" Property="UIElement.Opacity" Value="0.56" />
+                            <Setter TargetName="keyboardborder" Property="UIElement.Opacity" Value="0.56" />
                         </Trigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#7EB4EA" />
@@ -188,6 +215,7 @@
                             <Setter TargetName="remaintext" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="title" Property="Border.BorderBrush" Value="#7EB4EA" />
                             <Setter TargetName="printborder" Property="Border.BorderBrush" Value="#7EB4EA" />
+                            <Setter TargetName="keyboardborder" Property="Border.BorderBrush" Value="#7EB4EA" />
                         </Trigger>
                         <Trigger Property="UIElement.IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#569DE5" />
@@ -199,6 +227,7 @@
                             <Setter TargetName="remaintext" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="title" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="printborder" Property="Border.BorderBrush" Value="#569DE5" />
+                            <Setter TargetName="keyboardborder" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
