@@ -29,7 +29,12 @@ namespace Extensions
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
-            string key = button.Content.ToString();
+            string key = button.Content?.ToString();
+
+            if (key == null)
+            {
+                return;
+            }
 
             if (button.Tag?.ToString() == "Shift")
             {
@@ -59,7 +64,6 @@ namespace Extensions
                     textBox.Text += key;
                 }
             }
-
         }
 
         private IEnumerable<FrameworkElement> GetTemplateChildren()

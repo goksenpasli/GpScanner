@@ -192,9 +192,7 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
-                StaysOpen="True"
-                TopMost="False">
+            <Extensions:ContentToggleButton StaysOpen="True" TopMost="False">
                 <Grid>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -261,7 +259,7 @@
                             <CheckBox Grid.Row="1"
                                 Content="{local:Loc ADDFIRST}"
                                 IsChecked="{Binding MergePdfFileToFirst}" />
-                            <UniformGrid Grid.Row="2" Columns="2">
+                            <UniformGrid Grid.Row="2" Columns="3">
                                 <Button Command="{Binding MergePdfListAddFile}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32"
@@ -280,7 +278,23 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc MERGEPDF}" />
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run Text="{local:Loc FILE}" />
+                                            <Run Text="{local:Loc MERGEPDF}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding MergePdfListToFile}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="6" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SAVEPDF}" />
                                     </StackPanel>
                                 </Button>
                             </UniformGrid>
@@ -456,15 +470,8 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc RANDOM}" />
                                     </StackPanel>
                                 </Button>
-                                <Button HorizontalContentAlignment="Stretch"
-                                    VerticalContentAlignment="Stretch"
-                                    Command="{Binding ExtractMultiplePdfFile}"
-                                    CommandParameter="{Binding Source={x:Reference PdfViewer}}">
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
+                                <Button Command="{Binding ExtractMultiplePdfFile}" CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                    <StackPanel Orientation="Horizontal">
                                         <Image Width="24"
                                             Height="24"
                                             VerticalAlignment="Bottom"
@@ -473,7 +480,7 @@
                                             VerticalAlignment="Center"
                                             Text="{local:Loc SAVESELECTED}"
                                             TextWrapping="Wrap" />
-                                    </Grid>
+                                    </StackPanel>
                                 </Button>
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"

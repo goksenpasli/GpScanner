@@ -2,18 +2,35 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace Extensions;
 
 public class Resizer : Thumb
 {
-    public static DependencyProperty ThumbDirectionProperty =
-                    DependencyProperty.Register("ThumbDirection", typeof(ResizeDirections), typeof(Resizer));
+    public static DependencyProperty ThumbDirectionProperty = DependencyProperty.Register("ThumbDirection", typeof(ResizeDirections), typeof(Resizer));
 
     static Resizer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Resizer), new FrameworkPropertyMetadata(typeof(Resizer))); }
     public Resizer() { DragDelta += Resizer_DragDelta; }
 
     public ResizeDirections ThumbDirection { get => (ResizeDirections)GetValue(ThumbDirectionProperty); set => SetValue(ThumbDirectionProperty, value); }
+
+    protected override void OnMouseDoubleClick(MouseButtonEventArgs e)
+    {
+        base.OnMouseDoubleClick(e);
+        if (DataContext is not ResizablePanel resizablePanel)
+        {
+            return;
+        }
+        if ((ThumbDirection == ResizeDirections.Left || ThumbDirection == ResizeDirections.Right) && resizablePanel.MinWidth > 0)
+        {
+            resizablePanel.Width = resizablePanel.MinWidth;
+        }
+        else if ((ThumbDirection == ResizeDirections.Top || ThumbDirection == ResizeDirections.Bottom) && resizablePanel.MinHeight > 0)
+        {
+            resizablePanel.Height = resizablePanel.MinHeight;
+        }
+    }
 
     private static double ResizeBottom(DragDeltaEventArgs e, Control designerItem)
     {

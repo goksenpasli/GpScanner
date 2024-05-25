@@ -1005,14 +1005,14 @@
                     </Hyperlink>
                 </TextBlock>
             </StackPanel>
-            <Image Grid.Row="1"
+            <PdfViewer:PdfShadowedImage Grid.Row="1"
                 Width="210"
                 Height="297"
                 Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
-                <Image.Resources>
+                <PdfViewer:PdfShadowedImage.Resources>
                     <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="36" />
-                </Image.Resources>
-                <Image.Tag>
+                </PdfViewer:PdfShadowedImage.Resources>
+                <PdfViewer:PdfShadowedImage.Tag>
                     <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                         <Binding Mode="OneWay"
                             Path="DataContext"
@@ -1024,8 +1024,8 @@
                         </Binding>
                         <Binding Mode="OneWay" Path="RefreshDocumentList" />
                     </MultiBinding>
-                </Image.Tag>
-            </Image>
+                </PdfViewer:PdfShadowedImage.Tag>
+            </PdfViewer:PdfShadowedImage>
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="EypViewerTemplate">

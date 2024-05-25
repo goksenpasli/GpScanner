@@ -182,9 +182,9 @@
                                     Text="7" />
                                 <local:ContentToggleButton.OverContent>
                                     <local:ResizablePanel Width="400"
-                                        Height="80"
+                                        Height="85"
                                         MinWidth="400"
-                                        MinHeight="80">
+                                        MinHeight="85">
                                         <local:KeyboardControl KeyboardAttachedTextBox="{Binding Mode=OneWay}" />
                                     </local:ResizablePanel>
                                 </local:ContentToggleButton.OverContent>

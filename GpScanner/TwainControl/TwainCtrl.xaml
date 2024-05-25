@@ -1171,6 +1171,7 @@
                                     d:Text="FileName"
                                     local:Policy.PolicyName="SaveFileName"
                                     GotKeyboardFocus="ButtonedTextBox_GotKeyboardFocus"
+                                    KeyBoardButtonVisibility="Visible"
                                     MaxLength="255"
                                     OpenButtonVisibility="Collapsed"
                                     RemainingLengthVisibility="Collapsed"

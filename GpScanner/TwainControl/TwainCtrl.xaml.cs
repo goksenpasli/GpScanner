@@ -1065,22 +1065,32 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 string currentfile = PdfImportViewer.PdfViewer.PdfFilePath;
                 if (MergePdfFileToFirst)
                 {
-                    Scanner?.MergePdfFiles?.Add(currentfile);
+                    Scanner.MergePdfFiles.Add(currentfile);
                 }
                 else
                 {
-                    Scanner?.MergePdfFiles?.Insert(0, currentfile);
+                    Scanner.MergePdfFiles.Insert(0, currentfile);
                 }
                 string[] files = Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
-                if (files?.Length > 0)
-                {
-                    files.MergePdf().Save(currentfile);
-                    Scanner?.MergePdfFiles?.Clear();
-                    PdfImportViewer.PdfViewer.PdfFilePath = null;
-                    PdfImportViewer.PdfViewer.PdfFilePath = currentfile;
-                }
+                files.MergePdf().Save(currentfile);
+                Scanner?.MergePdfFiles?.Clear();
+                PdfImportViewer.PdfViewer.PdfFilePath = null;
+                PdfImportViewer.PdfViewer.PdfFilePath = currentfile;
             },
             parameter => Scanner?.MergePdfFiles?.Count > 0 && File.Exists(PdfImportViewer.PdfViewer.PdfFilePath));
+
+        MergePdfListToFile = new RelayCommand<object>(
+            parameter =>
+            {
+                string[] files = Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
+                SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("MERGE")}" };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    files.MergePdf().Save(saveFileDialog.FileName);
+                    Scanner?.MergePdfFiles?.Clear();
+                }
+            },
+            parameter => Scanner?.MergePdfFiles?.Count > 1);
 
         MergePdfListRemoveFile = new RelayCommand<object>(parameter => Scanner?.MergePdfFiles?.Remove(parameter as string), parameter => true);
 
@@ -2536,6 +2546,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand MergePdfListRemoveFile { get; }
 
     public RelayCommand<object> MergePdfListToCurrentFile { get; }
+
+    public RelayCommand<object> MergePdfListToFile { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
 

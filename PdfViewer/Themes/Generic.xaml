@@ -85,7 +85,8 @@
                                                 Margin="1"
                                                 AutoToolTipPlacement="TopLeft"
                                                 IsEnabled="{Binding ZoomEnabled, RelativeSource={RelativeSource TemplatedParent}}"
-                                                Minimum="0.01"
+                                                Maximum="{Binding MaxZoom, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Minimum="{Binding MinZoom, RelativeSource={RelativeSource TemplatedParent}}"
                                                 SmallChange="1"
                                                 Style="{DynamicResource Slider}"
                                                 Visibility="{Binding SliderZoomAngleVisibility, RelativeSource={RelativeSource TemplatedParent}}"
@@ -396,14 +397,25 @@
                                             <Border Background="{StaticResource BorderBackground}"
                                                 BorderBrush="Gray"
                                                 BorderThickness="1">
-                                                <Slider Height="96"
-                                                    AutoToolTipPlacement="TopLeft"
-                                                    AutoToolTipPrecision="2"
-                                                    Minimum="0.01"
-                                                    Orientation="Vertical"
-                                                    SmallChange="1"
-                                                    Style="{DynamicResource Slider}"
-                                                    Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                <StackPanel>
+                                                    <Button Background="{x:Null}"
+                                                        BorderBrush="{x:Null}"
+                                                        Command="{Binding ZoomIncrease, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        Content="+" />
+                                                    <Slider Height="96"
+                                                        AutoToolTipPlacement="TopLeft"
+                                                        AutoToolTipPrecision="2"
+                                                        Maximum="{Binding MaxZoom, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        Minimum="{Binding MinZoom, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        Orientation="Vertical"
+                                                        SmallChange="1"
+                                                        Style="{DynamicResource Slider}"
+                                                        Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    <Button Background="{x:Null}"
+                                                        BorderBrush="{x:Null}"
+                                                        Command="{Binding ZoomDecrease, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        Content="-" />
+                                                </StackPanel>
                                             </Border>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>

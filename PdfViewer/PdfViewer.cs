@@ -172,18 +172,19 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter => File.Exists(PdfFilePath));
 
         Resize = new RelayCommand<object>(
-            delegate
+            parameter =>
             {
-                Zoom = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
-                if (Zoom == 0)
-                {
-                    Zoom = 1;
-                }
+                double zoomFactor = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
+                Zoom = zoomFactor != 0 ? zoomFactor : 1;
             },
             parameter => Source is not null && File.Exists(PdfFilePath));
 
+        ZoomIncrease = new RelayCommand<object>(parameter => Zoom = Math.Min(MaxZoom, Zoom + ZoomIncreaseLevel), parameter => true);
+
+        ZoomDecrease = new RelayCommand<object>(parameter => Zoom = Math.Max(MinZoom, Zoom - ZoomIncreaseLevel), parameter => true);
+
         ReadPdfText = new RelayCommand<object>(
-            delegate
+            parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
@@ -191,7 +192,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter => File.Exists(PdfFilePath));
 
         ReadPdfBookmarks = new RelayCommand<object>(
-            delegate
+            parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfBookmarks = pdfDocument.Bookmarks;
@@ -219,7 +220,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter => File.Exists(PdfFilePath));
 
         SearchPdfText = new RelayCommand<object>(
-            delegate
+            parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
@@ -299,6 +300,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             }
         }
     }
+
+    public double MaxZoom { get; } = 10;
+
+    public double MinZoom { get; } = 0.01;
 
     public Visibility OpenButtonVisibility
     {
@@ -559,7 +564,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public double Zoom { get => (double)GetValue(ZoomProperty); set => SetValue(ZoomProperty, value); }
 
+    public RelayCommand<object> ZoomDecrease { get; }
+
     public bool ZoomEnabled { get => (bool)GetValue(ZoomEnabledProperty); set => SetValue(ZoomEnabledProperty, value); }
+
+    public RelayCommand<object> ZoomIncrease { get; }
+
+    public double ZoomIncreaseLevel { get; } = 0.2;
 
     public static async Task<BitmapSource> ConvertToBitmapSourceAsync(string pdffilepath, int page, int dpi = 72)
     {
