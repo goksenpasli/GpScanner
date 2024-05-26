@@ -135,61 +135,69 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         SplitAllImage = new RelayCommand<object>(
             async parameter =>
             {
-                if (DataContext is TwainCtrl twainControl)
+                if (DataContext is not TwainCtrl twainControl)
                 {
-                    List<ScannedImage> listcroppedimages;
-                    PdfDocument pdfdocument = null;
-                    bool splitpdfbypage = Keyboard.Modifiers == ModifierKeys.Alt;
-                    await Task.Run(
-                        async () =>
-                        {
-                            listcroppedimages = Scanner.Resimler
-                            .Where(z => z.Seçili)
-                            .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
-                            .ToList();
-                            pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
-                        });
-                    string savefolder = CreateSaveFolder("SPLIT");
-                    string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
-                    pdfdocument.Save(path);
-                    if (splitpdfbypage)
-                    {
-                        twainControl.SplitPdfPageCount(path, savefolder, 1);
-                    }
-
-                    WebAdreseGit.Execute(savefolder);
-                    listcroppedimages = null;
-                    pdfdocument = null;
-                    if (Settings.Default.RemoveProcessedImage)
-                    {
-                        twainControl.SeçiliListeTemizle.Execute(null);
-                    }
+                    return;
                 }
+
+                List<ScannedImage> listcroppedimages;
+                PdfDocument pdfdocument = null;
+                bool splitpdfbypage = Keyboard.Modifiers == ModifierKeys.Alt;
+                await Task.Run(
+                    async () =>
+                    {
+                        listcroppedimages = Scanner.Resimler
+                        .Where(z => z.Seçili)
+                        .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
+                        .ToList();
+                        pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
+                    });
+                string savefolder = CreateSaveFolder("SPLIT");
+                string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
+                pdfdocument.Save(path);
+                if (splitpdfbypage)
+                {
+                    twainControl.SplitPdfPageCount(path, savefolder, 1);
+                }
+
+                WebAdreseGit.Execute(savefolder);
+                listcroppedimages = null;
+                pdfdocument = null;
+                if (!Settings.Default.RemoveProcessedImage)
+                {
+                    return;
+                }
+
+                twainControl.SeçiliListeTemizle.Execute(null);
             },
             parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
         MergeHorizontal = new RelayCommand<object>(
             async parameter =>
             {
-                if (DataContext is TwainCtrl twainControl)
+                if (DataContext is not TwainCtrl twainControl)
                 {
-                    List<ScannedImage> listcroppedimages;
-                    Orientation orientation = Keyboard.Modifiers == ModifierKeys.Alt ? Orientation.Vertical : Orientation.Horizontal;
-                    string savefolder = CreateSaveFolder("MERGE");
-                    string path = savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "jpg");
-                    await Task.Run(
-                        () =>
-                        {
-                            listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
-                            File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
-                        });
-                    WebAdreseGit.Execute(savefolder);
-                    listcroppedimages = null;
-                    if (Settings.Default.RemoveProcessedImage)
-                    {
-                        twainControl.SeçiliListeTemizle.Execute(null);
-                    }
+                    return;
                 }
+
+                List<ScannedImage> listcroppedimages;
+                Orientation orientation = Keyboard.Modifiers == ModifierKeys.Alt ? Orientation.Vertical : Orientation.Horizontal;
+                string savefolder = CreateSaveFolder("MERGE");
+                string path = savefolder.SetUniqueFile(Translation.GetResStringValue("MERGE"), "jpg");
+                await Task.Run(
+                    () =>
+                    {
+                        listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                        File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
+                    });
+                WebAdreseGit.Execute(savefolder);
+                listcroppedimages = null;
+                if (!Settings.Default.RemoveProcessedImage)
+                {
+                    return;
+                }
+
+                twainControl.SeçiliListeTemizle.Execute(null);
             },
             parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
 

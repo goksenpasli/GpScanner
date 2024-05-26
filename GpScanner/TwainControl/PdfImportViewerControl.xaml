@@ -1268,7 +1268,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     </StackPanel>
-                    <ToggleButton IsChecked="{Binding DrawLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <ToggleButton IsChecked="{Binding DrawLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Canvas Width="16" Height="16">
                                 <TextBlock Canvas.Top="-3"
@@ -1290,7 +1290,7 @@
                             </Canvas>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <ToggleButton IsChecked="{Binding DrawBeziers, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <ToggleButton IsChecked="{Binding DrawBeziers, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Canvas Width="16" Height="16">
                                 <TextBlock Canvas.Top="-3"
@@ -1312,7 +1312,7 @@
                             </Canvas>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <ToggleButton IsChecked="{Binding DrawCurve, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <ToggleButton IsChecked="{Binding DrawCurve, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Canvas Width="16" Height="16">
                                 <TextBlock Canvas.Top="-3"
@@ -1335,7 +1335,7 @@
                             </Canvas>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <ToggleButton IsChecked="{Binding DrawPolygon, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding SinglePage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <ToggleButton IsChecked="{Binding DrawPolygon, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Canvas Width="16" Height="16">
                                 <TextBlock Canvas.Top="-3"
@@ -1507,7 +1507,7 @@
                                     <TextBox Width="64"
                                         VerticalContentAlignment="Center"
                                         Text="{Binding AnnotationText}" />
-                                    <ToggleButton IsChecked="{Binding DrawAnnotation}" IsEnabled="{Binding SinglePage}">
+                                    <ToggleButton IsChecked="{Binding DrawAnnotation}">
                                         <ToggleButton.Content>
                                             <Image Width="16" Height="16">
                                                 <Image.Source>

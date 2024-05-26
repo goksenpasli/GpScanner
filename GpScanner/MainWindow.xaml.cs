@@ -21,6 +21,7 @@ using static TwainControl.DrawControl;
 using Twainsettings = TwainControl.Properties;
 
 namespace GpScanner;
+
 public partial class MainWindow : Window
 {
     public static CollectionViewSource cvs;

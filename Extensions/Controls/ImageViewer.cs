@@ -252,6 +252,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public ImageSource Source { get => (ImageSource)GetValue(SourceProperty); set => SetValue(SourceProperty, value); }
 
     public Geometry3D SphereModel { get; set; } = MediaViewer.CreateGeometry();
+
     [Browsable(false)]
     public TiffBitmapDecoder TiffDecoder
     {
