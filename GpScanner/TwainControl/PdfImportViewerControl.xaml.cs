@@ -245,6 +245,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             {
                 if (parameter is PdfDocument pdfDocument && pdfDocument is not null)
                 {
+                    pdfDocument.ApplyDefaultPdfCompression();
                     pdfDocument.Save(PdfViewer.PdfFilePath);
                     PdfViewer.Source = await Viewer.ConvertToImgAsync(PdfViewer.PdfFilePath, PdfViewer.Sayfa, PdfViewer.Dpi);
                 }

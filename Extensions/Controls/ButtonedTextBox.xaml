@@ -43,8 +43,22 @@
                                     Margin="4,0,0,0"
                                     VerticalAlignment="Center"
                                     Foreground="Gray"
-                                    Text="{Binding Watermark, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="Collapsed" />
+                                    Text="{Binding Watermark, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed" />
+                                            <Style.Triggers>
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsFocused, RelativeSource={RelativeSource TemplatedParent}}" Value="False" />
+                                                        <Condition Binding="{Binding Text, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" Value="" />
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                                 <ScrollViewer Name="PART_ContentHost"
                                     Focusable="False"
                                     HorizontalScrollBarVisibility="Hidden"
@@ -229,13 +243,6 @@
                             <Setter TargetName="printborder" Property="Border.BorderBrush" Value="#569DE5" />
                             <Setter TargetName="keyboardborder" Property="Border.BorderBrush" Value="#569DE5" />
                         </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsFocused" Value="False" />
-                                <Condition Property="TextBlock.Text" Value="" />
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="PART_Watermark" Property="Visibility" Value="Visible" />
-                        </MultiTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
