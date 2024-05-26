@@ -26,7 +26,7 @@ namespace PdfViewer
             string file = pdfpath ?? GetPdfFilePath(control);
             int thumbsize = GetThumbSize(control);
             tooltip.HorizontalOffset = -thumbsize - 40;
-            BitmapSource bitmapsource = await PdfViewer.ConvertToBitmapSourceAsync(file, pagenumber, 16);
+            BitmapSource bitmapsource = await PdfViewer.ConvertToImgAsync(file, pagenumber, 16);
             if (bitmapsource != null)
             {
                 bitmapsource.Freeze();

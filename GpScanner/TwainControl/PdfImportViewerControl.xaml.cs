@@ -247,7 +247,12 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     pdfDocument.ApplyDefaultPdfCompression();
                     pdfDocument.Save(PdfViewer.PdfFilePath);
-                    PdfViewer.Source = await Viewer.ConvertToImgAsync(PdfViewer.PdfFilePath, PdfViewer.Sayfa, PdfViewer.Dpi);
+                    double zoom = PdfViewer.Zoom;
+                    using PdfiumViewer.PdfDocument pdfDoc = PdfiumViewer.PdfDocument.Load(PdfViewer.PdfFilePath);
+                    int width = (int)(pdfDoc.PageSizes[PdfViewer.Sayfa - 1].Width / 72 * PdfViewer.Dpi);
+                    int height = (int)(pdfDoc.PageSizes[PdfViewer.Sayfa - 1].Height / 72 * PdfViewer.Dpi);
+                    PdfViewer.Source = await Viewer.ConvertToImgAsync(pdfDoc, PdfViewer.Dpi, PdfViewer.Sayfa - 1, width, height);
+                    PdfViewer.Zoom = zoom;
                 }
             },
             parameter => true);

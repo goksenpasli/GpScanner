@@ -1183,7 +1183,7 @@
                                     <ComboBox VerticalContentAlignment="Center"
                                         ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfPenLineJoinLayout}}"
                                         SelectedItem="{Binding PenLineJoin}" />
-                                    <Extensions:NumericUpDown Width="40"
+                                    <Extensions:NumericUpDown Width="80"
                                         Interval="0.5"
                                         Maximum="512"
                                         Minimum="0.5"
@@ -1468,7 +1468,7 @@
                                             <SolidColorBrush Color="{Binding GraphObjectFillColor, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </TextBox.BorderBrush>
                                     </TextBox>
-                                    <Extensions:NumericUpDown Width="40"
+                                    <Extensions:NumericUpDown Width="80"
                                         Interval="1"
                                         Maximum="512"
                                         Minimum="1"

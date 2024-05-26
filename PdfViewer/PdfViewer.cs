@@ -572,33 +572,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public double ZoomIncreaseLevel { get; } = 0.2;
 
-    public static async Task<BitmapSource> ConvertToBitmapSourceAsync(string pdffilepath, int page, int dpi = 72)
-    {
-        try
-        {
-            return !IsValidPdfFile(pdffilepath)
-                   ? throw new ArgumentNullException(nameof(pdffilepath), "pdf is not valid")
-                   : await Task.Run(
-                async () =>
-                {
-                    using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
-                    if (pdfDoc is null)
-                    {
-                        return null;
-                    }
-                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
-                    BitmapSource bitmapsource = await RenderPdf(pdfDoc, dpi, page - 1, width, height);
-                    bitmapsource.Freeze();
-                    return bitmapsource;
-                });
-        }
-        catch (Exception)
-        {
-            return null;
-        }
-    }
-
     public static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 72)
     {
         try
@@ -630,6 +603,20 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         {
             return null;
         }
+    }
+
+    public static Task<BitmapSource> ConvertToImgAsync(PdfDocument pdfDoc, int dpi, int page, int width, int height)
+    {
+        return Task.Run(
+            () =>
+            {
+                using Bitmap image = pdfDoc.Render(page, width, height, dpi, dpi, false) as Bitmap;
+                IntPtr gdibitmap = image.GetHbitmap();
+                BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
+                _ = Helpers.DeleteObject(gdibitmap);
+                bitmapSource?.Freeze();
+                return bitmapSource;
+            });
     }
 
     public static async Task<MemoryStream> ConvertToImgStreamAsync(byte[] pdffilestream, int page, int dpi)
@@ -816,7 +803,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 72 * dpi);
                 pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                 pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                pdfViewer.Source = await RenderPdf(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
+                pdfViewer.Source = await ConvertToImgAsync(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
             }
             catch (Exception)
             {
@@ -847,20 +834,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             GC.Collect();
         }
         return fixedDocument;
-    }
-
-    private static Task<BitmapSource> RenderPdf(PdfDocument pdfDoc, int dpi, int page, int width, int height)
-    {
-        return Task.Run(
-            () =>
-            {
-                using Bitmap image = pdfDoc.Render(page, width, height, dpi, dpi, false) as Bitmap;
-                IntPtr gdibitmap = image.GetHbitmap();
-                BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                _ = Helpers.DeleteObject(gdibitmap);
-                bitmapSource?.Freeze();
-                return bitmapSource;
-            });
     }
 
     private static async void SayfaChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
