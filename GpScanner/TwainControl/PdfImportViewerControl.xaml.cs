@@ -923,7 +923,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-    private Rect CalculateRect(ScrollViewer scrollviewer, double x1, double x2, double y1, double y2, PdfPage page)
+    private Rect CalculateRect(ScrollViewer scrollviewer, double x1, double x2, double y1, double y2, PdfPage page, bool linescurves = false)
     {
         if (scrollviewer == null)
         {
@@ -946,7 +946,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
         return page.Orientation == PageOrientation.Portrait
                ? new Rect(coordx * widthmultiply, coordy * heightmultiply, width * widthmultiply, height * heightmultiply)
-               : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
+               : linescurves
+                 ? new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply), height * widthmultiply, width * heightmultiply)
+                 : new Rect(coordy * widthmultiply, page.Height - (coordx * heightmultiply) - (width * widthmultiply), height * widthmultiply, width * heightmultiply);
     }
 
     private void DrawAnnotations(PdfPage page, XGraphics gfx, Rect rect)
@@ -1111,7 +1113,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 if (DrawLines || DrawBeziers || DrawCurve || DrawPolygon)
                 {
                     using PdfDocument reader = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.ReadOnly);
-                    Rect rect = CalculateRect(scrollviewer, mousedowncoord.X, 0, mousedowncoord.Y, 0, reader?.Pages[PdfViewer.Sayfa - 1]);
+                    Rect rect = CalculateRect(scrollviewer, mousedowncoord.X, 0, mousedowncoord.Y, 0, reader?.Pages[PdfViewer.Sayfa - 1], true);
                     Points.Add(new XPoint(rect.X, rect.Y));
                     GC.Collect();
                 }
