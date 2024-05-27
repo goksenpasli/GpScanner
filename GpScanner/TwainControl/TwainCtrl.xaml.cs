@@ -3282,7 +3282,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         foreach (PdfPage page in inputDocument.Pages)
         {
-            if (page.Rotate>360 || page.Rotate<-360)
+            if (page.Rotate is > 360 or < (-360))
             {
                 page.Rotate = 0;
             }
@@ -3294,8 +3294,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
     {
-        var page = inputDocument.Pages[pageindex];
-        if (page.Rotate > 360 || page.Rotate < -360)
+        PdfPage page = inputDocument.Pages[pageindex];
+        if (page.Rotate is > 360 or < (-360))
         {
             page.Rotate = 0;
         }
