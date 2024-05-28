@@ -1008,10 +1008,19 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private void DrawImages(XGraphics gfx, Rect rect)
+    private void DrawImages(PdfPage page, XGraphics gfx, Rect rect)
     {
-        if (DrawImage && DrawnImage is not null)
+        if (DrawImage && DrawnImage != null)
         {
+            XPoint center = new(rect.X + (rect.Width / 2), rect.Y + (rect.Height / 2));
+            double angle = page.Rotate switch
+            {
+                270 or -90 => 90,
+                90 => -90,
+                180 => -180,
+                _ => 0,
+            };
+            gfx.RotateAtTransform(angle, center);
             gfx.DrawImage(DrawnImage, rect);
             xImage?.Dispose();
         }
@@ -1091,16 +1100,16 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         if (DrawString && brush is not null && !string.IsNullOrWhiteSpace(Text))
         {
             XFont font = new("Times New Roman", TextSize, XFontStyle.Regular);
-            rect.Height = 0;
-            if (page.Orientation == PageOrientation.Portrait)
+            XPoint center = new(rect.X + (rect.Width / 2), rect.Y + (rect.Height / 2));
+            double angle = page.Rotate switch
             {
-                gfx.DrawString(Text, font, brush, rect, XStringFormats.Default);
-            }
-            else
-            {
-                gfx.RotateAtTransform(-90, rect.Location);
-                gfx.DrawString(Text, font, brush, rect, XStringFormats.Default);
-            }
+                270 or -90 => 90,
+                90 => -90,
+                180 => -180,
+                _ => 0,
+            };
+            gfx.RotateAtTransform(angle, center);
+            gfx.DrawString(Text, font, brush, rect, XStringFormats.Center);
         }
     }
 
@@ -1246,7 +1255,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
                         DrawShapes(page, gfx, rect, pen, brush);
                         DrawLinesAndCurves(page, gfx, rect, pen, brush);
-                        DrawImages(gfx, rect);
+                        DrawImages(page, gfx, rect);
                         DrawTexts(page, gfx, rect, brush);
                         DrawAnnotations(page, gfx, rect);
 
