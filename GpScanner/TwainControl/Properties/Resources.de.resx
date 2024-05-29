@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Entfernen Sie die Ordner nach Abschluss der Indexoperationen, um die Lastleistung zu erhalten</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Es gibt zahlreiche Dateien</value>
+  </data>
 </root>

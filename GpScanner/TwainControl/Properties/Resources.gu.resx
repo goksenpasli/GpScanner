@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>લોડ પરફોર્મન્સ મેળવવા માટે અનુક્રમણિકા કામગીરી પૂર્ણ થયા પછી ફોલ્ડર્સને દૂર કરો</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>અસંખ્ય ફાઇલો છે</value>
+  </data>
 </root>

@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Supprimer les dossiers une fois les opérations d'index terminées pour gagner des performances de chargement</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Il existe de nombreux fichiers</value>
+  </data>
 </root>

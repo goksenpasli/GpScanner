@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>インデックス操作が完了した後にフォルダを削除して負荷のパフォーマンスを獲得します</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>多数のファイルがあります</value>
+  </data>
 </root>

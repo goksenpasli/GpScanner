@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Távolítsa el a mappákat az index műveletek befejezése után a betöltési teljesítmény elérése érdekében</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Számos fájl van</value>
+  </data>
 </root>

@@ -759,4 +759,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>برای به دست آوردن عملکرد بار ، پوشه ها را حذف کنید</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>پرونده های بی شماری وجود دارد</value>
+  </data>
 </root>

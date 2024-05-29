@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Выдаліце ​​папкі пасля завяршэння аперацый па індэксах, каб атрымаць прадукцыйнасць нагрузкі</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Ёсць шматлікія файлы</value>
+  </data>
 </root>

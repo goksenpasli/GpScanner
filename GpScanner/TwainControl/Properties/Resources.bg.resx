@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Премахнете папките след завършване на операциите на индекса, за да спечелите натоварване на производителността</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Има много файлове</value>
+  </data>
 </root>

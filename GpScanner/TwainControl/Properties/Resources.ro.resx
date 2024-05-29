@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Eliminați folderele după operațiunile de index finalizate pentru a obține performanță de încărcare</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Există numeroase fișiere</value>
+  </data>
 </root>

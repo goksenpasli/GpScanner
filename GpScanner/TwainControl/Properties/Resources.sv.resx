@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Ta bort mappar efter att indexoperationer har slutförts för att få lastprestanda</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Det finns många filer</value>
+  </data>
 </root>

@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Fjern mapper efter indeksoperationer afsluttet for at få belastningsydelse</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Der er adskillige filer</value>
+  </data>
 </root>

@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Yük performansını qazanmaq üçün indeks əməliyyatları tamamlandıqdan sonra qovluqları çıxarın</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Çox sayda fayl var</value>
+  </data>
 </root>

@@ -757,4 +757,7 @@ BELGE EKLE</value>
   <data name="INDEXWARN" xml:space="preserve">
     <value>İndekslenmemiş dosyalar penceresinin açılışında daha iyi performans elde etmek için dizin işlemleri tamamlandıktan sonra klasörleri silin</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Çok Sayıda İndekslenmemiş Dosya Var</value>
+  </data>
 </root>

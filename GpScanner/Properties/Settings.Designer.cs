@@ -588,5 +588,17 @@ namespace GpScanner.Properties {
                 this["ShowAllPdfControl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int UnindexedFileCount {
+            get {
+                return ((int)(this["UnindexedFileCount"]));
+            }
+            set {
+                this["UnindexedFileCount"] = value;
+            }
+        }
     }
 }

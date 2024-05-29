@@ -751,4 +751,7 @@ TO FILE</value>
   <data name="INDEXWARN" xml:space="preserve">
     <value>After Index Operations Completed Remove Folders To Gain Load Performance</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>There are numerous files unindexed</value>
+  </data>
 </root>

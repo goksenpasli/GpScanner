@@ -1454,6 +1454,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string WARNUNINDEXFILES {
+            get {
+                return ResourceManager.GetString("WARNUNINDEXFILES", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string WIDTHCOUNT {
             get {
                 return ResourceManager.GetString("WIDTHCOUNT", resourceCulture);

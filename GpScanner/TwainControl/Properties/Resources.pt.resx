@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Remova as pastas após as operações de índice concluídas para obter o desempenho da carga</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Existem inúmeros arquivos</value>
+  </data>
 </root>

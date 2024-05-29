@@ -132,6 +132,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string selectedFtp;
     private ReminderData selectedReminder;
     private Size selectedSize;
+    private bool showUnindexedFileWarn;
     private bool shutdown;
     private List<Data> sqlQueryData;
     private string sqlText = string.Empty;
@@ -559,7 +560,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
-        LoadUnindexedFiles = new RelayCommand<object>(async parameter => UnIndexedFiles = await GetUnindexedFileData(), parameter => true);
+        LoadUnindexedFiles = new RelayCommand<object>(
+            async parameter =>
+            {
+                UnIndexedFiles = await GetUnindexedFileData();
+                ShowUnindexedFileWarn = UnIndexedFiles.Count > Settings.Default.UnindexedFileCount;
+                ShowUnindexedFileWarn = false;
+            },
+            parameter => true);
 
         Tümünüİşaretle = new RelayCommand<object>(
             parameter =>
@@ -2257,6 +2265,20 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
 
     public int[] SettingsPagePictureResizeList { get; } = Enumerable.Range(5, 100).Where(z => z % 5 == 0).ToArray();
+
+    public bool ShowUnindexedFileWarn
+    {
+        get => showUnindexedFileWarn;
+
+        set
+        {
+            if (showUnindexedFileWarn != value)
+            {
+                showUnindexedFileWarn = value;
+                OnPropertyChanged(nameof(ShowUnindexedFileWarn));
+            }
+        }
+    }
 
     public bool Shutdown
     {

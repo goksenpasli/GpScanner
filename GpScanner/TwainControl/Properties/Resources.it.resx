@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Rimuovere le cartelle dopo le operazioni dell'indice completate per ottenere prestazioni di carico</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Ci sono numerosi file</value>
+  </data>
 </root>

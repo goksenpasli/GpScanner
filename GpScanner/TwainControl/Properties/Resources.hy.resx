@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Հեռացրեք Թղթապանակները ինդեքսային գործառնություններից հետո ավարտվել են բեռի աշխատանքը ստանալու համար</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Կան բազմաթիվ ֆայլեր</value>
+  </data>
 </root>

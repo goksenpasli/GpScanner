@@ -759,4 +759,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Отстранете ги папките по завршувањето на операциите на индексот за да се здобијат со перформанси на оптоварувањето</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Постојат бројни датотеки</value>
+  </data>
 </root>

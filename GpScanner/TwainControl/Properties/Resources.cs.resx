@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Po dokončení indexových operací odstraňte složky, abyste získali výkon zatížení</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Existuje mnoho souborů</value>
+  </data>
 </root>

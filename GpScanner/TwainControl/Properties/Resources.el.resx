@@ -744,4 +744,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Αφαιρέστε τους φακέλους μετά την ολοκλήρωση των λειτουργιών ευρετηρίου για να αποκτήσετε απόδοση φορτίου</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Υπάρχουν πολλά αρχεία</value>
+  </data>
 </root>

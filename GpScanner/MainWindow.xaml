@@ -226,7 +226,7 @@
             </TaskbarItemInfo.ThumbButtonInfos>
         </TaskbarItemInfo>
     </Window.TaskbarItemInfo>
-    <Grid d:Effect="{x:Null}">
+    <Grid x:Name="grid" d:Effect="{x:Null}">
         <Grid.Style>
             <Style TargetType="Grid">
                 <Style.Triggers>
@@ -317,6 +317,29 @@
                 </ContextMenu>
             </Extensions:SystemTrayIcon.ContextMenu>
         </Extensions:SystemTrayIcon>
+        <Extensions:FadedToolTipControl d:IsHidden="True"
+            Background="{StaticResource Dur}"
+            BorderBrush="{x:Null}"
+            PopupParent="{Binding ElementName=grid}"
+            Position="Center"
+            Show="{Binding ShowUnindexedFileWarn}"
+            TimeToClose="4000"
+            TimeToShow="0">
+            <Grid Width="250"
+                Height="250"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Background="{StaticResource Dur}">
+                <TextBlock Margin="25"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    d:Text="WARN"
+                    FontSize="25"
+                    Foreground="White"
+                    Text="{twainctrl:Loc WARNUNINDEXFILES}"
+                    TextWrapping="Wrap" />
+            </Grid>
+        </Extensions:FadedToolTipControl>
         <GridSplitter Grid.Column="1"
             Width="3"
             HorizontalAlignment="Stretch"

@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Uklonite mape nakon završetka indeksnih operacija kako biste postigli učinak opterećenja</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Postoje brojne datoteke</value>
+  </data>
 </root>

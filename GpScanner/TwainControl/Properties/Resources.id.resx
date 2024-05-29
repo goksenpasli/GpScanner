@@ -747,4 +747,7 @@
   <data name="INDEXWARN" xml:space="preserve">
     <value>Hapus folder setelah operasi indeks selesai untuk mendapatkan kinerja beban</value>
   </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Ada banyak file</value>
+  </data>
 </root>
