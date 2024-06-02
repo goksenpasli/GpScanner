@@ -1176,6 +1176,30 @@
         Vid="{StaticResource VideoViewerTemplateMini}"
         Xlsx="{StaticResource EypSimpleXlsxTemplate}"
         Zip="{StaticResource ZipViewerTemplate}" />
+    <Style TargetType="TabItem">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border Name="Panel">
+                        <ContentPresenter Margin="10,2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            ContentSource="Header" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Panel" Property="Background" Value="{StaticResource GroupBoxBackGround}" />
+                            <Setter TargetName="Panel" Property="BorderBrush" Value="Black" />
+                            <Setter TargetName="Panel" Property="BorderThickness" Value="1" />
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter TargetName="Panel" Property="Background" Value="{StaticResource BorderBackground}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style x:Key="NumericUpDownStyle" TargetType="{x:Type Extensions:NumericUpDown}">
         <Setter Property="Background" Value="{x:Null}" />
         <Setter Property="Template">

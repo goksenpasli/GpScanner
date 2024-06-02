@@ -769,28 +769,35 @@
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
                                 <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="PdfCompressorControl" ArrowVisibility="Collapsed">
-                                    <Canvas Width="32" Height="32">
-                                        <Image Width="32"
-                                            Height="32"
-                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                        <Image Canvas.Right="0"
-                                            Canvas.Bottom="0"
-                                            Width="16"
-                                            Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="zipfldr.dll" />
-                                                    <Binding Source="0" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Canvas>
+                                    <Grid>
+                                        <ProgressBar Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Maximum="1"
+                                            Orientation="Vertical"
+                                            Value="{Binding ElementName=PdfCompressorControl, Path=ProgressValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Canvas Width="32" Height="32">
+                                            <Image Width="32"
+                                                Height="32"
+                                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                            <Image Canvas.Right="0"
+                                                Canvas.Bottom="0"
+                                                Width="16"
+                                                Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="zipfldr.dll" />
+                                                        <Binding Source="0" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
+                                    </Grid>
                                     <Extensions:ContentToggleButton.OverContent>
                                         <Extensions:ResizablePanel Width="720"
                                             Height="640"
                                             MinWidth="320"
                                             MinHeight="240">
-                                            <local:PdfCompressorControl />
+                                            <local:PdfCompressorControl x:Name="PdfCompressorControl" />
                                         </Extensions:ResizablePanel>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>

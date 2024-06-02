@@ -150,7 +150,7 @@
                 <Style.Triggers>
                     <Trigger Property="IsSelected" Value="True">
                         <Setter Property="Background" Value="{StaticResource BorderBackground}" />
-                        <Setter Property="BorderBrush" Value="{StaticResource GroupBoxBackGround}" />
+                        <Setter Property="BorderBrush" Value="DarkMagenta" />
                     </Trigger>
                     <Trigger Property="IsMouseOver" Value="True">
                         <Setter Property="Background" Value="#1F26A0DA" />

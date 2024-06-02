@@ -18,5 +18,6 @@
         <ResourceDictionary Source="/Extensions;component/Controls/ArchiveViewer.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/FileBreadCrumbControl.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/KeyboardControl.xaml" />
+        <ResourceDictionary Source="/Extensions;component/Controls/CheckComboBox.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

@@ -106,6 +106,8 @@ public class Compressor : Control, INotifyPropertyChanged
             parameter => CompressFinished);
     }
 
+    public event EventHandler<double> ProgressChanged;
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     public RelayCommand<object> BatchCompressFile { get; }
@@ -128,6 +130,7 @@ public class Compressor : Control, INotifyPropertyChanged
             {
                 compressionProgress = value;
                 OnPropertyChanged(nameof(CompressionProgress));
+                OnProgressChanged(CompressionProgress);
             }
         }
     }
@@ -244,6 +247,8 @@ public class Compressor : Control, INotifyPropertyChanged
             });
         return document;
     }
+
+    protected virtual void OnProgressChanged(double progress) => ProgressChanged?.Invoke(this, progress);
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 

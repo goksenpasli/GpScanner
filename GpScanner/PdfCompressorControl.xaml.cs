@@ -1,4 +1,6 @@
 ﻿using GpScanner.ViewModel;
+using PdfCompressor;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
@@ -9,7 +11,15 @@ namespace GpScanner
     /// </summary>
     public partial class PdfCompressorControl : UserControl
     {
-        public PdfCompressorControl() { InitializeComponent(); }
+        public static readonly DependencyPropertyKey ProgressValueProperty = DependencyProperty.RegisterReadOnly("ProgressValue", typeof(double), typeof(PdfCompressorControl), new PropertyMetadata(0d));
+
+        public PdfCompressorControl()
+        {
+            InitializeComponent();
+            Compressor.ProgressChanged += Compressor_ProgressChanged;
+        }
+
+        public double ProgressValue => (double)GetValue(ProgressValueProperty.DependencyProperty);
 
         private void ComboBox_CompressorListSourceUpdated(object sender, DataTransferEventArgs e)
         {
@@ -27,5 +37,7 @@ namespace GpScanner
                 gpScannerViewModel.ReloadFileDatas(false);
             }
         }
+
+        private void Compressor_ProgressChanged(object sender, double e) => Dispatcher.BeginInvoke(() => SetValue(ProgressValueProperty, e));
     }
 }
