@@ -101,6 +101,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private bool helpIsOpened;
     private bool ıgnoreImageWidthHeight;
     private byte[] ımgData;
+    private bool ısEven = true;
+    private bool ısOdd = true;
     private bool isMouseDown;
     private bool isRightMouseDown;
     private Window maximizedWindow;
@@ -1141,11 +1143,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         }
                         if (Keyboard.Modifiers == ModifierKeys.Alt)
                         {
+                            PdfDocument listDocument = null;
                             for (int i = 0; i < pdfdocument.PageCount; i++)
                             {
-                                using PdfDocument listDocument = pdfdocument.GenerateWatermarkedPdf(i, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
-                                listDocument.Save(oldpdfpath);
+                                  listDocument = pdfdocument.GenerateWatermarkedPdf(i, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
                             }
+                            listDocument?.Save(oldpdfpath);
+                            listDocument?.Dispose();
                         }
                         else
                         {
@@ -1727,19 +1731,23 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
+                XFont font = new(PdfWatermarkFont, Scanner.PdfPageNumberSize);
+                XBrush brush = new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor));
                 if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     for (int i = 0; i < pdfdocument.PageCount; i++)
                     {
                         PdfPage pageall = pdfdocument.Pages[i];
                         using XGraphics gfxall = XGraphics.FromPdfPage(pageall, XGraphicsPdfPageOptions.Append);
-                        double textallwidth = gfxall.MeasureString(GetPdfBatchNumberString(i), new XFont("Times New Roman", Scanner.PdfPageNumberSize)).Width;
-                        gfxall.DrawText(
-                            new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
-                            GetPdfBatchNumberString(i),
-                            PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[0],
-                            PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[1],
-                            Scanner.PdfPageNumberSize);
+                        double textallwidth = gfxall.MeasureString(GetPdfBatchNumberString(i), font).Width;
+                        if (i % 2 == 0 && IsOdd)
+                        {
+                            gfxall.DrawText(brush, GetPdfBatchNumberString(i), PdfWatermarkFont, PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[0], PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[1], Scanner.PdfPageNumberSize);
+                        }
+                        if (i % 2 == 1 && IsEven)
+                        {
+                            gfxall.DrawText(brush, GetPdfBatchNumberString(i), PdfWatermarkFont, PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[0], PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[1], Scanner.PdfPageNumberSize);
+                        }
                     }
 
                     pdfdocument.Save(pdfviewer.PdfFilePath);
@@ -1751,17 +1759,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 PdfPage page = pdfdocument.Pages[pdfviewer.Sayfa - 1];
                 using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                double textwidth = gfx.MeasureString(GetPdfBatchNumberString(pdfviewer.Sayfa), new XFont("Times New Roman", Scanner.PdfPageNumberSize)).Width;
-                gfx.DrawText(
-                    new XSolidBrush(XColor.FromKnownColor(Scanner.PdfPageNumberAlignTextColor)),
-                    GetPdfBatchNumberString(pdfviewer.Sayfa - 1),
-                    PdfGeneration.GetPdfTextLayout(page, textwidth)[0],
-                    PdfGeneration.GetPdfTextLayout(page, textwidth)[1],
-                    Scanner.PdfPageNumberSize);
+                double textwidth = gfx.MeasureString(GetPdfBatchNumberString(pdfviewer.Sayfa), font).Width;
+                gfx.DrawText(brush, GetPdfBatchNumberString(pdfviewer.Sayfa - 1), PdfWatermarkFont, PdfGeneration.GetPdfTextLayout(page, textwidth)[0], PdfGeneration.GetPdfTextLayout(page, textwidth)[1], Scanner.PdfPageNumberSize);
                 pdfdocument.Save(pdfviewer.PdfFilePath);
                 pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
             },
-            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
+            parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath) && (IsEven || IsOdd));
 
         FlipPdfPage = new RelayCommand<object>(
             async parameter =>
@@ -2531,6 +2534,32 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> InvertPdfPage { get; }
 
     public RelayCommand<object> InvertSelectedImage { get; }
+
+    public bool IsEven
+    {
+        get => ısEven;
+        set
+        {
+            if (ısEven != value)
+            {
+                ısEven = value;
+                OnPropertyChanged(nameof(IsEven));
+            }
+        }
+    }
+
+    public bool IsOdd
+    {
+        get => ısOdd;
+        set
+        {
+            if (ısOdd != value)
+            {
+                ısOdd = value;
+                OnPropertyChanged(nameof(IsOdd));
+            }
+        }
+    }
 
     public ICommand KayıtYoluBelirle { get; }
 

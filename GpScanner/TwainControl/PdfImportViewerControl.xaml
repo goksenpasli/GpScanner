@@ -659,11 +659,6 @@
                                             <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
                                         </DataTemplate>
                                     </ComboBox.ItemTemplate>
-                                    <ComboBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel />
-                                        </ItemsPanelTemplate>
-                                    </ComboBox.ItemsPanel>
                                 </ComboBox>
                                 <Extensions:ContentToggleButton Background="{Binding PdfWatermarkColor, Mode=OneWay}">
                                     <Extensions:ContentToggleButton.OverContent>
@@ -808,6 +803,35 @@
                                     Minimum="1"
                                     Value="{Binding Scanner.PdfPageNumberSize, UpdateSourceTrigger=PropertyChanged}" />
                             </UniformGrid>
+                            <StackPanel Orientation="Horizontal">
+                                <CheckBox IsChecked="{Binding IsOdd}">
+                                    <TextBlock>
+                                        <Run Text="{local:Loc PAGENUMBER}" />
+                                        <System:String>1,3,5,7...</System:String>
+                                    </TextBlock>
+                                </CheckBox>
+                                <CheckBox IsChecked="{Binding IsEven}">
+                                    <TextBlock>
+                                        <Run Text="{local:Loc PAGENUMBER}" />
+                                        <System:String>2,4,6,8...</System:String>
+                                    </TextBlock>
+                                </CheckBox>
+                            </StackPanel>
+                            <ComboBox Height="22.4"
+                                VerticalContentAlignment="Center"
+                                SelectedItem="{Binding PdfWatermarkFont}">
+                                <ComboBox.Items>
+                                    <System:String>Arial</System:String>
+                                    <System:String>Calibri</System:String>
+                                    <System:String>Segoe UI</System:String>
+                                    <System:String>Times New Roman</System:String>
+                                </ComboBox.Items>
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
                             <ComboBox ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}" SelectedItem="{Binding Scanner.PdfPageNumberAlignTextColor}">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>

@@ -92,9 +92,9 @@ public static class PdfGeneration
         gfx?.DrawString(text, font, xBrush, new XPoint((page.Width - fontsize.Width) / 2, (page.Height - fontsize.Height) / 2), textformat);
     }
 
-    public static void DrawText(this XGraphics gfx, XBrush xBrush, string item, double x, double y, double fontsize = 16)
+    public static void DrawText(this XGraphics gfx, XBrush xBrush, string item, string fontname, double x, double y, double fontsize = 16)
     {
-        XFont font = new("Times New Roman", fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
+        XFont font = new(fontname, fontsize, XFontStyle.Regular, new XPdfFontOptions(PdfFontEncoding.Unicode));
         gfx?.DrawString(item, font, xBrush, x, y);
     }
 
