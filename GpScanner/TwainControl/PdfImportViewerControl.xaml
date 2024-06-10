@@ -686,21 +686,31 @@
                                         Style="{DynamicResource Slider}"
                                         Value="{Binding PdfWatermarkFontAngle}" />
                                 </StackPanel>
-                                <TextBlock HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Foreground="{Binding PdfWatermarkColor, Mode=OneWay}"
-                                    RenderTransformOrigin="0.5,0.5"
-                                    Text="AaBbCc">
-                                    <TextBlock.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform />
-                                            <SkewTransform />
-                                            <RotateTransform d:Angle="315" Angle="{Binding PdfWatermarkFontAngle}" />
-                                            <TranslateTransform />
-                                        </TransformGroup>
-                                    </TextBlock.RenderTransform>
-                                </TextBlock>
+                                <Border Width="42"
+                                    Height="59.4"
+                                    BorderBrush="Gray"
+                                    BorderThickness="1">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="3"
+                                            Opacity="0.33"
+                                            ShadowDepth="3" />
+                                    </Border.Effect>
+                                    <TextBlock HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Foreground="{Binding PdfWatermarkColor, Mode=OneWay}"
+                                        RenderTransformOrigin="0.5,0.5"
+                                        Text="AaBbCc">
+                                        <TextBlock.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform />
+                                                <SkewTransform />
+                                                <RotateTransform d:Angle="315" Angle="{Binding PdfWatermarkFontAngle}" />
+                                                <TranslateTransform />
+                                            </TransformGroup>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                </Border>
                             </UniformGrid>
                             <Button BorderBrush="Cyan"
                                 Command="{Binding PdfWaterMark}"
