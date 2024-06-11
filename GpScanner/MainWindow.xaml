@@ -2256,7 +2256,7 @@
                                         Grid.Column="1"
                                         Margin="1"
                                         Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
-                                        ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                        ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
                                     <Button Grid.Row="2"
                                         Grid.ColumnSpan="2"
                                         HorizontalContentAlignment="Stretch"
