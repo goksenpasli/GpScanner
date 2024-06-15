@@ -169,16 +169,6 @@
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
-            <Extensions:NumericUpDown Interval="1"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
-                Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
-                Minimum="1"
-                Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
-            <Extensions:NumericUpDown Interval="1"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
-                Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
-                Minimum="1"
-                Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
             <Button local:Policy.PolicyName="AddAllFileToControlPanel"
                 BorderBrush="Cyan"
                 Command="{Binding AddAllFileToControlPanel}"
@@ -189,6 +179,26 @@
                         Text="ç" />
                 </Button.Content>
             </Button>
+            <Extensions:ContentToggleButton>
+                <Extensions:ContentToggleButton.OverContent>
+                    <Border Background="{DynamicResource BorderBackground}"
+                        BorderBrush="{DynamicResource GroupBoxBackGround}"
+                        BorderThickness="1">
+                        <StackPanel Orientation="Horizontal">
+                            <Extensions:NumericUpDown Interval="1"
+                                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, Source={x:Reference PdfViewer}}"
+                                Maximum="{Binding Source={x:Reference PdfViewer}, Path=ToplamSayfa}"
+                                Minimum="1"
+                                Value="{Binding SayfaBaşlangıç, UpdateSourceTrigger=PropertyChanged}" />
+                            <Extensions:NumericUpDown Interval="1"
+                                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, Source={x:Reference PdfViewer}}"
+                                Maximum="{Binding Source={x:Reference PdfViewer}, Path=ToplamSayfa}"
+                                Minimum="1"
+                                Value="{Binding SayfaBitiş, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </Border>
+                </Extensions:ContentToggleButton.OverContent>
+            </Extensions:ContentToggleButton>
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
@@ -880,33 +890,36 @@
                     FontSize="16"
                     Text="[" />
                 <Extensions:ContentToggleButton.OverContent>
-                    <StackPanel>
-                        <Button Command="{Binding BlackAndWhitePdfPage}"
-                            CommandParameter="{Binding Source={x:Reference PdfViewer}}"
-                            Content="{local:Loc BW}" />
-                        <Button Command="{Binding InvertPdfPage}"
-                            CommandParameter="{Binding Source={x:Reference PdfViewer}}"
-                            Content="{local:Loc INVERTCOLOR}" />
-                    </StackPanel>
+                    <Border Background="{DynamicResource BorderBackground}"
+                        BorderBrush="{DynamicResource GroupBoxBackGround}"
+                        BorderThickness="1">
+                        <StackPanel>
+                            <Button Command="{Binding BlackAndWhitePdfPage}"
+                                CommandParameter="{Binding Source={x:Reference PdfViewer}}"
+                                Content="{local:Loc BW}" />
+                            <Button Command="{Binding InvertPdfPage}"
+                                CommandParameter="{Binding Source={x:Reference PdfViewer}}"
+                                Content="{local:Loc INVERTCOLOR}" />
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc DESPECKLE}" />
+                                <Extensions:NumericUpDown Interval="1"
+                                    IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, Source={x:Reference PdfViewer}}"
+                                    IsReadOnly="True"
+                                    Maximum="10"
+                                    Minimum="0"
+                                    Value="{Binding PdfMedianValue}" />
+                                <Button local:Policy.PolicyName="ApplyPdfMedianFilter"
+                                    Command="{Binding ApplyPdfMedianFilter}"
+                                    CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                    <Image Width="24"
+                                        Height="24"
+                                        Source="/TwainControl;component/Icons/save.png" />
+                                </Button>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-
-            <StackPanel Orientation="Horizontal">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            </StackPanel>
-            <Extensions:NumericUpDown Interval="1"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
-                IsReadOnly="True"
-                Maximum="10"
-                Minimum="0"
-                Value="{Binding PdfMedianValue}" />
-            <Button local:Policy.PolicyName="ApplyPdfMedianFilter"
-                Command="{Binding ApplyPdfMedianFilter}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
-                <Image Width="16"
-                    Height="16"
-                    Source="/TwainControl;component/Icons/save.png" />
-            </Button>
             <StackPanel Orientation="Horizontal">
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             </StackPanel>
