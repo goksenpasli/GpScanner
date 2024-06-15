@@ -72,6 +72,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public static DispatcherTimer CameraQrCodeTimer;
     public static Task Filesavetask;
     private static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
+    private static readonly ComboBoxItem comboboxitemseperator = new() { HorizontalContentAlignment = HorizontalAlignment.Stretch, IsEnabled = false, Content = new Separator() };
     private static bool ısAdministrator;
     private readonly object _lockObject = new();
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
@@ -144,6 +145,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int sayfaBaşlangıç = 1;
     private int sayfaBitiş = 1;
     private Scanner scanner;
+    private object[] scanResolutionList = [72d, 96d, 120d, 150d, 200d, 300d, 450d, 600d, 1200d, 2400d, 4800d, comboboxitemseperator, Settings.Default.CustomResolution];
     private ScannedImage seçiliResim;
     private int seekIndex = -1;
     private Tuple<string, int, double, bool, double> selectedCompressionProfile;
@@ -2917,7 +2919,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    public DoubleCollection ScanResolutionList { get; } = [72, 96, 120, 150, 200, 300, 450, 600, 1200, 2400, 4800];
+    public object[] ScanResolutionList
+    {
+        get => scanResolutionList;
+
+        set
+        {
+            if (scanResolutionList != value)
+            {
+                scanResolutionList = value;
+                OnPropertyChanged(nameof(ScanResolutionList));
+            }
+        }
+    }
 
     public ICommand SeçiliDirektPdfKaydet { get; }
 
@@ -3902,6 +3916,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Paper paper = Papers.FirstOrDefault(z => z.PaperType == "Custom");
             paper.Width = Settings.Default.CustomPaperWidth;
             paper.Height = Settings.Default.CustomPaperHeight;
+        }
+
+        if (e.PropertyName is "CustomResolution")
+        {
+            ScanResolutionList = [72d, 96d, 120d, 150d, 200d, 300d, 450d, 600d, 1200d, 2400d, 4800d, comboboxitemseperator, Settings.Default.CustomResolution];
         }
 
         if (e.PropertyName is "Right" or "Bottom")

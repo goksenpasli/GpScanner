@@ -115,6 +115,22 @@
                                 StringFormat="{}{0} CM"
                                 Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                         </UniformGrid>
+                        <StackPanel Orientation="Horizontal">
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Width="32" Height="32">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="201" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                            <Extensions:NumericUpDown Minimum="0"
+                                StringFormat="{}{0} DPI"
+                                Value="{Binding Path=CustomResolution, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
@@ -132,7 +148,7 @@
                         Minimum="72"
                         SmallChange="1"
                         Style="{StaticResource Slider}"
-                        Ticks="{Binding ScanResolutionList, Mode=OneWay}"
+                        Ticks="72, 96, 120, 150, 200, 300, 450, 600, 1200, 2400, 4800"
                         Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
                 <HeaderedContentControl>
