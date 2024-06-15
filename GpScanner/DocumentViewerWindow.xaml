@@ -11,7 +11,6 @@
     Width="800"
     Height="600"
     d:DataContext="{d:DesignInstance Type=viewmodel:DocumentViewerModel}"
-    Unloaded="Window_Unloaded"
     UseLayoutRounding="True"
     WindowStartupLocation="CenterOwner"
     WindowState="Maximized"

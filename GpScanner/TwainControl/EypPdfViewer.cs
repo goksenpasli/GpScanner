@@ -33,7 +33,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Doküman (*.pdf;*.eyp)|*.pdf;*.eyp" };
                 openFileDialog.Multiselect = false;
-                if (openFileDialog.ShowDialog() == true)
+                if (openFileDialog?.ShowDialog() == true)
                 {
                     if (Path.GetExtension(openFileDialog.FileName.ToLowerInvariant()) == ".eyp")
                     {
@@ -86,7 +86,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                    twainCtrl?.Scanner?.Resimler.Add(scannedImage);
+                    twainCtrl?.Scanner?.Resimler?.Add(scannedImage);
                     filedata = null;
                 }
             },
@@ -134,13 +134,13 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     using PdfDocument document = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
                     if (document != null)
                     {
-                        PdfPage page = document.Pages[currentpage - 1];
+                        PdfPage page = document.Pages?[currentpage - 1];
                         using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
                         XPoint center = new(page.Width / 2, page.Height / 2);
-                        gfx.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
+                        gfx?.ScaleAtTransform(Keyboard.Modifiers == ModifierKeys.Alt ? 1 : -1, Keyboard.Modifiers == ModifierKeys.Alt ? -1 : 1, center);
                         BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage);
                         XImage image = XImage.FromBitmapSource(bitmapImage);
-                        gfx.DrawImage(image, 0, 0);
+                        gfx?.DrawImage(image, 0, 0);
                         document.Save(PdfFilePath);
                         image = null;
                         bitmapImage = null;
@@ -194,9 +194,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public void AddToHistoryList(string pdffilepath)
     {
-        if (!Settings.Default.PdfLoadHistory.Contains(PdfFilePath))
+        if (Settings.Default?.PdfLoadHistory?.Contains(PdfFilePath) == false)
         {
-            Settings.Default.PdfLoadHistory.Insert(0, pdffilepath);
+            Settings.Default?.PdfLoadHistory?.Insert(0, pdffilepath);
             Settings.Default.Save();
             Settings.Default.Reload();
         }
@@ -207,8 +207,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         List<string> files = TwainCtrl.EypFileExtract(filename);
         if (files != null)
         {
-            EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z).ToLowerInvariant())));
-            EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z).ToLowerInvariant())));
+            EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant())));
+            EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant())));
             using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLowerInvariant()) == ".pdf"), PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
             return document?.FullPath;
         }
@@ -217,7 +217,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     protected override void OnDrop(DragEventArgs e)
     {
-        if (e.Data.GetData(typeof(Scanner)) is Scanner droppedData && IsValidPdfFile(droppedData.FileName))
+        if (e?.Data?.GetData(typeof(Scanner)) is Scanner droppedData && IsValidPdfFile(droppedData.FileName))
         {
             PdfFilePath = droppedData.FileName;
             AddToHistoryList(PdfFilePath);
@@ -225,7 +225,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             return;
         }
 
-        if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+        if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
         {
             if (string.Equals(Path.GetExtension(droppedfiles[0]), ".eyp", StringComparison.OrdinalIgnoreCase))
             {

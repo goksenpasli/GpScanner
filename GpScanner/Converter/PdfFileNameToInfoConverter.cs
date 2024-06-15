@@ -21,18 +21,18 @@ public sealed class PdfFileNameToInfoConverter : DependencyObject, IValueConvert
         {
             using PdfDocument reader = PdfReader.Open(filename, PdfDocumentOpenMode.InformationOnly);
             StringBuilder stringBuilder = new();
-            _ = stringBuilder
-                .Append((reader.Version / 10d).ToString("n1", CultureInfo.InvariantCulture))
-            .AppendLine(reader.Info.Title)
+            _ = stringBuilder?
+                .Append((reader?.Version / 10d)?.ToString("n1", CultureInfo.InvariantCulture))
+            .AppendLine(reader?.Info?.Title)
             .Append(Translation.GetResStringValue("PAGENUMBER"))
             .Append(": ")
-            .AppendLine(reader.PageCount.ToString())
-            .AppendLine(reader.Info.Author)
-            .Append(reader.Info.CreationDate.AddHours(DateTimeOffset.Now.Offset.Hours))
+            .AppendLine(reader?.PageCount.ToString())
+            .AppendLine(reader?.Info?.Author)
+            .Append(reader?.Info?.CreationDate.AddHours(DateTimeOffset.Now.Offset.Hours))
             .AppendLine()
-            .Append($"{reader.FileSize / 1048576d:##.##}")
+            .Append($"{reader?.FileSize / 1048576d:##.##}")
             .AppendLine(" MB");
-            return stringBuilder.ToString();
+            return stringBuilder?.ToString();
         }
         else
         {

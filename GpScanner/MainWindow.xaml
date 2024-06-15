@@ -1345,7 +1345,7 @@
                                             </ListBox>
                                             <ContentPresenter Grid.Column="1"
                                                 Content="{Binding Mode=OneWay, Path=SelectedReminder.FileName}"
-                                                ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}" />
+                                                ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
                                         </Grid>
                                     </TabItem>
                                 </TabControl>

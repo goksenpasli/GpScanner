@@ -74,7 +74,7 @@ namespace GpScanner
         private static FlowDocument DocxFlowDocument(DocX document)
         {
             FlowDocument fd = new();
-            foreach (Paragraph docxparagraph in document.Paragraphs)
+            foreach (Paragraph docxparagraph in document?.Paragraphs)
             {
                 System.Windows.Documents.Paragraph paragraph = new();
                 foreach (FormattedText formattedText in docxparagraph?.MagicText)
@@ -85,7 +85,7 @@ namespace GpScanner
 
                 if (docxparagraph?.Pictures?.Count > 0)
                 {
-                    foreach (Picture picture in docxparagraph.Pictures)
+                    foreach (Picture picture in docxparagraph?.Pictures)
                     {
                         fd.Blocks.Add(BlockUIContainerGetPicture(picture));
                     }

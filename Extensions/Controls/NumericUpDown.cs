@@ -20,7 +20,7 @@ namespace Extensions
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(decimal), typeof(NumericUpDown), new FrameworkPropertyMetadata(0m, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
         private bool mouseSelectAllText = true;
 
-        static NumericUpDown() { DefaultStyleKeyProperty.OverrideMetadata(typeof(NumericUpDown), new FrameworkPropertyMetadata(typeof(NumericUpDown))); }
+        static NumericUpDown() { DefaultStyleKeyProperty?.OverrideMetadata(typeof(NumericUpDown), new FrameworkPropertyMetadata(typeof(NumericUpDown))); }
 
         public NumericUpDown()
         {
@@ -88,11 +88,11 @@ namespace Extensions
                 if (e.NewValue is decimal number)
                 {
                     numericUpDown.Value = Math.Max(numericUpDown.Minimum, Math.Min(numericUpDown.Maximum, number));
-                    numericUpDown.UpdateText(numericUpDown.Value);
+                    numericUpDown?.UpdateText(numericUpDown.Value);
                 }
                 if (e.NewValue is string stringnumber && decimal.TryParse(stringnumber, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal value))
                 {
-                    numericUpDown.UpdateText(value);
+                    numericUpDown?.UpdateText(value);
                 }
             }
         }
@@ -101,19 +101,19 @@ namespace Extensions
 
         private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Space)
+            if (e?.Key == Key.Space)
             {
                 e.Handled = true;
             }
-            if (e.Key == Key.Up)
+            if (e?.Key == Key.Up)
             {
                 AdjustValue(Interval);
             }
-            if (e.Key == Key.Down)
+            if (e?.Key == Key.Down)
             {
                 AdjustValue(-Interval);
             }
-            if (e.Key == Key.Enter && decimal.TryParse((sender as TextBox)?.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal value))
+            if (e?.Key == Key.Enter && decimal.TryParse((sender as TextBox)?.Text, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out decimal value))
             {
                 SetValue(ValueProperty, value);
             }
@@ -123,7 +123,7 @@ namespace Extensions
 
         private void TextBox_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (char.IsDigit(e.Text, e.Text.Length - 1) || e.Text == CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator || e.Text == "-")
+            if (char.IsDigit(e?.Text, e.Text.Length - 1) || e?.Text == CultureInfo.InvariantCulture.NumberFormat.CurrencyDecimalSeparator || e?.Text == "-")
             {
                 return;
             }

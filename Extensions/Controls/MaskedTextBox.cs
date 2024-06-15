@@ -199,7 +199,7 @@ public class MaskedTextBox : TextBox
     {
         object convertedValue = null;
         Type dataType = ValueType;
-        string valueToConvert = MaskProvider.ToString().Trim();
+        string valueToConvert = MaskProvider?.ToString()?.Trim();
         if (valueToConvert != null)
         {
             try

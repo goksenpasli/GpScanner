@@ -12,15 +12,18 @@ public partial class DocumentViewerWindow : Window
     public DocumentViewerWindow()
     {
         InitializeComponent();
-        DataContext = new DocumentViewerModel();
-    }
-
-    private void Window_Unloaded(object sender, RoutedEventArgs e)
-    {
-        if (cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
-        {
-            pdfvwr.PdfFilePath = null;
-            pdfvwr.Source = null;
-        }
+        IWindowService windowService = new WindowService();
+        IScannerService scannerService = new ScannerService();
+        IFileService fileService = new FileService();
+        DataContext = new DocumentViewerModel(scannerService, fileService);
+        Owner = windowService.GetFirstWindow();
+        Unloaded += (sender, e) =>
+                    {
+                        if (cnt.GetFirstVisualChild<PdfViewer.PdfViewer>() is PdfViewer.PdfViewer pdfvwr)
+                        {
+                            pdfvwr.PdfFilePath = null;
+                            pdfvwr.Source = null;
+                        }
+                    };
     }
 }

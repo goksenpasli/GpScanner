@@ -40,6 +40,7 @@ namespace WebPWrapper
         } = Environment.Is64BitProcess
             ? File.Exists($@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\libwebp_x64.dll")
             : File.Exists($@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\libwebp_x86.dll");
+
         #region | Destruction |
 
         /// <summary>

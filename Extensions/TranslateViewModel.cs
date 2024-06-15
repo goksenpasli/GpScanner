@@ -18,21 +18,21 @@ public class TranslateViewModel : InpcBase
                 return null;
             }
             using HttpClient client = new();
-            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0");
-            client.DefaultRequestHeaders.Add("Accept-Charset", "UTF-8");
+            client?.DefaultRequestHeaders?.Add("User-Agent", "Mozilla/5.0");
+            client?.DefaultRequestHeaders?.Add("Accept-Charset", "UTF-8");
             string url = $"https://translate.googleapis.com/translate_a/single?client=gtx&sl={from}&tl={to}&dt=t&q={Uri.EscapeUriString(text)}";
             HttpResponseMessage response = await client.GetAsync(url).ConfigureAwait(false);
-            _ = response.EnsureSuccessStatusCode();
+            _ = response?.EnsureSuccessStatusCode();
             string page = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
             JavaScriptSerializer JSS = new();
-            object parsedObj = JSS.DeserializeObject(page);
+            object parsedObj = JSS?.DeserializeObject(page);
             string çeviri = string.Empty;
             object[] data = parsedObj as object[];
-            if (data[0] is null)
+            if (data?[0] is null)
             {
                 return string.Empty;
             }
-            foreach (object firstnodeItem in data[0] as object[])
+            foreach (object firstnodeItem in data?[0] as object[])
             {
                 çeviri += (firstnodeItem as object[])?[0].ToString();
             }

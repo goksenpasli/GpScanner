@@ -54,7 +54,7 @@ public partial class MainWindow : Window
         {
             string pdfFilePath = (string)pdfviewer.DataContext;
             string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
-            if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
+            if (e?.Data?.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
             {
                 try
                 {
@@ -64,7 +64,7 @@ public partial class MainWindow : Window
                     if (Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Shift))
                     {
                         await TwainCtrl.RemovePdfPageAsync(pdfFilePath, curpage, curpage);
-                        processedfiles.MergePdf().Save(pdfFilePath);
+                        processedfiles?.MergePdf()?.Save(pdfFilePath);
                         await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
                         TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         return;
@@ -72,14 +72,14 @@ public partial class MainWindow : Window
 
                     if (Keyboard.Modifiers == ModifierKeys.Shift)
                     {
-                        processedfiles.MergePdf().Save(pdfFilePath);
+                        processedfiles?.MergePdf()?.Save(pdfFilePath);
                         await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
                         TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                         return;
                     }
 
                     string[] pdffiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporarypdf] : [temporarypdf, pdfFilePath];
-                    pdffiles.MergePdf().Save(pdfFilePath);
+                    pdffiles?.MergePdf()?.Save(pdfFilePath);
                     TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                     return;
                 }
@@ -94,10 +94,10 @@ public partial class MainWindow : Window
                 await Task.Run(
                     () =>
                     {
-                        if (DroppedPdfFiles.Any())
+                        if (DroppedPdfFiles?.Any() == true)
                         {
                             DroppedPdfFiles.Add(pdfFilePath);
-                            DroppedPdfFiles.ToArray().MergePdf().Save(pdfFilePath);
+                            DroppedPdfFiles?.ToArray()?.MergePdf()?.Save(pdfFilePath);
                         }
                     });
 
@@ -258,7 +258,7 @@ public partial class MainWindow : Window
 
     private void QrListBox_Drop(object sender, DragEventArgs e)
     {
-        if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is GpScannerViewModel ViewModel)
+        if (e?.Data?.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is GpScannerViewModel ViewModel)
         {
             QrCode.QrCode qrcode = new();
             List<string> barcodes = qrcode.GetMultipleImageBarcodeResult(scannedImage.Resim);
@@ -266,7 +266,7 @@ public partial class MainWindow : Window
             {
                 foreach (string barcode in barcodes)
                 {
-                    ViewModel.BarcodeList.Add(barcode);
+                    ViewModel.BarcodeList?.Add(barcode);
                 }
             }
         }

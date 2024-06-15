@@ -430,7 +430,7 @@ public static class BitmapMethods
                     rtb.Render(dv);
                     rtb.Freeze();
                     BitmapImage bitmapimage = rtb.ToBitmapImage();
-                    bitmapimage.Freeze();
+                    bitmapimage?.Freeze();
                     bitmapSource = null;
                     Source = null;
                     dv = null;
@@ -479,7 +479,7 @@ public static class BitmapMethods
         BitmapImage bitmapimage = bmp.PixelFormat == PixelFormat.Format32bppArgb
                                   ? fullresolution ? bmp.ToBitmapImage(ImageFormat.Png) : bmp.ToBitmapImage(ImageFormat.Png, decodeheight)
                                   : fullresolution ? bmp.ToBitmapImage(ImageFormat.Jpeg) : bmp.ToBitmapImage(ImageFormat.Jpeg, decodeheight);
-        bitmapimage.Freeze();
+        bitmapimage?.Freeze();
         return bitmapimage;
     }
 

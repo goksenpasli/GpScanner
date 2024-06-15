@@ -1146,7 +1146,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             PdfDocument listDocument = null;
                             for (int i = 0; i < pdfdocument.PageCount; i++)
                             {
-                                  listDocument = pdfdocument.GenerateWatermarkedPdf(i, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
+                                listDocument = pdfdocument.GenerateWatermarkedPdf(i, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
                             }
                             listDocument?.Save(oldpdfpath);
                             listDocument?.Dispose();
@@ -3309,9 +3309,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
     {
-        foreach (PdfPage page in inputDocument.Pages)
+        foreach (PdfPage page in inputDocument?.Pages)
         {
-            if (page.Rotate is > 360 or < (-360))
+            if (page?.Rotate is > 360 or < (-360))
             {
                 page.Rotate = 0;
             }
@@ -3323,8 +3323,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
     {
-        PdfPage page = inputDocument.Pages[pageindex];
-        if (page.Rotate is > 360 or < (-360))
+        PdfPage page = inputDocument?.Pages[pageindex];
+        if (page?.Rotate is > 360 or < (-360))
         {
             page.Rotate = 0;
         }

@@ -51,6 +51,11 @@ public static class PdfGeneration
 
     public static void ApplyDefaultPdfCompression(this PdfDocument doc)
     {
+        if (doc == null)
+        {
+            return;
+        }
+
         doc.Info.Author = Scanner.UserName;
         doc.Info.Creator = Scanner.CreatorAppName;
         doc.Info.CreationDate = DateTime.Now;

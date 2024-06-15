@@ -425,13 +425,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static async Task<int[]> GetImagePixelSizeAsync(string filepath)
+    private static async Task<int?[]> GetImagePixelSizeAsync(string filepath)
     {
         return await Task.Run(
             () =>
             {
                 BitmapDecoder bitmapframe = BitmapDecoder.Create(new Uri(filepath), BitmapCreateOptions.DelayCreation | BitmapCreateOptions.IgnoreImageCache | BitmapCreateOptions.IgnoreColorProfile, BitmapCacheOption.None);
-                return new[] { bitmapframe.Frames[0].PixelHeight, bitmapframe.Frames[0].PixelWidth };
+                return new[] { bitmapframe.Frames[0]?.PixelHeight, bitmapframe.Frames[0]?.PixelWidth };
             });
     }
 
@@ -441,9 +441,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         {
             if (e.NewValue is string filepath && File.Exists(filepath))
             {
-                int[] size = await GetImagePixelSizeAsync(filepath);
-                imageViewer.OriginalPixelHeight = size[0];
-                imageViewer.OriginalPixelWidth = size[1];
+                int?[] size = await GetImagePixelSizeAsync(filepath);
+                imageViewer.OriginalPixelHeight = size[0] ?? 0;
+                imageViewer.OriginalPixelWidth = size[1] ?? 0;
                 await LoadImageAsync(filepath, imageViewer);
                 return;
             }
@@ -478,7 +478,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         if (d is ImageViewer imageViewer)
         {
-            imageViewer.Resize.Execute(null);
+            imageViewer?.Resize?.Execute(null);
         }
     }
 

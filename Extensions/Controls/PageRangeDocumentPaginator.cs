@@ -40,12 +40,12 @@ public class PageRangeDocumentPaginator : DocumentPaginator
         {
             foreach (object child in page1.Children)
             {
-                UIElement childClone = (UIElement)child?.GetType().GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic).Invoke(child, null);
+                UIElement childClone = (UIElement)child?.GetType()?.GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(child, null);
                 FieldInfo parentField = childClone?.GetType().GetField("_parent", BindingFlags.Instance | BindingFlags.NonPublic);
                 if (parentField != null)
                 {
                     parentField.SetValue(childClone, null);
-                    _ = cv.Children.Add(childClone);
+                    _ = cv?.Children?.Add(childClone);
                 }
             }
 

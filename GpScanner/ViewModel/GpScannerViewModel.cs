@@ -152,7 +152,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         TranslateViewModel = new TranslateViewModel();
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
-        AppName = windowService.GetFirstWindow().Title;
+        AppName = windowService?.GetFirstWindow()?.Title;
         LoadFiles = new RelayCommand<object>(async parameter => Dosyalar = await GetScannerFileData(), parameter => true);
         LoadFiles.Execute(null);
         SeçiliDil = Settings.Default.DefaultLang;
@@ -160,7 +160,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
         GenerateAnimationTimer();
         GenerateJumpList();
-        _ = LoadRemainderDatas();
+        LoadRemainder = new RelayCommand<object>(async parameter => await LoadRemainderDatas(), parameter => true);
+        LoadRemainder.Execute(null);
 
         RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => IsAdministrator);
 
@@ -531,20 +532,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
 
                 DocumentViewerWindow documentViewerWindow = new();
-                if (documentViewerWindow.DataContext is not DocumentViewerModel documentViewerModel)
+                if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                 {
-                    return;
+                    documentViewerModel.FilePath = filepath;
+                    documentViewerWindow.Show();
+                    documentViewerWindow.Lb?.ScrollIntoView(filepath);
                 }
-
-                documentViewerWindow.Owner = windowService.GetFirstWindow();
-                documentViewerModel.Scanner = ToolBox.Scanner;
-                documentViewerModel.FilePath = filepath;
-                List<string> files = MainWindow.cvs?.View?.OfType<Scanner>()?.Select(z => z.FileName)?.ToList();
-                files?.Sort(new StrCmpLogicalComparer());
-                documentViewerModel.DirectoryAllPdfFiles = files;
-                documentViewerModel.Index = Array.IndexOf(documentViewerModel.DirectoryAllPdfFiles.ToArray(), documentViewerModel.FilePath);
-                documentViewerWindow.Show();
-                documentViewerWindow.Lb?.ScrollIntoView(filepath);
             },
             parameter => parameter is string filepath && File.Exists(filepath));
 
@@ -1184,7 +1177,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         LoadGroupFilesMonth = new RelayCommand<object>(
             async parameter =>
             {
-                ObservableCollection<ContributionData> contributiondata = await GetContributionData(GetContributionFiles(), new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                List<ScannerFileDatas> files = GetContributionFiles();
+                ObservableCollection<ContributionData> contributiondata = await GetContributionData(files, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
                 YearlyGroupData = contributiondata?.GroupBy(z => z.ContrubutionDate.Value.Month);
             },
             parameter => true);
@@ -1843,6 +1837,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> LoadGroupFilesMonth { get; }
 
+    public RelayCommand<object> LoadRemainder { get; }
+
     public RelayCommand<object> LoadUnindexedFiles { get; }
 
     public GridLength MainWindowDocumentGuiControlLength
@@ -2463,7 +2459,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public static async Task WriteToLogFile(string filePath, string content)
     {
         using StreamWriter writer = new(filePath, true);
-        await writer.WriteLineAsync($"{DateTime.Now} {content}");
+        await writer?.WriteLineAsync($"{DateTime.Now} {content}");
     }
 
     public void AddBarcodeToList(string barcodecontent)
@@ -2514,7 +2510,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                    () =>
                                    {
                                        string item = $"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}";
-                                       FileSystemWatcherProcessedFileList.Add(item);
+                                       FileSystemWatcherProcessedFileList?.Add(item);
                                    });
                                }
                            };
@@ -2826,7 +2822,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             return;
         }
         using AppDbContext context = new();
-        _ = context.Database
+        _ = context?.Database?
         .ExecuteSqlCommand(
             """
                 CREATE TABLE "Data" (
@@ -2837,7 +2833,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 	PRIMARY KEY("Id")
                 )
                 """);
-        _ = context.Database
+        _ = context?.Database?
         .ExecuteSqlCommand(
             """
                 CREATE INDEX "index" ON "Data" (
@@ -2845,7 +2841,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 	"FileName"	ASC
                 );
                 """);
-        _ = context.Database
+        _ = context?.Database?
         .ExecuteSqlCommand(
             """
                 CREATE TABLE "ReminderDatas" (
@@ -2920,7 +2916,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
         else
         {
-            scannedText = await currentfilepath.OcrAsync(Settings.Default.DefaultTtsLang);
+            scannedText = await currentfilepath?.OcrAsync(Settings.Default.DefaultTtsLang);
         }
         await Task.Run(
             () =>
@@ -2990,8 +2986,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         list.ShowRecentCategory = true;
         list.ShowFrequentCategory = true;
         JumpList.SetJumpList(Application.Current, list);
-        list.JumpItems.Add(update);
-        list.JumpItems.Add(scan);
+        list?.JumpItems?.Add(update);
+        list?.JumpItems?.Add(scan);
         list.Apply();
     }
 
@@ -3088,7 +3084,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         FileInfo fi = new(dosya);
                         if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
                         {
-                            list.Add(new Scanner { FileName = dosya, FolderName = fi.Directory.Name, FileSize = fi.Length / 1048576F });
+                            list.Add(new Scanner { FileName = dosya, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F });
                         }
                         FileLoadProgress = (i + 1) / (double)files.Count;
                     }
@@ -3105,9 +3101,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         try
         {
-            List<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z.FileName.ToLowerInvariant()))).Select(z => z.FileName).ToList();
+            List<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z?.FileName?.ToLowerInvariant()))).Select(z => z.FileName).ToList();
             using AppDbContext context = new();
-            List<string> scannedDatabaseFiles = (await context.Data.AsNoTracking().ToListAsync())?.Select(x => x.FileName).ToList();
+            List<string> scannedDatabaseFiles = (await context?.Data?.AsNoTracking()?.ToListAsync())?.Select(x => x.FileName).ToList();
             if (scannerunindexedfiles != null && scannedDatabaseFiles != null)
             {
                 return new ObservableCollection<string>(scannerunindexedfiles.Except(scannedDatabaseFiles));
@@ -3264,7 +3260,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private bool IsWin7OrAbove()
     {
         Version os = Environment.OSVersion.Version;
-        return os.Major > 6 || (os.Major == 6 && os.Minor >= 1);
+        return os?.Major > 6 || (os?.Major == 6 && os?.Minor >= 1);
     }
 
     private async Task LoadRemainderDatas()

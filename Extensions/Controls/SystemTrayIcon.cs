@@ -82,7 +82,7 @@ namespace Extensions
             newNOTIFYICONDATA.szTip = ToolTipText ?? string.Empty;
             _notifyIconData = newNOTIFYICONDATA;
             _ = Shell_NotifyIcon(NIM_ADD, ref _notifyIconData);
-            streamInfo.Stream.Dispose();
+            streamInfo?.Stream?.Dispose();
             hwndSource.AddHook(WndProc);
         }
 

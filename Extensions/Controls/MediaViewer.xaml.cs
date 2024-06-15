@@ -226,16 +226,16 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     Grid imagegrid = GenerateImageGrid();
                     Image image = GenerateImage(imgdata, ThumbMargin);
                     image.SetValue(Grid.RowProperty, 0);
-                    _ = imagegrid.Children.Add(image);
+                    _ = imagegrid?.Children?.Add(image);
 
                     if (ThumbShowTime)
                     {
                         TextBlock textBlock = GenerateWhiteTextBlock(Player.Position.ToString());
                         textBlock.SetValue(Grid.RowProperty, 1);
-                        _ = imagegrid.Children.Add(textBlock);
+                        _ = imagegrid?.Children?.Add(textBlock);
                     }
                     imgdata = null;
-                    _ = uniformgrid.Children.Add(imagegrid);
+                    _ = uniformgrid?.Children?.Add(imagegrid);
                 }
 
                 string dosya = picturesfolder.SetUniqueFile("Resim", "jpg");
@@ -249,13 +249,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = VideoFileExtensions };
-                if (openFileDialog.ShowDialog() == true)
+                if (openFileDialog?.ShowDialog() == true)
                 {
                     foreach (string item in openFileDialog.FileNames)
                     {
-                        if (!PlayList.Contains(item))
+                        if (PlayList?.Contains(item) == false)
                         {
-                            PlayList.Add(item);
+                            PlayList?.Add(item);
                         }
                     }
                 }
@@ -375,7 +375,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             {
                 if (parameter is string filepath)
                 {
-                    Settings.Default.MediaHistory.Remove(filepath);
+                    Settings.Default?.MediaHistory?.Remove(filepath);
                     Settings.Default.Save();
                     Settings.Default.Reload();
                 }
@@ -750,9 +750,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             for (int ti = 0; ti <= tDiv; ti++)
             {
                 double t = ti * dt;
-                mesh.Positions.Add(GetPosition(t, y));
-                mesh.Normals.Add(GetNormal(t, y));
-                mesh.TextureCoordinates.Add(GetTextureCoordinate(t, y));
+                mesh?.Positions?.Add(GetPosition(t, y));
+                mesh?.Normals?.Add(GetNormal(t, y));
+                mesh?.TextureCoordinates?.Add(GetTextureCoordinate(t, y));
             }
         }
 
@@ -764,12 +764,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 int x1 = ti + 1;
                 int y0 = yi * (tDiv + 1);
                 int y1 = (yi + 1) * (tDiv + 1);
-                mesh.TriangleIndices.Add(x0 + y0);
-                mesh.TriangleIndices.Add(x0 + y1);
-                mesh.TriangleIndices.Add(x1 + y0);
-                mesh.TriangleIndices.Add(x1 + y0);
-                mesh.TriangleIndices.Add(x0 + y1);
-                mesh.TriangleIndices.Add(x1 + y1);
+                mesh?.TriangleIndices?.Add(x0 + y0);
+                mesh?.TriangleIndices?.Add(x0 + y1);
+                mesh?.TriangleIndices?.Add(x1 + y0);
+                mesh?.TriangleIndices?.Add(x1 + y0);
+                mesh?.TriangleIndices?.Add(x0 + y1);
+                mesh?.TriangleIndices?.Add(x1 + y1);
             }
         }
 
@@ -1024,9 +1024,9 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void AddToHistoryList(string mediapath)
     {
-        if (!Settings.Default.MediaHistory.Contains(mediapath))
+        if (Settings.Default?.MediaHistory?.Contains(mediapath) == false)
         {
-            Settings.Default.MediaHistory.Insert(0, mediapath);
+            Settings.Default?.MediaHistory?.Insert(0, mediapath);
             Settings.Default.Save();
             Settings.Default.Reload();
         }

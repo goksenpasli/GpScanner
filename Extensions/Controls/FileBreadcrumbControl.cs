@@ -96,7 +96,7 @@ namespace Extensions
                 {
                     if (string.IsNullOrWhiteSpace(Path.GetDirectoryName(segment)))
                     {
-                        PathSegments.Add(new Data() { Path = segment[0].ToString(), FullPath = $"{segment}\\" });
+                        PathSegments.Add(new Data() { Path = segment?[0].ToString(), FullPath = $"{segment}\\" });
                     }
                     else
                     {

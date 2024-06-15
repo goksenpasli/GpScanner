@@ -122,7 +122,7 @@ public class GraphControl : FrameworkElement
                 graphdrawinggroup = new DrawingGroup();
                 graphgeometrygroup = new DrawingGroup();
                 item = Series[i - 1];
-                pen = new Pen(item.ChartBrush, thickness);
+                pen = new Pen(item?.ChartBrush, thickness);
                 linepen = new Pen(LineColor, LineThickness);
                 linepen.Freeze();
                 pen.Freeze();

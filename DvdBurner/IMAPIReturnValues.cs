@@ -10,12 +10,12 @@ namespace DvdBurner
             Type t = typeof(IMAPIReturnValues);
             foreach (FieldInfo field in t.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance))
             {
-                ulong constValue = (ulong)field.GetValue(null);
+                ulong constValue = (ulong)field?.GetValue(null);
                 ulong errorValue = unchecked((uint)value);
 
                 if (constValue == errorValue)
                 {
-                    return field.Name;
+                    return field?.Name;
                 }
             }
 

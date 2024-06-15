@@ -78,19 +78,19 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
     private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
         XpsViewer xpsViewer = (sender as DocumentViewer)?.DataContext as XpsViewer;
-        e.CanExecute = xpsViewer.Document is not null;
+        e.CanExecute = xpsViewer?.Document is not null;
     }
 
     private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
     {
         PrintDialog dlg = new() { UserPageRangeEnabled = true };
-        if (dlg.ShowDialog() == true)
+        if (dlg?.ShowDialog() == true)
         {
             XpsViewer xpsViewer = (sender as DocumentViewer)?.DataContext as XpsViewer;
-            DocumentPaginator paginator = xpsViewer.Document.DocumentPaginator;
+            DocumentPaginator paginator = xpsViewer?.Document?.DocumentPaginator;
             if (dlg.PageRangeSelection == PageRangeSelection.UserPages)
             {
-                paginator = new PageRangeDocumentPaginator(xpsViewer.Document.DocumentPaginator, dlg.PageRange);
+                paginator = new PageRangeDocumentPaginator(xpsViewer?.Document?.DocumentPaginator, dlg.PageRange);
             }
 
             dlg.PrintDocument(paginator, string.Empty);

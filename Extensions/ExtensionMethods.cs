@@ -218,13 +218,13 @@ public static class ExtensionMethods
         if (rotate.HasValue)
         {
             RotateTransform rotateTransform = new(rotate.Value);
-            transformGroup.Children.Add(rotateTransform);
+            transformGroup?.Children?.Add(rotateTransform);
         }
 
         double scaleX = nWidth / bfPhoto.PixelWidth * dpiX / 96;
         double scaleY = nHeight / bfPhoto.PixelHeight * dpiY / 96;
         ScaleTransform scaleTransform = new(scaleX, scaleY);
-        transformGroup.Children.Add(scaleTransform);
+        transformGroup?.Children?.Add(scaleTransform);
         TransformedBitmap tb = new(bfPhoto, transformGroup);
         tb.Freeze();
         return tb;

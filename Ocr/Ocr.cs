@@ -132,7 +132,7 @@ public static class Ocr
             if (iterator?.TryGetBoundingBox(pageIteratorLevel, out Tesseract.Rect rect) == true)
             {
                 Rect imgrect = new(rect.X1, rect.Y1, rect.Width, rect.Height);
-                OcrData item = new() { Text = iterator?.GetText(pageIteratorLevel).Trim(), Rect = imgrect };
+                OcrData item = new() { Text = iterator?.GetText(pageIteratorLevel)?.Trim(), Rect = imgrect };
                 if (!string.IsNullOrWhiteSpace(item.Text))
                 {
                     ocrdata.Add(item);

@@ -62,13 +62,13 @@ public class Compressor : Control, INotifyPropertyChanged
                     SetValue(CompressFinishedProperty, false);
                     foreach (BatchPdfData file in BatchPdfList)
                     {
-                        string outputFile = $"{Path.GetDirectoryName(file.Filename)}\\{Path.GetFileNameWithoutExtension(file.Filename)}_Compressed.pdf";
-                        bool isPdf = Path.GetExtension(file.Filename.ToLowerInvariant()) == ".pdf" && IsValidPdfFile(file.Filename);
-                        using PdfDocument pdfDocument = isPdf ? await CompressFilePdfDocumentAsync(file.Filename) : await GeneratePdfAsync(file.Filename, Quality);
+                        string outputFile = $"{Path.GetDirectoryName(file?.Filename)}\\{Path.GetFileNameWithoutExtension(file?.Filename)}_Compressed.pdf";
+                        bool isPdf = Path.GetExtension(file?.Filename?.ToLowerInvariant()) == ".pdf" && IsValidPdfFile(file?.Filename);
+                        using PdfDocument pdfDocument = isPdf ? await CompressFilePdfDocumentAsync(file?.Filename) : await GeneratePdfAsync(file?.Filename, Quality);
                         ApplyDefaultPdfCompression(pdfDocument);
                         pdfDocument.Save(outputFile);
                         long outputFileSize = new FileInfo(outputFile).Length;
-                        long originalFileSize = new FileInfo(file.Filename).Length;
+                        long originalFileSize = new FileInfo(file?.Filename).Length;
                         file.CompressionRatio = (double)outputFileSize / originalFileSize * 100;
                         file.Completed = true;
                     }
@@ -85,11 +85,11 @@ public class Compressor : Control, INotifyPropertyChanged
             parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = true, Filter = "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf" };
-                if (openFileDialog.ShowDialog() == true)
+                if (openFileDialog?.ShowDialog() == true)
                 {
                     foreach (string item in openFileDialog.FileNames)
                     {
-                        BatchPdfList.Add(new BatchPdfData() { Filename = item });
+                        BatchPdfList?.Add(new BatchPdfData() { Filename = item });
                     }
                 }
             },
@@ -198,6 +198,10 @@ public class Compressor : Control, INotifyPropertyChanged
 
     protected void ApplyDefaultPdfCompression(PdfDocument doc)
     {
+        if (doc is null)
+        {
+            return;
+        }
         doc.Info.CreationDate = DateTime.Now;
         doc.Options.FlateEncodeMode = PdfFlateEncodeMode.BestCompression;
         doc.Options.CompressContentStreams = true;
@@ -222,11 +226,15 @@ public class Compressor : Control, INotifyPropertyChanged
                 try
                 {
                     PdfPage page = document.AddPage();
+                    if (page == null)
+                    {
+                        return;
+                    }
                     using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                     using MemoryStream ms = new(BitmapFrame.Create(new Uri(imagefile)).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
                     using XImage xImage = XImage.FromStream(ms);
                     XSize size = PageSizeConverter.ToSize(page.Size);
-                    if (xImage.PixelWidth < xImage.PixelHeight)
+                    if (xImage?.PixelWidth < xImage?.PixelHeight)
                     {
                         page.Orientation = PageOrientation.Portrait;
 
@@ -294,7 +302,7 @@ public class Compressor : Control, INotifyPropertyChanged
         await Task.Run(
             () =>
             {
-                for (int i = 0; i < pdfDoc.PageCount; i++)
+                for (int i = 0; i < pdfDoc?.PageCount; i++)
                 {
                     int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
                     int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
@@ -322,50 +330,54 @@ public class Compressor : Control, INotifyPropertyChanged
                     for (int i = 0; i < bitmapFrames.Count; i++)
                     {
                         BitmapImage pdfimage = bitmapFrames[i];
-                        PdfPage page = document.AddPage();
-                        double ratio = pdfimage.PixelWidth / (double)pdfimage.PixelHeight;
-                        bool portrait = pdfimage.PixelWidth < pdfimage.PixelHeight;
-                        if (UseMozJpegEncoding)
+                        if (pdfimage != null)
                         {
-                            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                            using MozJpeg.MozJpeg mozJpeg = new();
-                            BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
-                            byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
-                            using MemoryStream ms = new(data);
-                            using XImage xImage = XImage.FromStream(ms);
-                            resizedimage = null;
-                            data = null;
-
-                            if (portrait)
+                            PdfPage page = document.AddPage();
+                            double ratio = pdfimage.PixelWidth / (double)pdfimage.PixelHeight;
+                            bool portrait = pdfimage.PixelWidth < pdfimage.PixelHeight;
+                            if (UseMozJpegEncoding)
                             {
-                                gfx.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
+                                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                                using MozJpeg.MozJpeg mozJpeg = new();
+                                BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
+                                byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                                using MemoryStream ms = new(data);
+                                using XImage xImage = XImage.FromStream(ms);
+                                resizedimage = null;
+                                data = null;
+
+                                if (portrait)
+                                {
+                                    gfx?.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
+                                }
+                                else
+                                {
+                                    page.Orientation = PageOrientation.Landscape;
+                                    gfx?.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
+                                }
                             }
                             else
                             {
-                                page.Orientation = PageOrientation.Landscape;
-                                gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
-                            }
-                        }
-                        else
-                        {
-                            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                            BitmapSource resizedimage = bw
-                                                        ? BitmapSourceToBitmap(pdfimage).ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Tiff).Resize(page.Height * ratio, page.Height, 0, dpi, dpi)
-                                                        : pdfimage.Resize(page.Height * ratio, page.Height, 0, dpi, dpi);
-                            using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
-                            using XImage xImage = XImage.FromStream(ms);
-                            resizedimage = null;
+                                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                                BitmapSource resizedimage = bw
+                                                            ? BitmapSourceToBitmap(pdfimage).ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Tiff).Resize(page.Height * ratio, page.Height, 0, dpi, dpi)
+                                                            : pdfimage.Resize(page.Height * ratio, page.Height, 0, dpi, dpi);
+                                using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
+                                using XImage xImage = XImage.FromStream(ms);
+                                resizedimage = null;
 
-                            if (portrait)
-                            {
-                                gfx.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
-                            }
-                            else
-                            {
-                                page.Orientation = PageOrientation.Landscape;
-                                gfx.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
+                                if (portrait)
+                                {
+                                    gfx?.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
+                                }
+                                else
+                                {
+                                    page.Orientation = PageOrientation.Landscape;
+                                    gfx?.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
+                                }
                             }
                         }
+
                         progresscallback?.Invoke((i + 1) / (double)bitmapFrames.Count);
                     }
 
@@ -383,12 +395,12 @@ public class Compressor : Control, INotifyPropertyChanged
 
     private void Listbox_Drop(object sender, DragEventArgs e)
     {
-        string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+        string[] droppedfiles = (string[])e?.Data?.GetData(DataFormats.FileDrop);
         if (droppedfiles?.Length > 0)
         {
             foreach (string file in droppedfiles.Where(file => imagefileextensions.Contains(Path.GetExtension(file).ToLowerInvariant()) || IsValidPdfFile(file)))
             {
-                BatchPdfList.Add(new BatchPdfData() { Filename = file });
+                BatchPdfList?.Add(new BatchPdfData() { Filename = file });
             }
         }
     }

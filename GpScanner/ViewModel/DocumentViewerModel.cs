@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
@@ -19,12 +20,15 @@ public class DocumentViewerModel : InpcBase
     private string filePath;
     private int ındex;
     private string pdfFileContent;
-    private Scanner scanner;
     private string title;
 
-    public DocumentViewerModel()
+    public DocumentViewerModel(IScannerService scannerService, IFileService fileService)
     {
         PropertyChanged += DocumentViewerModel_PropertyChanged;
+        List<string> files = fileService.GetFileNames();
+        files?.Sort(new StrCmpLogicalComparer());
+        DirectoryAllPdfFiles = files;
+        Index = Array.IndexOf(DirectoryAllPdfFiles.ToArray(), FilePath);
         Back = new RelayCommand<object>(
             parameter =>
             {
@@ -58,7 +62,7 @@ public class DocumentViewerModel : InpcBase
                     BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = FilePath, Resim = bitmapFrame };
-                    Scanner?.Resimler?.Add(scannedImage);
+                    scannerService.GetScanner()?.Resimler?.Add(scannedImage);
                     bitmapFrame = null;
                     scannedImage = null;
                 }
@@ -129,20 +133,6 @@ public class DocumentViewerModel : InpcBase
         }
     }
 
-    public Scanner Scanner
-    {
-        get => scanner;
-
-        set
-        {
-            if (scanner != value)
-            {
-                scanner = value;
-                OnPropertyChanged(nameof(Scanner));
-            }
-        }
-    }
-
     public string Title
     {
         get => Path.GetFileName(FilePath);
@@ -165,7 +155,7 @@ public class DocumentViewerModel : InpcBase
                 async () =>
                 {
                     using AppDbContext context = new();
-                    return string.Join(" ", (await context?.Data?.AsNoTracking().ToListAsync())?.Where(z => z.FileName == FilePath)?.Select(z => z.FileContent));
+                    return string.Join(" ", (await context?.Data?.AsNoTracking()?.ToListAsync())?.Where(z => z.FileName == FilePath)?.Select(z => z.FileContent));
                 });
         }
     }

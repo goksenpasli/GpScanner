@@ -32,7 +32,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
             {
                 if (parameter is Scanner scanner && File.Exists(scanner.FileName))
                 {
-                    string path = $"{SelectedRemovableDrive.RootDirectory.Name}{Path.GetFileName(scanner.FileName)}";
+                    string path = $"{SelectedRemovableDrive?.RootDirectory.Name}{Path.GetFileName(scanner.FileName)}";
                     if (!File.Exists(path))
                     {
                         await CopyFileAsync(scanner.FileName, path, false, progress => CopyProgressValue = progress);
@@ -108,9 +108,9 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
             long totalBytesRead = 0;
             long fileSize = sourceStream.Length;
 
-            while ((bytesRead = await sourceStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
+            while ((bytesRead = await sourceStream?.ReadAsync(buffer, 0, buffer.Length)) > 0)
             {
-                await destinationStream.WriteAsync(buffer, 0, bytesRead);
+                await destinationStream?.WriteAsync(buffer, 0, bytesRead);
                 totalBytesRead += bytesRead;
                 progressCallback?.Invoke(totalBytesRead / (double)fileSize);
             }
@@ -130,7 +130,7 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
             webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
             webClient.UploadProgressChanged += (sender, args) => ftpProgressCallback(args.ProgressPercentage);
             string address = $"{uri}/{Directory.GetParent(filename).Name}{Path.GetFileName(filename)}";
-            _ = await webClient.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, filename);
+            _ = await webClient?.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, filename);
         }
         catch (Exception ex)
         {

@@ -252,7 +252,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         {
             if (Directory.Exists(tesseractfolder))
             {
-                string[] defaultTtsLang = Settings.Default.DefaultTtsLang.Split('+');
+                string[] defaultTtsLang = Settings.Default?.DefaultTtsLang?.Split('+');
                 ObservableCollection<TessFiles> tesseractfiles = new(
                     Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
                     .Select(

@@ -44,27 +44,27 @@ public sealed class PdfMultiplePageToThumbImageConverter : InpcBase, IMultiValue
                     }
                     BitmapImage[] bitmapImages = new BitmapImage[Math.Min(PdfViewer.PdfViewer.PdfPageCount(pdfFilePath), MaxPageCount)];
 
-                    for (int i = 0; i < bitmapImages.Length; i++)
+                    for (int i = 0; i < bitmapImages?.Length; i++)
                     {
                         bitmapImages[i] = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfFilePath, i + 1, 16);
-                        bitmapImages[i].Freeze();
+                        bitmapImages[i]?.Freeze();
                     }
 
                     DrawingVisual drawingVisual = new();
                     double totalWidth = 0;
-                    using (DrawingContext drawingContext = drawingVisual.RenderOpen())
+                    using (DrawingContext drawingContext = drawingVisual?.RenderOpen())
                     {
                         foreach (BitmapImage bitmapImage in bitmapImages)
                         {
                             Rect rect = new(new Point(totalWidth, 0), new Size(bitmapImage.PixelWidth, bitmapImage.PixelHeight));
-                            drawingContext.DrawImage(bitmapImage, rect);
+                            drawingContext?.DrawImage(bitmapImage, rect);
                             totalWidth += bitmapImage.PixelWidth;
                         }
                     }
 
                     RenderTargetBitmap renderTargetBitmap = new((int)totalWidth, bitmapImages[0].PixelHeight, 96, 96, PixelFormats.Pbgra32);
-                    renderTargetBitmap.Render(drawingVisual);
-                    renderTargetBitmap.Freeze();
+                    renderTargetBitmap?.Render(drawingVisual);
+                    renderTargetBitmap?.Freeze();
                     return renderTargetBitmap;
                 });
         }

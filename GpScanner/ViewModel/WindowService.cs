@@ -1,17 +1,35 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using TwainControl;
 
 namespace GpScanner;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
-/// 
+public interface IFileService
+{
+    List<string> GetFileNames();
+}
+
+public interface IScannerService
+{
+    Scanner GetScanner();
+}
+
 public interface IWindowService
 {
     Window GetActiveWindow();
 
     Window GetFirstWindow();
+}
+
+public class FileService : IFileService
+{
+    public List<string> GetFileNames() => MainWindow.cvs?.View?.OfType<Scanner>()?.Select(z => z.FileName)?.ToList();
+}
+
+public class ScannerService : IScannerService
+{
+    public Scanner GetScanner() => ToolBox.Scanner;
 }
 
 public class WindowService : IWindowService

@@ -199,10 +199,10 @@ namespace Extensions
 
             _ = Win32.SHGetImageList(shil, ref guil, ref spiml);
             IntPtr hIcon = IntPtr.Zero;
-            _ = spiml.GetIcon((int)iconIndex, ILD_TRANSPARENT | ILD_IMAGE, ref hIcon);
+            _ = spiml?.GetIcon((int)iconIndex, ILD_TRANSPARENT | ILD_IMAGE, ref hIcon);
             Icon icon = (Icon)Icon.FromHandle(hIcon).Clone();
             BitmapSource bitmapsource = Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            bitmapsource.Freeze();
+            bitmapsource?.Freeze();
             _ = Win32.DestroyIcon(hIcon);
             return bitmapsource;
         }

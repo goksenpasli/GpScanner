@@ -234,7 +234,7 @@ namespace Extensions
             if (archive != null)
             {
                 ZipArchiveEntry dosya = archive.GetEntry(entryname);
-                string extractpath = $"{Path.GetTempPath()}{dosya.Name}";
+                string extractpath = $"{Path.GetTempPath()}{dosya?.Name}";
                 if (!File.Exists(extractpath))
                 {
                     dosya?.ExtractToFile(extractpath, true);
@@ -280,7 +280,7 @@ namespace Extensions
 
         protected override void OnDrop(DragEventArgs e)
         {
-            if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+            if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
             {
                 LoadDroppedZipFile(droppedfiles);
             }

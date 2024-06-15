@@ -105,7 +105,7 @@ namespace DvdBurner
                             }
                             catch (Exception ex)
                             {
-                                ActionText = ex?.Message.Trim();
+                                ActionText = ex?.Message?.Trim();
                                 ActionTextForeground = Brushes.Red;
                             }
                             finally
@@ -146,7 +146,7 @@ namespace DvdBurner
                         _ = MessageBox.Show(WarnText, AppName);
                         return;
                     }
-                    if (parameter is string file && Files.Remove(file))
+                    if (parameter is string file && Files?.Remove(file) == true)
                     {
                         UpdateProgressFileSize([.. Files]);
                     }
@@ -180,7 +180,7 @@ namespace DvdBurner
                             }
                             catch (Exception ex)
                             {
-                                ActionText = ex?.Message.Trim();
+                                ActionText = ex?.Message?.Trim();
                                 ActionTextForeground = Brushes.Red;
                             }
                             finally
@@ -212,7 +212,7 @@ namespace DvdBurner
             RemoveAllFile = new RelayCommand<object>(
                 parameter =>
                 {
-                    Files.Clear();
+                    Files?.Clear();
                     UpdateProgressFileSize([.. Files]);
                 },
                 parameter => Files?.Any() == true);
@@ -436,7 +436,7 @@ namespace DvdBurner
             {
                 if (!Files.Select(Path.GetFileName).Contains(Path.GetFileName(item)))
                 {
-                    Files.Add(item);
+                    Files?.Add(item);
                 }
                 else
                 {
@@ -541,7 +541,7 @@ namespace DvdBurner
 
         private void Listbox_Drop(object sender, DragEventArgs e)
         {
-            string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string[] droppedfiles = (string[])e?.Data?.GetData(DataFormats.FileDrop);
             if (droppedfiles?.Length > 0)
             {
                 AddFiles(droppedfiles);

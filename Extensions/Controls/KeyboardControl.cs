@@ -83,14 +83,13 @@ namespace Extensions
             {
                 if (child is Button button)
                 {
-                    string content = button.Content.ToString();
-                    if (content.Length == 1 && char.IsLetter(content[0]))
+                    string content = button?.Content?.ToString();
+                    if (content?.Length == 1 && char.IsLetter(content[0]))
                     {
-                        button.Content = isShiftPressed ? content.ToUpper() : content.ToLower();
+                        button.Content = isShiftPressed ? content?.ToUpper() : content?.ToLower();
                     }
                 }
             }
         }
     }
 }
-

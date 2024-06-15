@@ -146,9 +146,9 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     {
         using MemoryStream stream = new();
         JpegBitmapEncoder encoder = new();
-        encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device.BitmapSource, new RotateTransform(Rotation))));
+        encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device?.BitmapSource, new RotateTransform(Rotation))));
         encoder.QualityLevel = 90;
-        encoder.Save(stream);
+        encoder?.Save(stream);
         return stream;
     }
 
@@ -158,7 +158,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
     {
         if (e.PropertyName is "SeçiliKamera")
         {
-            Device = new CapDevice(SeçiliKamera.MonikerString) { MaxHeightInPixels = 1080 };
+            Device = new CapDevice(SeçiliKamera?.MonikerString) { MaxHeightInPixels = 1080 };
         }
     }
 

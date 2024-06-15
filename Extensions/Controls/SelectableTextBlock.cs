@@ -16,7 +16,7 @@ public class SelectableTextBlock : TextBlock
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
-        if (e.KeyboardDevice.Modifiers == ModifierKeys.Control && e.Key == Key.C)
+        if (e?.KeyboardDevice?.Modifiers == ModifierKeys.Control && e.Key == Key.C)
         {
             Clipboard.SetDataObject(textRange?.Text);
         }

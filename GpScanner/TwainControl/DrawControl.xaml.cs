@@ -280,13 +280,16 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     public BitmapFrame SaveInkCanvasToImage()
     {
         BitmapSource temporaryimage = (BitmapSource)TemporaryImage;
+        if (temporaryimage == null)
+        {
+            return null;
+        }
         RenderTargetBitmap renderTargetBitmap = new(temporaryimage.PixelWidth, temporaryimage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
         DrawingVisual dv = new();
         using (DrawingContext ctx = dv.RenderOpen())
         {
             ctx.DrawRectangle(new VisualBrush(Ink), null, new Rect(0, 0, temporaryimage.PixelWidth, temporaryimage.PixelHeight));
         }
-
         renderTargetBitmap.Render(dv);
         renderTargetBitmap.Freeze();
         BitmapFrame image = BitmapFrame.Create(renderTargetBitmap);
@@ -353,8 +356,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     private void GenerateCustomCursor()
     {
         PresentationSource source = PresentationSource.FromVisual(this);
-        double m11 = source?.CompositionTarget.TransformToDevice.M11 ?? 1;
-        double m22 = source?.CompositionTarget.TransformToDevice.M22 ?? 1;
+        double m11 = source?.CompositionTarget?.TransformToDevice.M11 ?? 1;
+        double m22 = source?.CompositionTarget?.TransformToDevice.M22 ?? 1;
         SelectedBrush = new SolidColorBrush(DrawingAttribute.Color);
         double width = StylusWidth * Ink.CurrentZoom * m11;
         double height = StylusHeight * Ink.CurrentZoom * m22;

@@ -31,11 +31,11 @@ namespace GpScanner.Converter
             if (value is int number)
             {
                 int normalizedNumber = Math.Max(MinNumber, Math.Min(MaxNumber, number));
-                int rangeCount = Colors.Length;
+                int? rangeCount = Colors?.Length;
                 double rangeSize = (MaxNumber - MinNumber + 1) / (double)rangeCount;
                 int colorIndex = (int)((normalizedNumber - MinNumber) / rangeSize);
                 SolidColorBrush brush = new(Color.FromArgb(Colors[colorIndex].A, Colors[colorIndex].R, Colors[colorIndex].G, Colors[colorIndex].B));
-                brush.Freeze();
+                brush?.Freeze();
                 return brush;
             }
 

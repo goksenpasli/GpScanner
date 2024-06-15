@@ -610,7 +610,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         return Task.Run(
             () =>
             {
-                using Bitmap image = pdfDoc.Render(page, width, height, dpi, dpi, false) as Bitmap;
+                if (pdfDoc.Render(page, width, height, dpi, dpi, false) is not Bitmap image)
+                {
+                    return null;
+                }
                 IntPtr gdibitmap = image.GetHbitmap();
                 BitmapSource bitmapSource = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                 _ = Helpers.DeleteObject(gdibitmap);
@@ -706,13 +709,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     bs = Source.Width > Source.Height
                          ? ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaHeight, (int)pd.PrintableAreaWidth, 90, Dpi, Dpi)
                          : ((BitmapSource)Source)?.Resize((int)pd.PrintableAreaWidth, (int)pd.PrintableAreaHeight, 0, Dpi, Dpi);
-                    bs.Freeze();
+                    bs?.Freeze();
                     dc.DrawImage(bs, new Rect(0, 0, pd.PrintableAreaWidth, pd.PrintableAreaHeight));
                 }
                 else
                 {
                     bs = (BitmapSource)Source;
-                    bs.Freeze();
+                    bs?.Freeze();
                     dc.DrawImage(bs, new Rect(0, 0, bs.PixelWidth, bs.PixelHeight));
                 }
             }
