@@ -114,23 +114,7 @@
                             <Extensions:NumericUpDown Minimum="1"
                                 StringFormat="{}{0} CM"
                                 Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </UniformGrid>
-                        <StackPanel Orientation="Horizontal">
-                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="32" Height="32">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="201" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                            <Extensions:NumericUpDown Minimum="0"
-                                StringFormat="{}{0} DPI"
-                                Value="{Binding Path=CustomResolution, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </StackPanel>
+                        </UniformGrid>                        
                     </StackPanel>
                 </StackPanel>
             </GroupBox>

@@ -432,9 +432,27 @@
                                     VerticalContentAlignment="Center"
                                     local:Policy.PolicyName="Çözünürlük"
                                     FontWeight="Bold"
-                                    ItemStringFormat="{}{0} Dpi"
-                                    ItemsSource="{Binding ScanResolutionList, Mode=OneWay}"
-                                    SelectedItem="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                    SelectedValue="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                    SelectedValuePath="Tag">
+                                    <ComboBoxItem Content="72 DPI" Tag="72" />
+                                    <ComboBoxItem Content="96 DPI" Tag="96" />
+                                    <ComboBoxItem Content="120 DPI" Tag="120" />
+                                    <ComboBoxItem Content="150 DPI" Tag="150" />
+                                    <ComboBoxItem Content="200 DPI" Tag="200" />
+                                    <ComboBoxItem Content="300 DPI" Tag="300" />
+                                    <ComboBoxItem Content="450 DPI" Tag="450" />
+                                    <ComboBoxItem Content="600 DPI" Tag="600" />
+                                    <ComboBoxItem Content="1200 DPI" Tag="1200" />
+                                    <ComboBoxItem Content="2400 DPI" Tag="2400" />
+                                    <ComboBoxItem Content="4800 DPI" Tag="4800" />
+                                    <Separator />
+                                    <ComboBoxItem Tag="{Binding Path=CustomResolution, Source={x:Static properties:Settings.Default}, Mode=OneWay}">
+                                        <Extensions:NumericUpDown Margin="1"
+                                            Minimum="36"
+                                            StringFormat="{}{0} DPI"
+                                            Value="{Binding Path=CustomResolution, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                    </ComboBoxItem>
+                                </ComboBox>
                                 <Extensions:ContentToggleButton Grid.Column="2" ArrowVisibility="Collapsed">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
