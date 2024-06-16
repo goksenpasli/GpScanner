@@ -1804,40 +1804,44 @@
                                         Height="24"
                                         Source="/TwainControl;component/Icons/delete.png" />
                                 </Extensions:ContentToggleButton>
-                                <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
-                                    <Button.ToolTip>
-                                        <TextBlock>
-                                            <Run Text="{local:Loc EMPTYPAGE}" />
-                                            <Run Text="{local:Loc THRESHOLD}" />
-                                            <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat=%{0}}" />
-                                        </TextBlock>
-                                    </Button.ToolTip>
-                                    <Canvas Width="24" Height="24">
-                                        <Image Width="24" Height="24">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="0" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <TextBlock Canvas.Left="4"
+                                <Extensions:BadgeControl HorizontalBadgeAlignment="Left">
+                                    <Extensions:BadgeControl.BadgeContent>
+                                        <TextBlock Margin="2,-2,0,0"
                                             d:Text="0"
                                             FontSize="9"
                                             Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                        <Image Canvas.Left="4"
-                                            Canvas.Top="8"
-                                            Width="16"
-                                            Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="32" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Canvas>
-                                </Button>
+                                    </Extensions:BadgeControl.BadgeContent>
+                                    <Button local:Policy.PolicyName="DetectEmptyPages" Command="{Binding DetectEmptyPages}">
+                                        <Button.ToolTip>
+                                            <TextBlock>
+                                                <Run Text="{local:Loc EMPTYPAGE}" />
+                                                <Run Text="{local:Loc THRESHOLD}" />
+                                                <Run Text="{Binding EmptyThreshold, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat=%{0}}" />
+                                            </TextBlock>
+                                        </Button.ToolTip>
+                                        <Canvas Width="24" Height="24">
+                                            <Image Width="24" Height="24">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="0" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Image Canvas.Left="4"
+                                                Canvas.Top="8"
+                                                Width="16"
+                                                Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="32" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Canvas>
+                                    </Button>
+                                </Extensions:BadgeControl>
                                 <Separator />
                                 <Button local:Policy.PolicyName="Tümünüİşaretle"
                                     BorderBrush="Cyan"
@@ -1899,8 +1903,16 @@
                                         </Image.Source>
                                     </Image>
                                 </Button>
-                                <Extensions:SplitButton local:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding PrintSelectedDocuments}">
-                                    <Canvas Width="24" Height="24">
+                                <Extensions:BadgeControl HorizontalBadgeAlignment="Left">
+                                    <Extensions:BadgeControl.BadgeContent>
+                                        <TextBlock Margin="2,-3,0,0"
+                                            d:Text="0"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="Red"
+                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                    </Extensions:BadgeControl.BadgeContent>
+                                    <Extensions:SplitButton local:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding PrintSelectedDocuments}">
                                         <Image Width="24" Height="24">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1909,19 +1921,13 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock Canvas.Bottom="0"
-                                            d:Text="0"
-                                            FontSize="11"
-                                            FontWeight="Bold"
-                                            Foreground="Red"
-                                            Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                    </Canvas>
-                                    <Extensions:SplitButton.InternalContent>
-                                        <ListBox ItemStringFormat="{}{0} Dpi"
-                                            ItemsSource="{Binding DpiList, Source={x:Reference ImgViewer}}"
-                                            SelectedItem="{Binding PrintDpi}" />
-                                    </Extensions:SplitButton.InternalContent>
-                                </Extensions:SplitButton>
+                                        <Extensions:SplitButton.InternalContent>
+                                            <ListBox ItemStringFormat="{}{0} Dpi"
+                                                ItemsSource="{Binding DpiList, Source={x:Reference ImgViewer}}"
+                                                SelectedItem="{Binding PrintDpi}" />
+                                        </Extensions:SplitButton.InternalContent>
+                                    </Extensions:SplitButton>
+                                </Extensions:BadgeControl>
                                 <Separator />
                                 <Grid>
                                     <ProgressBar Background="{x:Null}"

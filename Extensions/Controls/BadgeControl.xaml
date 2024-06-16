@@ -1,0 +1,25 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Extensions">
+    <Style TargetType="{x:Type local:BadgeControl}">
+        <Setter Property="HorizontalAlignment" Value="Stretch" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:BadgeControl}">
+                    <Grid>
+                        <ContentPresenter x:Name="content" Content="{TemplateBinding Content}" />
+                        <ContentPresenter MaxWidth="{Binding ElementName=content, Path=ActualWidth}"
+                            MaxHeight="{Binding ElementName=content, Path=ActualHeight}"
+                            HorizontalAlignment="{TemplateBinding HorizontalBadgeAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalBadgeAlignment}"
+                            Content="{TemplateBinding BadgeContent}"
+                            Focusable="False"
+                            IsHitTestVisible="False"
+                            Visibility="{TemplateBinding BadgeVisibility}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalAlignment" Value="Stretch" />
+    </Style>
+</ResourceDictionary>

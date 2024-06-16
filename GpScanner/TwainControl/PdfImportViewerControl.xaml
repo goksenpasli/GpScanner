@@ -928,7 +928,16 @@
                 IsReadOnly="True"
                 Maximum="{Binding ElementName=PdfViewer, Path=ToplamSayfa}"
                 Minimum="0"
-                Value="{Binding PdfSplitCount}" />
+                Value="{Binding PdfSplitCount}">
+                <Extensions:NumericUpDown.ToolTip>
+                    <TextBlock>
+                        <Run Text="{local:Loc DOCUMENT}" />
+                        <Run Text="{local:Loc SLICE}" />
+                        <Run Text="{local:Loc PAGENUMBER}" />
+                        <Run Text="{Binding PdfSplitCount, Mode=OneWay}" />
+                    </TextBlock>
+                </Extensions:NumericUpDown.ToolTip>
+            </Extensions:NumericUpDown>
             <Button local:Policy.PolicyName="SplitPdf"
                 Command="{Binding SplitPdf}"
                 CommandParameter="{Binding ElementName=PdfViewer}">
