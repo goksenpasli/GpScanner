@@ -750,4 +750,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Կան բազմաթիվ ֆայլեր</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>ՄԵԾ</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Ամենամեծը</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Կես</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>ՓՈՔՐ</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Ամենափոքր</value>
+  </data>
 </root>

@@ -750,4 +750,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Postoje brojne datoteke</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>VELIK</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>NAJVEĆI</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Srednji</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>MALI</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Najmanji</value>
+  </data>
 </root>

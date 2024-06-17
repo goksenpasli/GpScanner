@@ -750,4 +750,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Der er adskillige filer</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>STOR</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Største</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Midten</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>LILLE</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Mindste</value>
+  </data>
 </root>

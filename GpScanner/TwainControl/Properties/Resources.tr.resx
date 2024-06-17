@@ -760,4 +760,19 @@ BELGE EKLE</value>
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Çok Sayıda İndekslenmemiş Dosya Var</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>BÜYÜK</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>EN BÜYÜK</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>ORTA</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>KÜÇÜK</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>EN KÜÇÜK</value>
+  </data>
 </root>

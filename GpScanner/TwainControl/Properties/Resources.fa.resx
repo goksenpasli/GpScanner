@@ -762,4 +762,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>پرونده های بی شماری وجود دارد</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>بزرگ</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>بزرگترین</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>میانه</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>کم اهمیت</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>کوچکترین</value>
+  </data>
 </root>

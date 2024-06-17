@@ -750,4 +750,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Има много файлове</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>Голям</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Най -голямо</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Средна</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Малък</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Най -малки</value>
+  </data>
 </root>

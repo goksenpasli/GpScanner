@@ -747,4 +747,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Υπάρχουν πολλά αρχεία</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>ΜΕΓΑΛΟ</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>ΜΕΓΙΣΤΟΣ</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>ΜΕΣΑΙΑ</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>ΜΙΚΡΟ</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Μικρότερος</value>
+  </data>
 </root>

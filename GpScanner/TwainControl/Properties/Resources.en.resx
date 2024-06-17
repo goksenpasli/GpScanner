@@ -754,4 +754,19 @@ TO FILE</value>
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>There are numerous files unindexed</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>BIG</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>BIGGEST</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>MIDDLE</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>SMALL</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>SMALLEST</value>
+  </data>
 </root>

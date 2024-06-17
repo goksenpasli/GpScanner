@@ -750,4 +750,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Számos fájl van</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>NAGY</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>LEGNAGYOBB</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>KÖZÉPSŐ</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>KICSI</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Legkisebb</value>
+  </data>
 </root>

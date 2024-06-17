@@ -207,6 +207,24 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string BIG {
+            get {
+                return ResourceManager.GetString("BIG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string BIGGEST {
+            get {
+                return ResourceManager.GetString("BIGGEST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string BORDERDETECT {
             get {
                 return ResourceManager.GetString("BORDERDETECT", resourceCulture);
@@ -788,6 +806,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string MIDDLE {
+            get {
+                return ResourceManager.GetString("MIDDLE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string MINTOTRAY {
             get {
                 return ResourceManager.GetString("MINTOTRAY", resourceCulture);
@@ -1250,6 +1277,24 @@ namespace TwainControl.Properties {
         public static string SLICE {
             get {
                 return ResourceManager.GetString("SLICE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SMALL {
+            get {
+                return ResourceManager.GetString("SMALL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SMALLEST {
+            get {
+                return ResourceManager.GetString("SMALLEST", resourceCulture);
             }
         }
         

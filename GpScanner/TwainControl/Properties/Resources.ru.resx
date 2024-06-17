@@ -747,4 +747,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Есть множество файлов</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>БОЛЬШОЙ</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>САМЫЙ БОЛЬШОЙ</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>СЕРЕДИНА</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>МАЛЕНЬКИЙ</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Наименьший</value>
+  </data>
 </root>

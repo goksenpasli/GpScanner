@@ -762,4 +762,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Постојат бројни датотеки</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>ГОЛЕМО</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>НАЈГОЛЕМ</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Среден</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Мал</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Најмал</value>
+  </data>
 </root>

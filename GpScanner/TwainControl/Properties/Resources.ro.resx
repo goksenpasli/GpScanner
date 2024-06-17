@@ -750,4 +750,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value>Există numeroase fișiere</value>
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value>MARE</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Cel mai mare</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>MIJLOC</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>MIC</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Cel mai mic</value>
+  </data>
 </root>

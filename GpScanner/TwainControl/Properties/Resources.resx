@@ -785,4 +785,19 @@
   <data name="WARNUNINDEXFILES" xml:space="preserve">
     <value />
   </data>
+  <data name="BIG" xml:space="preserve">
+    <value />
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value />
+  </data>
 </root>

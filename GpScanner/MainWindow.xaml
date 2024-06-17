@@ -82,6 +82,7 @@
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
+        <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:MonthContributionDataFileNameConverter x:Key="MonthContributionDataFileNameConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
         <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter"
@@ -588,27 +589,27 @@
                                     twainctrl:Policy.PolicyName="SelectedSize"
                                     SelectedValue="{Binding SelectedSize}"
                                     SelectedValuePath="Tag">
-                                    <ComboBoxItem Content="190x305">
+                                    <ComboBoxItem Content="{twainctrl:Loc SMALLEST}">
                                         <ComboBoxItem.Tag>
                                             <Size Width="190" Height="305" />
                                         </ComboBoxItem.Tag>
                                     </ComboBoxItem>
-                                    <ComboBoxItem Content="230x370">
+                                    <ComboBoxItem Content="{twainctrl:Loc SMALL}">
                                         <ComboBoxItem.Tag>
                                             <Size Width="230" Height="370" />
                                         </ComboBoxItem.Tag>
                                     </ComboBoxItem>
-                                    <ComboBoxItem Content="330x530">
+                                    <ComboBoxItem Content="{twainctrl:Loc MIDDLE}">
                                         <ComboBoxItem.Tag>
                                             <Size Width="330" Height="530" />
                                         </ComboBoxItem.Tag>
                                     </ComboBoxItem>
-                                    <ComboBoxItem Content="380x610">
+                                    <ComboBoxItem Content="{twainctrl:Loc BIG}">
                                         <ComboBoxItem.Tag>
                                             <Size Width="380" Height="610" />
                                         </ComboBoxItem.Tag>
                                     </ComboBoxItem>
-                                    <ComboBoxItem Content="425x645">
+                                    <ComboBoxItem Content="{twainctrl:Loc BIGGEST}">
                                         <ComboBoxItem.Tag>
                                             <Size Width="425" Height="645" />
                                         </ComboBoxItem.Tag>
@@ -649,6 +650,7 @@
                                     <UniformGrid Rows="2">
                                         <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
                                             Interval="1"
+                                            IsEnabled="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}"
                                             Minimum="1"
                                             Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <ToggleButton twainctrl:Policy.PolicyName="ShowAllPdfControl"
