@@ -202,7 +202,7 @@
                     </GroupBox>
                     <GroupBox Grid.Row="2">
                         <StackPanel>
-                            <UniformGrid Columns="5" Rows="2">
+                            <UniformGrid Columns="4" Rows="2">
                                 <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
                                     <Run Text="{twainctrl:Loc FILE}" />
                                     <Run Text="{twainctrl:Loc RES}" />
@@ -232,10 +232,22 @@
                                         </Style>
                                     </ComboBox.ItemContainerStyle>
                                 </ComboBox>
+                                <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
+                                    <sys:String>PDF</sys:String>
+                                    <Run Text="{twainctrl:Loc PREVIEWFILE}" />
+                                </TextBlock>
+                                <ComboBox VerticalContentAlignment="Center"
+                                    twainctrl:Policy.PolicyName="DefaultThumbNailDpi"
+                                    ItemStringFormat="{}{0} Dpi"
+                                    ItemsSource="{Binding SettingsPagePdfDpiList}"
+                                    SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxPdfNumberRangeToColorConverter}}" />
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
+                                </ComboBox>
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    </StackPanel>
                                     <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="MinimizeTray">
                                         <Grid>
                                             <Image Width="32" Height="32">
@@ -353,53 +365,7 @@
                                         </Extensions:ContentToggleButton>
                                     </CheckBox>
                                 </StackPanel>
-                                <TextBlock VerticalAlignment="Center" TextWrapping="Wrap">
-                                    <sys:String>PDF</sys:String>
-                                    <Run Text="{twainctrl:Loc PREVIEWFILE}" />
-                                </TextBlock>
-                                <ComboBox VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="DefaultThumbNailDpi"
-                                    ItemStringFormat="{}{0} Dpi"
-                                    ItemsSource="{Binding SettingsPagePdfDpiList}"
-                                    SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                    <ComboBox.ItemContainerStyle>
-                                        <Style TargetType="ComboBoxItem">
-                                            <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxPdfNumberRangeToColorConverter}}" />
-                                        </Style>
-                                    </ComboBox.ItemContainerStyle>
-                                </ComboBox>
-                                <UniformGrid Rows="2">
-                                    <Extensions:NumericUpDown Interval="1"
-                                        IsReadOnly="True"
-                                        Minimum="100"
-                                        StringFormat="{}{0} Pixel"
-                                        ToolTip="{twainctrl:Loc CWIDTH}"
-                                        Value="{Binding CustomWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <Extensions:NumericUpDown Interval="1"
-                                        IsReadOnly="True"
-                                        Minimum="100"
-                                        StringFormat="{}{0} Pixel"
-                                        ToolTip="{twainctrl:Loc CHEIGHT}"
-                                        Value="{Binding CustomHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                </UniformGrid>
-                                <ComboBox VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="SelectedSize"
-                                    ItemsSource="{Binding GetPreviewSize}"
-                                    SelectedIndex="{Binding PreviewIndex, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
-                                    SelectedItem="{Binding SelectedSize}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock>
-                                                <Run Text="{Binding Width, StringFormat=\{0\} Pixel}" /><LineBreak />
-                                                <Run Text="{Binding Height, StringFormat=\{0\} Pixel}" />
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
                                 <StackPanel Orientation="Horizontal">
-                                    <StackPanel Orientation="Horizontal">
-                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    </StackPanel>
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="NotifyCalendar"

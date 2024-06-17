@@ -83,6 +83,7 @@
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
         <Converter:MonthContributionDataFileNameConverter x:Key="MonthContributionDataFileNameConverter" />
+        <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
         <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter"
             MaxNumber="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
             MinNumber="1" />
@@ -582,6 +583,62 @@
                                 <StackPanel Orientation="Horizontal">
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 </StackPanel>
+                                <ComboBox VerticalContentAlignment="Center"
+                                    d:SelectedValue="330,530"
+                                    twainctrl:Policy.PolicyName="SelectedSize"
+                                    SelectedValue="{Binding SelectedSize}"
+                                    SelectedValuePath="Tag">
+                                    <ComboBoxItem Content="190x305">
+                                        <ComboBoxItem.Tag>
+                                            <Size Width="190" Height="305" />
+                                        </ComboBoxItem.Tag>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem Content="230x370">
+                                        <ComboBoxItem.Tag>
+                                            <Size Width="230" Height="370" />
+                                        </ComboBoxItem.Tag>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem Content="330x530">
+                                        <ComboBoxItem.Tag>
+                                            <Size Width="330" Height="530" />
+                                        </ComboBoxItem.Tag>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem Content="380x610">
+                                        <ComboBoxItem.Tag>
+                                            <Size Width="380" Height="610" />
+                                        </ComboBoxItem.Tag>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem Content="425x645">
+                                        <ComboBoxItem.Tag>
+                                            <Size Width="425" Height="645" />
+                                        </ComboBoxItem.Tag>
+                                    </ComboBoxItem>
+                                    <Separator />
+                                    <ComboBoxItem>
+                                        <ComboBoxItem.Tag>
+                                            <MultiBinding Converter="{StaticResource CustomSizeToSizeConverter}">
+                                                <Binding Path="CustomWidth" Source="{x:Static properties:Settings.Default}" />
+                                                <Binding Path="CustomHeight" Source="{x:Static properties:Settings.Default}" />
+                                            </MultiBinding>
+                                        </ComboBoxItem.Tag>
+                                        <UniformGrid Width="65" Rows="2">
+                                            <Extensions:NumericUpDown Interval="1"
+                                                Maximum="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}}"
+                                                Minimum="100"
+                                                MouseSelectAllText="True"
+                                                ToolTip="{twainctrl:Loc CWIDTH}"
+                                                Value="{Binding CustomWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                            <Extensions:NumericUpDown Interval="1"
+                                                Minimum="100"
+                                                MouseSelectAllText="True"
+                                                ToolTip="{twainctrl:Loc CHEIGHT}"
+                                                Value="{Binding CustomHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                        </UniformGrid>
+                                    </ComboBoxItem>
+                                </ComboBox>
+                                <StackPanel Orientation="Horizontal">
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                </StackPanel>
                                 <TextBlock VerticalAlignment="Center">
                                     <Run Text="PDF" />
                                     <Run Text="{twainctrl:Loc ALL}" />
@@ -589,7 +646,7 @@
                                     <Run Text="{twainctrl:Loc PAGENUMBER}" />
                                 </TextBlock>
                                 <UniformGrid Columns="2">
-                                    <StackPanel>
+                                    <UniformGrid Rows="2">
                                         <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
                                             Interval="1"
                                             Minimum="1"
@@ -601,7 +658,7 @@
                                             FontWeight="Bold"
                                             Foreground="Green"
                                             IsChecked="{Binding ShowAllPdfControl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
-                                    </StackPanel>
+                                    </UniformGrid>
                                     <ListBox VerticalContentAlignment="Center"
                                         Background="{StaticResource BorderBackground}"
                                         SelectedValue="{Binding PdfAllPageOrientation}"
@@ -853,30 +910,19 @@
                                 KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
-                            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                                <ComboBox VerticalContentAlignment="Center"
-                                    twainctrl:Policy.PolicyName="SelectedSize"
-                                    ItemsSource="{Binding GetPreviewSize}"
-                                    SelectedItem="{Binding SelectedSize}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextBlock><Run Text="{Binding Width}" /><Run Text="X" /><Run Text="{Binding Height}" /></TextBlock>
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                                <Button twainctrl:Policy.PolicyName="CycleSelectedDocuments"
-                                    Command="{Binding CycleSelectedDocuments}"
-                                    CommandParameter="{Binding ElementName=LbDoc}">
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="55" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
-                            </StackPanel>
+                            <Button Grid.Column="2"
+                                twainctrl:Policy.PolicyName="CycleSelectedDocuments"
+                                Command="{Binding CycleSelectedDocuments}"
+                                CommandParameter="{Binding ElementName=LbDoc}">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="55" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
                         </Grid>
                         <ProgressBar Grid.Row="3"
                             Height="3"

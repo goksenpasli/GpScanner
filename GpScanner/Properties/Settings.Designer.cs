@@ -12,7 +12,7 @@ namespace GpScanner.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.10.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.11.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -97,10 +97,10 @@ namespace GpScanner.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
-        public int PreviewIndex {
+        [global::System.Configuration.DefaultSettingValueAttribute("330,530")]
+        public global::System.Windows.Size PreviewIndex {
             get {
-                return ((int)(this["PreviewIndex"]));
+                return ((global::System.Windows.Size)(this["PreviewIndex"]));
             }
             set {
                 this["PreviewIndex"] = value;

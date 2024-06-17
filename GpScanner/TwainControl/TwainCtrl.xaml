@@ -430,6 +430,7 @@
                                 </ComboBox>
                                 <ComboBox Grid.Column="1"
                                     VerticalContentAlignment="Center"
+                                    d:SelectedValue="200"
                                     local:Policy.PolicyName="Çözünürlük"
                                     FontWeight="Bold"
                                     SelectedValue="{Binding Çözünürlük, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"

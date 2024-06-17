@@ -56,6 +56,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly string AppName;
+    private readonly ObservableCollection<Size> getPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
@@ -100,7 +101,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string ftpPassword = string.Empty;
     private string ftpSite = string.Empty;
     private string ftpUserName = string.Empty;
-    private ObservableCollection<Size> getPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
     private int ındexedFileCount;
     private bool ısAdministrator;
     private bool ısSqlQuery = true;
@@ -157,7 +157,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         LoadFiles.Execute(null);
         SeçiliDil = Settings.Default.DefaultLang;
         SeçiliGün = DateTime.Today;
-        SelectedSize = GetPreviewSize[Settings.Default.PreviewIndex];
+        SelectedSize = Settings.Default.PreviewIndex;
         GenerateAnimationTimer();
         GenerateJumpList();
         LoadRemainder = new RelayCommand<object>(async parameter => await LoadRemainderDatas(), parameter => true);
@@ -1739,19 +1739,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<Size> GetPreviewSize
-    {
-        get => getPreviewSize;
-        set
-        {
-            if (getPreviewSize != value)
-            {
-                getPreviewSize = value;
-                OnPropertyChanged(nameof(GetPreviewSize));
-            }
-        }
-    }
-
     public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
@@ -2899,7 +2886,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         if (e.PropertyName is "CustomWidth" or "CustomHeight")
         {
-            GetPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
+            SelectedSize = new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight);
         }
 
         Settings.Default.Save();
@@ -3224,6 +3211,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 ContributionData = await GetContributionData(files, firstdate, lastdate);
                 ContributionDocumentCount = ContributionData.Sum(z => z.Count);
             }
+        }
+
+        if (e.PropertyName is "SelectedSize")
+        {
+            Settings.Default.PreviewIndex = SelectedSize;
         }
     }
 

@@ -135,6 +135,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\CustomSizeToSizeConverter.cs" />
     <Compile Include="Converter\FileNameExtractConverter.cs" />
     <Compile Include="Converter\MonthContributionDataFileNameConverter.cs" />
     <Compile Include="Converter\NumberRangeToColorConverter.cs" />

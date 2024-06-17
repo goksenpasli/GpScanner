@@ -20,8 +20,8 @@
     <Setting Name="IsFirstRun" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="PreviewIndex" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+    <Setting Name="PreviewIndex" Type="System.Windows.Size" Scope="User">
+      <Value Profile="(Default)">330,530</Value>
     </Setting>
     <Setting Name="SelectedFtp" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
