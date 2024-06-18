@@ -98,11 +98,13 @@
                                 ItemsSource="{x:Static viewmodel:SplashViewModel.LanguageFlags}"
                                 SelectedValue="{Binding SeçiliDil}"
                                 SelectedValuePath="Key">
-                                <ListBox.Resources>
+                                <ListBox.ItemContainerStyle>
                                     <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem">
                                         <Setter Property="HorizontalAlignment" Value="Center" />
+                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
                                         <Setter Property="Margin" Value="1,0,1,0" />
                                         <Setter Property="Padding" Value="0" />
+                                        <Setter Property="VerticalContentAlignment" Value="Top" />
                                         <Style.Triggers>
                                             <Trigger Property="IsSelected" Value="True">
                                                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
@@ -114,7 +116,7 @@
                                             </Trigger>
                                         </Style.Triggers>
                                     </Style>
-                                </ListBox.Resources>
+                                </ListBox.ItemContainerStyle>
                                 <ListBox.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <Extensions:VirtualizingWrapPanel SpacingMode="None" />

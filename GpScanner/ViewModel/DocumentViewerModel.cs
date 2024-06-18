@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using GpScanner.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -157,6 +158,11 @@ public class DocumentViewerModel : InpcBase
                     using AppDbContext context = new();
                     return string.Join(" ", (await context?.Data?.AsNoTracking()?.ToListAsync())?.Where(z => z.FileName == FilePath)?.Select(z => z.FileContent));
                 });
+
+            if (!string.IsNullOrWhiteSpace(PdfFileContent))
+            {
+                Settings.Default.DocumentViewerPanelIsExpanded = true;
+            }
         }
     }
 }

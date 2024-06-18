@@ -52,9 +52,9 @@
             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
             VirtualizingPanel.ScrollUnit="Pixel"
             VirtualizingPanel.VirtualizationMode="Recycling">
-            <ListBox.Resources>
+            <ListBox.ItemContainerStyle>
                 <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
-            </ListBox.Resources>
+            </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>

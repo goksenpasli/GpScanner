@@ -600,5 +600,17 @@ namespace GpScanner.Properties {
                 this["UnindexedFileCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DocumentViewerPanelIsExpanded {
+            get {
+                return ((bool)(this["DocumentViewerPanelIsExpanded"]));
+            }
+            set {
+                this["DocumentViewerPanelIsExpanded"] = value;
+            }
+        }
     }
 }
