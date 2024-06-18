@@ -42,6 +42,7 @@ namespace GpScanner.ViewModel
             { "MALAYSIAN", "Flag_of_Malaysia.png" },
             { "ایرانی", "flag_of_iran.png" },
             { "МАКЕДОНСКИ", "Flag_of_North_Macedonia.png" },
+            { "ქართველი", "Flag-of-Georgia.png" },
         };
         private const string basePath = "pack://application:,,,/GpScanner;component/Resources/";
         private Uri flagUri;
