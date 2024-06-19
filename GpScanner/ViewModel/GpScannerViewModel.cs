@@ -1126,6 +1126,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 if (windowService.GetFirstWindow().DataContext is GpScannerViewModel gpScannerViewModel)
                 {
+                    SettingsWindowView settingsWindowView = windowService.GetFirstWindow<SettingsWindowView>();
+                    if (settingsWindowView is not null)
+                    {
+                        settingsWindowView.Activate();
+                        return;
+                    }
                     gpScannerViewModel.GenerateFlagAnimation();
                     SettingsWindowView settingswindow = new() { Owner = windowService.GetFirstWindow(), DataContext = gpScannerViewModel };
                     settingswindow.Closed += (s, e) => gpScannerViewModel.StopFlagAnimation.Execute(null);
