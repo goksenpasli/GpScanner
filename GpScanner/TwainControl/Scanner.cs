@@ -406,7 +406,6 @@ public class Scanner : InpcBase, IDataErrorInfo
             {
                 croppedImage = value;
                 OnPropertyChanged(nameof(CroppedImage));
-                OnPropertyChanged(nameof(CroppedImageThumb));
             }
         }
     }
@@ -441,7 +440,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public BitmapSource CroppedImageThumb
     {
-        get => ((BitmapSource)CroppedImage).Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+        get => croppedImageThumb;
 
         set
         {
@@ -1461,11 +1460,23 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshIndexNumbers(resimler);
 
-    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
         {
             ProgressState = TaskbarItemProgressState.None;
+        }
+        if (e.PropertyName is "CroppedImage" && CroppedImage is not null)
+        {
+            CroppedImage.Freeze();
+            BitmapSource bitmapSource = (BitmapSource)CroppedImage;
+            if (Settings.Default.DefaultThumbPictureAutoResize)
+            {
+                double resizeratio = Math.Min(256d / bitmapSource.PixelWidth, 256d / bitmapSource.PixelHeight);
+                CroppedImageThumb = bitmapSource.Resize(resizeratio);
+                return;
+            }
+            CroppedImageThumb = await bitmapSource.ResizeAsync(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
         }
     }
 }

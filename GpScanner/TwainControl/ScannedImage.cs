@@ -169,6 +169,12 @@ public class ScannedImage : InpcBase
         if (e.PropertyName is "Resim" && Resim is not null)
         {
             Resim.Freeze();
+            if (Settings.Default.DefaultThumbPictureAutoResize)
+            {
+                double resizeratio = Math.Min(256d / Resim.PixelWidth, 256d / Resim.PixelHeight);
+                ResimThumb = Resim.Resize(resizeratio);
+                return;
+            }
             ResimThumb = await Resim.ResizeAsync(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
         }
     }

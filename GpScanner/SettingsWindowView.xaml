@@ -36,6 +36,7 @@
             MinNumber="12" />
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
         <Extensions:FilePathToIconConverter x:Key="JumboSizeFilePathToIconConverter" IconSize="jumbo" />
+        <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:PageSizePreviewWidthConverter x:Key="PageSizePreviewWidthConverter" />
         <Converter:StringToCountryFlagImageConverter x:Key="StringToCountryFlagImageConverter" />
         <Converter:PageSizePreviewHeightConverter x:Key="PageSizePreviewHeightConverter" />
@@ -214,6 +215,13 @@
                                     ItemStringFormat="{}{0}%"
                                     ItemsSource="{Binding SettingsPagePictureResizeList}"
                                     SelectedItem="{Binding DefaultPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ToolTip>
+                                        <TextBlock>
+                                            <Run Text="{twainctrl:Loc CONTENT}" />
+                                            <Run Text="{twainctrl:Loc RES}" />
+                                            <Run Text="{Binding DefaultPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, StringFormat={}{0}%}" />
+                                        </TextBlock>
+                                    </ComboBox.ToolTip>
                                     <ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
                                             <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
@@ -223,11 +231,28 @@
                                 <TextBlock VerticalAlignment="Center"
                                     Text="{twainctrl:Loc PREVIEWFILE}"
                                     TextWrapping="Wrap" />
+                                <CheckBox VerticalAlignment="Center"
+                                    VerticalContentAlignment="Center"
+                                    IsChecked="{Binding DefaultThumbPictureAutoResize, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock>
+                                        <Run Text="{twainctrl:Loc Auto}" />
+                                        <LineBreak />
+                                        <sys:String>256px</sys:String>
+                                    </TextBlock>
+                                </CheckBox>
                                 <ComboBox VerticalContentAlignment="Center"
                                     twainctrl:Policy.PolicyName="DefaultThumbPictureResizeRatio"
+                                    IsEnabled="{Binding DefaultThumbPictureAutoResize, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}"
                                     ItemStringFormat="{}{0}%"
                                     ItemsSource="{Binding SettingsPagePictureResizeList}"
                                     SelectedItem="{Binding DefaultThumbPictureResizeRatio, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ComboBox.ToolTip>
+                                        <TextBlock>
+                                            <Run Text="{twainctrl:Loc CONTENT}" />
+                                            <Run Text="{twainctrl:Loc RES}" />
+                                            <Run Text="{Binding DefaultThumbPictureResizeRatio, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}, StringFormat={}{0}%}" />
+                                        </TextBlock>
+                                    </ComboBox.ToolTip>
                                     <ComboBox.ItemContainerStyle>
                                         <Style TargetType="ComboBoxItem">
                                             <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />

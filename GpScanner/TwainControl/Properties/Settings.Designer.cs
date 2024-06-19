@@ -577,5 +577,17 @@ namespace TwainControl.Properties {
                 this["CustomResolution"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DefaultThumbPictureAutoResize {
+            get {
+                return ((bool)(this["DefaultThumbPictureAutoResize"]));
+            }
+            set {
+                this["DefaultThumbPictureAutoResize"] = value;
+            }
+        }
     }
 }
