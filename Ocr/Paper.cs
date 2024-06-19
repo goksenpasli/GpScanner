@@ -1,10 +1,13 @@
-﻿namespace Ocr;
+﻿using System.Windows;
+
+namespace Ocr;
 
 public class Paper : InpcBase
 {
     private string category;
     private double height;
     private string paperType;
+    private Visibility widespreadPaper = Visibility.Collapsed;
     private double width;
 
     public string Category
@@ -45,6 +48,19 @@ public class Paper : InpcBase
             {
                 paperType = value;
                 OnPropertyChanged(nameof(PaperType));
+            }
+        }
+    }
+
+    public Visibility WidespreadPaper
+    {
+        get => widespreadPaper;
+        set
+        {
+            if (widespreadPaper != value)
+            {
+                widespreadPaper = value;
+                OnPropertyChanged(nameof(WidespreadPaper));
             }
         }
     }

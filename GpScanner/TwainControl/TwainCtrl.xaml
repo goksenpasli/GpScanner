@@ -698,6 +698,16 @@
                                                         Text="{Binding PaperType}" />
                                                     <StackPanel Grid.Column="1" Orientation="Horizontal">
                                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                                        <Image Width="16"
+                                                            Height="16"
+                                                            Visibility="{Binding WidespreadPaper}">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="43" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
                                                     </StackPanel>
                                                     <Viewbox Grid.Column="2">
                                                         <DockPanel LastChildFill="True">
@@ -967,9 +977,7 @@
                                         Grid.Column="1"
                                         Background="{StaticResource BorderBackground}"
                                         Orientation="Horizontal">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        </StackPanel>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <Image Width="16" Height="16">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1000,9 +1008,7 @@
                                             Minimum="0"
                                             ToolTip="{local:Loc SECOND}"
                                             Value="{Binding ScanBetweenDelay, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                        <StackPanel Orientation="Horizontal">
-                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        </StackPanel>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <ListBox HorizontalContentAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             local:Policy.PolicyName="SelectedRotation"
@@ -1021,9 +1027,7 @@
                                             <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
                                             <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
                                         </ListBox>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        </StackPanel>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <ListBox VerticalContentAlignment="Center"
                                             local:Policy.PolicyName="SelectedFlip"
                                             Background="{DynamicResource BorderBackground}"
@@ -1929,11 +1933,10 @@
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
                                 </Extensions:BadgeControl>
-                                <Separator />
-                                <Grid>
-                                    <ProgressBar Background="{x:Null}"
+                                <StackPanel>
+                                    <ProgressBar Height="3"
+                                        Background="{x:Null}"
                                         BorderBrush="{x:Null}"
-                                        Foreground="Yellow"
                                         Maximum="1"
                                         Value="{Binding AllRotateProgressValue}" />
                                     <Extensions:NumericUpDown VerticalAlignment="Center"
@@ -1944,7 +1947,7 @@
                                         Minimum="-1"
                                         NumericUpdownTextBoxVisibility="Collapsed"
                                         Value="{Binding AllImageRotationAngle}" />
-                                </Grid>
+                                </StackPanel>
                                 <Button local:Policy.PolicyName="InvertSelectedImage"
                                     BorderBrush="Cyan"
                                     Command="{Binding InvertSelectedImage}"

@@ -166,9 +166,7 @@
                     </MenuItem.Header>
                 </MenuItem>
             </Menu>
-            <StackPanel Orientation="Horizontal">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            </StackPanel>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Button local:Policy.PolicyName="AddAllFileToControlPanel"
                 BorderBrush="Cyan"
                 Command="{Binding AddAllFileToControlPanel}"
@@ -199,9 +197,7 @@
                     </Border>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <StackPanel Orientation="Horizontal">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            </StackPanel>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Extensions:ContentToggleButton StaysOpen="True" TopMost="False">
                 <Grid>
                     <Image Width="16" Height="16">
@@ -920,9 +916,7 @@
                     </Border>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <StackPanel Orientation="Horizontal">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            </StackPanel>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Extensions:NumericUpDown Interval="1"
                 IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 IsReadOnly="True"
@@ -950,9 +944,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <StackPanel Orientation="Horizontal">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            </StackPanel>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Extensions:SplitButton Command="{Binding OcrCurrentPdfPage}"
                 CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
                 DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
@@ -1092,9 +1084,7 @@
                     </Image.Source>
                 </Image>
             </Button>
-            <StackPanel Orientation="Horizontal">
-                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            </StackPanel>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Button local:Policy.PolicyName="ClosePdfFile"
                 Command="{Binding ClosePdfFile}"
                 CommandParameter="{Binding ElementName=PdfViewer}">
@@ -1248,9 +1238,7 @@
                             </Border>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <ToggleButton IsChecked="{Binding DrawEllipse, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Ellipse Width="16"
@@ -1321,9 +1309,7 @@
                             </Rectangle>
                         </ToggleButton.Content>
                     </ToggleButton>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <ToggleButton IsChecked="{Binding DrawLines, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Canvas Width="16" Height="16">
@@ -1426,9 +1412,7 @@
                             Height="16"
                             Source="/TwainControl;component/Icons/delete.png" />
                     </Button>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <ToggleButton IsChecked="{Binding DrawImage, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding DrawnImage, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <ToggleButton.Content>
                             <Image Width="16" Height="16">
@@ -1606,9 +1590,7 @@
                             </Border>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <StackPanel Orientation="Horizontal">
                             <Image Width="16" Height="16">

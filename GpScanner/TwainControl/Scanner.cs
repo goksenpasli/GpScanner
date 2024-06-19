@@ -1460,7 +1460,7 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshIndexNumbers(resimler);
 
-    private async void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "PdfSaveProgressValue" && PdfSaveProgressValue == 1)
         {
@@ -1476,7 +1476,7 @@ public class Scanner : InpcBase, IDataErrorInfo
                 CroppedImageThumb = bitmapSource.Resize(resizeratio);
                 return;
             }
-            CroppedImageThumb = await bitmapSource.ResizeAsync(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+            CroppedImageThumb = bitmapSource.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
         }
     }
 }

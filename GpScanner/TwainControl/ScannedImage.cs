@@ -175,7 +175,7 @@ public class ScannedImage : InpcBase
                 ResimThumb = Resim.Resize(resizeratio);
                 return;
             }
-            ResimThumb = await Resim.ResizeAsync(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
+            ResimThumb = Resim.Resize(Settings.Default.DefaultThumbPictureResizeRatio / 100d);
         }
     }
 }

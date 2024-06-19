@@ -256,9 +256,7 @@
                                     Text="ç" />
                             </Button.Content>
                         </Button>
-                        <StackPanel Orientation="Horizontal">
-                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                        </StackPanel>
+                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                         <Button BorderBrush="Cyan"
                             Command="{Binding RotateSelectedPage}"
                             CommandParameter="{Binding ElementName=PdfVwr}">

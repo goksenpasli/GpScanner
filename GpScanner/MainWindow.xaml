@@ -581,9 +581,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                     </StackPanel>
                                 </Extensions:SplitButton>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <ComboBox VerticalContentAlignment="Center"
                                     d:SelectedValue="330,530"
                                     twainctrl:Policy.PolicyName="SelectedSize"
@@ -637,9 +635,7 @@
                                         </UniformGrid>
                                     </ComboBoxItem>
                                 </ComboBox>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <TextBlock VerticalAlignment="Center">
                                     <Run Text="PDF" />
                                     <Run Text="{twainctrl:Loc ALL}" />
@@ -684,9 +680,7 @@
                                         </ListBoxItem>
                                     </ListBox>
                                 </UniformGrid>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfBirleştir"
@@ -696,9 +690,7 @@
                                         Height="32"
                                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                 </Button>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfZipBirleştir"
@@ -806,9 +798,7 @@
                                         </Border>
                                     </Extensions:ContentToggleButton.OverContent>
                                 </Extensions:ContentToggleButton>
-                                <StackPanel Orientation="Horizontal">
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                </StackPanel>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="DvdBurnerControl" ArrowVisibility="Collapsed">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
@@ -1277,9 +1267,7 @@
                         Visibility="{Binding Shutdown, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Run Text="{twainctrl:Loc WARNREBOOT}" />
                     </TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <TextBlock VerticalAlignment="Center"
                         FontWeight="Bold"
                         Foreground="Red">
@@ -1288,9 +1276,7 @@
                         <Run Text="{Binding Mode=OneWay, ElementName=LbDoc, Path=Items.Count}" />
                         <Run Text="{twainctrl:Loc DOCUMENT}" />
                     </TextBlock>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Image Width="16"
                         Height="16"
                         Visibility="{Binding PdfBatchRunning, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -1433,9 +1419,7 @@
                                                 <Run Text="{Binding Mode=OneWay, Path=ContributionDocumentCount}" />
                                                 <Run Text="{twainctrl:Loc DOCUMENT}" />
                                             </TextBlock>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                            </StackPanel>
+                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                             <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWSIZE}" />
                                             <Slider Width="400"
                                                 AutoToolTipPlacement="TopLeft"
@@ -1576,9 +1560,7 @@
                             </Image.Source>
                         </Image>
                     </Extensions:ContentToggleButton>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Extensions:ContentToggleButton AllowDrop="True"
                         Background="Transparent"
                         BorderThickness="2"
@@ -1652,9 +1634,7 @@
                             <Run Text="{twainctrl:Loc QRDETECT}" />
                         </TextBlock>
                     </Extensions:ContentToggleButton>
-                    <StackPanel Orientation="Horizontal">
-                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                    </StackPanel>
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Extensions:ContentToggleButton HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         Background="{x:Null}"
@@ -1889,9 +1869,7 @@
                                                                             TextTrimming="CharacterEllipsis" />
                                                                     </ToggleButton.ToolTip>
                                                                 </ToggleButton>
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                                                </StackPanel>
+                                                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                                                 <Button Command="{Binding BatchFolderTümünüİşaretle}">
                                                                     <Image Width="32"
                                                                         Height="32"
