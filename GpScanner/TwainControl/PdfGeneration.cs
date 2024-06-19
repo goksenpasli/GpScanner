@@ -248,33 +248,11 @@ public static class PdfGeneration
         {
             using PdfDocument document = new();
             PdfPage page = document.AddPage();
-            page.Orientation = bitmapframe.PixelWidth < bitmapframe.PixelHeight ? PageOrientation.Portrait : PageOrientation.Landscape;
-            bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
-            XSize size = default;
-            switch (paper.PaperType)
-            {
-                case "Custom":
-                    size.Width = XUnit.FromCentimeter(paper.Width);
-                    size.Height = XUnit.FromCentimeter(paper.Height);
-                    page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
-                    break;
-
-                case "Original":
-                    page.Width = bitmapframe.PixelWidth;
-                    page.Height = bitmapframe.PixelHeight;
-                    size.Width = page.Orientation == PageOrientation.Portrait ? bitmapframe.PixelWidth : bitmapframe.PixelHeight;
-                    size.Height = page.Orientation == PageOrientation.Portrait ? bitmapframe.PixelHeight : bitmapframe.PixelWidth;
-                    break;
-
-                default:
-                    page.Size = paper.GetPaperSize();
-                    size = PageSizeConverter.ToSize(page.Size);
-                    break;
-            }
-
+            XSize size = GetPageSize(paper, bitmapframe, page);
             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
             byte[] data = null;
             MemoryStream ms;
+            bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
             if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
             {
                 using MozJpeg.MozJpeg mozJpeg = new();
@@ -349,30 +327,8 @@ public static class PdfGeneration
             {
                 ScannedImage scannedimage = bitmapFrames[i];
                 PdfPage page = document.AddPage();
-                page.Orientation = scannedimage.Resim.PixelWidth < scannedimage.Resim.PixelHeight ? PageOrientation.Portrait : PageOrientation.Landscape;
+                XSize size = GetPageSize(paper, scannedimage, page);
                 bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
-                XSize size = default;
-                switch (paper.PaperType)
-                {
-                    case "Custom":
-                        size.Width = XUnit.FromCentimeter(paper.Width);
-                        size.Height = XUnit.FromCentimeter(paper.Height);
-                        page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
-                        break;
-
-                    case "Original":
-                        page.Width = scannedimage.Resim.PixelWidth;
-                        page.Height = scannedimage.Resim.PixelHeight;
-                        size.Width = page.Orientation == PageOrientation.Portrait ? scannedimage.Resim.PixelWidth : scannedimage.Resim.PixelHeight;
-                        size.Height = page.Orientation == PageOrientation.Portrait ? scannedimage.Resim.PixelHeight : scannedimage.Resim.PixelWidth;
-                        break;
-
-                    default:
-                        page.Size = paper.GetPaperSize();
-                        size = PageSizeConverter.ToSize(page.Size);
-                        break;
-                }
-
                 if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
                 {
                     using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
@@ -608,6 +564,38 @@ public static class PdfGeneration
         double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
         adjustedBounds.Offset(horizontalOffset, verticalOffset);
         textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+    }
+
+    private static XSize GetPageSize(Paper paper, ScannedImage scannedimage, PdfPage page) => GetPageSize(paper, scannedimage, page, img => img.Resim.PixelWidth, img => img.Resim.PixelHeight);
+
+    private static XSize GetPageSize(Paper paper, BitmapSource bitmapframe, PdfPage page) => GetPageSize(paper, bitmapframe, page, img => img.PixelWidth, img => img.PixelHeight);
+
+    private static XSize GetPageSize<T>(Paper paper, T image, PdfPage page, Func<T, int> getWidth, Func<T, int> getHeight)
+    {
+        page.Orientation = getWidth(image) < getHeight(image) ? PageOrientation.Portrait : PageOrientation.Landscape;
+        XSize size = default;
+        switch (paper.PaperType)
+        {
+            case "Custom":
+                size.Width = XUnit.FromCentimeter(paper.Width);
+                size.Height = XUnit.FromCentimeter(paper.Height);
+                page.MediaBox = new PdfRectangle(new XRect(0, 0, size.Width, size.Height));
+                break;
+
+            case "Original":
+                page.Width = getWidth(image);
+                page.Height = getHeight(image);
+                size.Width = page.Orientation == PageOrientation.Portrait ? getWidth(image) : getHeight(image);
+                size.Height = page.Orientation == PageOrientation.Portrait ? getHeight(image) : getWidth(image);
+                break;
+
+            default:
+                page.Size = paper.GetPaperSize();
+                size = PageSizeConverter.ToSize(page.Size);
+                break;
+        }
+
+        return size;
     }
 
     private static void WritePdfTextContent(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)

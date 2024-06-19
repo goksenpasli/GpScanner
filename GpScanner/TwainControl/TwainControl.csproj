@@ -119,6 +119,8 @@
     </Compile>
     <Compile Include="ExtendedArchiveData.cs" />
     <Compile Include="EypPdfViewer.cs" />
+    <Compile Include="ILoadFileHandler.cs" />
+    <Compile Include="ImageFileHandler.cs" />
     <Compile Include="ImageWidthHeightComparer.cs" />
     <Compile Include="PageCropControl.xaml.cs">
       <DependentUpon>PageCropControl.xaml</DependentUpon>
@@ -127,6 +129,7 @@
     <Compile Include="PageRotation.cs" />
     <Compile Include="PdfCompressor.cs" />
     <Compile Include="PdfData.cs" />
+    <Compile Include="PdfFileHandler.cs" />
     <Compile Include="PdfGeneration.cs" />
     <Compile Include="PdfImportViewerControl.xaml.cs">
       <DependentUpon>PdfImportViewerControl.xaml</DependentUpon>
@@ -281,10 +284,12 @@
     <Compile Include="SafeIconHandle.cs" />
     <Compile Include="ScannedImage.cs" />
     <Compile Include="SimpleArchiveViewer.cs" />
+    <Compile Include="TiffFileHandler.cs" />
     <Compile Include="ToolBox.xaml.cs">
       <DependentUpon>ToolBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewerTemplateSelector.cs" />
+    <Compile Include="WebpFileHandler.cs" />
     <Compile Include="WpfLocalizationWithMultipleResourceManagers.cs" />
     <Compile Include="XlsxViewer.xaml.cs">
       <DependentUpon>XlsxViewer.xaml</DependentUpon>
@@ -293,6 +298,7 @@
       <DependentUpon>XmlViewerControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="XmlViewerControlModel.cs" />
+    <Compile Include="XpsFileHandler.cs" />
     <Compile Include="ZoomableInkCanvas.cs" />
     <Page Include="AboutView.xaml">
       <SubType>Designer</SubType>

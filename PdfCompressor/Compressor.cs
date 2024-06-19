@@ -63,8 +63,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     foreach (BatchPdfData file in BatchPdfList)
                     {
                         string outputFile = $"{Path.GetDirectoryName(file?.Filename)}\\{Path.GetFileNameWithoutExtension(file?.Filename)}_Compressed.pdf";
-                        bool isPdf = Path.GetExtension(file?.Filename?.ToLowerInvariant()) == ".pdf" && IsValidPdfFile(file?.Filename);
-                        using PdfDocument pdfDocument = isPdf ? await CompressFilePdfDocumentAsync(file?.Filename) : await GeneratePdfAsync(file?.Filename, Quality);
+                        using PdfDocument pdfDocument = IsValidPdfFile(file?.Filename) ? await CompressFilePdfDocumentAsync(file?.Filename) : await GeneratePdfAsync(file?.Filename, Quality);
                         ApplyDefaultPdfCompression(pdfDocument);
                         pdfDocument.Save(outputFile);
                         long outputFileSize = new FileInfo(outputFile).Length;
