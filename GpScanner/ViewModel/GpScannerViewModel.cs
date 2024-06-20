@@ -63,6 +63,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private int allPdfPage = 1;
     private string aramaMetni;
     private ObservableCollection<string> barcodeList = [];
+    private DateTime başlangıçTarihi;
     private bool batchDialogOpen;
     private string batchFolder;
     private ObservableCollection<TessFiles> batchFolderProcessedFileList;
@@ -80,6 +81,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         new TessFiles() { Name = ".webp", Checked = false, Enabled = WebP.WebpDllExists },
         ];
     private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
+    private DateTime bitişTarihi;
     private ObservableCollection<string> burnFiles = [];
     private string calendarDesc;
     private XmlLanguage calendarLang;
@@ -124,7 +126,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private double ripple;
     private ObservableCollection<OcrData> scannedText = [];
     private string seçiliDil;
-    private DateTime seçiliGün;
     private TessFiles selectedBatchFile;
     private Size selectedCompressorProfile;
     private ContributionData selectedContribution;
@@ -156,7 +157,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         LoadFiles = new RelayCommand<object>(async parameter => Dosyalar = await GetScannerFileData(), parameter => true);
         LoadFiles.Execute(null);
         SeçiliDil = Settings.Default.DefaultLang;
-        SeçiliGün = DateTime.Today;
+        BaşlangıçTarihi = BitişTarihi = DateTime.Today;
         SelectedSize = Settings.Default.PreviewIndex;
         GenerateAnimationTimer();
         GenerateJumpList();
@@ -1015,9 +1016,21 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         CancelOcr = new RelayCommand<object>(parameter => Ocr.Ocr.ocrcancellationToken?.Cancel());
 
-        DateBack = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.AddDays(-1), parameter => SeçiliGün > DateTime.MinValue);
+        DateBack = new RelayCommand<object>(
+            parameter =>
+            {
+                BaşlangıçTarihi = BaşlangıçTarihi.AddDays(-1);
+                BitişTarihi = BitişTarihi.AddDays(-1);
+            },
+            parameter => BaşlangıçTarihi > DateTime.MinValue && BitişTarihi > DateTime.MinValue);
 
-        DateForward = new RelayCommand<object>(parameter => SeçiliGün = SeçiliGün.AddDays(1), parameter => SeçiliGün < DateTime.Today);
+        DateForward = new RelayCommand<object>(
+            parameter =>
+            {
+                BaşlangıçTarihi = BaşlangıçTarihi.AddDays(1);
+                BitişTarihi = BitişTarihi.AddDays(1);
+            },
+            parameter => BitişTarihi < DateTime.Today && BaşlangıçTarihi < DateTime.Today);
 
         CycleSelectedDocuments = new RelayCommand<object>(
             async parameter =>
@@ -1129,7 +1142,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     SettingsWindowView settingsWindowView = windowService.GetFirstWindow<SettingsWindowView>();
                     if (settingsWindowView is not null)
                     {
-                        settingsWindowView.Activate();
+                        _ = settingsWindowView.Activate();
                         return;
                     }
                     gpScannerViewModel.GenerateFlagAnimation();
@@ -1291,7 +1304,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
-        SetDateToday = new RelayCommand<object>(parameter => SeçiliGün = DateTime.Today, parameter => SeçiliGün != DateTime.Today);
+        SetDateToday = new RelayCommand<object>(parameter => BaşlangıçTarihi = BitişTarihi = DateTime.Today, parameter => BaşlangıçTarihi != DateTime.Today || BitişTarihi != DateTime.Today);
 
         CloseApp = new RelayCommand<object>(parameter => windowService.GetFirstWindow().Close(), parameter => true);
 
@@ -1365,6 +1378,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 barcodeList = value;
                 OnPropertyChanged(nameof(BarcodeList));
+            }
+        }
+    }
+
+    public DateTime BaşlangıçTarihi
+    {
+        get => başlangıçTarihi;
+        set
+        {
+            if (başlangıçTarihi != value)
+            {
+                başlangıçTarihi = value;
+                OnPropertyChanged(nameof(BaşlangıçTarihi));
             }
         }
     }
@@ -1443,6 +1469,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 batchTxtOcrs = value;
                 OnPropertyChanged(nameof(BatchTxtOcrs));
+            }
+        }
+    }
+
+    public DateTime BitişTarihi
+    {
+        get => bitişTarihi;
+        set
+        {
+            if (bitişTarihi != value)
+            {
+                bitişTarihi = value;
+                OnPropertyChanged(nameof(BitişTarihi));
             }
         }
     }
@@ -2134,20 +2173,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    public DateTime SeçiliGün
-    {
-        get => seçiliGün;
-
-        set
-        {
-            if (seçiliGün != value)
-            {
-                seçiliGün = value;
-                OnPropertyChanged(nameof(SeçiliGün));
-            }
-        }
-    }
-
     public TessFiles SelectedBatchFile
     {
         get => selectedBatchFile;
@@ -2514,7 +2539,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         Dosyalar = await GetScannerFileData();
         if (dateapplytoday)
         {
-            SeçiliGün = DateTime.Today;
+            BaşlangıçTarihi = BitişTarihi = DateTime.Today;
         }
     }
 
@@ -3132,13 +3157,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private async void GpScannerViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "SeçiliGün")
+        if (e.PropertyName is "BaşlangıçTarihi" or "BitişTarihi")
         {
             if (!string.IsNullOrWhiteSpace(AramaMetni))
             {
                 AramaMetni = string.Empty;
             }
-            string format = Twainsettings.Settings.Default.FolderDateFormat;
+
             if (MainWindow.cvs is not null)
             {
                 MainWindow.cvs.Filter += (s, x) =>
@@ -3146,8 +3171,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                              Scanner scanner = (Scanner)x.Item;
                                              if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
                                              {
-                                                 string seçiligün = SeçiliGün.ToString(format);
-                                                 x.Accepted = result.ToString(format).StartsWith(seçiligün);
+                                                 if (BaşlangıçTarihi > BitişTarihi)
+                                                 {
+                                                     x.Accepted = false;
+                                                     return;
+                                                 }
+                                                 x.Accepted = result >= BaşlangıçTarihi && result <= BitişTarihi;
                                              }
                                              else
                                              {
@@ -3159,14 +3188,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         if (e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
         {
-            SeçiliGün = (DateTime)SelectedContribution.ContrubutionDate;
+            BaşlangıçTarihi = BitişTarihi = (DateTime)SelectedContribution.ContrubutionDate;
         }
 
         if (e.PropertyName is "AramaMetni")
         {
             if (string.IsNullOrWhiteSpace(AramaMetni))
             {
-                OnPropertyChanged(nameof(SeçiliGün));
+                OnPropertyChanged(nameof(BaşlangıçTarihi));
+                OnPropertyChanged(nameof(BitişTarihi));
                 return;
             }
 

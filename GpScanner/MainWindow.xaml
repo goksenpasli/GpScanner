@@ -871,13 +871,19 @@
                                     Content="ç"
                                     FontFamily="Wingdings"
                                     FontSize="16" />
-                                <DatePicker Grid.Column="1"
-                                    twainctrl:Policy.PolicyName="SeçiliGün"
-                                    DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                    Language="{Binding CalendarLang}"
-                                    SelectedDate="{Binding SeçiliGün}" />
+                                <StackPanel Grid.Column="1">
+                                    <DatePicker twainctrl:Policy.PolicyName="BaşlangıçTarihi"
+                                        DisplayDateEnd="{Binding BitişTarihi}"
+                                        Language="{Binding CalendarLang}"
+                                        SelectedDate="{Binding BaşlangıçTarihi}" />
+                                    <DatePicker twainctrl:Policy.PolicyName="BitişTarihi"
+                                        DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                        DisplayDateStart="{Binding BaşlangıçTarihi}"
+                                        Language="{Binding CalendarLang}"
+                                        SelectedDate="{Binding BitişTarihi}" />
+                                </StackPanel>
                                 <Button Grid.Column="2" Command="{Binding SetDateToday}">
-                                    <Image Width="16" Height="16">
+                                    <Image Width="32" Height="32">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="TimeDate.cpl" />
@@ -899,6 +905,7 @@
                                 d:Text="AramaMetni"
                                 twainctrl:Policy.PolicyName="AramaMetni"
                                 CopyButtonVisibility="Collapsed"
+                                FontSize="22"
                                 KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
@@ -906,7 +913,7 @@
                                 twainctrl:Policy.PolicyName="CycleSelectedDocuments"
                                 Command="{Binding CycleSelectedDocuments}"
                                 CommandParameter="{Binding ElementName=LbDoc}">
-                                <Image Width="16" Height="16">
+                                <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                             <Binding Source="Shell32.dll" />

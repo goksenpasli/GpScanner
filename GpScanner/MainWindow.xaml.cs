@@ -380,9 +380,11 @@ public partial class MainWindow : Window
 
             if (e.PropertyName is "RefreshDocumentList" && twainCtrl?.RefreshDocumentList == true)
             {
-                DateTime tempdate = ViewModel.SeçiliGün;
+                DateTime başlangıç = ViewModel.BaşlangıçTarihi;
+                DateTime bitiş = ViewModel.BitişTarihi;
                 ViewModel.ReloadFileDatas(false);
-                ViewModel.SeçiliGün = tempdate;
+                ViewModel.BaşlangıçTarihi = başlangıç;
+                ViewModel.BitişTarihi = bitiş;
                 twainCtrl.RefreshDocumentList = false;
             }
         }
