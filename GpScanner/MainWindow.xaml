@@ -2310,39 +2310,60 @@
                                         Margin="1"
                                         Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
                                         ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
-                                    <Button Grid.Row="2"
-                                        Grid.ColumnSpan="2"
-                                        HorizontalContentAlignment="Stretch"
-                                        VerticalContentAlignment="Stretch"
-                                        Command="{Binding UnindexedAllFilesOcr}">
-                                        <Grid>
-                                            <ProgressBar Background="{x:Null}"
-                                                BorderBrush="{x:Null}"
-                                                Maximum="1"
-                                                Value="{Binding OcrAllPdfPagesProgress}" />
-                                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                    <Run d:Text="0"
-                                                        Foreground="LawnGreen"
-                                                        Text="{Binding IndexedFileCount}" />
-                                                    <Run Text="/" />
-                                                    <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
-                                                </TextBlock>
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="171" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <TextBlock VerticalAlignment="Center">
-                                                    <Run Text="{twainctrl:Loc ALL}" />
-                                                    <Run Text="{twainctrl:Loc UNINDEXED}" />
-                                                </TextBlock>
-                                            </StackPanel>
-                                        </Grid>
-                                    </Button>
+                                    <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="12" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <Extensions:NumericUpDown Grid.Column="1"
+                                            Interval="1"
+                                            IsReadOnly="True"
+                                            Maximum="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
+                                            Minimum="1"
+                                            TextBlock.TextAlignment="Center"
+                                            Value="{Binding BatchOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Button Grid.Column="2"
+                                            HorizontalContentAlignment="Stretch"
+                                            VerticalContentAlignment="Stretch"
+                                            Command="{Binding UnindexedAllFilesOcr}">
+                                            <Grid>
+                                                <ProgressBar Background="{x:Null}"
+                                                    BorderBrush="{x:Null}"
+                                                    Maximum="1"
+                                                    Value="{Binding OcrAllPdfPagesProgress}" />
+                                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                                                        <Run d:Text="0"
+                                                            Foreground="LawnGreen"
+                                                            Text="{Binding IndexedFileCount}" />
+                                                        <Run Text="/" />
+                                                        <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
+                                                    </TextBlock>
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="171" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <TextBlock VerticalAlignment="Center">
+                                                        <Run Text="{twainctrl:Loc ALL}" />
+                                                        <Run Text="{twainctrl:Loc UNINDEXED}" />
+                                                    </TextBlock>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Button>
+                                    </Grid>
                                 </Grid>
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>

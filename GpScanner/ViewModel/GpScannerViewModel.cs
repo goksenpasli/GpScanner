@@ -321,7 +321,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     string unIndexedFile = parameter as string;
                     string ocrText = await ProcessFileAsync(unIndexedFile);
                     await SaveOcrTextToFileAsync(unIndexedFile, ocrText);
-                    _ = (UnIndexedFiles?.Remove(unIndexedFile));               
+                    _ = (UnIndexedFiles?.Remove(unIndexedFile));
                 }
                 catch (Exception ex)
                 {
@@ -343,16 +343,25 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             async parameter =>
             {
                 int i = 1;
-
-                foreach (string unIndexedFile in UnIndexedFiles.ToList())
+                int slicecount = UnIndexedFiles.Count > Settings.Default.BatchOcrProcessorCount ? UnIndexedFiles.Count / Settings.Default.BatchOcrProcessorCount : 1;
+                List<Task> Tasks = [];
+                foreach (List<string> unIndexedFile in TwainCtrl.ChunkBy(UnIndexedFiles.ToList(), slicecount))
                 {
                     OcrIsBusy = true;
                     try
                     {
-                        string ocrText = await ProcessFileAsync(unIndexedFile);
-                        await SaveOcrTextToFileAsync(unIndexedFile, ocrText);
-                        _ = (UnIndexedFiles?.Remove(unIndexedFile));
-                        IndexedFileCount = i++;
+                        Task task = Task.Run(
+                            async () =>
+                            {
+                                for (int j = 0; j < unIndexedFile.Count; j++)
+                                {
+                                    string ocrText = await ProcessFileAsync(unIndexedFile[j]);
+                                    await SaveOcrTextToFileAsync(unIndexedFile[j], ocrText);
+                                    _ = await Application.Current.Dispatcher.InvokeAsync(() => UnIndexedFiles?.Remove(unIndexedFile[j]));
+                                    IndexedFileCount = i++;
+                                }
+                            });
+                        Tasks.Add(task);
                     }
                     catch (Exception ex)
                     {
@@ -364,7 +373,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         GC.Collect();
                     }
                 }
-
+                await Task.WhenAll(Tasks);
                 if (Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);

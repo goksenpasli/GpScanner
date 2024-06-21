@@ -612,5 +612,17 @@ namespace GpScanner.Properties {
                 this["DocumentViewerPanelIsExpanded"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int BatchOcrProcessorCount {
+            get {
+                return ((int)(this["BatchOcrProcessorCount"]));
+            }
+            set {
+                this["BatchOcrProcessorCount"] = value;
+            }
+        }
     }
 }
