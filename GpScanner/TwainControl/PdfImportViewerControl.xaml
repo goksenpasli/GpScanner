@@ -82,9 +82,17 @@
                         </MenuItem.Icon>
                     </MenuItem>
                     <Separator />
-                    <MenuItem Header="{local:Loc DOCUMENT}"
-                        IsEnabled="{Binding ElementName=Clear, Path=IsEnabled}"
-                        ItemsSource="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                    <MenuItem IsEnabled="{Binding ElementName=Clear, Path=IsEnabled}" ItemsSource="{Binding PdfLoadHistory, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
+                        <MenuItem.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc DOCUMENT}" />
+                                <Extensions:NumericUpDown IsReadOnly="True"
+                                    Maximum="100"
+                                    Minimum="1"
+                                    Value="{Binding PdfLoadHistoryCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
+                            </StackPanel>
+                        </MenuItem.Header>
                         <MenuItem.Icon>
                             <Image Width="16" Height="16">
                                 <Image.Source>

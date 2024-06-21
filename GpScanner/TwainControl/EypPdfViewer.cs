@@ -196,6 +196,10 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     {
         if (Settings.Default?.PdfLoadHistory?.Contains(PdfFilePath) == false)
         {
+            if (Settings.Default.PdfLoadHistory.Count >= Settings.Default.PdfLoadHistoryCount)
+            {
+                Settings.Default.PdfLoadHistory.RemoveAt(Settings.Default.PdfLoadHistory.Count - 1);
+            }
             Settings.Default?.PdfLoadHistory?.Insert(0, pdffilepath);
             Settings.Default.Save();
             Settings.Default.Reload();

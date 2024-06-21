@@ -589,5 +589,17 @@ namespace TwainControl.Properties {
                 this["DefaultThumbPictureAutoResize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int PdfLoadHistoryCount {
+            get {
+                return ((int)(this["PdfLoadHistoryCount"]));
+            }
+            set {
+                this["PdfLoadHistoryCount"] = value;
+            }
+        }
     }
 }

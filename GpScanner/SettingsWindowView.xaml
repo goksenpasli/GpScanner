@@ -1239,7 +1239,7 @@
                             ItemsSource="{Binding SqlQueryData}"
                             VirtualizingPanel.CacheLengthUnit="Item"
                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                            VirtualizingPanel.ScrollUnit="Item"
+                            VirtualizingPanel.ScrollUnit="Pixel"
                             VirtualizingPanel.VirtualizationMode="Recycling">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn>
