@@ -455,7 +455,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             async parameter =>
             {
                 UnIndexedFiles = await GetUnindexedFileData();
-                ShowUnindexedFileWarn = UnIndexedFiles.Count > Settings.Default.UnindexedFileCount;
+                ShowUnindexedFileWarn = UnIndexedFiles?.Count > Settings.Default.UnindexedFileCount;
                 ShowUnindexedFileWarn = false;
             },
             parameter => true);
