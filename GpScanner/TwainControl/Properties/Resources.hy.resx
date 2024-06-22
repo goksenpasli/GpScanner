@@ -765,4 +765,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Ամենափոքր</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Վազք</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Show ույց տալ splash էկրան</value>
+  </data>
 </root>

@@ -185,7 +185,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 OsdText = "Görüntü Yakalandı";
             },
-            parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
+            parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath is not null);
 
         CaptureThumbnail = new RelayCommand<object>(
             async parameter =>
@@ -243,7 +243,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                 ExtensionMethods.OpenFolderAndSelectItem(picturesfolder, dosya);
                 MediaVolume = 1;
             },
-            parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath != null);
+            parameter => Player?.NaturalVideoWidth > 0 && MediaDataFilePath is not null);
 
         AddToPlaylist = new RelayCommand<object>(
             parameter =>
@@ -813,7 +813,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
                     Match match = timestampRegex.Match(line);
                     currentSubtitle = new SubtitleContent { StartTime = TimeSpan.Parse(match.Groups[1].Value), EndTime = TimeSpan.Parse(match.Groups[2].Value), };
                 }
-                else if (!string.IsNullOrWhiteSpace(line) && currentSubtitle != null)
+                else if (!string.IsNullOrWhiteSpace(line) && currentSubtitle is not null)
                 {
                     currentSubtitle.Text += $"{line.Trim()} ";
                     subtitles.Add(currentSubtitle);
@@ -840,7 +840,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && (bool)e.NewValue && viewer.MediaDataFilePath is not null)
         {
             viewer.Player.Play();
         }
@@ -848,7 +848,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void FovChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is MediaViewer viewer && e.NewValue != null)
+        if (d is MediaViewer viewer && e.NewValue is not null)
         {
             if ((double)e.NewValue < 1)
             {
@@ -889,7 +889,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void MediaDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue != null)
+        if (!DesignerProperties.GetIsInDesignMode(new DependencyObject()) && d is MediaViewer viewer && e.NewValue is not null)
         {
             try
             {
@@ -935,7 +935,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void MediaPositionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is MediaViewer viewer && e.NewValue != null && !sliderdragging)
+        if (d is MediaViewer viewer && e.NewValue is not null && !sliderdragging)
         {
             TimeSpan position = (TimeSpan)e.NewValue;
             viewer.Player.Position = position;
@@ -948,7 +948,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private static void MediaVolumeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is MediaViewer viewer && e.NewValue != null)
+        if (d is MediaViewer viewer && e.NewValue is not null)
         {
             viewer.Player.Volume = (double)e.NewValue;
             viewer.OsdText = $"Ses: {(int)(viewer.Player.Volume * 100)}";
@@ -1034,7 +1034,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Back_Click(object sender, RoutedEventArgs e)
     {
-        if (MediaDataFilePath != null)
+        if (MediaDataFilePath is not null)
         {
             Player.Position = Player.Position.Subtract(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
             OsdText = "Geri";
@@ -1047,7 +1047,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Forward_Click(object sender, RoutedEventArgs e)
     {
-        if (MediaDataFilePath != null)
+        if (MediaDataFilePath is not null)
         {
             Player.Position = Player.Position.Add(new TimeSpan(0, 0, ForwardBackwardSkipSecond));
             OsdText = "İleri";
@@ -1144,7 +1144,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Play_Click(object sender, RoutedEventArgs e)
     {
-        if (MediaDataFilePath != null)
+        if (MediaDataFilePath is not null)
         {
             if (Player.Position == Player.NaturalDuration)
             {
@@ -1234,7 +1234,7 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     private void Stop_Click(object sender, RoutedEventArgs e)
     {
-        if (Player.Source != null)
+        if (Player.Source is not null)
         {
             Player.Stop();
             OsdText = "Durdu";

@@ -777,4 +777,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>کوچکترین</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>اجرا کن</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>نمایش صفحه چلپ چلوپ</value>
+  </data>
 </root>

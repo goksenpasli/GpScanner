@@ -66,7 +66,7 @@ public static class StillImageHelper
             string exe = Assembly.GetEntryAssembly().Location;
 
             using RegistryKey key1 = Registry.LocalMachine.CreateSubKey(REGKEY_AUTOPLAY_HANDLER_GPSCANNER);
-            if (key1 != null)
+            if (key1 is not null)
             {
                 key1.SetValue("Action", $"GPSCANNER {Translation.GetResStringValue("SCAN")}");
                 key1.SetValue("CLSID", "{A55803CC-4D53-404c-8557-FD63DBA95D24}");
@@ -79,7 +79,7 @@ public static class StillImageHelper
             key2?.SetValue("GpScanner", $"{exe} /StiDevice:%1 /StiEvent:%2");
 
             using RegistryKey key3 = Registry.LocalMachine.CreateSubKey(REGKEY_STI_EVENT_GPSCANNER);
-            if (key3 != null)
+            if (key3 is not null)
             {
                 key3.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
                 key3.SetValue("Desc", $"GPSCANNER {Translation.GetResStringValue("SCAN")}");
@@ -88,7 +88,7 @@ public static class StillImageHelper
             }
 
             using RegistryKey key4 = Registry.LocalMachine.CreateSubKey(REGKEY_STI_EVENT_SCANBUTTON);
-            if (key4 != null)
+            if (key4 is not null)
             {
                 key4.SetValue("Cmdline", $"{exe} /StiDevice:%1 /StiEvent:%2");
                 key4.SetValue("Desc", $"GPSCANNER {Translation.GetResStringValue("SCAN")}");
@@ -173,7 +173,7 @@ public static class StillImageHelper
             Registry.LocalMachine.DeleteSubKey(REGKEY_STI_EVENT_SCANBUTTON, false);
 
             RegistryKey events = Registry.LocalMachine.OpenSubKey(REGKEY_IMAGE_EVENTS, true);
-            if (events != null)
+            if (events is not null)
             {
                 foreach (string eventType in events.GetSubKeyNames())
                 {

@@ -1,4 +1,5 @@
-﻿using GpScanner.ViewModel;
+﻿using GpScanner.Properties;
+using GpScanner.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,14 +27,30 @@ public partial class App : Application
 #endif
         FrameworkElement.LanguageProperty.OverrideMetadata(typeof(Run), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
 
-        splashWindow = new SplashWindow();
-        splashWindow.Show();
+        if (Settings.Default.ShowSplash)
+        {
+            splashWindow = new SplashWindow();
+            splashWindow.Show();
+        }
+
         mainwindow = new MainWindow();
         mainwindow.Loaded += Window_Loaded;
-        mainwindow.Show();
+        if (e.Args.Contains("/silent") && Settings.Default.StartWithWindows)
+        {
+            Settings.Default.MinimizeTray = true;
+            Settings.Default.ShowTrayIcon = true;
+            mainwindow.WindowState = WindowState.Minimized;
+            mainwindow.Show();
+            mainwindow.ShowInTaskbar = false;
+        }
+        else
+        {
+            mainwindow.Show();
+        }
 
         foreach (string arg in e.Args)
         {
+
             if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
             {
                 List<Process> processes = [.. StillImageHelper.GetAllGPScannerProcess()];

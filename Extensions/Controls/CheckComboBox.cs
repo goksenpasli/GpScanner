@@ -47,7 +47,7 @@ namespace Extensions
 
         private void UpdateSelectedItems()
         {
-            if (Items == null)
+            if (Items is null)
             {
                 return;
             }

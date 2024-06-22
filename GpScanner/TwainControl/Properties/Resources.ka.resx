@@ -772,4 +772,10 @@ PDF</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>ნებისმიერი ციანის ფერადი კონტროლი განსხვავებულად მუშაობს ALT SHIFT CTRL კლავიშთან ერთი ან რამდენიმე ან მეტი</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>სირბილი</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>აჩვენეთ Splash ეკრანი</value>
+  </data>
 </root>

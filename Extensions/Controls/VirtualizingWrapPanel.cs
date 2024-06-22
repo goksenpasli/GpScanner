@@ -494,7 +494,7 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <inheritdoc/>
     protected override Size MeasureOverride(Size availableSize)
     {
-        if (ScrollOwner != null)
+        if (ScrollOwner is not null)
         {
             bool verticalScrollBarGotHidden = ScrollOwner.VerticalScrollBarVisibility == ScrollBarVisibility.Auto &&
             ScrollOwner.ComputedVerticalScrollBarVisibility != Visibility.Visible &&

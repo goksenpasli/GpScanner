@@ -36,7 +36,7 @@ namespace TwainControl
                 string[] archiveext = [".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip", ".gz"];
                 string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
                 string ext = Path.GetExtension(dosya).ToLowerInvariant();
-                if (ext != null)
+                if (ext is not null)
                 {
                     return ext switch
                     {

@@ -800,4 +800,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value />
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value />
+  </data>
 </root>

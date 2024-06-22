@@ -762,4 +762,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>最小</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>跑步</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>显示飞溅屏幕</value>
+  </data>
 </root>

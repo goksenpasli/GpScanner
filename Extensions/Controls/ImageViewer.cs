@@ -72,9 +72,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                 }
             });
 
-        ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => TiffDecoder != null && Sayfa > 1 && Sayfa <= TiffDecoder.Frames.Count);
+        ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => TiffDecoder is not null && Sayfa > 1 && Sayfa <= TiffDecoder.Frames.Count);
 
-        ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => TiffDecoder != null && Sayfa >= 1 && Sayfa < TiffDecoder.Frames.Count);
+        ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => TiffDecoder is not null && Sayfa >= 1 && Sayfa < TiffDecoder.Frames.Count);
 
         Resize = new RelayCommand<object>(
             parameter =>
@@ -103,7 +103,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                 PrintDialog printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)(TiffDecoder?.Frames?.Count ?? 1), MinPage = 1 };
                 if (printdialog.ShowDialog() == true)
                 {
-                    if (TiffDecoder == null)
+                    if (TiffDecoder is null)
                     {
                         DrawingVisual dv = new();
                         using (DrawingContext dc = dv.RenderOpen())
@@ -363,7 +363,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         base.OnApplyTemplate();
         _viewport = GetTemplateChild("PanoramaViewPort") as Viewport3D;
         _panoramaBrush = GetTemplateChild("panoramaBrush") as DiffuseMaterial;
-        if (_viewport != null)
+        if (_viewport is not null)
         {
             _viewport.MouseLeftButtonDown -= Viewport3D_MouseLeftButtonDown;
             _viewport.MouseLeftButtonDown += Viewport3D_MouseLeftButtonDown;
@@ -411,7 +411,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static void FovChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is ImageViewer viewer && e.NewValue != null)
+        if (d is ImageViewer viewer && e.NewValue is not null)
         {
             if ((double)e.NewValue < 1)
             {

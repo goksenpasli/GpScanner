@@ -762,4 +762,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Μικρότερος</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>ΤΡΕΞΙΜΟ</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Εμφάνιση οθόνης εκτόξευσης</value>
+  </data>
 </root>

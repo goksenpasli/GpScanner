@@ -31,7 +31,7 @@ public static class UdfParser
     private static void Bgimgcreate(Template content, FlowDocument flowdocument)
     {
         BgImage bgimage = content.Properties.BgImage;
-        if (bgimage != null)
+        if (bgimage is not null)
         {
             byte[] binaryData = Convert.FromBase64String(content.Properties.BgImage.BgImageData);
             BitmapImage bi = new();
@@ -97,7 +97,7 @@ public static class UdfParser
     private static Run GetRun(string text, Content xmlparagraphcontent)
     {
         Run inline = new(text);
-        if (xmlparagraphcontent != null)
+        if (xmlparagraphcontent is not null)
         {
             if (xmlparagraphcontent.Bulleted)
             {

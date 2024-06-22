@@ -42,7 +42,7 @@ public class PageRangeDocumentPaginator : DocumentPaginator
             {
                 UIElement childClone = (UIElement)child?.GetType()?.GetMethod("MemberwiseClone", BindingFlags.Instance | BindingFlags.NonPublic)?.Invoke(child, null);
                 FieldInfo parentField = childClone?.GetType().GetField("_parent", BindingFlags.Instance | BindingFlags.NonPublic);
-                if (parentField != null)
+                if (parentField is not null)
                 {
                     parentField.SetValue(childClone, null);
                     _ = cv?.Children?.Add(childClone);

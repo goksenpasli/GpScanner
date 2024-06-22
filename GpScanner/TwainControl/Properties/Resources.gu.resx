@@ -762,4 +762,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>નાનું</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>દોડવું</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>સ્પ્લેશ સ્ક્રીન બતાવો</value>
+  </data>
 </root>

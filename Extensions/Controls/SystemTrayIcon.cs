@@ -70,20 +70,27 @@ namespace Extensions
 
         private void InitializeNotifyIcon()
         {
-            if (IconUri == null || !TrayIconActive)
+            if (IconUri is null || !TrayIconActive)
             {
                 return;
             }
             HwndSource hwndSource = PresentationSource.FromDependencyObject(this) as HwndSource;
-            NOTIFYICONDATA newNOTIFYICONDATA = new() { hWnd = hwndSource.Handle, uID = 100, uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP, uCallbackMessage = WM_TRAYICON };
-            StreamResourceInfo streamInfo = Application.GetResourceStream(IconUri);
-            using Icon icon = new(streamInfo.Stream, new System.Drawing.Size(16, 16));
-            newNOTIFYICONDATA.hIcon = icon.Handle;
-            newNOTIFYICONDATA.szTip = ToolTipText ?? string.Empty;
-            _notifyIconData = newNOTIFYICONDATA;
-            _ = Shell_NotifyIcon(NIM_ADD, ref _notifyIconData);
-            streamInfo?.Stream?.Dispose();
-            hwndSource.AddHook(WndProc);
+            if (hwndSource is not null)
+            {
+                NOTIFYICONDATA newNOTIFYICONDATA = new() { hWnd = hwndSource.Handle, uID = 100, uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP, uCallbackMessage = WM_TRAYICON };
+                StreamResourceInfo streamInfo = Application.GetResourceStream(IconUri);
+                using Icon icon = new(streamInfo.Stream, new System.Drawing.Size(16, 16));
+                newNOTIFYICONDATA.hIcon = icon.Handle;
+                newNOTIFYICONDATA.szTip = ToolTipText ?? string.Empty;
+                _notifyIconData = newNOTIFYICONDATA;
+                _ = Shell_NotifyIcon(NIM_ADD, ref _notifyIconData);
+                streamInfo?.Stream?.Dispose();
+                hwndSource.AddHook(WndProc);
+            }
+            else
+            {
+                hwndSource?.Dispose();
+            }
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -99,7 +106,7 @@ namespace Extensions
 
         private void ShowContextMenu()
         {
-            if (ContextMenu == null)
+            if (ContextMenu is null)
             {
                 return;
             }
@@ -110,7 +117,7 @@ namespace Extensions
 
         private void ShowPopup()
         {
-            if (popup == null || Content == null)
+            if (popup is null || Content is null)
             {
                 return;
             }

@@ -61,7 +61,7 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 
     private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is XpsViewer xpsViewer && e.NewValue != null)
+        if (d is XpsViewer xpsViewer && e.NewValue is not null)
         {
             try
             {

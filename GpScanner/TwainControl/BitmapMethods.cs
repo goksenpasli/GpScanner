@@ -417,7 +417,7 @@ public static class BitmapMethods
                     using (DrawingContext dc = dv.RenderOpen())
                     {
                         Rect rect = new(0, 0, bitmapSource.PixelWidth, bitmapSource.PixelHeight);
-                        if (backgroundbrush != null)
+                        if (backgroundbrush is not null)
                         {
                             dc.DrawRectangle(backgroundbrush, null, rect);
                         }

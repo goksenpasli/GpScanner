@@ -31,7 +31,7 @@ namespace Extensions
             Button button = sender as Button;
             string key = button.Content?.ToString();
 
-            if (key == null)
+            if (key is null)
             {
                 return;
             }

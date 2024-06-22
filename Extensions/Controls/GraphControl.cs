@@ -109,7 +109,8 @@ public class GraphControl : FrameworkElement
             double thickness = ActualWidth / Series.Count;
             DrawingGroup graphdrawinggroup = null;
             DrawingGroup graphgeometrygroup = null;
-            Pen linepen = null;
+            Pen linepen = new(LineColor, LineThickness);
+            linepen.Freeze();
             Pen pen = null;
             Chart item = null;
             Point point0 = default;
@@ -123,8 +124,6 @@ public class GraphControl : FrameworkElement
                 graphgeometrygroup = new DrawingGroup();
                 item = Series[i - 1];
                 pen = new Pen(item?.ChartBrush, thickness);
-                linepen = new Pen(LineColor, LineThickness);
-                linepen.Freeze();
                 pen.Freeze();
                 point0 = new Point((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight);
                 point1 = new Point((pen.Thickness * i) - (pen.Thickness / 2), ActualHeight - (item.ChartValue / max * ActualHeight * 9 / 10));

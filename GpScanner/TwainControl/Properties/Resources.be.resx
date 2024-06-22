@@ -765,4 +765,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Самы маленькі</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Бегчы</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Паказаць экран Splash</value>
+  </data>
 </root>

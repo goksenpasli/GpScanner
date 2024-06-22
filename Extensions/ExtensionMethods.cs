@@ -47,7 +47,7 @@ public static class ExtensionMethods
         unsafe
         {
     BitmapData bitmapData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-    if (bitmapData == null)
+    if (bitmapData is null)
     {
         return bitmap;
     }
@@ -130,7 +130,7 @@ public static class ExtensionMethods
         int count = 0;
         double stdDev = 0;
         BitmapData bmData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height), ImageLockMode.ReadOnly, bitmap.PixelFormat);
-        if (bmData != null)
+        if (bmData is not null)
         {
             int stride = bmData.Stride;
             unsafe

@@ -161,7 +161,7 @@ public class Compressor : Control, INotifyPropertyChanged
         src.Freeze();
         Bitmap bitmap = new(src.PixelWidth, src.PixelHeight, PixelFormat.Format32bppArgb);
         BitmapData data = bitmap.LockBits(new Rectangle(Point.Empty, bitmap.Size), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
-        if (data != null)
+        if (data is not null)
         {
             src.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
             bitmap.UnlockBits(data);
@@ -188,7 +188,7 @@ public class Compressor : Control, INotifyPropertyChanged
     {
         base.OnApplyTemplate();
         listbox = GetTemplateChild("ListBox") as ListBox;
-        if (listbox != null)
+        if (listbox is not null)
         {
             listbox.Drop -= Listbox_Drop;
             listbox.Drop += Listbox_Drop;
@@ -225,7 +225,7 @@ public class Compressor : Control, INotifyPropertyChanged
                 try
                 {
                     PdfPage page = document.AddPage();
-                    if (page == null)
+                    if (page is null)
                     {
                         return;
                     }
@@ -329,7 +329,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     for (int i = 0; i < bitmapFrames.Count; i++)
                     {
                         BitmapImage pdfimage = bitmapFrames[i];
-                        if (pdfimage != null)
+                        if (pdfimage is not null)
                         {
                             PdfPage page = document.AddPage();
                             double ratio = pdfimage.PixelWidth / (double)pdfimage.PixelHeight;

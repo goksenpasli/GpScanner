@@ -47,7 +47,7 @@ public static class Ocr
         using Pix pixImage = Pix.LoadFromFile(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page?.GetIterator();
-        if (iterator != null)
+        if (iterator is not null)
         {
             iterator.Begin();
             ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(PageIteratorLevel.Word);
@@ -112,7 +112,7 @@ public static class Ocr
         using Pix pixImage = Pix.LoadFromMemory(dosya);
         using Page page = engine.Process(pixImage);
         using ResultIterator iterator = page?.GetIterator();
-        if (iterator != null)
+        if (iterator is not null)
         {
             iterator.Begin();
             ObservableCollection<OcrData> ocrdata = iterator.IterateOcr(pageIteratorLevel);

@@ -765,4 +765,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Najmanji</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>TRČANJE</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Prikaži zaslon za prskanje</value>
+  </data>
 </root>

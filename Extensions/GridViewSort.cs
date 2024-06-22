@@ -13,16 +13,16 @@ public class GridViewSort
     #region Column header click event handler
     private static void ColumnHeader_Click(object sender, RoutedEventArgs e)
     {
-        if (e.OriginalSource is GridViewColumnHeader headerClicked && headerClicked.Column != null)
+        if (e.OriginalSource is GridViewColumnHeader headerClicked && headerClicked.Column is not null)
         {
             string propertyName = GetPropertyName(headerClicked.Column);
             if (!string.IsNullOrEmpty(propertyName))
             {
                 ListView listView = GetAncestor<ListView>(headerClicked);
-                if (listView != null)
+                if (listView is not null)
                 {
                     ICommand command = GetCommand(listView);
-                    if (command != null)
+                    if (command is not null)
                     {
                         if (command.CanExecute(propertyName))
                         {
@@ -46,7 +46,7 @@ public class GridViewSort
         {
             base.OnRender(drawingContext);
 
-            if (sortGlyph != null)
+            if (sortGlyph is not null)
             {
                 double x = columnHeader.ActualWidth - 13;
                 double y = (columnHeader.ActualHeight / 2) - 5;
@@ -118,7 +118,7 @@ public class GridViewSort
             false,
             (o, e) =>
             {
-                if (o is ListView listView && GetCommand(listView) == null)
+                if (o is ListView listView && GetCommand(listView) is null)
                 {
                     bool oldValue = (bool)e.OldValue;
                     bool newValue = (bool)e.NewValue;
@@ -145,12 +145,12 @@ public class GridViewSort
             {
                 if (o is ItemsControl listView && !GetAutoSort(listView))
                 {
-                    if (e.OldValue != null && e.NewValue == null)
+                    if (e.OldValue is not null && e.NewValue is null)
                     {
                         listView.RemoveHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
                     }
 
-                    if (e.OldValue == null && e.NewValue != null)
+                    if (e.OldValue is null && e.NewValue is not null)
                     {
                         listView.AddHandler(ButtonBase.ClickEvent, new RoutedEventHandler(ColumnHeader_Click));
                     }
@@ -194,7 +194,7 @@ public class GridViewSort
             view.SortDescriptions.Clear();
 
             GridViewColumnHeader currentSortedColumnHeader = GetSortedColumnHeader(listView);
-            if (currentSortedColumnHeader != null)
+            if (currentSortedColumnHeader is not null)
             {
                 RemoveSortGlyph(currentSortedColumnHeader);
             }
@@ -220,7 +220,7 @@ public class GridViewSort
             parent = VisualTreeHelper.GetParent(parent);
         }
 
-        return parent != null ? (T)parent : null;
+        return parent is not null ? (T)parent : null;
     }
 
     private static void AddSortGlyph(GridViewColumnHeader columnHeader, ListSortDirection direction, ImageSource sortGlyph)
@@ -233,7 +233,7 @@ public class GridViewSort
     {
         AdornerLayer adornerLayer = AdornerLayer.GetAdornerLayer(columnHeader);
         Adorner[] adorners = adornerLayer.GetAdorners(columnHeader);
-        if (adorners != null)
+        if (adorners is not null)
         {
             foreach (Adorner adorner in adorners)
             {

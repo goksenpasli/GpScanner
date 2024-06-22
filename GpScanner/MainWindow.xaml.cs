@@ -45,6 +45,10 @@ public partial class MainWindow : Window
         {
             Hide();
         }
+        else
+        {
+            ShowInTaskbar = true;
+        }
         base.OnStateChanged(e);
     }
 
@@ -123,7 +127,7 @@ public partial class MainWindow : Window
     {
         if (e.Effects == DragDropEffects.Move)
         {
-            if (TwainCtrl.DragCursor != null)
+            if (TwainCtrl.DragCursor is not null)
             {
                 e.UseDefaultCursors = false;
                 _ = Mouse.SetCursor(TwainCtrl.DragCursor);
@@ -262,7 +266,7 @@ public partial class MainWindow : Window
         {
             QrCode.QrCode qrcode = new();
             List<string> barcodes = qrcode.GetMultipleImageBarcodeResult(scannedImage.Resim);
-            if (barcodes != null)
+            if (barcodes is not null)
             {
                 foreach (string barcode in barcodes)
                 {
@@ -291,7 +295,7 @@ public partial class MainWindow : Window
     {
         if (e.Effects == DragDropEffects.Move)
         {
-            if (TwainCtrl.DragCursor != null)
+            if (TwainCtrl.DragCursor is not null)
             {
                 e.UseDefaultCursors = false;
                 _ = Mouse.SetCursor(TwainCtrl.DragCursor);
@@ -316,7 +320,7 @@ public partial class MainWindow : Window
             if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
             {
                 string detectedbarcode = twainCtrl?.Scanner?.BarcodeContent;
-                if (detectedbarcode != null)
+                if (detectedbarcode is not null)
                 {
                     ViewModel.AddBarcodeToList(detectedbarcode);
                     if (twainCtrl?.Scanner?.UsePageSeperator == true)
@@ -353,7 +357,7 @@ public partial class MainWindow : Window
 
                 ViewModel.OcrIsBusy = true;
                 ViewModel.ScannedText = await twainCtrl.ImgData.OcrAsync(Settings.Default.DefaultTtsLang);
-                if (ViewModel.ScannedText != null)
+                if (ViewModel.ScannedText is not null)
                 {
                     ViewModel.TranslateViewModel.Metin = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text));
                     ViewModel.OcrIsBusy = false;

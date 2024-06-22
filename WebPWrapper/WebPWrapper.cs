@@ -735,12 +735,12 @@ namespace WebPWrapper
 
             try
             {
-                if (source == null)
+                if (source is null)
                 {
                     throw new Exception("Source picture is void");
                 }
 
-                if (reference == null)
+                if (reference is null)
                 {
                     throw new Exception("Reference picture is void");
                 }

@@ -100,9 +100,9 @@ namespace GpScanner
             Run inline = new(formattedText.text)
             {
                 FontSize = formattedText.formatting?.Size * 4 / 3 ?? 16,
-                FontFamily = formattedText.formatting?.FontFamily == null ? new System.Windows.Media.FontFamily("Times New Roman") : new System.Windows.Media.FontFamily(formattedText.formatting?.FontFamily.Name)
+                FontFamily = formattedText.formatting?.FontFamily is null ? new System.Windows.Media.FontFamily("Times New Roman") : new System.Windows.Media.FontFamily(formattedText.formatting?.FontFamily.Name)
             };
-            if (formattedText?.formatting != null)
+            if (formattedText?.formatting is not null)
             {
                 if (formattedText.formatting.FontColor.HasValue)
                 {

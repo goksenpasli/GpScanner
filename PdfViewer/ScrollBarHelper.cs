@@ -27,7 +27,7 @@ namespace PdfViewer
             int thumbsize = GetThumbSize(control);
             tooltip.HorizontalOffset = -thumbsize - 40;
             BitmapSource bitmapsource = await PdfViewer.ConvertToImgAsync(file, pagenumber, 16);
-            if (bitmapsource != null)
+            if (bitmapsource is not null)
             {
                 bitmapsource.Freeze();
                 tooltip.Content = new Image { Source = bitmapsource, Width = thumbsize, Height = thumbsize };
@@ -67,7 +67,7 @@ namespace PdfViewer
                 if (frameworkElement is ListBox listBox)
                 {
                     ScrollViewer scrollViewer = listBox.GetFirstVisualChild<ScrollViewer>();
-                    if (scrollViewer != null)
+                    if (scrollViewer is not null)
                     {
                         scrollViewer.ScrollChanged += async (sender, args) =>
                                                       {

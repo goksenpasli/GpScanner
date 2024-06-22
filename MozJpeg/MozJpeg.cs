@@ -658,7 +658,7 @@ namespace MozJpeg
         {
             try
             {
-                return array == null || candidate == null || array.Length == 0 || candidate.Length == 0 || candidate.Length > array.Length;
+                return array is null || candidate is null || array.Length == 0 || candidate.Length == 0 || candidate.Length > array.Length;
             }
             catch (Exception ex)
             {

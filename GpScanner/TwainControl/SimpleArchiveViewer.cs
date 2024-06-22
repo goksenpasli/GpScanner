@@ -116,7 +116,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                 try
                 {
                     using ArchiveFile archive = new(ArchiveFilePath);
-                    if (archive != null)
+                    if (archive is not null)
                     {
                         TotalFilesCount = archive.Entries?.Count(z => z.Size > 0) ?? 0;
                         foreach (Entry item in archive.Entries?.Where(z => z.Size > 0))

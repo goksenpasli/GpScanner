@@ -777,4 +777,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Најмал</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Трчај</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Покажете го Splash екранот</value>
+  </data>
 </root>

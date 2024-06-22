@@ -765,4 +765,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Legkisebb</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>FUSS</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>A Splash képernyő megjelenítése</value>
+  </data>
 </root>

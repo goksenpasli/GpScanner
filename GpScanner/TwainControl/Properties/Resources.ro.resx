@@ -765,4 +765,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Cel mai mic</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>ALERGA</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Afișați ecranul Splash</value>
+  </data>
 </root>

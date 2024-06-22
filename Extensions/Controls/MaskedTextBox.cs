@@ -65,7 +65,7 @@ public class MaskedTextBox : TextBox
 
     protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
     {
-        if (Value == null || string.IsNullOrEmpty(Value.ToString()))
+        if (Value is null || string.IsNullOrEmpty(Value.ToString()))
         {
             CaretIndex = 0;
         }
@@ -200,7 +200,7 @@ public class MaskedTextBox : TextBox
         object convertedValue = null;
         Type dataType = ValueType;
         string valueToConvert = MaskProvider?.ToString()?.Trim();
-        if (valueToConvert != null)
+        if (valueToConvert is not null)
         {
             try
             {
@@ -216,7 +216,7 @@ public class MaskedTextBox : TextBox
                 {
                     convertedValue = Activator.CreateInstance(dataType);
                 }
-                else if (convertedValue == null && valueToConvert is IConvertible)
+                else if (convertedValue is null && valueToConvert is IConvertible)
                 {
                     convertedValue = Convert.ChangeType(valueToConvert, dataType);
                 }
@@ -241,7 +241,7 @@ public class MaskedTextBox : TextBox
             _convertExceptionOccurred = false;
         }
 
-        if (MaskProvider == null)
+        if (MaskProvider is null)
         {
             return value.ToString();
         }
@@ -438,7 +438,7 @@ public class MaskedTextBox : TextBox
         }
 
         object data = Clipboard.GetData(DataFormats.Text);
-        if (data != null)
+        if (data is not null)
         {
             string text = data.ToString().Trim();
             if (text.Length > 0)
@@ -487,7 +487,7 @@ public class MaskedTextBox : TextBox
 
         _isSyncingTextAndValueProperties = true;
 
-        if (TextProperty == p && newValue != null)
+        if (TextProperty == p && newValue is not null)
         {
             SetValue(ValueProperty, ConvertTextToValue());
         }

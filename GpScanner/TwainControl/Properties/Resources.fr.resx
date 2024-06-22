@@ -762,4 +762,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Le plus petit</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>COURIR</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Afficher l'écran des éclaboussures</value>
+  </data>
 </root>

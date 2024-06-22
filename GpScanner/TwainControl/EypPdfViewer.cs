@@ -66,7 +66,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 {
                     string path = PdfFilePath;
                     using PdfDocument inputDocument = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                    if (inputDocument != null)
+                    if (inputDocument is not null)
                     {
                         TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
                         PdfFilePath = null;
@@ -132,7 +132,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 {
                     string oldpdfpath = PdfFilePath;
                     using PdfDocument document = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                    if (document != null)
+                    if (document is not null)
                     {
                         PdfPage page = document.Pages?[currentpage - 1];
                         using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Replace);
@@ -209,7 +209,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
     public string ExtractEypFilesToPdf(string filename)
     {
         List<string> files = TwainCtrl.EypFileExtract(filename);
-        if (files != null)
+        if (files is not null)
         {
             EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant())));
             EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant())));

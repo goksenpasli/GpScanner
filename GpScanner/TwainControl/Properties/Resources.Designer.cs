@@ -1121,6 +1121,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string RUN {
+            get {
+                return ResourceManager.GetString("RUN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SATURATION {
             get {
                 return ResourceManager.GetString("SATURATION", resourceCulture);
@@ -1259,6 +1268,15 @@ namespace TwainControl.Properties {
         public static string SHOWPROGRESS {
             get {
                 return ResourceManager.GetString("SHOWPROGRESS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string SHOWSPLASH {
+            get {
+                return ResourceManager.GetString("SHOWSPLASH", resourceCulture);
             }
         }
         

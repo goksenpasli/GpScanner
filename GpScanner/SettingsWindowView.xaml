@@ -311,6 +311,17 @@
                                                         IsCheckable="True"
                                                         IsChecked="{Binding MinimizeTray, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                                                         IsEnabled="{Binding ShowTrayIcon, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                                    <MenuItem IsCheckable="True" IsChecked="{Binding StartWithWindows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                                        <MenuItem.Header>
+                                                            <TextBlock>
+                                                                <Run Text="{twainctrl:Loc Auto}" />
+                                                                <Run Text="{twainctrl:Loc RUN}" />
+                                                            </TextBlock>
+                                                        </MenuItem.Header>
+                                                    </MenuItem>
+                                                    <MenuItem Header="{twainctrl:Loc SHOWSPLASH}"
+                                                        IsCheckable="True"
+                                                        IsChecked="{Binding ShowSplash, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                                 </StackPanel>
                                             </Border>
                                         </Extensions:ContentToggleButton.OverContent>

@@ -762,4 +762,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Найменший</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Пробігати</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Показати екран сплеску</value>
+  </data>
 </root>

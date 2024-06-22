@@ -1251,7 +1251,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     IntPtr gdibitmap = bitmap.GetHbitmap();
                     BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
                     _ = Helpers.DeleteObject(gdibitmap);
-                    if (image != null)
+                    if (image is not null)
                     {
                         BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
                         await Task.Run(
@@ -1368,7 +1368,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 string path = pdfviewer.PdfFilePath;
                 using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if (pdfdocument == null)
+                if (pdfdocument is null)
                 {
                     return;
                 }
@@ -1727,7 +1727,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 string oldpdfpath = pdfviewer.PdfFilePath;
                 using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if (pdfdocument == null)
+                if (pdfdocument is null)
                 {
                     return;
                 }
@@ -1776,7 +1776,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 int currentpage = pdfviewer.Sayfa;
                 using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if (pdfdocument == null)
+                if (pdfdocument is null)
                 {
                     return;
                 }
@@ -1859,7 +1859,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string oldpath = pdfviewer.PdfFilePath;
                     PdfCompressor pdfcompressor = new();
                     using PdfDocument pdfdocument = await pdfcompressor.Compress(pdfviewer.PdfFilePath);
-                    if (pdfdocument == null)
+                    if (pdfdocument is null)
                     {
                         return;
                     }
@@ -1969,7 +1969,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 ScrollViewer scrollviewer = ImgViewer?.FindVisualChildren<ScrollViewer>()?.First();
-                if (scrollviewer != null)
+                if (scrollviewer is not null)
                 {
                     System.Windows.Controls.Image image = scrollviewer.Content as System.Windows.Controls.Image;
                     BitmapFrame bitmapFrame = BitmapFrame.Create(image?.ToRenderTargetBitmap(scrollviewer.ViewportWidth, scrollviewer.ViewportHeight));
@@ -3180,7 +3180,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument outputDocument = loadfilename.ArrangePdfPages(start, end);
-                if (outputDocument != null)
+                if (outputDocument is not null)
                 {
                     outputDocument.ApplyDefaultPdfCompression();
                     outputDocument.Save(savefilename);
@@ -3199,19 +3199,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 return null;
             }
             using ZipArchive archive = ZipFile.Open(eypfilepath, ZipArchiveMode.Read);
-            if (archive != null)
+            if (archive is not null)
             {
                 List<string> data = [];
                 ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "NihaiOzet.xml");
                 string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
                 üstveri?.ExtractToFile(source, true);
                 XDocument xdoc = XDocument.Load(source);
-                if (xdoc != null)
+                if (xdoc is not null)
                 {
                     foreach (string file in xdoc.Descendants().Select(z => Path.GetFileName((string)z.Attribute("URI"))).Where(z => !string.IsNullOrEmpty(z)))
                     {
                         ZipArchiveEntry zipArchiveEntry = archive.Entries.FirstOrDefault(entry => entry.Name == file);
-                        if (zipArchiveEntry != null)
+                        if (zipArchiveEntry is not null)
                         {
                             string destinationFileName = $"{Path.GetTempPath()}{Guid.NewGuid()}{Path.GetExtension(file.ToLowerInvariant())}";
                             zipArchiveEntry.ExtractToFile(destinationFileName, true);
@@ -3654,7 +3654,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         byte[] fileData = await Viewer.ReadAllFileAsync(filename);
-        if (fileData == null)
+        if (fileData is null)
         {
             return;
         }
@@ -3705,7 +3705,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         const string valueName = "PendingFileRenameOperations";
 
         using RegistryKey key = Registry.LocalMachine.OpenSubKey(registryKeyPath, true);
-        if (key != null)
+        if (key is not null)
         {
             string[] newValue = key.GetValue(valueName) is string[] currentValue ? (string[])currentValue.Clone() : [];
             Array.Resize(ref newValue, newValue.Length + 2);
@@ -3776,7 +3776,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         IntPtr gdibitmap = bitmap.GetHbitmap();
         BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         _ = Helpers.DeleteObject(gdibitmap);
-        return image != null ? GenerateBitmapFrame(image) : null;
+        return image is not null ? GenerateBitmapFrame(image) : null;
     }
 
     private Int32Rect CropPreviewImage(ImageSource imageSource)
@@ -4256,7 +4256,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 using PdfDocument outputDocument = loadfilename.ExtractPdfPages(start, end);
-                if (outputDocument == null)
+                if (outputDocument is null)
                 {
                     return;
                 }
@@ -4299,7 +4299,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
                 using PdfDocument outputdocument = new();
-                if (outputdocument == null)
+                if (outputdocument is null)
                 {
                     return;
                 }
@@ -4590,7 +4590,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim != null)
+        if (e.PropertyName is "CropLeft" or "CropTop" or "CropRight" or "CropBottom" && SeçiliResim is not null)
         {
             Int32Rect sourceRect = CropPreviewImage(SeçiliResim.Resim);
             if (sourceRect.HasArea)
@@ -4682,7 +4682,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (e.Effects == DragDropEffects.Move)
         {
-            if (DragCursor != null)
+            if (DragCursor is not null)
             {
                 e.UseDefaultCursors = false;
                 _ = Mouse.SetCursor(DragCursor);
@@ -4699,7 +4699,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private async void Twain_TransferImage(object sender, TransferImageEventArgs e)
     {
-        if (e.Image == null)
+        if (e.Image is null)
         {
             return;
         }

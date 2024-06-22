@@ -775,4 +775,10 @@ BELGE EKLE</value>
   <data name="SMALLEST" xml:space="preserve">
     <value>EN KÜÇÜK</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>ÇALIŞTIR</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>AÇILIŞ EKRANINI GÖSTER</value>
+  </data>
 </root>

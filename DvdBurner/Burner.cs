@@ -117,7 +117,7 @@ namespace DvdBurner
                             }
                         });
                 },
-                parameter => !string.IsNullOrWhiteSpace(CdLabel) && Files?.Any() == true && SelectedDrive != null);
+                parameter => !string.IsNullOrWhiteSpace(CdLabel) && Files?.Any() == true && SelectedDrive is not null);
 
             SelectBurnDir = new RelayCommand<object>(
                 parameter =>
@@ -192,7 +192,7 @@ namespace DvdBurner
                             }
                         });
                 },
-                parameter => SelectedDrive != null);
+                parameter => SelectedDrive is not null);
 
             GetSupportedDiscFormats = new RelayCommand<object>(
                 parameter =>
@@ -207,7 +207,7 @@ namespace DvdBurner
                     _ = MessageBox.Show(string.Join("\n", supportedformats), AppName);
                     recorder = null;
                 },
-                parameter => SelectedDrive != null);
+                parameter => SelectedDrive is not null);
 
             RemoveAllFile = new RelayCommand<object>(
                 parameter =>
@@ -413,7 +413,7 @@ namespace DvdBurner
         {
             base.OnApplyTemplate();
             lb = GetTemplateChild("Lb") as ListBox;
-            if (lb != null)
+            if (lb is not null)
             {
                 lb.Drop -= Listbox_Drop;
                 lb.Drop += Listbox_Drop;

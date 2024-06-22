@@ -15,7 +15,7 @@ public static class ScrollDragDrop
 
     public static IEnumerable<T> FindVisualChildren<T>(this DependencyObject parent) where T : DependencyObject
     {
-        return parent == null ? throw new ArgumentNullException(nameof(parent)) : FindChildren();
+        return parent is null ? throw new ArgumentNullException(nameof(parent)) : FindChildren();
 
         IEnumerable<T> FindChildren()
         {
@@ -42,7 +42,7 @@ public static class ScrollDragDrop
 
     public static T GetFirstVisualChild<T>(this DependencyObject depObj) where T : DependencyObject
     {
-        if (depObj != null)
+        if (depObj is not null)
         {
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
             {
@@ -53,7 +53,7 @@ public static class ScrollDragDrop
                 }
 
                 T childItem = GetFirstVisualChild<T>(child);
-                if (childItem != null)
+                if (childItem is not null)
                 {
                     return childItem;
                 }
@@ -63,11 +63,11 @@ public static class ScrollDragDrop
         return null;
     }
 
-    public static bool GetScrollOnDragDrop(DependencyObject element) => element == null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
+    public static bool GetScrollOnDragDrop(DependencyObject element) => element is null ? throw new ArgumentNullException(nameof(element)) : (bool)element.GetValue(ScrollOnDragDropProperty);
 
     public static void SetScrollOnDragDrop(DependencyObject element, bool value)
     {
-        if (element == null)
+        if (element is null)
         {
             throw new ArgumentNullException(nameof(element));
         }
@@ -98,7 +98,7 @@ public static class ScrollDragDrop
         {
             ScrollViewer scrollViewer = container.GetFirstVisualChild<ScrollViewer>();
 
-            if (scrollViewer != null)
+            if (scrollViewer is not null)
             {
                 const double tolerance = 60;
                 double verticalPos = e.GetPosition(container).Y;

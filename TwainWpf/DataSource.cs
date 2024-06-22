@@ -486,7 +486,7 @@ namespace TwainWpf
         {
             AreaSettings area = scanSettings.Area;
 
-            if (area == null)
+            if (area is null)
             {
                 return false;
             }

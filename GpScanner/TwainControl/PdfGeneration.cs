@@ -51,7 +51,7 @@ public static class PdfGeneration
 
     public static void ApplyDefaultPdfCompression(this PdfDocument doc)
     {
-        if (doc == null)
+        if (doc is null)
         {
             return;
         }
@@ -69,7 +69,7 @@ public static class PdfGeneration
     public static PdfDocument ArrangePdfPages(this string filename, int oldindex, int newindex)
     {
         using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Modify, PasswordProvider);
-        if (inputDocument != null)
+        if (inputDocument is not null)
         {
             inputDocument.Pages.MovePage(oldindex, newindex);
             return inputDocument;
@@ -111,7 +111,7 @@ public static class PdfGeneration
         }
 
         using PdfDocument inputDocument = PdfReader.Open(filename, PdfDocumentOpenMode.Import, PasswordProvider);
-        if (inputDocument != null)
+        if (inputDocument is not null)
         {
             using PdfDocument outputDocument = new();
             for (int i = startpage - 1; i <= endpage - 1; i++)
@@ -153,7 +153,7 @@ public static class PdfGeneration
                 if (xImage.PixelWidth < xImage.PixelHeight)
                 {
                     page.Orientation = PageOrientation.Portrait;
-                    if (ScannedText?.ElementAtOrDefault(i) != null)
+                    if (ScannedText?.ElementAtOrDefault(i) is not null)
                     {
                         WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                     }
@@ -163,7 +163,7 @@ public static class PdfGeneration
                 else
                 {
                     page.Orientation = PageOrientation.Landscape;
-                    if (ScannedText?.ElementAtOrDefault(i) != null)
+                    if (ScannedText?.ElementAtOrDefault(i) is not null)
                     {
                         WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
                     }
@@ -204,7 +204,7 @@ public static class PdfGeneration
             if (xImage.PixelWidth < xImage.PixelHeight)
             {
                 page.Orientation = PageOrientation.Portrait;
-                if (ScannedText != null)
+                if (ScannedText is not null)
                 {
                     WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
                 }
@@ -214,7 +214,7 @@ public static class PdfGeneration
             else
             {
                 page.Orientation = PageOrientation.Landscape;
-                if (ScannedText != null)
+                if (ScannedText is not null)
                 {
                     WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
                 }
@@ -340,7 +340,7 @@ public static class PdfGeneration
                     resizedimage = null;
                     data = null;
 
-                    if (ScannedText?[i] != null)
+                    if (ScannedText?[i] is not null)
                     {
                         WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
                     }
@@ -373,7 +373,7 @@ public static class PdfGeneration
                     using XImage xImage = XImage.FromStream(ms);
                     resizedimage = null;
 
-                    if (ScannedText?[i] != null)
+                    if (ScannedText?[i] is not null)
                     {
                         WritePdfTextContent(scannedimage.Resim, ScannedText?[i], page, gfx, XBrushes.Transparent);
                     }
@@ -422,7 +422,7 @@ public static class PdfGeneration
         return pdfdocument;
     }
 
-    public static PageSize GetPaperSize(this Paper paper) => paper == null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
+    public static PageSize GetPaperSize(this Paper paper) => paper is null || !paperSizes.TryGetValue(paper.PaperType, out PageSize pageSize) ? PageSize.A4 : pageSize;
 
     public static string GetPdfScanPath() => GetSaveFolder().SetUniqueFile(Scanner.SaveFileName, "pdf");
 

@@ -729,7 +729,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         try
         {
             using FileStream file = new(filename, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, true);
-            if (file != null)
+            if (file is not null)
             {
                 byte[] buffer = new byte[file.Length];
                 _ = await file.ReadAsync(buffer, 0, (int)file.Length);
@@ -754,7 +754,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         base.OnApplyTemplate();
         scrollvwr = GetTemplateChild("ScrollVwr") as ScrollViewer;
-        if (scrollvwr != null)
+        if (scrollvwr is not null)
         {
             scrollvwr.Drop -= Scrollvwr_Drop;
             scrollvwr.Drop += Scrollvwr_Drop;

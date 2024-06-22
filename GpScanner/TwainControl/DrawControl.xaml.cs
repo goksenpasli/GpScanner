@@ -280,7 +280,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     public BitmapFrame SaveInkCanvasToImage()
     {
         BitmapSource temporaryimage = (BitmapSource)TemporaryImage;
-        if (temporaryimage == null)
+        if (temporaryimage is null)
         {
             return null;
         }

@@ -762,4 +762,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>Più piccolo</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>CORRERE</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Mostra schermo splash</value>
+  </data>
 </root>

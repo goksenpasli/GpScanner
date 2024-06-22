@@ -769,4 +769,10 @@ TO FILE</value>
   <data name="SMALLEST" xml:space="preserve">
     <value>SMALLEST</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>RUN</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>SHOW SPLASH SCREEN</value>
+  </data>
 </root>

@@ -294,6 +294,24 @@
                             </Image>
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem IsCheckable="True" IsChecked="{Binding StartWithWindows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                        <MenuItem.Icon>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="24" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </MenuItem.Icon>
+                        <MenuItem.Header>
+                            <TextBlock>
+                                <Run Text="{twainctrl:Loc Auto}" />
+                                <Run Text="{twainctrl:Loc RUN}" />
+                            </TextBlock>
+                        </MenuItem.Header>
+                    </MenuItem>
                     <MenuItem Command="{Binding CloseApp}" Header="{twainctrl:Loc EXIT}">
                         <MenuItem.Icon>
                             <Image Width="16"
@@ -2325,6 +2343,7 @@
                                             </Image.Source>
                                         </Image>
                                         <Extensions:NumericUpDown Grid.Column="1"
+                                            Background="{Binding BatchOcrProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
                                             Interval="1"
                                             IsReadOnly="True"
                                             Maximum="{Binding Source={x:Static sys:Environment.ProcessorCount}}"

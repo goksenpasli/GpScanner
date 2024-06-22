@@ -74,7 +74,7 @@ public class RelayCommand<T> : ICommand
     public event EventHandler CanExecuteChanged { add => CommandManager.RequerySuggested += value; remove => CommandManager.RequerySuggested -= value; }
 
     [DebuggerStepThrough]
-    public virtual bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
+    public virtual bool CanExecute(object parameter) => _canExecute is null || _canExecute((T)parameter);
 
     [DebuggerStepThrough]
     public virtual void Execute(object parameter) => _execute((T)parameter);
@@ -101,7 +101,7 @@ public class RelayCommand : ICommand
     {
         add
         {
-            if (canExecute != null)
+            if (canExecute is not null)
             {
                 CommandManager.RequerySuggested += value;
             }
@@ -109,14 +109,14 @@ public class RelayCommand : ICommand
 
         remove
         {
-            if (canExecute != null)
+            if (canExecute is not null)
             {
                 CommandManager.RequerySuggested -= value;
             }
         }
     }
 
-    public virtual bool CanExecute(object parameter) => canExecute == null || canExecute();
+    public virtual bool CanExecute(object parameter) => canExecute is null || canExecute();
 
     public virtual void Execute(object parameter) => execute();
 }

@@ -195,7 +195,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                         return;
                     }
                     using PdfDocument pdfdocument = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                    if (pdfdocument == null)
+                    if (pdfdocument is null)
                     {
                         return;
                     }
@@ -943,7 +943,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private Rect CalculateRect(ScrollViewer scrollviewer, double x1, double x2, double y1, double y2, PdfPage page)
     {
-        if (scrollviewer == null)
+        if (scrollviewer is null)
         {
             return Rect.Empty;
         }
@@ -1010,7 +1010,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private void DrawImages(PdfPage page, XGraphics gfx, Rect rect)
     {
-        if (DrawImage && DrawnImage != null)
+        if (DrawImage && DrawnImage is not null)
         {
             XPoint center = new(rect.X + (rect.Width / 2), rect.Y + (rect.Height / 2));
             double angle = page.Rotate switch
@@ -1242,7 +1242,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 EscToolTip.IsOpen = false;
                 cnv.Children?.Clear();
                 using PdfDocument pdfDocument = PdfReader.Open(PdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-                if (pdfDocument != null)
+                if (pdfDocument is not null)
                 {
                     List<PdfPage> pdfpages = GetPdfPagesOrientation(pdfDocument);
                     foreach (PdfPage pdfpage in pdfpages)

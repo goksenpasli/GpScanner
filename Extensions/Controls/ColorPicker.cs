@@ -75,7 +75,7 @@ public class ColorPicker : Control
     {
         base.OnApplyTemplate();
         _spectrumgrid = GetTemplateChild("SpectrumGrid") as Rectangle;
-        if (_spectrumgrid != null)
+        if (_spectrumgrid is not null)
         {
             _spectrumgrid.MouseMove -= Spectrumgrid_MouseMove;
             _spectrumgrid.MouseMove += Spectrumgrid_MouseMove;
@@ -84,7 +84,7 @@ public class ColorPicker : Control
         }
 
         _rgbgrid = GetTemplateChild("RgbGrid") as Rectangle;
-        if (_rgbgrid != null)
+        if (_rgbgrid is not null)
         {
             _rgbgrid.MouseMove -= Rgbgrid_MouseMove;
             _rgbgrid.MouseMove += Rgbgrid_MouseMove;

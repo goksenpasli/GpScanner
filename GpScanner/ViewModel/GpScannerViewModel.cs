@@ -249,7 +249,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 OcrIsBusy = true;
                 ScannedText = await imgdata.OcrAsync(Settings.Default.DefaultTtsLang);
                 OcrIsBusy = false;
-                if (ScannedText != null)
+                if (ScannedText is not null)
                 {
                     TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
                 }
@@ -258,7 +258,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     QrCode.QrCode qrcode = new();
                     string result = await Task.Run(() => qrcode.GetImageBarcodeResult(bitmapframe));
-                    if (result != null)
+                    if (result is not null)
                     {
                         BarcodeList.Add(result);
                     }
@@ -277,7 +277,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
                 byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                if (filedata == null)
+                if (filedata is null)
                 {
                     return;
                 }
@@ -389,7 +389,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
                 byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                if (filedata == null)
+                if (filedata is null)
                 {
                     return;
                 }
@@ -2840,6 +2840,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             SelectedSize = new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight);
         }
 
+        if (e.PropertyName is "StartWithWindows")
+        {
+            RunAtStartup(Settings.Default.StartWithWindows);
+            if (Settings.Default.StartWithWindows)
+            {
+                Settings.Default.MinimizeTray = true;
+                Settings.Default.ShowTrayIcon = true;
+            }
+        }
+
         Settings.Default.Save();
     }
 
@@ -2939,7 +2949,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (Directory.Exists(path))
                 {
                     IEnumerable<string> files = FastFileSearch.EnumerateFilepaths(path);
-                    if (filter != null)
+                    if (filter is not null)
                     {
                         files = files.Where(filter);
                     }
@@ -3042,7 +3052,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             List<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z?.FileName?.ToLowerInvariant()))).Select(z => z.FileName).ToList();
             using AppDbContext context = new();
             List<string> scannedDatabaseFiles = (await context?.Data?.AsNoTracking()?.ToListAsync())?.Select(x => x.FileName).ToList();
-            if (scannerunindexedfiles != null && scannedDatabaseFiles != null)
+            if (scannerunindexedfiles is not null && scannedDatabaseFiles is not null)
             {
                 return new ObservableCollection<string>(scannerunindexedfiles.Except(scannedDatabaseFiles));
             }
@@ -3326,6 +3336,26 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         catch (Exception)
         {
             return null;
+        }
+    }
+
+    private void RunAtStartup(bool isChecked, string appname = "GPSCANNER")
+    {
+        try
+        {
+            using RegistryKey registryKey = Registry.CurrentUser?.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if (isChecked)
+            {
+                registryKey?.SetValue(appname, $@"""{Process.GetCurrentProcess().MainModule.FileName}"" /silent");
+            }
+            else
+            {
+                registryKey?.DeleteValue(appname);
+            }
+        }
+        catch (Exception ex)
+        {
+            _ = MessageBox.Show(ex.Message, appname, MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
     }
 

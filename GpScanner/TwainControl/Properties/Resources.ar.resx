@@ -762,4 +762,10 @@
   <data name="SMALLEST" xml:space="preserve">
     <value>أصغر</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>يجري</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>عرض شاشة دفقة</value>
+  </data>
 </root>

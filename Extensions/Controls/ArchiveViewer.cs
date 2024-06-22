@@ -231,7 +231,7 @@ namespace Extensions
         protected string ExtractToFile(string entryname)
         {
             using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
-            if (archive != null)
+            if (archive is not null)
             {
                 ZipArchiveEntry dosya = archive.GetEntry(entryname);
                 string extractpath = $"{Path.GetTempPath()}{dosya?.Name}";
@@ -297,7 +297,7 @@ namespace Extensions
                     try
                     {
                         using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
-                        if (archive != null)
+                        if (archive is not null)
                         {
                             TotalFilesCount = archive.Entries?.Count(z => z.Length > 0) ?? 0;
                             foreach (ZipArchiveEntry item in archive.Entries?.Where(z => z.Length > 0))

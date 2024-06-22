@@ -23,7 +23,7 @@ namespace DvdBurner
                 string[] imgext = [".jpg", ".bmp", ".png", ".tif", ".tiff"];
                 string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
                 string ext = Path.GetExtension(dosya)?.ToLowerInvariant();
-                if (ext != null)
+                if (ext is not null)
                 {
                     return ext switch
                     {
