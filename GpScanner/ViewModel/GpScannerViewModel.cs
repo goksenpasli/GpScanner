@@ -3350,7 +3350,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
             else
             {
-                registryKey?.DeleteValue(appname);
+                if (registryKey?.GetValue(appname) is not null)
+                {
+                    registryKey?.DeleteValue(appname);
+                }
             }
         }
         catch (Exception ex)
