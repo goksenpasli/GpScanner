@@ -1031,6 +1031,11 @@
                                                             VerticalContentAlignment="Center"
                                                             IsChecked="{Binding Seçili}">
                                                             <TextBlock>
+                                                                <InlineUIContainer BaselineAlignment="Center">
+                                                                    <Image Width="16"
+                                                                        Height="16"
+                                                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, Path=FileName, IsAsync=True}" />
+                                                                </InlineUIContainer>
                                                                 <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
                                                                 <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
                                                                 <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
