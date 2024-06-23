@@ -638,19 +638,33 @@
                                                 <Binding Path="CustomHeight" Source="{x:Static properties:Settings.Default}" />
                                             </MultiBinding>
                                         </ComboBoxItem.Tag>
-                                        <UniformGrid Width="65" Rows="2">
-                                            <Extensions:NumericUpDown Interval="1"
-                                                Maximum="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}}"
-                                                Minimum="100"
-                                                MouseSelectAllText="True"
-                                                ToolTip="{twainctrl:Loc CWIDTH}"
-                                                Value="{Binding CustomWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                            <Extensions:NumericUpDown Interval="1"
-                                                Minimum="100"
-                                                MouseSelectAllText="True"
-                                                ToolTip="{twainctrl:Loc CHEIGHT}"
-                                                Value="{Binding CustomHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
-                                        </UniformGrid>
+                                        <StackPanel Orientation="Horizontal">
+                                            <UniformGrid Width="65" Rows="2">
+                                                <Extensions:NumericUpDown Interval="1"
+                                                    Maximum="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}}"
+                                                    Minimum="100"
+                                                    MouseSelectAllText="True"
+                                                    ToolTip="{twainctrl:Loc CWIDTH}"
+                                                    Value="{Binding CustomWidth, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                                <Extensions:NumericUpDown Interval="1"
+                                                    Minimum="100"
+                                                    MouseSelectAllText="True"
+                                                    ToolTip="{twainctrl:Loc CHEIGHT}"
+                                                    Value="{Binding CustomHeight, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                            </UniformGrid>
+                                            <Button Background="{x:Null}"
+                                                BorderBrush="{x:Null}"
+                                                Command="{Binding ApplyCustomSize}">
+                                                <Image Width="24" Height="24">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="144" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Button>
+                                        </StackPanel>
                                     </ComboBoxItem>
                                 </ComboBox>
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -2004,10 +2018,13 @@
                                                         <RowDefinition />
                                                     </Grid.RowDefinitions>
                                                     <StackPanel>
+                                                        <TextBlock Foreground="Red"
+                                                            Text="{twainctrl:Loc BATCHDESC}"
+                                                            TextWrapping="Wrap" />
+                                                        <Separator />
                                                         <UniformGrid Columns="2">
                                                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                                                 CopyButtonVisibility="Collapsed"
-                                                                IsReadOnly="True"
                                                                 PasteButtonVisibility="Collapsed"
                                                                 ResetButtonVisibility="Visible"
                                                                 Text="{Binding BatchFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
@@ -2070,10 +2087,6 @@
                                                             </UniformGrid>
                                                         </UniformGrid>
                                                         <Separator />
-                                                        <TextBlock Foreground="Red"
-                                                            Text="{twainctrl:Loc BATCHDESC}"
-                                                            TextWrapping="Wrap" />
-                                                        <Separator />
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
                                                                 <ColumnDefinition />
@@ -2081,7 +2094,6 @@
                                                             </Grid.ColumnDefinitions>
                                                             <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
                                                                 CopyButtonVisibility="Collapsed"
-                                                                IsReadOnly="True"
                                                                 PasteButtonVisibility="Collapsed"
                                                                 ResetButtonVisibility="Visible"
                                                                 Text="{Binding BatchSaveFolder, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
@@ -2105,7 +2117,11 @@
                                                             d:ItemsSource="{d:SampleData ItemCount=5}"
                                                             Background="{StaticResource BorderBackground}"
                                                             ItemsPanel="{StaticResource ListBoxWrapItemsPanel}"
-                                                            ItemsSource="{Binding FileSystemWatcherProcessedFileList, Mode=OneWay}">
+                                                            ItemsSource="{Binding FileSystemWatcherProcessedFileList, Mode=OneWay}"
+                                                            VirtualizingPanel.CacheLengthUnit="Pixel"
+                                                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                            VirtualizingPanel.ScrollUnit="Pixel"
+                                                            VirtualizingPanel.VirtualizationMode="Recycling">
                                                             <ListBox.ItemTemplate>
                                                                 <DataTemplate>
                                                                     <Image Width="64"

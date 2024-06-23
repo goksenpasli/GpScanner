@@ -1211,6 +1211,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         SetDateToday = new RelayCommand<object>(parameter => BaşlangıçTarihi = BitişTarihi = DateTime.Today, parameter => BaşlangıçTarihi != DateTime.Today || BitişTarihi != DateTime.Today);
 
+        ApplyCustomSize = new RelayCommand<object>(parameter => SelectedSize = new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight), parameter => true);
+
         CloseApp = new RelayCommand<object>(parameter => windowService.GetFirstWindow().Close(), parameter => true);
 
         AppBringToFront = new RelayCommand<object>(
@@ -1247,6 +1249,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> AppBringToFront { get; }
 
     public RelayCommand<object> ApplyCalendarData { get; }
+
+    public RelayCommand<object> ApplyCustomSize { get; }
 
     public string AramaMetni
     {
@@ -2417,7 +2421,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public void RegisterBatchImageFileWatcher(Paper paper, string batchfolder, string batchsavefolder)
     {
-        if (!Directory.Exists(batchfolder) || !Directory.Exists(batchsavefolder))
+        if (!Directory.Exists(batchfolder) || !Directory.Exists(batchsavefolder) || paper is null)
         {
             return;
         }
@@ -2813,31 +2817,17 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher)
+        if (e.PropertyName is "RegisterBatchWatcher" && Settings.Default.RegisterBatchWatcher && WindowService.GetActiveWindow() is MainWindow mainWindow)
         {
-            if (!Directory.Exists(Settings.Default.BatchFolder) || !Directory.Exists(Settings.Default.BatchSaveFolder))
-            {
-                Settings.Default.RegisterBatchWatcher = false;
-                Settings.Default.BatchFolder = null;
-                Settings.Default.BatchSaveFolder = null;
-            }
-            else
-            {
-                _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), AppName);
-            }
+            RegisterBatchImageFileWatcher(mainWindow.twainCtrl.SelectedPaper, Settings.Default.BatchFolder, Settings.Default.BatchSaveFolder);
         }
 
         if (e.PropertyName is "BatchFolder" or "BatchSaveFolder")
         {
-            if (Settings.Default.BatchFolder?.Length == 0 || Settings.Default.BatchSaveFolder?.Length == 0)
+            if (!Directory.Exists(Settings.Default.BatchFolder) || !Directory.Exists(Settings.Default.BatchSaveFolder))
             {
                 Settings.Default.RegisterBatchWatcher = false;
             }
-        }
-
-        if (e.PropertyName is "CustomWidth" or "CustomHeight")
-        {
-            SelectedSize = new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight);
         }
 
         if (e.PropertyName is "StartWithWindows")
