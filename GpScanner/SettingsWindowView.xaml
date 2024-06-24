@@ -96,9 +96,54 @@
                                 d:SelectedValue="TÜRKÇE"
                                 twainctrl:Policy.PolicyName="SeçiliDil"
                                 Background="{StaticResource BorderBackground}"
-                                ItemsSource="{x:Static viewmodel:SplashViewModel.LanguageFlags}"
                                 SelectedValue="{Binding SeçiliDil}"
                                 SelectedValuePath="Key">
+                                <ListBox.ItemsSource>
+                                    <CompositeCollection>
+                                        <CollectionContainer Collection="{x:Static viewmodel:SplashViewModel.LanguageFlags}" />
+                                        <ListBoxItem Focusable="False">
+                                            <Canvas Width="70" Height="60">
+                                                <Canvas.Resources>
+                                                    <Style TargetType="Grid">
+                                                        <Setter Property="Opacity" Value="0" />
+                                                        <Style.Triggers>
+                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                <Setter Property="Opacity" Value="1" />
+                                                            </Trigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Canvas.Resources>
+                                                <Image Width="70" Source="/Resources/Flag_of_Israel.png" />
+                                                <Grid Width="70" Height="60">
+                                                    <Image Width="50"
+                                                        Height="40"
+                                                        HorizontalAlignment="Right"
+                                                        VerticalAlignment="Bottom"
+                                                        Source="/Resources/blood.png" />
+                                                    <Image Width="50"
+                                                        Height="40"
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Top"
+                                                        RenderTransformOrigin="0.5,0.5"
+                                                        Source="/Resources/blood.png">
+                                                        <Image.RenderTransform>
+                                                            <TransformGroup>
+                                                                <ScaleTransform ScaleX="-1" />
+                                                                <SkewTransform />
+                                                                <RotateTransform />
+                                                                <TranslateTransform />
+                                                            </TransformGroup>
+                                                        </Image.RenderTransform>
+                                                    </Image>
+                                                </Grid>
+                                                <TextBlock Canvas.Bottom="0"
+                                                    HorizontalAlignment="Center"
+                                                    FontSize="11"
+                                                    Text="עִברִית" />
+                                            </Canvas>
+                                        </ListBoxItem>
+                                    </CompositeCollection>
+                                </ListBox.ItemsSource>
                                 <ListBox.ItemContainerStyle>
                                     <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem">
                                         <Setter Property="HorizontalAlignment" Value="Center" />

@@ -57,7 +57,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly string AppName;
-    private readonly ObservableCollection<Size> getPreviewSize = [new Size(190, 305), new Size(230, 370), new Size(330, 530), new Size(380, 610), new Size(425, 645), new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight)];
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
@@ -157,7 +156,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         AppName = windowService?.GetFirstWindow()?.Title;
         LoadFiles = new RelayCommand<object>(async parameter => Dosyalar = await GetScannerFileData(), parameter => true);
         LoadFiles.Execute(null);
-        SeçiliDil = Settings.Default.DefaultLang;
+        SeçiliDil = !string.IsNullOrWhiteSpace(Settings.Default.DefaultLang) ? Settings.Default.DefaultLang : "TÜRKÇE";
         BaşlangıçTarihi = BitişTarihi = DateTime.Today;
         SelectedSize = Settings.Default.PreviewIndex;
         GenerateAnimationTimer();
@@ -2438,15 +2437,22 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                    isFileLocked = IsFileLocked(currentfilepath);
                                }
 
-                               if (File.Exists(currentfilepath) && BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(currentfilename).ToLowerInvariant()))
+                               try
                                {
-                                   await FileSystemWatcherOcrFile(paper, batchsavefolder, currentfilepath, currentfilename);
-                                   await Application.Current?.Dispatcher?.InvokeAsync(
-                                   () =>
+                                   if (File.Exists(currentfilepath) && BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(currentfilename).ToLowerInvariant()))
                                    {
-                                       string item = $"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}";
-                                       FileSystemWatcherProcessedFileList?.Add(item);
-                                   });
+                                       await FileSystemWatcherOcrFile(paper, batchsavefolder, currentfilepath, currentfilename);
+                                       await Application.Current?.Dispatcher?.InvokeAsync(
+                                       () =>
+                                       {
+                                           string item = $"{batchsavefolder}\\{Path.ChangeExtension(currentfilename, ".pdf")}";
+                                           FileSystemWatcherProcessedFileList?.Add(item);
+                                       });
+                                   }
+                               }
+                               catch (Exception ex)
+                               {
+                                   throw new ArgumentException(ex?.Message);
                                }
                            };
     }
@@ -2508,6 +2514,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         LangFlowDirection = FlowDirection.LeftToRight;
         switch (lang)
         {
+            case "":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
+                CalendarLang = XmlLanguage.GetLanguage("tr-TR");
+                TesseractViewModel.SeçiliDil = "Turkish";
+                break;
+
             case "TÜRKÇE":
                 TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tr-TR");
                 CalendarLang = XmlLanguage.GetLanguage("tr-TR");
@@ -2845,31 +2857,38 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private async Task FileSystemWatcherOcrFile(Paper paper, string batchsavefolder, string currentfilepath, string currentfilename)
     {
-        ObservableCollection<OcrData> scannedText;
-        if (string.Equals(Path.GetExtension(currentfilepath), ".webp", StringComparison.OrdinalIgnoreCase))
+        try
         {
-            byte[] webpfile = currentfilepath.WebpDecode(true, Twainsettings.Settings.Default.ImgLoadResolution).ToTiffJpegByteArray(Format.Jpg);
-            scannedText = await webpfile.OcrAsync(Settings.Default.DefaultTtsLang);
-            webpfile = null;
-        }
-        else
-        {
-            scannedText = await currentfilepath?.OcrAsync(Settings.Default.DefaultTtsLang);
-        }
-        await Task.Run(
-            () =>
+            ObservableCollection<OcrData> scannedText;
+            if (string.Equals(Path.GetExtension(currentfilepath), ".webp", StringComparison.OrdinalIgnoreCase))
             {
-                PdfBatchRunning = true;
-                using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress
-                                                 ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution)
-                                                 : currentfilepath.GeneratePdf(paper, scannedText))
+                byte[] webpfile = currentfilepath.WebpDecode(true, Twainsettings.Settings.Default.ImgLoadResolution).ToTiffJpegByteArray(Format.Jpg);
+                scannedText = await webpfile.OcrAsync(Settings.Default.DefaultTtsLang);
+                webpfile = null;
+            }
+            else
+            {
+                scannedText = await currentfilepath?.OcrAsync(Settings.Default.DefaultTtsLang);
+            }
+            await Task.Run(
+                () =>
                 {
-                    string pdfFileName = Path.ChangeExtension(currentfilename, ".pdf");
-                    string pdfFilePath = Path.Combine(batchsavefolder, pdfFileName);
-                    pdfdocument.Save(pdfFilePath);
-                }
-                PdfBatchRunning = false;
-            });
+                    PdfBatchRunning = true;
+                    using (PdfDocument pdfdocument = Settings.Default.PdfBatchCompress
+                                                     ? BitmapFrame.Create(new Uri(currentfilepath)).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution)
+                                                     : currentfilepath.GeneratePdf(paper, scannedText))
+                    {
+                        string pdfFileName = Path.ChangeExtension(currentfilename, ".pdf");
+                        string pdfFilePath = Path.Combine(batchsavefolder, pdfFileName);
+                        pdfdocument.Save(pdfFilePath);
+                    }
+                    PdfBatchRunning = false;
+                });
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException(ex?.Message);
+        }
     }
 
     private void GenerateAnimationTimer()
