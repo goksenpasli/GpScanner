@@ -1309,22 +1309,7 @@
                                                     <InlineUIContainer>
                                                         <Image Width="16"
                                                             Height="16"
-                                                            Source="{Binding Mode=OneWay, IsAsync=True, Path=FileName, Converter={StaticResource FilePathToIconConverter}}">
-                                                            <Image.ToolTip>
-                                                                <ToolTip>
-                                                                    <UniformGrid Columns="2">
-                                                                        <ContentControl Width="150"
-                                                                            Height="150"
-                                                                            Content="{Binding Mode=OneWay, Path=FileName}"
-                                                                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                                                                        <TextBlock Width="150"
-                                                                            Height="150"
-                                                                            Margin="5"
-                                                                            Text="{Binding Mode=OneWay, Path=FileName, Converter={StaticResource PdfFileNameToInfoConverter}}" />
-                                                                    </UniformGrid>
-                                                                </ToolTip>
-                                                            </Image.ToolTip>
-                                                        </Image>
+                                                            Source="{Binding Mode=OneWay, IsAsync=True, Path=FileName, Converter={StaticResource FilePathToIconConverter}}" />
                                                     </InlineUIContainer>
                                                 </Hyperlink>
                                             </TextBlock>
