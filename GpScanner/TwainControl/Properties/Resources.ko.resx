@@ -1,0 +1,781 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>소스를 선택하십시오</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>설정</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>해결</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>ADF</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>검정, 흰색</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>회색</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>색상</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>두 쪽</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>GUI를 보여주십시오</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>별도의 스캔</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>빠른 스캔 후 파일을 표시하십시오</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>다른 설정</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>Deskew</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>자동 테두리 감지</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>진행 상황을 보여줍니다</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>자동 회전</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>조치 없음</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>닫기 컴퓨터</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>컴퓨터를 다시 시작하십시오</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>파일 이름</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>낮</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>월</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>년도</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>시간</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>분</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>두번째</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>안내</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>사용자 이름</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>프로필 저장</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>삭제</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>주사</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>빠른
+주사</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>자동 스캔
+길</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>모두</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>없음</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>뒤집다</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>이미지 미리보기 크기</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF 보호</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>암호화</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>여기에 설정된 설정은 모든 PDF 설정에 영향을 미칩니다. 
+또한 제 3 자 응용 프로그램에서는 PDF 보호를 중단 할 수 있습니다.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>인쇄 허용</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>사본을 허용하십시오</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>편집 허용</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>선택된 저장</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>명확한 목록</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>PDF 병합</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>에 대한</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>문서</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>트림 이미지</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>초기화</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>너비 수</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>높이 수</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>일부분</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>텍스트</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>텍스트 크기</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>텍스트 각도</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>폰트</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>텍스트를 그립니다</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>PDF를 저장하십시오</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>돕다</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>OCR</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>파일</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>달력</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>그래프</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>모두보기</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>미리보기 파일</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>Tesseract</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>병합</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>선택된 병합
+PDF</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>두 개의 PDF 파일을 선택하십시오</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>활성을 읽으십시오
+페이지</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>콘텐츠</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>폴더에 표시하십시오</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>TesserAct 및 Leptonica Binaries는 Visual Studio 2019로 컴파일되므로 Visual Studio 2019 런타임이 설치되어 있는지 확인해야합니다.</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>또한 필요한 경우 Tesseract-Acr에서 Tesseract 4.1.0의 다른 언어 데이터 파일을 다운로드하십시오. TessData 폴더에 넣으십시오.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Studio 2019 X86 및 X64 Runtimes</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>다른 Tesseract 언어 데이터</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>스캐너</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>비밀번호</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>종료 또는 재시작이 설정되었습니다.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>빠른 스캔 작업 후</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>자동 저장 폴더를 설정합니다</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>자동 저장 경로가 변경되었습니다. 이전 파일은 새로 결정된 폴더로 이동하지 않습니다.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>하단 목록의 모든 스캔 된 문서가 삭제됩니다. 계속 하시겠습니까?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>주사</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>회전을 적용하십시오</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>응용 프로그램이 이미 실행 중입니다.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>등록 STI
+장치</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>번역하다</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>소스 언어</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>목적지 언어</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>STI 장치를 등록 해제하십시오</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>파일 파일을 별도의 파일에 저장하면 아래 지정된 폴더에 저장됩니다.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>OCR PDF를 저장하십시오</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>멈추다</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>비어 있는</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>탈퇴</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>이전 브라우저 응용 프로그램의 폴더 인덱스에 적합한 형식을 선택하는 것이 좋습니다. 여기서는 선택한 형식에 따라 필터링이 이루어집니다.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>사용자 정의 너비</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>맞춤 높이</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>자동 저장 폴더를 지정하십시오. 빠른 스캔 프로세스에서는이 폴더가 기록됩니다.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>알려진 문제</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>때로는 파일이 목록에 추가되지만 목록에는 표시되지 않습니다. 솔루션의 경우 마우스 휠을 스크롤해야합니다.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>스캐너가 스캔하기 전에 몇 초 동안 기다릴 수 있습니다!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>필름 스캐너</value>
+  </data>
+  <data name="LICENSE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>너비 높이를 무시하십시오. 예외가 발생할 수 있습니다</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>도서관</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>PDF 저장 폴더를 선택하십시오</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>이미지 폴더를 선택하십시오</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>스캔이 완료되면 사운드를 재생합니다</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>확인 된 경우 여러 문서를 동시에 OCR'ed 할 수 있습니다</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>파일을 닫습니다</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>색상을 반전합니다</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>겹</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>거울</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>리플</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>설치</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>파일이 사용 중입니다. 응용 프로그램을 닫고 파일을로드하지 말고 다시 시도하십시오.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>ESC 버튼을 누르고 누르면 취소하십시오</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>색조</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>가벼움</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>포화</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>간단한 PDF 미리보기. 느린 컴퓨터에 적합합니다</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>완료되면 CD를 제거하십시오</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>수평의</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>먼저, 마지막으로 계속하십시오</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>분할 및 정렬</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>무작위의</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>무례한 파일</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>PDF 정보를 보여줍니다</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>OCR 모든 PDF 페이지</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>접근 불가. 관리자 권한을 확인하십시오</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>파일 이름은 유효하지 않습니다</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>백업 데이터베이스 파일</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>연관 파일 확장자</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>시스템 트레이를 최소화하십시오</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>시작 메시지</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>선형 충전</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>출구</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>복사</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>클립 보드에 복사</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>이 과정은 시간이 오래 걸릴 수 있습니다.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>오류</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>각 페이지를 별도의 파일로 스캔하십시오</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>성공</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>원래의</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF는 JPG로 작동합니다. 이렇게하면 메모리의로드가 줄어들지 만 JPG 파일은 디스크 크기가 감소하기 때문에 Windowsun 임시 디렉토리에 기록됩니다. 너무 많은 (1000) 페이지가 포함 된 파일에 메모리가 채워진 경우에만 사용하는 것이 좋습니다.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>반죽</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>SystemTray 아이콘을 표시하십시오</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>종류</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>처음에 추가하십시오</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>끝에 추가하십시오</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>OCR 결과 대신 PDF 콘텐츠 텍스트를 사용하십시오. Thıs functıon을 활성화하는 것이 좋습니다.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>인덱스 작업이 완료된 후로드 성능을 얻기 위해 폴더를 제거합니다.</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>수많은 파일이 무례한 파일이 있습니다</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>큰</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>가장 큰</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>가운데</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>작은</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>가장 작은</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>달리다</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>스플래시 화면 표시</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>문서를 추가하십시오
+파일로</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>데이터베이스에 OCR을 추가하십시오</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>이를 확인하면 아래에 표시된 문서는 데이터베이스에 왼쪽의 활성 문서의 텍스트로 저장됩니다.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>이 응용 프로그램은 스캔 및 문서 추적을 용이하게하기 위해 개발되었습니다.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>적용하다</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>색상 변경</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>자동적 인</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>자동 사진</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>자동 텍스트</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>일괄</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>아래 지정된 폴더에 이미지 파일이 추가되면 프로그램이 열리는 한 동일한 폴더의 PDF 파일로 자동 변환됩니다.</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>카메라</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>임계 값을 설정 한 후 클릭하면 두 번째 색상을 선택할 수 있습니다.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>압박 붕대</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>기본</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>목적지 색상</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>빈 페이지를 건너 뜁니다</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>EYP 파일을 직접 엽니 다.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>평평한 베드</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG 품질</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>왼쪽</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>이 파일 형식은 지원이 제한되어 있습니다.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>짐</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>패치 코드가 감지되지 않았습니다</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>선택된 프로필이 없습니다</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>PDF OCR 프로세스에는 추가 시간이 걸립니다.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>내 다른 앱</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>스캔 된 문서에서 압축 파일을 직접 덮어 씁니다</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>페이지 번호</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>PDF 파일을 직접 엽니 다.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>PDF 폴더 변경을 시청하십시오</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>QR을 감지하십시오</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>문서 목록에서 처리 된 파일을 삭제합니다</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>선택한 이미지를 삭제 하시겠습니까?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>페이지 교체</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>다시 시작합니다</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>오른쪽</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>180도 회전합니다</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>270도 회전합니다</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>90도 회전합니다</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>Seperator를 사용하십시오</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>분할</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>복원을 위해 두 번 클릭하고 마우스 오른쪽 버튼을 클릭하여 확장하십시오</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>소스 색상</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>오른쪽 클릭하여 소스 색상을 선택하십시오.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>시작</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>꼬리표</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>일부 작업이 끝날 때까지 기다리고 있습니다.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>TesserAct 언어를 선택하십시오</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>응용 프로그램에 사용 된 제 3 자 라이브러리</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>한계점</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>프로세스가 진행 중입니다. 끝날 때까지 기다립니다.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>업데이트</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>양수표</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>시안 색상 제어는 하나 이상의 Alt Shift Ctrl 키와 다르게 작동합니다.</value>
+  </data>
+</root>

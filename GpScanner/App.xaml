@@ -744,7 +744,7 @@
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <twain:ViewerTemplateSelector x:Key="ContributionViewerSelector"
                 Docx="{StaticResource EmptyViewerTemplate}"
-                Eyp="{StaticResource EmptyViewerTemplate}"
+                Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ContributionViewerImgTemplateMini}"
                 Pdf="{StaticResource ContributionViewerPdfViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
@@ -754,7 +754,7 @@
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector"
                 Docx="{StaticResource EmptyViewerTemplate}"
-                Eyp="{StaticResource EmptyViewerTemplate}"
+                Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"

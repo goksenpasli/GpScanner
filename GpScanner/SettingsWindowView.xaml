@@ -91,7 +91,7 @@
                                 <ColumnDefinition Width="3*" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <ListBox Margin="1"
+                            <ListBox Margin="1" PreviewKeyDown="ListBox_PreviewKeyDown"
                                 VerticalContentAlignment="Center"
                                 d:SelectedValue="TÜRKÇE"
                                 twainctrl:Policy.PolicyName="SeçiliDil"

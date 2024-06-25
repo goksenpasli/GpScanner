@@ -8,4 +8,6 @@ namespace GpScanner;
 public partial class SettingsWindowView : Window
 {
     public SettingsWindowView() { InitializeComponent(); }
+
+    private void ListBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e) => e.Handled = true;
 }
