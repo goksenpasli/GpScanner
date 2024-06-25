@@ -222,13 +222,21 @@
                     </UniformGrid>
                 </UniformGrid>
                 <Separator />
-                <UniformGrid Columns="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
                     <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
                         <Run d:Text="PageWidth" Text="{Binding PageWidth, Mode=OneWay}" />
-                        <System:String>X</System:String>
+                        <LineBreak />
                         <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
                     </TextBlock>
-                    <TextBlock x:Name="TbMargin" HorizontalAlignment="Center">
+                    <TextBlock x:Name="TbMargin"
+                        Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
                         <Run Text="{Binding Left, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
                         <System:String>,</System:String>
                         <Run Text="{Binding Top, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
@@ -237,7 +245,11 @@
                         <System:String>,</System:String>
                         <Run d:Text="0" Text="{Binding CropBottomMargin, Mode=OneWay}" />
                     </TextBlock>
-                </UniformGrid>
+                    <Extensions:NumericUpDown Grid.Column="2"
+                        Maximum="{Binding CropAllMaximumWidth}"
+                        Minimum="0"
+                        Value="{Binding CropAllMargin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
             </StackPanel>
         </GroupBox.Header>
         <Grid>

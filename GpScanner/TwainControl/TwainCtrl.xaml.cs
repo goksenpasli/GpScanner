@@ -83,6 +83,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private double allRotateProgressValue;
     private byte[] cameraQRCodeData;
     private bool canUndoImage;
+    private int cropAllMargin;
+    private int cropAllMaximumWidth;
     private int cropBottomMargin;
     private CroppedBitmap croppedOcrBitmap;
     private int cropRightMargin;
@@ -2295,6 +2297,32 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand CopyPdfBitmapFile { get; }
 
+    public int CropAllMargin
+    {
+        get => cropAllMargin;
+        set
+        {
+            if (cropAllMargin != value)
+            {
+                cropAllMargin = value;
+                OnPropertyChanged(nameof(CropAllMargin));
+            }
+        }
+    }
+
+    public int CropAllMaximumWidth
+    {
+        get => Math.Min(PageHeight, PageWidth) / 2;
+        set
+        {
+            if (cropAllMaximumWidth != value)
+            {
+                cropAllMaximumWidth = value;
+                OnPropertyChanged(nameof(CropAllMaximumWidth));
+            }
+        }
+    }
+
     public int CropBottomMargin
     {
         get => cropBottomMargin;
@@ -2617,6 +2645,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 pageHeight = value;
                 OnPropertyChanged(nameof(PageHeight));
+                OnPropertyChanged(nameof(CropAllMaximumWidth));
             }
         }
     }
@@ -2630,6 +2659,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 pageWidth = value;
                 OnPropertyChanged(nameof(PageWidth));
+                OnPropertyChanged(nameof(CropAllMaximumWidth));
             }
         }
     }
@@ -4832,6 +4862,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             Scanner.CropDialogExpanded = false;
         }
+
+        if (e.PropertyName is "CropAllMargin")
+        {
+            Settings.Default.Top = Settings.Default.Left = CropAllMargin;
+            Settings.Default.Bottom = PageHeight - CropAllMargin;
+            Settings.Default.Right = PageWidth - CropAllMargin;
+        }
+
     }
 
     private void ZipExtractSingleFile(string zipfileName, string zipcontentfilename, string destinationfilename)
