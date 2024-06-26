@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -250,7 +251,21 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
-    private void CopyCommand(object sender, ExecutedRoutedEventArgs e) => Clipboard.SetText(Text);
+    private void CopyCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        try
+        {
+            Clipboard.SetText(Text);
+        }
+        catch (COMException ex)
+        {
+            const uint CLIPBRD_E_CANT_OPEN = 0x800401D0;
+            if ((uint)ex.ErrorCode != CLIPBRD_E_CANT_OPEN)
+            {
+                throw;
+            }
+        }
+    }
 
     private void LowerCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, SelectedText.ToLower());
 
