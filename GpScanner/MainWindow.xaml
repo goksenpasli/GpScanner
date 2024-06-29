@@ -1516,9 +1516,9 @@
                         StaysOpen="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
                         TopMost="False">
                         <Extensions:ContentToggleButton.OverContent>
-                            <Extensions:ResizablePanel Width="225"
+                            <Extensions:ResizablePanel Width="250"
                                 Height="150"
-                                MinWidth="225"
+                                MinWidth="250"
                                 MinHeight="150">
                                 <GroupBox>
                                     <GroupBox.Header>
@@ -1533,6 +1533,11 @@
                                                     <Image Width="16"
                                                         Height="16"
                                                         Source="/TwainControl;component/Icons/undo.png" />
+                                                </Button>
+                                                <Button twainctrl:Policy.PolicyName="SeçiliKaydet" Command="{Binding SaveSelectedFilesPdfFile, Source={x:Reference twainCtrl}}">
+                                                    <Image Width="16"
+                                                        Height="16"
+                                                        Source="/TwainControl;component/Icons/save.png" />
                                                 </Button>
                                             </StackPanel>
                                             <ToggleButton Grid.Column="1"
@@ -1555,53 +1560,57 @@
                                         Background="{StaticResource BorderBackground}"
                                         Drop="ListBox_DropAsync"
                                         ItemsSource="{Binding Scanner.Resimler, Source={x:Reference twainCtrl}}"
+                                        SelectedItem="{Binding SeçiliResim, Source={x:Reference twainCtrl}}"
+                                        SelectionMode="Extended"
                                         VirtualizingPanel.CacheLengthUnit="Pixel"
                                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                         VirtualizingPanel.ScrollUnit="Pixel"
-                                        VirtualizingPanel.VirtualizationMode="Standard">
+                                        VirtualizingPanel.VirtualizationMode="Recycling">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <StackPanel Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
-                                                    <TextBlock HorizontalAlignment="Center"><InlineUIContainer>
-                                                            <Extensions:NumericUpDown Height="20"
-                                                                Interval="1"
-                                                                Maximum="1"
-                                                                Minimum="-1"
-                                                                NumericUpdownTextBoxVisibility="Collapsed"
-                                                                Value="{Binding RotationAngle}" />
-                                                        </InlineUIContainer><Run AllowDrop="True"
-                                                            Cursor="SizeAll"
-                                                            FontFamily="Wingdings"
-                                                            FontSize="24"
-                                                            FontWeight="Bold"
-                                                            MouseLeftButtonDown="MiniDocumentRun_MouseLeftButtonDown"
-                                                            Text="B" /><Hyperlink twainctrl:Policy.PolicyName="ResimSil"
-                                                            Command="{Binding DataContext.ResimSil, Source={x:Reference twainCtrl}}"
-                                                            CommandParameter="{Binding Mode=OneWay}"
-                                                            TextDecorations="None">
-                                                            <InlineUIContainer>
-                                                                <Image Width="16"
-                                                                    Height="16"
-                                                                    Source="/TwainControl;component/Icons/delete.png" />
-                                                            </InlineUIContainer>
-                                                        </Hyperlink></TextBlock>
-                                                    <PdfViewer:PdfShadowedImage Width="72"
-                                                        Height="72"
-                                                        d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                        d:Source="/GpScanner;component/scanner.ico"
-                                                        d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                        <PdfViewer:PdfShadowedImage.Source>
-                                                            <PriorityBinding>
-                                                                <Binding IsAsync="True"
-                                                                    Mode="OneWay"
-                                                                    Path="ResimThumb" />
-                                                                <Binding Converter="{StaticResource FilePathToIconConverter}"
-                                                                    IsAsync="True"
-                                                                    Path="FilePath" />
-                                                            </PriorityBinding>
-                                                        </PdfViewer:PdfShadowedImage.Source>
-                                                    </PdfViewer:PdfShadowedImage>
-                                                </StackPanel>
+                                                <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Seçili}">
+                                                    <StackPanel Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
+                                                        <TextBlock HorizontalAlignment="Center"><InlineUIContainer>
+                                                                <Extensions:NumericUpDown Height="20"
+                                                                    Interval="1"
+                                                                    Maximum="1"
+                                                                    Minimum="-1"
+                                                                    NumericUpdownTextBoxVisibility="Collapsed"
+                                                                    Value="{Binding RotationAngle}" />
+                                                            </InlineUIContainer><Run AllowDrop="True"
+                                                                Cursor="SizeAll"
+                                                                FontFamily="Wingdings"
+                                                                FontSize="24"
+                                                                FontWeight="Bold"
+                                                                MouseLeftButtonDown="MiniDocumentRun_MouseLeftButtonDown"
+                                                                Text="B" /><Hyperlink twainctrl:Policy.PolicyName="ResimSil"
+                                                                Command="{Binding DataContext.ResimSil, Source={x:Reference twainCtrl}}"
+                                                                CommandParameter="{Binding Mode=OneWay}"
+                                                                TextDecorations="None">
+                                                                <InlineUIContainer>
+                                                                    <Image Width="16"
+                                                                        Height="16"
+                                                                        Source="/TwainControl;component/Icons/delete.png" />
+                                                                </InlineUIContainer>
+                                                            </Hyperlink></TextBlock>
+                                                        <PdfViewer:PdfShadowedImage Width="72"
+                                                            Height="72"
+                                                            d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                            d:Source="/GpScanner;component/scanner.ico"
+                                                            d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                            <PdfViewer:PdfShadowedImage.Source>
+                                                                <PriorityBinding>
+                                                                    <Binding IsAsync="True"
+                                                                        Mode="OneWay"
+                                                                        Path="ResimThumb" />
+                                                                    <Binding Converter="{StaticResource FilePathToIconConverter}"
+                                                                        IsAsync="True"
+                                                                        Path="FilePath" />
+                                                                </PriorityBinding>
+                                                            </PdfViewer:PdfShadowedImage.Source>
+                                                        </PdfViewer:PdfShadowedImage>
+                                                    </StackPanel>
+                                                </CheckBox>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                         <ListBox.ItemsPanel>

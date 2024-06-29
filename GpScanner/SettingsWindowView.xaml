@@ -91,11 +91,12 @@
                                 <ColumnDefinition Width="3*" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <ListBox Margin="1" PreviewKeyDown="ListBox_PreviewKeyDown"
+                            <ListBox Margin="1"
                                 VerticalContentAlignment="Center"
                                 d:SelectedValue="TÜRKÇE"
                                 twainctrl:Policy.PolicyName="SeçiliDil"
                                 Background="{StaticResource BorderBackground}"
+                                PreviewKeyDown="ListBox_PreviewKeyDown"
                                 SelectedValue="{Binding SeçiliDil}"
                                 SelectedValuePath="Key">
                                 <ListBox.ItemsSource>
@@ -1323,7 +1324,7 @@
                                             <Extensions:ButtonedTextBox VerticalAlignment="Top"
                                                 Background="Transparent"
                                                 BorderBrush="Transparent"
-                                                Description="{Binding FileName, Mode=OneWay}"
+                                                Description="{Binding FileName, Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}"
                                                 IsReadOnly="True"
                                                 PasteButtonVisibility="Collapsed"
                                                 ResetButtonVisibility="Collapsed"
