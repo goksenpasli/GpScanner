@@ -139,6 +139,11 @@
       <DependentUpon>PdfSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Policy.cs" />
+    <Compile Include="Properties\Resources.uz.Designer.cs">
+      <DependentUpon>Resources.uz.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\Resources.tk.Designer.cs">
       <DependentUpon>Resources.tk.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -386,6 +391,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.uz.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.uz.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.tk.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.tk.Designer.cs</LastGenOutput>

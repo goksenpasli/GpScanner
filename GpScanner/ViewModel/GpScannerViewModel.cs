@@ -2766,6 +2766,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
                 break;
 
+            case "UZBEK":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("uz");
+                CalendarLang = XmlLanguage.GetLanguage("uz");
+                TesseractViewModel.SeçiliDil = "Uzbek";
+
+                break;
+
             case "TÜRKMEN":
                 TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tk");
                 CalendarLang = XmlLanguage.GetLanguage("tk");

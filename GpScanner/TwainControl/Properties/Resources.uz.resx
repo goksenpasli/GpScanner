@@ -1,0 +1,786 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>Manba ni tanlang</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>Sozlash</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>Hal qilish</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>Hujjat
+Oziqlantiruvchi</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>QORA OQ</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>Kulrang</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>RANGLI</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>Ikki tomonlama</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>Joylashtirish interfeysini ko'rsating</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>TRA har bir sahifani ajrating</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>Tez skanerdan keyin faylni ko'rsating</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>Boshqa sozlamalar</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>To'g'ri egrilik</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>Avtomatik qirrani aniqlash</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>Foizni ko'rsating</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>Avtomatik ravishda aylantiring</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>Jarayon yo'q</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>Kompyuterni yoping</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>Kompyuterni qayta yoqing</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>FAYL NOMI</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>Kun</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>Oy</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>Yil</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>Soat</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>Minut</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>IKKINCHI</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>Hidi</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>Foydalanuvchi nomi</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>Profilni saqlang</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>O'chirmoq</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>Taramoq</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>Tez
+Taramoq</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>Avtomatik
+Yozmoq</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>Hamma</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>Hech biri</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>Teskari</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>Rasmni oldindan ko'rish hajmi</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF himoya qiladi</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>Parol</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>Bu erda yaratilgan sozlamalar PDF-ning barcha yozuvlariga ta'sir qiladi.
+Bundan tashqari, PDF himoyasi 3-qismning 3-qismida qo'llanilishi mumkin.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>Chop etishga ruxsat bering</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>Tarkib nusxasini olishiga ruxsat bering</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>Hujjatni tartibga solishga ruxsat bering</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>Tanlovlarni saqlang</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>Ro'yxatni tozalang</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>PDF-ni birlashtirish</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>Haqida</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>Hujjat</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>Hosil</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>QAYTA O'RNATISH</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>Ko'p odatiy</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>Balandligi</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>Alohida</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>Matn</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>Matn hajmi</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>Matn burchagi</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>Shrift</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>Matnni chizish</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>PDF-ni tejang</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>YORDAM</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>Oon</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>Fayli</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>Taqvim</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>Grafik</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>ULARNING HAMMASI
+Ko'rmoq</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>Fayli
+Oldindan ko'rish</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>Tsect</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>Birlashtirmoq</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>Pdf belgilangan
+Birlashtirmoq</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>Kamida ikkita pdf
+Faylni tanlang</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>Faol sahifa
+O'qimoq</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>Tarkibni o'qing</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>Jildda ko'rsating</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Tesektsiya va Leptoca ikkilik fayllari Visual Studio bilan tuzilganligi sababli, siz Visual Studio 2019 Rayt vaqti o'rnatilganligiga ishonch hosil qilishingiz kerak.</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Shuningdek, boshqa tildagi ma'lumotlar fayllarini tsosektsiya-okrni tsitiklar uchun 4.1.0 uchun yuklab oling. Uni TessData papkasiga qo'ying.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Studio 2019 X86 va X64 ish kuni</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Boshqa tsex tillari ma'lumotlari</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>Skaner</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>Parol</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Yopilish yoki qayta ishga tushirish.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Tez skaner tugaganida qilish jarayoni</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Avtomatik ro'yxatga olish papkasini belgilang.</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Avtomatik yozish yo'l o'zgargan. Eski fayllar yangi belgilangan papkaga ko'chirilmaydi.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Quyidagi ro'yxatdagi barcha skanerlangan hujjatlarni o'chirishni xohlaysizmi?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Skanerlash</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>U aylanishni qo'llash orqali saqlanishi kerakmi?</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Ilova allaqachon ishlamoqda.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>Brauzer menyusiga
+Qo'shmoq</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>Tarjima</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>Manba tili</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>Maqsad tili</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>Brauzer menyusidan
+Ko'tarmoq</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Har bir sahifani alohida faylga saqlash Quyidagi fayllar quyidagi papkaga saqlanadi.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>OCR PDF saqlanadi</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>STOP</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>Bo'sh</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>Nuqtani olib tashlash</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Eski brauzeringiz qo'llanilgan papka ma'lumotnomasi uchun tegishli formatni tanlash tavsiya etiladi. Filtrlash formatga qarab tuziladi.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>Maxsus kenglik</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>Maxsus balandlik</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Avtomatik ro'yxatga olish papkasini belgilang. Qisqa skanerlash jarayonida ushbu papkaga ro'yxatdan o'tish amalga oshiriladi.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Ma'lum muammolar</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Ba'zida fayl ro'yxatga qo'shilgan, ammo u ro'yxatda ko'rinmaydi. Yechim uchun sichqonchaning g'ildiragini aylantirish kerak.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Brauzer qancha soniyalarni skanerlash jarayonidan oldin kutishini bildiradi.</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>Film brauzeri</value>
+  </data>
+  <data name="LICENSE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Kenglikning balandligi tengligi. Xato amaliyotda sodir bo'lishi mumkin</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>Kutubxona</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>PDF-ni saqlash uchun papkani tanlang</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Rasmlar papkasini tanlang</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Skrining tugallanganda ovozni o'ynang</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Agar belgilangan bo'lsa, bir vaqtning o'zida bir nechta hujjatlar oCR bo'lishi mumkin</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Faylni o'chiring</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>Teskari</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>O'rash</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>Oyna</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>To'lqin</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>Yuklatilgan</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Fayldan foydalanish. Ilovani o'chiring, faylni o'ngga yuklang, qayta urinib ko'ring</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Bekor qilish uchun ESC tugmasini bosib ushlab turing</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>Rang ohangi</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>Ochiqlik</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>To'yinganlik</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Oddiy PDF oldindan ko'rish. Sekin kompyuterlar uchun mos.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Tugatgandan so'ng CD-ni olib tashlang</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>Gorizontal</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Birinchi va oxirgi sahifalarni va tartibni tanlang</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Bo'linish va tartiblang</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>Tasodifiy</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>Noma'lum fayllar</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>PDF ma'lumotlarini ko'rsatish</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Barcha PDF sahifalarida OCR</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Kirish rad etildi. Menejer sessiyasi borligiga ishonch hosil qiling</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Fayl nomi yaroqsiz</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>Ma'lumotlar bazasini zaxiralash</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>Filer sheriklari</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Tizim patnisini kamaytiring</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Boshlang'ich xabar</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>Chiziqli to'ldirish</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>CHIQISH</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>Nusxa ko'chirmoq</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Kengashga ko'chirilgan</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Bu ko'proq vaqt talab qilishi mumkin. Davom etishni xohlaysizmi?</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>XATO</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>Fayllarni ajratish uchun tara</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>OMADLI</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>Asl</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF JPG sifatida ishlaydi. Bu xotiraga yuklanmoqda, ammo JPG fayllari dizayn hajmining pasayishi bo'lgani kabi, JPG fayllari qayd etiladi. Faqat xotira juda ko'p (1000) bo'lgan fayllarda to'ldirilgan bo'lsa, undan foydalanish yaxshiroqdir.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>Pastroq qilmoq</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Tizim patnisidagi dastur belgisini ko'rsating</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Reyting</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Boshiga qo'shing</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Oxiriga qo'shing</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>OCR o'rniga PDF tarkibidagi matndan foydalaning. Siz ushbu funktsiyani yoqish tavsiya etilmaydi.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Katalog operatsiyalaridan so'ng papkalarni o'chirish tugallanmoqda</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Ko'plab fayllar mavjud</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>Katta</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>ENG KATTA</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>O'rtada</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Kichik</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Eng kichik</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Yugurish</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Ochilgan ekranni ko'rsating</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>Faylga
+Hujjat qo'shing</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>OCR ma'lumotlarini saqlash</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Agar bu belgilangan bo'lsa, quyidagi matn ma'lumotlar bazasida chapdagi faol hujjatda yozilgan matn sifatida qayd etiladi.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Ushbu ariza skanerlash va hujjatlarni kuzatishni osonlashtirish uchun ishlab chiqilgan.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>Qo'llamoq</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>Rangni qo'llang</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Avtomatik</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>Avtomatik rasm</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>Avtomatik matn</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>Kollektiv ish</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Rasmli fayllar quyida keltirilganda, dastur ochiq bo'lsa, xuddi shu papkadagi avtomatik konversiya amalga oshiriladi.</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>Kamera</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Agar siz diafder qiymatini o'rnatgandan so'ng uni bosganingizdan so'ng uni bosgan bo'lsangiz, siz ikkinchi rangni tanlashingiz mumkin.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>Siqmoq</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Bajarilish</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>Maqsad rangi</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>Bo'sh sahifalar</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Exp fayllarini to'g'ridan-to'g'ri oching</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>Kvartira</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG sifat nisbati</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Chapda</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Ushbu fayl formati cheklangan.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>Yuklamoq</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Yamoq kodini aniqlab olmagan</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>Profil tanlanmagan</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>PDF OCR qo'shimcha vaqt talab etadi.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>Boshqa ilovalar</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Skanerlangan hujjatlarga bevosita siqilgan faylni yozing</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>Yo'q</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>To'g'ridan-to'g'ri PDF fayllarini oching</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>PDF papkasini almashtirishni tomosha qiling</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>QR aniqlash</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Ishlangan fayllarni hujjatlar ro'yxatidan o'chirish</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Tanlangan rasmni yo'q qilmoqchimisiz?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Sahifalar o'zgaradi</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>Ilovani qayta boshlash kerak.</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>To'g'ri</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>180 darajaga aylaning</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>Qaytish 270 daraja</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>90 daraja daromad</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>Qavs</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Singan</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Qayta tiklash uchun ikki marta bosing, o'ngni kengaytirish</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>Payvandlash rangi</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>O'ngga va rangni tanlang</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>Boshlamoq</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>Chipta</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Tugatish uchun ba'zi vazifalarni kuting.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Tesekte tilini tanlang</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>Qo'llashda ishlatiladigan 3-qism kutubxonalari</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>Ostona</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Jarayon davom etmoqda. Uni tugatishni kuting.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>Yangilamoq</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>Suv belgisi</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Har qanday shisha rangli boshqaruv Ctrl tugmachalari bir yoki bir nechtasi bilan farq qiladi!</value>
+  </data>
+</root>
