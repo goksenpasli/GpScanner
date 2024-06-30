@@ -2765,6 +2765,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 TesseractViewModel.SeçiliDil = "Korean";
 
                 break;
+
+            case "TÜRKMEN":
+                TranslationSource.Instance.CurrentCulture = CultureInfo.GetCultureInfo("tk");
+                CalendarLang = XmlLanguage.GetLanguage("tk");
+
+                break;
         }
     }
 

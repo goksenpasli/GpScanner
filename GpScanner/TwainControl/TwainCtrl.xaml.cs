@@ -1859,16 +1859,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("COMPRESS")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     string oldpath = pdfviewer.PdfFilePath;
-                    PdfCompressor pdfcompressor = new();
+                    double oldsize = new FileInfo(pdfviewer.PdfFilePath).Length;
+                    PdfCompressor pdfcompressor = new() { UseMozJpeg = MozJpeg.MozJpeg.MozJpegDllExists, Dpi = 150, Quality = 70, };
+                    pdfcompressor.ProgressChanged += (_, e) => Dispatcher.CurrentDispatcher.Invoke(() => Scanner.PdfSaveProgressValue = e);
                     using PdfDocument pdfdocument = await pdfcompressor.Compress(pdfviewer.PdfFilePath);
                     if (pdfdocument is null)
                     {
                         return;
                     }
                     pdfdocument.Save(pdfviewer.PdfFilePath);
+                    double newsize = new FileInfo(pdfviewer.PdfFilePath).Length;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = oldpath;
-                    _ = MessageBox.Show($"{Translation.GetResStringValue("SUCCESS")}", AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    double compressionratio = newsize / oldsize;
+                    _ = MessageBox.Show($"{Translation.GetResStringValue("SUCCESS")}\n{compressionratio:P2}", AppName, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));

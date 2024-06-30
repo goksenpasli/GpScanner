@@ -23,7 +23,7 @@
     </UserControl.Resources>
     <GroupBox>
         <GroupBox.Header>
-            <UniformGrid Columns="2">
+            <UniformGrid Rows="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />

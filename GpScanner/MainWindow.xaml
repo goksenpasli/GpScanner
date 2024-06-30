@@ -247,6 +247,7 @@
         <Grid.RowDefinitions>
             <RowDefinition />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding MainWindowGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="3*" />
@@ -1256,7 +1257,16 @@
                 </TabItem>
             </TabControl>
         </GroupBox>
-        <StatusBar Grid.Row="1"
+        <ProgressBar Grid.Row="1"
+            Grid.ColumnSpan="3"
+            Height="3"
+            Background="{StaticResource GroupBoxBackGround}"
+            BorderBrush="{StaticResource GroupBoxBackGround}"
+            Foreground="{StaticResource BorderBackground}"
+            Maximum="1"
+            Minimum="0"
+            Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, ElementName=twainCtrl}" />
+        <StatusBar Grid.Row="2"
             Grid.ColumnSpan="3"
             twainctrl:Policy.PolicyName="StatusBar"
             Background="Black">
@@ -1712,17 +1722,10 @@
                         VerticalContentAlignment="Stretch"
                         Background="{x:Null}"
                         BorderBrush="{x:Null}"
+                        Content="{twainctrl:Loc BATCH}"
                         IsChecked="{Binding BatchDialogOpen}"
                         StaysOpen="True"
                         TopMost="False">
-                        <Grid>
-                            <ProgressBar Background="{x:Null}"
-                                BorderBrush="{x:Null}"
-                                Maximum="1"
-                                Minimum="0"
-                                Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, ElementName=twainCtrl}" />
-                            <TextBlock Text="{twainctrl:Loc BATCH}" />
-                        </Grid>
                         <Extensions:ContentToggleButton.Style>
                             <Style TargetType="Extensions:ContentToggleButton">
                                 <Setter Property="Foreground" Value="White" />

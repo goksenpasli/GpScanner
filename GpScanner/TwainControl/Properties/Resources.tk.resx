@@ -1,0 +1,786 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="SRC" xml:space="preserve">
+    <value>Çeşmesini saýlaň</value>
+  </data>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>Sazlamalar</value>
+  </data>
+  <data name="RES" xml:space="preserve">
+    <value>Çözgüdi</value>
+  </data>
+  <data name="ADF" xml:space="preserve">
+    <value>Resminama
+Iýmitlendiriji</value>
+  </data>
+  <data name="BW" xml:space="preserve">
+    <value>Gara ak</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>Çal</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>Reňkli</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>Iki tarapa</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>Interfeýsi görkez</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>Tara her sahypany bölüň</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>Çalt skanerden soň faýly görkeziň</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>Beýleki sazlamalar</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>Dogry egrilik</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>Awtomatiki usulda kesgitleme</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>Göterimini görkez</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>Awtomatiki aýlanýar</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>Hiç hili proses ýok</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>Kompýuteri ýapyň</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>Kompýuterini täzeden açyň</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>Faýlyň ady</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>Gün</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>Aý</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>Ýyl</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>Sagat</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>Minut</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>Ikinji</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>Gözegçiligi</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>Ulanyjy ady</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>Profili dowam etdiriň</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>Pozuň</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>Tara</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>Çalt
+Tara</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>Awtomatiki
+Ýazgy</value>
+  </data>
+  <data name="ALL" xml:space="preserve">
+    <value>Hemmesi</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>Hiç</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>Tersine</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>Surat deslapky syn</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PDF gora</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>Parol</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>Bu ýerde ýasalan sazlamalar ähli pdf ýazgylaryna täsir edýär.
+Mundan başga-da, 3-nji böurma programmalary bilen döwülip bilner.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>Çap etmäge rugsat beriň</value>
+  </data>
+  <data name="ALLOWCOPY" xml:space="preserve">
+    <value>Mazmunyň göçürmesine rugsat beriň</value>
+  </data>
+  <data name="ALLOWEDIT" xml:space="preserve">
+    <value>Resminamany gurmaga rugsat beriň</value>
+  </data>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>Saýlawlary tygşytlaň</value>
+  </data>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>Sanawy arassalaň</value>
+  </data>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>PDF birleşdiriň</value>
+  </data>
+  <data name="ABOUT" xml:space="preserve">
+    <value>Hakda</value>
+  </data>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>Resminama</value>
+  </data>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>Ekin</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>Täzeden düzmek</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>Iň adaty</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>Beýikligi adaty</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>Aýry-aýry</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>Tekst</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>Tekstiň ululygy</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>Tekst burçly</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>Şrift</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>Tekst çyz</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>PDF tygşytlaň</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>KÖMEK EDIŇ</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>Ocr</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>Faýl</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>Senenama</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>Grafika</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>HEMMESI
+Seret</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>Faýl
+Deslapky syn</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>Teserct</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>Birleşdirmek</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>PDF bellendi
+Birleşdirmek</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>Azyndan iki pdf
+Faýly saýlaň</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>Işjeň sahypasy
+Oka</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>Mazmuny okaň</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>Papkada görkeziň</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>"Tsecton" -i tisştisinden bäri we lentonika Faýllar "Visual Studio" bilen düzülendigini deňeşdirilýär, 2019-njy ýylda wizual studiýa işine göz ýetirmeli.</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Şeýle hem testturs-ocr-den testcess-ocr-den beýleki dilet maglumatlaryny göçürip alyň. Tesdata bukjasyna salyň.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Visual Stuçe 2019 x86 we X64 iş wagty</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Beýleki synag dilekleri</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>Skaner</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>Parol</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>Ýapmak ýa-da täzeden açmak.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Çalt skaner gutarandan soň edilmeli amal</value>
+  </data>
+  <data name="AUTOFOLDER" xml:space="preserve">
+    <value>Awtomatiki hasaba alyş bukjasyny kesgitläň.</value>
+  </data>
+  <data name="AUTOFOLDERCHANGE" xml:space="preserve">
+    <value>Awtomatiki ýazgy ýollary üýtgedi. Köne faýllar täze bellenen bukja göçürilmez.</value>
+  </data>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Aşakdaky sanawdaky ähli skanirlenen resminamalary dowam etdirmek isleýärsiňizmi?</value>
+  </data>
+  <data name="DEFAULTSCANNAME" xml:space="preserve">
+    <value>Skanirlemek</value>
+  </data>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Aýlanmagy ulanyp ýatda saklamalymy?</value>
+  </data>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>Programma eýýäm işleýär.</value>
+  </data>
+  <data name="REGSTI" xml:space="preserve">
+    <value>Brauzer menýusyna çenli
+Goş</value>
+  </data>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>Terjime</value>
+  </data>
+  <data name="SOURCELANG" xml:space="preserve">
+    <value>Çeşme dili</value>
+  </data>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>Maksatly dili</value>
+  </data>
+  <data name="UNREGSTI" xml:space="preserve">
+    <value>Brauzer menýusyndan
+Götermek</value>
+  </data>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Her sahypany aýratyn faýl faýllaryna ýazdyryň Aşakdaky bukja ýazylýar.</value>
+  </data>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>OCR PDF saklaň</value>
+  </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Dur</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>Boş</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DOT-ny aýyryň</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Köne brauzer programmaňyz bukjasynyň bukjasy üçin degişli formaty saýlamaly, köne brauzeriň bukjasynyň bukjasy üçin degişli formata saýlangydyr. Süzgü alyş gurnamak şu ýerde saýlanan formata görä berler.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>Specialörite giň</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ECörite beýiklik</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Awtomatiki hasaba alyş bukjasyny kesgitläň. Çalt gözlemek prosesi, bellige almak bu bukja amala aşyrylýar.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Belli meseleler</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Käwagt sanawa faýl sanawa goşulýar, ýöne bu sanawda görünmeýär. Çözüw üçin syçanjygyň tigirini aýlamaly.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Brauzeriň näçe sekuntda skaner prosesini almazdan ozal garaşjakdygyny görkezýär.</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>Film brauzeri</value>
+  </data>
+  <data name="LICENSE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Giň beýikligi deňlik. Iş ýüzünde ýalňyşlyk ýüze çykyp biler</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>Kitaphanasy</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>PDF saklamak üçin bukjany saýlaň</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Surat bukjasyny saýlaň</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Ekranda gutaranda ses oýnaň</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Bellenen bolsa, birnäçe resminama şol bir wagtyň özünde okr bolup biler</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Faýly öçüriň</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>Tersine</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>Ellemek</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>Aýna</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>Tolkun</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>Ýükledim</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Ulanylyşy faýl. Programmany öçüriň, faýllary saga ýükläň, gaýtadan synanyşyň</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Cancatyrmak üçin ESC düwmesini basyp saklaň</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>Reňk äheňi</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>Açyklyg</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>Doýba</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Pleönekeý pdf deslapky syn. Haýal kompýuterler üçin amatly.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Gutarandan soň CD-ni aýyryň</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>Keseligine</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Ilkinji we soňky sahypalary saýlaň we sort</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Bölmek we sortlamak</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>Tötänleýin</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>Açylmadyk faýllar</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>PDF maglumatyny görkeziň</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>OCR-ny PDF sahypalaryny düzüň</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Giriş ret edildi. Dolandyryjy sessiýanyň bardygyny anyklaň</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Faýlyň ady nädogry</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>Maglumat bazasynyň faýlyny ätiýaçlaň</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>Faýl askatlary</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Ulgamyň tarelmegini azaltmak</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Başlangyç habar</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>Çyzykly doldurgyç</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>Çykyş</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>Göçürmek</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Tagtada göçürildi</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Bu has köp wagt alyp biler. Dowam etmek isleýärsiňizmi?</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>Ýalňyşlyk</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>"Tra" faýllary bölmek</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>Üstünlikli</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>Asyl</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF JPG ýaly işleýär. Bu mesele ýadyňa ýüklemegi azaldýar, ýöne JPG faýllarynda diski ölçegi azalmagy sebäpli "JPG" faýllarynda ýazylýar. Diňe kän bir köp (1000) sahypada görkezilen faýllarda doldurylan faýllarda doldurylsa has gowudyr.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>Çökdürmek</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Ulgamyň tarelinde programma nyşanyny görkeziň</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Reýting</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Başlangyç goşuň</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Soňuna goşuň</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>OCR-iň ýerine PDF mazmunly mazmunyny ulanyň. Bu funksiýany işletmek maslahat berilmeýärsiňiz.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>"Kataloglanan" fotosuratlaryň açylyş penjiresiniň açylmagynda has gowy öndürijiligine ýetmek üçin bukjalary pozuň</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Köp sanly faýl bar</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>Uly</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Iň ulusy</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Ortasy</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Kiçi</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Iň kiçi</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Ylga</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Açylyş ekranyny görkeziň</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>Faýla
+Resminama goşuň</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>OCR maglumatlaryny tygşytlaň</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Bu belli hasaplanse, aşakdaky tekst çepdäki işdäki maglumatlar bazasynda maglumatlar bazasynda hasaba alynýar.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Bu programma, skaner we resminama yzarlamagyny aňsatlaşdyrmak üçin döredildi.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>Ýüz tutuň</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>Reňk çalyň</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>Awtomatiki</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>Awtomatiki surat</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>Awtomatiki tekst</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>Köpçülikleýin iş</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Surat faýllary, programma açyk bolsa, programma açyk, awtomatiki konwergensiýa şol bir bukjada şol merkezde ýerleşende, awtomatiki konwergensiýa şol bir bukjada deňdir.</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>Kamera</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Balyklary gurlandan soň oňa bassaňyz, ikinji reňk saýlap bilersiňiz.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>Gysmak</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>Gaýybana</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>Maksatly reňk</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>Boş sahypalary geçiň</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Göz gabak faýllaryny göni açyň</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>Tekiz</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG Hil wersiýasy</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>Çep</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Bu faýl formatynda çäkli goldaw bar.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>Ýüklemek</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Patch kody tapylmady</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>Profil saýlanmady</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>PDF OCR goşmaça wagt alýar.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>Beýleki programmalar</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Faýly göni skanirlenen resminamalarda gysyň</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>Sahypa ýok</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Gönüden-göni PDF faýllaryny açyň</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>PDF bukjasyny çalyşmak</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>QR tapmak</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Resminamalaryň sanawyndan gaýtadan işlenen faýllary pozuň</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Saýlanan suraty pozmak isleýärsiňizmi?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Sahypalary üýtgeýär</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>Arza täzeden başlamaly.</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>Dogry</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>180 derejesini açyň</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>270 dereje gaýtaryň</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>90 dereje gaýtaryň</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>Ýaý</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Döwüldi</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Dikeltmek üçin iki gezek basyň, saglygy giňeltmek üçin sagdyn</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>Kebşirleýiş reňki</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Sag - reňk we reňk saýlaň</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>Başla</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>Bilet</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Tamamlamak üçin käbir wezipeleri garaşyň.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Testvelt dilini saýlaň</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>Programmada ulanylýan 3-nji bölek kitaphanalar</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>Bosagasy</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Bu proses dowam edýär. Gutarmagyna garaşyň.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>Täzelen</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>Suwarmak</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Islendik aýna reňkli dolandyryş aşaky smena düwmeleriniň bir ýa-da köpüsi bilen başgaça işleýär!</value>
+  </data>
+</root>
