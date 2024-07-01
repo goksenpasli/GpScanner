@@ -386,7 +386,9 @@
                     DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
-                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <twain:SimpleArchiveViewer x:Name="ArchiveVwr"
+                    ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    Style="{StaticResource SimpleArchiveViewerStyle}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
                 <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
