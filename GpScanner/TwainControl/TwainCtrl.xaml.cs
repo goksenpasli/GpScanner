@@ -483,6 +483,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => PdfPages?.Count > 0);
 
+        PdfImportViewerTekİşaretle = new RelayCommand<object>(
+            parameter =>
+            {
+                foreach (PdfData item in PdfPages.Where(z=>z.PageNumber % 2 == 1))
+                {
+                    item.Selected = true;
+                }
+            },
+            parameter => PdfPages?.Count > 0);
+
+        PdfImportViewerÇiftİşaretle = new RelayCommand<object>(
+            parameter =>
+            {
+                foreach (PdfData item in PdfPages.Where(z => z.PageNumber % 2 == 0))
+                {
+                    item.Selected = true;
+                }
+            },
+            parameter => PdfPages?.Count > 0);
+
         PdfImportViewerTersiniİşaretle = new RelayCommand<object>(
             parameter =>
             {
@@ -2683,6 +2703,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public ICommand PasteFileToPdfFile { get; }
+
+    public RelayCommand<object> PdfImportViewerÇiftİşaretle { get; }
+
+    public RelayCommand<object> PdfImportViewerTekİşaretle { get; }
 
     public RelayCommand<object> PdfImportViewerTersiniİşaretle { get; }
 

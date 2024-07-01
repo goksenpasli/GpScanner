@@ -1259,11 +1259,11 @@
         </GroupBox>
         <ProgressBar Grid.Row="1"
             Grid.ColumnSpan="3"
-            Height="5"
+            Height="6"
             Extensions:ProgressBarExtensions.IsCentered="True"
             Background="{StaticResource GroupBoxBackGround}"
             BorderBrush="{StaticResource GroupBoxBackGround}"
-            Foreground="{StaticResource BorderBackground}"
+            Foreground="{Binding Scanner.SaveProgressBarForegroundBrush, Mode=OneWay, ElementName=twainCtrl}"
             Maximum="1"
             Minimum="0"
             Value="{Binding Scanner.PdfSaveProgressValue, Mode=OneWay, ElementName=twainCtrl}" />
