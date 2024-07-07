@@ -19,7 +19,6 @@ namespace TwainControl;
 
 public partial class DrawControl : UserControl, INotifyPropertyChanged
 {
-    public static readonly DependencyProperty EditingImageProperty = DependencyProperty.Register("EditingImage", typeof(BitmapFrame), typeof(DrawControl), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
     public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register("TemporaryImage", typeof(ImageSource), typeof(DrawControl), new PropertyMetadata(null));
     private bool drawControlContextMenu;
     private Cursor drawCursor;
@@ -31,6 +30,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     private SolidColorBrush selectedBrush;
     private string selectedColor = "Black";
     private StylusTip selectedStylus = StylusTip.Ellipse;
+    private bool silentApply;
     private bool smooth;
     private double stylusHeight = 3d;
     private double stylusWidth = 3d;
@@ -46,11 +46,21 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         SaveEditedImage = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is ScannedImage scannedImage &&
-                MessageBox.Show($"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}", Window.GetWindow(this)?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (parameter is not ScannedImage scannedImage)
+                {
+                    return;
+                }
+                if (SilentApply)
                 {
                     scannedImage.Resim = SaveInkCanvasToImage();
+                    return;
                 }
+                if (MessageBox.Show($"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}", Window.GetWindow(this)?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                scannedImage.Resim = SaveInkCanvasToImage();
             },
             parameter => parameter is ScannedImage && TemporaryImage is not null);
 
@@ -64,6 +74,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 }
             },
             parameter => TemporaryImage is not null);
+
+        FitImage = new RelayCommand<object>(parameter => Ink.CurrentZoom = ActualHeight / TemporaryImage?.Height ?? 1, parameter => TemporaryImage is not null);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -98,8 +110,6 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public BitmapFrame EditingImage { get => (BitmapFrame)GetValue(EditingImageProperty); set => SetValue(EditingImageProperty, value); }
-
     public Ellipse Ellipse
     {
         get => ellipse;
@@ -113,6 +123,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             }
         }
     }
+
+    public RelayCommand<object> FitImage { get; }
 
     public bool Highlighter
     {
@@ -218,6 +230,19 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         }
     }
 
+    public bool SilentApply
+    {
+        get => silentApply;
+        set
+        {
+            if (silentApply != value)
+            {
+                silentApply = value;
+                OnPropertyChanged(nameof(SilentApply));
+            }
+        }
+    }
+
     public bool Smooth
     {
         get => smooth;
@@ -301,7 +326,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     {
         if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && scannedImage?.Resim is not null)
         {
-            TemporaryImage = EditingImage = scannedImage.Resim;
+            TemporaryImage = scannedImage.Resim;
             Ink.CurrentZoom = ActualHeight / scannedImage.Resim.PixelHeight;
             if (DataContext is TwainCtrl twainCtrl)
             {

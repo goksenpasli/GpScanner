@@ -116,95 +116,109 @@
                 </local:ZoomableInkCanvas.Background>
             </local:ZoomableInkCanvas>
         </ScrollViewer>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <ComboBox x:Name="CbEdit"
-                VerticalContentAlignment="Center"
-                ItemsSource="{Binding Mode=OneWay, Source={StaticResource InkCanvasEditingMode}}"
-                SelectedIndex="1" />
-            <ComboBox x:Name="CbStylus"
-                VerticalContentAlignment="Center"
-                ItemsSource="{Binding Mode=OneWay, Source={StaticResource StylusTip}}"
-                SelectedItem="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
-            <ToggleButton IsChecked="{Binding Highlighter, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                <Image Width="24" Height="24">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="133" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-            </ToggleButton>
-            <ToggleButton IsChecked="{Binding IgnorePressure, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                <Image Width="24" Height="24">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="100" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-            </ToggleButton>
-            <ToggleButton IsChecked="{Binding Smooth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                <Image Width="24" Height="24">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="248" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-            </ToggleButton>
-            <Extension:NumericUpDown Interval="1"
-                Minimum="0.5"
-                Value="{Binding StylusWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
-            <ToggleButton IsChecked="{Binding Lock, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                <Image Width="24" Height="24">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="47" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-            </ToggleButton>
-            <Extension:NumericUpDown Interval="1"
-                Minimum="0.5"
-                Value="{Binding StylusHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
-            <Button local:Policy.PolicyName="SaveEditedImage"
-                Command="{Binding SaveEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
-                CommandParameter="{Binding SeçiliResim}">
-                <Image Width="24"
-                    Height="24"
-                    Source="/TwainControl;component/Icons/save.png" />
-            </Button>
-            <Extension:ContentToggleButton Padding="2" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                <Rectangle Width="24"
-                    Height="24"
-                    Fill="{Binding SelectedBrush}" />
-                <Extension:ContentToggleButton.OverContent>
-                    <Border BorderThickness="1">
-                        <Extension:ColorPicker HexCode="{Binding SelectedColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            HexCodeVisibility="Collapsed"
-                            PredefinedColorVisibility="Visible"
-                            SliderVisibility="Collapsed" />
-                    </Border>
-                </Extension:ContentToggleButton.OverContent>
-            </Extension:ContentToggleButton>
-            <Button Command="{Binding ClearTemporaryImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
-                <Image Width="24"
-                    Height="24"
-                    Source="/TwainControl;component/Icons/delete.png" />
-            </Button>
-            <Slider Width="100"
-                VerticalAlignment="Center"
-                AutoToolTipPlacement="TopLeft"
-                AutoToolTipPrecision="2"
-                Maximum="{Binding ElementName=Ink, Path=MaxZoom}"
-                Minimum="{Binding ElementName=Ink, Path=MinZoom}"
-                Style="{DynamicResource Slider}"
-                Value="{Binding ElementName=Ink, Path=CurrentZoom}" />
-
-        </StackPanel>
+        <ScrollViewer Grid.Row="1"
+            HorizontalScrollBarVisibility="Auto"
+            Template="{StaticResource HorizontalScrollViewerTemplate}"
+            VerticalScrollBarVisibility="Disabled">
+            <StackPanel Orientation="Horizontal">
+                <ComboBox x:Name="CbEdit"
+                    VerticalContentAlignment="Center"
+                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource InkCanvasEditingMode}}"
+                    SelectedIndex="1" />
+                <ComboBox x:Name="CbStylus"
+                    VerticalContentAlignment="Center"
+                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource StylusTip}}"
+                    SelectedItem="{Binding SelectedStylus, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                <ToggleButton IsChecked="{Binding Highlighter, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="133" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
+                <ToggleButton IsChecked="{Binding IgnorePressure, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="100" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
+                <ToggleButton IsChecked="{Binding Smooth, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="248" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
+                <Extension:NumericUpDown Interval="1"
+                    Minimum="0.5"
+                    Value="{Binding StylusWidth, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                <ToggleButton IsChecked="{Binding Lock, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="47" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </ToggleButton>
+                <Extension:NumericUpDown Interval="1"
+                    Minimum="0.5"
+                    Value="{Binding StylusHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                <Button local:Policy.PolicyName="SaveEditedImage"
+                    Command="{Binding SaveEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    CommandParameter="{Binding SeçiliResim}">
+                    <Image Width="24"
+                        Height="24"
+                        Source="/TwainControl;component/Icons/save.png" />
+                </Button>
+                <Button Command="{Binding FitImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" CommandParameter="{Binding SeçiliResim}">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="22" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Button>
+                <Slider Width="100"
+                    VerticalAlignment="Center"
+                    AutoToolTipPlacement="TopLeft"
+                    AutoToolTipPrecision="2"
+                    Maximum="{Binding ElementName=Ink, Path=MaxZoom}"
+                    Minimum="{Binding ElementName=Ink, Path=MinZoom}"
+                    Style="{DynamicResource Slider}"
+                    Value="{Binding ElementName=Ink, Path=CurrentZoom}" />
+                <Extension:ContentToggleButton Padding="2" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    <Rectangle Width="24"
+                        Height="24"
+                        Fill="{Binding SelectedBrush}" />
+                    <Extension:ContentToggleButton.OverContent>
+                        <Border BorderThickness="1">
+                            <Extension:ColorPicker HexCode="{Binding SelectedColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                HexCodeVisibility="Collapsed"
+                                PredefinedColorVisibility="Visible"
+                                SliderVisibility="Collapsed" />
+                        </Border>
+                    </Extension:ContentToggleButton.OverContent>
+                </Extension:ContentToggleButton>
+                <Button Command="{Binding ClearTemporaryImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    <Image Width="24"
+                        Height="24"
+                        Source="/TwainControl;component/Icons/delete.png" />
+                </Button>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </UserControl>

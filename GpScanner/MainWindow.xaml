@@ -1523,9 +1523,9 @@
                         StaysOpen="{Binding DocumentPanelIsExpanded, Mode=OneWay}"
                         TopMost="False">
                         <Extensions:ContentToggleButton.OverContent>
-                            <Extensions:ResizablePanel Width="250"
+                            <Extensions:ResizablePanel Width="260"
                                 Height="150"
-                                MinWidth="250"
+                                MinWidth="260"
                                 MinHeight="150">
                                 <GroupBox>
                                     <GroupBox.Header>
@@ -1573,6 +1573,11 @@
                                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                         VirtualizingPanel.ScrollUnit="Pixel"
                                         VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="IsSelected" Value="{Binding Seçili}" />
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
                                                 <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Seçili}">
@@ -1600,22 +1605,36 @@
                                                                         Source="/TwainControl;component/Icons/delete.png" />
                                                                 </InlineUIContainer>
                                                             </Hyperlink></TextBlock>
-                                                        <PdfViewer:PdfShadowedImage Width="72"
-                                                            Height="72"
-                                                            d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
-                                                            d:Source="/GpScanner;component/scanner.ico"
-                                                            d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
-                                                            <PdfViewer:PdfShadowedImage.Source>
-                                                                <PriorityBinding>
-                                                                    <Binding IsAsync="True"
-                                                                        Mode="OneWay"
-                                                                        Path="ResimThumb" />
-                                                                    <Binding Converter="{StaticResource FilePathToIconConverter}"
-                                                                        IsAsync="True"
-                                                                        Path="FilePath" />
-                                                                </PriorityBinding>
-                                                            </PdfViewer:PdfShadowedImage.Source>
-                                                        </PdfViewer:PdfShadowedImage>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <PdfViewer:PdfShadowedImage Width="72"
+                                                                Height="72"
+                                                                d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                                                d:Source="/GpScanner;component/scanner.ico"
+                                                                d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                                                <PdfViewer:PdfShadowedImage.Source>
+                                                                    <PriorityBinding>
+                                                                        <Binding IsAsync="True"
+                                                                            Mode="OneWay"
+                                                                            Path="ResimThumb" />
+                                                                        <Binding Converter="{StaticResource FilePathToIconConverter}"
+                                                                            IsAsync="True"
+                                                                            Path="FilePath" />
+                                                                    </PriorityBinding>
+                                                                </PdfViewer:PdfShadowedImage.Source>
+                                                            </PdfViewer:PdfShadowedImage>
+                                                            <Extensions:ContentToggleButton IsEnabled="{Binding Seçili}" PlacementMode="Left">
+                                                                <Extensions:ContentToggleButton.OverContent>
+                                                                    <Extensions:ResizablePanel Width="410"
+                                                                        Height="410"
+                                                                        MinWidth="410"
+                                                                        MinHeight="410">
+                                                                        <twainctrl:DrawControl DataContext="{Binding Mode=OneWay, Source={x:Reference twainCtrl}}"
+                                                                            SilentApply="True"
+                                                                            TemporaryImage="{Binding DataContext.Resim, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                                    </Extensions:ResizablePanel>
+                                                                </Extensions:ContentToggleButton.OverContent>
+                                                            </Extensions:ContentToggleButton>
+                                                        </StackPanel>
                                                     </StackPanel>
                                                 </CheckBox>
                                             </DataTemplate>

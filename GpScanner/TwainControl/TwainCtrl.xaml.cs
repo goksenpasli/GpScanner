@@ -486,7 +486,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         PdfImportViewerTekİşaretle = new RelayCommand<object>(
             parameter =>
             {
-                foreach (PdfData item in PdfPages.Where(z=>z.PageNumber % 2 == 1))
+                foreach (PdfData item in PdfPages.Where(z => z.PageNumber % 2 == 1))
                 {
                     item.Selected = true;
                 }
@@ -1614,7 +1614,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is ScannedImage scannedImage && scannedImage?.Resim is not null)
                 {
                     SelectedTabIndex = 1;
-                    drawControl.TemporaryImage = drawControl.EditingImage = scannedImage.Resim;
+                    drawControl.TemporaryImage = scannedImage.Resim;
                     drawControl.Ink.CurrentZoom = ActualHeight / scannedImage.Resim.PixelHeight;
                     TümününİşaretiniKaldır?.Execute(null);
                     scannedImage.Seçili = true;
