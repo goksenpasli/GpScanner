@@ -1628,9 +1628,25 @@
                                                                         Height="410"
                                                                         MinWidth="410"
                                                                         MinHeight="410">
-                                                                        <twainctrl:DrawControl DataContext="{Binding Mode=OneWay, Source={x:Reference twainCtrl}}"
-                                                                            SilentApply="True"
-                                                                            TemporaryImage="{Binding DataContext.Resim, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                                                        <Grid DataContext="{Binding Mode=OneWay, Source={x:Reference twainCtrl}}">
+                                                                            <Grid.RowDefinitions>
+                                                                                <RowDefinition />
+                                                                                <RowDefinition Height="Auto" />
+                                                                            </Grid.RowDefinitions>
+                                                                            <twainctrl:DrawControl x:Name="DrawControl" SilentApply="True" />
+                                                                            <Button Grid.Row="1"
+                                                                                Command="{Binding LoadMiniDraw}"
+                                                                                Content="{twainctrl:Loc LOAD}">
+                                                                                <Button.CommandParameter>
+                                                                                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                                                                                        <Binding Mode="OneWay" Source="{x:Reference DrawControl}" />
+                                                                                        <Binding Mode="OneWay"
+                                                                                            Path="DataContext.Resim"
+                                                                                            RelativeSource="{RelativeSource Mode=TemplatedParent}" />
+                                                                                    </MultiBinding>
+                                                                                </Button.CommandParameter>
+                                                                            </Button>
+                                                                        </Grid>
                                                                     </Extensions:ResizablePanel>
                                                                 </Extensions:ContentToggleButton.OverContent>
                                                             </Extensions:ContentToggleButton>

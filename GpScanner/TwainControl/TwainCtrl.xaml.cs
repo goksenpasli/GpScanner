@@ -2012,6 +2012,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
+        LoadMiniDraw = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is object[] obj && obj[0] is DrawControl drawControl && obj[1] is BitmapFrame bitmapFrame)
+                {
+                    drawControl.TemporaryImage = bitmapFrame;
+                    drawControl.FitImage.Execute(null);
+                }
+            },
+            parameter => true);
+
         PdfViewerFullScreen = new RelayCommand<object>(
             parameter =>
             {
@@ -2614,6 +2625,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand LoadCroppedImage { get; }
 
     public ICommand LoadImage { get; }
+
+    public RelayCommand<object> LoadMiniDraw { get; }
 
     public ICommand LoadPdfExtractFile { get; }
 
