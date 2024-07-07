@@ -973,7 +973,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         "Eyp Dosyası (*.eyp)|*.eyp|" +
                         "Webp Dosyası (*.webp)|*.webp|" +
                         "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz|" +
-                        "Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv)|*.xls;*.xlsx;*.xlsb;*.csv",
+                        "Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv)|*.xls;*.xlsx;*.xlsb;*.csv|" +
+                        "Belge Liste Dosyası (*.txt)|*.txt",
                     Multiselect = true
                 };
 
@@ -1072,17 +1073,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => Scanner?.Resimler?.Count(z => !string.IsNullOrWhiteSpace(z.FilePath)) > 0);
-
-        LoadFileList = new RelayCommand<object>(
-            async parameter =>
-            {
-                OpenFileDialog openFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt" };
-                if (openFileDialog.ShowDialog() == true)
-                {
-                    await AddFiles(File.ReadAllLines(openFileDialog.FileName), DecodeHeight);
-                }
-            },
-            parameter => true);
 
         MergePdfListToCurrentFile = new RelayCommand<object>(
             parameter =>
@@ -1999,9 +1989,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     System.Windows.Controls.Image image = scrollviewer.Content as System.Windows.Controls.Image;
                     BitmapFrame bitmapFrame = BitmapFrame.Create(image?.ToRenderTargetBitmap(scrollviewer.ViewportWidth, scrollviewer.ViewportHeight));
-                    bitmapFrame.Freeze();
+                    bitmapFrame?.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                    Scanner?.Resimler.Insert(SeçiliResim.Index, scannedImage);
+                    Scanner?.Resimler?.Insert(SeçiliResim.Index, scannedImage);
                 }
             },
             parameter => SeçiliResim is not null);
@@ -2040,7 +2030,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfImportViewerControl.PdfViewer.EypFilePath = file;
                 }
                 pdfImportViewerControl.DataContext = this;
-                maximizedWindow = new() { Owner = Window.GetWindow(this), WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
+                maximizedWindow = new() { Owner = Window.GetWindow(this), WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = file, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -2143,7 +2133,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame });
                 }
             },
-            parameter => parameter is MediaViewer mediaViewer && !string.IsNullOrWhiteSpace(mediaViewer.MediaDataFilePath));
+            parameter => parameter is MediaViewer mediaViewer && File.Exists(mediaViewer.MediaDataFilePath));
 
         PrintSelectedDocuments = new RelayCommand<object>(
             parameter =>
@@ -2622,8 +2612,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> LoadArrangedPdfFile { get; }
 
     public ICommand LoadCroppedImage { get; }
-
-    public ICommand LoadFileList { get; }
 
     public ICommand LoadImage { get; }
 
@@ -3419,6 +3407,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                             case ".eyp":
                                 await AddFiles([.. (EypFileExtract(filename))], decodeheight);
+                                break;
+
+                            case ".txt":
+                                await AddFiles(File.ReadAllLines(filename), decodeheight);
                                 break;
 
                             case ".jpg":

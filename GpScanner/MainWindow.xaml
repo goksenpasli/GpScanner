@@ -889,71 +889,65 @@
                         <Grid Grid.Row="2" Background="{StaticResource BorderBackground}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <RepeatButton twainctrl:Policy.PolicyName="DateBack"
-                                    Command="{Binding DateBack}"
-                                    Content="ç"
-                                    FontFamily="Wingdings"
-                                    FontSize="16" />
-                                <StackPanel Grid.Column="1">
-                                    <StackPanel Orientation="Horizontal">
-                                        <RepeatButton Command="{Binding StartDateBack}"
-                                            Content="ç"
-                                            FontFamily="Wingdings"
-                                            FontSize="16" />
-                                        <DatePicker twainctrl:Policy.PolicyName="BaşlangıçTarihi"
-                                            DisplayDateEnd="{Binding BitişTarihi}"
-                                            Language="{Binding CalendarLang}"
-                                            SelectedDate="{Binding BaşlangıçTarihi}" />
-                                        <RepeatButton Command="{Binding StartDateForward}"
-                                            Content="è"
-                                            FontFamily="Wingdings"
-                                            FontSize="16" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <RepeatButton Command="{Binding EndDateBack}"
-                                            Content="ç"
-                                            FontFamily="Wingdings"
-                                            FontSize="16" />
-                                        <DatePicker twainctrl:Policy.PolicyName="BitişTarihi"
-                                            DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                            DisplayDateStart="{Binding BaşlangıçTarihi}"
-                                            Language="{Binding CalendarLang}"
-                                            SelectedDate="{Binding BitişTarihi}" />
-                                        <RepeatButton Command="{Binding EndDateForward}"
-                                            Content="è"
-                                            FontFamily="Wingdings"
-                                            FontSize="16" />
-                                    </StackPanel>
+                            <RepeatButton twainctrl:Policy.PolicyName="DateBack"
+                                Command="{Binding DateBack}"
+                                Content="ç"
+                                FontFamily="Wingdings"
+                                FontSize="16" />
+                            <StackPanel Grid.Column="1">
+                                <StackPanel Orientation="Horizontal">
+                                    <RepeatButton Command="{Binding StartDateBack}"
+                                        Content="ç"
+                                        FontFamily="Wingdings"
+                                        FontSize="16" />
+                                    <DatePicker twainctrl:Policy.PolicyName="BaşlangıçTarihi"
+                                        DisplayDateEnd="{Binding BitişTarihi}"
+                                        Language="{Binding CalendarLang}"
+                                        SelectedDate="{Binding BaşlangıçTarihi}" />
+                                    <RepeatButton Command="{Binding StartDateForward}"
+                                        Content="è"
+                                        FontFamily="Wingdings"
+                                        FontSize="16" />
                                 </StackPanel>
-                                <Button Grid.Column="2" Command="{Binding SetDateToday}">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="TimeDate.cpl" />
-                                                <Binding Source="0" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
-                                <RepeatButton Grid.Column="3"
-                                    twainctrl:Policy.PolicyName="DateForward"
-                                    Command="{Binding DateForward}"
-                                    Content="è"
-                                    FontFamily="Wingdings"
-                                    FontSize="16" />
-                            </Grid>
+                                <StackPanel Orientation="Horizontal">
+                                    <RepeatButton Command="{Binding EndDateBack}"
+                                        Content="ç"
+                                        FontFamily="Wingdings"
+                                        FontSize="16" />
+                                    <DatePicker twainctrl:Policy.PolicyName="BitişTarihi"
+                                        DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                        DisplayDateStart="{Binding BaşlangıçTarihi}"
+                                        Language="{Binding CalendarLang}"
+                                        SelectedDate="{Binding BitişTarihi}" />
+                                    <RepeatButton Command="{Binding EndDateForward}"
+                                        Content="è"
+                                        FontFamily="Wingdings"
+                                        FontSize="16" />
+                                </StackPanel>
+                            </StackPanel>
+                            <Button Grid.Column="2" Command="{Binding SetDateToday}">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="TimeDate.cpl" />
+                                            <Binding Source="0" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <RepeatButton Grid.Column="3"
+                                twainctrl:Policy.PolicyName="DateForward"
+                                Command="{Binding DateForward}"
+                                Content="è"
+                                FontFamily="Wingdings"
+                                FontSize="16" />
                             <Extensions:ButtonedTextBox x:Name="TbSearch"
-                                Grid.Column="1"
+                                Grid.Column="4"
                                 VerticalContentAlignment="Center"
                                 d:Text="AramaMetni"
                                 twainctrl:Policy.PolicyName="AramaMetni"
@@ -962,19 +956,6 @@
                                 KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
-                            <Button Grid.Column="2"
-                                twainctrl:Policy.PolicyName="CycleSelectedDocuments"
-                                Command="{Binding CycleSelectedDocuments}"
-                                CommandParameter="{Binding ElementName=LbDoc}">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="55" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </Button>
                         </Grid>
                         <ProgressBar Grid.Row="3"
                             Height="3"
@@ -1346,6 +1327,21 @@
                     <TextBlock VerticalAlignment="Center"
                         FontWeight="Bold"
                         Foreground="Red">
+                        <Hyperlink twainctrl:Policy.PolicyName="CycleSelectedDocuments"
+                            Command="{Binding CycleSelectedDocuments}"
+                            CommandParameter="{Binding ElementName=LbDoc}"
+                            TextDecorations="None">
+                            <InlineUIContainer BaselineAlignment="Center">
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="55" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </InlineUIContainer>
+                        </Hyperlink>
                         <Run Text="{Binding Mode=OneWay, Path=CheckedPdfCount}" />
                         <sys:String>/</sys:String>
                         <Run Text="{Binding Mode=OneWay, ElementName=LbDoc, Path=Items.Count}" />

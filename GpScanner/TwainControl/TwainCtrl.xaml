@@ -385,6 +385,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
                 <Expander Grid.Row="0"
                     Background="{StaticResource BorderBackground}"
@@ -1898,16 +1899,6 @@
                                         Height="24"
                                         Source="/TwainControl;component/Icons/save.png" />
                                 </Button>
-                                <Button local:Policy.PolicyName="LoadFileList" Command="{Binding LoadFileList}">
-                                    <Image Width="24" Height="24">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="70" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                </Button>
                                 <Extensions:BadgeControl HorizontalBadgeAlignment="Left">
                                     <Extensions:BadgeControl.BadgeContent>
                                         <TextBlock Margin="2,-3,0,0"
@@ -1933,21 +1924,14 @@
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
                                 </Extensions:BadgeControl>
-                                <StackPanel>
-                                    <ProgressBar Height="3"
-                                        Background="{x:Null}"
-                                        BorderBrush="{x:Null}"
-                                        Maximum="1"
-                                        Value="{Binding AllRotateProgressValue}" />
-                                    <Extensions:NumericUpDown VerticalAlignment="Center"
-                                        BorderBrush="Cyan"
-                                        Interval="1"
-                                        IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
-                                        Maximum="1"
-                                        Minimum="-1"
-                                        NumericUpdownTextBoxVisibility="Collapsed"
-                                        Value="{Binding AllImageRotationAngle}" />
-                                </StackPanel>
+                                <Extensions:NumericUpDown VerticalAlignment="Center"
+                                    BorderBrush="Cyan"
+                                    Interval="1"
+                                    IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}"
+                                    Maximum="1"
+                                    Minimum="-1"
+                                    NumericUpdownTextBoxVisibility="Collapsed"
+                                    Value="{Binding AllImageRotationAngle}" />
                                 <Button local:Policy.PolicyName="InvertSelectedImage"
                                     BorderBrush="Cyan"
                                     Command="{Binding InvertSelectedImage}"
@@ -1958,7 +1942,13 @@
                         </ScrollViewer>
                     </Grid>
                 </GroupBox>
-                <UniformGrid Grid.Row="2" Columns="3">
+                <ProgressBar Grid.Row="2"
+                    Height="3"
+                    Background="{StaticResource GroupBoxBackGround}"
+                    BorderBrush="{StaticResource GroupBoxBackGround}"
+                    Maximum="1"
+                    Value="{Binding AllRotateProgressValue}" />
+                <UniformGrid Grid.Row="3" Columns="3">
                     <Button HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         local:Policy.PolicyName="LoadImage"
