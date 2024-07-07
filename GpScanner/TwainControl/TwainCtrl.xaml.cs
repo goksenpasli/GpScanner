@@ -1730,6 +1730,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => PdfPages?.Count(z => z.Selected) > 0 && PdfPages?.All(z => z.Selected) == false);
 
+        RemoveCurrentPdfPage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is Viewer pdfViewer &&
+                Viewer.IsValidPdfFile(pdfViewer.PdfFilePath) &&
+                MessageBox.Show($"{Translation.GetResStringValue("REMOVESELECTED")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    string oldpdfpath = pdfViewer.PdfFilePath;
+                    using PdfDocument inputDocument = PdfReader.Open(pdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+                    inputDocument.Pages.RemoveAt(pdfViewer.Sayfa - 1);
+                    inputDocument.Save(pdfViewer.PdfFilePath);
+                    pdfViewer.PdfFilePath = null;
+                    pdfViewer.PdfFilePath = oldpdfpath;
+                    pdfViewer.Sayfa = 1;
+                }
+            },
+            parameter => parameter is Viewer pdfViewer && pdfViewer.ToplamSayfa > 1);
+
         AddPageNumber = new RelayCommand<object>(
             async parameter =>
             {
@@ -2879,6 +2897,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public RelayCommand<object> RemoveArrangedPdfFile { get; }
+
+    public RelayCommand<object> RemoveCurrentPdfPage { get; }
 
     public ICommand RemoveProfile { get; }
 

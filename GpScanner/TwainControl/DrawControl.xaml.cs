@@ -53,6 +53,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 if (SilentApply)
                 {
                     scannedImage.Resim = SaveInkCanvasToImage();
+                    scannedImage.ScannedImageNotifyBrush = System.Windows.Media.Brushes.Yellow;
                     return;
                 }
                 if (MessageBox.Show($"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("APPLY")}", Window.GetWindow(this)?.Title, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) != MessageBoxResult.Yes)
@@ -61,6 +62,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 }
 
                 scannedImage.Resim = SaveInkCanvasToImage();
+                scannedImage.ScannedImageNotifyBrush = System.Windows.Media.Brushes.Yellow;
             },
             parameter => parameter is ScannedImage && TemporaryImage is not null);
 
@@ -313,12 +315,12 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         DrawingVisual dv = new();
         using (DrawingContext ctx = dv.RenderOpen())
         {
-            ctx.DrawRectangle(new VisualBrush(Ink), null, new Rect(0, 0, temporaryimage.PixelWidth, temporaryimage.PixelHeight));
+            ctx?.DrawRectangle(new VisualBrush(Ink), null, new Rect(0, 0, temporaryimage.PixelWidth, temporaryimage.PixelHeight));
         }
-        renderTargetBitmap.Render(dv);
-        renderTargetBitmap.Freeze();
+        renderTargetBitmap?.Render(dv);
+        renderTargetBitmap?.Freeze();
         BitmapFrame image = BitmapFrame.Create(renderTargetBitmap);
-        image.Freeze();
+        image?.Freeze();
         return image;
     }
 
@@ -327,7 +329,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && scannedImage?.Resim is not null)
         {
             TemporaryImage = scannedImage.Resim;
-            Ink.CurrentZoom = ActualHeight / scannedImage.Resim.PixelHeight;
+            FitImage.Execute(null);
             if (DataContext is TwainCtrl twainCtrl)
             {
                 twainCtrl.TümününİşaretiniKaldır?.Execute(null);

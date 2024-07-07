@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl.Properties;
 
@@ -16,6 +17,7 @@ public class ScannedImage : InpcBase
     private BitmapFrame resim;
     private BitmapSource resimThumb;
     private double rotationAngle;
+    private SolidColorBrush scannedImageNotifyBrush;
     private bool seçili;
 
     public ScannedImage() { PropertyChanged += ScannedImage_PropertyChangedAsync; }
@@ -115,6 +117,19 @@ public class ScannedImage : InpcBase
             {
                 rotationAngle = value;
                 OnPropertyChanged(nameof(RotationAngle));
+            }
+        }
+    }
+
+    public SolidColorBrush ScannedImageNotifyBrush
+    {
+        get => scannedImageNotifyBrush;
+        set
+        {
+            if (scannedImageNotifyBrush != value)
+            {
+                scannedImageNotifyBrush = value;
+                OnPropertyChanged(nameof(ScannedImageNotifyBrush));
             }
         }
     }

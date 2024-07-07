@@ -545,6 +545,7 @@
                                 </Button>
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
+                                    local:Policy.PolicyName="RemoveArrangedPdfFile"
                                     Command="{Binding RemoveArrangedPdfFile}"
                                     CommandParameter="{Binding Source={x:Reference PdfViewer}}">
                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">

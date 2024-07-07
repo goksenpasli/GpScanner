@@ -328,6 +328,15 @@
                                 </Image>
                             </Button.Content>
                         </Button>
+                        <Button twainctrl:Policy.PolicyName="RemoveCurrentPdfPage"
+                            Command="{Binding RemoveCurrentPdfPage}"
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                            <Button.Content>
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="/TwainControl;component/Icons/delete.png" />
+                            </Button.Content>
+                        </Button>
                     </WrapPanel>
                     <Extensions:Magnifier ContentPanel="{Binding ElementName=PdfVwr}"
                         IsActive="{Binding ShowMagnifier, Mode=OneWay, Source={x:Static properties:Settings.Default}}"

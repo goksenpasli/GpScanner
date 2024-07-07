@@ -1723,6 +1723,7 @@
                                                         </ToggleButton>
                                                         <TextBlock Canvas.Left="0"
                                                             Canvas.Bottom="0"
+                                                            Background="{Binding ScannedImageNotifyBrush}"
                                                             FontWeight="Bold"
                                                             Text="{Binding Index, Mode=OneWay}"
                                                             Visibility="{Binding DocumentNumberVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}" />

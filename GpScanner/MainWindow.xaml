@@ -1580,7 +1580,9 @@
                                         </ListBox.ItemContainerStyle>
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Seçili}">
+                                                <CheckBox VerticalContentAlignment="Center"
+                                                    Background="{Binding ScannedImageNotifyBrush}"
+                                                    IsChecked="{Binding Seçili}">
                                                     <StackPanel Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
                                                         <TextBlock HorizontalAlignment="Center"><InlineUIContainer>
                                                                 <Extensions:NumericUpDown Height="20"
