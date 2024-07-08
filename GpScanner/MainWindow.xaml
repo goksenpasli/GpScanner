@@ -66,6 +66,12 @@
         <KeyBinding Key="Z"
             Command="{Binding ResimSilGeriAl, ElementName=twainCtrl}"
             Modifiers="Ctrl" />
+        <KeyBinding Key="Tab"
+            Command="{Binding MoveToNextTabCommand, ElementName=twainCtrl}"
+            Modifiers="Control" />
+        <KeyBinding Key="Tab"
+            Command="{Binding MoveToPreviousTabCommand, ElementName=twainCtrl}"
+            Modifiers="Control+Shift" />
     </Window.InputBindings>
     <Window.Resources>
         <ViewModel:FoldEffect x:Key="Fold"

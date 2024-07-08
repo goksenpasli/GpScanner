@@ -1062,7 +1062,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SaveFileList = new RelayCommand<object>(
             parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt", FileName = "Filedata.txt" };
+                SaveFileDialog saveFileDialog = new() { Filter = "Belge Liste Dosyası (*.txt)|*.txt", FileName = "Filedata.txt" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     using StreamWriter file = new(saveFileDialog.FileName);
@@ -1910,20 +1910,32 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ApplyCropCurrentImage = new RelayCommand<object>(
             parameter =>
             {
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
                 BitmapFrame bitmapframe = BitmapFrame.Create(GenerateCroppedImage(SeçiliResim.Resim, Settings.Default.Top, Settings.Default.Left, Settings.Default.Bottom, Settings.Default.Right));
                 bitmapframe.Freeze();
-                SeçiliResim.Resim = bitmapframe;
+                if (altkeypressed)
+                {
+                    SeçiliResim.Resim = bitmapframe;
+                    return;
+                }
+                Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapframe });
             },
             parameter => SeçiliResim is not null && PageWidth == SeçiliResim.Resim.PixelWidth && PageHeight == SeçiliResim.Resim.PixelHeight && Settings.Default.Left != Settings.Default.Right && Settings.Default.Top != Settings.Default.Bottom);
 
         ApplyCropAllImages = new RelayCommand<object>(
             parameter =>
             {
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
                 foreach (ScannedImage item in GetSelectedImages())
                 {
                     BitmapFrame bitmapframe = BitmapFrame.Create(GenerateCroppedImage(item.Resim, Settings.Default.Top, Settings.Default.Left, Settings.Default.Bottom, Settings.Default.Right));
                     bitmapframe.Freeze();
-                    item.Resim = bitmapframe;
+                    if (altkeypressed)
+                    {
+                        item.Resim = bitmapframe;
+                        continue;
+                    }
+                    Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapframe });
                 }
                 if (PrepareCropCurrentImage.CanExecute(null))
                 {
@@ -2040,6 +2052,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => true);
+
+        MoveToNextTabCommand = new RelayCommand<object>(parameter => SelectedTabIndex = (SelectedTabIndex + 1) % TbCtrl.Items.Count, parameter => true);
+
+        MoveToPreviousTabCommand = new RelayCommand<object>(parameter => SelectedTabIndex = SelectedTabIndex > 0 ? SelectedTabIndex - 1 : TbCtrl.Items.Count - 1, parameter => true);
 
         PdfViewerFullScreen = new RelayCommand<object>(
             parameter =>
@@ -2676,6 +2692,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> MergePdfListToFile { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
+
+    public RelayCommand<object> MoveToNextTabCommand { get; }
+
+    public RelayCommand<object> MoveToPreviousTabCommand { get; }
 
     public RelayCommand<object> OpenHelpDialog { get; }
 

@@ -92,7 +92,9 @@
                         </StackPanel>
                     </Button>
                     <UniformGrid Rows="2">
-                        <Button local:Policy.PolicyName="ApplyCropCurrentImage" Command="{Binding ApplyCropCurrentImage}">
+                        <Button local:Policy.PolicyName="ApplyCropCurrentImage"
+                            BorderBrush="Cyan"
+                            Command="{Binding ApplyCropCurrentImage}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32"
                                     Height="32"
@@ -112,6 +114,7 @@
                             </StackPanel>
                         </Button>
                         <Button local:Policy.PolicyName="ApplyCropAllImages"
+                            BorderBrush="Cyan"
                             Command="{Binding ApplyCropAllImages}"
                             ToolTipService.IsEnabled="{Binding SelectedImageWidthHeightIsEqual, Converter={StaticResource ReverseBooleanConverter}}"
                             ToolTipService.ShowOnDisabled="True">
@@ -294,7 +297,8 @@
                         Grid.Column="1"
                         Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                         Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
-                        Margin="3">
+                        Margin="3"
+                        ClipToBounds="True">
                         <Border Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                             Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                             d:Height="295"
@@ -317,6 +321,24 @@
                             d:Width="242"
                             Source="{Binding SeçiliResim.ResimThumb}" />
                         <Extensions:Magnifier ContentPanel="{Binding ElementName=Cnv}" />
+                        <Rectangle Canvas.Left="{Binding Value, ElementName=LeftCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
+                            Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                            Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                            d:Canvas.Left="20"
+                            d:Height="295"
+                            d:Width="20"
+                            Fill="#33FF0000"
+                            IsHitTestVisible="False"
+                            RenderTransformOrigin="0,0.5">
+                            <Rectangle.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="-1" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
                         <Line Canvas.Left="{Binding Value, ElementName=LeftCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
                             d:Canvas.Left="20"
                             d:Y2="295"
@@ -326,6 +348,15 @@
                             X2="0"
                             Y1="0"
                             Y2="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}" />
+                        <Rectangle Canvas.Left="{Binding Value, ElementName=RightCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
+                            Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                            Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                            d:Canvas.Left="220"
+                            d:Height="295"
+                            d:Width="20"
+                            Fill="#3300FFFF"
+                            IsHitTestVisible="False"
+                            RenderTransformOrigin="0,0.5" />
                         <Line Canvas.Left="{Binding Value, ElementName=RightCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
                             d:Canvas.Left="220"
                             d:Y2="295"
@@ -335,6 +366,24 @@
                             X2="0"
                             Y1="0"
                             Y2="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}" />
+                        <Rectangle Canvas.Top="{Binding Value, ElementName=TopCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
+                            Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                            Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                            d:Canvas.Top="20"
+                            d:Height="20"
+                            d:Width="242"
+                            Fill="#33008000"
+                            IsHitTestVisible="False"
+                            RenderTransformOrigin="0.5,0">
+                            <Rectangle.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleY="-1" />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Rectangle.RenderTransform>
+                        </Rectangle>
                         <Line Canvas.Top="{Binding Value, ElementName=TopCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
                             d:Canvas.Top="20"
                             d:X2="242"
@@ -344,8 +393,17 @@
                             X2="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
                             Y1="0"
                             Y2="0" />
+                        <Rectangle Canvas.Top="{Binding Value, ElementName=BottomCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
+                            Width="{Binding PageWidth, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                            Height="{Binding PageHeight, ConverterParameter=10, Converter={StaticResource DivideConverter}}"
+                            d:Canvas.Top="260"
+                            d:Height="20"
+                            d:Width="242"
+                            Fill="#34FFA500"
+                            IsHitTestVisible="False"
+                            RenderTransformOrigin="0.5,0" />
                         <Line Canvas.Top="{Binding Value, ElementName=BottomCrop, ConverterParameter=10, Converter={StaticResource DivideConverter}, Mode=OneWay}"
-                            d:Canvas.Top="280"
+                            d:Canvas.Top="260"
                             d:X2="242"
                             Stroke="Orange"
                             StrokeDashArray="2 2"
