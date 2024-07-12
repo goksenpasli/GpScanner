@@ -148,43 +148,29 @@
                                         VirtualizingPanel.VirtualizationMode="Recycling">
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Extensions:ButtonedTextBox VerticalAlignment="Center"
-                                                        Background="Transparent"
-                                                        BorderBrush="Transparent"
-                                                        CopyButtonVisibility="Collapsed"
-                                                        Focusable="False"
-                                                        Foreground="{Binding Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}"
-                                                        PasteButtonVisibility="Collapsed"
-                                                        ResetButtonVisibility="Collapsed"
-                                                        Text="{Binding Filename, Mode=OneWay}"
-                                                        TextBoxVisibility="Collapsed">
-                                                        <TextBlock>
-                                                            <Hyperlink BaselineAlignment="Center"
-                                                                Command="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType={x:Type Compressor:Compressor}}}"
-                                                                CommandParameter="{Binding Mode=OneWay}"
-                                                                TextDecorations="None">
-                                                                <InlineUIContainer>
-                                                                    <StackPanel Margin="1" Orientation="Horizontal">
-                                                                        <Image Width="16" Height="16">
-                                                                            <Image.Source>
-                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                    <Binding Source="Shell32.dll" />
-                                                                                    <Binding Source="131" />
-                                                                                </MultiBinding>
-                                                                            </Image.Source>
-                                                                        </Image>
-                                                                        <ProgressBar Width="32"
-                                                                            Background="{x:Null}"
-                                                                            Maximum="100"
-                                                                            Value="{Binding CompressionRatio, Mode=OneWay}" />
-                                                                    </StackPanel>
-                                                                </InlineUIContainer>
-                                                            </Hyperlink>
-                                                            <Run Text="{Binding Filename, Mode=OneWay}" />
-                                                        </TextBlock>
-                                                    </Extensions:ButtonedTextBox>
-                                                </StackPanel>
+                                                <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                                                    Background="Transparent"
+                                                    BorderBrush="Transparent"
+                                                    CancelCommand="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType={x:Type Compressor:Compressor}}}"
+                                                    CancelCommandParameter="{Binding Mode=OneWay}"
+                                                    CopyButtonVisibility="Collapsed"
+                                                    Focusable="False"
+                                                    Foreground="{Binding Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}"
+                                                    PasteButtonVisibility="Collapsed"
+                                                    Text="{Binding Filename, Mode=OneWay}"
+                                                    TextBoxVisibility="Collapsed">
+                                                    <TextBlock>
+                                                        <InlineUIContainer BaselineAlignment="Center">
+                                                            <ProgressBar Width="32"
+                                                                Height="12"
+                                                                Margin="1"
+                                                                Background="{x:Null}"
+                                                                Maximum="100"
+                                                                Value="{Binding CompressionRatio, Mode=OneWay}" />
+                                                        </InlineUIContainer>
+                                                        <Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" />
+                                                    </TextBlock>
+                                                </Extensions:ButtonedTextBox>
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                         <ListBox.ItemContainerStyle>

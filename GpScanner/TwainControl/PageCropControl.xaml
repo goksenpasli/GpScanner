@@ -9,7 +9,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="525"
+    d:DesignHeight="550"
     d:DesignWidth="300"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     UseLayoutRounding="True"
@@ -38,7 +38,13 @@
                         <TextBlock>
                             <Run Text="{local:Loc SCAN}" />
                             <Run Text="{local:Loc TRIMIMAGE}" /><Run Text="" />
-                            <Run Text="{Binding ElementName=TbMargin, Path=Text, Mode=OneWay}" />
+                            <Run Text="{Binding Left, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                            <System:String>,</System:String>
+                            <Run Text="{Binding Top, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                            <System:String>,</System:String>
+                            <Run d:Text="0" Text="{Binding CropRightMargin, Mode=OneWay}" />
+                            <System:String>,</System:String>
+                            <Run d:Text="0" Text="{Binding CropBottomMargin, Mode=OneWay}" />
                         </TextBlock>
                     </StackPanel>
                 </CheckBox>
@@ -228,7 +234,9 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center">
@@ -236,19 +244,39 @@
                         <LineBreak />
                         <Run d:Text="PageHeight" Text="{Binding PageHeight, Mode=OneWay}" />
                     </TextBlock>
-                    <TextBlock x:Name="TbMargin"
-                        Grid.Column="1"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
-                        <Run Text="{Binding Left, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                        <System:String>,</System:String>
-                        <Run Text="{Binding Top, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
-                        <System:String>,</System:String>
-                        <Run d:Text="0" Text="{Binding CropRightMargin, Mode=OneWay}" />
-                        <System:String>,</System:String>
-                        <Run d:Text="0" Text="{Binding CropBottomMargin, Mode=OneWay}" />
-                    </TextBlock>
-                    <Extensions:NumericUpDown Grid.Column="2"
+                    <Separator Grid.Column="1" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Extensions:NumericUpDown Grid.Column="1"
+                            Maximum="{Binding ElementName=BottomCrop, Path=Value}"
+                            Minimum="0"
+                            Value="{Binding Top, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                        <Extensions:NumericUpDown Grid.Row="1"
+                            Maximum="{Binding ElementName=BottomCrop, Path=Value}"
+                            Minimum="0"
+                            Value="{Binding Left, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                        <Extensions:NumericUpDown Grid.Row="1"
+                            Grid.Column="2"
+                            Maximum="{Binding PageWidth}"
+                            Minimum="0"
+                            Value="{Binding Right, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                        <Extensions:NumericUpDown Grid.Row="2"
+                            Grid.Column="1"
+                            Maximum="{Binding PageHeight}"
+                            Minimum="0"
+                            Value="{Binding Bottom, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                    </Grid>
+                    <Separator Grid.Column="3" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    <Extensions:NumericUpDown Grid.Column="4"
                         Maximum="{Binding CropAllMaximumWidth}"
                         Minimum="0"
                         Value="{Binding CropAllMargin, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />

@@ -17,6 +17,8 @@ namespace Extensions;
 [ContentProperty("Description")]
 public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 {
+    public static readonly DependencyProperty CancelCommandParameterProperty = DependencyProperty.Register("CancelCommandParameter", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty CancelCommandProperty = DependencyProperty.Register("CancelCommand", typeof(ICommand), typeof(ButtonedTextBox));
     public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(ButtonedTextBox));
     public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
@@ -49,6 +51,10 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public ICommand CancelCommand { get => (ICommand)GetValue(CancelCommandProperty); set => SetValue(CancelCommandProperty, value); }
+
+    public object CancelCommandParameter { get => GetValue(CancelCommandParameterProperty); set => SetValue(CancelCommandParameterProperty, value); }
 
     public ICommand Command { get => (ICommand)GetValue(CommandProperty); set => SetValue(CommandProperty, value); }
 
@@ -336,13 +342,26 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     private void ResetCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {
+        if (CancelCommand?.CanExecute(CancelCommandParameter) == true)
+        {
+            e.CanExecute = true;
+            return;
+        }
         if (!string.IsNullOrWhiteSpace(Text) && !IsReadOnly)
         {
             e.CanExecute = true;
         }
     }
 
-    private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Text = string.Empty;
+    private void ResetCommand(object sender, ExecutedRoutedEventArgs e)
+    {
+        if (CancelCommand?.CanExecute(CancelCommandParameter) == true)
+        {
+            CancelCommand.Execute(CancelCommandParameter);
+            return;
+        }
+        Text = string.Empty;
+    }
 
     private void TitleCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, CultureInfo.CurrentUICulture.TextInfo.ToTitleCase(SelectedText.ToLower()));
 

@@ -23,43 +23,35 @@
     </UserControl.Resources>
     <GroupBox>
         <GroupBox.Header>
-            <UniformGrid Rows="2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
-                    <Extension:ButtonedTextBox CopyButtonVisibility="Collapsed"
+                    <Extension:ButtonedTextBox CancelCommand="{Binding ResetTesseractFilter}"
+                        CopyButtonVisibility="Collapsed"
                         OpenButtonVisibility="Collapsed"
                         PasteButtonVisibility="Collapsed"
-                        ResetButtonVisibility="Collapsed"
                         Text="{Binding SeçiliDil, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Grid.Column="1" Command="{Binding ResetTesseractFilter}">
-                        <StackPanel Orientation="Horizontal">
-                            <Image Width="16"
-                                Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
-                            <TextBlock Text="{twainctrl:Loc RESET}" />
-                        </StackPanel>
-                    </Button>
+                    <TextBlock Grid.Column="1"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Hyperlink BaselineAlignment="Center"
+                            Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding Tessdatafolder}"
+                            TextDecorations="None">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="4" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Hyperlink>
+                        <Run BaselineAlignment="Center" Text="TESSERACT" />
+                    </TextBlock>
                 </Grid>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <Hyperlink BaselineAlignment="Center"
-                        Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                        CommandParameter="{Binding Tessdatafolder}"
-                        TextDecorations="None">
-                        <Image Width="16" Height="16">
-                            <Image.Source>
-                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Shell32.dll" />
-                                    <Binding Source="4" />
-                                </MultiBinding>
-                            </Image.Source>
-                        </Image>
-                    </Hyperlink>
-                    <Run BaselineAlignment="Center" Text="TESSERACT" />
-                </TextBlock>
-            </UniformGrid>
         </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>
