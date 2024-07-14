@@ -95,7 +95,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         InvertSelectedPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is int currentpage && MessageBox.Show($"{Translation.GetResStringValue("INVERTCOLOR")}", "GPSCANNER", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (parameter is int currentpage && MessageBox.Show($"{Translation.GetResStringValue("INVERTCOLOR")}", TwainCtrl.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     string oldpdfpath = PdfFilePath;
                     BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage, Dpi);
@@ -256,9 +256,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     eypPdfViewer.PdfFilePath = eypfile;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _ = Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
             }
         }
     }

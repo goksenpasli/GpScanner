@@ -1,13 +1,11 @@
-﻿using Extensions;
-using GpScanner.ViewModel;
+﻿using GpScanner.ViewModel;
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Xceed.Document.NET;
 using Xceed.Words.NET;
 using Color = System.Windows.Media.Color;
@@ -30,8 +28,7 @@ namespace GpScanner
 
         private static BlockUIContainer BlockUIContainerGetPicture(Picture picture)
         {
-            using Bitmap bitmap = new(picture.Stream);
-            System.Windows.Controls.Image image = new() { Source = bitmap?.ToBitmapImage(ImageFormat.Jpeg) };
+            System.Windows.Controls.Image image = new() { Source = BitmapFrame.Create(picture.Stream, BitmapCreateOptions.None, BitmapCacheOption.None) };
             return new BlockUIContainer(image);
         }
 
@@ -61,13 +58,7 @@ namespace GpScanner
             }
             catch (Exception ex)
             {
-                _ = Application.Current.Dispatcher
-                .InvokeAsync(
-                    async () =>
-                    {
-                        _ = MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.StackTrace);
-                    });
+                _ = Application.Current.Dispatcher.InvokeAsync(async () => await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.StackTrace));
             }
         }
 
@@ -152,21 +143,14 @@ namespace GpScanner
                 }
             }
 
-            switch (docxparagraph.Alignment)
+            paragraph.TextAlignment = docxparagraph.Alignment switch
             {
-                case Alignment.both:
-                    paragraph.TextAlignment = TextAlignment.Justify;
-                    break;
-                case Alignment.center:
-                    paragraph.TextAlignment = TextAlignment.Center;
-                    break;
-                case Alignment.left:
-                    paragraph.TextAlignment = TextAlignment.Left;
-                    break;
-                case Alignment.right:
-                    paragraph.TextAlignment = TextAlignment.Right;
-                    break;
-            }
+                Alignment.both => TextAlignment.Justify,
+                Alignment.center => TextAlignment.Center,
+                Alignment.left => TextAlignment.Left,
+                Alignment.right => TextAlignment.Right,
+                _ => TextAlignment.Left,
+            };
 
             return inline;
         }

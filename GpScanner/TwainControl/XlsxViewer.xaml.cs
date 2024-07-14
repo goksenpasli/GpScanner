@@ -79,9 +79,8 @@ namespace TwainControl
                         };
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    _ = Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
                 }
             }
         }

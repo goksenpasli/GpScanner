@@ -33,7 +33,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private int caretPosition;
     private ObservableCollection<Chart> chart;
     private ImageSource copyCroppedImage;
-    private string creatorAppName = "GPSCANNER";
+    private string creatorAppName = TwainCtrl.AppName;
     private double cropBottom;
     private bool cropDialogExpanded;
     private double cropLeft;

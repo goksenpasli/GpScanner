@@ -25,9 +25,8 @@ public class XmlViewerControlModel
                 Binding binding = new() { Source = new XmlDataProvider { Document = XMLdoc }, XPath = "child::node()" };
                 _ = xmlViewerControl.xmlTree.SetBinding(ItemsControl.ItemsSourceProperty, binding);
             }
-            catch (XmlException ex)
+            catch (XmlException)
             {
-                _ = Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
             }
         }
     }

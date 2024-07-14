@@ -51,11 +51,11 @@ public static class StillImageHelper
         ];
     }
 
-    public static void KillServer()
+    public static void KillServer(string title)
     {
         if (_serverRunning)
         {
-            _ = SendMessage(Process.GetCurrentProcess(), MSG_KILL_PIPE_SERVER);
+            _ = SendMessage(Process.GetCurrentProcess(), MSG_KILL_PIPE_SERVER, title);
         }
     }
 
@@ -102,7 +102,7 @@ public static class StillImageHelper
         }
     }
 
-    public static bool SendMessage(Process recipient, string msg)
+    public static bool SendMessage(Process recipient, string msg, string appname)
     {
         try
         {
@@ -114,7 +114,7 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Error);
+            _ = MessageBox.Show(ex?.Message, appname, MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         return false;

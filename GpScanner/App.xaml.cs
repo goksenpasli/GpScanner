@@ -66,7 +66,7 @@ public partial class App : Application
                     foreach (Process process in processes)
                     {
                         StillImageHelper.ActivateProcess(process);
-                        if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX))
+                        if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX, MainWindow?.Title))
                         {
                             Environment.Exit(0);
                         }
@@ -82,7 +82,7 @@ public partial class App : Application
         .Invoke(
             async () =>
             {
-                _ = MessageBox.Show(e.Exception?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _ = MessageBox.Show(e.Exception?.Message, MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Warning);
                 await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", e.Exception.StackTrace);
             });
         e.Handled = true;

@@ -33,6 +33,8 @@
             <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
             <Converter:PdfMultiplePageToThumbImageConverter x:Key="PdfMultiplePageToThumbImageConverter" />
+            <Converter:DocxInternalThumbnailExtractConverter x:Key="DocxInternalThumbnailExtractConverter" />
+            <Converter:XlsxInternalThumbnailExtractConverter x:Key="XlsxInternalThumbnailExtractConverter" />
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
@@ -520,6 +522,16 @@
             <DataTemplate x:Key="DocxViewerThumbTemplate">
                 <local:DocxViewer DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="DocxViewerInternalThumbTemplate">
+                <Image Width="145"
+                    Height="145"
+                    Source="{Binding Path=DataContext, Mode=OneWay, Converter={StaticResource DocxInternalThumbnailExtractConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
+            <DataTemplate x:Key="XlsxViewerInternalThumbTemplate">
+                <Image Width="145"
+                    Height="145"
+                    Source="{Binding Path=DataContext, Mode=OneWay, Converter={StaticResource XlsxInternalThumbnailExtractConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <DataTemplate x:Key="DocumentViewerMonthPreviewDocxViewerTemplate">
                 <local:DocxViewer Width="155"
                     Height="155"
@@ -754,32 +766,32 @@
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <twain:ViewerTemplateSelector x:Key="ContributionViewerSelector"
-                Docx="{StaticResource EmptyViewerTemplate}"
+                Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ContributionViewerImgTemplateMini}"
                 Pdf="{StaticResource ContributionViewerPdfViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
-                Xlsx="{StaticResource EmptyViewerTemplate}"
+                Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
                 Xps="{StaticResource EmptyViewerTemplate}"
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector"
-                Docx="{StaticResource EmptyViewerTemplate}"
+                Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
-                Xlsx="{StaticResource EmptyViewerTemplate}"
+                Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
                 Xps="{StaticResource EmptyViewerTemplate}"
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMonthPreviewSelector"
-                Docx="{StaticResource DocumentViewerMonthPreviewDocxViewerTemplate}"
+                Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
                 Pdf="{StaticResource PdfViewerDocumentViewerMonthTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
-                Xlsx="{StaticResource DocumentViewerMonthPreviewXlsxTemplate}"
+                Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
                 Xps="{StaticResource EmptyViewerTemplate}"
                 Zip="{StaticResource DocumentViewerMonthPreviewZipViewerTemplate}" />

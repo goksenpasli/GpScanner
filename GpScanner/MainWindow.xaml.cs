@@ -403,6 +403,6 @@ public partial class MainWindow : Window
             return;
         }
         BackupDatabaseFile();
-        StillImageHelper.KillServer();
+        StillImageHelper.KillServer(Title);
     }
 }

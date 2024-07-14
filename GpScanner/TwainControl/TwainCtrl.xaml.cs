@@ -69,9 +69,9 @@ namespace TwainControl;
 public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposable
 {
     public const double Inch = 2.54d;
+    public static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     public static DispatcherTimer CameraQrCodeTimer;
     public static Task Filesavetask;
-    private static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     private static bool ısAdministrator;
     private readonly object _lockObject = new();
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
@@ -3323,9 +3323,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             return null;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
-            _ = Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show(ex?.Message, "GPSCANNER", MessageBoxButton.OK, MessageBoxImage.Warning));
         }
         return null;
     }
