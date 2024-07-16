@@ -113,6 +113,7 @@
     <Compile Include="Converter\FontSizeConverter.cs" />
     <Compile Include="Converter\ResourceLanguageStringConverter.cs" />
     <Compile Include="Converter\StringToStrokeCollectionConverter.cs" />
+    <Compile Include="Converter\WebpFileToBitmapImageConverter.cs" />
     <Compile Include="Converter\XKnownColorToBrushConverter.cs" />
     <Compile Include="DrawControl.xaml.cs">
       <DependentUpon>DrawControl.xaml</DependentUpon>

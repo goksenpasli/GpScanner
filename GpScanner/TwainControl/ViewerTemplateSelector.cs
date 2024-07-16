@@ -20,6 +20,8 @@ namespace TwainControl
 
         public DataTemplate Vid { get; set; }
 
+        public DataTemplate Webp { get; set; }
+
         public DataTemplate Xlsx { get; set; }
 
         public DataTemplate Xml { get; set; }
@@ -43,6 +45,7 @@ namespace TwainControl
                         ".pdf" => Pdf,
                         ".eyp" => Eyp,
                         ".xps" => Xps,
+                        ".webp" => Webp,
                         ".docx" or ".txt" => Docx,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
                         ".csv" or ".xls" or ".xlsx" or ".xlsb" => Xlsx,

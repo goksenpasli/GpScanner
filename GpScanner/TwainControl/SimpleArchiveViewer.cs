@@ -18,6 +18,7 @@ namespace TwainControl;
 
 public class SimpleArchiveViewer : ArchiveViewer
 {
+    public static readonly DependencyProperty SimpleStyleProperty = DependencyProperty.Register("SimpleStyle", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
     private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps"];
     private double previewPanelWidth;
     private string thumbFile;
@@ -79,6 +80,8 @@ public class SimpleArchiveViewer : ArchiveViewer
     }
 
     public new RelayCommand<object> SeçiliAyıkla { get; }
+
+    public bool SimpleStyle { get => (bool)GetValue(SimpleStyleProperty); set => SetValue(SimpleStyleProperty, value); }
 
     public string ThumbFile
     {

@@ -394,7 +394,9 @@
                 <twain:SimpleArchiveViewer Width="155"
                     Height="155"
                     ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                    DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    SimpleStyle="True"
+                    Style="{StaticResource SimpleArchiveViewerStyle}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
                 <twain:SimpleArchiveViewer x:Name="ArchiveVwr"
