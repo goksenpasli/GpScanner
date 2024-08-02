@@ -15,6 +15,18 @@
     WindowStartupLocation="CenterOwner"
     WindowState="Maximized"
     mc:Ignorable="d">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.75"
+                        To="1"
+                        Duration="0:0:0.35" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Window.Resources>
         <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
         <converter:PdfFileNameToInfoConverter x:Key="PdfFileNameToInfoConverter" IsEnabled="{Binding Path=ShowPdfInfo, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />

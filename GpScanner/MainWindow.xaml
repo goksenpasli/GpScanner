@@ -2293,7 +2293,6 @@
                                 MinHeight="400">
                                 <Grid Background="{StaticResource BorderBackground}">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
                                         <RowDefinition />
                                         <RowDefinition Height="Auto" />
                                     </Grid.RowDefinitions>
@@ -2301,54 +2300,7 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <ToggleButton IsChecked="{Binding Shutdown}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <Canvas Width="32" Height="32">
-                                                <Image Width="32" Height="32">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="27" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <Image Canvas.Right="0"
-                                                    Canvas.Bottom="0"
-                                                    Width="16"
-                                                    Height="16"
-                                                    Visibility="{Binding Shutdown, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Comres.dll" />
-                                                            <Binding Source="8" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </Canvas>
-                                            <TextBlock VerticalAlignment="Center"
-                                                FontWeight="Bold"
-                                                Foreground="Red"
-                                                Text="{twainctrl:Loc CLOSECOMP}" />
-                                        </StackPanel>
-                                    </ToggleButton>
-                                    <ToggleButton Grid.Column="1"
-                                        IsChecked="{Binding OcrAllPdfPages}"
-                                        ToolTip="{twainctrl:Loc OCRALL}">
-                                        <ToggleButton.Content>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Width="32"
-                                                    Height="32"
-                                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                <TextBlock VerticalAlignment="Center">
-                                                    <Run Text="{twainctrl:Loc ALL}" />
-                                                    <Run Text="PDF" />
-                                                    <Run Text="{twainctrl:Loc OCR}" />
-                                                </TextBlock>
-                                            </StackPanel>
-                                        </ToggleButton.Content>
-                                    </ToggleButton>
                                     <ListBox x:Name="LbUnindexed"
-                                        Grid.Row="1"
                                         Margin="1"
                                         d:ItemsSource="{d:SampleData ItemCount=5}"
                                         Background="{StaticResource BorderBackground}"
@@ -2396,12 +2348,11 @@
                                             </DataTemplate>
                                         </ListBox.ItemTemplate>
                                     </ListBox>
-                                    <ContentControl Grid.Row="1"
-                                        Grid.Column="1"
+                                    <ContentControl Grid.Column="1"
                                         Margin="1"
                                         Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
                                         ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
-                                    <Grid Grid.Row="2" Grid.ColumnSpan="2">
+                                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="Auto" />
@@ -2423,10 +2374,11 @@
                                             Minimum="1"
                                             TextBlock.TextAlignment="Center"
                                             Value="{Binding BatchOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Button Grid.Column="2"
+                                        <Extensions:SplitButton Grid.Column="2"
                                             HorizontalContentAlignment="Stretch"
                                             VerticalContentAlignment="Stretch"
-                                            Command="{Binding UnindexedAllFilesOcr}">
+                                            Command="{Binding UnindexedAllFilesOcr}"
+                                            PlacementMode="Top">
                                             <Grid>
                                                 <ProgressBar Background="{x:Null}"
                                                     BorderBrush="{x:Null}"
@@ -2454,7 +2406,45 @@
                                                     </TextBlock>
                                                 </StackPanel>
                                             </Grid>
-                                        </Button>
+                                            <Extensions:SplitButton.InternalContent>
+                                                <Border Background="{StaticResource BorderBackground}"
+                                                    BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                    BorderThickness="1">
+                                                    <StackPanel>
+                                                        <MenuItem Header="{twainctrl:Loc CLOSECOMP}"
+                                                            IsCheckable="True"
+                                                            IsChecked="{Binding Shutdown}">
+                                                            <MenuItem.Icon>
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="27" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                            </MenuItem.Icon>
+                                                        </MenuItem>
+                                                        <MenuItem IsCheckable="True"
+                                                            IsChecked="{Binding OcrAllPdfPages}"
+                                                            ToolTip="{twainctrl:Loc OCRALL}">
+                                                            <MenuItem.Header>
+                                                                <TextBlock VerticalAlignment="Center">
+                                                                    <Run Text="{twainctrl:Loc ALL}" />
+                                                                    <Run Text="PDF" />
+                                                                    <Run Text="{twainctrl:Loc OCR}" />
+                                                                </TextBlock>
+                                                            </MenuItem.Header>
+                                                            <MenuItem.Icon>
+                                                                <Image Width="16"
+                                                                    Height="16"
+                                                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                                            </MenuItem.Icon>
+                                                        </MenuItem>
+                                                    </StackPanel>
+                                                </Border>
+                                            </Extensions:SplitButton.InternalContent>
+                                        </Extensions:SplitButton>
                                     </Grid>
                                 </Grid>
                             </Extensions:ResizablePanel>

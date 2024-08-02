@@ -364,7 +364,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new() { OcrName = "grc.traineddata", OcrLangName = "Ancient Greek" },
             new() { OcrName = "guj.traineddata", OcrLangName = "Gujarati" },
             new() { OcrName = "hat.traineddata", OcrLangName = "Haitian Creole" },
-            new() { OcrName = "heb.traineddata", OcrLangName = "Hebrew" },
+            new() { OcrName = "heb.traineddata", OcrLangName = "Hebrew", IsEnabled = false },
             new() { OcrName = "hin.traineddata", OcrLangName = "Hindi" },
             new() { OcrName = "hrv.traineddata", OcrLangName = "Croatian" },
             new() { OcrName = "hun.traineddata", OcrLangName = "Hungarian" },

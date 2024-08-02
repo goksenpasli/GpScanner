@@ -21,6 +21,18 @@
     UseLayoutRounding="True"
     WindowStartupLocation="CenterOwner"
     mc:Ignorable="d">
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                        From="0.8"
+                        To="1"
+                        Duration="0:0:0.25" />
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </Window.Triggers>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
@@ -102,7 +114,7 @@
                                 <ListBox.ItemsSource>
                                     <CompositeCollection>
                                         <CollectionContainer Collection="{x:Static viewmodel:SplashViewModel.LanguageFlags}" />
-                                        <ListBoxItem Focusable="False">
+                                        <ListBoxItem Cursor="No" Focusable="False">
                                             <Canvas Width="70" Height="60">
                                                 <Canvas.Resources>
                                                     <Style TargetType="Grid">
@@ -151,6 +163,12 @@
                                         <Setter Property="HorizontalContentAlignment" Value="Left" />
                                         <Setter Property="Margin" Value="1,0,1,0" />
                                         <Setter Property="Padding" Value="0" />
+                                        <Setter Property="RenderTransform">
+                                            <Setter.Value>
+                                                <ScaleTransform d:ScaleX="1" d:ScaleY="1" ScaleX="0" ScaleY="0" />
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
                                         <Setter Property="VerticalContentAlignment" Value="Top" />
                                         <Style.Triggers>
                                             <Trigger Property="IsSelected" Value="True">
@@ -161,6 +179,20 @@
                                                 <Setter Property="Background" Value="#1F26A0DA" />
                                                 <Setter Property="BorderBrush" Value="#A826A0DA" />
                                             </Trigger>
+                                            <EventTrigger RoutedEvent="Loaded">
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleX)"
+                                                            From="0"
+                                                            To="1"
+                                                            Duration="0:0:0.2" />
+                                                        <DoubleAnimation Storyboard.TargetProperty="RenderTransform.(ScaleTransform.ScaleY)"
+                                                            From="0"
+                                                            To="1"
+                                                            Duration="0:0:0.2" />
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger>
                                         </Style.Triggers>
                                     </Style>
                                 </ListBox.ItemContainerStyle>
@@ -893,6 +925,7 @@
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <CheckBox VerticalAlignment="Center"
                                     VerticalContentAlignment="Center"
+                                    twainctrl:Policy.PolicyName="SetDbBackUpFolder"
                                     IsChecked="{Binding Path=BackUpDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                     <TextBlock Width="170"
                                         Text="{twainctrl:Loc BACKUPDB}"

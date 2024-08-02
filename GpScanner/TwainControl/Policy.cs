@@ -51,12 +51,12 @@ public class Policy : DependencyObject
             return;
         }
 
-        if (d is UIElement uIElement)
+        if (d is UIElement uIElement && uIElement.IsEnabled)
         {
             uIElement.IsEnabled = CheckPolicy((string)e.NewValue);
         }
 
-        if (d is Hyperlink hyperlink)
+        if (d is Hyperlink hyperlink && hyperlink.IsEnabled)
         {
             hyperlink.IsEnabled = CheckPolicy((string)e.NewValue);
         }
