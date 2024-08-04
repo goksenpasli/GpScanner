@@ -824,7 +824,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             async parameter =>
             {
                 string[] files = BatchFolderProcessedFileList.Where(z => z.Checked).Select(z => z.Name).ToArray();
-                if (files.Length > 0)
+                if (files.All(z => File.Exists(z)))
                 {
                     await files.SavePdfFilesAsync();
                 }

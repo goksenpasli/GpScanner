@@ -1064,15 +1064,18 @@
             <UniformGrid Columns="2">
                 <GroupBox Margin="1" Header="SHAREPOINT">
                     <StackPanel>
-                        <Extensions:ButtonedTextBox Description="URL"
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            Description="URL"
                             ResetButtonVisibility="Collapsed"
                             Text="{Binding SharePointUrl, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                        <Extensions:ButtonedTextBox Description="{twainctrl:Loc LIBRARY}"
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            Description="{twainctrl:Loc LIBRARY}"
                             OpenButtonVisibility="Collapsed"
                             ResetButtonVisibility="Collapsed"
                             Text="{Binding SharePointLibraryName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                         <Separator />
-                        <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}"
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            Description="{twainctrl:Loc USERNAME}"
                             OpenButtonVisibility="Collapsed"
                             Text="{Binding SharePointUserName, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                         <Grid>
@@ -1092,11 +1095,13 @@
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <StackPanel>
-                            <Extensions:ButtonedTextBox Description="FTP"
+                            <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                Description="FTP"
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding FtpSite, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="ftp://adress:portnumber" />
-                            <Extensions:ButtonedTextBox Description="{twainctrl:Loc USERNAME}"
+                            <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                Description="{twainctrl:Loc USERNAME}"
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding FtpUserName, UpdateSourceTrigger=PropertyChanged}" />
                             <Grid>
@@ -1409,7 +1414,9 @@
                                 </Image>
                                 <TextBlock VerticalAlignment="Center"
                                     FontSize="24"
-                                    FontWeight="Bold"><Run>SQL</Run><Run Text=" " /><Run Text="{twainctrl:Loc START}" /></TextBlock>
+                                    FontWeight="Bold"><Run>SQL</Run>
+                                    <Run Text="{twainctrl:Loc START}" />
+                                </TextBlock>
                             </StackPanel>
                         </Button>
                         <Button Command="{Binding RunSqliteVacuumCommand}" Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">

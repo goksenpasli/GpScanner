@@ -449,7 +449,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             TesseractView.cvs.Filter += (s, x) =>
                                         {
                                             TesseractOcrData tesseractOcrData = x.Item as TesseractOcrData;
-                                            x.Accepted = tesseractOcrData.OcrLangName.Contains(SeçiliDil);
+                                            x.Accepted = tesseractOcrData.OcrLangName.Contains(SeçiliDil, StringComparison.OrdinalIgnoreCase);
                                         };
         }
     }

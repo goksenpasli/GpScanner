@@ -1095,8 +1095,7 @@
                                     <RowDefinition Height="15.2" />
                                     <RowDefinition Height="34.4" />
                                 </Grid.RowDefinitions>
-                                <CheckBox Grid.ColumnSpan="2"
-                                    VerticalContentAlignment="Center"
+                                <CheckBox VerticalContentAlignment="Center"
                                     Content="{local:Loc TWOSIDE}"
                                     IsChecked="{Binding Scanner.Duplex}"
                                     IsEnabled="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />

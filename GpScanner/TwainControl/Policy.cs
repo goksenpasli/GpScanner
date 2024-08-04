@@ -9,6 +9,7 @@ namespace TwainControl;
 public class Policy : DependencyObject
 {
     public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty, Changed));
+    public static readonly DependencyProperty PolicyVisibilityNameProperty = DependencyProperty.RegisterAttached("PolicyVisibilityName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty, VisibilityChanged));
 
     public static bool CheckKeyPolicy(string searchvalue, RegistryKey registryKey)
     {
@@ -42,7 +43,11 @@ public class Policy : DependencyObject
 
     public static string GetPolicyName(DependencyObject obj) => (string)obj.GetValue(PolicyNameProperty);
 
+    public static string GetPolicyVisibilityName(DependencyObject obj) => (string)obj.GetValue(PolicyVisibilityNameProperty);
+
     public static void SetPolicyName(DependencyObject obj, string value) => obj.SetValue(PolicyNameProperty, value);
+
+    public static void SetPolicyVisibilityName(DependencyObject obj, string value) => obj.SetValue(PolicyVisibilityNameProperty, value);
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -60,5 +65,19 @@ public class Policy : DependencyObject
         {
             hyperlink.IsEnabled = CheckPolicy((string)e.NewValue);
         }
+    }
+
+    private static void VisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (DesignerProperties.GetIsInDesignMode(d))
+        {
+            return;
+        }
+
+        if (d is UIElement uIElement && uIElement.Visibility == Visibility.Visible)
+        {
+            uIElement.Visibility = CheckPolicy((string)e.NewValue) ? Visibility.Visible : Visibility.Collapsed;
+        }
+
     }
 }

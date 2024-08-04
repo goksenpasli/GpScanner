@@ -135,6 +135,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BatchDialogView.xaml.cs">
+      <DependentUpon>BatchDialogView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converter\CustomSizeToSizeConverter.cs" />
     <Compile Include="Converter\DocxInternalThumbnailExtractConverter.cs" />
     <Compile Include="Converter\FileNameExtractConverter.cs" />
@@ -212,6 +215,10 @@
     <Compile Include="ViewModel\TranslateViewModel.cs" />
     <Compile Include="ViewModel\WindowExtensions.cs" />
     <Compile Include="ViewModel\WindowService.cs" />
+    <Page Include="BatchDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DocumentViewerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
