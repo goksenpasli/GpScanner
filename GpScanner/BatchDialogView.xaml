@@ -78,6 +78,7 @@
                                 <Grid.RowDefinitions>
                                     <RowDefinition />
                                     <RowDefinition />
+                                    <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Extensions:ButtonedTextBox Grid.Column="0"
                                     VerticalContentAlignment="Center"
@@ -260,6 +261,7 @@
                                         </Button>
                                     </StackPanel>
                                 </ScrollViewer>
+                                <Separator Grid.Row="2" Grid.ColumnSpan="3" />
                             </Grid>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>

@@ -84,14 +84,10 @@
             PresentationOptions:Freeze="true"
             RelativeHeight="{Binding Mirror}" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-        <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:MonthContributionDataFileNameConverter x:Key="MonthContributionDataFileNameConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
-        <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter"
-            MaxNumber="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
-            MinNumber="1" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
             MaxNumber="100"
             MinNumber="5" />
@@ -102,8 +98,6 @@
             MaxNumber="1200"
             MinNumber="12" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
-        <CollectionViewSource x:Key="Reminder" Source="{Binding ScannerData.Reminder}" />
-        <CollectionViewSource x:Key="GörülenReminder" Source="{Binding ScannerData.GörülenReminder}" />
         <Style x:Key="ListBoxAnimationStyle" TargetType="{x:Type ListBox}">
             <Setter Property="BorderBrush" Value="Transparent" />
             <Style.Triggers>
@@ -1376,91 +1370,7 @@
                                 <Extensions:ResizablePanel.Resources>
                                     <PdfViewer:PdfPageToThumbImageConverter x:Key="PdfPageToThumbImageConverter" Dpi="48" />
                                 </Extensions:ResizablePanel.Resources>
-                                <TabControl Background="{StaticResource BorderBackground}">
-                                    <TabItem>
-                                        <TabItem.Header>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
-                                                <Button Command="{Binding ApplyCalendarData}">
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="144" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </Button>
-                                            </StackPanel>
-                                        </TabItem.Header>
-                                        <ListBox ItemsSource="{Binding Source={StaticResource Reminder}}"
-                                            SelectedItem="{Binding SelectedReminder}"
-                                            VirtualizingPanel.ScrollUnit="Pixel">
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="{x:Type ListBoxItem}">
-                                                    <Setter Property="IsSelected" Value="{Binding Seen}" />
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-                                            <ListBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel>
-                                                        <CheckBox HorizontalAlignment="Center"
-                                                            FontWeight="Bold"
-                                                            IsChecked="{Binding Seen}">
-                                                            <Hyperlink Command="{Binding DataContext.WebAdreseGit, Source={x:Reference twainCtrl}}" CommandParameter="{Binding FileName, Mode=OneWay}">
-                                                                <Run Text="{Binding Tarih}" />
-                                                                <Run Text="{Binding Açıklama}" />
-                                                            </Hyperlink>
-                                                        </CheckBox>
-                                                        <ContentPresenter Width="384"
-                                                            Height="384"
-                                                            d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
-                                                            Content="{Binding Mode=OneWay, Path=FileName}"
-                                                            ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}"
-                                                            IsHitTestVisible="False" />
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </ListBox.ItemTemplate>
-                                        </ListBox>
-                                    </TabItem>
-                                    <TabItem>
-                                        <TabItem.Header>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
-                                                <Button Command="{Binding UndoApplyCalendarData}">
-                                                    <Image Width="16"
-                                                        Height="16"
-                                                        Source="/TwainControl;component/Icons/undo.png" />
-                                                </Button>
-                                            </StackPanel>
-                                        </TabItem.Header>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition Width="3*" />
-                                            </Grid.ColumnDefinitions>
-                                            <ListBox ItemsSource="{Binding Source={StaticResource GörülenReminder}}" SelectedItem="{Binding SelectedReminder}">
-                                                <ListBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel>
-                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Açıklama}" />
-                                                            <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding Tarih}">
-                                                                <DatePicker.Resources>
-                                                                    <Style TargetType="DatePickerTextBox">
-                                                                        <Setter Property="IsReadOnly" Value="True" />
-                                                                    </Style>
-                                                                </DatePicker.Resources>
-                                                            </DatePicker>
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </ListBox.ItemTemplate>
-                                            </ListBox>
-                                            <ContentPresenter Grid.Column="1"
-                                                Content="{Binding Mode=OneWay, Path=SelectedReminder.FileName}"
-                                                ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
-                                        </Grid>
-                                    </TabItem>
-                                </TabControl>
+                                <local:ReminderView />
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                         <Image Width="16" Height="16">
@@ -1480,39 +1390,7 @@
                                 Height="165"
                                 MinWidth="700"
                                 MinHeight="165">
-                                <GroupBox>
-                                    <GroupBox.Header>
-                                        <StackPanel Orientation="Horizontal">
-                                            <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedContributionYear}">
-                                                <ComboBox.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock>
-                                                            <Run Text="{twainctrl:Loc YEAR}" />
-                                                            <Run Text="{Binding Mode=OneWay}" />
-                                                        </TextBlock>
-                                                    </DataTemplate>
-                                                </ComboBox.ItemTemplate>
-                                            </ComboBox>
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Run Text="{Binding Mode=OneWay, Path=ContributionDocumentCount}" />
-                                                <Run Text="{twainctrl:Loc DOCUMENT}" />
-                                            </TextBlock>
-                                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWSIZE}" />
-                                            <Slider Width="400"
-                                                AutoToolTipPlacement="TopLeft"
-                                                AutoToolTipPrecision="0"
-                                                Maximum="800"
-                                                Minimum="32"
-                                                SmallChange="1"
-                                                Style="{StaticResource Slider}"
-                                                Value="{Binding ContributionPreviewSize}" />
-                                        </StackPanel>
-                                    </GroupBox.Header>
-                                    <Extensions:ContributionControl Contributions="{Binding ContributionData}"
-                                        SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}"
-                                        Template="{StaticResource CustomContributionTemplate}" />
-                                </GroupBox>
+                                <local:YearContributionView />
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                         <TextBlock FontFamily="Webdings"
@@ -1692,66 +1570,7 @@
                         IsEnabled="{Binding DetectBarCode}"
                         Style="{StaticResource ContentToggleButtonAnimationStyle}">
                         <Extensions:ContentToggleButton.OverContent>
-                            <GroupBox>
-                                <ListBox Width="310"
-                                    Height="240"
-                                    HorizontalContentAlignment="Stretch"
-                                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                                    Background="{StaticResource BorderBackground}"
-                                    ItemsSource="{Binding BarcodeList}"
-                                    ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate>
-                                            <Extensions:ButtonedTextBox Height="80"
-                                                IsReadOnly="True"
-                                                PasteButtonVisibility="Collapsed"
-                                                ResetButtonVisibility="Collapsed"
-                                                Text="{Binding Mode=OneWay}"
-                                                TextWrapping="Wrap">
-                                                <Extensions:ButtonedTextBox.Description>
-                                                    <Image Width="80"
-                                                        Height="80"
-                                                        Source="{Binding Converter={StaticResource StringToQrBitmapImageConverter}, Mode=OneWay}"
-                                                        Tag="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type Window}}}">
-                                                        <Image.ContextMenu>
-                                                            <ContextMenu DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Mode=Self}}">
-                                                                <ContextMenu.Template>
-                                                                    <ControlTemplate>
-                                                                        <GroupBox>
-                                                                            <StackPanel>
-                                                                                <Button Command="{Binding Tag.SaveQrImage}" CommandParameter="{Binding Source}">
-                                                                                    <Image Width="32" Height="32">
-                                                                                        <Image.Source>
-                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                <Binding Source="Shell32.dll" />
-                                                                                                <Binding Source="6" />
-                                                                                            </MultiBinding>
-                                                                                        </Image.Source>
-                                                                                    </Image>
-                                                                                </Button>
-                                                                                <Button Command="{Binding Tag.PrintImage}" CommandParameter="{Binding Source}">
-                                                                                    <Image Width="32" Height="32">
-                                                                                        <Image.Source>
-                                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                                <Binding Source="Shell32.dll" />
-                                                                                                <Binding Source="16" />
-                                                                                            </MultiBinding>
-                                                                                        </Image.Source>
-                                                                                    </Image>
-                                                                                </Button>
-                                                                            </StackPanel>
-                                                                        </GroupBox>
-                                                                    </ControlTemplate>
-                                                                </ContextMenu.Template>
-                                                            </ContextMenu>
-                                                        </Image.ContextMenu>
-                                                    </Image>
-                                                </Extensions:ButtonedTextBox.Description>
-                                            </Extensions:ButtonedTextBox>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </GroupBox>
+                            <local:QrDialogView />
                         </Extensions:ContentToggleButton.OverContent>
                         <TextBlock>
                             <Run Text="{Binding BarcodeList.Count, Mode=OneWay}" />
@@ -1809,162 +1628,7 @@
                                 Height="400"
                                 MinWidth="800"
                                 MinHeight="400">
-                                <Grid Background="{StaticResource BorderBackground}">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition />
-                                        <RowDefinition Height="Auto" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <ListBox x:Name="LbUnindexed"
-                                        Margin="1"
-                                        d:ItemsSource="{d:SampleData ItemCount=5}"
-                                        Background="{StaticResource BorderBackground}"
-                                        ItemsSource="{Binding UnIndexedFiles}"
-                                        VirtualizingPanel.CacheLengthUnit="Item"
-                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                        VirtualizingPanel.ScrollUnit="Item"
-                                        VirtualizingPanel.VirtualizationMode="Recycling">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <TextBlock VerticalAlignment="Center">
-                                                    <Hyperlink BaselineAlignment="Center"
-                                                        Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                                                        CommandParameter="{Binding Mode=OneWay}"
-                                                        TextDecorations="None">
-                                                        <Image Width="16" Height="16">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="3" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </Hyperlink>
-                                                    <InlineUIContainer BaselineAlignment="Center">
-                                                        <Image Width="16"
-                                                            Height="16"
-                                                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, IsAsync=True}" />
-                                                    </InlineUIContainer>
-                                                    <Hyperlink BaselineAlignment="Center"
-                                                        Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                                                        CommandParameter="{Binding Mode=OneWay}"
-                                                        TextDecorations="None">
-                                                        <Image Width="16" Height="16">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="171" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </Hyperlink>
-                                                    <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
-                                                </TextBlock>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
-                                    <ContentControl Grid.Column="1"
-                                        Margin="1"
-                                        Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
-                                        ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
-                                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="12" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                        <Extensions:NumericUpDown Grid.Column="1"
-                                            Background="{Binding BatchOcrProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
-                                            Interval="1"
-                                            IsReadOnly="True"
-                                            Maximum="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
-                                            Minimum="1"
-                                            TextBlock.TextAlignment="Center"
-                                            Value="{Binding BatchOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                        <Extensions:SplitButton Grid.Column="2"
-                                            HorizontalContentAlignment="Stretch"
-                                            VerticalContentAlignment="Stretch"
-                                            Command="{Binding UnindexedAllFilesOcr}"
-                                            PlacementMode="Top">
-                                            <Grid>
-                                                <ProgressBar Background="{x:Null}"
-                                                    BorderBrush="{x:Null}"
-                                                    Maximum="1"
-                                                    Value="{Binding OcrAllPdfPagesProgress}" />
-                                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                                    <TextBlock VerticalAlignment="Center" FontWeight="Bold">
-                                                        <Run d:Text="0"
-                                                            Foreground="LawnGreen"
-                                                            Text="{Binding IndexedFileCount}" />
-                                                        <Run Text="/" />
-                                                        <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
-                                                    </TextBlock>
-                                                    <Image Width="32" Height="32">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="171" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                    <TextBlock VerticalAlignment="Center">
-                                                        <Run Text="{twainctrl:Loc ALL}" />
-                                                        <Run Text="{twainctrl:Loc UNINDEXED}" />
-                                                    </TextBlock>
-                                                </StackPanel>
-                                            </Grid>
-                                            <Extensions:SplitButton.InternalContent>
-                                                <Border Background="{StaticResource BorderBackground}"
-                                                    BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                    BorderThickness="1">
-                                                    <StackPanel>
-                                                        <MenuItem Header="{twainctrl:Loc CLOSECOMP}"
-                                                            IsCheckable="True"
-                                                            IsChecked="{Binding Shutdown}">
-                                                            <MenuItem.Icon>
-                                                                <Image Width="16" Height="16">
-                                                                    <Image.Source>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Shell32.dll" />
-                                                                            <Binding Source="27" />
-                                                                        </MultiBinding>
-                                                                    </Image.Source>
-                                                                </Image>
-                                                            </MenuItem.Icon>
-                                                        </MenuItem>
-                                                        <MenuItem IsCheckable="True"
-                                                            IsChecked="{Binding OcrAllPdfPages}"
-                                                            ToolTip="{twainctrl:Loc OCRALL}">
-                                                            <MenuItem.Header>
-                                                                <TextBlock VerticalAlignment="Center">
-                                                                    <Run Text="{twainctrl:Loc ALL}" />
-                                                                    <Run Text="PDF" />
-                                                                    <Run Text="{twainctrl:Loc OCR}" />
-                                                                </TextBlock>
-                                                            </MenuItem.Header>
-                                                            <MenuItem.Icon>
-                                                                <Image Width="16"
-                                                                    Height="16"
-                                                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                            </MenuItem.Icon>
-                                                        </MenuItem>
-                                                    </StackPanel>
-                                                </Border>
-                                            </Extensions:SplitButton.InternalContent>
-                                        </Extensions:SplitButton>
-                                    </Grid>
-                                </Grid>
+                                <local:UnindexedFilesDialogView />
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>

@@ -1,0 +1,181 @@
+﻿<UserControl x:Class="GpScanner.UnindexedFilesDialogView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:GpScanner.Converter"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter"
+            MaxNumber="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
+            MinNumber="1" />
+    </UserControl.Resources>
+    <Grid Background="{StaticResource BorderBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <ListBox x:Name="LbUnindexed"
+            Margin="1"
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            Background="{StaticResource BorderBackground}"
+            ItemsSource="{Binding UnIndexedFiles}"
+            VirtualizingPanel.CacheLengthUnit="Item"
+            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+            VirtualizingPanel.ScrollUnit="Item"
+            VirtualizingPanel.VirtualizationMode="Recycling">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock VerticalAlignment="Center">
+                        <Hyperlink BaselineAlignment="Center"
+                            Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                            CommandParameter="{Binding Mode=OneWay}"
+                            TextDecorations="None">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="3" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Hyperlink>
+                        <InlineUIContainer BaselineAlignment="Center">
+                            <Image Width="16"
+                                Height="16"
+                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, IsAsync=True}" />
+                        </InlineUIContainer>
+                        <Hyperlink BaselineAlignment="Center"
+                            Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                            CommandParameter="{Binding Mode=OneWay}"
+                            TextDecorations="None">
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="171" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Hyperlink>
+                        <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
+                    </TextBlock>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ContentControl Grid.Column="1"
+            Margin="1"
+            Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
+            ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Image Width="32" Height="32">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                        <Binding Source="Shell32.dll" />
+                        <Binding Source="12" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
+            <Extensions:NumericUpDown Grid.Column="1"
+                Background="{Binding BatchOcrProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
+                Interval="1"
+                IsReadOnly="True"
+                Maximum="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
+                Minimum="1"
+                TextBlock.TextAlignment="Center"
+                Value="{Binding BatchOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Extensions:SplitButton Grid.Column="2"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                Command="{Binding UnindexedAllFilesOcr}"
+                PlacementMode="Top">
+                <Grid>
+                    <ProgressBar Background="{x:Null}"
+                        BorderBrush="{x:Null}"
+                        Maximum="1"
+                        Value="{Binding OcrAllPdfPagesProgress}" />
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" FontWeight="Bold">
+                            <Run d:Text="0"
+                                Foreground="LawnGreen"
+                                Text="{Binding IndexedFileCount}" />
+                            <Run Text="/" />
+                            <Run Foreground="Red" Text="{Binding Source={x:Reference LbUnindexed}, Path=Items.Count, Mode=OneWay}" />
+                        </TextBlock>
+                        <Image Width="32" Height="32">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="171" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock VerticalAlignment="Center">
+                            <Run Text="{twainctrl:Loc ALL}" />
+                            <Run Text="{twainctrl:Loc UNINDEXED}" />
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+                <Extensions:SplitButton.InternalContent>
+                    <Border Background="{StaticResource BorderBackground}"
+                        BorderBrush="{StaticResource GroupBoxBackGround}"
+                        BorderThickness="1">
+                        <StackPanel>
+                            <MenuItem Header="{twainctrl:Loc CLOSECOMP}"
+                                IsCheckable="True"
+                                IsChecked="{Binding Shutdown}">
+                                <MenuItem.Icon>
+                                    <Image Width="16" Height="16">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="27" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem IsCheckable="True"
+                                IsChecked="{Binding OcrAllPdfPages}"
+                                ToolTip="{twainctrl:Loc OCRALL}">
+                                <MenuItem.Header>
+                                    <TextBlock VerticalAlignment="Center">
+                                        <Run Text="{twainctrl:Loc ALL}" />
+                                        <Run Text="PDF" />
+                                        <Run Text="{twainctrl:Loc OCR}" />
+                                    </TextBlock>
+                                </MenuItem.Header>
+                                <MenuItem.Icon>
+                                    <Image Width="16"
+                                        Height="16"
+                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </StackPanel>
+                    </Border>
+                </Extensions:SplitButton.InternalContent>
+            </Extensions:SplitButton>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -171,6 +171,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AssemblyInfo.tt</DependentUpon>
     </Compile>
+    <Compile Include="QrDialogView.xaml.cs">
+      <DependentUpon>QrDialogView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ReminderView.xaml.cs">
+      <DependentUpon>ReminderView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingsWindowView.xaml.cs">
       <DependentUpon>SettingsWindowView.xaml</DependentUpon>
     </Compile>
@@ -182,6 +188,9 @@
     </Compile>
     <Compile Include="TranslateView.xaml.cs">
       <DependentUpon>TranslateView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UnindexedFilesDialogView.xaml.cs">
+      <DependentUpon>UnindexedFilesDialogView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\AllPdfViewerControl.cs" />
     <Compile Include="ViewModel\AppDbContext.cs" />
@@ -215,6 +224,9 @@
     <Compile Include="ViewModel\TranslateViewModel.cs" />
     <Compile Include="ViewModel\WindowExtensions.cs" />
     <Compile Include="ViewModel\WindowService.cs" />
+    <Compile Include="YearContributionView.xaml.cs">
+      <DependentUpon>YearContributionView.xaml</DependentUpon>
+    </Compile>
     <Page Include="BatchDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -251,6 +263,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="QrDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReminderView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="SettingsWindowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -264,6 +284,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TranslateView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UnindexedFilesDialogView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="YearContributionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

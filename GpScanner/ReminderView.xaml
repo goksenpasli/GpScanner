@@ -1,0 +1,106 @@
+﻿<UserControl x:Class="GpScanner.ReminderView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
+    twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="Reminder" Source="{Binding ScannerData.Reminder}" />
+        <CollectionViewSource x:Key="GörülenReminder" Source="{Binding ScannerData.GörülenReminder}" />
+    </UserControl.Resources>
+    <TabControl Background="{StaticResource BorderBackground}">
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
+                    <Button Command="{Binding ApplyCalendarData}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="144" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                </StackPanel>
+            </TabItem.Header>
+            <ListBox d:ItemsSource="{d:SampleData ItemCount=1}"
+                ItemsSource="{Binding Source={StaticResource Reminder}}"
+                SelectedItem="{Binding SelectedReminder}"
+                VirtualizingPanel.ScrollUnit="Pixel">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="IsSelected" Value="{Binding Seen}" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <CheckBox HorizontalAlignment="Center"
+                                FontWeight="Bold"
+                                IsChecked="{Binding Seen}">
+                                <Hyperlink Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding FileName, Mode=OneWay}">
+                                    <Run Text="{Binding Tarih}" />
+                                    <Run Text="{Binding Açıklama}" />
+                                </Hyperlink>
+                            </CheckBox>
+                            <ContentPresenter Width="384"
+                                Height="384"
+                                Content="{Binding Mode=OneWay, Path=FileName}"
+                                ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}"
+                                IsHitTestVisible="False" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc CALENDAR}" />
+                    <Button Command="{Binding UndoApplyCalendarData}">
+                        <Image Width="16"
+                            Height="16"
+                            Source="/TwainControl;component/Icons/undo.png" />
+                    </Button>
+                </StackPanel>
+            </TabItem.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                </Grid.ColumnDefinitions>
+                <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+                    ItemsSource="{Binding Source={StaticResource GörülenReminder}}"
+                    SelectedItem="{Binding SelectedReminder}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Açıklama}" />
+                                <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding Tarih}">
+                                    <DatePicker.Resources>
+                                        <Style TargetType="DatePickerTextBox">
+                                            <Setter Property="IsReadOnly" Value="True" />
+                                        </Style>
+                                    </DatePicker.Resources>
+                                </DatePicker>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ContentPresenter Grid.Column="1"
+                    Content="{Binding Mode=OneWay, Path=SelectedReminder.FileName}"
+                    ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
+            </Grid>
+        </TabItem>
+    </TabControl>
+</UserControl>
