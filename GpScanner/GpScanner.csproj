@@ -210,6 +210,7 @@
     <Compile Include="ViewModel\IScannerService.cs" />
     <Compile Include="ViewModel\IWindowService.cs" />
     <Compile Include="ViewModel\MirrorAngleEffect.cs" />
+    <Compile Include="ViewModel\MultiFolderWatcher.cs" />
     <Compile Include="ViewModel\ReminderData.cs" />
     <Compile Include="ViewModel\RippleEffect.cs" />
     <Compile Include="ViewModel\ScannerData.cs" />

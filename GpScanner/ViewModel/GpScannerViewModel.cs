@@ -1221,6 +1221,17 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 windowService.GetFirstWindow().WindowState = WindowState.Maximized;
             },
             parameter => true);
+
+        EditWithControlPanel = new RelayCommand<object>(
+            parameter =>
+            {
+                if (windowService.GetActiveWindow() is MainWindow mainWindow && parameter is string filepath && PdfViewer.PdfViewer.IsValidPdfFile(filepath))
+                {
+                    mainWindow.twainCtrl.PdfImportViewer.PdfViewer.PdfFilePath = filepath;
+                    mainWindow.twainCtrl.SelectedTabIndex = 3;
+                }
+            },
+            parameter => true);
     }
 
     public RelayCommand<object> AddAdditionalIndexFolder { get; }
@@ -1576,6 +1587,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     }
+
+    public RelayCommand<object> EditWithControlPanel { get; }
 
     public RelayCommand<object> EndDateBack { get; }
 
@@ -2416,6 +2429,42 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         return matchingPatchCode?.Split('|')[1] ?? Translation.GetResStringValue("DEFAULTSCANNAME");
     }
 
+    public async Task<ObservableCollection<Scanner>> GetScannerFileData()
+    {
+        if (!Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
+        {
+            return null;
+        }
+
+        ObservableCollection<Scanner> list = [];
+        try
+        {
+            List<string> allfilepaths = [.. Settings.Default.AdditionalIndexFolders.OfType<string>(), Twainsettings.Settings.Default.AutoFolder,];
+
+            return await Task.Run(
+                () =>
+                {
+                    List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
+                    files.Sort(new StrCmpLogicalComparer());
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        string dosya = files[i];
+                        FileInfo fi = new(dosya);
+                        if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
+                        {
+                            list.Add(new Scanner { FileName = dosya, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F });
+                        }
+                        FileLoadProgress = (i + 1) / (double)files.Count;
+                    }
+                    return list;
+                });
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return list;
+        }
+    }
+
     public bool NeedAppUpdate() => Settings.Default.CheckAppUpdate && DateTime.Now > Settings.Default.LastCheckDate.AddDays(Settings.Default.UpdateInterval);
 
     public void RegisterBatchImageFileWatcher(Paper paper, string batchfolder, string batchsavefolder)
@@ -3034,46 +3083,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         .ToList();
     }
 
-    private async Task<ObservableCollection<Scanner>> GetScannerFileData()
-    {
-        if (!Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
-        {
-            return null;
-        }
-
-        ObservableCollection<Scanner> list = [];
-        try
-        {
-            List<string> allfilepaths =
-            [
-                .. Settings.Default.AdditionalIndexFolders.OfType<string>(),
-                    Twainsettings.Settings.Default.AutoFolder,
-                ];
-
-            return await Task.Run(
-                () =>
-                {
-                    List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
-                    files.Sort(new StrCmpLogicalComparer());
-                    for (int i = 0; i < files.Count; i++)
-                    {
-                        string dosya = files[i];
-                        FileInfo fi = new(dosya);
-                        if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
-                        {
-                            list.Add(new Scanner { FileName = dosya, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F });
-                        }
-                        FileLoadProgress = (i + 1) / (double)files.Count;
-                    }
-                    return list;
-                });
-        }
-        catch (UnauthorizedAccessException)
-        {
-            return list;
-        }
-    }
-
     private async Task<ObservableCollection<string>> GetUnindexedFileData()
     {
         try
@@ -3326,33 +3335,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private async void RegisterSimplePdfFileWatcher()
+    private void RegisterSimplePdfFileWatcher()
     {
-        string autoFolder = Twainsettings.Settings.Default.AutoFolder;
-        if (string.IsNullOrWhiteSpace(autoFolder))
-        {
-            return;
-        }
-        try
-        {
-            FileSystemWatcher watcher = new(autoFolder) { NotifyFilter = NotifyFilters.FileName, Filter = "*.pdf", IncludeSubdirectories = true, EnableRaisingEvents = true };
-            watcher.Renamed += async (s, e) =>
-                               {
-                                   using (AppDbContext context = new())
-                                   {
-                                       foreach (Data item in context?.Data?.Where(z => z.FileName == e.OldFullPath))
-                                       {
-                                           item.FileName = e.FullPath;
-                                       }
-                                       _ = context.SaveChanges();
-                                   }
-                                   Dosyalar = await GetScannerFileData();
-                               };
-        }
-        catch (Exception ex)
-        {
-            await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
-        }
+        List<string> folders = [.. Settings.Default.AdditionalIndexFolders.OfType<string>(), Twainsettings.Settings.Default.AutoFolder,];
+        MultiFolderWatcher.Watch(this, folders);
     }
 
     private async Task<ObservableCollection<ReminderData>> ReminderYükle()

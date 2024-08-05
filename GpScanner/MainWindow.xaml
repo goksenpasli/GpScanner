@@ -1042,6 +1042,15 @@
                                                                 FontWeight="Bold"
                                                                 Foreground="{StaticResource {x:Static SystemColors.HotTrackBrushKey}}"
                                                                 Text="B" />
+                                                            <Hyperlink twainctrl:Policy.PolicyName="EditWithControlPanel"
+                                                                Command="{Binding DataContext.EditWithControlPanel, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                CommandParameter="{Binding Mode=OneWay, Path=FileName}"
+                                                                TextDecorations="None">
+                                                                <Run FontFamily="Wingdings 2"
+                                                                    FontSize="18"
+                                                                    FontWeight="Bold"
+                                                                    Text="$" />
+                                                            </Hyperlink>
                                                             <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
                                                                 Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}"
                                                                 CommandParameter="{Binding Mode=OneWay, Path=FileName}"
