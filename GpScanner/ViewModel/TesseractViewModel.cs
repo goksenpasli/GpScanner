@@ -27,7 +27,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
     private string tessdatafolder;
     private ObservableCollection<TessFiles> tesseractFiles;
 
-    public TesseractViewModel(IWindowService windowService)
+    public TesseractViewModel(IWindowService windowService, TwainCtrl twainCtrl)
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         Tessdatafolder = $@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\tessdata";
@@ -37,6 +37,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         ShowHelpDesc = TesseractFiles?.Count == 0;
         PropertyChanged += TesseractViewModel_PropertyChanged;
         WindowService = windowService;
+        TwainCtrl = twainCtrl;
         TesseractDataFilesDownloadLink = new RelayCommand<object>(
             parameter =>
             {
@@ -139,9 +140,9 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             },
             parameter => TesseractView.cvs is not null);
 
-        if (PdfGeneration.Scanner is not null)
+        if (TwainCtrl.Scanner is not null)
         {
-            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
+            TwainCtrl.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
         }
     }
 
@@ -237,6 +238,8 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> TesseractRemove { get; }
 
+    public TwainCtrl TwainCtrl { get; }
+
     public IWindowService WindowService { get; }
 
     public string this[string columnName] => columnName switch
@@ -309,11 +312,11 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             if (!CheckedFiles.Any())
             {
                 Settings.Default.BatchFolder = string.Empty;
-                PdfGeneration.Scanner.ApplyPdfSaveOcr = false;
-                PdfGeneration.Scanner.ApplyDataBaseOcr = false;
+                TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
+                TwainCtrl.Scanner.ApplyDataBaseOcr = false;
             }
 
-            PdfGeneration.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang = string.Join("+", CheckedFiles.Select(item => item.Name));
+            TwainCtrl.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang = string.Join("+", CheckedFiles.Select(item => item.Name));
             OnPropertyChanged(nameof(TesseractFiles));
         }
     }

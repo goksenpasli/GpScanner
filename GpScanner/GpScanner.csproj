@@ -163,6 +163,9 @@
     <Compile Include="FtpUserControl.xaml.cs">
       <DependentUpon>FtpUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MiniDocumentView.xaml.cs">
+      <DependentUpon>MiniDocumentView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PdfCompressorControl.xaml.cs">
       <DependentUpon>PdfCompressorControl.xaml</DependentUpon>
     </Compile>
@@ -260,6 +263,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MiniDocumentView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PdfCompressorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

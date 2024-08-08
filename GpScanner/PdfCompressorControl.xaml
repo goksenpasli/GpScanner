@@ -60,26 +60,20 @@
                                         SmallChange="1"
                                         Style="{DynamicResource Slider}"
                                         Value="{Binding Quality, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
-                                    <UniformGrid Columns="2">
-                                        <ComboBox ItemsSource="{Binding CompressorList}"
-                                            SelectedItem="{Binding Path=SelectedCompressorProfile, NotifyOnSourceUpdated=True}"
-                                            SourceUpdated="ComboBox_CompressorListSourceUpdated">
-                                            <ComboBox.ItemTemplate>
-                                                <DataTemplate>
-                                                    <TextBlock>
-                                                        <Run Text="{Binding Width, Mode=OneWay}" />
-                                                        <Run Text="DPI" />
-                                                        <Run Text="{Binding Height, Mode=OneWay}" />
-                                                        <Run Text="{twainctrl:Loc JPEGQUALITY}" />
-                                                    </TextBlock>
-                                                </DataTemplate>
-                                            </ComboBox.ItemTemplate>
-                                        </ComboBox>
-                                        <TextBlock VerticalAlignment="Center">
-                                            <Run Text="{twainctrl:Loc ALL}" />
-                                            <Run Text="{twainctrl:Loc CLEARLIST}" />
-                                        </TextBlock>
-                                    </UniformGrid>
+                                    <ComboBox ItemsSource="{Binding CompressorList}"
+                                        SelectedItem="{Binding Path=SelectedCompressorProfile, NotifyOnSourceUpdated=True}"
+                                        SourceUpdated="ComboBox_CompressorListSourceUpdated">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Width, Mode=OneWay}" />
+                                                    <Run Text="DPI" />
+                                                    <Run Text="{Binding Height, Mode=OneWay}" />
+                                                    <Run Text="{twainctrl:Loc JPEGQUALITY}" />
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                     <Button Command="{Binding ClearPdfCompressorBatchList}"
                                         CommandParameter="{Binding BatchPdfList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                         IsEnabled="{Binding CompressFinished, RelativeSource={RelativeSource Mode=TemplatedParent}}">

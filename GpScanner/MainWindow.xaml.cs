@@ -31,10 +31,10 @@ public partial class MainWindow : Window
         InitializeComponent();
         cvs = TryFindResource("Veriler") as CollectionViewSource;
         IWindowService windowService = new WindowService();
-        DataContext = new GpScannerViewModel(windowService);
-        twainCtrl.PropertyChanged += TwainCtrl_PropertyChangedAsync;
-        twainCtrl.Scanner.PropertyChanged += Scanner_PropertyChanged;
         TwainCtrl = twainCtrl;
+        DataContext = new GpScannerViewModel(windowService, TwainCtrl);
+        TwainCtrl.PropertyChanged += TwainCtrl_PropertyChangedAsync;
+        TwainCtrl.Scanner.PropertyChanged += Scanner_PropertyChanged;
     }
 
     public TwainCtrl TwainCtrl { get; set; }
@@ -63,7 +63,7 @@ public partial class MainWindow : Window
                 try
                 {
                     int curpage = pdfviewer.Sayfa;
-                    droppedData.Resim.GeneratePdf(null, Format.Jpg, twainCtrl.SelectedPaper).Save(temporarypdf);
+                    droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
                     string[] processedfiles = [temporarypdf, pdfFilePath];
                     if (Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Shift))
                     {
@@ -140,22 +140,6 @@ public partial class MainWindow : Window
         e.Handled = true;
     }
 
-    private async void ListBox_DropAsync(object sender, DragEventArgs e) => await twainCtrl.ListBoxDropFileAsync(e);
-
-    private void MiniDocumentRun_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        if (sender is Run run)
-        {
-            twainCtrl.DragMoveStarted = true;
-            StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
-            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
-            TwainCtrl.DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
-            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
-            twainCtrl.DragMoveStarted = false;
-            e.Handled = true;
-        }
-    }
-
     private void MW_ContentRendered(object sender, EventArgs e)
     {
         this.SystemMenu();
@@ -170,7 +154,7 @@ public partial class MainWindow : Window
             }
             if (Settings.Default.RegisterBatchWatcher)
             {
-                ViewModel.RegisterBatchImageFileWatcher(twainCtrl.SelectedPaper, Settings.Default.BatchFolder, Settings.Default.BatchSaveFolder);
+                ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.SelectedPaper, Settings.Default.BatchFolder, Settings.Default.BatchSaveFolder);
             }
 
             if (ViewModel.NeedAppUpdate() && ViewModel.CheckUpdate.CanExecute(null))
@@ -185,7 +169,7 @@ public partial class MainWindow : Window
                 {
                     ViewModel.OpenSettings.Execute(null);
                 }
-                twainCtrl.CreateBuiltInScanProfiles();
+                TwainCtrl.CreateBuiltInScanProfiles();
             }
         }
 
@@ -197,16 +181,16 @@ public partial class MainWindow : Window
             {
                 if (Settings.Default.DirectOpenEypFile && extension == ".eyp")
                 {
-                    twainCtrl.SelectedTabIndex = 3;
-                    EypPdfViewer eypPdfViewer = twainCtrl.PdfImportViewer.PdfViewer;
+                    TwainCtrl.SelectedTabIndex = 3;
+                    EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
                     eypPdfViewer.PdfFilePath = eypPdfViewer.ExtractEypFilesToPdf(filePath);
                     return;
                 }
 
                 if (Settings.Default.DirectOpenPdfFile && extension == ".pdf" && PdfViewer.PdfViewer.IsValidPdfFile(filePath))
                 {
-                    twainCtrl.SelectedTabIndex = 3;
-                    EypPdfViewer eypPdfViewer = twainCtrl.PdfImportViewer.PdfViewer;
+                    TwainCtrl.SelectedTabIndex = 3;
+                    EypPdfViewer eypPdfViewer = TwainCtrl.PdfImportViewer.PdfViewer;
                     eypPdfViewer.PdfFilePath = filePath;
                     eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
                     return;
@@ -214,24 +198,24 @@ public partial class MainWindow : Window
 
                 if (Settings.Default.DirectOpenUdfFile && extension == ".udf")
                 {
-                    twainCtrl.SelectedTabIndex = 4;
-                    twainCtrl.xpsViewer.XpsDataFilePath = twainCtrl.LoadUdfFile(filePath);
+                    TwainCtrl.SelectedTabIndex = 4;
+                    TwainCtrl.xpsViewer.XpsDataFilePath = TwainCtrl.LoadUdfFile(filePath);
                     return;
                 }
             }
-            _ = twainCtrl.AddFiles(commandLineArgs, twainCtrl.DecodeHeight);
+            _ = TwainCtrl.AddFiles(commandLineArgs, TwainCtrl.DecodeHeight);
         }
 
         if (StillImageHelper.FirstLanuchScan)
         {
             switch (Settings.Default.ButtonScanMode)
             {
-                case 0 when twainCtrl.ScanImage.CanExecute(null):
-                    twainCtrl.ScanImage.Execute(null);
+                case 0 when TwainCtrl.ScanImage.CanExecute(null):
+                    TwainCtrl.ScanImage.Execute(null);
                     break;
 
-                case 1 when twainCtrl.FastScanImage.CanExecute(null):
-                    twainCtrl.FastScanImage.Execute(null);
+                case 1 when TwainCtrl.FastScanImage.CanExecute(null):
+                    TwainCtrl.FastScanImage.Execute(null);
                     break;
             }
         }
@@ -243,12 +227,12 @@ public partial class MainWindow : Window
                 {
                     switch (Settings.Default.ButtonScanMode)
                     {
-                        case 0 when twainCtrl.ScanImage.CanExecute(null):
-                            Dispatcher.Invoke(() => twainCtrl.ScanImage.Execute(null));
+                        case 0 when TwainCtrl.ScanImage.CanExecute(null):
+                            Dispatcher.Invoke(() => TwainCtrl.ScanImage.Execute(null));
                             break;
 
-                        case 1 when twainCtrl.FastScanImage.CanExecute(null):
-                            Dispatcher.Invoke(() => twainCtrl.FastScanImage.Execute(null));
+                        case 1 when TwainCtrl.FastScanImage.CanExecute(null):
+                            Dispatcher.Invoke(() => TwainCtrl.FastScanImage.Execute(null));
                             break;
                     }
                 }
@@ -278,34 +262,15 @@ public partial class MainWindow : Window
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if ((e.PropertyName is "ApplyPdfSaveOcr" && twainCtrl?.Scanner?.ApplyPdfSaveOcr == true) || (e.PropertyName is "ApplyDataBaseOcr" && twainCtrl?.Scanner?.ApplyDataBaseOcr == true))
+        if ((e.PropertyName is "ApplyPdfSaveOcr" && TwainCtrl?.Scanner?.ApplyPdfSaveOcr == true) || (e.PropertyName is "ApplyDataBaseOcr" && TwainCtrl?.Scanner?.ApplyDataBaseOcr == true))
         {
             if (DataContext is GpScannerViewModel ViewModel && ViewModel?.TesseractViewModel?.GetTesseractFiles(ViewModel.TesseractViewModel.Tessdatafolder)?.Count(item => item.Checked) == 0)
             {
-                twainCtrl.Scanner.ApplyPdfSaveOcr = false;
-                twainCtrl.Scanner.ApplyDataBaseOcr = false;
+                TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
+                TwainCtrl.Scanner.ApplyDataBaseOcr = false;
                 _ = MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("TESSLANGSELECT")}", Title);
             }
         }
-    }
-
-    private void StackPanel_Drop(object sender, DragEventArgs e) => twainCtrl.DropFile(sender, e);
-
-    private void StackPanel_GiveFeedback(object sender, GiveFeedbackEventArgs e)
-    {
-        if (e.Effects == DragDropEffects.Move)
-        {
-            if (TwainCtrl.DragCursor is not null)
-            {
-                e.UseDefaultCursors = false;
-                _ = Mouse.SetCursor(TwainCtrl.DragCursor);
-            }
-        }
-        else
-        {
-            e.UseDefaultCursors = true;
-        }
-        e.Handled = true;
     }
 
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
@@ -319,77 +284,77 @@ public partial class MainWindow : Window
 
             if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)
             {
-                string detectedbarcode = twainCtrl?.Scanner?.BarcodeContent;
+                string detectedbarcode = TwainCtrl?.Scanner?.BarcodeContent;
                 if (detectedbarcode is not null)
                 {
                     ViewModel.AddBarcodeToList(detectedbarcode);
-                    if (twainCtrl?.Scanner?.UsePageSeperator == true)
+                    if (TwainCtrl?.Scanner?.UsePageSeperator == true)
                     {
-                        twainCtrl.Scanner.FileName = ViewModel.GetFileNameFromPatchCodeResult(detectedbarcode);
+                        TwainCtrl.Scanner.FileName = ViewModel.GetFileNameFromPatchCodeResult(detectedbarcode);
                     }
                 }
             }
 
-            if (e.PropertyName is "DataBaseTextData" && twainCtrl?.DataBaseTextData is not null)
+            if (e.PropertyName is "DataBaseTextData" && TwainCtrl?.DataBaseTextData is not null)
             {
-                ViewModel.ScannedText = twainCtrl.DataBaseTextData;
+                ViewModel.ScannedText = TwainCtrl.DataBaseTextData;
                 using (AppDbContext context = new())
                 {
-                    _ = context.Data.Add(new Data { FileName = twainCtrl?.Scanner?.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)), QrData = twainCtrl?.Scanner?.BarcodeContent });
+                    _ = context.Data.Add(new Data { FileName = TwainCtrl?.Scanner?.PdfFilePath, FileContent = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text)), QrData = TwainCtrl?.Scanner?.BarcodeContent });
                     _ = context.SaveChanges();
                 }
                 ViewModel.ScannedText = null;
             }
 
-            if (e.PropertyName is "ImgData" && twainCtrl?.ImgData is not null)
+            if (e.PropertyName is "ImgData" && TwainCtrl?.ImgData is not null)
             {
                 if (ViewModel.DetectBarCode)
                 {
                     QrCode.QrCode qrcode = new();
-                    ViewModel.AddBarcodeToList(qrcode.GetImageBarcodeResult(twainCtrl.ImgData));
+                    ViewModel.AddBarcodeToList(qrcode.GetImageBarcodeResult(TwainCtrl.ImgData));
                 }
 
                 if (string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang))
                 {
-                    twainCtrl.ImgData = null;
+                    TwainCtrl.ImgData = null;
                     return;
                 }
 
                 ViewModel.OcrIsBusy = true;
-                ViewModel.ScannedText = await twainCtrl.ImgData.OcrAsync(Settings.Default.DefaultTtsLang);
+                ViewModel.ScannedText = await TwainCtrl.ImgData.OcrAsync(Settings.Default.DefaultTtsLang);
                 if (ViewModel.ScannedText is not null)
                 {
                     ViewModel.TranslateViewModel.Metin = string.Join(" ", ViewModel.ScannedText?.Select(z => z.Text));
                     ViewModel.OcrIsBusy = false;
                 }
 
-                twainCtrl.ImgData = null;
+                TwainCtrl.ImgData = null;
             }
 
             if (e.PropertyName is "DragMoveStarted")
             {
-                ViewModel.ListBoxBorderAnimation = twainCtrl.DragMoveStarted;
+                ViewModel.ListBoxBorderAnimation = TwainCtrl.DragMoveStarted;
             }
 
-            if (e.PropertyName is "CameraQRCodeData" && twainCtrl?.CameraQRCodeData is not null)
+            if (e.PropertyName is "CameraQRCodeData" && TwainCtrl?.CameraQRCodeData is not null)
             {
-                ViewModel.AddBarcodeToList(twainCtrl?.Scanner?.BarcodeContent);
+                ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
             }
 
-            if (e.PropertyName is "UsePageSeperator" && twainCtrl?.Scanner?.UsePageSeperator == true && Settings.Default.PatchCodes.Count == 0)
+            if (e.PropertyName is "UsePageSeperator" && TwainCtrl?.Scanner?.UsePageSeperator == true && Settings.Default.PatchCodes.Count == 0)
             {
-                twainCtrl.Scanner.UsePageSeperator = false;
+                TwainCtrl.Scanner.UsePageSeperator = false;
                 _ = MessageBox.Show($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("QRDETECT")}", Title);
             }
 
-            if (e.PropertyName is "RefreshDocumentList" && twainCtrl?.RefreshDocumentList == true)
+            if (e.PropertyName is "RefreshDocumentList" && TwainCtrl?.RefreshDocumentList == true)
             {
                 DateTime başlangıç = ViewModel.BaşlangıçTarihi;
                 DateTime bitiş = ViewModel.BitişTarihi;
                 ViewModel.ReloadFileDatas(false);
                 ViewModel.BaşlangıçTarihi = başlangıç;
                 ViewModel.BitişTarihi = bitiş;
-                twainCtrl.RefreshDocumentList = false;
+                TwainCtrl.RefreshDocumentList = false;
             }
         }
     }

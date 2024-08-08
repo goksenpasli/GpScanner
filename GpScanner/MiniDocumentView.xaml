@@ -1,0 +1,203 @@
+﻿<UserControl x:Class="GpScanner.MiniDocumentView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:PdfViewer="clr-namespace:PdfViewer;assembly=PdfViewer"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
+    twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
+    Loaded="UserControl_Loaded"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <GroupBox>
+        <GroupBox.Header>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
+                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                    <Button twainctrl:Policy.PolicyName="ResimSilGeriAl" Command="{Binding TwainCtrl.ResimSilGeriAl}">
+                        <Image Width="16"
+                            Height="16"
+                            Source="/TwainControl;component/Icons/undo.png" />
+                    </Button>
+                    <Button twainctrl:Policy.PolicyName="Tümünüİşaretle"
+                        BorderBrush="Cyan"
+                        Command="{Binding TwainCtrl.Tümünüİşaretle}"
+                        ToolTip="{twainctrl:Loc ALL}">
+                        <Image Width="16"
+                            Height="16"
+                            Source="/TwainControl;component/Icons/selectall.png" />
+                    </Button>
+                    <Button twainctrl:Policy.PolicyName="TümününİşaretiniKaldır"
+                        Command="{Binding TwainCtrl.TümününİşaretiniKaldır}"
+                        ToolTip="{twainctrl:Loc NONE}">
+                        <Image Width="16"
+                            Height="16"
+                            Source="/TwainControl;component/Icons/none.png" />
+                    </Button>
+                    <Button twainctrl:Policy.PolicyName="Tersiniİşaretle"
+                        Command="{Binding TwainCtrl.Tersiniİşaretle}"
+                        ToolTip="{twainctrl:Loc REVERSE}">
+                        <Image Width="16"
+                            Height="16"
+                            Source="/TwainControl;component/Icons/inverse.png" />
+                    </Button>
+                    <Button twainctrl:Policy.PolicyName="InsertClipBoardImage"
+                        BorderBrush="Cyan"
+                        Command="{Binding TwainCtrl.InsertClipBoardImage}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="260" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                    <Button twainctrl:Policy.PolicyName="PrintSelectedDocuments" Command="{Binding TwainCtrl.PrintSelectedDocuments}">
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="16" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </Button>
+                    <Button twainctrl:Policy.PolicyName="SeçiliKaydet" Command="{Binding TwainCtrl.SaveSelectedFilesPdfFile}">
+                        <Image Width="16"
+                            Height="16"
+                            Source="/TwainControl;component/Icons/save.png" />
+                    </Button>
+                </StackPanel>
+                <ToggleButton Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Background="{x:Null}"
+                    BorderBrush="{x:Null}"
+                    Command="{Binding ModifyGridWidth}"
+                    CommandParameter="0"
+                    IsChecked="{Binding DocumentPanelIsExpanded}">
+                    <Image Width="16"
+                        Height="16"
+                        Source="/TwainControl;component/Icons/delete.png" />
+                </ToggleButton>
+            </Grid>
+        </GroupBox.Header>
+        <ListBox Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
+            d:ItemsSource="{d:SampleData ItemCount=5}"
+            twainctrl:Policy.PolicyName="LoadImage"
+            AllowDrop="True"
+            Background="{StaticResource BorderBackground}"
+            Drop="ListBox_DropAsync"
+            ItemsSource="{Binding TwainCtrl.Scanner.Resimler}"
+            SelectedItem="{Binding TwainCtrl.SeçiliResim}"
+            SelectionMode="Extended"
+            VirtualizingPanel.CacheLengthUnit="Pixel"
+            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+            VirtualizingPanel.ScrollUnit="Pixel"
+            VirtualizingPanel.VirtualizationMode="Recycling">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="IsSelected" Value="{Binding Seçili}" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox VerticalContentAlignment="Center"
+                        Background="{Binding ScannedImageNotifyBrush}"
+                        IsChecked="{Binding Seçili}">
+                        <StackPanel Drop="StackPanel_Drop" GiveFeedback="StackPanel_GiveFeedback">
+                            <TextBlock HorizontalAlignment="Center"><InlineUIContainer>
+                                    <Extensions:NumericUpDown Height="20"
+                                        Interval="1"
+                                        Maximum="1"
+                                        Minimum="-1"
+                                        NumericUpdownTextBoxVisibility="Collapsed"
+                                        Value="{Binding RotationAngle}" />
+                                </InlineUIContainer><Run AllowDrop="True"
+                                    Cursor="SizeAll"
+                                    FontFamily="Wingdings"
+                                    FontSize="24"
+                                    FontWeight="Bold"
+                                    MouseLeftButtonDown="MiniDocumentRun_MouseLeftButtonDown"
+                                    Text="B" /><Hyperlink twainctrl:Policy.PolicyName="ResimSil"
+                                    Command="{Binding DataContext.TwainCtrl.ResimSil, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding Mode=OneWay}"
+                                    TextDecorations="None">
+                                    <InlineUIContainer>
+                                        <Image Width="16"
+                                            Height="16"
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                    </InlineUIContainer>
+                                </Hyperlink></TextBlock>
+                            <StackPanel Orientation="Horizontal">
+                                <PdfViewer:PdfShadowedImage Width="72"
+                                    Height="72"
+                                    d:Height="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}"
+                                    d:Source="/GpScanner;component/scanner.ico"
+                                    d:Width="{Binding PreviewWidth, Source={x:Static properties:Settings.Default}}">
+                                    <PdfViewer:PdfShadowedImage.Source>
+                                        <PriorityBinding>
+                                            <Binding IsAsync="True"
+                                                Mode="OneWay"
+                                                Path="ResimThumb" />
+                                            <Binding Converter="{StaticResource FilePathToIconConverter}"
+                                                IsAsync="True"
+                                                Path="FilePath" />
+                                        </PriorityBinding>
+                                    </PdfViewer:PdfShadowedImage.Source>
+                                </PdfViewer:PdfShadowedImage>
+                                <Extensions:ContentToggleButton DataContext="{Binding DataContext.TwainCtrl, RelativeSource={RelativeSource AncestorType=Window}}"
+                                    IsEnabled="{Binding DataContext.Seçili, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                    PlacementMode="Left">
+                                    <Extensions:ContentToggleButton.OverContent>
+                                        <Extensions:ResizablePanel Width="410"
+                                            Height="410"
+                                            MinWidth="410"
+                                            MinHeight="410">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition />
+                                                    <RowDefinition Height="Auto" />
+                                                </Grid.RowDefinitions>
+                                                <twainctrl:DrawControl x:Name="DrawControl" SilentApply="True" />
+                                                <Button Grid.Row="1"
+                                                    Command="{Binding LoadMiniDraw}"
+                                                    Content="{twainctrl:Loc LOAD}">
+                                                    <Button.CommandParameter>
+                                                        <MultiBinding Converter="{StaticResource CloneConverter}">
+                                                            <Binding Mode="OneWay" Source="{x:Reference DrawControl}" />
+                                                            <Binding Mode="OneWay"
+                                                                Path="DataContext.Resim"
+                                                                RelativeSource="{RelativeSource Mode=TemplatedParent}" />
+                                                        </MultiBinding>
+                                                    </Button.CommandParameter>
+                                                </Button>
+                                            </Grid>
+                                        </Extensions:ResizablePanel>
+                                    </Extensions:ContentToggleButton.OverContent>
+                                </Extensions:ContentToggleButton>
+                            </StackPanel>
+                        </StackPanel>
+                    </CheckBox>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+        </ListBox>
+    </GroupBox>
+</UserControl>

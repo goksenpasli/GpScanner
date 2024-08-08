@@ -144,12 +144,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private double zipProgress;
     private bool zipProgressIndeterminate;
 
-    public GpScannerViewModel(IWindowService windowService)
+    public GpScannerViewModel(IWindowService windowService, TwainCtrl twainCtrl)
     {
         WindowService = windowService;
+        TwainCtrl = twainCtrl;
         CreateEmptySqliteDatabase();
         RegisterSimplePdfFileWatcher();
-        TesseractViewModel = new TesseractViewModel(windowService);
+        TesseractViewModel = new TesseractViewModel(windowService, twainCtrl);
         TranslateViewModel = new TranslateViewModel();
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
@@ -2306,6 +2307,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public ICommand Tümünüİşaretle { get; }
 
     public ICommand TümününİşaretiniKaldır { get; }
+
+    public TwainCtrl TwainCtrl { get; }
 
     public RelayCommand<object> UndoApplyCalendarData { get; }
 
