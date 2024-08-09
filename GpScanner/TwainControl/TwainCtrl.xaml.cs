@@ -1507,10 +1507,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ShuffleData = new RelayCommand<object>(
             parameter =>
             {
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
                 if (MessageBox.Show($"{Translation.GetResStringValue("RANDOM")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Random random = new();
-                    Scanner.Resimler = Shuffle(Scanner.Resimler, random);
+                    Scanner.Resimler = altkeypressed ? Shuffle(GetSelectedImages(), random) : Shuffle(Scanner.Resimler, random);
                     Scanner.RefreshIndexNumbers(Scanner.Resimler);
                 }
             },
@@ -3639,6 +3640,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if ((e.Data.GetData(System.Windows.DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
         {
+            foreach (string folder in from string file in droppedfiles where File.GetAttributes(file).HasFlag(FileAttributes.Directory) select file)
+            {
+                await Task.Run(() => AddFiles(Directory.GetFiles(folder), DecodeHeight));
+            }
             await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
         }
     }
@@ -4748,7 +4753,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Settings.Default.Right = PageWidth;
     }
 
-    private ObservableCollection<T> Shuffle<T>(ObservableCollection<T> collection, Random random)
+    private ObservableCollection<T> Shuffle<T>(IList<T> collection, Random random)
     {
         for (int i = collection.Count - 1; i > 0; i--)
         {
@@ -4757,7 +4762,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             collection[i] = collection[j];
             collection[j] = temp;
         }
-        return collection;
+        return new ObservableCollection<T>(collection);
     }
 
     private List<T[]> SplitArray<T>(T[] array, params int[] indices)

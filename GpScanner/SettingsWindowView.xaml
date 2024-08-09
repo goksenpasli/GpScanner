@@ -1337,24 +1337,6 @@
                             VirtualizingPanel.ScrollUnit="Pixel"
                             VirtualizingPanel.VirtualizationMode="Recycling">
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn>
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <TextBlock>
-                                                <Hyperlink BaselineAlignment="Bottom"
-                                                    Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                    CommandParameter="{Binding Mode=OneWay, Path=FileName}"
-                                                    TextDecorations="None">
-                                                    <InlineUIContainer>
-                                                        <Image Width="16"
-                                                            Height="16"
-                                                            Source="{Binding Mode=OneWay, IsAsync=True, Path=FileName, Converter={StaticResource FilePathToIconConverter}}" />
-                                                    </InlineUIContainer>
-                                                </Hyperlink>
-                                            </TextBlock>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
                                 <DataGridTextColumn Binding="{Binding Id, Mode=OneWay}" Header="ID" />
                                 <DataGridTemplateColumn Header="{twainctrl:Loc FILENAME}" SortMemberPath="FileName">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -1387,9 +1369,10 @@
                                         <DataTemplate>
                                             <Extensions:ButtonedTextBox Background="{x:Null}"
                                                 BorderBrush="{x:Null}"
+                                                Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                CommandParameter="{Binding Mode=OneWay, Path=FileName}"
                                                 CopyButtonVisibility="Collapsed"
                                                 IsReadOnly="True"
-                                                OpenButtonVisibility="Collapsed"
                                                 PasteButtonVisibility="Collapsed"
                                                 PrintButtonVisibility="Visible"
                                                 ResetButtonVisibility="Collapsed"

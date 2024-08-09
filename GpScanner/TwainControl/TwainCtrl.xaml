@@ -1335,18 +1335,20 @@
                                             Command="{Binding ShuffleData}"
                                             TextDecorations="None"
                                             ToolTip="{local:Loc RANDOM}">
-                                            <Canvas Width="16"
-                                                Height="16"
-                                                Background="Transparent">
-                                                <Canvas.Resources>
-                                                    <Style BasedOn="{StaticResource RandomDiceStyle}" TargetType="Ellipse" />
-                                                </Canvas.Resources>
-                                                <Ellipse Canvas.Left="6" Canvas.Top="6" />
-                                                <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
-                                                <Ellipse Canvas.Left="10.5" Canvas.Top="10.5" />
-                                                <Ellipse Canvas.Left="10.5" Canvas.Top="2" />
-                                                <Ellipse Canvas.Left="1.5" Canvas.Top="10.5" />
-                                            </Canvas>
+                                            <Border BorderBrush="Cyan" BorderThickness="1">
+                                                <Canvas Width="16"
+                                                    Height="16"
+                                                    Background="Transparent">
+                                                    <Canvas.Resources>
+                                                        <Style BasedOn="{StaticResource RandomDiceStyle}" TargetType="Ellipse" />
+                                                    </Canvas.Resources>
+                                                    <Ellipse Canvas.Left="6" Canvas.Top="6" />
+                                                    <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
+                                                    <Ellipse Canvas.Left="10.5" Canvas.Top="10.5" />
+                                                    <Ellipse Canvas.Left="10.5" Canvas.Top="2" />
+                                                    <Ellipse Canvas.Left="1.5" Canvas.Top="10.5" />
+                                                </Canvas>
+                                            </Border>
                                         </Hyperlink>
                                         <LineBreak />
                                         <Run BaselineAlignment="Center" Text="1" />

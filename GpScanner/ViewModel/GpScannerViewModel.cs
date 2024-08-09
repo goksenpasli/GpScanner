@@ -2840,8 +2840,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         string databaseFilePath = Settings.Default.DatabaseFile;
         if (!File.Exists(databaseFilePath))
         {
-            databaseFilePath = $@"{ProfileFolder}\Data.db";
-            Settings.Default.DatabaseFile = databaseFilePath;
+            Settings.Default.DatabaseFile = $@"{ProfileFolder}\Data.db";
         }
         if (File.Exists(databaseFilePath))
         {
@@ -2851,7 +2850,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         _ = context?.Database?
         .ExecuteSqlCommand(
             """
-                CREATE TABLE "Data" (
+                CREATE TABLE IF NOT EXISTS "Data" (
                 	"Id"	INTEGER UNIQUE,
                 	"FileName"	TEXT,
                 	"QrData"	TEXT,
@@ -2862,7 +2861,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         _ = context?.Database?
         .ExecuteSqlCommand(
             """
-                CREATE INDEX "index" ON "Data" (
+                CREATE INDEX IF NOT EXISTS "index" ON "Data" (
                 	"FileContent",
                 	"FileName"	ASC
                 );
@@ -2870,7 +2869,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         _ = context?.Database?
         .ExecuteSqlCommand(
             """
-                CREATE TABLE "ReminderDatas" (
+                CREATE TABLE IF NOT EXISTS "ReminderDatas" (
                 	"Id"	INTEGER UNIQUE,
                 	"Açıklama"	TEXT,
                 	"Seen"	INTEGER,
