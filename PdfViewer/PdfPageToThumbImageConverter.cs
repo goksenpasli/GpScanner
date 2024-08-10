@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using PdfiumViewer;
 using System;
 using System.Globalization;
 using System.IO;
@@ -32,17 +33,7 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
         {
             try
             {
-                return Task.Run(
-                    async () =>
-                    {
-                        BitmapImage bitmapImage = await PdfViewer.ConvertToImgAsync(PdfFilePath, index, Dpi);
-                        if (bitmapImage is null)
-                        {
-                            return null;
-                        }
-                        bitmapImage.Freeze();
-                        return bitmapImage;
-                    });
+                return Task.Run(() => ConvertPdfPageToImageAsync(PdfFilePath, index, Dpi));
             }
             catch (Exception)
             {
@@ -53,4 +44,12 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
     }
 
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
+
+    private async Task<BitmapSource> ConvertPdfPageToImageAsync(string pdfFilePath, int index, int dpi)
+    {
+        using PdfDocument pdfDoc = PdfDocument.Load(pdfFilePath);
+        int width = (int)(pdfDoc.PageSizes[index - 1].Width / 72 * dpi);
+        int height = (int)(pdfDoc.PageSizes[index - 1].Height / 72 * dpi);
+        return await PdfViewer.ConvertToImgAsync(pdfDoc, dpi, index - 1, width, height);
+    }
 }

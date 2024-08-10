@@ -138,6 +138,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private List<Data> sqlQueryData;
     private string sqlText = string.Empty;
     private TesseractViewModel tesseractViewModel;
+    private long totalFileSize;
     private TranslateViewModel translateViewModel;
     private ObservableCollection<string> unIndexedFiles;
     private IEnumerable<IGrouping<int, ContributionData>> yearlyGroupData;
@@ -379,8 +380,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
                 }
             },
-            parameter => !OcrIsBusy && UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang)
-);
+            parameter => !OcrIsBusy && UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+
         WordOcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>
             {
@@ -2290,6 +2291,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool TesseractVisualCRuntimeInstalled => CheckFileVersion($@"{Environment.SystemDirectory}\msvcp140.dll") > new Version(MinimumVcVersion);
 
+    public long TotalFileSize
+    {
+        get => totalFileSize;
+        set
+        {
+            if (totalFileSize != value)
+            {
+                totalFileSize = value;
+                OnPropertyChanged(nameof(TotalFileSize));
+            }
+        }
+    }
+
     public TranslateViewModel TranslateViewModel
     {
         get => translateViewModel;
@@ -3085,6 +3099,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         .ToList();
     }
 
+    private long GetTotalFileSizeMB(string[] files) => files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024 ?? 0;
+
     private async Task<ObservableCollection<string>> GetUnindexedFileData()
     {
         try
@@ -3205,6 +3221,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
             BurnFiles = burnfiles;
             CompressedFiles = compressedfiles;
+            TotalFileSize = GetTotalFileSizeMB([.. BurnFiles]);
         }
 
         if (e.PropertyName is "SelectedContributionYear")

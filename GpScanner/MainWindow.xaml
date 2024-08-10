@@ -1356,6 +1356,7 @@
                         <sys:String>/</sys:String>
                         <Run Text="{Binding Mode=OneWay, ElementName=LbDoc, Path=Items.Count}" />
                         <Run Text="{twainctrl:Loc DOCUMENT}" />
+                        <Run Text="{Binding TotalFileSize, Mode=OneWay, StringFormat={}{0} MB}" />
                     </TextBlock>
                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                     <Image Width="16"
@@ -1421,7 +1422,7 @@
                                 Height="150"
                                 MinWidth="260"
                                 MinHeight="150">
-                                <local:MiniDocumentView/>
+                                <local:MiniDocumentView />
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                         <Image Width="16"

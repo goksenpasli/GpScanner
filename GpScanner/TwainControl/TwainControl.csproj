@@ -299,6 +299,9 @@
     <Compile Include="Resolution.cs" />
     <Compile Include="SafeIconHandle.cs" />
     <Compile Include="ScannedImage.cs" />
+    <Compile Include="ScanProfilesView.xaml.cs">
+      <DependentUpon>ScanProfilesView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SimpleArchiveViewer.cs" />
     <Compile Include="TiffFileHandler.cs" />
     <Compile Include="ToolBox.xaml.cs">
@@ -341,6 +344,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PdfSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ScanProfilesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

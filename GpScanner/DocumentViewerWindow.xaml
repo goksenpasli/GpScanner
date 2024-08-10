@@ -63,7 +63,7 @@
             VirtualizingPanel.CacheLengthUnit="Pixel"
             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
             VirtualizingPanel.ScrollUnit="Pixel"
-            VirtualizingPanel.VirtualizationMode="Recycling">
+            VirtualizingPanel.VirtualizationMode="Standard">
             <ListBox.ItemContainerStyle>
                 <Style BasedOn="{StaticResource ListBoxItemTemplate}" TargetType="ListBoxItem" />
             </ListBox.ItemContainerStyle>

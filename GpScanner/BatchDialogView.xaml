@@ -304,12 +304,25 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
-                                <twainctrl:EypPdfViewer Grid.Column="1"
-                                    DpiListVisibility="Collapsed"
-                                    PdfFilePath="{Binding SelectedBatchFile.Name}"
-                                    PdfTextContentVisibility="Collapsed"
-                                    SearchTextContentVisibility="Collapsed"
-                                    TifNavigasyonButtonEtkin="Collapsed" />
+                                <Grid Grid.Column="1">
+                                    <twainctrl:EypPdfViewer DpiListVisibility="Collapsed"
+                                        PdfFilePath="{Binding SelectedBatchFile.Name}"
+                                        PdfTextContentVisibility="Collapsed"
+                                        SearchTextContentVisibility="Collapsed"
+                                        TifNavigasyonButtonEtkin="Collapsed" />
+                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">
+                                        <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                                            Command="{Binding OpenOriginalFile}"
+                                            CommandParameter="{Binding Mode=OneWay, Path=SelectedBatchFile.Name}"
+                                            TextDecorations="None">
+                                            <Run FontFamily="Wingdings 2"
+                                                FontSize="18"
+                                                FontWeight="Bold"
+                                                Foreground="Cyan"
+                                                Text="4" />
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </GroupBox>
@@ -445,7 +458,7 @@
                                     VirtualizingPanel.CacheLengthUnit="Pixel"
                                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                     VirtualizingPanel.ScrollUnit="Pixel"
-                                    VirtualizingPanel.VirtualizationMode="Recycling">
+                                    VirtualizingPanel.VirtualizationMode="Standard">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate>
                                             <Image Width="64"
@@ -468,12 +481,25 @@
                                         </DataTemplate>
                                     </ListBox.ItemTemplate>
                                 </ListBox>
-                                <twainctrl:EypPdfViewer Grid.Column="1"
-                                    DpiListVisibility="Collapsed"
-                                    PdfFilePath="{Binding Source={x:Reference Lb}, Path=SelectedItem, Mode=OneWay}"
-                                    PdfTextContentVisibility="Collapsed"
-                                    SearchTextContentVisibility="Collapsed"
-                                    TifNavigasyonButtonEtkin="Collapsed" />
+                                <Grid Grid.Column="1">
+                                    <twainctrl:EypPdfViewer DpiListVisibility="Collapsed"
+                                        PdfFilePath="{Binding SelectedItem, Mode=OneWay, Source={x:Reference Lb}}"
+                                        PdfTextContentVisibility="Collapsed"
+                                        SearchTextContentVisibility="Collapsed"
+                                        TifNavigasyonButtonEtkin="Collapsed" />
+                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">
+                                        <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                                            Command="{Binding OpenOriginalFile}"
+                                            CommandParameter="{Binding SelectedItem, Mode=OneWay, Source={x:Reference Lb}}"
+                                            TextDecorations="None">
+                                            <Run FontFamily="Wingdings 2"
+                                                FontSize="18"
+                                                FontWeight="Bold"
+                                                Foreground="Cyan"
+                                                Text="4" />
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </Grid>
                             </Grid>
                         </Grid>
                     </GroupBox>

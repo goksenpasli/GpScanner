@@ -1337,7 +1337,6 @@
                             VirtualizingPanel.ScrollUnit="Pixel"
                             VirtualizingPanel.VirtualizationMode="Recycling">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Binding="{Binding Id, Mode=OneWay}" Header="ID" />
                                 <DataGridTemplateColumn Header="{twainctrl:Loc FILENAME}" SortMemberPath="FileName">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

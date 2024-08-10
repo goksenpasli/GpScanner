@@ -43,18 +43,15 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <TextBlock VerticalAlignment="Center">
-                        <Hyperlink BaselineAlignment="Center"
-                            Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
+                        <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                            Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
                             CommandParameter="{Binding Mode=OneWay}"
                             TextDecorations="None">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="3" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
+                            <Run FontFamily="Wingdings 2"
+                                FontSize="16"
+                                FontWeight="Bold"
+                                Foreground="Cyan"
+                                Text="4" />
                         </Hyperlink>
                         <InlineUIContainer BaselineAlignment="Center">
                             <Image Width="16"
