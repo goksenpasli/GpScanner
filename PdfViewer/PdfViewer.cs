@@ -46,8 +46,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty SnapTickProperty =
         DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
-    public static readonly DependencyProperty ThumbsVisibleProperty =
-        DependencyProperty.Register("ThumbsVisible", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty ToolBarVisibilityProperty =
         DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty ZoomEnabledProperty = DependencyProperty.Register("ZoomEnabled", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
@@ -175,7 +173,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter =>
             {
                 double zoomFactor = Orientation != FitImageOrientation.Width ? ActualHeight / Source.Height : ActualWidth / Source.Width;
-                Zoom = zoomFactor != 0 ? zoomFactor : 1;
+                Zoom = Math.Truncate(zoomFactor * 100) / 100 != 0 ? Math.Truncate(zoomFactor * 100) / 100 : 1;
             },
             parameter => Source is not null && File.Exists(PdfFilePath));
 
@@ -513,8 +511,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ImageSource Source { get => (ImageSource)GetValue(SourceProperty); set => SetValue(SourceProperty, value); }
 
-    public bool ThumbsVisible { get => (bool)GetValue(ThumbsVisibleProperty); set => SetValue(ThumbsVisibleProperty, value); }
-
     public Visibility TifNavigasyonButtonEtkin
     {
         get => tifNavigasyonButtonEtkin;
@@ -570,7 +566,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public RelayCommand<object> ZoomIncrease { get; }
 
-    public double ZoomIncreaseLevel { get; } = 0.2;
+    public double ZoomIncreaseLevel { get; } = 0.1;
 
     public static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 72)
     {

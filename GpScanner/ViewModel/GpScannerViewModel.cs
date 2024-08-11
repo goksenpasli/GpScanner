@@ -2526,6 +2526,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public async void ReloadFileDatas(bool dateapplytoday = true)
     {
         Dosyalar = await GetScannerFileData();
+        ReloadDocumentViewerFiles();
         if (dateapplytoday)
         {
             BaşlangıçTarihi = BitişTarihi = DateTime.Today;
@@ -3358,6 +3359,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         List<string> folders = [.. Settings.Default.AdditionalIndexFolders.OfType<string>(), Twainsettings.Settings.Default.AutoFolder,];
         MultiFolderWatcher.Watch(this, folders);
+    }
+
+    private void ReloadDocumentViewerFiles()
+    {
+        if (WindowService?.GetActiveWindow()?.DataContext is DocumentViewerModel documentViewerModel)
+        {
+            IEnumerable<string> files = documentViewerModel.DirectoryAllPdfFiles;
+            string currentfile = documentViewerModel.FilePath;
+            documentViewerModel.DirectoryAllPdfFiles = null;
+            documentViewerModel.DirectoryAllPdfFiles = files;
+            documentViewerModel.FilePath = null;
+            documentViewerModel.FilePath = currentfile;
+        }
     }
 
     private async Task<ObservableCollection<ReminderData>> ReminderYükle()

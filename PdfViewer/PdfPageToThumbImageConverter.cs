@@ -11,7 +11,7 @@ namespace PdfViewer;
 
 public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
-    private int dpi = 16;
+    private int dpi = 20;
 
     public int Dpi
     {

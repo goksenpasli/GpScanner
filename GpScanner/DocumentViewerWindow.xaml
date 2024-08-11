@@ -38,7 +38,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="255" />
+            <ColumnDefinition Width="195" MinWidth="195" />
+            <ColumnDefinition Width="3" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <RepeatButton Command="{Binding Back}"
@@ -46,9 +47,14 @@
             Content="é"
             FontFamily="Wingdings"
             FontSize="16" />
+        <GridSplitter Grid.RowSpan="3"
+            Grid.Column="1"
+            Width="3"
+            HorizontalAlignment="Stretch"
+            Background="{StaticResource GroupBoxBackGround}" />
         <ContentControl x:Name="cnt"
             Grid.RowSpan="3"
-            Grid.Column="1"
+            Grid.Column="2"
             d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
             d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
             Content="{Binding FilePath, IsAsync=True, Mode=OneWay}"
@@ -70,11 +76,11 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel>
-                        <ContentControl HorizontalAlignment="Left"
+                        <ContentControl HorizontalAlignment="Center"
                             d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}"
                             Content="{Binding IsAsync=True, Mode=OneWay}"
                             ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                        <Extensions:ButtonedTextBox HorizontalAlignment="Left"
+                        <Extensions:ButtonedTextBox HorizontalAlignment="Center"
                             d:Description="FileName"
                             d:Text="FileName"
                             Background="{x:Null}"
@@ -87,7 +93,7 @@
                             Text="{Binding Mode=OneWay}"
                             TextBoxVisibility="Collapsed">
                             <Extensions:ButtonedTextBox.Description>
-                                <TextBlock>
+                                <TextBlock HorizontalAlignment="Center">
                                     <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
                                     <Run Text="{Binding Mode=OneWay, Converter={StaticResource PdfFileNameToInfoConverter}}" />
                                 </TextBlock>
@@ -96,6 +102,13 @@
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                        ItemSize="170,260"
+                        SpacingMode="None" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
         </ListBox>
         <RepeatButton Grid.Row="2"
             Command="{Binding Forward}"

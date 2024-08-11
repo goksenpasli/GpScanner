@@ -12,7 +12,22 @@ namespace GpScanner.Converter;
 
 public sealed class PdfMultiplePageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
+    private int dpi = 20;
     private uint maxPageCount = 2;
+
+    public int Dpi
+    {
+        get => dpi;
+
+        set
+        {
+            if (dpi != value)
+            {
+                dpi = value;
+                OnPropertyChanged(nameof(Dpi));
+            }
+        }
+    }
 
     public uint MaxPageCount
     {
@@ -46,7 +61,7 @@ public sealed class PdfMultiplePageToThumbImageConverter : InpcBase, IMultiValue
 
                     for (int i = 0; i < bitmapImages?.Length; i++)
                     {
-                        bitmapImages[i] = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfFilePath, i + 1, 16);
+                        bitmapImages[i] = await PdfViewer.PdfViewer.ConvertToImgAsync(pdfFilePath, i + 1, Dpi);
                         bitmapImages[i]?.Freeze();
                     }
 
