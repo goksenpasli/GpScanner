@@ -135,11 +135,6 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         SplitAllImage = new RelayCommand<object>(
             async parameter =>
             {
-                if (DataContext is not TwainCtrl twainControl)
-                {
-                    return;
-                }
-
                 List<ScannedImage> listcroppedimages;
                 PdfDocument pdfdocument = null;
                 bool splitpdfbypage = Keyboard.Modifiers == ModifierKeys.Alt;
@@ -155,31 +150,28 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 string savefolder = CreateSaveFolder("SPLIT");
                 string path = savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf");
                 pdfdocument.Save(path);
-                if (splitpdfbypage)
+
+                if (DataContext is TwainCtrl twainCtrl)
                 {
-                    twainControl.SplitPdfPageCount(path, savefolder, 1);
+                    if (splitpdfbypage)
+                    {
+                        twainCtrl.SplitPdfPageCount(path, savefolder, 1);
+                    }
+                    if (Settings.Default.RemoveProcessedImage)
+                    {
+                        twainCtrl.SeçiliListeTemizle.Execute(null);
+                    }
                 }
 
                 WebAdreseGit.Execute(savefolder);
                 listcroppedimages = null;
                 pdfdocument = null;
-                if (!Settings.Default.RemoveProcessedImage)
-                {
-                    return;
-                }
-
-                twainControl.SeçiliListeTemizle.Execute(null);
             },
             parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 0);
 
         MergeHorizontal = new RelayCommand<object>(
             async parameter =>
             {
-                if (DataContext is not TwainCtrl twainControl)
-                {
-                    return;
-                }
-
                 List<ScannedImage> listcroppedimages;
                 Orientation orientation = Keyboard.Modifiers == ModifierKeys.Alt ? Orientation.Vertical : Orientation.Horizontal;
                 string savefolder = CreateSaveFolder("MERGE");
@@ -192,12 +184,10 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                     });
                 WebAdreseGit.Execute(savefolder);
                 listcroppedimages = null;
-                if (!Settings.Default.RemoveProcessedImage)
+                if (Settings.Default.RemoveProcessedImage && DataContext is TwainCtrl twainCtrl)
                 {
-                    return;
+                    twainCtrl.SeçiliListeTemizle.Execute(null);
                 }
-
-                twainControl.SeçiliListeTemizle.Execute(null);
             },
             parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
 
@@ -208,30 +198,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 string savefolder = CreateSaveFolder("MERGE");
                 List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
                 PdfDocument pdfdocument = new();
-                XRect box;
                 PdfPage page = null;
                 int imageindex = 0;
                 for (int i = 0; i < seçiliresimler.Count / (Scanner.SliceCountWidth * Scanner.SliceCountHeight); i++)
                 {
                     page = pdfdocument.AddPage();
-                    switch (Paper.PaperType)
-                    {
-                        case "Custom":
-                            page.Width = XUnit.FromCentimeter(Paper.Width);
-                            page.Height = XUnit.FromCentimeter(Paper.Height);
-                            break;
-
-                        case "Original":
-                            page.Width = XUnit.FromPoint(seçiliresimler[i].Resim.PixelWidth);
-                            page.Height = XUnit.FromPoint(seçiliresimler[i].Resim.PixelHeight);
-                            break;
-
-                        default:
-                            page.Size = Paper.GetPaperSize();
-                            break;
-                    }
-
-                    page.Orientation = pageOrientation;
+                    SetPageSizeAndOrientation(page, seçiliresimler[i], pageOrientation);
                     for (int heighindex = 0; heighindex < Scanner.SliceCountHeight; heighindex++)
                     {
                         for (int widthindex = 0; widthindex < Scanner.SliceCountWidth; widthindex++)
@@ -240,32 +212,16 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                             {
                                 break;
                             }
-
+                            BitmapFrame bitmapframe = seçiliresimler[imageindex].Resim;
+                            double x = widthindex * page.Width / Scanner.SliceCountWidth;
+                            double y = heighindex * page.Height / Scanner.SliceCountHeight;
+                            double width = page.Width / Scanner.SliceCountWidth;
+                            double height = page.Height / Scanner.SliceCountHeight;
                             await Task.Run(
                                 () =>
                                 {
-                                    double x = widthindex * page.Width / Scanner.SliceCountWidth;
-                                    double y = heighindex * page.Height / Scanner.SliceCountHeight;
-                                    double width = page.Width / Scanner.SliceCountWidth;
-                                    double height = page.Height / Scanner.SliceCountHeight;
-                                    BitmapFrame currentimage = seçiliresimler.ElementAtOrDefault(imageindex).Resim;
-                                    double xratio = width / currentimage.PixelWidth;
-                                    BitmapSource bitmapsource = ResizeRatioImage
-                                                                ? currentimage.Resize(xratio)
-                                                                : CompressImage ? AutoRotate ? currentimage.Resize(width, height, 90 * (int)SelectedRotation) : currentimage.Resize(width, height) : currentimage;
-                                    using MemoryStream ms = new(bitmapsource.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
-                                    using XImage xImage = XImage.FromStream(ms);
-                                    using XGraphics gfx = XGraphics.FromPdfPage(page);
-                                    box = new XRect(x + BorderSize, y + BorderSize, width + (BorderSize * -2), height + (BorderSize * -2));
-                                    if (ResizeRatioImage)
-                                    {
-                                        gfx.DrawImage(xImage, new Point(x, y));
-                                    }
-                                    else
-                                    {
-                                        gfx.DrawImage(xImage, box);
-                                    }
-
+                                    BitmapSource resizedImage = ResizeOrCompressImage(bitmapframe, width, height);
+                                    DrawImageOnPage(page, resizedImage, x, y, width, height);
                                     imageindex++;
                                     ToolBoxPdfMergeProgressValue = imageindex / (double)seçiliresimler.Count;
                                 });
@@ -278,12 +234,11 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 WebAdreseGit.Execute(savefolder);
                 pdfdocument = null;
                 page = null;
-                if (Settings.Default.RemoveProcessedImage)
-                {
-                    (DataContext as TwainCtrl)?.SeçiliListeTemizle.Execute(null);
-                }
-
                 ToolBoxPdfMergeProgressValue = 0;
+                if (Settings.Default.RemoveProcessedImage && DataContext is TwainCtrl twainCtrl)
+                {
+                    twainCtrl.SeçiliListeTemizle.Execute(null);
+                }
             },
             parameter => Scanner?.AutoSave == true && Scanner?.Resimler?.Count(z => z.Seçili) > 1);
     }
@@ -461,6 +416,37 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
+    private void DrawImageOnPage(PdfPage page, BitmapSource image, double x, double y, double width, double height)
+    {
+        using MemoryStream ms = new(image.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+        using XImage xImage = XImage.FromStream(ms);
+        using XGraphics gfx = XGraphics.FromPdfPage(page);
+        XRect box = new(x + BorderSize, y + BorderSize, width - (2 * BorderSize), height - (2 * BorderSize));
+
+        if (ResizeRatioImage)
+        {
+            gfx.DrawImage(xImage, new Point(x, y));
+        }
+        else
+        {
+            gfx.DrawImage(xImage, box);
+        }
+    }
+
+    private BitmapSource ResizeOrCompressImage(BitmapFrame image, double width, double height)
+    {
+        double xRatio = width / image.PixelWidth;
+        if (ResizeRatioImage)
+        {
+            return image.Resize(xRatio);
+        }
+        if (CompressImage)
+        {
+            return image.Resize(width, height, AutoRotate ? 90 * (int)SelectedRotation : 0);
+        }
+        return image;
+    }
+
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "EnAdet")
@@ -508,6 +494,28 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             writeableBitmap.Freeze();
             Scanner.CroppedImage = writeableBitmap;
         }
+    }
+
+    private void SetPageSizeAndOrientation(PdfPage page, ScannedImage image, PageOrientation orientation)
+    {
+        switch (Paper.PaperType)
+        {
+            case "Custom":
+                page.Width = XUnit.FromCentimeter(Paper.Width);
+                page.Height = XUnit.FromCentimeter(Paper.Height);
+                break;
+
+            case "Original":
+                page.Width = XUnit.FromPoint(image.Resim.PixelWidth);
+                page.Height = XUnit.FromPoint(image.Resim.PixelHeight);
+                break;
+
+            default:
+                page.Size = Paper.GetPaperSize();
+                break;
+        }
+
+        page.Orientation = orientation;
     }
 
     private void UserControl_Loaded(object sender, RoutedEventArgs e)

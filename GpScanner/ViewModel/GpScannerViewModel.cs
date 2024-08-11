@@ -783,11 +783,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                         batchTxtOcr.FilePath = Path.GetFileName(item.ElementAtOrDefault(i));
                                         if (Settings.Default.PdfBatchCompress)
                                         {
-                                            BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i))).GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution).Save(pdffile);
+                                            BitmapFrame bitmapframe = BitmapFrame.Create(new Uri(item.ElementAtOrDefault(i)));
+                                            bitmapframe?.Freeze();
+                                            using PdfDocument pdfdocument = bitmapframe?.GeneratePdf(scannedText, Format.Jpg, paper, Twainsettings.Settings.Default.JpegQuality, Twainsettings.Settings.Default.ImgLoadResolution);
+                                            pdfdocument.Save(pdffile);
                                         }
                                         else
                                         {
-                                            item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText).Save(pdffile);
+                                            using PdfDocument pdfdocument = item.ElementAtOrDefault(i).GeneratePdf(paper, scannedText);
+                                            pdfdocument.Save(pdffile);
                                         }
                                         await Application.Current?.Dispatcher?.InvokeAsync(
                                         () =>

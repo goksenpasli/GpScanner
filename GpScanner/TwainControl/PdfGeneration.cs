@@ -146,10 +146,9 @@ public static class PdfGeneration
             {
                 string imagefile = imagefiles[i];
                 PdfPage page = document.AddPage();
-                page.Size = paper.GetPaperSize();
                 using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                 using XImage xImage = XImage.FromFile(imagefile);
-                XSize size = PageSizeConverter.ToSize(page.Size);
+                XSize size = GetPageSize(paper, xImage, page);
                 if (xImage.PixelWidth < xImage.PixelHeight)
                 {
                     page.Orientation = PageOrientation.Portrait;
@@ -197,10 +196,9 @@ public static class PdfGeneration
         try
         {
             PdfPage page = document.AddPage();
-            page.Size = paper.GetPaperSize();
             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
             using XImage xImage = XImage.FromFile(imagefile);
-            XSize size = PageSizeConverter.ToSize(page.Size);
+            XSize size = GetPageSize(paper, xImage, page);
             if (xImage.PixelWidth < xImage.PixelHeight)
             {
                 page.Orientation = PageOrientation.Portrait;
@@ -569,6 +567,8 @@ public static class PdfGeneration
     private static XSize GetPageSize(Paper paper, ScannedImage scannedimage, PdfPage page) => GetPageSize(paper, scannedimage, page, img => img.Resim.PixelWidth, img => img.Resim.PixelHeight);
 
     private static XSize GetPageSize(Paper paper, BitmapSource bitmapframe, PdfPage page) => GetPageSize(paper, bitmapframe, page, img => img.PixelWidth, img => img.PixelHeight);
+
+    private static XSize GetPageSize(Paper paper, XImage ximage, PdfPage page) => GetPageSize(paper, ximage, page, img => img.PixelWidth, img => img.PixelHeight);
 
     private static XSize GetPageSize<T>(Paper paper, T image, PdfPage page, Func<T, int> getWidth, Func<T, int> getHeight)
     {
