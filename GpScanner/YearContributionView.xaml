@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
     xmlns:Properties="clr-namespace:GpScanner.Properties"
+    xmlns:converter="clr-namespace:GpScanner.Converter"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GpScanner"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -10,11 +11,13 @@
     xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    x:Name="UserControl"
     d:DataContext="{d:DesignInstance Type={x:Type viewmodel:GpScannerViewModel}}"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <converter:ContributionOptimalViewportConverter x:Key="ContributionOptimalViewportConverter" />
         <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
     </UserControl.Resources>
     <GroupBox>
@@ -159,13 +162,18 @@
                                                     <ListBox Grid.Row="1"
                                                         Width="800"
                                                         Height="600"
-                                                        ItemsSource="{Binding Name}"
                                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                         VirtualizingPanel.CacheLengthUnit="Pixel"
                                                         VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                                         VirtualizingPanel.ScrollUnit="Pixel"
                                                         VirtualizingPanel.VirtualizationMode="Standard">
+                                                        <ListBox.ItemsSource>
+                                                            <MultiBinding Converter="{StaticResource ContributionOptimalViewportConverter}">
+                                                                <Binding Path="Name" />
+                                                                <Binding Path="DataContext.ContributionPreviewSize" Source="{x:Reference UserControl}" />
+                                                            </MultiBinding>
+                                                        </ListBox.ItemsSource>
                                                         <ListBox.Style>
                                                             <Style TargetType="{x:Type ListBox}">
                                                                 <Style.Triggers>

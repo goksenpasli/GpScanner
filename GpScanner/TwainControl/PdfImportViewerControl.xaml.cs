@@ -265,14 +265,19 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         OcrCurrentPdfPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is TwainCtrl twainCtrl && PdfViewer.Source is not null)
+                if (parameter is not TwainCtrl twainCtrl || PdfViewer.Source is null)
                 {
-                    OcrProgressIndeterminate = true;
-                    OcrText = await GetOcrData(twainCtrl.Scanner?.SelectedTtsLanguage, PdfViewer.Source.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                    OcrProgressIndeterminate = false;
+                    return;
                 }
+                OcrProgressIndeterminate = true;
+                using PdfDocument pdfDocument = await GenerateOcredPdfPage(PdfViewer, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution, twainCtrl.Scanner?.SelectedTtsLanguage, twainCtrl.SelectedPaper);
+                pdfDocument.Save(PdfViewer.PdfFilePath);
+                OcrText = PdfiumViewer.PdfDocument.Load(PdfViewer.PdfFilePath).GetPdfText(PdfViewer.Sayfa - 1);
+                OcrDialogOpen = false;
+                OcrDialogOpen = true;
+                OcrProgressIndeterminate = false;
             },
-            parameter => true);
+            parameter => parameter is TwainCtrl twainCtrl && !string.IsNullOrWhiteSpace(twainCtrl.Scanner?.SelectedTtsLanguage) && File.Exists(PdfViewer.PdfFilePath));
 
         WebAdreseGit = new RelayCommand<object>(parameter => TwainCtrl.GotoPage(parameter as string), parameter => true);
 
@@ -1111,6 +1116,32 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             gfx.RotateAtTransform(angle, center);
             gfx.DrawString(Text, font, brush, rect, XStringFormats.Center);
         }
+    }
+
+    private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper)
+    {
+        PdfDocument mainDocument = PdfReader.Open(pdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+        ObservableCollection<OcrData> ocrDatas = await pdfViewer.Source.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg).OcrAsync(ocrlang);
+        PdfDocument scanneddocument = ((BitmapSource)pdfViewer.Source).GeneratePdf(ocrDatas, ExtensionMethods.Format.Jpg, paper, jpegquality, dpi);
+        int[] pagesToReplace = [pdfViewer.Sayfa - 1];
+        if (pagesToReplace.Length <= scanneddocument.PageCount)
+        {
+            for (int i = 0; i < pagesToReplace.Length; i++)
+            {
+                int pageIndexToReplace = pagesToReplace[i];
+                if (pageIndexToReplace < mainDocument.PageCount)
+                {
+                    mainDocument.Pages.RemoveAt(pageIndexToReplace);
+                }
+                using MemoryStream ms = new();
+                scanneddocument.Save(ms);
+                using PdfDocument replacedocument = PdfReader.Open(ms, PdfDocumentOpenMode.Import);
+                PdfPage newPage = replacedocument.Pages[i];
+                _ = mainDocument.Pages.Insert(pageIndexToReplace, newPage);
+                return mainDocument;
+            }
+        }
+        return null;
     }
 
     private PdfTextAnnotation GeneratePdfTextAnnotation(XGraphics gfx, Rect rect, string content)

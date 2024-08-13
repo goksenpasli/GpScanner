@@ -138,6 +138,7 @@
     <Compile Include="BatchDialogView.xaml.cs">
       <DependentUpon>BatchDialogView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\ContributionOptimalViewportConverter.cs" />
     <Compile Include="Converter\CustomSizeToSizeConverter.cs" />
     <Compile Include="Converter\DocxInternalThumbnailExtractConverter.cs" />
     <Compile Include="Converter\FileNameExtractConverter.cs" />
