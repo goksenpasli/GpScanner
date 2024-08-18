@@ -768,4 +768,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Mostre a tela Splash</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>COMPUTADOR</value>
+  </data>
 </root>

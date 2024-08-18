@@ -768,4 +768,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Показати екран сплеску</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Комп'ютер</value>
+  </data>
 </root>

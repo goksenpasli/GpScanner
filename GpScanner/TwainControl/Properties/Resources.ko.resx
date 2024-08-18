@@ -778,4 +778,7 @@ PDF</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>시안 색상 제어는 하나 이상의 Alt Shift Ctrl 키와 다르게 작동합니다.</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>컴퓨터</value>
+  </data>
 </root>

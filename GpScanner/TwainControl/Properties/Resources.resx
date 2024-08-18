@@ -806,4 +806,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value />
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value />
+  </data>
 </root>

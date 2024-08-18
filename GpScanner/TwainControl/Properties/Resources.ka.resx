@@ -778,4 +778,7 @@ PDF</value>
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>აჩვენეთ Splash ეკრანი</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>კომპიუტერი</value>
+  </data>
 </root>

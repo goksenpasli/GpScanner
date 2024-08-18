@@ -1446,6 +1446,7 @@ public class Scanner : InpcBase, IDataErrorInfo
             { "[MINUTE]", DateTime.Now.Minute.ToString() },
             { "[SECOND]", DateTime.Now.Second.ToString() },
             { "[GUID]", Guid.NewGuid().ToString() },
+            { "[COMPUTER]", Environment.MachineName },
             { "[USERNAME]", Environment.UserName },
             { "[RESOLUTION]", Settings.Default.Çözünürlük.ToString() }
         };

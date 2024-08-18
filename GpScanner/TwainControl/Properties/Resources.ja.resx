@@ -768,4 +768,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>スプラッシュ画面を表示します</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>コンピューター</value>
+  </data>
 </root>

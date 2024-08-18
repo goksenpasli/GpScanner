@@ -28,10 +28,12 @@
     </UserControl.Resources>
     <GroupBox>
         <GroupBox.Header>
-            <Extension:ButtonedTextBox CancelCommand="{Binding ResetTesseractFilter}"
+            <Extension:ButtonedTextBox VerticalContentAlignment="Center"
+                CancelCommand="{Binding ResetTesseractFilter}"
                 Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                 CommandParameter="{Binding Tessdatafolder}"
                 CopyButtonVisibility="Collapsed"
+                Description="TESSERACT"
                 PasteButtonVisibility="Collapsed"
                 Text="{Binding SeçiliDil, UpdateSourceTrigger=PropertyChanged}" />
         </GroupBox.Header>

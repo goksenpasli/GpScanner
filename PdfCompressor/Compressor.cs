@@ -60,7 +60,7 @@ public class Compressor : Control, INotifyPropertyChanged
                 try
                 {
                     SetValue(CompressFinishedProperty, false);
-                    foreach (BatchPdfData file in BatchPdfList)
+                    foreach (var file in BatchPdfList.Where(file => File.Exists(file?.Filename)))
                     {
                         string outputFile = $"{Path.GetDirectoryName(file?.Filename)}\\{Path.GetFileNameWithoutExtension(file?.Filename)}_Compressed.pdf";
                         using PdfDocument pdfDocument = IsValidPdfFile(file?.Filename) ? await CompressFilePdfDocumentAsync(file?.Filename) : await GeneratePdfAsync(file?.Filename, Quality);
@@ -71,6 +71,7 @@ public class Compressor : Control, INotifyPropertyChanged
                         file.CompressionRatio = (double)outputFileSize / originalFileSize * 100;
                         file.Completed = true;
                     }
+
                     CompressionProgress = 0;
                 }
                 finally

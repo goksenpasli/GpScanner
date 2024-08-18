@@ -768,4 +768,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Показать Splash Screen</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Компьютер</value>
+  </data>
 </root>

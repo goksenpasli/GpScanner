@@ -771,4 +771,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Показване на екрана за пръскане</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Компютър</value>
+  </data>
 </root>

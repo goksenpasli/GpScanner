@@ -23,7 +23,9 @@
     <GroupBox>
         <GroupBox.Header>
             <StackPanel Orientation="Horizontal">
-                <ComboBox ItemsSource="{Binding Years}" SelectedItem="{Binding SelectedContributionYear}">
+                <ComboBox VerticalContentAlignment="Center"
+                    ItemsSource="{Binding Years}"
+                    SelectedItem="{Binding SelectedContributionYear}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock>
@@ -39,14 +41,25 @@
                 </TextBlock>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWSIZE}" />
-                <Slider Width="400"
-                    AutoToolTipPlacement="TopLeft"
-                    AutoToolTipPrecision="0"
-                    Maximum="800"
-                    Minimum="32"
-                    SmallChange="1"
-                    Style="{StaticResource Slider}"
-                    Value="{Binding ContributionPreviewSize}" />
+                <UniformGrid Rows="2">
+                    <Slider Width="400"
+                        AutoToolTipPlacement="TopLeft"
+                        AutoToolTipPrecision="0"
+                        Maximum="{Binding ElementName=LbPreviewSize, Path=Value}"
+                        Minimum="32"
+                        SmallChange="1"
+                        Style="{StaticResource Slider}"
+                        Value="{Binding ContributionPreviewSize}" />
+                    <Slider x:Name="LbPreviewSize"
+                        Width="400"
+                        AutoToolTipPlacement="TopLeft"
+                        AutoToolTipPrecision="0"
+                        Maximum="{x:Static SystemParameters.PrimaryScreenHeight}"
+                        Minimum="32"
+                        SmallChange="1"
+                        Style="{StaticResource Slider}"
+                        Value="{Binding ContributionListBoxSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static Properties:Settings.Default}}" />
+                </UniformGrid>
             </StackPanel>
         </GroupBox.Header>
         <Extensions:ContributionControl Contributions="{Binding ContributionData}" SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}">
@@ -160,8 +173,8 @@
                                                     </Grid.RowDefinitions>
                                                     <TextBlock><Run FontWeight="Bold" Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" /><LineBreak /><Run Text="{Binding Count}" /></TextBlock>
                                                     <ListBox Grid.Row="1"
-                                                        Width="800"
-                                                        Height="600"
+                                                        Width="{Binding ContributionListBoxSize, Mode=OneWay, Source={x:Static Properties:Settings.Default}}"
+                                                        Height="{Binding ContributionListBoxSize, Mode=OneWay, Source={x:Static Properties:Settings.Default}}"
                                                         ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                                         ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                                         VirtualizingPanel.CacheLengthUnit="Pixel"

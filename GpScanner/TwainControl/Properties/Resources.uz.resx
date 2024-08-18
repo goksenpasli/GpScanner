@@ -783,4 +783,7 @@ Hujjat qo'shing</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Har qanday shisha rangli boshqaruv Ctrl tugmachalari bir yoki bir nechtasi bilan farq qiladi!</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Kompyuter</value>
+  </data>
 </root>

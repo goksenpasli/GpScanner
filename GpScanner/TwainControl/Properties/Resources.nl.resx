@@ -768,4 +768,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Toon spatscherm</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>COMPUTER</value>
+  </data>
 </root>

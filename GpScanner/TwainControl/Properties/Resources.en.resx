@@ -199,7 +199,7 @@
     <value>GUID</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>USERNAME</value>
+    <value>USER NAME</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
     <value>SAVE PROFILE</value>
@@ -774,5 +774,8 @@ TO FILE</value>
   </data>
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>SHOW SPLASH SCREEN</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>COMPUTER</value>
   </data>
 </root>

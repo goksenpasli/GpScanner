@@ -1110,6 +1110,65 @@
                                                     <Setter Property="ToolTip" Value="{Binding CommandParameter, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource FileDateContextMenuConverter}}" />
                                                 </Style>
                                             </ContextMenu.Resources>
+                                            <MenuItem Header="{local:Loc AutoText}" ToolTipService.IsEnabled="False">
+                                                <MenuItem.Icon>
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="43" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </MenuItem.Icon>
+                                                <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR] [HOUR].[MINUTE].[SECOND]" Icon="{StaticResource TimeIcon}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock>
+                                                            <Run Text="{local:Loc DAY}" />
+                                                            <Run Text="{local:Loc MONTH}" />
+                                                            <Run Text="{local:Loc YEAR}" />
+                                                            <Run Text="{local:Loc TIME}" />
+                                                            <Run Text="{local:Loc MINUTE}" />
+                                                            <Run Text="{local:Loc SECOND}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[DATE]-[MONTH]-[YEAR]" Icon="{StaticResource TimeIcon}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock>
+                                                            <Run Text="{local:Loc DAY}" />
+                                                            <Run Text="{local:Loc MONTH}" />
+                                                            <Run Text="{local:Loc YEAR}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[MONTH]-[DATE]-[YEAR]" Icon="{StaticResource TimeIcon}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock>
+                                                            <Run Text="{local:Loc MONTH}" />
+                                                            <Run Text="{local:Loc DAY}" />
+                                                            <Run Text="{local:Loc YEAR}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[USERNAME] [RESOLUTION] DPI" Icon="{StaticResource TimeIcon}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock>
+                                                            <Run Text="{local:Loc USERNAME}" />
+                                                            <Run Text="{local:Loc RES}" />
+                                                            <System:String>DPI</System:String>
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                                <MenuItem CommandParameter="[COMPUTER] [USERNAME]" Icon="{StaticResource TimeIcon}">
+                                                    <MenuItem.Header>
+                                                        <TextBlock>
+                                                            <Run Text="{local:Loc COMPUTER}" />
+                                                            <Run Text="{local:Loc USERNAME}" />
+                                                        </TextBlock>
+                                                    </MenuItem.Header>
+                                                </MenuItem>
+                                            </MenuItem>
                                             <MenuItem CommandParameter="[DATE]"
                                                 Header="{local:Loc DAY}"
                                                 Icon="{StaticResource TimeIcon}" />
@@ -1147,6 +1206,18 @@
                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                 <Binding Source="Comres.dll" />
                                                                 <Binding Source="1" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </MenuItem.Icon>
+                                            </MenuItem>
+                                            <MenuItem CommandParameter="[COMPUTER]" Header="{local:Loc COMPUTER}">
+                                                <MenuItem.Icon>
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="15" />
                                                             </MultiBinding>
                                                         </Image.Source>
                                                     </Image>

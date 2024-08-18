@@ -783,4 +783,7 @@ Resminama goşuň</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Islendik aýna reňkli dolandyryş aşaky smena düwmeleriniň bir ýa-da köpüsi bilen başgaça işleýär!</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Kompýuter</value>
+  </data>
 </root>

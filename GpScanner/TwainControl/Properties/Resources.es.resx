@@ -768,4 +768,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Mostrar pantalla de salpicaduras</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>COMPUTADORA</value>
+  </data>
 </root>

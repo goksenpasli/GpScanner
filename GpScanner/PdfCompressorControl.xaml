@@ -51,7 +51,7 @@
                                         Value="{Binding Dpi, Mode=TwoWay, RelativeSource={RelativeSource Mode=TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
                                     <TextBlock VerticalAlignment="Center">
                                         <Run Text="{twainctrl:Loc JPEGQUALITY}" />
-                                        <Run Text="{Binding Quality, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        <Run Text="{Binding Quality, Mode=OneWay, StringFormat={}{0}%, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                                     </TextBlock>
                                     <Slider AutoToolTipPlacement="TopLeft"
                                         LargeChange="1"

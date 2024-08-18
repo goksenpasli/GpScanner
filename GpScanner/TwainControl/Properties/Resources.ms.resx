@@ -771,4 +771,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Tunjukkan skrin percikan</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Komputer</value>
+  </data>
 </root>

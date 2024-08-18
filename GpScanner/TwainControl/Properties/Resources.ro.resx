@@ -771,4 +771,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Afișați ecranul Splash</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>CALCULATOR</value>
+  </data>
 </root>

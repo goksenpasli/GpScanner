@@ -200,7 +200,7 @@ BESLEYİCİ</value>
     <value>GUID</value>
   </data>
   <data name="USERNAME" xml:space="preserve">
-    <value>KULLANICIADI</value>
+    <value>KULLANICI ADI</value>
   </data>
   <data name="SAVEPROFILE" xml:space="preserve">
     <value>PROFİL SAKLA</value>
@@ -780,5 +780,8 @@ BELGE EKLE</value>
   </data>
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>AÇILIŞ EKRANINI GÖSTER</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>BİLGİSAYAR</value>
   </data>
 </root>

@@ -771,4 +771,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Vis splashskærm</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>COMPUTER</value>
+  </data>
 </root>

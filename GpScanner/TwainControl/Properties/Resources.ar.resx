@@ -768,4 +768,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>عرض شاشة دفقة</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>حاسوب</value>
+  </data>
 </root>

@@ -771,4 +771,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Show ույց տալ splash էկրան</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Համակարգիչ</value>
+  </data>
 </root>

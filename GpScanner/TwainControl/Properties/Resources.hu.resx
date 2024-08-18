@@ -771,4 +771,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>A Splash képernyő megjelenítése</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>SZÁMÍTÓGÉP</value>
+  </data>
 </root>

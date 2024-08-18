@@ -771,4 +771,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Visa stänkskärm</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>DATOR</value>
+  </data>
 </root>

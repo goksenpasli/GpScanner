@@ -768,4 +768,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Εμφάνιση οθόνης εκτόξευσης</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>ΗΛΕΚΤΡΟΝΙΚΟΣ ΥΠΟΛΟΓΙΣΤΗΣ</value>
+  </data>
 </root>

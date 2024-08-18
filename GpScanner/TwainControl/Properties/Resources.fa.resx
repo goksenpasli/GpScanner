@@ -783,4 +783,7 @@
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>نمایش صفحه چلپ چلوپ</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>کامپیوتر</value>
+  </data>
 </root>

@@ -648,5 +648,17 @@ namespace GpScanner.Properties {
                 this["ShowSplash"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("600")]
+        public double ContributionListBoxSize {
+            get {
+                return ((double)(this["ContributionListBoxSize"]));
+            }
+            set {
+                this["ContributionListBoxSize"] = value;
+            }
+        }
     }
 }

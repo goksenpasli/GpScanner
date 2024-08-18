@@ -39,7 +39,7 @@
                                     Value="{Binding Dpi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                                 <TextBlock VerticalAlignment="Center">
                                     <Run Text="QUALITY" />
-                                    <Run Text="{Binding Quality, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Run Text="{Binding Quality, StringFormat={}{0}%, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" />
                                 </TextBlock>
                                 <Slider AutoToolTipPlacement="TopLeft"
                                     LargeChange="1"

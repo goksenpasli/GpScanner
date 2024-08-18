@@ -297,6 +297,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string COMPUTER {
+            get {
+                return ResourceManager.GetString("COMPUTER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string CONTENT {
             get {
                 return ResourceManager.GetString("CONTENT", resourceCulture);
