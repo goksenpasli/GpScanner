@@ -1,12 +1,4 @@
-﻿using Extensions;
-using Microsoft.Win32;
-using Ocr;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using PdfSharp.Pdf.Annotations;
-using PdfSharp.Pdf.IO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -21,6 +13,14 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Extensions;
+using Microsoft.Win32;
+using Ocr;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using PdfSharp.Pdf.Annotations;
+using PdfSharp.Pdf.IO;
 using TwainControl.Converter;
 using TwainControl.Properties;
 using Viewer = PdfViewer.PdfViewer;
@@ -272,7 +272,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 OcrProgressIndeterminate = true;
                 using PdfDocument pdfDocument = await GenerateOcredPdfPage(PdfViewer, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution, twainCtrl.Scanner?.SelectedTtsLanguage, twainCtrl.SelectedPaper);
                 pdfDocument.Save(PdfViewer.PdfFilePath);
-                OcrText = PdfiumViewer.PdfDocument.Load(PdfViewer.PdfFilePath).GetPdfText(PdfViewer.Sayfa - 1);
+                using PdfiumViewer.PdfDocument document = PdfiumViewer.PdfDocument.Load(PdfViewer.PdfFilePath);
+                OcrText = document.GetPdfText(PdfViewer.Sayfa - 1);
                 OcrDialogOpen = false;
                 OcrDialogOpen = true;
                 OcrProgressIndeterminate = false;
@@ -286,12 +287,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public PdfAnnotations Annotations
-    {
+    public PdfAnnotations Annotations {
         get => annotations;
 
-        set
-        {
+        set {
             if (annotations != value)
             {
                 annotations = value;
@@ -300,12 +299,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public string AnnotationText
-    {
+    public string AnnotationText {
         get => annotationText;
 
-        set
-        {
+        set {
             if (annotationText != value)
             {
                 annotationText = value;
@@ -314,11 +311,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool ApplyLandscape
-    {
+    public bool ApplyLandscape {
         get => applyLandscape;
-        set
-        {
+        set {
             if (applyLandscape != value)
             {
                 applyLandscape = value;
@@ -327,11 +322,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool ApplyPortrait
-    {
+    public bool ApplyPortrait {
         get => applyPortrait;
-        set
-        {
+        set {
             if (applyPortrait != value)
             {
                 applyPortrait = value;
@@ -344,10 +337,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> ClearLines { get; }
 
-    public Brush CombinedLinearBrush
-    {
-        get
-        {
+    public Brush CombinedLinearBrush {
+        get {
             Color firstColor = (Color)ColorConverter.ConvertFromString(GraphObjectFirstGradientColor.ToString());
             Color secondColor = (Color)ColorConverter.ConvertFromString(GraphObjectSecondGradientColor.ToString());
             return SelectedGradientMode switch
@@ -359,8 +350,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 _ => new LinearGradientBrush(firstColor, secondColor, new Point(0, 0.5), new Point(1, 0.5)),
             };
         }
-        set
-        {
+        set {
             if (combinedLinearBrush != value)
             {
                 combinedLinearBrush = value;
@@ -369,12 +359,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public string Çeviri
-    {
+    public string Çeviri {
         get => çeviri;
 
-        set
-        {
+        set {
             if (çeviri != value)
             {
                 çeviri = value;
@@ -383,11 +371,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public string ÇevrilenDil
-    {
+    public string ÇevrilenDil {
         get => çevrilenDil;
-        set
-        {
+        set {
             if (çevrilenDil != value)
             {
                 çevrilenDil = value;
@@ -396,12 +382,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawAnnotation
-    {
+    public bool DrawAnnotation {
         get => drawAnnotation;
 
-        set
-        {
+        set {
             if (drawAnnotation != value)
             {
                 drawAnnotation = value;
@@ -410,12 +394,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawBeziers
-    {
+    public bool DrawBeziers {
         get => drawBeziers;
 
-        set
-        {
+        set {
             if (drawBeziers != value)
             {
                 drawBeziers = value;
@@ -424,12 +406,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawCurve
-    {
+    public bool DrawCurve {
         get => drawCurve;
 
-        set
-        {
+        set {
             if (drawCurve != value)
             {
                 drawCurve = value;
@@ -438,12 +418,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawEllipse
-    {
+    public bool DrawEllipse {
         get => drawEllipse;
 
-        set
-        {
+        set {
             if (drawEllipse != value)
             {
                 drawEllipse = value;
@@ -452,12 +430,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawImage
-    {
+    public bool DrawImage {
         get => drawImage;
 
-        set
-        {
+        set {
             if (drawImage != value)
             {
                 drawImage = value;
@@ -466,12 +442,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawLine
-    {
+    public bool DrawLine {
         get => drawLine;
 
-        set
-        {
+        set {
             if (drawLine != value)
             {
                 drawLine = value;
@@ -480,12 +454,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawLines
-    {
+    public bool DrawLines {
         get => drawLines;
 
-        set
-        {
+        set {
             if (drawLines != value)
             {
                 drawLines = value;
@@ -494,12 +466,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public XImage DrawnImage
-    {
+    public XImage DrawnImage {
         get => drawnImage;
 
-        set
-        {
+        set {
             if (drawnImage != value)
             {
                 drawnImage = value;
@@ -508,12 +478,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawPolygon
-    {
+    public bool DrawPolygon {
         get => drawPolygon;
 
-        set
-        {
+        set {
             if (drawPolygon != value)
             {
                 drawPolygon = value;
@@ -522,12 +490,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawRect
-    {
+    public bool DrawRect {
         get => drawRect;
 
-        set
-        {
+        set {
             if (drawRect != value)
             {
                 drawRect = value;
@@ -536,12 +502,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawReverseLine
-    {
+    public bool DrawReverseLine {
         get => drawReverseLine;
 
-        set
-        {
+        set {
             if (drawReverseLine != value)
             {
                 drawReverseLine = value;
@@ -550,12 +514,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawRoundedRect
-    {
+    public bool DrawRoundedRect {
         get => drawRoundedRect;
 
-        set
-        {
+        set {
             if (drawRoundedRect != value)
             {
                 drawRoundedRect = value;
@@ -564,12 +526,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool DrawString
-    {
+    public bool DrawString {
         get => drawString;
 
-        set
-        {
+        set {
             if (drawString != value)
             {
                 drawString = value;
@@ -580,12 +540,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public ToolTip EscToolTip { get; private set; }
 
-    public XKnownColor GraphObjectColor
-    {
+    public XKnownColor GraphObjectColor {
         get => graphObjectColor;
 
-        set
-        {
+        set {
             if (graphObjectColor != value)
             {
                 graphObjectColor = value;
@@ -594,12 +552,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public XKnownColor GraphObjectFillColor
-    {
+    public XKnownColor GraphObjectFillColor {
         get => graphObjectFillColor;
 
-        set
-        {
+        set {
             if (graphObjectFillColor != value)
             {
                 graphObjectFillColor = value;
@@ -609,11 +565,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public XKnownColor GraphObjectFirstGradientColor
-    {
+    public XKnownColor GraphObjectFirstGradientColor {
         get => graphObjectFirstGradientColor;
-        set
-        {
+        set {
             if (graphObjectFirstGradientColor != value)
             {
                 graphObjectFirstGradientColor = value;
@@ -624,11 +578,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public XKnownColor GraphObjectSecondGradientColor
-    {
+    public XKnownColor GraphObjectSecondGradientColor {
         get => graphObjectSecondGradientColor;
-        set
-        {
+        set {
             if (graphObjectSecondGradientColor != value)
             {
                 graphObjectSecondGradientColor = value;
@@ -639,12 +591,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public string InkDrawColor
-    {
+    public string InkDrawColor {
         get => ınkDrawColor;
 
-        set
-        {
+        set {
             if (ınkDrawColor != value)
             {
                 ınkDrawColor = value;
@@ -653,12 +603,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public BitmapSource InkSource
-    {
+    public BitmapSource InkSource {
         get => ınkSource;
 
-        set
-        {
+        set {
             if (ınkSource != value)
             {
                 ınkSource = value;
@@ -667,12 +615,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool IsLinearDraw
-    {
+    public bool IsLinearDraw {
         get => ısLinearDraw;
 
-        set
-        {
+        set {
             if (ısLinearDraw != value)
             {
                 ısLinearDraw = value;
@@ -685,11 +631,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> LoadInkDrawImage { get; }
 
-    public string MevcutDil
-    {
+    public string MevcutDil {
         get => mevcutDil;
-        set
-        {
+        set {
             if (mevcutDil != value)
             {
                 mevcutDil = value;
@@ -700,11 +644,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> OcrCurrentPdfPage { get; }
 
-    public bool OcrDialogOpen
-    {
+    public bool OcrDialogOpen {
         get => ocrDialogOpen;
-        set
-        {
+        set {
             if (ocrDialogOpen != value)
             {
                 ocrDialogOpen = value;
@@ -713,12 +655,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool OcrProgressIndeterminate
-    {
+    public bool OcrProgressIndeterminate {
         get => ocrProgressIndeterminate;
 
-        set
-        {
+        set {
             if (ocrProgressIndeterminate != value)
             {
                 ocrProgressIndeterminate = value;
@@ -727,11 +667,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public string OcrText
-    {
+    public string OcrText {
         get => ocrText;
-        set
-        {
+        set {
             if (ocrText != value)
             {
                 ocrText = value;
@@ -744,12 +682,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> OpenPdfHistoryFile { get; }
 
-    public XDashStyle PenDash
-    {
+    public XDashStyle PenDash {
         get => penDash;
 
-        set
-        {
+        set {
             if (penDash != value)
             {
                 penDash = value;
@@ -758,12 +694,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public XLineCap PenLineCap
-    {
+    public XLineCap PenLineCap {
         get => penLineCap;
 
-        set
-        {
+        set {
             if (penLineCap != value)
             {
                 penLineCap = value;
@@ -772,12 +706,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public XLineJoin PenLineJoin
-    {
+    public XLineJoin PenLineJoin {
         get => penLineJoin;
 
-        set
-        {
+        set {
             if (penLineJoin != value)
             {
                 penLineJoin = value;
@@ -786,12 +718,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public double PenWidth
-    {
+    public double PenWidth {
         get => penWidth;
 
-        set
-        {
+        set {
             if (penWidth != value)
             {
                 penWidth = value;
@@ -802,12 +732,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public ObservableCollection<XPoint> Points { get; set; } = [];
 
-    public int PolygonCount
-    {
+    public int PolygonCount {
         get => polygonCount;
 
-        set
-        {
+        set {
             if (polygonCount != value)
             {
                 polygonCount = value;
@@ -816,12 +744,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public string QrText
-    {
+    public string QrText {
         get => qrText;
 
-        set
-        {
+        set {
             if (qrText != value)
             {
                 qrText = value;
@@ -840,11 +766,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> SaveRefreshPdfPage { get; }
 
-    public XLinearGradientMode SelectedGradientMode
-    {
+    public XLinearGradientMode SelectedGradientMode {
         get => selectedGradientMode;
-        set
-        {
+        set {
             if (selectedGradientMode != value)
             {
                 selectedGradientMode = value;
@@ -854,11 +778,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public string SelectedInk
-    {
+    public string SelectedInk {
         get => selectedInk;
-        set
-        {
+        set {
             if (selectedInk != value)
             {
                 selectedInk = value;
@@ -867,11 +789,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool SinglePage
-    {
+    public bool SinglePage {
         get => singlePage;
-        set
-        {
+        set {
             if (singlePage != value)
             {
                 singlePage = value;
@@ -880,12 +800,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public string Text
-    {
+    public string Text {
         get => text;
 
-        set
-        {
+        set {
             if (text != value)
             {
                 text = value;
@@ -894,12 +812,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public double TextSize
-    {
+    public double TextSize {
         get => textSize;
 
-        set
-        {
+        set {
             if (textSize != value)
             {
                 textSize = value;
@@ -908,11 +824,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public bool ToolBoxIsExpanded
-    {
+    public bool ToolBoxIsExpanded {
         get => toolBoxIsExpanded;
-        set
-        {
+        set {
             if (toolBoxIsExpanded != value)
             {
                 toolBoxIsExpanded = value;
@@ -921,11 +835,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    public double TransparentLevel
-    {
+    public double TransparentLevel {
         get => transparentLevel;
-        set
-        {
+        set {
             if (transparentLevel != value)
             {
                 transparentLevel = value;
@@ -1120,26 +1032,23 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper)
     {
-        PdfDocument mainDocument = PdfReader.Open(pdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
+        using PdfDocument mainDocument = PdfReader.Open(pdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify);
         ObservableCollection<OcrData> ocrDatas = await pdfViewer.Source.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg).OcrAsync(ocrlang);
-        PdfDocument scanneddocument = ((BitmapSource)pdfViewer.Source).GeneratePdf(ocrDatas, ExtensionMethods.Format.Jpg, paper, jpegquality, dpi);
-        int[] pagesToReplace = [pdfViewer.Sayfa - 1];
-        if (pagesToReplace.Length <= scanneddocument.PageCount)
+        using PdfDocument scanneddocument = ((BitmapSource)pdfViewer.Source).GeneratePdf(ocrDatas, ExtensionMethods.Format.Jpg, paper, jpegquality, dpi);
+        int[] pagesToReplace = Keyboard.Modifiers == ModifierKeys.Alt ? new int[pdfViewer.ToplamSayfa] : [pdfViewer.Sayfa - 1];
+        for (int i = 0; i < pagesToReplace.Length; i++)
         {
-            for (int i = 0; i < pagesToReplace.Length; i++)
+            int pageIndexToReplace = pagesToReplace[i];
+            if (pageIndexToReplace < mainDocument.PageCount)
             {
-                int pageIndexToReplace = pagesToReplace[i];
-                if (pageIndexToReplace < mainDocument.PageCount)
-                {
-                    mainDocument.Pages.RemoveAt(pageIndexToReplace);
-                }
-                using MemoryStream ms = new();
-                scanneddocument.Save(ms);
-                using PdfDocument replacedocument = PdfReader.Open(ms, PdfDocumentOpenMode.Import);
-                PdfPage newPage = replacedocument.Pages[i];
-                _ = mainDocument.Pages.Insert(pageIndexToReplace, newPage);
-                return mainDocument;
+                mainDocument.Pages.RemoveAt(pageIndexToReplace);
             }
+            using MemoryStream ms = new();
+            scanneddocument.Save(ms);
+            using PdfDocument replacedocument = PdfReader.Open(ms, PdfDocumentOpenMode.Import);
+            PdfPage newPage = replacedocument.Pages[i];
+            _ = mainDocument.Pages.Insert(pageIndexToReplace, newPage);
+            return mainDocument;
         }
         return null;
     }

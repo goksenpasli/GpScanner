@@ -979,7 +979,8 @@
                 </Image>
             </Button>
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            <Extensions:SplitButton Command="{Binding OcrCurrentPdfPage}"
+            <Extensions:SplitButton BorderBrush="Cyan"
+                Command="{Binding OcrCurrentPdfPage}"
                 CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
                 DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
                 IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
