@@ -1129,6 +1129,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
         using PdfDocument document = tempfiles.ToArray().MergePdf();
         using PdfiumViewer.PdfDocument content = PdfiumViewer.PdfDocument.Load(pdfViewer.PdfFilePath);
+        OcrText = string.Empty;
         for (int i = 0; i < pdfViewer.ToplamSayfa; i++)
         {
             OcrText = OcrText += $"{content.GetPdfText(i)}\n";

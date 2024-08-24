@@ -62,13 +62,15 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         RotateSelectedPage = new RelayCommand<object>(
             parameter =>
             {
-                if (parameter is int sayfa)
+                if (parameter is int sayfa && DataContext is TwainCtrl twainCtrl)
                 {
                     string path = PdfFilePath;
                     using PdfDocument inputDocument = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
                     if (inputDocument is not null)
                     {
+                        twainCtrl.PdfToolBarControlIsEnabled = false;
                         TwainCtrl.SavePageRotated(path, inputDocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, sayfa - 1);
+                        twainCtrl.PdfToolBarControlIsEnabled = true;
                         PdfFilePath = null;
                         PdfFilePath = path;
                     }
@@ -95,13 +97,15 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         InvertSelectedPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is int currentpage && MessageBox.Show($"{Translation.GetResStringValue("INVERTCOLOR")}", TwainCtrl.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (parameter is int currentpage && DataContext is TwainCtrl twainCtrl && MessageBox.Show($"{Translation.GetResStringValue("INVERTCOLOR")}", TwainCtrl.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     string oldpdfpath = PdfFilePath;
                     BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage, Dpi);
                     BitmapImage image = bitmapImage.InvertBitmap().ToBitmapImage();
                     using PdfDocument pdfdocument = TwainCtrl.RenderPdfPage(this, image);
+                    twainCtrl.PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(PdfFilePath);
+                    twainCtrl.PdfToolBarControlIsEnabled = true;
                     image = null;
                     bitmapImage = null;
                     PdfFilePath = null;
@@ -128,7 +132,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         FlipPdfPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is int currentpage)
+                if (parameter is int currentpage && DataContext is TwainCtrl twainCtrl)
                 {
                     string oldpdfpath = PdfFilePath;
                     using PdfDocument document = PdfReader.Open(PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
@@ -141,7 +145,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                         BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage);
                         XImage image = XImage.FromBitmapSource(bitmapImage);
                         gfx?.DrawImage(image, 0, 0);
+                        twainCtrl.PdfToolBarControlIsEnabled = false;
                         document.Save(PdfFilePath);
+                        twainCtrl.PdfToolBarControlIsEnabled = true;
                         image = null;
                         bitmapImage = null;
                         PdfFilePath = null;

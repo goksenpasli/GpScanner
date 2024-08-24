@@ -55,7 +55,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <WrapPanel Orientation="Horizontal">
+        <WrapPanel IsEnabled="{Binding PdfToolBarControlIsEnabled}" Orientation="Horizontal">
             <Menu Background="{x:Null}" IsMainMenu="False">
                 <MenuItem>
                     <MenuItem Name="Clear"
@@ -273,7 +273,9 @@
                             <CheckBox Grid.Row="1"
                                 Content="{local:Loc ADDFIRST}"
                                 IsChecked="{Binding MergePdfFileToFirst}" />
-                            <UniformGrid Grid.Row="2" Columns="3">
+                            <UniformGrid Grid.Row="2"
+                                Columns="3"
+                                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                                 <Button Command="{Binding MergePdfListAddFile}">
                                     <StackPanel Orientation="Horizontal">
                                         <Image Width="32"
@@ -355,7 +357,8 @@
                                 <RowDefinition />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <ListBox ItemsSource="{Binding PdfPages}"
+                            <ListBox IsEnabled="{Binding PdfToolBarControlIsEnabled}"
+                                ItemsSource="{Binding PdfPages}"
                                 SelectionMode="Extended"
                                 Tag="{Binding Source={x:Reference PdfViewer}}"
                                 VirtualizingPanel.CacheLengthUnit="Pixel"
@@ -450,6 +453,7 @@
                             </ListBox>
                             <UniformGrid Grid.Row="1"
                                 Columns="3"
+                                IsEnabled="{Binding PdfToolBarControlIsEnabled}"
                                 Rows="2">
                                 <Extensions:ContentToggleButton>
                                     <Image Width="24"
@@ -754,7 +758,8 @@
                             </UniformGrid>
                             <Button BorderBrush="Cyan"
                                 Command="{Binding PdfWaterMark}"
-                                CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                CommandParameter="{Binding Source={x:Reference PdfViewer}}"
+                                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="24" Height="24">
                                         <Image.Source>
@@ -898,7 +903,8 @@
                             </ComboBox>
                             <Button BorderBrush="Cyan"
                                 Command="{Binding AddPageNumber}"
-                                CommandParameter="{Binding Source={x:Reference PdfViewer}}">
+                                CommandParameter="{Binding Source={x:Reference PdfViewer}}"
+                                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="16" Height="16">
                                         <Image.Source>
@@ -923,7 +929,7 @@
                     <Border Background="{DynamicResource BorderBackground}"
                         BorderBrush="{DynamicResource GroupBoxBackGround}"
                         BorderThickness="1">
-                        <StackPanel>
+                        <StackPanel IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                             <Button Command="{Binding BlackAndWhitePdfPage}"
                                 CommandParameter="{Binding Source={x:Reference PdfViewer}}"
                                 Content="{local:Loc BW}" />

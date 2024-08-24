@@ -136,6 +136,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int pdfMedianValue;
     private ObservableCollection<PdfData> pdfPages;
     private int pdfSplitCount;
+    private bool pdfToolBarControlIsEnabled = true;
     private SolidColorBrush pdfWatermarkColor = Brushes.Red;
     private string pdfWatermarkFont = "Arial";
     private double pdfWatermarkFontAngle = 315d;
@@ -1016,8 +1017,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath))
                 {
+                    PdfToolBarControlIsEnabled = false;
                     string savefolder = ToolBox.CreateSaveFolder("SPLIT");
                     SplitPdfPageCount(pdfviewer.PdfFilePath, savefolder, PdfSplitCount);
+                    PdfToolBarControlIsEnabled = true;
                     WebAdreseGit.Execute(savefolder);
                 }
             },
@@ -1087,8 +1090,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Scanner.MergePdfFiles.Insert(0, currentfile);
                 }
                 string[] files = Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
+                PdfToolBarControlIsEnabled = false;
                 files.MergePdf().Save(currentfile);
                 Scanner?.MergePdfFiles?.Clear();
+                PdfToolBarControlIsEnabled = true;
                 PdfImportViewer.PdfViewer.PdfFilePath = null;
                 PdfImportViewer.PdfViewer.PdfFilePath = currentfile;
             },
@@ -1101,8 +1106,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("MERGE")}" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    PdfToolBarControlIsEnabled = false;
                     files.MergePdf().Save(saveFileDialog.FileName);
                     Scanner?.MergePdfFiles?.Clear();
+                    PdfToolBarControlIsEnabled = true;
                 }
             },
             parameter => Scanner?.MergePdfFiles?.Count > 1);
@@ -1160,13 +1167,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             {
                                 listDocument = pdfdocument.GenerateWatermarkedPdf(i, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
                             }
+                            PdfToolBarControlIsEnabled = false;
                             listDocument?.Save(oldpdfpath);
                             listDocument?.Dispose();
+                            PdfToolBarControlIsEnabled = true;
                         }
                         else
                         {
+                            PdfToolBarControlIsEnabled = false;
                             using PdfDocument document = pdfdocument.GenerateWatermarkedPdf(pdfViewer.Sayfa - 1, PdfWatermarkFontAngle, PdfWatermarkColor, PdfWatermarkFontSize, PdfWaterMarkText, PdfWatermarkFont);
                             document.Save(oldpdfpath);
+                            PdfToolBarControlIsEnabled = true;
                         }
                     }
                     pdfViewer.Source = await Viewer.ConvertToImgAsync(pdfViewer.PdfFilePath, pdfViewer.Sayfa, pdfViewer.Dpi);
@@ -1186,6 +1197,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
 
+                PdfToolBarControlIsEnabled = false;
                 string pdfFilePath = pdfviewer.PdfFilePath;
                 string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                 string[] processedfiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporarypdf] : [temporarypdf, pdfFilePath];
@@ -1196,6 +1208,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         pdfDocument.Save(temporarypdf);
                         processedfiles.MergePdf().Save(pdfFilePath);
                     });
+                PdfToolBarControlIsEnabled = true;
                 pdfviewer.Sayfa = 1;
                 NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
                 if (!Settings.Default.RemoveProcessedImage)
@@ -1230,6 +1243,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     List<string> clipboardImageFiles = clipboardFiles.Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant())).ToList();
                     if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
                     {
+                        PdfToolBarControlIsEnabled = false;
                         await Task.Run(
                             () =>
                             {
@@ -1249,7 +1263,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     processedFiles.MergePdf().Save(pdfFilePath);
                                 }
                             });
-
+                        PdfToolBarControlIsEnabled = true;
                         pdfviewer.Sayfa = 1;
                         NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
                         clipboardImageFiles = null;
@@ -1266,6 +1280,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     if (image is not null)
                     {
                         BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
+                        PdfToolBarControlIsEnabled = false;
                         await Task.Run(
                             () =>
                             {
@@ -1276,6 +1291,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                                 processedFiles.MergePdf().Save(pdfFilePath);
                             });
+                        PdfToolBarControlIsEnabled = true;
                         pdfviewer.Sayfa = 1;
                         NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
                         image = null;
@@ -1384,23 +1400,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
+                PdfToolBarControlIsEnabled = false;
                 if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt))
                 {
                     if (Keyboard.Modifiers == ModifierKeys.Shift)
                     {
                         SavePageRotated(path, pdfdocument, -90);
+                        PdfToolBarControlIsEnabled = true;
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = path;
                         return;
                     }
 
                     SavePageRotated(path, pdfdocument, 90);
+                    PdfToolBarControlIsEnabled = true;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = path;
                     return;
                 }
 
                 SavePageRotated(path, pdfdocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
+                PdfToolBarControlIsEnabled = true;
                 pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1412,8 +1432,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 File.Exists(pdfviewer.PdfFilePath) &&
                 MessageBox.Show($"{Translation.GetResStringValue("SAVEPDF")} {Translation.GetResStringValue("REVERSE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
+                    PdfToolBarControlIsEnabled = false;
                     string oldpdfpath = pdfviewer.PdfFilePath;
                     await ReverseFileAsync(pdfviewer.PdfFilePath, pdfviewer.PdfFilePath);
+                    PdfToolBarControlIsEnabled = true;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = oldpdfpath;
                 }
@@ -1430,8 +1452,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     OpenFileDialog openFileDialog = new() { Filter = "Tüm Dosyalar (*.*)|*.*", Multiselect = true };
                     if (openFileDialog.ShowDialog() == true)
                     {
+                        PdfToolBarControlIsEnabled = false;
                         string oldpdfpath = pdfviewer.PdfFilePath;
                         await AddAttachmentFileAsync(openFileDialog.FileNames, pdfviewer.PdfFilePath, pdfviewer.PdfFilePath);
+                        PdfToolBarControlIsEnabled = true;
                         pdfviewer.PdfFilePath = null;
                         pdfviewer.PdfFilePath = oldpdfpath;
                     }
@@ -1641,8 +1665,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
-
+                PdfToolBarControlIsEnabled = false;
                 document.Save(saveFileDialog.FileName);
+                PdfToolBarControlIsEnabled = true;
                 PdfMedianValue = 0;
             },
             parameter => PdfMedianValue > 0 && parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
@@ -1658,6 +1683,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 List<string> files = [];
                 List<PdfData> currentpages = PdfPages?.Where(currentpage => currentpage.Selected).ToList();
                 double pagecount = currentpages.Count;
+                PdfToolBarControlIsEnabled = false;
                 for (int i = 0; i < pagecount; i++)
                 {
                     PdfData currentpage = currentpages[i];
@@ -1671,6 +1697,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     using PdfDocument mergedPdf = files.ToArray().MergePdf();
                     mergedPdf.Save($@"{savefolder}\{Path.GetFileNameWithoutExtension(pdfViewer.PdfFilePath)} {Translation.GetResStringValue("MERGE")}.pdf");
                 }
+                PdfToolBarControlIsEnabled = true;
                 Scanner.PdfSaveProgressValue = 0;
                 WebAdreseGit.Execute(savefolder);
                 files = null;
@@ -1689,6 +1716,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 List<string> files = [];
                 List<PdfData> currentpages = PdfPages?.ToList();
                 double pagecount = currentpages.Count;
+                PdfToolBarControlIsEnabled = false;
                 for (int i = 0; i < pagecount; i++)
                 {
                     PdfData currentpage = currentpages[i];
@@ -1699,6 +1727,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 using PdfDocument mergedPdf = files.ToArray().MergePdf();
                 mergedPdf.Save(pdfViewer.PdfFilePath);
+                PdfToolBarControlIsEnabled = true;
                 Scanner.PdfSaveProgressValue = 0;
                 pdfViewer.PdfFilePath = null;
                 pdfViewer.PdfFilePath = oldpdfpath;
@@ -1722,7 +1751,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         inputDocument.Pages.RemoveAt(item.PageNumber - 1);
                     }
+                    PdfToolBarControlIsEnabled = false;
                     inputDocument.Save(pdfViewer.PdfFilePath);
+                    PdfToolBarControlIsEnabled = true;
                     pdfViewer.PdfFilePath = null;
                     pdfViewer.PdfFilePath = oldpdfpath;
                     pdfViewer.Sayfa = 1;
@@ -1741,7 +1772,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string oldpdfpath = pdfViewer.PdfFilePath;
                     using PdfDocument inputDocument = PdfReader.Open(pdfViewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
                     inputDocument.Pages.RemoveAt(pdfViewer.Sayfa - 1);
+                    PdfToolBarControlIsEnabled = false;
                     inputDocument.Save(pdfViewer.PdfFilePath);
+                    PdfToolBarControlIsEnabled = true;
                     pdfViewer.PdfFilePath = null;
                     pdfViewer.PdfFilePath = oldpdfpath;
                     pdfViewer.Sayfa = 1;
@@ -1780,8 +1813,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             gfxall.DrawText(brush, GetPdfBatchNumberString(i), PdfWatermarkFont, PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[0], PdfGeneration.GetPdfTextLayout(pageall, textallwidth)[1], Scanner.PdfPageNumberSize);
                         }
                     }
-
+                    PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(pdfviewer.PdfFilePath);
+                    PdfToolBarControlIsEnabled = true;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = oldpdfpath;
                     pdfviewer.Sayfa = 1;
@@ -1792,7 +1826,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
                 double textwidth = gfx.MeasureString(GetPdfBatchNumberString(pdfviewer.Sayfa), font).Width;
                 gfx.DrawText(brush, GetPdfBatchNumberString(pdfviewer.Sayfa - 1), PdfWatermarkFont, PdfGeneration.GetPdfTextLayout(page, textwidth)[0], PdfGeneration.GetPdfTextLayout(page, textwidth)[1], Scanner.PdfPageNumberSize);
+                PdfToolBarControlIsEnabled = false;
                 pdfdocument.Save(pdfviewer.PdfFilePath);
+                PdfToolBarControlIsEnabled = true;
                 pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
             },
             parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath) && (IsEven || IsOdd));
@@ -1819,7 +1855,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, currentpage, pdfviewer.Dpi);
                 XImage image = XImage.FromBitmapSource(bitmapImage);
                 gfx.DrawImage(image, 0, 0);
+                PdfToolBarControlIsEnabled = false;
                 pdfdocument.Save(pdfviewer.PdfFilePath);
+                PdfToolBarControlIsEnabled = true;
                 pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
                 image = null;
                 bitmapImage = null;
@@ -1834,7 +1872,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
                     BitmapImage image = bitmapImage.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
                     using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image);
+                    PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(pdfviewer.PdfFilePath);
+                    PdfToolBarControlIsEnabled = true;
                     pdfviewer.Source = image;
                     image = null;
                     bitmapImage = null;
@@ -1850,7 +1890,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
                     BitmapImage image = bitmapImage.InvertBitmap().ToBitmapImage();
                     using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image);
+                    PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(pdfviewer.PdfFilePath);
+                    PdfToolBarControlIsEnabled = true;
                     pdfviewer.Source = image;
                     image = null;
                     bitmapImage = null;
@@ -1891,12 +1933,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     double oldsize = new FileInfo(filepath).Length;
                     PdfCompressor pdfcompressor = new() { UseMozJpeg = MozJpeg.MozJpeg.MozJpegDllExists, Dpi = 150, Quality = 70, };
                     pdfcompressor.ProgressChanged += (_, e) => Dispatcher.CurrentDispatcher.Invoke(() => Scanner.PdfSaveProgressValue = e);
+                    PdfToolBarControlIsEnabled = false;
                     using PdfDocument pdfdocument = await pdfcompressor.Compress(filepath);
                     if (pdfdocument is null)
                     {
                         return;
                     }
                     pdfdocument.Save(filepath);
+                    PdfToolBarControlIsEnabled = true;
                     double newsize = new FileInfo(filepath).Length;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = filepath;
@@ -2804,6 +2848,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 pdfSplitCount = value;
                 OnPropertyChanged(nameof(PdfSplitCount));
+            }
+        }
+    }
+
+    public bool PdfToolBarControlIsEnabled
+    {
+        get => pdfToolBarControlIsEnabled;
+        set
+        {
+            if (pdfToolBarControlIsEnabled != value)
+            {
+                pdfToolBarControlIsEnabled = value;
+                OnPropertyChanged(nameof(PdfToolBarControlIsEnabled));
             }
         }
     }
