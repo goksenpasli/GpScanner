@@ -201,10 +201,12 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     }
                     PdfPage page = pdfdocument.Pages[PdfViewer.Sayfa - 1];
                     PdfAnnotation annotation = page.Annotations.ToList().Cast<PdfAnnotation>().FirstOrDefault(z => z.Contents == selectedannotation.Contents);
-                    if (annotation is not null)
+                    if (annotation is not null && DataContext is TwainCtrl twainCtrl)
                     {
                         page?.Annotations?.Remove(annotation);
+                        twainCtrl.PdfToolBarControlIsEnabled = false;
                         pdfdocument.Save(PdfViewer.PdfFilePath);
+                        twainCtrl.PdfToolBarControlIsEnabled = true;
                         ReadAnnotation.Execute(null);
                     }
                 }
@@ -269,9 +271,11 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 {
                     return;
                 }
+                twainCtrl.PdfToolBarControlIsEnabled = false;
                 OcrProgressIndeterminate = true;
                 using PdfDocument pdfDocument = await GenerateOcredPdfPage(PdfViewer, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution, twainCtrl.Scanner?.SelectedTtsLanguage, twainCtrl.SelectedPaper);
                 pdfDocument.Save(PdfViewer.PdfFilePath);
+                twainCtrl.PdfToolBarControlIsEnabled = true;
                 OcrDialogOpen = false;
                 OcrDialogOpen = true;
             },
@@ -1294,7 +1298,9 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     pdfpages = null;
                     if (!Keyboard.IsKeyDown(Key.Escape) && SaveRefreshPdfPage.CanExecute(null))
                     {
+                        twainCtrl.PdfToolBarControlIsEnabled = false;
                         SaveRefreshPdfPage.Execute(pdfDocument);
+                        twainCtrl.PdfToolBarControlIsEnabled = true;
                     }
                 }
                 ResetMouse();

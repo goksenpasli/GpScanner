@@ -270,7 +270,8 @@
                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                         <Button BorderBrush="Cyan"
                             Command="{Binding RotateSelectedPage}"
-                            CommandParameter="{Binding ElementName=PdfVwr}">
+                            CommandParameter="{Binding ElementName=PdfVwr}"
+                            IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                             <Image Width="16"
                                 Height="16"
                                 Source="/TwainControl;component/Icons/rotate.png" />
@@ -303,7 +304,8 @@
                         </Button>
                         <Button BorderBrush="Cyan"
                             Command="{Binding MergeSelectedImagesToPdfFile}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
+                            IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -327,7 +329,8 @@
                         </Button>
                         <Button BorderBrush="Cyan"
                             Command="{Binding PasteFileToPdfFile}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
+                            IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                             <Button.Content>
                                 <Image Width="16" Height="16">
                                     <Image.Source>
@@ -341,7 +344,8 @@
                         </Button>
                         <Button twainctrl:Policy.PolicyName="RemoveCurrentPdfPage"
                             Command="{Binding RemoveCurrentPdfPage}"
-                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}">
+                            CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
+                            IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                             <Button.Content>
                                 <Image Width="16"
                                     Height="16"
