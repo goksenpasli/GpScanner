@@ -223,8 +223,13 @@
                         </MouseBinding>
                     </PdfViewer:PdfShadowedImage.InputBindings>
                     <PdfViewer:PdfShadowedImage.Tag>
-                        <MultiBinding Converter="{StaticResource PdfMultiplePageToThumbImageConverter}">
+                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
                             <Binding Mode="OneWay" />
+                            <Binding Mode="OneWay">
+                                <Binding.Source>
+                                    <System:Int32>1</System:Int32>
+                                </Binding.Source>
+                            </Binding>
                         </MultiBinding>
                     </PdfViewer:PdfShadowedImage.Tag>
                 </PdfViewer:PdfShadowedImage>

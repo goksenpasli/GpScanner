@@ -121,6 +121,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private string patchTag;
     private PdfViewer.FitImageOrientation pdfAllPageOrientation = PdfViewer.FitImageOrientation.Width;
     private bool pdfBatchRunning;
+    private bool pdfCompressorItemToggle;
     private double pdfMergeProgressValue;
     private Brush progressBarForegroundBrush = Brushes.Green;
     private double ripple;
@@ -2002,6 +2003,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     }
 
     public ICommand PdfBirleştir { get; }
+
+    public bool PdfCompressorItemToggle
+    {
+        get => pdfCompressorItemToggle;
+        set
+        {
+            if (pdfCompressorItemToggle != value)
+            {
+                pdfCompressorItemToggle = value;
+                OnPropertyChanged(nameof(PdfCompressorItemToggle));
+            }
+        }
+    }
 
     public double PdfMergeProgressValue
     {

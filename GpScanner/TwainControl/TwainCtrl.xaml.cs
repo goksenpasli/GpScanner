@@ -1780,7 +1780,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfViewer.Sayfa = 1;
                 }
             },
-            parameter => parameter is Viewer pdfViewer && pdfViewer.ToplamSayfa > 1);
+            parameter => parameter is Viewer pdfViewer && pdfViewer.ToplamSayfa > 1 && PdfToolBarControlIsEnabled);
 
         AddPageNumber = new RelayCommand<object>(
             async parameter =>

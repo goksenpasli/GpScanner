@@ -17,6 +17,28 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+        <DataTemplate x:Key="ListBoxItemListTemplate">
+            <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                CancelCommand="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType={x:Type Compressor:Compressor}}}"
+                CancelCommandParameter="{Binding Mode=OneWay}"
+                CopyButtonVisibility="Collapsed"
+                Focusable="False"
+                Foreground="{Binding Foreground, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                PasteButtonVisibility="Collapsed"
+                Text="{Binding Filename, Mode=OneWay}"
+                TextBoxVisibility="Collapsed">
+                <TextBlock><InlineUIContainer BaselineAlignment="Center">
+                        <ProgressBar Width="32"
+                            Height="12"
+                            Margin="1"
+                            Background="{x:Null}"
+                            Maximum="100"
+                            Value="{Binding CompressionRatio, Mode=OneWay}" />
+                    </InlineUIContainer><Run Text=" " /><Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" /></TextBlock>
+            </Extensions:ButtonedTextBox>
+        </DataTemplate>
         <Style x:Key="CompressorStyle" TargetType="{x:Type Compressor:Compressor}">
             <Setter Property="Template">
                 <Setter.Value>
@@ -68,7 +90,7 @@
                                                 <TextBlock>
                                                     <Run Text="{Binding Width, Mode=OneWay}" />
                                                     <Run Text="DPI" />
-                                                    <Run Text="{Binding Height, Mode=OneWay}" />
+                                                    <Run Text="{Binding Height, Mode=OneWay, StringFormat={}{0}%}" />
                                                     <Run Text="{twainctrl:Loc JPEGQUALITY}" />
                                                 </TextBlock>
                                             </DataTemplate>
@@ -131,56 +153,78 @@
                                     </Button>
                                 </StackPanel>
                                 <UniformGrid Grid.Row="1" Columns="2">
-                                    <ListBox x:Name="ListBox"
-                                        d:ItemsSource="{d:SampleData ItemCount=5}"
-                                        AllowDrop="True"
-                                        IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                        ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                        VirtualizingPanel.CacheLengthUnit="Item"
-                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                        VirtualizingPanel.ScrollUnit="Item"
-                                        VirtualizingPanel.VirtualizationMode="Recycling">
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Extensions:ButtonedTextBox VerticalAlignment="Center"
-                                                    Background="Transparent"
-                                                    BorderBrush="Transparent"
-                                                    CancelCommand="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType={x:Type Compressor:Compressor}}}"
-                                                    CancelCommandParameter="{Binding Mode=OneWay}"
-                                                    CopyButtonVisibility="Collapsed"
-                                                    Focusable="False"
-                                                    Foreground="{Binding Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=Foreground}"
-                                                    PasteButtonVisibility="Collapsed"
-                                                    Text="{Binding Filename, Mode=OneWay}"
-                                                    TextBoxVisibility="Collapsed">
-                                                    <TextBlock>
-                                                        <InlineUIContainer BaselineAlignment="Center">
-                                                            <ProgressBar Width="32"
-                                                                Height="12"
-                                                                Margin="1"
-                                                                Background="{x:Null}"
-                                                                Maximum="100"
-                                                                Value="{Binding CompressionRatio, Mode=OneWay}" />
-                                                        </InlineUIContainer>
-                                                        <Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" />
-                                                    </TextBlock>
-                                                </Extensions:ButtonedTextBox>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                        <ListBox.ItemContainerStyle>
-                                            <Style TargetType="{x:Type ListBoxItem}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Completed}" Value="true">
-                                                        <Setter Property="FontWeight" Value="Bold" />
-                                                        <Setter Property="Foreground" Value="Green" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ListBox.ItemContainerStyle>
-                                    </ListBox>
+                                    <Grid>
+                                        <ListBox x:Name="ListBox"
+                                            d:ItemsSource="{d:SampleData ItemCount=5}"
+                                            AllowDrop="True"
+                                            IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                            ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                            VirtualizingPanel.CacheLengthUnit="Pixel"
+                                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                            VirtualizingPanel.ScrollUnit="Pixel"
+                                            VirtualizingPanel.VirtualizationMode="Recycling">
+                                            <ListBox.ItemContainerStyle>
+                                                <Style TargetType="{x:Type ListBoxItem}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Completed}" Value="true">
+                                                            <Setter Property="Background" Value="Green" />
+                                                            <Setter Property="FontWeight" Value="Bold" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ListBox.ItemContainerStyle>
+                                            <ListBox.Style>
+                                                <Style TargetType="ListBox">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding PdfCompressorItemToggle, Mode=OneWay}" Value="true">
+                                                            <Setter Property="ItemTemplate">
+                                                                <Setter.Value>
+                                                                    <DataTemplate>
+                                                                        <ContentControl Width="150"
+                                                                            Height="150"
+                                                                            Content="{Binding IsAsync=True, Mode=OneWay, Path=Filename}"
+                                                                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                                                                    </DataTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                            <Setter Property="ItemsPanel">
+                                                                <Setter.Value>
+                                                                    <ItemsPanelTemplate>
+                                                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                                            ItemSize="165,165"
+                                                                            SpacingMode="None" />
+                                                                    </ItemsPanelTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding PdfCompressorItemToggle, Mode=OneWay}" Value="false">
+                                                            <Setter Property="ItemTemplate" Value="{StaticResource ListBoxItemListTemplate}" />
+                                                            <Setter Property="Margin" Value="20,0,0,0" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ListBox.Style>
+                                        </ListBox>
+                                        <ToggleButton HorizontalAlignment="Left"
+                                            VerticalAlignment="Top"
+                                            Background="Transparent"
+                                            BorderBrush="Transparent"
+                                            IsChecked="{Binding PdfCompressorItemToggle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="19" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ToggleButton>
+                                    </Grid>
                                     <ContentControl Content="{Binding SelectedItem.Filename, ElementName=ListBox, IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
                                 </UniformGrid>
-                                <UniformGrid Grid.Row="2" Columns="2">
+                                <UniformGrid Grid.Row="2"
+                                    Columns="2"
+                                    IsEnabled="{Binding CompressFinished, ElementName=Compressor}">
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         Content="PDF MOZJPEG"
