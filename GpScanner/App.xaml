@@ -432,7 +432,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="2*" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Button Command="{Binding DataContext.AddFileToControlPanel, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" CommandParameter="{Binding ElementName=ImgVwr, Path=Source}">
                         <Button.Content>
@@ -459,7 +459,11 @@
                             PanoramaButtonVisibility="Collapsed"
                             PrintButtonVisibility="Visible" />
                     </Grid>
-                    <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
+                    <Expander Grid.Column="2"
+                        ExpandDirection="Right"
+                        IsExpanded="{Binding DocumentViewerPanelIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                        <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
+                    </Expander>
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="DvdBurnerEmptyViewerTemplate">

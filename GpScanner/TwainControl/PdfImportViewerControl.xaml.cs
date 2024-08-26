@@ -1123,21 +1123,18 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper)
     {
         List<string> tempfiles = [];
+        ObservableCollection<OcrData> ocrdata;
+        OcrText = string.Empty;
         for (int i = 0; i < pdfViewer.ToplamSayfa; i++)
         {
-            ObservableCollection<OcrData> ocrdata = await (await Viewer.ConvertToImgAsync(pdfViewer.PdfFilePath, i + 1, dpi)).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg).OcrAsync(ocrlang);
+            ocrdata = await (await Viewer.ConvertToImgAsync(pdfViewer.PdfFilePath, i + 1, dpi)).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg).OcrAsync(ocrlang);
             using PdfDocument scanneddocument = (await Viewer.ConvertToImgAsync(pdfViewer.PdfFilePath, i + 1, dpi)).GeneratePdf(ocrdata, ExtensionMethods.Format.Jpg, paper, jpegquality, dpi);
             string pdffile = $"{System.IO.Path.GetTempPath()}{i}.pdf";
             scanneddocument.Save(pdffile);
             tempfiles.Add(pdffile);
+            OcrText = OcrText += $"{string.Join(" ", ocrdata?.Select(z => z.Text))}\n";
         }
         using PdfDocument document = tempfiles.ToArray().MergePdf();
-        using PdfiumViewer.PdfDocument content = PdfiumViewer.PdfDocument.Load(pdfViewer.PdfFilePath);
-        OcrText = string.Empty;
-        for (int i = 0; i < pdfViewer.ToplamSayfa; i++)
-        {
-            OcrText = OcrText += $"{content.GetPdfText(i)}\n";
-        }
         OcrProgressIndeterminate = false;
         tempfiles.ForEach(File.Delete);
         return document;

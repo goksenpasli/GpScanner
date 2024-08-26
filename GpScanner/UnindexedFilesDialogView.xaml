@@ -21,6 +21,36 @@
         <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter"
             MaxNumber="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
             MinNumber="1" />
+        <DataTemplate x:Key="ListBoxItemListTemplate">
+            <TextBlock VerticalAlignment="Center"><Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                    Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
+                    CommandParameter="{Binding Mode=OneWay}"
+                    TextDecorations="None">
+                    <Run FontFamily="Wingdings 2"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        Foreground="Cyan"
+                        Text="4" />
+                </Hyperlink><Run Text=" " /><InlineUIContainer BaselineAlignment="Center">
+                    <Image Width="16"
+                        Height="16"
+                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay}" />
+                </InlineUIContainer><Run Text=" " /><Hyperlink BaselineAlignment="Center"
+                    Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
+                    CommandParameter="{Binding Mode=OneWay}"
+                    TextDecorations="None">
+                    <InlineUIContainer>
+                        <Image Width="16" Height="16">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="171" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </InlineUIContainer>
+                </Hyperlink><Run Text=" " /><Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" /></TextBlock>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid Background="{StaticResource BorderBackground}">
         <Grid.RowDefinitions>
@@ -40,41 +70,36 @@
             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
             VirtualizingPanel.ScrollUnit="Item"
             VirtualizingPanel.VirtualizationMode="Recycling">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock VerticalAlignment="Center">
-                        <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
-                            Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                            CommandParameter="{Binding Mode=OneWay}"
-                            TextDecorations="None">
-                            <Run FontFamily="Wingdings 2"
-                                FontSize="16"
-                                FontWeight="Bold"
-                                Foreground="Cyan"
-                                Text="4" />
-                        </Hyperlink>
-                        <InlineUIContainer BaselineAlignment="Center">
-                            <Image Width="16"
-                                Height="16"
-                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, IsAsync=True}" />
-                        </InlineUIContainer>
-                        <Hyperlink BaselineAlignment="Center"
-                            Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                            CommandParameter="{Binding Mode=OneWay}"
-                            TextDecorations="None">
-                            <Image Width="16" Height="16">
-                                <Image.Source>
-                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                        <Binding Source="Shell32.dll" />
-                                        <Binding Source="171" />
-                                    </MultiBinding>
-                                </Image.Source>
-                            </Image>
-                        </Hyperlink>
-                        <Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" />
-                    </TextBlock>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
+            <ListBox.Style>
+                <Style TargetType="ListBox">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding PdfCompressorItemToggle, Mode=OneWay}" Value="true">
+                            <Setter Property="ItemTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <ContentControl Width="150"
+                                            Height="150"
+                                            Content="{Binding IsAsync=True, Mode=OneWay}"
+                                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="ItemsPanel">
+                                <Setter.Value>
+                                    <ItemsPanelTemplate>
+                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                            ItemSize="165,165"
+                                            SpacingMode="None" />
+                                    </ItemsPanelTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding PdfCompressorItemToggle, Mode=OneWay}" Value="false">
+                            <Setter Property="ItemTemplate" Value="{StaticResource ListBoxItemListTemplate}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
         </ListBox>
         <ContentControl Grid.Column="1"
             Margin="1"
@@ -84,9 +109,26 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
-            <Image Width="32" Height="32">
+            <ToggleButton HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                IsChecked="{Binding PdfCompressorItemToggle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <Image Width="32" Height="32">
+                    <Image.Source>
+                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                            <Binding Source="Shell32.dll" />
+                            <Binding Source="19" />
+                        </MultiBinding>
+                    </Image.Source>
+                </Image>
+            </ToggleButton>
+            <Image Grid.Column="1"
+                Width="32"
+                Height="32">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                         <Binding Source="Shell32.dll" />
@@ -94,7 +136,7 @@
                     </MultiBinding>
                 </Image.Source>
             </Image>
-            <Extensions:NumericUpDown Grid.Column="1"
+            <Extensions:NumericUpDown Grid.Column="2"
                 Background="{Binding BatchOcrProcessorCount, Converter={StaticResource NumberRangeToColorConverter}, Source={x:Static properties:Settings.Default}, Mode=OneWay}"
                 Interval="1"
                 IsReadOnly="True"
@@ -102,7 +144,7 @@
                 Minimum="1"
                 TextBlock.TextAlignment="Center"
                 Value="{Binding BatchOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Extensions:SplitButton Grid.Column="2"
+            <Extensions:SplitButton Grid.Column="3"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
                 Command="{Binding UnindexedAllFilesOcr}"
