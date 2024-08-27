@@ -20,6 +20,7 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
+using System.Windows.Threading;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
@@ -310,7 +311,7 @@ public static class PdfGeneration
         }
     }
 
-    public static Task<PdfDocument> GeneratePdfAsync(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120)
+    public static Task<PdfDocument> GeneratePdfAsync(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120, Action<double> progressCallback = null)
     {
         if (bitmapFrames?.Count == 0)
         {
@@ -385,8 +386,7 @@ public static class PdfGeneration
                         gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
                     }
                 }
-
-                Scanner.PdfSaveProgressValue = i / (double)bitmapFrames.Count;
+                progressCallback?.Invoke((i + 1) / (double)bitmapFrames.Count);
                 if (Settings.Default.RemoveProcessedImage)
                 {
                     scannedimage.Resim = null;
@@ -399,7 +399,7 @@ public static class PdfGeneration
             }
 
             document.ApplyDefaultPdfCompression();
-            Scanner.PdfSaveProgressValue = 0;
+            progressCallback?.Invoke(0);
         }
         catch (Exception ex)
         {

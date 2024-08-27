@@ -1205,7 +1205,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 await Task.Run(
                     async () =>
                     {
-                        using PdfDocument pdfDocument = await seçiliresimler.GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution);
+                        using PdfDocument pdfDocument = await seçiliresimler.GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution, progress => Scanner.PdfSaveProgressValue = progress);
                         pdfDocument.Save(temporarypdf);
                         processedfiles.MergePdf().Save(pdfFilePath);
                     });
@@ -4105,12 +4105,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
         {
-            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük)).Save(Scanner.PdfFilePath);
+            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük, progress => Scanner.PdfSaveProgressValue = progress)).Save(Scanner.PdfFilePath);
         }
 
         if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
         {
-            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük)).Save(Scanner.PdfFilePath);
+            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük, progress => Scanner.PdfSaveProgressValue = progress)).Save(Scanner.PdfFilePath);
         }
 
         if (Settings.Default.ShowFile)
@@ -4588,11 +4588,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
         if (blackwhite)
         {
-            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
+            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress)).Save(filename);
             return;
         }
 
-        (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi)).Save(filename);
+        (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress)).Save(filename);
     }
 
     private void SaveTifImage(BitmapFrame scannedImage, string filename)

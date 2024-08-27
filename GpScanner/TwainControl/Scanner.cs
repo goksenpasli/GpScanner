@@ -84,7 +84,7 @@ public class Scanner : InpcBase, IDataErrorInfo
     private double rotateAngle;
     private double saturation = 1;
     private string saveFileName;
-    private Brush saveProgressBarForegroundBrush;
+    private Brush saveProgressBarForegroundBrush = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
     private bool saveProgressIndeterminate;
     private bool scanSeperate;
     private bool seçili;
