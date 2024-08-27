@@ -1122,6 +1122,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper)
     {
+        if (DataContext is not TwainCtrl twainCtrl)
+        {
+            return null;
+        }
         List<string> tempfiles = [];
         ObservableCollection<OcrData> ocrdata;
         OcrText = string.Empty;
@@ -1132,6 +1136,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             string pdffile = $"{System.IO.Path.GetTempPath()}{i}.pdf";
             scanneddocument.Save(pdffile);
             tempfiles.Add(pdffile);
+            twainCtrl.PdfImportControlProgressValue = (i + 1) / (double)pdfViewer.ToplamSayfa;
             OcrText = OcrText += $"{string.Join(" ", ocrdata?.Select(z => z.Text))}\n";
         }
         using PdfDocument document = tempfiles.ToArray().MergePdf();

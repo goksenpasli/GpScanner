@@ -132,6 +132,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         new Paper { Category = string.Empty, Height = 0, PaperType = "Original", Width = 0 },
         new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth },
     ];
+    private double pdfImportControlProgressValue;
     private double pdfLoadProgressValue;
     private int pdfMedianValue;
     private ObservableCollection<PdfData> pdfPages;
@@ -1932,7 +1933,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string filepath = pdfviewer.PdfFilePath;
                     double oldsize = new FileInfo(filepath).Length;
                     PdfCompressor pdfcompressor = new() { UseMozJpeg = MozJpeg.MozJpeg.MozJpegDllExists, Dpi = 150, Quality = 70, };
-                    pdfcompressor.ProgressChanged += (_, e) => Dispatcher.CurrentDispatcher.Invoke(() => Scanner.PdfSaveProgressValue = e);
+                    pdfcompressor.ProgressChanged += (_, e) => Dispatcher.CurrentDispatcher.Invoke(() => PdfImportControlProgressValue = e);
                     PdfToolBarControlIsEnabled = false;
                     using PdfDocument pdfdocument = await pdfcompressor.Compress(filepath);
                     if (pdfdocument is null)
@@ -2787,6 +2788,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public ICommand PasteFileToPdfFile { get; }
+
+    public double PdfImportControlProgressValue
+    {
+        get => pdfImportControlProgressValue;
+        set
+        {
+            if (pdfImportControlProgressValue != value)
+            {
+                pdfImportControlProgressValue = value;
+                OnPropertyChanged(nameof(PdfImportControlProgressValue));
+            }
+        }
+    }
 
     public RelayCommand<object> PdfImportViewerÇiftİşaretle { get; }
 

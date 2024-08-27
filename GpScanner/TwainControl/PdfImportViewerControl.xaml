@@ -53,6 +53,7 @@
     <Grid x:Name="grid" Focusable="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <WrapPanel IsEnabled="{Binding PdfToolBarControlIsEnabled}" Orientation="Horizontal">
@@ -1730,7 +1731,14 @@
                 </WrapPanel>
             </Expander>
         </WrapPanel>
-        <Grid Grid.Row="1">
+        <ProgressBar Grid.Row="1"
+            Height="3"
+            Background="{StaticResource BorderBackground}"
+            BorderBrush="{StaticResource BorderBackground}"
+            Foreground="{StaticResource GroupBoxBackGround}"
+            Maximum="1"
+            Value="{Binding PdfImportControlProgressValue}" />
+        <Grid Grid.Row="2">
             <local:EypPdfViewer x:Name="PdfViewer"
                 local:Policy.PolicyName="EypPdfViewer"
                 x:FieldModifier="public"

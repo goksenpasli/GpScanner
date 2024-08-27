@@ -152,7 +152,12 @@
                                         </Grid>
                                     </Button>
                                 </StackPanel>
-                                <UniformGrid Grid.Row="1" Columns="2">
+                                <Grid Grid.Row="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="3" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
                                     <Grid>
                                         <ListBox x:Name="ListBox"
                                             d:ItemsSource="{d:SampleData ItemCount=5}"
@@ -220,8 +225,14 @@
                                             </Image>
                                         </ToggleButton>
                                     </Grid>
-                                    <ContentControl Content="{Binding SelectedItem.Filename, ElementName=ListBox, IsAsync=True, Mode=OneWay}" ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
-                                </UniformGrid>
+                                    <GridSplitter Grid.Column="1"
+                                        Width="3"
+                                        HorizontalAlignment="Stretch"
+                                        Background="{DynamicResource GroupBoxBackGround}" />
+                                    <ContentControl Grid.Column="2"
+                                        Content="{Binding SelectedItem.Filename, ElementName=ListBox, IsAsync=True, Mode=OneWay}"
+                                        ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
+                                </Grid>
                                 <UniformGrid Grid.Row="2"
                                     Columns="2"
                                     IsEnabled="{Binding CompressFinished, ElementName=Compressor}">

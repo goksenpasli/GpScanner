@@ -59,6 +59,7 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
+            <ColumnDefinition Width="3" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <ListBox x:Name="LbUnindexed"
@@ -101,11 +102,15 @@
                 </Style>
             </ListBox.Style>
         </ListBox>
-        <ContentControl Grid.Column="1"
+        <GridSplitter Grid.Column="1"
+            Width="3"
+            HorizontalAlignment="Stretch"
+            Background="{DynamicResource GroupBoxBackGround}" />
+        <ContentControl Grid.Column="2"
             Margin="1"
             Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
             ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
-        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+        <Grid Grid.Row="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
