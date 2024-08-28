@@ -1256,7 +1256,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                                 if (clipboardImageFiles.Any())
                                 {
-                                    using (PdfDocument document = clipboardImageFiles.GeneratePdf(SelectedPaper))
+                                    using (PdfDocument document = clipboardImageFiles.GeneratePdf(SelectedPaper,null, progress => Scanner.PdfSaveProgressValue = progress))
                                     {
                                         document.Save(temporaryPdf);
                                     }

@@ -132,7 +132,7 @@ public static class PdfGeneration
         return pdfdocument;
     }
 
-    public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null)
+    public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null, Action<double> progressCallback = null)
     {
         if (imagefiles?.Count == 0)
         {
@@ -170,7 +170,7 @@ public static class PdfGeneration
 
                     gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
                 }
-                Scanner.PdfSaveProgressValue = i / (double)imagefiles.Count;
+                progressCallback?.Invoke((i + 1) / (double)imagefiles.Count);
             }
 
             if (Scanner.PasswordProtect)
@@ -179,7 +179,7 @@ public static class PdfGeneration
             }
 
             document.ApplyDefaultPdfCompression();
-            Scanner.PdfSaveProgressValue = 0;
+            progressCallback?.Invoke(0);
         }
         catch (Exception ex)
         {
