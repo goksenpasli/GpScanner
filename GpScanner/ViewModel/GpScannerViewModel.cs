@@ -3339,38 +3339,37 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private async Task ProcessPdfFileAsync(string unIndexedFile, StringBuilder ocrTextBuilder)
     {
         int pagecount = PdfViewer.PdfViewer.PdfPageCount(unIndexedFile);
+        BitmapImage bitmapImage;
+        ObservableCollection<OcrData> ocrData;
         if (OcrAllPdfPages)
         {
-            for (int j = 1; j <= pagecount; j++)
+            for (int i = 1; i <= pagecount; i++)
             {
                 if (Settings.Default.OcrContentUseInternalPdfContent)
                 {
                     using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
-                    _ = ocrTextBuilder.Append(pdfDocument.GetPdfText(j - 1));
+                    _ = ocrTextBuilder.Append(pdfDocument.GetPdfText(i - 1));
                 }
                 else
                 {
-                    BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, j, Twainsettings.Settings.Default.ImgLoadResolution);
-                    ObservableCollection<OcrData> ocrData = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                    bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, i, Twainsettings.Settings.Default.ImgLoadResolution);
+                    ocrData = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
                     _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
                 }
-                OcrAllPdfPagesProgress = j / (double)pagecount;
+                OcrAllPdfPagesProgress = i / (double)pagecount;
             }
+            OcrAllPdfPagesProgress = 0;
+            return;
         }
-        else
+        if (Settings.Default.OcrContentUseInternalPdfContent)
         {
-            if (Settings.Default.OcrContentUseInternalPdfContent)
-            {
-                using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
-                _ = ocrTextBuilder.Append(pdfDocument.GetPdfText(0));
-            }
-            else
-            {
-                BitmapImage bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
-                ObservableCollection<OcrData> ocrData = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
-                _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
-            }
+            using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
+            _ = ocrTextBuilder.Append(pdfDocument.GetPdfText(0));
+            return;
         }
+        bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
+        ocrData = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+        _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
     }
 
     private void RegisterSimplePdfFileWatcher()

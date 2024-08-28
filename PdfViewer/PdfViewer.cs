@@ -34,45 +34,38 @@ namespace PdfViewer;
 public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 {
     public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
-    public static readonly DependencyProperty ContextMenuVisibilityProperty =
-        DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
-    public static readonly DependencyProperty DpiProperty =
-        DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
+    public static readonly DependencyProperty BookmarkContentVisibilityProperty = DependencyProperty.Register("BookmarkContentVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ContextMenuVisibilityProperty = DependencyProperty.Register("ContextMenuVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
+    public static readonly DependencyProperty DpiListVisibilityProperty = DependencyProperty.Register("DpiListVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty DpiProperty = DependencyProperty.Register("Dpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(200, DpiChangedAsync));
+    public static readonly DependencyProperty MatchCaseProperty = DependencyProperty.Register("MatchCase", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
+    public static readonly DependencyProperty OpenButtonVisibilityProperty = DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(PdfViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
     public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
+    public static readonly DependencyProperty PdfTextContentVisibilityProperty = DependencyProperty.Register("PdfTextContentVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty PrintButtonVisibilityProperty = DependencyProperty.Register("PrintButtonVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty PrintDpiProperty = DependencyProperty.Register("PrintDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(300));
-    public static readonly DependencyProperty SayfaProperty =
-        DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
-    public static readonly DependencyProperty SnapTickProperty =
-        DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
+    public static readonly DependencyProperty PrintDpiSettingsListEnabledProperty = DependencyProperty.Register("PrintDpiSettingsListEnabled", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
+    public static readonly DependencyProperty SayfaProperty = DependencyProperty.Register("Sayfa", typeof(int), typeof(PdfViewer), new PropertyMetadata(1, SayfaChangedAsync));
+    public static readonly DependencyProperty SearchTextContentVisibilityProperty = DependencyProperty.Register("SearchTextContentVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty SliderZoomAngleVisibilityProperty = DependencyProperty.Register("SliderZoomAngleVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty SnapTickProperty = DependencyProperty.Register("SnapTick", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
-    public static readonly DependencyProperty ToolBarVisibilityProperty =
-        DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty TifNavigasyonButtonEtkinProperty = DependencyProperty.Register("TifNavigasyonButtonEtkin", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty WholeWordProperty = DependencyProperty.Register("WholeWord", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty ZoomEnabledProperty = DependencyProperty.Register("ZoomEnabled", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
-    public static readonly DependencyProperty ZoomProperty =
-        DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+    public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
     private bool autoFitContent;
-    private Visibility bookmarkContentVisibility;
     private bool disposedValue;
-    private Visibility dpiListVisibility = Visibility.Visible;
-    private bool matchCase;
-    private Visibility openButtonVisibility = Visibility.Collapsed;
     private IEnumerable<int> pages;
     private PdfBookmarkCollection pdfBookmarks;
-    private byte[] pdfData;
     private ObservableCollection<PdfMatch> pdfMatches;
     private string pdfTextContent;
-    private Visibility pdfTextContentVisibility;
-    private Visibility printButtonVisibility = Visibility.Collapsed;
-    private bool printDpiSettingsListEnabled = true;
     private ScrollViewer scrollvwr;
     private PdfMatch searchPdfMatch;
     private string searchTextContent;
-    private Visibility searchTextContentVisibility;
-    private Visibility sliderZoomAngleVisibility = Visibility.Visible;
-    private Visibility tifNavigasyonButtonEtkin = Visibility.Visible;
     private int toplamSayfa;
-    private bool wholeWord;
 
     static PdfViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer))); }
 
@@ -247,19 +240,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility BookmarkContentVisibility
-    {
-        get => bookmarkContentVisibility;
-
-        set
-        {
-            if (bookmarkContentVisibility != value)
-            {
-                bookmarkContentVisibility = value;
-                OnPropertyChanged(nameof(BookmarkContentVisibility));
-            }
-        }
-    }
+    public Visibility BookmarkContentVisibility { get => (Visibility)GetValue(BookmarkContentVisibilityProperty); set => SetValue(BookmarkContentVisibilityProperty, value); }
 
     public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
 
@@ -269,53 +250,17 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int Dpi { get => (int)GetValue(DpiProperty); set => SetValue(DpiProperty, value); }
 
-    public Visibility DpiListVisibility
-    {
-        get => dpiListVisibility;
-
-        set
-        {
-            if (dpiListVisibility != value)
-            {
-                dpiListVisibility = value;
-                OnPropertyChanged(nameof(DpiListVisibility));
-            }
-        }
-    }
+    public Visibility DpiListVisibility { get => (Visibility)GetValue(DpiListVisibilityProperty); set => SetValue(DpiListVisibilityProperty, value); }
 
     public RelayCommand<object> GoPdfBookMarkPage { get; }
 
-    public bool MatchCase
-    {
-        get => matchCase;
-
-        set
-        {
-            if (matchCase != value)
-            {
-                matchCase = value;
-                OnPropertyChanged(nameof(MatchCase));
-            }
-        }
-    }
+    public bool MatchCase { get => (bool)GetValue(MatchCaseProperty); set => SetValue(MatchCaseProperty, value); }
 
     public double MaxZoom { get; } = 10;
 
     public double MinZoom { get; } = 0.01;
 
-    public Visibility OpenButtonVisibility
-    {
-        get => openButtonVisibility;
-
-        set
-        {
-            if (openButtonVisibility != value)
-            {
-                openButtonVisibility = value;
-                OnPropertyChanged(nameof(OpenButtonVisibility));
-            }
-        }
-    }
+    public Visibility OpenButtonVisibility { get => (Visibility)GetValue(OpenButtonVisibilityProperty); set => SetValue(OpenButtonVisibilityProperty, value); }
 
     public FitImageOrientation Orientation { get => (FitImageOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
@@ -344,20 +289,6 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 pdfBookmarks = value;
                 OnPropertyChanged(nameof(PdfBookmarks));
-            }
-        }
-    }
-
-    public byte[] PdfData
-    {
-        get => pdfData;
-
-        set
-        {
-            if (pdfData != value)
-            {
-                pdfData = value;
-                OnPropertyChanged(nameof(PdfData));
             }
         }
     }
@@ -392,48 +323,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility PdfTextContentVisibility
-    {
-        get => pdfTextContentVisibility;
+    public Visibility PdfTextContentVisibility { get => (Visibility)GetValue(PdfTextContentVisibilityProperty); set => SetValue(PdfTextContentVisibilityProperty, value); }
 
-        set
-        {
-            if (pdfTextContentVisibility != value)
-            {
-                pdfTextContentVisibility = value;
-                OnPropertyChanged(nameof(PdfTextContentVisibility));
-            }
-        }
-    }
-
-    public Visibility PrintButtonVisibility
-    {
-        get => printButtonVisibility;
-
-        set
-        {
-            if (printButtonVisibility != value)
-            {
-                printButtonVisibility = value;
-                OnPropertyChanged(nameof(PrintButtonVisibility));
-            }
-        }
-    }
+    public Visibility PrintButtonVisibility { get => (Visibility)GetValue(PrintButtonVisibilityProperty); set => SetValue(PrintButtonVisibilityProperty, value); }
 
     public int PrintDpi { get => (int)GetValue(PrintDpiProperty); set => SetValue(PrintDpiProperty, value); }
 
-    public bool PrintDpiSettingsListEnabled
-    {
-        get => printDpiSettingsListEnabled;
-        set
-        {
-            if (printDpiSettingsListEnabled != value)
-            {
-                printDpiSettingsListEnabled = value;
-                OnPropertyChanged(nameof(PrintDpiSettingsListEnabled));
-            }
-        }
-    }
+    public bool PrintDpiSettingsListEnabled { get => (bool)GetValue(PrintDpiSettingsListEnabledProperty); set => SetValue(PrintDpiSettingsListEnabledProperty, value); }
 
     public RelayCommand<object> PrintSinglePage { get; }
 
@@ -479,51 +375,15 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public Visibility SearchTextContentVisibility
-    {
-        get => searchTextContentVisibility;
+    public Visibility SearchTextContentVisibility { get => (Visibility)GetValue(SearchTextContentVisibilityProperty); set => SetValue(SearchTextContentVisibilityProperty, value); }
 
-        set
-        {
-            if (searchTextContentVisibility != value)
-            {
-                searchTextContentVisibility = value;
-                OnPropertyChanged(nameof(SearchTextContentVisibility));
-            }
-        }
-    }
-
-    public Visibility SliderZoomAngleVisibility
-    {
-        get => sliderZoomAngleVisibility;
-
-        set
-        {
-            if (sliderZoomAngleVisibility != value)
-            {
-                sliderZoomAngleVisibility = value;
-                OnPropertyChanged(nameof(SliderZoomAngleVisibility));
-            }
-        }
-    }
+    public Visibility SliderZoomAngleVisibility { get => (Visibility)GetValue(SliderZoomAngleVisibilityProperty); set => SetValue(SliderZoomAngleVisibilityProperty, value); }
 
     public bool SnapTick { get => (bool)GetValue(SnapTickProperty); set => SetValue(SnapTickProperty, value); }
 
     public ImageSource Source { get => (ImageSource)GetValue(SourceProperty); set => SetValue(SourceProperty, value); }
 
-    public Visibility TifNavigasyonButtonEtkin
-    {
-        get => tifNavigasyonButtonEtkin;
-
-        set
-        {
-            if (tifNavigasyonButtonEtkin != value)
-            {
-                tifNavigasyonButtonEtkin = value;
-                OnPropertyChanged(nameof(TifNavigasyonButtonEtkin));
-            }
-        }
-    }
+    public Visibility TifNavigasyonButtonEtkin { get => (Visibility)GetValue(TifNavigasyonButtonEtkinProperty); set => SetValue(TifNavigasyonButtonEtkinProperty, value); }
 
     public Visibility ToolBarVisibility { get => (Visibility)GetValue(ToolBarVisibilityProperty); set => SetValue(ToolBarVisibilityProperty, value); }
 
@@ -542,19 +402,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public bool WholeWord
-    {
-        get => wholeWord;
-
-        set
-        {
-            if (wholeWord != value)
-            {
-                wholeWord = value;
-                OnPropertyChanged(nameof(WholeWord));
-            }
-        }
-    }
+    public bool WholeWord { get => (bool)GetValue(WholeWordProperty); set => SetValue(WholeWordProperty, value); }
 
     public ICommand Yazdır { get; }
 

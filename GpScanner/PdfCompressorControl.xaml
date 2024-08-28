@@ -260,6 +260,6 @@
     <Grid>
         <Compressor:Compressor x:Name="Compressor"
             BatchPdfList="{Binding CompressedFiles}"
-            Style="{StaticResource CompressorStyle}" />
+            Style="{StaticResource CompressorStyle}" Height="450" VerticalAlignment="Bottom" />
     </Grid>
 </UserControl>

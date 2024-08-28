@@ -132,10 +132,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         new Paper { Category = string.Empty, Height = 0, PaperType = "Original", Width = 0 },
         new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth },
     ];
+    private int pdfCompressDpi = 150;
     private double pdfImportControlProgressValue;
     private double pdfLoadProgressValue;
     private int pdfMedianValue;
     private ObservableCollection<PdfData> pdfPages;
+    private int pdfQuality = 70;
     private int pdfSplitCount;
     private bool pdfToolBarControlIsEnabled = true;
     private SolidColorBrush pdfWatermarkColor = Brushes.Red;
@@ -1256,7 +1258,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                                 if (clipboardImageFiles.Any())
                                 {
-                                    using (PdfDocument document = clipboardImageFiles.GeneratePdf(SelectedPaper,null, progress => Scanner.PdfSaveProgressValue = progress))
+                                    using (PdfDocument document = clipboardImageFiles.GeneratePdf(SelectedPaper, null, progress => Scanner.PdfSaveProgressValue = progress))
                                     {
                                         document.Save(temporaryPdf);
                                     }
@@ -1932,7 +1934,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     string filepath = pdfviewer.PdfFilePath;
                     double oldsize = new FileInfo(filepath).Length;
-                    PdfCompressor pdfcompressor = new() { UseMozJpeg = MozJpeg.MozJpeg.MozJpegDllExists, Dpi = 150, Quality = 70, };
+                    PdfCompressor pdfcompressor = new() { Dpi = PdfCompressDpi, Quality = PdfQuality, };
                     pdfcompressor.ProgressChanged += (_, e) => Dispatcher.CurrentDispatcher.Invoke(() => PdfImportControlProgressValue = e);
                     PdfToolBarControlIsEnabled = false;
                     using PdfDocument pdfdocument = await pdfcompressor.Compress(filepath);
@@ -2789,6 +2791,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand PasteFileToPdfFile { get; }
 
+    public int PdfCompressDpi
+    {
+        get => pdfCompressDpi;
+        set
+        {
+            if (pdfCompressDpi != value)
+            {
+                pdfCompressDpi = value;
+                OnPropertyChanged(nameof(PdfCompressDpi));
+            }
+        }
+    }
+
     public double PdfImportControlProgressValue
     {
         get => pdfImportControlProgressValue;
@@ -2848,6 +2863,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 pdfPages = value;
                 OnPropertyChanged(nameof(PdfPages));
+            }
+        }
+    }
+
+    public int PdfQuality
+    {
+        get => pdfQuality;
+        set
+        {
+            if (pdfQuality != value)
+            {
+                pdfQuality = value;
+                OnPropertyChanged(nameof(PdfQuality));
             }
         }
     }

@@ -1482,7 +1482,9 @@
                         <Grid>
                             <ProgressBar Background="{x:Null}"
                                 BorderBrush="{x:Null}"
-                                IsIndeterminate="{Binding OcrIsBusy}" />
+                                IsIndeterminate="{Binding OcrIsBusy}"
+                                Maximum="1"
+                                Value="{Binding OcrAllPdfPagesProgress}" />
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
