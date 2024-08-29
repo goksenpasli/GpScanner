@@ -165,6 +165,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
     private ScannedImage undoImage;
     private int? undoImageIndex;
+    private bool useMozJpeg;
     private double width;
 
     public TwainCtrl()
@@ -1934,7 +1935,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     string filepath = pdfviewer.PdfFilePath;
                     double oldsize = new FileInfo(filepath).Length;
-                    PdfCompressor pdfcompressor = new() { Dpi = PdfCompressDpi, Quality = PdfQuality, };
+                    PdfCompressor pdfcompressor = new() { UseMozJpeg = UseMozJpeg, Dpi = PdfCompressDpi, Quality = PdfQuality, };
                     pdfcompressor.ProgressChanged += (_, e) => Dispatcher.CurrentDispatcher.Invoke(() => PdfImportControlProgressValue = e);
                     PdfToolBarControlIsEnabled = false;
                     using PdfDocument pdfdocument = await pdfcompressor.Compress(filepath);
@@ -3359,6 +3360,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 undoImageIndex = value;
                 OnPropertyChanged(nameof(UndoImageIndex));
+            }
+        }
+    }
+
+    public bool UseMozJpeg
+    {
+        get => useMozJpeg;
+        set
+        {
+            if (useMozJpeg != value)
+            {
+                useMozJpeg = value;
+                OnPropertyChanged(nameof(UseMozJpeg));
             }
         }
     }
