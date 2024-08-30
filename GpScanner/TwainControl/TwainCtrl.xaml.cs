@@ -27,6 +27,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
@@ -4735,16 +4736,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void SaveXpsImage(BitmapFrame scannedImage, string filename)
     {
-        Dispatcher.Invoke(
-            () =>
+        _ = Dispatcher.Invoke(
+            async () =>
             {
+                FixedDocument fixedDoc = new();
+                PageContent pageContent = new();
+                double width = SelectedPaper.Width * 96 / Inch;
+                double height = SelectedPaper.Height * 96 / Inch;
+                double Width = width == 0 ? scannedImage.PixelWidth : width;
+                double Height = height == 0 ? scannedImage.PixelHeight : height;
+                FixedPage fixedPage = new() { Width = Width, Height = Height };
                 System.Windows.Controls.Image image = new();
                 image.BeginInit();
-                image.Source = scannedImage;
+                image.Source = scannedImage.PixelWidth > scannedImage.PixelHeight ? await scannedImage.RotateImageAsync(-1) : scannedImage;
+                image.Width = fixedPage.Width;
+                image.Stretch = Stretch.UniformToFill;
+                image.Height = fixedPage.Height;
                 image.EndInit();
+                _ = fixedPage.Children.Add(image);
+                ((IAddChild)pageContent).AddChild(fixedPage);
+                _ = fixedDoc.Pages.Add(pageContent);
                 using XpsDocument xpsd = new(filename, FileAccess.Write);
                 XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsd);
-                xw.Write(image);
+                xw.Write(fixedDoc);
                 image = null;
             });
     }
