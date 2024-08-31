@@ -1052,6 +1052,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
+        DuplicateSelectedImage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is not BitmapFrame bitmapFrame)
+                {
+                    return;
+                }
+                ScannedImage image = new() { Seçili = false, Resim = bitmapFrame };
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
+                {
+                    Scanner?.Resimler?.Insert(SeçiliResim.Index, image);
+                }
+                else
+                {
+                    Scanner?.Resimler?.Add(image);
+                }
+            },
+            parameter => parameter is BitmapFrame);
+
         InsertClipBoardImage = new RelayCommand<object>(
             parameter =>
             {
@@ -2586,6 +2605,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public RelayCommand<object> DuplicateSelectedImage { get; }
 
     public ICommand ExploreFile { get; }
 

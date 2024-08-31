@@ -1354,6 +1354,19 @@
                                             </Image.Source>
                                         </Image>
                                     </Button>
+                                    <Button local:Policy.PolicyName="DuplicateSelectedImage"
+                                        BorderBrush="Cyan"
+                                        Command="{Binding DuplicateSelectedImage}"
+                                        CommandParameter="{Binding SeçiliResim.Resim}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="134" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
                                     <Button local:Policy.PolicyName="AddActiveVisibleContentImage" Command="{Binding AddActiveVisibleContentImage}">
                                         <Image Width="16" Height="16">
                                             <Image.Source>

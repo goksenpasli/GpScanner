@@ -53,6 +53,9 @@
         <KeyBinding Key="D"
             Command="{Binding TümününİşaretiniKaldır, ElementName=twainCtrl}"
             Modifiers="Ctrl" />
+        <KeyBinding Key="D"
+            Command="{Binding DuplicateSelectedImage, ElementName=twainCtrl}"
+            Modifiers="Ctrl+Shift" />
         <KeyBinding Key="Delete" Command="{Binding SeçiliListeTemizle, ElementName=twainCtrl}" />
         <KeyBinding Key="Delete"
             Command="{Binding ListeTemizle, ElementName=twainCtrl}"
