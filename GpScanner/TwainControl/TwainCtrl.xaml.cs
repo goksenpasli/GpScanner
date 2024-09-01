@@ -8,6 +8,7 @@ using PdfSharp.Pdf.IO;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
@@ -46,11 +47,9 @@ using static TwainControl.DrawControl;
 using Application = System.Windows.Application;
 using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
-using Clipboard = System.Windows.Forms.Clipboard;
 using Color = System.Windows.Media.Color;
 using ColorConverter = System.Windows.Media.ColorConverter;
 using Cursors = System.Windows.Input.Cursors;
-using DataFormats = System.Windows.Forms.DataFormats;
 using DragDropEffects = System.Windows.DragDropEffects;
 using DragEventArgs = System.Windows.DragEventArgs;
 using Image = System.Drawing.Image;
@@ -1034,20 +1033,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         AddFromClipBoard = new RelayCommand<object>(
             async parameter =>
             {
-                System.Windows.Forms.IDataObject clipboardData = Clipboard.GetDataObject();
-                if (clipboardData?.GetDataPresent(DataFormats.Bitmap) == true)
+                if (Clipboard.ContainsImage())
                 {
-                    Scanner?.Resimler?.Add(new ScannedImage { Seçili = true, Resim = CreateBitmapFromClipBoard(clipboardData) });
-                }
-                if (clipboardData?.GetDataPresent(DataFormats.FileDrop) == true)
-                {
-                    string[] clipboardFiles = (string[])clipboardData.GetData(System.Windows.DataFormats.FileDrop);
-                    if (clipboardFiles?.Length > 0)
+                    BitmapSource image = Clipboard.GetImage();
+                    if (image is not null)
                     {
-                        await AddFiles(clipboardFiles, DecodeHeight);
+                        Scanner?.Resimler?.Add(new ScannedImage { Seçili = true, Resim = GenerateBitmapFrame(image.ToBitmapImage()) });
                     }
                 }
-                clipboardData = null;
+                if (Clipboard.ContainsFileDropList())
+                {
+                    StringCollection clipboardFiles = Clipboard.GetFileDropList();
+                    if (clipboardFiles?.Count > 0)
+                    {
+                        await AddFiles(clipboardFiles.Cast<string>().ToArray(), DecodeHeight);
+                    }
+                }
                 Clipboard.Clear();
             },
             parameter => true);
@@ -1251,20 +1252,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
-                System.Windows.Forms.IDataObject clipboardData = Clipboard.GetDataObject();
+                IDataObject clipboardData = Clipboard.GetDataObject();
                 if (clipboardData is null)
                 {
                     return;
                 }
-
                 string pdfFilePath = pdfviewer.PdfFilePath;
                 string temporaryPdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                 string[] processedFiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporaryPdf] : [temporaryPdf, pdfFilePath];
-                if (clipboardData.GetDataPresent(DataFormats.FileDrop))
+                if (Clipboard.ContainsFileDropList())
                 {
-                    string[] clipboardFiles = (string[])clipboardData.GetData(System.Windows.DataFormats.FileDrop);
-                    List<string> clipboardPdfFiles = clipboardFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
-                    List<string> clipboardImageFiles = clipboardFiles.Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant())).ToList();
+                    StringCollection clipboardFiles = Clipboard.GetFileDropList();
+                    List<string> clipboardPdfFiles = clipboardFiles.Cast<string>().Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
+                    List<string> clipboardImageFiles = clipboardFiles.Cast<string>().Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant())).ToList();
                     if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
                     {
                         PdfToolBarControlIsEnabled = false;
@@ -1290,17 +1290,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         PdfToolBarControlIsEnabled = true;
                         pdfviewer.Sayfa = 1;
                         NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
-                        clipboardImageFiles = null;
-                        clipboardPdfFiles = null;
                     }
                 }
 
-                if (clipboardData.GetDataPresent(DataFormats.Bitmap))
+                if (Clipboard.ContainsImage())
                 {
-                    using Bitmap bitmap = (Bitmap)clipboardData.GetData(DataFormats.Bitmap);
-                    IntPtr gdibitmap = bitmap.GetHbitmap();
-                    BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-                    _ = Helpers.DeleteObject(gdibitmap);
+                    BitmapSource image = Clipboard.GetImage();
                     if (image is not null)
                     {
                         BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
@@ -1312,19 +1307,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 {
                                     pdfDocument.Save(temporaryPdf);
                                 }
-
                                 processedFiles.MergePdf().Save(pdfFilePath);
                             });
                         PdfToolBarControlIsEnabled = true;
                         pdfviewer.Sayfa = 1;
                         NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
-                        image = null;
-                        processedFiles = null;
-                        bitmapFrame = null;
                     }
                 }
-
-                clipboardData = null;
                 Clipboard.Clear();
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1634,14 +1623,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
-                    Clipboard.SetImage(((BitmapSource)pdfViewer.Source).BitmapSourceToBitmap());
+                    Clipboard.SetImage((BitmapSource)pdfViewer.Source);
                     return;
                 }
                 byte[] filedata = await Viewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
                 using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, pdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
                 filedata = null;
                 using Image image = Image.FromStream(ms);
-                Clipboard.SetImage(image);
+                Clipboard.SetImage(image.ToBitmapImage(ImageFormat.Jpeg));
             },
             parameter => parameter is Viewer pdfViewer && File.Exists(pdfViewer.PdfFilePath));
 
@@ -1650,8 +1639,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (parameter is ScannedImage scannedImage && scannedImage?.Resim is not null)
                 {
-                    using Image image = scannedImage.Resim.BitmapSourceToBitmap();
-                    Clipboard.SetImage(image);
+                    Clipboard.SetImage(scannedImage.Resim.ToBitmapImage());
                     _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             },
@@ -3773,7 +3761,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             return;
         }
 
-        if ((e.Data.GetData(System.Windows.DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+        if ((e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
         {
             foreach (string folder in from string file in droppedfiles where File.GetAttributes(file).HasFlag(FileAttributes.Directory) select file)
             {
@@ -4010,15 +3998,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Version current = new(osversion);
         Version compare = new(version);
         return current >= compare;
-    }
-
-    private BitmapFrame CreateBitmapFromClipBoard(System.Windows.Forms.IDataObject clipboardData)
-    {
-        using Bitmap bitmap = (Bitmap)clipboardData.GetData(DataFormats.Bitmap);
-        IntPtr gdibitmap = bitmap.GetHbitmap();
-        BitmapSource image = Imaging.CreateBitmapSourceFromHBitmap(gdibitmap, IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-        _ = Helpers.DeleteObject(gdibitmap);
-        return image is not null ? GenerateBitmapFrame(image) : null;
     }
 
     private Int32Rect CropPreviewImage(ImageSource imageSource)
@@ -4933,7 +4912,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void StackPanel_Drop(object sender, DragEventArgs e) => DropFile(sender, e);
 
-    private void StackPanel_GiveFeedback(object sender, System.Windows.GiveFeedbackEventArgs e)
+    private void StackPanel_GiveFeedback(object sender, GiveFeedbackEventArgs e)
     {
         if (e.Effects == DragDropEffects.Move)
         {

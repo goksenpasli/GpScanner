@@ -20,7 +20,6 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
-using System.Windows.Threading;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
@@ -132,6 +131,51 @@ public static class PdfGeneration
         return pdfdocument;
     }
 
+    public static PdfDocument GeneratePdf(this string imagefile, Paper paper, ObservableCollection<OcrData> ScannedText = null)
+    {
+        using PdfDocument document = new();
+        try
+        {
+            PdfPage page = document.AddPage();
+            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+            using XImage xImage = XImage.FromFile(imagefile);
+            XSize size = GetPageSize(paper, xImage, page);
+            if (xImage.PixelWidth < xImage.PixelHeight)
+            {
+                page.Orientation = PageOrientation.Portrait;
+                if (ScannedText is not null)
+                {
+                    WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
+                }
+
+                gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
+            }
+            else
+            {
+                page.Orientation = PageOrientation.Landscape;
+                if (ScannedText is not null)
+                {
+                    WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
+                }
+
+                gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
+            }
+            if (Scanner.PasswordProtect)
+            {
+                document.ApplyPdfSecurity();
+            }
+            document.ApplyDefaultPdfCompression();
+        }
+        catch (Exception ex)
+        {
+            imagefile = null;
+            ScannedText = null;
+            throw new ArgumentException(ex?.Message);
+        }
+
+        return document;
+    }
+
     public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null, Action<double> progressCallback = null)
     {
         if (imagefiles?.Count == 0)
@@ -184,51 +228,6 @@ public static class PdfGeneration
         catch (Exception ex)
         {
             imagefiles = null;
-            ScannedText = null;
-            throw new ArgumentException(ex?.Message);
-        }
-
-        return document;
-    }
-
-    public static PdfDocument GeneratePdf(this string imagefile, Paper paper, ObservableCollection<OcrData> ScannedText = null)
-    {
-        using PdfDocument document = new();
-        try
-        {
-            PdfPage page = document.AddPage();
-            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-            using XImage xImage = XImage.FromFile(imagefile);
-            XSize size = GetPageSize(paper, xImage, page);
-            if (xImage.PixelWidth < xImage.PixelHeight)
-            {
-                page.Orientation = PageOrientation.Portrait;
-                if (ScannedText is not null)
-                {
-                    WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
-                }
-
-                gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
-            }
-            else
-            {
-                page.Orientation = PageOrientation.Landscape;
-                if (ScannedText is not null)
-                {
-                    WritePdfTextContent(xImage, ScannedText, page, gfx, XBrushes.Transparent);
-                }
-
-                gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
-            }
-            if (Scanner.PasswordProtect)
-            {
-                document.ApplyPdfSecurity();
-            }
-            document.ApplyDefaultPdfCompression();
-        }
-        catch (Exception ex)
-        {
-            imagefile = null;
             ScannedText = null;
             throw new ArgumentException(ex?.Message);
         }

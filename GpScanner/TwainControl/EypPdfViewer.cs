@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -97,7 +98,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         InvertSelectedPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is int currentpage && DataContext is TwainCtrl twainCtrl && MessageBox.Show($"{Translation.GetResStringValue("INVERTCOLOR")}", TwainCtrl.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                if (parameter is int currentpage &&
+                DataContext is TwainCtrl twainCtrl &&
+                MessageBox.Show($"{Translation.GetResStringValue("INVERTCOLOR")}", TwainCtrl.AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     string oldpdfpath = PdfFilePath;
                     BitmapImage bitmapImage = await ConvertToImgAsync(PdfFilePath, currentpage, Dpi);
@@ -123,7 +126,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     using MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
                     filedata = null;
                     using Image image = Image.FromStream(ms);
-                    System.Windows.Forms.Clipboard.SetImage(image);
+                    Clipboard.SetImage(image.ToBitmapImage(ImageFormat.Jpeg));
                     _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), Window.GetWindow(this)?.Title, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             },

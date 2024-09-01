@@ -436,15 +436,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
     private BitmapSource ResizeOrCompressImage(BitmapFrame image, double width, double height)
     {
         double xRatio = width / image.PixelWidth;
-        if (ResizeRatioImage)
-        {
-            return image.Resize(xRatio);
-        }
-        if (CompressImage)
-        {
-            return image.Resize(width, height, AutoRotate ? 90 * (int)SelectedRotation : 0);
-        }
-        return image;
+        return ResizeRatioImage ? image.Resize(xRatio) : CompressImage ? image.Resize(width, height, AutoRotate ? 90 * (int)SelectedRotation : 0) : image;
     }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)

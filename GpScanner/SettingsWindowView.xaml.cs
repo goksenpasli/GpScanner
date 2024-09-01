@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace GpScanner;
 
@@ -9,5 +10,5 @@ public partial class SettingsWindowView : Window
 {
     public SettingsWindowView() { InitializeComponent(); }
 
-    private void ListBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e) => e.Handled = true;
+    private void ListBox_PreviewKeyDown(object sender, KeyEventArgs e) => e.Handled = true;
 }

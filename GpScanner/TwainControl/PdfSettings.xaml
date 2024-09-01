@@ -114,7 +114,7 @@
                             <Extensions:NumericUpDown Minimum="1"
                                 StringFormat="{}{0} CM"
                                 Value="{Binding Path=CustomPaperHeight, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                        </UniformGrid>                        
+                        </UniformGrid>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>

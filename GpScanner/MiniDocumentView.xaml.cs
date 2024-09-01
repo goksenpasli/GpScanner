@@ -1,4 +1,5 @@
 ﻿using GpScanner.ViewModel;
+using System.Drawing;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -27,7 +28,7 @@ namespace GpScanner
             {
                 viewModel.TwainCtrl.DragMoveStarted = true;
                 StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
-                using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+                using Icon icon = Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
                 TwainCtrl.DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
                 _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
                 viewModel.TwainCtrl.DragMoveStarted = false;
