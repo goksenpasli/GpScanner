@@ -601,7 +601,6 @@
                                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ALL}" />
                                     </StackPanel>
                                 </Extensions:SplitButton>
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <ComboBox VerticalContentAlignment="Center"
                                     d:SelectedValue="330,530"
                                     twainctrl:Policy.PolicyName="SelectedSize"
@@ -724,7 +723,6 @@
                                         Height="32"
                                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                 </Button>
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfZipBirleştir"
@@ -743,96 +741,6 @@
                                             Text="ZIP" />
                                     </Canvas>
                                 </Button>
-                                <Extensions:ContentToggleButton Command="{Binding LoadGroupFilesMonth}"
-                                    StaysOpen="True"
-                                    TopMost="False">
-                                    <Extensions:ContentToggleButton.OverContent>
-                                        <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
-                                            <ItemsControl ItemsSource="{Binding YearlyGroupData}">
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <Grid Background="{StaticResource BorderBackground}">
-                                                            <StackPanel Orientation="Horizontal">
-                                                                <Button x:Name="Btn"
-                                                                    Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}">
-                                                                    <StackPanel Orientation="Horizontal">
-                                                                        <Image Width="32" Height="32">
-                                                                            <Image.Source>
-                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                    <Binding Source="zipfldr.dll" />
-                                                                                    <Binding Source="0" />
-                                                                                </MultiBinding>
-                                                                            </Image.Source>
-                                                                        </Image>
-                                                                        <TextBlock VerticalAlignment="Center">
-                                                                            <Run Text="{twainctrl:Loc MONTH}" />
-                                                                            <Run Text="{Binding Key, Mode=OneWay}" />
-                                                                        </TextBlock>
-                                                                    </StackPanel>
-                                                                </Button>
-                                                                <TextBlock x:Name="TbView"
-                                                                    VerticalAlignment="Center"
-                                                                    FontFamily="Webdings"
-                                                                    FontSize="20"
-                                                                    Foreground="Red"
-                                                                    IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
-                                                                    Text="N" />
-                                                            </StackPanel>
-                                                            <Extensions:FadedToolTipControl Background="{StaticResource BorderBackground}"
-                                                                BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                                PopupParent="{Binding ElementName=TbView}"
-                                                                Position="Bottom"
-                                                                ShowCloseButton="Visible"
-                                                                TimeToClose="{x:Static sys:Int32.MaxValue}"
-                                                                TimeToShow="2000">
-                                                                <Extensions:FadedToolTipControl.Style>
-                                                                    <Style TargetType="Extensions:FadedToolTipControl">
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding ElementName=TbView, Path=IsMouseOver}" Value="true">
-                                                                                <Setter Property="Show" Value="True" />
-                                                                            </DataTrigger>
-                                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="true">
-                                                                                <Setter Property="Show" Value="True" />
-                                                                            </DataTrigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </Extensions:FadedToolTipControl.Style>
-                                                                <Extensions:ResizablePanel Width="720"
-                                                                    Height="480"
-                                                                    MinWidth="360"
-                                                                    MinHeight="240"
-                                                                    Background="{x:Null}"
-                                                                    BorderBrush="Transparent">
-                                                                    <ListBox ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
-                                                                        ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
-                                                                        VirtualizingPanel.CacheLengthUnit="Pixel"
-                                                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                                                        VirtualizingPanel.ScrollUnit="Pixel"
-                                                                        VirtualizingPanel.VirtualizationMode="Standard">
-                                                                        <ListBox.ItemsPanel>
-                                                                            <ItemsPanelTemplate>
-                                                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                                                                    ItemSize="165,165"
-                                                                                    SpacingMode="None" />
-                                                                            </ItemsPanelTemplate>
-                                                                        </ListBox.ItemsPanel>
-                                                                    </ListBox>
-                                                                </Extensions:ResizablePanel>
-                                                            </Extensions:FadedToolTipControl>
-                                                        </Grid>
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <UniformGrid Columns="1" Rows="12" />
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                            </ItemsControl>
-                                        </Border>
-                                    </Extensions:ContentToggleButton.OverContent>
-                                </Extensions:ContentToggleButton>
-                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="DvdBurnerControl" ArrowVisibility="Collapsed">
                                     <Image Width="32" Height="32">
                                         <Image.Source>
@@ -893,6 +801,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <RepeatButton twainctrl:Policy.PolicyName="DateBack"
@@ -931,7 +840,13 @@
                                         FontSize="16" />
                                 </StackPanel>
                             </StackPanel>
-                            <Button Grid.Column="2" Command="{Binding SetDateToday}">
+                            <RepeatButton Grid.Column="2"
+                                twainctrl:Policy.PolicyName="DateForward"
+                                Command="{Binding DateForward}"
+                                Content="è"
+                                FontFamily="Wingdings"
+                                FontSize="16" />
+                            <Button Grid.Column="3" Command="{Binding SetDateToday}">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -941,22 +856,108 @@
                                     </Image.Source>
                                 </Image>
                             </Button>
-                            <RepeatButton Grid.Column="3"
-                                twainctrl:Policy.PolicyName="DateForward"
-                                Command="{Binding DateForward}"
-                                Content="è"
-                                FontFamily="Wingdings"
-                                FontSize="16" />
+                            <Extensions:ContentToggleButton Grid.Column="4"
+                                Command="{Binding LoadGroupFilesMonth}"
+                                StaysOpen="True"
+                                TopMost="False">
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
+                                        <ItemsControl ItemsSource="{Binding YearlyGroupData}">
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate>
+                                                    <Grid Background="{StaticResource BorderBackground}">
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Button x:Name="Btn"
+                                                                Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
+                                                                CommandParameter="{Binding Mode=OneWay}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                    <Image Width="32" Height="32">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="zipfldr.dll" />
+                                                                                <Binding Source="0" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                    <TextBlock VerticalAlignment="Center">
+                                                                        <Run Text="{twainctrl:Loc MONTH}" />
+                                                                        <Run Text="{Binding Key, Mode=OneWay}" />
+                                                                    </TextBlock>
+                                                                </StackPanel>
+                                                            </Button>
+                                                            <TextBlock x:Name="TbView"
+                                                                VerticalAlignment="Center"
+                                                                FontFamily="Webdings"
+                                                                FontSize="20"
+                                                                Foreground="Red"
+                                                                IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
+                                                                Text="N" />
+                                                        </StackPanel>
+                                                        <Extensions:FadedToolTipControl Background="{StaticResource BorderBackground}"
+                                                            BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                            PopupParent="{Binding ElementName=TbView}"
+                                                            Position="Bottom"
+                                                            ShowCloseButton="Visible"
+                                                            TimeToClose="{x:Static sys:Int32.MaxValue}"
+                                                            TimeToShow="2000">
+                                                            <Extensions:FadedToolTipControl.Style>
+                                                                <Style TargetType="Extensions:FadedToolTipControl">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding ElementName=TbView, Path=IsMouseOver}" Value="true">
+                                                                            <Setter Property="Show" Value="True" />
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="true">
+                                                                            <Setter Property="Show" Value="True" />
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Extensions:FadedToolTipControl.Style>
+                                                            <Extensions:ResizablePanel Width="720"
+                                                                Height="480"
+                                                                MinWidth="360"
+                                                                MinHeight="240"
+                                                                Background="{x:Null}"
+                                                                BorderBrush="Transparent">
+                                                                <ListBox ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
+                                                                    ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
+                                                                    VirtualizingPanel.CacheLengthUnit="Pixel"
+                                                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                                    VirtualizingPanel.ScrollUnit="Pixel"
+                                                                    VirtualizingPanel.VirtualizationMode="Standard">
+                                                                    <ListBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                                                ItemSize="165,165"
+                                                                                SpacingMode="None" />
+                                                                        </ItemsPanelTemplate>
+                                                                    </ListBox.ItemsPanel>
+                                                                </ListBox>
+                                                            </Extensions:ResizablePanel>
+                                                        </Extensions:FadedToolTipControl>
+                                                    </Grid>
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Columns="1" Rows="12" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                    </Border>
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
                             <Extensions:ButtonedTextBox x:Name="TbSearch"
-                                Grid.Column="4"
+                                Grid.Column="5"
                                 VerticalContentAlignment="Center"
-                                d:Text="AramaMetni"
+                                d:Watermark="{twainctrl:Loc DOCUMENT}"
                                 twainctrl:Policy.PolicyName="AramaMetni"
                                 CopyButtonVisibility="Collapsed"
                                 FontSize="22"
                                 KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
-                                Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}" />
+                                ResetButtonVisibility="Collapsed"
+                                Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                Watermark="{twainctrl:Loc DOCUMENT}" />
                         </Grid>
                         <ProgressBar Grid.Row="3"
                             Height="3"
@@ -1000,6 +1001,7 @@
                                                 <Border Width="{Binding DataContext.SelectedSize.Width, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                     Height="{Binding DataContext.SelectedSize.Height, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                                                     Padding="1"
+                                                    d:Width="230"
                                                     Drop="ContentControl_DropAsync"
                                                     RenderTransformOrigin="0.5,0.5"
                                                     Style="{StaticResource BorderAnimationStyle}">
@@ -1033,8 +1035,21 @@
                                                                         Height="16"
                                                                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, Path=FileName, IsAsync=True}" />
                                                                 </InlineUIContainer>
-                                                                <Run d:Text="FileName" Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
-                                                                <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
+                                                                <InlineUIContainer BaselineAlignment="Center">
+                                                                    <Extensions:ContentToggleButton d:Content="FileName"
+                                                                        ArrowVisibility="Collapsed"
+                                                                        Background="{x:Null}"
+                                                                        BorderBrush="{x:Null}"
+                                                                        Content="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}">
+                                                                        <Extensions:ContentToggleButton.OverContent>
+                                                                            <Extensions:FileBreadCrumbControl VerticalAlignment="Center"
+                                                                                Background="{StaticResource BorderBackground}"
+                                                                                FilePath="{Binding Mode=OneWay, Path=FileName}"
+                                                                                InternalBackground="{StaticResource BorderBackground}"
+                                                                                Orientation="Vertical" />
+                                                                        </Extensions:ContentToggleButton.OverContent>
+                                                                    </Extensions:ContentToggleButton>
+                                                                </InlineUIContainer>
                                                                 <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
                                                             </TextBlock>
                                                         </CheckBox>
@@ -1146,6 +1161,7 @@
                                                             Extensions:IgnoreMouseWheelBehavior.IgnoreMouseWheel="True"
                                                             d:ContentTemplate="{StaticResource PdfViewerTemplateFull}"
                                                             d:ContentTemplateSelector="{StaticResource ThumbViewerSelector}"
+                                                            d:Height="120"
                                                             Content="{Binding FileName, IsAsync=True, Mode=OneWay}">
                                                             <ContentControl.Style>
                                                                 <Style TargetType="ContentControl">
