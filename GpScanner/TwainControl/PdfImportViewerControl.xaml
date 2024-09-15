@@ -182,7 +182,8 @@
                 Command="{Binding AddAllFileToControlPanel}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
                 <Button.Content>
-                    <TextBlock FontFamily="Wingdings"
+                    <TextBlock Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection}"
+                        FontFamily="Wingdings"
                         FontSize="16"
                         Text="ç" />
                 </Button.Content>

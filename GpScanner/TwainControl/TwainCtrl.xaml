@@ -2343,7 +2343,8 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <RepeatButton local:Policy.PolicyName="VideodanResimYükle"
+                        <RepeatButton Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection}"
+                            local:Policy.PolicyName="VideodanResimYükle"
                             Command="{Binding VideodanResimYükle}"
                             CommandParameter="{Binding ElementName=mediaViewer, Mode=OneWay}"
                             Content="ç"

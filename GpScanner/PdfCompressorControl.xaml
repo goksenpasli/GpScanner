@@ -162,6 +162,7 @@
                                         <ListBox x:Name="ListBox"
                                             d:ItemsSource="{d:SampleData ItemCount=5}"
                                             AllowDrop="True"
+                                            Background="{DynamicResource BorderBackground}"
                                             IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                             ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                             VirtualizingPanel.CacheLengthUnit="Pixel"

@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using System;
 using System.ComponentModel;
 
 namespace TwainControl
@@ -40,10 +41,17 @@ namespace TwainControl
 
         private async void AboutViewTranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName is "ÇevrilenDil")
+            try
             {
-                string licensetext = Translation.GetResStringValue("LICENSE").Replace("\r", string.Empty).Replace("\n", string.Empty);
-                Çeviri = await TranslateViewModel.DileÇevirAsync(licensetext, "auto", ÇevrilenDil);
+                if (e.PropertyName is "ÇevrilenDil")
+                {
+                    string licensetext = Translation.GetResStringValue("LICENSE").Replace("\r", string.Empty).Replace("\n", string.Empty);
+                    Çeviri = await TranslateViewModel.DileÇevirAsync(licensetext, "auto", ÇevrilenDil);
+                }
+            }
+            catch (Exception)
+            {
+                Çeviri = string.Empty;
             }
         }
     }

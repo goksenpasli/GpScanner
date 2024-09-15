@@ -65,6 +65,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ControlExtensions.cs" />
     <Compile Include="Controls\ArchiveData.cs" />
     <Compile Include="Controls\ArchiveViewer.cs" />
     <Compile Include="Controls\BadgeControl.cs" />
