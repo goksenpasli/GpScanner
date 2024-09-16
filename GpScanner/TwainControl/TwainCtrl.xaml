@@ -921,11 +921,54 @@
                                                 </ItemsPanelTemplate>
                                             </ListBox.ItemsPanel>
                                             <ListBox.ItemContainerStyle>
-                                                <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                                <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="Margin" Value="0" />
+                                                </Style>
                                             </ListBox.ItemContainerStyle>
-                                            <ListBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
-                                            <ListBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
-                                            <ListBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
+                                            <ListBoxItem Tag="{Binding Path=[0], Source={StaticResource PageRotations}}">
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="1" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </ListBoxItem>
+                                            <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageRotations}}">
+                                                <Image Width="16"
+                                                    Height="16"
+                                                    RenderTransformOrigin="0.5,0.5">
+                                                    <Image.RenderTransform>
+                                                        <TransformGroup>
+                                                            <RotateTransform Angle="90" />
+                                                        </TransformGroup>
+                                                    </Image.RenderTransform>
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="1" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </ListBoxItem>
+                                            <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageRotations}}">
+                                                <Image Width="16"
+                                                    Height="16"
+                                                    RenderTransformOrigin="0.5,0.5">
+                                                    <Image.RenderTransform>
+                                                        <TransformGroup>
+                                                            <RotateTransform Angle="-90" />
+                                                        </TransformGroup>
+                                                    </Image.RenderTransform>
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="1" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </ListBoxItem>
                                         </ListBox>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <ListBox VerticalContentAlignment="Center"
@@ -934,7 +977,9 @@
                                             SelectedValue="{Binding SelectedFlip}"
                                             SelectedValuePath="Tag">
                                             <ListBox.ItemContainerStyle>
-                                                <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}" />
+                                                <Style BasedOn="{StaticResource ScanTypeLbItem}" TargetType="{x:Type ListBoxItem}">
+                                                    <Setter Property="Margin" Value="0" />
+                                                </Style>
                                             </ListBox.ItemContainerStyle>
                                             <ListBox.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -951,29 +996,32 @@
                                                     </Image.Source>
                                                 </Image>
                                             </ListBoxItem>
-                                            <ListBoxItem Tag="{Binding Path=[1], Source={StaticResource PageFlips}}">
-                                                <Image Width="16"
-                                                    Height="16"
-                                                    RenderTransformOrigin="0.5,0.5">
-                                                    <Image.RenderTransform>
-                                                        <TransformGroup>
-                                                            <RotateTransform Angle="-90" />
-                                                        </TransformGroup>
-                                                    </Image.RenderTransform>
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="252" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                            </ListBoxItem>
-                                            <ListBoxItem Tag="{Binding Path=[2], Source={StaticResource PageFlips}}">
+                                            <ListBoxItem RenderTransformOrigin="0.5,0.5" Tag="{Binding Path=[1], Source={StaticResource PageFlips}}">
+                                                <ListBoxItem.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleY="-1" />
+                                                    </TransformGroup>
+                                                </ListBoxItem.RenderTransform>
                                                 <Image Width="16" Height="16">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                             <Binding Source="Shell32.dll" />
-                                                            <Binding Source="252" />
+                                                            <Binding Source="1" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </ListBoxItem>
+                                            <ListBoxItem RenderTransformOrigin="0.5,0.5" Tag="{Binding Path=[2], Source={StaticResource PageFlips}}">
+                                                <ListBoxItem.RenderTransform>
+                                                    <TransformGroup>
+                                                        <ScaleTransform ScaleX="-1" />
+                                                    </TransformGroup>
+                                                </ListBoxItem.RenderTransform>
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="1" />
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
@@ -1853,14 +1901,33 @@
                                         Source="/TwainControl;component/Icons/inverse.png" />
                                 </Button>
                                 <Button local:Policy.PolicyName="TümünüİşaretleDikey" Command="{Binding TümünüİşaretleDikey}">
-                                    <Image Width="24"
-                                        Height="24"
-                                        Source="/TwainControl;component/Icons/portrait.png" />
+                                    <Image Width="24" Height="24">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                 </Button>
-                                <Button local:Policy.PolicyName="TümünüİşaretleYatay" Command="{Binding TümünüİşaretleYatay}">
+                                <Button local:Policy.PolicyName="TümünüİşaretleYatay"
+                                    Command="{Binding TümünüİşaretleYatay}"
+                                    RenderTransformOrigin="0.5,0.5">
                                     <Image Width="24"
                                         Height="24"
-                                        Source="/TwainControl;component/Icons/landscape.png" />
+                                        RenderTransformOrigin="0.5,0.5">
+                                        <Image.RenderTransform>
+                                            <TransformGroup>
+                                                <RotateTransform Angle="-90" />
+                                            </TransformGroup>
+                                        </Image.RenderTransform>
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="1" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
                                 </Button>
                                 <Separator />
                                 <Button local:Policy.PolicyName="CycleSelectedDocuments"

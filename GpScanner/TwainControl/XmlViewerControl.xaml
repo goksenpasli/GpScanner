@@ -101,9 +101,14 @@
             Margin="1"
             local:Policy.PolicyName="ExpandXml"
             IsChecked="True">
-            <Image Width="16"
-                Height="16"
-                Source="/TwainControl;component/Icons/portrait.png" />
+            <Image Width="16" Height="16">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                        <Binding Source="Shell32.dll" />
+                        <Binding Source="1" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
         </ToggleButton>
         <TreeView Name="xmlTree"
             Grid.Row="1"

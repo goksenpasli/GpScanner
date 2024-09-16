@@ -299,9 +299,50 @@
                                     IsEnabled="{Binding AutoRotate, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                     SelectedValue="{Binding SelectedRotation, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                                     SelectedValuePath="Tag">
-                                    <ComboBoxItem Content="{DynamicResource NoRotate}" Tag="{Binding Path=[0], Source={StaticResource PageRotations}}" />
-                                    <ComboBoxItem Content="{DynamicResource RightRotate}" Tag="{Binding Path=[1], Source={StaticResource PageRotations}}" />
-                                    <ComboBoxItem Content="{DynamicResource LeftRotate}" Tag="{Binding Path=[2], Source={StaticResource PageRotations}}" />
+                                    <ComboBoxItem Tag="{Binding Path=[0], Source={StaticResource PageRotations}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem Tag="{Binding Path=[1], Source={StaticResource PageRotations}}">
+                                        <Image Width="16"
+                                            Height="16"
+                                            RenderTransformOrigin="0.5,0.5">
+                                            <Image.RenderTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="90" />
+                                                </TransformGroup>
+                                            </Image.RenderTransform>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ComboBoxItem>
+                                    <ComboBoxItem Tag="{Binding Path=[2], Source={StaticResource PageRotations}}">
+                                        <Image Width="16"
+                                            Height="16"
+                                            RenderTransformOrigin="0.5,0.5">
+                                            <Image.RenderTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="-90" />
+                                                </TransformGroup>
+                                            </Image.RenderTransform>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </ComboBoxItem>
                                 </ComboBox>
                             </CheckBox>
                             <ToggleButton Grid.Column="1"

@@ -895,25 +895,6 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
-    <Image x:Key="NoRotate"
-        Width="16"
-        Height="16"
-        x:Shared="false">
-        <Image.Source>
-            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                <Binding Source="Shell32.dll" />
-                <Binding Source="1" />
-            </MultiBinding>
-        </Image.Source>
-    </Image>
-    <Image x:Key="RightRotate"
-        Width="16"
-        Height="16"
-        Source="/TwainControl;component/Icons/rotate.png" />
-    <Image x:Key="LeftRotate"
-        Width="16"
-        Height="16"
-        Source="/TwainControl;component/Icons/left.png" />
     <DataTemplate x:Key="EmptyTemplate">
         <StackPanel>
             <TextBlock Width="210"
