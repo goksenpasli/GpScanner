@@ -61,30 +61,32 @@
                                 VirtualizingPanel.VirtualizationMode="Recycling">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock VerticalAlignment="Center">
-                                                <Hyperlink BaselineAlignment="Center"
-                                                    Command="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType=local:Compressor}}"
-                                                    CommandParameter="{Binding Mode=OneWay}"
-                                                    TextDecorations="None">
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Source>
-                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                <Binding Source="Shell32.dll" />
-                                                                <Binding Source="131" />
-                                                            </MultiBinding>
-                                                        </Image.Source>
-                                                    </Image>
-                                                </Hyperlink>
-                                            </TextBlock>
-                                            <Extensions:ButtonedTextBox VerticalAlignment="Center"
-                                                VerticalContentAlignment="Center"
-                                                CopyButtonVisibility="Collapsed"
-                                                IsReadOnly="True"
-                                                PasteButtonVisibility="Collapsed"
-                                                ResetButtonVisibility="Collapsed"
-                                                Text="{Binding Filename}" />
-                                        </StackPanel>
+                                        <CheckBox IsChecked="{Binding IsChecked}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center">
+                                                    <Hyperlink BaselineAlignment="Center"
+                                                        Command="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType=local:Compressor}}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        TextDecorations="None">
+                                                        <Image Width="16" Height="16">
+                                                            <Image.Source>
+                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                    <Binding Source="Shell32.dll" />
+                                                                    <Binding Source="131" />
+                                                                </MultiBinding>
+                                                            </Image.Source>
+                                                        </Image>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                                <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    CopyButtonVisibility="Collapsed"
+                                                    IsReadOnly="True"
+                                                    PasteButtonVisibility="Collapsed"
+                                                    ResetButtonVisibility="Collapsed"
+                                                    Text="{Binding Filename}" />
+                                            </StackPanel>
+                                        </CheckBox>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                                 <ListBox.ItemContainerStyle>

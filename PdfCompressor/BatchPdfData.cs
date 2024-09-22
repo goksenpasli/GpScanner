@@ -7,12 +7,11 @@ public class BatchPdfData : InpcBase
     private bool completed;
     private double compressionRatio;
     private string filename;
+    private bool ısChecked = true;
 
-    public bool Completed
-    {
+    public bool Completed {
         get => completed;
-        set
-        {
+        set {
             if (completed != value)
             {
                 completed = value;
@@ -21,11 +20,9 @@ public class BatchPdfData : InpcBase
         }
     }
 
-    public double CompressionRatio
-    {
+    public double CompressionRatio {
         get => compressionRatio;
-        set
-        {
+        set {
             if (compressionRatio != value)
             {
                 compressionRatio = value;
@@ -34,11 +31,20 @@ public class BatchPdfData : InpcBase
         }
     }
 
-    public string Filename
-    {
+    public bool IsChecked {
+        get => ısChecked;
+        set {
+            if (ısChecked != value)
+            {
+                ısChecked = value;
+                OnPropertyChanged(nameof(IsChecked));
+            }
+        }
+    }
+
+    public string Filename {
         get => filename;
-        set
-        {
+        set {
             if (filename != value)
             {
                 filename = value;

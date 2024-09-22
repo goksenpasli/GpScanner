@@ -60,7 +60,7 @@ public class Compressor : Control, INotifyPropertyChanged
                 try
                 {
                     SetValue(CompressFinishedProperty, false);
-                    foreach (BatchPdfData file in BatchPdfList.Where(file => File.Exists(file?.Filename)))
+                    foreach (BatchPdfData file in BatchPdfList.Where(file => file.IsChecked && File.Exists(file?.Filename)))
                     {
                         string outputFile = $"{Path.GetDirectoryName(file?.Filename)}\\{Path.GetFileNameWithoutExtension(file?.Filename)}_Compressed.pdf";
                         using PdfDocument pdfDocument = IsValidPdfFile(file?.Filename) ? await CompressFilePdfDocumentAsync(file?.Filename) : await GeneratePdfAsync(file?.Filename, Quality);
@@ -79,7 +79,7 @@ public class Compressor : Control, INotifyPropertyChanged
                     SetValue(CompressFinishedProperty, true);
                 }
             },
-            parameter => BatchPdfList?.Count > 0);
+            parameter => BatchPdfList?.Count(z => z.IsChecked) > 0);
 
         OpenBatchPdfFolder = new RelayCommand<object>(
             parameter =>

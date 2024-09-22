@@ -18,26 +18,28 @@
     <UserControl.Resources>
         <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
         <DataTemplate x:Key="ListBoxItemListTemplate">
-            <Extensions:ButtonedTextBox VerticalAlignment="Center"
-                Background="Transparent"
-                BorderBrush="Transparent"
-                CancelCommand="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType={x:Type Compressor:Compressor}}}"
-                CancelCommandParameter="{Binding Mode=OneWay}"
-                CopyButtonVisibility="Collapsed"
-                Focusable="False"
-                Foreground="{Binding Foreground, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
-                PasteButtonVisibility="Collapsed"
-                Text="{Binding Filename, Mode=OneWay}"
-                TextBoxVisibility="Collapsed">
-                <TextBlock><InlineUIContainer BaselineAlignment="Center">
-                        <ProgressBar Width="32"
-                            Height="12"
-                            Margin="1"
-                            Background="{x:Null}"
-                            Maximum="100"
-                            Value="{Binding CompressionRatio, Mode=OneWay}" />
-                    </InlineUIContainer><Run Text=" " /><Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" /></TextBlock>
-            </Extensions:ButtonedTextBox>
+            <CheckBox IsChecked="{Binding IsChecked}">
+                <Extensions:ButtonedTextBox VerticalAlignment="Center"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    CancelCommand="{Binding RemovePdfFile, RelativeSource={RelativeSource AncestorType={x:Type Compressor:Compressor}}}"
+                    CancelCommandParameter="{Binding Mode=OneWay}"
+                    CopyButtonVisibility="Collapsed"
+                    Focusable="False"
+                    Foreground="{Binding Foreground, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}}"
+                    PasteButtonVisibility="Collapsed"
+                    Text="{Binding Filename, Mode=OneWay}"
+                    TextBoxVisibility="Collapsed">
+                    <TextBlock><InlineUIContainer BaselineAlignment="Center">
+                            <ProgressBar Width="32"
+                                Height="12"
+                                Margin="1"
+                                Background="{x:Null}"
+                                Maximum="100"
+                                Value="{Binding CompressionRatio, Mode=OneWay}" />
+                        </InlineUIContainer><Run Text=" " /><Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" /></TextBlock>
+                </Extensions:ButtonedTextBox>
+            </CheckBox>
         </DataTemplate>
         <Style x:Key="CompressorStyle" TargetType="{x:Type Compressor:Compressor}">
             <Setter Property="Template">
@@ -160,6 +162,8 @@
                                     </Grid.ColumnDefinitions>
                                     <Grid>
                                         <ListBox x:Name="ListBox"
+                                            Margin="20,0,0,0"
+                                            d:ItemTemplate="{StaticResource ListBoxItemListTemplate}"
                                             d:ItemsSource="{d:SampleData ItemCount=5}"
                                             AllowDrop="True"
                                             Background="{DynamicResource BorderBackground}"
@@ -186,10 +190,12 @@
                                                             <Setter Property="ItemTemplate">
                                                                 <Setter.Value>
                                                                     <DataTemplate>
-                                                                        <ContentControl Width="150"
-                                                                            Height="150"
-                                                                            Content="{Binding IsAsync=True, Mode=OneWay, Path=Filename}"
-                                                                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                                                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding IsChecked}">
+                                                                            <ContentControl Width="135"
+                                                                                Height="135"
+                                                                                Content="{Binding IsAsync=True, Mode=OneWay, Path=Filename}"
+                                                                                ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                                                                        </CheckBox>
                                                                     </DataTemplate>
                                                                 </Setter.Value>
                                                             </Setter>
@@ -205,7 +211,6 @@
                                                         </DataTrigger>
                                                         <DataTrigger Binding="{Binding PdfCompressorItemToggle, Mode=OneWay}" Value="false">
                                                             <Setter Property="ItemTemplate" Value="{StaticResource ListBoxItemListTemplate}" />
-                                                            <Setter Property="Margin" Value="20,0,0,0" />
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
