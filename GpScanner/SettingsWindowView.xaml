@@ -855,13 +855,46 @@
                                 </ListBox.ItemsPanel>
                                 <ListBoxItem HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    Content="{twainctrl:Loc SCAN}" />
+                                    VerticalContentAlignment="Center">
+                                    <ListBoxItem.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="201" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SCAN}" />
+                                        </StackPanel>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
                                 <ListBoxItem HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     VerticalContentAlignment="Center"
-                                    Content="{twainctrl:Loc FASTSCAN}"
-                                    IsEnabled="{Binding Path=AutoSave, Source={x:Static twainctrl:ToolBox.Scanner}}" />
+                                    IsEnabled="{Binding Path=AutoSave, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                                    <ListBoxItem.Content>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Canvas Width="32" Height="32">
+                                                <Image Width="32" Height="32">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="201" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Canvas.Left="0"
+                                                    Canvas.Bottom="0"
+                                                    Width="20"
+                                                    Height="20"
+                                                    Source="/TwainControl;component/Icons/save.png" />
+                                            </Canvas>
+                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FASTSCAN}" />
+                                        </StackPanel>
+                                    </ListBoxItem.Content>
+                                </ListBoxItem>
                             </ListBox>
                         </Grid>
                     </GroupBox>

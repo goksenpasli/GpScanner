@@ -26,27 +26,26 @@
     </UserControl.Resources>
     <GroupBox Background="{StaticResource GroupBoxBackGround}">
         <GroupBox.Header>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox VerticalAlignment="Center"
-                    local:Policy.PolicyName="PasswordProtect"
-                    Content="{local:Loc ENCRYPT}"
-                    IsChecked="{Binding Scanner.PasswordProtect}" />
-                <Image Width="32" Height="32">
-                    <Image.Source>
-                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                            <Binding Source="Shell32.dll" />
-                            <Binding Source="77" />
-                        </MultiBinding>
-                    </Image.Source>
-                </Image>
-                <TextBlock Width="370"
-                    VerticalAlignment="Center"
-                    FontSize="14"
-                    FontStyle="Italic"
-                    Foreground="Red"
-                    Text="{local:Loc PDFWARN}"
-                    TextWrapping="Wrap" />
-            </StackPanel>
+            <CheckBox VerticalAlignment="Center"
+                VerticalContentAlignment="Center"
+                local:Policy.PolicyName="PasswordProtect"
+                IsChecked="{Binding Scanner.PasswordProtect}">
+                <CheckBox.Content>
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Center"
+                            FontSize="14"
+                            FontWeight="Bold"
+                            Foreground="Red"
+                            Text="{local:Loc ENCRYPT}" />
+                        <TextBlock VerticalAlignment="Center"
+                            FontSize="14"
+                            FontStyle="Italic"
+                            Foreground="Red"
+                            Text="{local:Loc PDFWARN}"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                </CheckBox.Content>
+            </CheckBox>
         </GroupBox.Header>
         <StackPanel>
             <HeaderedContentControl Header="{local:Loc PASSWORD}">
@@ -170,7 +169,7 @@
                 IsChecked="{Binding Scanner.ApplyDataBaseOcr}"
                 IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
                 <CheckBox.Content>
-                    <TextBlock Width="410" TextWrapping="Wrap">
+                    <TextBlock TextWrapping="Wrap">
                         <Run Text="{local:Loc ADDOCRTODB}" />
                         <Run FontWeight="Bold"
                             Foreground="Red"

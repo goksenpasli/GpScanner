@@ -78,7 +78,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
     private readonly string[] imagefileextensions = [".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
     private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = new DoubleCollection([1]) };
-    private ScanSettings _settings;
     private double allImageRotationAngle;
     private double allRotateProgressValue;
     private byte[] cameraQRCodeData;
@@ -188,9 +187,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
-                ScanCommonSettings();
+                Scanner.ArayüzEtkin = false;
                 Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
-                Twain.StartScanning(_settings);
+                Twain.StartScanning(DefaultScanSettings());
                 Twain.ScanningComplete += ScanComplete;
             },
             parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy(nameof(ScanImage)));
@@ -205,12 +204,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
-                ScanCommonSettings();
+                Scanner.ArayüzEtkin = false;
                 Scanner.Resimler = [];
                 Scanner.Resimler.CollectionChanged -= Scanner.Resimler_CollectionChanged;
                 Scanner.Resimler.CollectionChanged += Scanner.Resimler_CollectionChanged;
                 Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
-                Twain.StartScanning(_settings);
+                Twain.StartScanning(DefaultScanSettings());
                 Twain.ScanningComplete += FastScanComplete;
             },
             parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Scanner?.AutoSave == true && FileNameValid(Scanner?.FileName) && Policy.CheckPolicy(nameof(FastScanImage)));
@@ -239,7 +238,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     RemoveSelectedImage(item);
                 }
             },
-            parameter => Scanner.ArayüzEtkin);
+            parameter => parameter is ScannedImage && Scanner.ArayüzEtkin);
+
+        TekResimSil = new RelayCommand<object>(
+            parameter =>
+            {
+                if (Filesavetask?.IsCompleted == false)
+                {
+                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    return;
+                }
+
+                if (MessageBox.Show(Translation.GetResStringValue("REMOVESELECTED"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    ScannedImage item = parameter as ScannedImage;
+                    UndoImageIndex = Scanner.Resimler?.IndexOf(item);
+                    UndoImage = item;
+                    CanUndoImage = true;
+                    RemoveSelectedImage(item);
+                    SeekIndex = UndoImageIndex ?? 0;
+                }
+            },
+            parameter => parameter is ScannedImage && Scanner.ArayüzEtkin);
 
         ResimSilGeriAl = new RelayCommand<object>(
             parameter =>
@@ -2955,6 +2975,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand ResimSil { get; }
 
+    public RelayCommand<object> TekResimSil { get; }
+
     public ICommand ResimSilGeriAl { get; }
 
     public ICommand ReverseData { get; }
@@ -4648,12 +4670,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             File.Delete(fPath);
             progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
         }
-    }
-
-    private void ScanCommonSettings()
-    {
-        Scanner.ArayüzEtkin = false;
-        _settings = DefaultScanSettings();
     }
 
     private async void ScanComplete(object sender, ScanningCompleteEventArgs e)
