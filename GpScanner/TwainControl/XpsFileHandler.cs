@@ -37,26 +37,32 @@ namespace TwainControl
 
         public async Task<IEnumerable<BitmapFrame>> LoadXpsPagesAsync(string filename)
         {
-            List<BitmapFrame> frames = [];
-            await Application.Current.Dispatcher
-            .InvokeAsync(
-                () =>
-                {
-                    using XpsDocument xpsDoc = new(filename, FileAccess.Read);
-                    FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
-                    int pageCount = docSeq.DocumentPaginator.PageCount;
+            switch (Path.GetExtension(filename.ToLowerInvariant()))
+            {
+                case ".xps":
+                    List<BitmapFrame> frames = [];
+                    await Application.Current.Dispatcher
+                    .InvokeAsync(
+                        () =>
+                        {
+                            using XpsDocument xpsDoc = new(filename, FileAccess.Read);
+                            FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
+                            int pageCount = docSeq.DocumentPaginator.PageCount;
 
-                    for (int i = 0; i < pageCount; i++)
-                    {
-                        using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
-                        RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
-                        rtb.Render(docPage.Visual);
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(rtb);
-                        bitmapFrame.Freeze();
-                        frames.Add(bitmapFrame);
-                    }
-                });
-            return frames;
+                            for (int i = 0; i < pageCount; i++)
+                            {
+                                using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
+                                RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                                rtb.Render(docPage.Visual);
+                                BitmapFrame bitmapFrame = BitmapFrame.Create(rtb);
+                                bitmapFrame.Freeze();
+                                frames.Add(bitmapFrame);
+                            }
+                        });
+                    return frames;
+                default:
+                    return null;
+            }
         }
     }
 }

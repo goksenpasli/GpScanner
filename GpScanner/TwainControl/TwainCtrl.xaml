@@ -1703,7 +1703,23 @@
                                                                     FontSize="24"
                                                                     FontWeight="Bold"
                                                                     MouseLeftButtonDown="Run_MouseLeftButtonDown"
-                                                                    Text="B" /><Hyperlink local:Policy.PolicyName="ResimSil"
+                                                                    Text="B" /><Hyperlink local:Policy.PolicyName="ReplaceSelectedImage"
+                                                                    BaselineAlignment="Center"
+                                                                    Command="{Binding DataContext.ReplaceSelectedImage, ElementName=UserControl}"
+                                                                    CommandParameter="{Binding Mode=OneWay}"
+                                                                    FontFamily="Segoe UI Black"
+                                                                    TextDecorations="None">
+                                                                    <InlineUIContainer>
+                                                                        <Image Width="24" Height="24">
+                                                                            <Image.Source>
+                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                    <Binding Source="Shell32.dll" />
+                                                                                    <Binding Source="260" />
+                                                                                </MultiBinding>
+                                                                            </Image.Source>
+                                                                        </Image>
+                                                                    </InlineUIContainer>
+                                                                </Hyperlink><Hyperlink local:Policy.PolicyName="ResimSil"
                                                                     BaselineAlignment="Center"
                                                                     Command="{Binding DataContext.ResimSil, ElementName=UserControl}"
                                                                     CommandParameter="{Binding Mode=OneWay}"

@@ -23,10 +23,16 @@ namespace TwainControl
 
         public BitmapFrame LoadWebpImage(int decodeheight, string filename)
         {
-            BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
+            switch (Path.GetExtension(filename.ToLowerInvariant()))
+            {
+                case ".webp":
+                    BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
+                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+                    bitmapFrame.Freeze();
+                    return bitmapFrame;
+                default:
+                    return null;
+            }
         }
 
         public Task<IEnumerable<BitmapFrame>> LoadXpsPagesAsync(string filename) => throw new NotImplementedException();

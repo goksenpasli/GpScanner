@@ -21,10 +21,21 @@ namespace TwainControl
 
         public async Task<BitmapFrame> LoadImageAsync(string filename)
         {
-            BitmapImage main = await ImageViewer.LoadImageAsync(filename);
-            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
+            switch (Path.GetExtension(filename.ToLowerInvariant()))
+            {
+                case ".jpg":
+                case ".jpeg":
+                case ".jfif":
+                case ".jpe":
+                case ".png":
+                case ".gif":
+                case ".bmp":
+                    BitmapImage main = await ImageViewer.LoadImageAsync(filename);
+                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+                    bitmapFrame.Freeze();
+                    return bitmapFrame;
+            }
+            return null;
         }
 
         public Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename) => throw new NotImplementedException();

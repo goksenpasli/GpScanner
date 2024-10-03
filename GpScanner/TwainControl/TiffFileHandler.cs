@@ -25,29 +25,35 @@ namespace TwainControl
 
         public async Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename)
         {
-            List<BitmapFrame> frames = [];
-            int pageCount = GetPageCount(filename);
-            for (int i = 0; i < pageCount; i++)
+            switch (Path.GetExtension(filename.ToLowerInvariant()))
             {
-                try
-                {
-                    BitmapFrame bitmapFrame = await Task.Run(
-                        () =>
+                case ".tif":
+                case ".tiff":
+                    List<BitmapFrame> frames = [];
+                    int pageCount = GetPageCount(filename);
+                    for (int i = 0; i < pageCount; i++)
+                    {
+                        try
                         {
-                            TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
-                            BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
-                            image.Freeze();
-                            BitmapFrame frame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
-                            frame.Freeze();
-                            return frame;
-                        });
-                    frames.Add(bitmapFrame);
-                }
-                catch (Exception)
-                {
-                }
+                            BitmapFrame bitmapFrame = await Task.Run(
+                                () =>
+                                {
+                                    TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
+                                    BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
+                                    image.Freeze();
+                                    BitmapFrame frame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
+                                    frame.Freeze();
+                                    return frame;
+                                });
+                            frames.Add(bitmapFrame);
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                    return frames;
             }
-            return frames;
+            return null;
         }
 
         public BitmapFrame LoadWebpImage(int decodeheight, string filename) => throw new NotImplementedException();
