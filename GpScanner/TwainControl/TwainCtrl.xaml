@@ -1510,7 +1510,7 @@
                                     Drop="ListBox_DropAsync"
                                     ItemsSource="{Binding Scanner.Resimler, Mode=OneWay}"
                                     PreviewMouseWheel="ListBox_PreviewMouseWheel"
-                                    SelectedIndex="{Binding SeekIndex}"
+                                    SelectedIndex="{Binding SeekIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     SelectedItem="{Binding SeçiliResim}"
                                     SelectionMode="Extended"
                                     VirtualizingPanel.CacheLengthUnit="Pixel"

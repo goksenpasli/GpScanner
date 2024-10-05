@@ -17,25 +17,25 @@ namespace TwainControl
 
         public int GetPageCount(string filename) => 1;
 
-        public bool IsValidFile(string filename) => true;
+        public bool IsValidFile(string filename)
+        {
+            return Path.GetExtension(filename.ToLowerInvariant()) switch
+            {
+                ".jpg" or ".jpeg" or ".jfif" or ".jpe" or ".png" or ".gif" or ".bmp" => true,
+                _ => false,
+            };
+        }
 
         public async Task<BitmapFrame> LoadImageAsync(string filename)
         {
-            switch (Path.GetExtension(filename.ToLowerInvariant()))
+            if (!IsValidFile(filename))
             {
-                case ".jpg":
-                case ".jpeg":
-                case ".jfif":
-                case ".jpe":
-                case ".png":
-                case ".gif":
-                case ".bmp":
-                    BitmapImage main = await ImageViewer.LoadImageAsync(filename);
-                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
-                    bitmapFrame.Freeze();
-                    return bitmapFrame;
+                return null;
             }
-            return null;
+            BitmapImage main = await ImageViewer.LoadImageAsync(filename);
+            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
         }
 
         public Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename) => throw new NotImplementedException();

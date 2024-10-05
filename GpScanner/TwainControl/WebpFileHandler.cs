@@ -15,7 +15,7 @@ namespace TwainControl
 
         public int GetPageCount(string filename) => 1;
 
-        public bool IsValidFile(string filename) => filename.EndsWith(".webp", StringComparison.OrdinalIgnoreCase);
+        public bool IsValidFile(string filename) => Path.GetExtension(filename.ToLowerInvariant()) == ".webp";
 
         public Task<BitmapFrame> LoadImageAsync(string filename) => throw new NotImplementedException();
 
@@ -23,16 +23,14 @@ namespace TwainControl
 
         public BitmapFrame LoadWebpImage(int decodeheight, string filename)
         {
-            switch (Path.GetExtension(filename.ToLowerInvariant()))
+            if (!IsValidFile(filename))
             {
-                case ".webp":
-                    BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
-                    bitmapFrame.Freeze();
-                    return bitmapFrame;
-                default:
-                    return null;
+                return null;
             }
+            BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
+            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+            bitmapFrame.Freeze();
+            return bitmapFrame;
         }
 
         public Task<IEnumerable<BitmapFrame>> LoadXpsPagesAsync(string filename) => throw new NotImplementedException();

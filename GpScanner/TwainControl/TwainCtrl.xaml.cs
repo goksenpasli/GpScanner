@@ -1114,14 +1114,47 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
-                StringCollection clipboardFiles = Clipboard.GetFileDropList();
-                if (clipboardFiles?.Count != 1)
-                {
-                    return;
-                }
 
-                ILoadFileHandler fileHandler = new ImageFileHandler();
-                scannedImage.Resim = await fileHandler.LoadImageAsync(clipboardFiles[0]);
+                StringCollection clipboardFiles = Clipboard.GetFileDropList();
+                PdfFileHandler pdfFileHandler = new();
+                TiffFileHandler tiffFileHandler = new();
+                ImageFileHandler imageFileHandler = new();
+                foreach (string filename in clipboardFiles)
+                {
+                    if (pdfFileHandler.IsValidFile(filename))
+                    {
+                        for (int i = pdfFileHandler.GetPageCount(filename); i >= 1; i--)
+                        {
+                            BitmapFrame bitmapFrame = BitmapFrame.Create(await pdfFileHandler.LoadImageAsync(filename, i));
+                            bitmapFrame?.Freeze();
+                            Scanner?.Resimler?.Insert(scannedImage.Index, new ScannedImage() { Resim = bitmapFrame });
+                        }
+                    }
+                    else if (tiffFileHandler.IsValidFile(filename))
+                    {
+                        List<BitmapFrame> list = (await tiffFileHandler.LoadTiffPagesAsync(filename)).ToList();
+                        for (int i = list.Count - 1; i >= 0; i--)
+                        {
+                            BitmapFrame bitmapFrame = list[i];
+                            bitmapFrame?.Freeze();
+                            Scanner?.Resimler?.Insert(scannedImage.Index, new ScannedImage() { Resim = bitmapFrame });
+                        }
+                    }
+                    else if (imageFileHandler.IsValidFile(filename))
+                    {
+                        if (clipboardFiles?.Count == 1)
+                        {
+                            scannedImage.Resim = await imageFileHandler.LoadImageAsync(clipboardFiles[0]);
+                        }
+                        else
+                        {
+                            BitmapFrame bitmapFrame = await imageFileHandler.LoadImageAsync(filename);
+                            bitmapFrame?.Freeze();
+                            Scanner?.Resimler?.Insert(scannedImage.Index, new ScannedImage() { Resim = bitmapFrame });
+                        }
+                    }
+                }
+                Scanner.RefreshIndexNumbers();
             },
             parameter => true);
 
@@ -1581,7 +1614,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 List<ScannedImage> scannedImages = Scanner.Resimler.Reverse().ToList();
                 Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
-                Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                Scanner.RefreshIndexNumbers();
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
@@ -1590,7 +1623,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 List<ScannedImage> scannedImages = [.. Scanner.Resimler];
                 Scanner.Resimler = new ObservableCollection<ScannedImage>(GroupByFirstLastList(scannedImages, GroupSplitCount));
-                Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                Scanner.RefreshIndexNumbers();
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
@@ -1602,7 +1635,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     Random random = new();
                     Scanner.Resimler = altkeypressed ? Shuffle(GetSelectedImages(), random) : Shuffle(Scanner.Resimler, random);
-                    Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                    Scanner.RefreshIndexNumbers();
                 }
             },
             parameter => Scanner?.Resimler?.Count > 1);
@@ -1624,11 +1657,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
                     Scanner.Resimler = FirstLastReverseSequence([.. Scanner.Resimler], item => item.Index);
-                    Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                    Scanner.RefreshIndexNumbers();
                     return;
                 }
                 Scanner.Resimler = FirstLastSequence(Scanner.Resimler);
-                Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                Scanner.RefreshIndexNumbers();
             },
             parameter => Scanner?.Resimler?.Count > 1);
 
@@ -1642,7 +1675,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     List<ScannedImage> scannedImages = [.. Scanner.Resimler];
                     scannedImages.Reverse(start, end - start + 1);
                     Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
-                    Scanner.RefreshIndexNumbers(Scanner.Resimler);
+                    Scanner.RefreshIndexNumbers();
                 }
             },
             parameter =>
@@ -3791,6 +3824,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             Scanner.Resimler.Insert(targetIdx + 1, droppedData);
             Scanner.Resimler.RemoveAt(removedIdx);
+            Scanner.RefreshIndexNumbers();
             return;
         }
 
@@ -3802,6 +3836,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         Scanner.Resimler.Insert(targetIdx, droppedData);
         Scanner.Resimler.RemoveAt(remIdx);
+        Scanner.RefreshIndexNumbers();
     }
 
     public async Task ListBoxDropFileAsync(DragEventArgs e)
@@ -5050,7 +5085,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if (e.PropertyName is "SeekIndex" && SeekIndex >= 0 && SeekIndex < Scanner.Resimler.Count)
         {
-            Lb.SelectedIndex = SeekIndex;
             Lb?.ScrollIntoView(Lb.Items[SeekIndex]);
         }
 

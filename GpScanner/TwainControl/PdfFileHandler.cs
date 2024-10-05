@@ -18,6 +18,15 @@ namespace TwainControl
 
         public Task<BitmapFrame> LoadImageAsync(string filename) => throw new NotImplementedException();
 
+        public async Task<BitmapImage> LoadImageAsync(string filename, int pageNumber)
+        {
+            if (!IsValidFile(filename))
+            {
+                return null;
+            }
+            return await Viewer.ConvertToImgAsync(filename, pageNumber, Settings.Default.ImgLoadResolution);
+        }
+
         public Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename) => throw new NotImplementedException();
 
         public BitmapFrame LoadWebpImage(int decodeheight, string filename) => throw new NotImplementedException();

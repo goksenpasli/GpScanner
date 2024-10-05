@@ -1452,16 +1452,15 @@ public class Scanner : InpcBase, IDataErrorInfo
         };
     }
 
-    public static void RefreshIndexNumbers(ObservableCollection<ScannedImage> resimler)
+    public void RefreshIndexNumbers()
     {
-        for (int i = 0; i < resimler.Count; i++)
+        for (int i = 0; i < Resimler.Count; i++)
         {
-            ScannedImage item = resimler[i];
-            item.Index = i + 1;
+            Resimler[i].Index = i + 1;
         }
     }
 
-    public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshIndexNumbers(resimler);
+    public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshIndexNumbers();
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
