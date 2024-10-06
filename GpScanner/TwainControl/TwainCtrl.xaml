@@ -1710,14 +1710,16 @@
                                                                     FontFamily="Segoe UI Black"
                                                                     TextDecorations="None">
                                                                     <InlineUIContainer>
-                                                                        <Image Width="24" Height="24">
-                                                                            <Image.Source>
-                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                    <Binding Source="Shell32.dll" />
-                                                                                    <Binding Source="260" />
-                                                                                </MultiBinding>
-                                                                            </Image.Source>
-                                                                        </Image>
+                                                                        <Border BorderBrush="Cyan" BorderThickness="1">
+                                                                            <Image Width="24" Height="24">
+                                                                                <Image.Source>
+                                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                        <Binding Source="Shell32.dll" />
+                                                                                        <Binding Source="260" />
+                                                                                    </MultiBinding>
+                                                                                </Image.Source>
+                                                                            </Image>
+                                                                        </Border>
                                                                     </InlineUIContainer>
                                                                 </Hyperlink><Hyperlink local:Policy.PolicyName="ResimSil"
                                                                     BaselineAlignment="Center"
@@ -2412,20 +2414,14 @@
                         </Grid.RowDefinitions>
                         <Controls:XpsViewer x:Name="xpsViewer" x:FieldModifier="public" />
                         <Button Grid.Row="1"
-                            local:Policy.PolicyName="LoadSingleUdfFile"
-                            Command="{Binding LoadSingleUdfFile}"
+                            local:Policy.PolicyName="LoadXpsFile"
+                            Command="{Binding LoadXpsFile}"
                             CommandParameter="{Binding ElementName=xpsViewer}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Width="32"
                                     Height="32"
                                     Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
-                                <TextBlock VerticalAlignment="Center"
-                                    FontSize="16"
-                                    Foreground="Red"
-                                    TextWrapping="Wrap">
-                                    <Run Text="UDF" />
-                                    <Run Text="{local:Loc LIMITED}" />
-                                </TextBlock>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource FilePathToFileDescriptionConverter}, Source=.xps}" />
                             </StackPanel>
                         </Button>
                     </Grid>

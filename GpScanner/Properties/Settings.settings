@@ -38,9 +38,6 @@
     <Setting Name="DirectOpenPdfFile" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="DirectOpenUdfFile" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="DirectlyOverwriteCompressedPdf" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

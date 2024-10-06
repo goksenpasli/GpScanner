@@ -41,7 +41,6 @@ using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
 using TwainWpf.Wpf;
-using UdfParser;
 using static Extensions.ExtensionMethods;
 using static TwainControl.DrawControl;
 using Application = System.Windows.Application;
@@ -1016,22 +1015,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => Policy.CheckPolicy(nameof(LoadImage)));
 
-        LoadSingleUdfFile = new RelayCommand<object>(
+        LoadXpsFile = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Filter = "Uyap Dokuman Formatı (*.udf)|*.udf|Xps Dosyası (*.xps)|*.xps", Multiselect = false };
+                OpenFileDialog openFileDialog = new() { Filter = "Xps Dosyası (*.xps)|*.xps", Multiselect = false };
 
                 if (openFileDialog.ShowDialog() == true && parameter is XpsViewer xpsViewer)
                 {
-                    switch (Path.GetExtension(openFileDialog.FileName.ToLowerInvariant()))
-                    {
-                        case ".udf":
-                            xpsViewer.XpsDataFilePath = LoadUdfFile(openFileDialog.FileName);
-                            return;
-                        case ".xps":
-                            xpsViewer.XpsDataFilePath = openFileDialog.FileName;
-                            break;
-                    }
+                    xpsViewer.XpsDataFilePath = openFileDialog.FileName;
                 }
             },
             parameter => true);
@@ -1142,7 +1133,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                     else if (imageFileHandler.IsValidFile(filename))
                     {
-                        if (clipboardFiles?.Count == 1)
+                        if (Keyboard.Modifiers == ModifierKeys.Alt)
                         {
                             scannedImage.Resim = await imageFileHandler.LoadImageAsync(clipboardFiles[0]);
                         }
@@ -2809,7 +2800,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand LoadPdfExtractFile { get; }
 
-    public ICommand LoadSingleUdfFile { get; }
+    public ICommand LoadXpsFile { get; }
 
     public RelayCommand<object> LoadXlsFile { get; }
 
@@ -3817,6 +3808,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             return;
         }
 
+        OrganizeDroppedData(droppedData, target);
+    }
+
+    private void OrganizeDroppedData(ScannedImage droppedData, ScannedImage target)
+    {
         int removedIdx = Scanner.Resimler.IndexOf(droppedData);
         int targetIdx = Scanner.Resimler.IndexOf(target);
 
@@ -3861,24 +3857,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             await Task.Run(() => AddFiles(droppedfiles, DecodeHeight));
         }
-    }
-
-    public string LoadUdfFile(string filename)
-    {
-        ZipArchive archive = ZipFile.Open(filename, ZipArchiveMode.Read);
-        ZipArchiveEntry üstveri = archive.Entries.FirstOrDefault(entry => entry.Name == "content.xml");
-        string source = $"{Path.GetTempPath()}{Guid.NewGuid()}.xml";
-        string xpssource = $"{Path.GetTempPath()}{Guid.NewGuid()}.xps";
-        üstveri?.ExtractToFile(source, true);
-        Template xmldata = DeSerialize<Template>(source);
-        IDocumentPaginatorSource flowDocument = UdfParser.UdfParser.RenderDocument(xmldata);
-        using (XpsDocument xpsDocument = new(xpssource, FileAccess.ReadWrite))
-        {
-            XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsDocument);
-            xw.Write(flowDocument.DocumentPaginator);
-        }
-
-        return xpssource;
     }
 
     public void SplitPdfPageCount(string pdfpath, string savefolder, int pagecount)

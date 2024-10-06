@@ -194,13 +194,6 @@ public partial class MainWindow : Window
                     eypPdfViewer.AddToHistoryList(eypPdfViewer.PdfFilePath);
                     return;
                 }
-
-                if (Settings.Default.DirectOpenUdfFile && extension == ".udf")
-                {
-                    TwainCtrl.SelectedTabIndex = 4;
-                    TwainCtrl.xpsViewer.XpsDataFilePath = TwainCtrl.LoadUdfFile(filePath);
-                    return;
-                }
             }
             _ = TwainCtrl.AddFiles(commandLineArgs, TwainCtrl.DecodeHeight);
         }
