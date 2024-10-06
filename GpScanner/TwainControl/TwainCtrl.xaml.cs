@@ -990,8 +990,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp|" +
-                        "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp|" +
+                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2|" +
+                        "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp;*.jb2|" +
                         "Pdf Dosyası (*.pdf)|*.pdf|" +
                         "Xps Dosyası (*.xps)|*.xps|" +
                         "Eyp Dosyası (*.eyp)|*.eyp|" +
@@ -2800,9 +2800,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand LoadPdfExtractFile { get; }
 
-    public ICommand LoadXpsFile { get; }
-
     public RelayCommand<object> LoadXlsFile { get; }
+
+    public ICommand LoadXpsFile { get; }
 
     public RelayCommand<object> ManualDeskewImage { get; }
 
@@ -3689,6 +3689,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 }
                                 break;
 
+                            case ".jb2":
+                                fileHandler = new Jb2FileHandler();
+                                await AddFilesAsync(filename, fileHandler, decodeHeight);
+                                break;
+
                             case ".zip":
                             case ".7z":
                             case ".arj":
@@ -3811,30 +3816,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         OrganizeDroppedData(droppedData, target);
     }
 
-    private void OrganizeDroppedData(ScannedImage droppedData, ScannedImage target)
-    {
-        int removedIdx = Scanner.Resimler.IndexOf(droppedData);
-        int targetIdx = Scanner.Resimler.IndexOf(target);
-
-        if (removedIdx < targetIdx)
-        {
-            Scanner.Resimler.Insert(targetIdx + 1, droppedData);
-            Scanner.Resimler.RemoveAt(removedIdx);
-            Scanner.RefreshIndexNumbers();
-            return;
-        }
-
-        int remIdx = removedIdx + 1;
-        if (Scanner.Resimler.Count + 1 <= remIdx)
-        {
-            return;
-        }
-
-        Scanner.Resimler.Insert(targetIdx, droppedData);
-        Scanner.Resimler.RemoveAt(remIdx);
-        Scanner.RefreshIndexNumbers();
-    }
-
     public async Task ListBoxDropFileAsync(DragEventArgs e)
     {
         if (fileloadtask?.IsCompleted == false)
@@ -3953,26 +3934,23 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             return;
         }
 
-        byte[] fileData = await Viewer.ReadAllFileAsync(filename);
-        if (fileData is null)
-        {
-            return;
-        }
-
         int totalPageCount = fileHandler.GetPageCount(filename);
+        MemoryStream ms;
+        BitmapFrame bitmapFrame;
         for (int i = 1; i <= totalPageCount; i++)
         {
-            MemoryStream ms;
-            BitmapFrame bitmapFrame;
             switch (fileHandler)
             {
                 case PdfFileHandler:
+                    byte[] fileData = await Viewer.ReadAllFileAsync(filename);
                     ms = await fileHandler.ConvertToImageStreamAsync(fileData, i);
                     bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
                     break;
+
                 case WebpFileHandler:
                     bitmapFrame = fileHandler.LoadWebpImage(decodeHeight, filename);
                     break;
+
                 case XpsFileHandler:
                     await HandleTifXpsFileAsync(fileHandler.LoadXpsPagesAsync, filename, i, totalPageCount);
                     return;
@@ -3996,7 +3974,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             bitmapFrame = null;
         }
         _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
-        fileData = null;
     }
 
     private void AddPendingFileRenameOperation(string sourceFilePath, string targetFilePath)
@@ -4539,6 +4516,30 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         Scanner.ProgressState = TaskbarItemProgressState.Normal;
         Scanner.PdfSaveProgressValue = (double)mediaViewer.MediaPosition.Ticks / mediaViewer.EndTimeSpan.Ticks;
+    }
+
+    private void OrganizeDroppedData(ScannedImage droppedData, ScannedImage target)
+    {
+        int removedIdx = Scanner.Resimler.IndexOf(droppedData);
+        int targetIdx = Scanner.Resimler.IndexOf(target);
+
+        if (removedIdx < targetIdx)
+        {
+            Scanner.Resimler.Insert(targetIdx + 1, droppedData);
+            Scanner.Resimler.RemoveAt(removedIdx);
+            Scanner.RefreshIndexNumbers();
+            return;
+        }
+
+        int remIdx = removedIdx + 1;
+        if (Scanner.Resimler.Count + 1 <= remIdx)
+        {
+            return;
+        }
+
+        Scanner.Resimler.Insert(targetIdx, droppedData);
+        Scanner.Resimler.RemoveAt(remIdx);
+        Scanner.RefreshIndexNumbers();
     }
 
     private async Task PdfPageRangeSaveFileAsync(string loadfilename, string savefilename, int start, int end)
