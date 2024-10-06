@@ -19,7 +19,7 @@ namespace TwainControl;
 public class SimpleArchiveViewer : ArchiveViewer
 {
     public static readonly DependencyProperty SimpleStyleProperty = DependencyProperty.Register("SimpleStyle", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
-    private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps"];
+    private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps", ".jb2"];
     private double previewPanelWidth;
     private string thumbFile;
 

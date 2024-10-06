@@ -21,6 +21,7 @@
     <Extensions:FilePathToIconConverter x:Key="FilePathToIconLargeConverter" IconSize="jumbo" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <Converter:WebpFileToBitmapImageConverter x:Key="WebpFileToBitmapImageConverter" />
+    <Converter:Jb2ToBitmapImageConverter x:Key="Jb2ToBitmapImageConverter" />
     <SolidColorBrush x:Key="ScrollBarDisabledBackground"
         ice:Freeze="True"
         Color="#FFE8E8EC" />
@@ -939,6 +940,14 @@
             PrintButtonVisibility="Visible"
             Source="{Binding Path=DataContext, Converter={StaticResource WebpFileToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
+    <DataTemplate x:Key="Jb2Template">
+        <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+            OpenButtonVisibility="Collapsed"
+            PanoramaButtonVisibility="Collapsed"
+            PrintButtonVisibility="Visible"
+            Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+            Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+    </DataTemplate>
     <DataTemplate x:Key="EypSimpleXlsxTemplate">
         <StackPanel>
             <TextBlock Width="210"
@@ -1222,6 +1231,7 @@
     <local:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
         Empty="{StaticResource EmptyTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
+        Jb2="{StaticResource Jb2Template}"
         Pdf="{StaticResource EypSimplePdfTemplate}"
         Vid="{StaticResource VideoViewerTemplateMini}"
         Webp="{StaticResource WebpTemplate}"
@@ -1233,6 +1243,7 @@
         Empty="{StaticResource SimpleArchiveViewerEmptyTemplate}"
         Eyp="{StaticResource SimpleArchiveViewerEypViewerTemplate}"
         Img="{StaticResource SimpleArchiveViewerImgViewerTemplate}"
+        Jb2="{StaticResource Jb2Template}"
         Pdf="{StaticResource SimpleArchiveViewerPdfViewerTemplate}"
         Vid="{StaticResource SimpleArchiveViewerVideoViewerTemplate}"
         Webp="{StaticResource WebpTemplate}"
@@ -1243,6 +1254,7 @@
     <local:ViewerTemplateSelector x:Key="PdfEypListBoxViewerSelector"
         Eyp="{StaticResource EypViewerTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
+        Jb2="{StaticResource Jb2Template}"
         Pdf="{StaticResource EypSimplePdfTemplate}"
         Vid="{StaticResource VideoViewerTemplateMini}"
         Webp="{StaticResource WebpTemplate}"

@@ -22,6 +22,8 @@ namespace TwainControl
 
         public DataTemplate Webp { get; set; }
 
+        public DataTemplate Jb2 { get; set; }
+
         public DataTemplate Xlsx { get; set; }
 
         public DataTemplate Xml { get; set; }
@@ -46,6 +48,7 @@ namespace TwainControl
                         ".eyp" => Eyp,
                         ".xps" => Xps,
                         ".webp" => Webp,
+                        ".jb2" => Jb2,
                         ".docx" or ".txt" => Docx,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
                         ".csv" or ".xls" or ".xlsx" or ".xlsb" => Xlsx,
