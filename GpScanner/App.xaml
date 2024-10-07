@@ -429,6 +429,42 @@
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Visible" />
             </DataTemplate>
+            <DataTemplate x:Key="Jb2TemplateMini">
+                <PdfViewer:PdfShadowedImage Width="150"
+                    Height="150"
+                    IsHitTestVisible="False"
+                    ShowShadow="True"
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                    Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
+            <DataTemplate x:Key="Jb2MonthTemplateMini">
+                <PdfViewer:PdfShadowedImage Width="150"
+                    Height="150"
+                    ShowShadow="True"
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                    Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                    <PdfViewer:PdfShadowedImage.InputBindings>
+                        <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
+                            <MouseBinding.CommandParameter>
+                                <MultiBinding Converter="{StaticResource CloneConverter}">
+                                    <Binding Mode="OneWay" />
+                                    <Binding Mode="OneWay"
+                                        Path="TwainCtrl"
+                                        RelativeSource="{RelativeSource AncestorType=Window}" />
+                                </MultiBinding>
+                            </MouseBinding.CommandParameter>
+                        </MouseBinding>
+                    </PdfViewer:PdfShadowedImage.InputBindings>
+                </PdfViewer:PdfShadowedImage>
+            </DataTemplate>
+            <DataTemplate x:Key="Jb2Template">
+                <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                    OpenButtonVisibility="Collapsed"
+                    PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Visible"
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                    Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -622,6 +658,7 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
+                Jb2="{StaticResource Jb2Template}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
@@ -632,6 +669,7 @@
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ContributionViewerImgTemplateMini}"
+                Jb2="{StaticResource Jb2TemplateMini}"
                 Pdf="{StaticResource ContributionViewerPdfViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
                 Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
@@ -642,6 +680,7 @@
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
+                Jb2="{StaticResource Jb2TemplateMini}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
                 Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
@@ -652,6 +691,7 @@
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
+                Jb2="{StaticResource Jb2MonthTemplateMini}"
                 Pdf="{StaticResource PdfViewerDocumentViewerMonthTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
                 Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
@@ -662,6 +702,7 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
+                Jb2="{StaticResource Jb2Template}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
@@ -672,6 +713,7 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
+                Jb2="{StaticResource Jb2TemplateMini}"
                 Pdf="{StaticResource UnIndexedPdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
@@ -682,6 +724,7 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
+                Jb2="{StaticResource Jb2TemplateMini}"
                 Pdf="{StaticResource SimplePdfTemplate}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
@@ -693,6 +736,7 @@
                 Empty="{StaticResource DvdBurnerEmptyViewerTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
+                Jb2="{StaticResource Jb2TemplateMini}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
