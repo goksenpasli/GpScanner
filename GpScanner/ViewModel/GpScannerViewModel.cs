@@ -78,6 +78,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         new TessFiles() { Name = ".jfif", Checked = true },
         new TessFiles() { Name = ".png", Checked = true },
         new TessFiles() { Name = ".bmp", Checked = true },
+        new TessFiles() { Name = ".jb2", Checked = true },
         new TessFiles() { Name = ".webp", Checked = false, Enabled = WebP.WebpDllExists },
         ];
     private ObservableCollection<BatchTxtOcr> batchTxtOcrs;

@@ -2412,7 +2412,22 @@
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Controls:XpsViewer x:Name="xpsViewer" x:FieldModifier="public" />
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Button Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection}"
+                                local:Policy.PolicyName="XpsDosyasındanResimYükle"
+                                Command="{Binding XpsDosyasındanResimYükle}"
+                                CommandParameter="{Binding ElementName=xpsViewer, Mode=OneWay}"
+                                Content="ç"
+                                FontFamily="Wingdings"
+                                FontSize="16" />
+                            <Controls:XpsViewer x:Name="xpsViewer"
+                                Grid.Column="1"
+                                x:FieldModifier="public" />
+                        </Grid>
                         <Button Grid.Row="1"
                             local:Policy.PolicyName="LoadXpsFile"
                             Command="{Binding LoadXpsFile}"

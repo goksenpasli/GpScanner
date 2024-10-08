@@ -13,23 +13,26 @@ namespace Extensions.Controls;
 
 public partial class XpsViewer : UserControl, INotifyPropertyChanged
 {
+    public static readonly DependencyPropertyKey PageNumberProperty = DependencyProperty.RegisterReadOnly("PageNumber", typeof(int), typeof(XpsViewer), new PropertyMetadata(0));
     public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register("XpsDataFilePath", typeof(string), typeof(XpsViewer), new PropertyMetadata(null, XpsDataFilePathChanged));
     private IDocumentPaginatorSource document;
+    public int PageNumber => (int)GetValue(PageNumberProperty.DependencyProperty);
 
     public XpsViewer()
     {
         InitializeComponent();
         DataContext = this;
+        Viewer?.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(ScrollChangedEvent));
     }
+
+    private void ScrollChangedEvent(object sender, ScrollChangedEventArgs e) => SetValue(PageNumberProperty, Viewer?.MasterPageNumber);
 
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public IDocumentPaginatorSource Document
-    {
+    public IDocumentPaginatorSource Document {
         get => document;
 
-        set
-        {
+        set {
             if (document != value)
             {
                 document = value;

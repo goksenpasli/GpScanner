@@ -62,5 +62,24 @@ namespace TwainControl
                 });
             return frames;
         }
+
+        public async Task<BitmapFrame> LoadXpsSinglePagesAsync(string filename, int pagenumber = 0)
+        {
+            return !IsValidFile(filename)
+                ? null
+                : await Application.Current.Dispatcher
+            .InvokeAsync(
+                () =>
+                {
+                    using XpsDocument xpsDoc = new(filename, FileAccess.Read);
+                    FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
+                    using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(pagenumber);
+                    RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                    rtb.Render(docPage.Visual);
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(rtb);
+                    bitmapFrame.Freeze();
+                    return bitmapFrame;
+                });
+        }
     }
 }

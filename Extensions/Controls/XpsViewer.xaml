@@ -10,7 +10,7 @@
     SnapsToDevicePixels="True"
     UseLayoutRounding="True"
     mc:Ignorable="d">
-    <DocumentViewer Document="{Binding Document}">
+    <DocumentViewer x:Name="Viewer" Document="{Binding Document}">
         <DocumentViewer.CommandBindings>
             <CommandBinding CanExecute="CommandBinding_CanExecute"
                 Command="ApplicationCommands.Print"
