@@ -338,6 +338,11 @@ public static class ExtensionMethods
 
     public static byte[] ToTiffJpegByteArray(this ImageSource bitmapsource, Format format, int jpegquality = 80)
     {
+        if (bitmapsource is null)
+        {
+            throw new ArgumentNullException(nameof(bitmapsource));
+        }
+
         try
         {
             using MemoryStream outStream = new();

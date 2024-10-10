@@ -17,7 +17,7 @@ namespace TwainControl
         public int GetPageCount(string filename)
         {
             FixedDocumentSequence docSeq = null;
-            Application.Current.Dispatcher
+            Application.Current?.Dispatcher?
             .Invoke(
                 () =>
                 {
@@ -42,7 +42,7 @@ namespace TwainControl
                 return null;
             }
             List<BitmapFrame> frames = [];
-            await Application.Current.Dispatcher
+            await Application.Current?.Dispatcher?
             .InvokeAsync(
                 () =>
                 {
@@ -67,7 +67,7 @@ namespace TwainControl
         {
             return !IsValidFile(filename)
                 ? null
-                : await Application.Current.Dispatcher
+                : await Application.Current?.Dispatcher?
             .InvokeAsync(
                 () =>
                 {

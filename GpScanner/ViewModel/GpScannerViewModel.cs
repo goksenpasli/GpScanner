@@ -54,6 +54,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public CancellationTokenSource ocrcancellationToken;
     private const string MinimumVcVersion = "14.21.27702";
     private const int NetFxMinVersion = 461808;
+    private static readonly SemaphoreSlim LogSemaphore = new(1, 1);
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly string AppName;
@@ -348,35 +349,35 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 int i = 1;
                 int slicecount = UnIndexedFiles.Count > Settings.Default.BatchOcrProcessorCount ? UnIndexedFiles.Count / Settings.Default.BatchOcrProcessorCount : 1;
                 List<Task> Tasks = [];
+                OcrIsBusy = true;
                 foreach (List<string> unIndexedFile in TwainCtrl.ChunkBy(UnIndexedFiles.ToList(), slicecount))
                 {
-                    OcrIsBusy = true;
-                    try
-                    {
-                        Task task = Task.Run(
-                            async () =>
+                    Task task = Task.Run(
+                        async () =>
+                        {
+                            for (int j = 0; j < unIndexedFile.Count; j++)
                             {
-                                for (int j = 0; j < unIndexedFile.Count; j++)
+                                try
                                 {
                                     string ocrText = await ProcessFileAsync(unIndexedFile[j]);
                                     await SaveOcrTextToFileAsync(unIndexedFile[j], ocrText);
-                                    _ = await Application.Current.Dispatcher.InvokeAsync(() => UnIndexedFiles?.Remove(unIndexedFile[j]));
+                                    _ = await Application.Current?.Dispatcher?.InvokeAsync(() => UnIndexedFiles?.Remove(unIndexedFile[j]));
                                     IndexedFileCount = i++;
                                 }
-                            });
-                        Tasks.Add(task);
-                    }
-                    catch (Exception ex)
-                    {
-                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex.Message);
-                    }
-                    finally
-                    {
-                        OcrIsBusy = false;
-                        GC.Collect();
-                    }
+                                catch (Exception ex)
+                                {
+                                    await LogErrorAsync(ex);
+                                }
+                                finally
+                                {
+                                    GC.Collect();
+                                }
+                            }
+                        });
+                    Tasks.Add(task);
                 }
                 await Task.WhenAll(Tasks);
+                OcrIsBusy = false;
                 if (Shutdown)
                 {
                     ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
@@ -767,14 +768,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 GC.Collect();
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
-                    try
-                    {
-                        BatchTxtOcr batchTxtOcr = new();
-                        Paper paper = ToolBox.Paper;
-                        Task task = Task.Run(
-                            async () =>
+                    BatchTxtOcr batchTxtOcr = new();
+                    Paper paper = ToolBox.Paper;
+                    Task task = Task.Run(
+                        async () =>
+                        {
+                            for (int i = 0; i < item.Count; i++)
                             {
-                                for (int i = 0; i < item.Count; i++)
+                                try
                                 {
                                     if (ocrcancellationToken?.IsCancellationRequested == false)
                                     {
@@ -804,15 +805,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                         scanner.PdfSaveProgressValue = BatchTxtOcrs?.Sum(z => z.ProgressValue) / Tasks.Count ?? 0;
                                     }
                                 }
-                            },
-                            ocrcancellationToken.Token);
-                        BatchTxtOcrs.Add(batchTxtOcr);
-                        Tasks.Add(task);
-                    }
-                    catch (Exception ex)
-                    {
-                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
-                    }
+                                catch (Exception ex)
+                                {
+                                    await LogErrorAsync(ex);
+                                }
+                            }
+                        },
+                        ocrcancellationToken.Token);
+                    BatchTxtOcrs.Add(batchTxtOcr);
+                    Tasks.Add(task);
                 }
 
                 BatchDialogOpen = true;
@@ -865,13 +866,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 GC.Collect();
                 foreach (List<string> item in TwainCtrl.ChunkBy(files, slicecount))
                 {
-                    try
-                    {
-                        BatchTxtOcr batchTxtOcr = new();
-                        Task task = Task.Run(
-                            () =>
+                    BatchTxtOcr batchTxtOcr = new();
+                    Task task = Task.Run(
+                        async () =>
+                        {
+                            for (int i = 0; i < item.Count; i++)
                             {
-                                for (int i = 0; i < item.Count; i++)
+                                try
                                 {
                                     if (ocrcancellationToken?.IsCancellationRequested == false)
                                     {
@@ -884,15 +885,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                         batchTxtOcr.FilePath = Path.GetFileName(image);
                                     }
                                 }
-                            },
-                            ocrcancellationToken.Token);
-                        BatchTxtOcrs.Add(batchTxtOcr);
-                        Tasks.Add(task);
-                    }
-                    catch (Exception ex)
-                    {
-                        await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
-                    }
+                                catch (Exception ex)
+                                {
+                                    await LogErrorAsync(ex);
+                                }
+                            }
+                        },
+                        ocrcancellationToken.Token);
+                    BatchTxtOcrs.Add(batchTxtOcr);
+                    Tasks.Add(task);
                 }
 
                 BatchDialogOpen = true;
@@ -3305,6 +3306,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
         {
             CalendarPanelIsExpanded = true;
+        }
+    }
+
+    private async Task LogErrorAsync(Exception ex)
+    {
+        await LogSemaphore.WaitAsync();
+        try
+        {
+            await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
+        }
+        finally
+        {
+            _ = LogSemaphore.Release();
         }
     }
 

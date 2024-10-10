@@ -1469,10 +1469,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 byte[] filedata = await Viewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
                 using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Settings.Default.ImgLoadResolution);
-                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
-                bitmapFrame.Freeze();
-                ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
-                Scanner?.Resimler.Add(scannedImage);
+                if (ms is not null)
+                {
+                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
+                    bitmapFrame?.Freeze();
+                    ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                    Scanner?.Resimler.Add(scannedImage);
+                }
+
                 filedata = null;
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));

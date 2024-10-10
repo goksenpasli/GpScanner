@@ -58,7 +58,7 @@ namespace GpScanner
             }
             catch (Exception ex)
             {
-                _ = Application.Current.Dispatcher.InvokeAsync(async () => await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.StackTrace));
+                _ = Application.Current?.Dispatcher?.InvokeAsync(async () => await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.StackTrace));
             }
         }
 

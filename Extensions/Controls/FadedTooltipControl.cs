@@ -24,7 +24,7 @@ namespace Extensions
         private Popup popup;
 
         static FadedToolTipControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FadedToolTipControl), new FrameworkPropertyMetadata(typeof(FadedToolTipControl))); }
-        public FadedToolTipControl() { ClosePopupWindow = new RelayCommand<object>(async parameter => await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = false), parameter => true); }
+        public FadedToolTipControl() { ClosePopupWindow = new RelayCommand<object>(async parameter => await Application.Current?.Dispatcher?.InvokeAsync(() => popup.IsOpen = false), parameter => true); }
 
         public int CloseDelay { get => (int)GetValue(CloseDelayProperty); set => SetValue(CloseDelayProperty, value); }
 
@@ -93,17 +93,17 @@ namespace Extensions
             await Task.Delay(CloseDelay);
             if (!Show)
             {
-                _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = false);
+                _ = await Application.Current?.Dispatcher?.InvokeAsync(() => popup.IsOpen = false);
             }
         }
 
         private async Task ShowToolTipAsync()
         {
             await Task.Delay(TimeToShow);
-            _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = true);
+            _ = await Application.Current?.Dispatcher?.InvokeAsync(() => popup.IsOpen = true);
 
             await Task.Delay(TimeToClose);
-            _ = await Application.Current.Dispatcher.InvokeAsync(() => popup.IsOpen = false);
+            _ = await Application.Current?.Dispatcher?.InvokeAsync(() => popup.IsOpen = false);
         }
     }
 }
