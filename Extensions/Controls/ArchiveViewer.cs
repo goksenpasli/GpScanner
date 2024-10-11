@@ -19,6 +19,7 @@ namespace Extensions
     public class ArchiveViewer : Control, INotifyPropertyChanged, IDisposable
     {
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
+        public static readonly DependencyPropertyKey ProgressProperty = DependencyProperty.RegisterReadOnly("Progress", typeof(double), typeof(ArchiveViewer), new PropertyMetadata(0d));
         protected ICollectionView cvs;
         private ObservableCollection<ArchiveData> arşivİçerik;
         private int checkedCount;
@@ -130,6 +131,8 @@ namespace Extensions
             }
         }
 
+        public double Progress => (double)GetValue(ProgressProperty.DependencyProperty);
+
         public string Search
         {
             get => search;
@@ -221,10 +224,13 @@ namespace Extensions
                 throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
             }
             using ZipArchive archive = ZipFile.Open(archivepath, ZipArchiveMode.Read) ?? throw new ArgumentException("Arşiv Açılamadı");
-            foreach (ArchiveData item in files)
+            ArchiveData[] archivedata = files.ToArray();
+            for (int i = 0; i < archivedata.Length; i++)
             {
+                ArchiveData item = archivedata[i];
                 ZipArchiveEntry dosya = archive.Entries?.FirstOrDefault(z => z.Name == Path.GetFileName(item.DosyaAdı));
                 dosya?.ExtractToFile(Path.Combine(destinationfolder, Path.GetFileName(item.DosyaAdı)), true);
+                SetValue(ProgressProperty, (i + 1) / (double)archivedata.Length);
             }
         }
 

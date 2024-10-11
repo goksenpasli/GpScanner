@@ -169,10 +169,13 @@ public class SimpleArchiveViewer : ArchiveViewer
             throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
         }
         using ArchiveFile archiveFile = new(archivepath);
-        foreach (ArchiveData item in list)
+        ArchiveData[] archivedata = list.ToArray();
+        for (int i = 0; i < archivedata.Length; i++)
         {
+            ArchiveData item = archivedata[i];
             Entry entry = archiveFile.Entries?.FirstOrDefault(z => z.FileName == item.DosyaAdı);
             entry?.Extract(Path.Combine(destinationfolder, Path.GetFileName(item.DosyaAdı)));
+            SetValue(ProgressProperty, (i + 1) / (double)archivedata.Length);
         }
     }
 

@@ -132,6 +132,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -277,9 +278,14 @@
                 HorizontalAlignment="Stretch"
                 Background="{StaticResource GroupBoxBackGround}" />
             <ContentControl Grid.Column="2"
-                Content="{Binding ElementName=ArchiveVwr, Path=ThumbFile, Mode=OneWay}"
+                Content="{Binding RelativeSource={RelativeSource AncestorType=Extensions:ArchiveViewer}, Path=ThumbFile, Mode=OneWay}"
                 ContentTemplateSelector="{DynamicResource SimpleArchiveViewerSelector}" />
-            <StatusBar Grid.Row="1" Grid.ColumnSpan="3">
+            <ProgressBar Grid.Row="1"
+                Grid.ColumnSpan="3"
+                Height="3"
+                Maximum="1"
+                Value="{Binding RelativeSource={RelativeSource AncestorType=Extensions:ArchiveViewer}, Path=Progress, Mode=OneWay}" />
+            <StatusBar Grid.Row="2" Grid.ColumnSpan="3">
                 <StatusBar.ItemsPanel>
                     <ItemsPanelTemplate>
                         <Grid>

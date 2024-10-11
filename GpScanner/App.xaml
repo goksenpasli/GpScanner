@@ -184,6 +184,7 @@
                         SearchTextContentVisibility="Collapsed"
                         SnapTick="True" />
                     <Expander Grid.Column="2"
+                        d:IsExpanded="True"
                         ExpandDirection="Right"
                         IsExpanded="{Binding DocumentViewerPanelIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                         <local:TranslateView MaxWidth="400" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
@@ -419,9 +420,7 @@
                     Style="{StaticResource SimpleArchiveViewerStyle}" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
-                <twain:SimpleArchiveViewer x:Name="ArchiveVwr"
-                    ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    Style="{StaticResource SimpleArchiveViewerStyle}" />
+                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" Style="{StaticResource SimpleArchiveViewerStyle}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
                 <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
@@ -498,9 +497,12 @@
                             PrintButtonVisibility="Visible" />
                     </Grid>
                     <Expander Grid.Column="2"
+                        d:IsExpanded="True"
                         ExpandDirection="Right"
                         IsExpanded="{Binding DocumentViewerPanelIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                        <local:TranslateView Grid.Column="2" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
+                        <local:TranslateView Grid.Column="2"
+                            MaxWidth="400"
+                            ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />
                     </Expander>
                 </Grid>
             </DataTemplate>

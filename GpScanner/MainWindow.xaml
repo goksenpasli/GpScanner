@@ -676,10 +676,9 @@
                                     <Run Text="{twainctrl:Loc PAGENUMBER}" />
                                 </TextBlock>
                                 <UniformGrid Columns="2">
-                                    <UniformGrid Rows="2">
+                                    <UniformGrid IsEnabled="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}" Rows="2">
                                         <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
                                             Interval="1"
-                                            IsEnabled="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}"
                                             Minimum="1"
                                             Value="{Binding AllPdfPage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                         <ToggleButton twainctrl:Policy.PolicyName="ShowAllPdfControl"
