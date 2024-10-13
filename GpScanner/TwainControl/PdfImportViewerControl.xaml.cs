@@ -273,7 +273,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 twainCtrl.PdfToolBarControlIsEnabled = false;
                 OcrProgressIndeterminate = true;
-                using PdfDocument pdfDocument = await GenerateOcredPdfPage(PdfViewer, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution, twainCtrl.Scanner?.SelectedTtsLanguage, twainCtrl.SelectedPaper);
+                using PdfDocument pdfDocument = await GenerateOcredPdfPage(PdfViewer, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution, twainCtrl.Scanner?.SelectedTtsLanguage, twainCtrl.SelectedPaper, progress => twainCtrl.PdfImportControlProgressValue = progress);
                 pdfDocument.Save(PdfViewer.PdfFilePath);
                 twainCtrl.PdfToolBarControlIsEnabled = true;
                 OcrDialogOpen = false;
@@ -1120,12 +1120,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper)
+    private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper, Action<double> progresscallback=null)
     {
-        if (DataContext is not TwainCtrl twainCtrl)
-        {
-            return null;
-        }
         List<string> tempfiles = [];
         ObservableCollection<OcrData> ocrdata;
         OcrText = string.Empty;
@@ -1136,11 +1132,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             string pdffile = $"{System.IO.Path.GetTempPath()}{i}.pdf";
             scanneddocument.Save(pdffile);
             tempfiles.Add(pdffile);
-            twainCtrl.PdfImportControlProgressValue = (i + 1) / (double)pdfViewer.ToplamSayfa;
+            progresscallback?.Invoke((i + 1) / (double)pdfViewer.ToplamSayfa);
             OcrText = OcrText += $"{string.Join(" ", ocrdata?.Select(z => z.Text))}\n";
         }
         using PdfDocument document = tempfiles.ToArray().MergePdf();
-        OcrProgressIndeterminate = false;
         tempfiles.ForEach(File.Delete);
         return document;
     }

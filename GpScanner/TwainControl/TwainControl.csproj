@@ -114,6 +114,7 @@
     <Compile Include="Converter\FileDateContextMenuConverter.cs" />
     <Compile Include="Converter\FontSizeConverter.cs" />
     <Compile Include="Converter\Jb2ToBitmapImageConverter.cs" />
+    <Compile Include="Converter\RandomColorBrushConverter.cs" />
     <Compile Include="Converter\ResourceLanguageStringConverter.cs" />
     <Compile Include="Converter\StringToStrokeCollectionConverter.cs" />
     <Compile Include="Converter\WebpFileToBitmapImageConverter.cs" />
