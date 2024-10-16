@@ -1,8 +1,10 @@
 ﻿using ExcelDataReader;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,12 +19,15 @@ namespace TwainControl
     {
         public static readonly DependencyProperty XlsxDataFilePathProperty = DependencyProperty.Register("XlsxDataFilePath", typeof(string), typeof(XlsxViewer), new PropertyMetadata(null, XlsxDataFilePathChanged));
         private double progress;
+        private string search;
+        private DataTable selectedTable;
         private DataTableCollection tablolar;
 
         public XlsxViewer()
         {
             InitializeComponent();
             DataContext = this;
+            PropertyChanged += XlsxViewer_PropertyChanged;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,6 +45,34 @@ namespace TwainControl
             }
         }
 
+        public string Search
+        {
+            get => search;
+            set
+            {
+                if (search != value)
+                {
+                    search = value;
+                    OnPropertyChanged(nameof(Search));
+                }
+            }
+        }
+
+        public DataTable SelectedTable
+        {
+            get => selectedTable;
+
+            set
+            {
+                if (selectedTable != value)
+                {
+                    selectedTable = value;
+
+                    OnPropertyChanged(nameof(SelectedTable));
+                }
+            }
+        }
+
         public DataTableCollection Tablolar
         {
             get => tablolar;
@@ -53,8 +86,6 @@ namespace TwainControl
                 }
             }
         }
-
-        public DataView XlsDataVieW { get; set; }
 
         public string XlsxDataFilePath { get => (string)GetValue(XlsxDataFilePathProperty); set => SetValue(XlsxDataFilePathProperty, value); }
 
@@ -80,10 +111,12 @@ namespace TwainControl
                             ".csv" => (await viewer.StreamToDtAsync(fs, true)).Tables,
                             _ => (await viewer.StreamToDtAsync(fs)).Tables,
                         };
+                        viewer.SelectedTable = viewer.Tablolar[0];
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    throw new ArgumentException(ex?.Message);
                 }
             }
         }
@@ -114,6 +147,26 @@ namespace TwainControl
                             });
                     }
                 });
+        }
+
+        private void XlsxViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "Search" && SelectedTable is not null)
+            {
+                DataTable defaulttable = Tablolar[SelectedTable.TableName];
+                string tablename = SelectedTable.TableName;
+                if (!string.IsNullOrWhiteSpace(Search))
+                {
+                    IEnumerable<DataRow> filteredrows = defaulttable.Rows.OfType<DataRow>().Where(z => z.ItemArray.Any(rowitem => rowitem is not null && rowitem is string content && content.IndexOf(Search, StringComparison.OrdinalIgnoreCase) >= 0));
+                    if (filteredrows.Any())
+                    {
+                        SelectedTable = filteredrows.CopyToDataTable();
+                        SelectedTable.TableName = tablename;
+                    }
+                    return;
+                }
+                SelectedTable = defaulttable;
+            }
         }
     }
 }
