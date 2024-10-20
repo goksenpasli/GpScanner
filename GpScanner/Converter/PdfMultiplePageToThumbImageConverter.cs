@@ -12,35 +12,32 @@ namespace GpScanner.Converter;
 
 public sealed class PdfMultiplePageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
-    private int dpi = 20;
-    private uint maxPageCount = 2;
-
     public int Dpi
     {
-        get => dpi;
+        get;
 
         set
         {
-            if (dpi != value)
+            if (field != value)
             {
-                dpi = value;
+                field = value;
                 OnPropertyChanged(nameof(Dpi));
             }
         }
-    }
+    } = 20;
 
     public uint MaxPageCount
     {
-        get => maxPageCount;
+        get;
         set
         {
-            if (maxPageCount != value)
+            if (field != value)
             {
-                maxPageCount = value;
+                field = value;
                 OnPropertyChanged(nameof(MaxPageCount));
             }
         }
-    }
+    } = 2;
 
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {

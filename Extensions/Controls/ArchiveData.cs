@@ -5,25 +5,17 @@ namespace Extensions;
 
 public class ArchiveData : InpcBase
 {
-    private long boyut;
-    private string crc;
-    private string dosyaAdı;
     private string dosyaTipi;
-    private DateTime düzenlenmeZamanı;
-    private bool ısChecked;
-    private float oran;
-    private long sıkıştırılmışBoyut;
-    private string tamYol;
 
     public long Boyut
     {
-        get => boyut;
+        get;
 
         set
         {
-            if (boyut != value)
+            if (field != value)
             {
-                boyut = value;
+                field = value;
                 OnPropertyChanged(nameof(Boyut));
             }
         }
@@ -31,12 +23,12 @@ public class ArchiveData : InpcBase
 
     public string Crc
     {
-        get => crc;
+        get;
         set
         {
-            if (crc != value)
+            if (field != value)
             {
-                crc = value;
+                field = value;
                 OnPropertyChanged(nameof(Crc));
             }
         }
@@ -44,13 +36,13 @@ public class ArchiveData : InpcBase
 
     public string DosyaAdı
     {
-        get => dosyaAdı;
+        get;
 
         set
         {
-            if (dosyaAdı != value)
+            if (field != value)
             {
-                dosyaAdı = value;
+                field = value;
                 OnPropertyChanged(nameof(DosyaAdı));
             }
         }
@@ -71,13 +63,13 @@ public class ArchiveData : InpcBase
 
     public DateTime DüzenlenmeZamanı
     {
-        get => düzenlenmeZamanı;
+        get;
 
         set
         {
-            if (düzenlenmeZamanı != value)
+            if (field != value)
             {
-                düzenlenmeZamanı = value;
+                field = value;
                 OnPropertyChanged(nameof(DüzenlenmeZamanı));
             }
         }
@@ -85,12 +77,12 @@ public class ArchiveData : InpcBase
 
     public bool IsChecked
     {
-        get => ısChecked;
+        get;
         set
         {
-            if (ısChecked != value)
+            if (field != value)
             {
-                ısChecked = value;
+                field = value;
                 OnPropertyChanged(nameof(IsChecked));
             }
         }
@@ -98,13 +90,13 @@ public class ArchiveData : InpcBase
 
     public float Oran
     {
-        get => oran;
+        get;
 
         set
         {
-            if (oran != value)
+            if (field != value)
             {
-                oran = value;
+                field = value;
                 OnPropertyChanged(nameof(Oran));
             }
         }
@@ -112,13 +104,13 @@ public class ArchiveData : InpcBase
 
     public long SıkıştırılmışBoyut
     {
-        get => sıkıştırılmışBoyut;
+        get;
 
         set
         {
-            if (sıkıştırılmışBoyut != value)
+            if (field != value)
             {
-                sıkıştırılmışBoyut = value;
+                field = value;
                 OnPropertyChanged(nameof(SıkıştırılmışBoyut));
             }
         }
@@ -126,13 +118,13 @@ public class ArchiveData : InpcBase
 
     public string TamYol
     {
-        get => tamYol;
+        get;
 
         set
         {
-            if (tamYol != value)
+            if (field != value)
             {
-                tamYol = value;
+                field = value;
                 OnPropertyChanged(nameof(TamYol));
             }
         }

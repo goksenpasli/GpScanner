@@ -20,8 +20,6 @@ namespace GpScanner;
 public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 {
     private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
-    private double copyProgressValue;
-    private DriveInfo selectedRemovableDrive;
 
     public FtpUserControl()
     {
@@ -63,12 +61,12 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 
     public double CopyProgressValue
     {
-        get => copyProgressValue;
+        get;
         set
         {
-            if (copyProgressValue != value)
+            if (field != value)
             {
-                copyProgressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(CopyProgressValue));
             }
         }
@@ -80,12 +78,12 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 
     public DriveInfo SelectedRemovableDrive
     {
-        get => selectedRemovableDrive;
+        get;
         set
         {
-            if (selectedRemovableDrive != value)
+            if (field != value)
             {
-                selectedRemovableDrive = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedRemovableDrive));
             }
         }

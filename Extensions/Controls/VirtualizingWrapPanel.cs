@@ -70,12 +70,6 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Owner of the displayed items.
     /// </summary>
-    private DependencyObject _itemsOwner;
-
-    /// <summary>
-    /// Items generator.
-    /// </summary>
-    private IRecyclingItemContainerGenerator _itemContainerGenerator;
 
     /// <summary>
     /// Previously set visibility of the vertical scroll bar.
@@ -141,16 +135,16 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
         get
         {
-            if (_itemsOwner is not null)
+            if (field is not null)
             {
-                return _itemsOwner;
+                return field;
             }
 
             MethodInfo getItemsOwnerInternalMethod = typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, [typeof(DependencyObject)], null)!;
 
-            _itemsOwner = (DependencyObject)getItemsOwnerInternalMethod.Invoke(null, [this])!;
+            field = (DependencyObject)getItemsOwnerInternalMethod.Invoke(null, [this])!;
 
-            return _itemsOwner;
+            return field;
         }
     }
 
@@ -171,14 +165,14 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     {
         get
         {
-            if (_itemContainerGenerator is not null)
+            if (field is not null)
             {
-                return _itemContainerGenerator;
+                return field;
             }
             _ = InternalChildren;
-            _itemContainerGenerator = (IRecyclingItemContainerGenerator)base.ItemContainerGenerator;
+            field = (IRecyclingItemContainerGenerator)base.ItemContainerGenerator;
 
-            return _itemContainerGenerator;
+            return field;
         }
     }
 

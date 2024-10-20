@@ -6,19 +6,16 @@ namespace TwainControl
 {
     public class AboutViewTranslateViewModel : InpcBase
     {
-        private string çeviri;
-        private string çevrilenDil;
-
         public AboutViewTranslateViewModel() { PropertyChanged += AboutViewTranslateViewModel_PropertyChanged; }
 
         public string Çeviri
         {
-            get => çeviri;
+            get;
             set
             {
-                if (çeviri != value)
+                if (field != value)
                 {
-                    çeviri = value;
+                    field = value;
                     OnPropertyChanged(nameof(Çeviri));
                 }
             }
@@ -26,12 +23,12 @@ namespace TwainControl
 
         public string ÇevrilenDil
         {
-            get => çevrilenDil;
+            get;
             set
             {
-                if (çevrilenDil != value)
+                if (field != value)
                 {
-                    çevrilenDil = value;
+                    field = value;
                     OnPropertyChanged(nameof(ÇevrilenDil));
                 }
             }

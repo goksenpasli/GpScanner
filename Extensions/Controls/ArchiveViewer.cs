@@ -21,14 +21,7 @@ namespace Extensions
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
         public static readonly DependencyPropertyKey ProgressProperty = DependencyProperty.RegisterReadOnly("Progress", typeof(double), typeof(ArchiveViewer), new PropertyMetadata(0d));
         protected ICollectionView cvs;
-        private ObservableCollection<ArchiveData> arşivİçerik;
-        private int checkedCount;
         private bool disposedValue;
-        private string search = string.Empty;
-        private ArchiveData selectedFile;
-        private string[] selectedFiles;
-        private double toplamOran;
-        private int totalFilesCount;
 
         static ArchiveViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ArchiveViewer), new FrameworkPropertyMetadata(typeof(ArchiveViewer))); }
 
@@ -104,13 +97,13 @@ namespace Extensions
 
         public ObservableCollection<ArchiveData> Arşivİçerik
         {
-            get => arşivİçerik;
+            get;
 
             set
             {
-                if (arşivİçerik != value)
+                if (field != value)
                 {
-                    arşivİçerik = value;
+                    field = value;
                     OnPropertyChanged(nameof(Arşivİçerik));
                 }
             }
@@ -120,12 +113,12 @@ namespace Extensions
 
         public int CheckedCount
         {
-            get => checkedCount;
+            get;
             set
             {
-                if (checkedCount != value)
+                if (field != value)
                 {
-                    checkedCount = value;
+                    field = value;
                     OnPropertyChanged(nameof(CheckedCount));
                 }
             }
@@ -135,27 +128,27 @@ namespace Extensions
 
         public string Search
         {
-            get => search;
+            get;
             set
             {
-                if (search != value)
+                if (field != value)
                 {
-                    search = value;
+                    field = value;
                     OnPropertyChanged(nameof(Search));
                 }
             }
-        }
+        } = string.Empty;
 
         public RelayCommand<object> SeçiliAyıkla { get; }
 
         public ArchiveData SelectedFile
         {
-            get => selectedFile;
+            get;
             set
             {
-                if (selectedFile != value)
+                if (field != value)
                 {
-                    selectedFile = value;
+                    field = value;
                     OnPropertyChanged(nameof(SelectedFile));
                 }
             }
@@ -163,12 +156,12 @@ namespace Extensions
 
         public string[] SelectedFiles
         {
-            get => selectedFiles;
+            get;
             set
             {
-                if (selectedFiles != value)
+                if (field != value)
                 {
-                    selectedFiles = value;
+                    field = value;
                     OnPropertyChanged(nameof(SelectedFiles));
                 }
             }
@@ -176,23 +169,23 @@ namespace Extensions
 
         public double ToplamOran
         {
-            get => toplamOran;
+            get;
 
             set
             {
-                toplamOran = value;
+                field = value;
                 OnPropertyChanged(nameof(ToplamOran));
             }
         }
 
         public int TotalFilesCount
         {
-            get => totalFilesCount;
+            get;
             set
             {
-                if (totalFilesCount != value)
+                if (field != value)
                 {
-                    totalFilesCount = value;
+                    field = value;
                     OnPropertyChanged(nameof(TotalFilesCount));
                 }
             }

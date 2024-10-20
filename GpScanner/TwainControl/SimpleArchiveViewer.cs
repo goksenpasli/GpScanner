@@ -20,8 +20,6 @@ public class SimpleArchiveViewer : ArchiveViewer
 {
     public static readonly DependencyProperty SimpleStyleProperty = DependencyProperty.Register("SimpleStyle", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
     private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps", ".jb2"];
-    private double previewPanelWidth;
-    private string thumbFile;
 
     public SimpleArchiveViewer()
     {
@@ -67,13 +65,13 @@ public class SimpleArchiveViewer : ArchiveViewer
 
     public double PreviewPanelWidth
     {
-        get => previewPanelWidth;
+        get;
 
         set
         {
-            if (previewPanelWidth != value)
+            if (field != value)
             {
-                previewPanelWidth = value;
+                field = value;
                 OnPropertyChanged(nameof(PreviewPanelWidth));
             }
         }
@@ -85,12 +83,12 @@ public class SimpleArchiveViewer : ArchiveViewer
 
     public string ThumbFile
     {
-        get => thumbFile;
+        get;
         set
         {
-            if (thumbFile != value)
+            if (field != value)
             {
-                thumbFile = value;
+                field = value;
                 OnPropertyChanged(nameof(ThumbFile));
             }
         }

@@ -6,7 +6,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
         <ResourceDictionary Source="/PdfViewer;component/Common.xaml" />
-        <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
@@ -106,18 +105,21 @@
                             </ContextMenu>
                         </Grid.ContextMenu>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
+                        <RepeatButton Grid.Row="0"
+                            Command="{Binding PageDecrease, RelativeSource={RelativeSource TemplatedParent}}"
+                            Content="é"
+                            FontFamily="Wingdings"
+                            FontSize="16" />
                         <ScrollViewer x:Name="ScrollVwr"
-                            Grid.Row="0"
+                            Grid.Row="1"
                             AllowDrop="True"
                             HorizontalScrollBarVisibility="Auto"
-                            VerticalScrollBarVisibility="Hidden">
+                            VerticalScrollBarVisibility="Auto">
                             <Image RenderTransformOrigin="0.5,0.5"
                                 ScrollViewer.CanContentScroll="True"
                                 Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
@@ -130,18 +132,13 @@
                                 </Image.LayoutTransform>
                             </Image>
                         </ScrollViewer>
-                        <ScrollBar x:Name="ScrollVwrAllPage"
-                            Grid.Row="0"
-                            Grid.Column="1"
-                            Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
-                            Minimum="1"
-                            Orientation="Vertical"
-                            SmallChange="1"
-                            ViewportSize="1"
-                            Visibility="{Binding Source, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                            Value="{Binding Sayfa, Delay=100, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                        <RepeatButton Grid.Row="2"
+                            Command="{Binding PageIncrease, RelativeSource={RelativeSource TemplatedParent}}"
+                            Content="ê"
+                            FontFamily="Wingdings"
+                            FontSize="16" />
                         <ContentControl x:Name="Cnt"
-                            Grid.Row="1"
+                            Grid.Row="3"
                             Grid.ColumnSpan="2"
                             Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                             <WrapPanel Grid.Column="1" Orientation="Horizontal">
@@ -179,7 +176,7 @@
                                     </ListBox>
                                     <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                         Command="{Binding ScrollToCurrentPage, RelativeSource={RelativeSource TemplatedParent}}"
-                                        CommandParameter="{Binding OverContent, RelativeSource={RelativeSource Mode=Self}}"
+                                        CommandParameter="{Binding OverContent.Content, RelativeSource={RelativeSource Mode=Self}}"
                                         Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
                                         <Canvas Width="24" Height="16">
                                             <Image Canvas.Left="4"
@@ -235,6 +232,22 @@
                                         Minimum="1"
                                         Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}"
                                         Value="{Binding Sayfa, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                    <Extensions:ContentToggleButton Visibility="{Binding Source, Converter={StaticResource NullToVisibilityConverter}, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Extensions:ContentToggleButton.OverContent>
+                                            <Border Background="{StaticResource BorderBackground}"
+                                                BorderBrush="Gray"
+                                                BorderThickness="1">
+                                                <ScrollBar Width="12"
+                                                    Height="128"
+                                                    Maximum="{Binding Pages.Count, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Minimum="1"
+                                                    Orientation="Vertical"
+                                                    SmallChange="1"
+                                                    ViewportSize="1"
+                                                    Value="{Binding Sayfa, Delay=100, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}, UpdateSourceTrigger=PropertyChanged}" />
+                                            </Border>
+                                        </Extensions:ContentToggleButton.OverContent>
+                                    </Extensions:ContentToggleButton>
                                     <Extensions:SplitButton Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                         SplitContentPartIsEnabled="{Binding PrintDpiSettingsListEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
@@ -256,7 +269,6 @@
                                         ItemStringFormat="{}{0} Dpi"
                                         ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}}"
-                                        Template="{StaticResource ComboBoxStyle}"
                                         Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                         Command="{Binding ReadPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
@@ -466,9 +478,6 @@
                         </Trigger>
                         <DataTrigger Binding="{Binding Visibility, ElementName=Cnt}" Value="Collapsed">
                             <Setter TargetName="Cnt" Property="Content" Value="{x:Null}" />
-                        </DataTrigger>
-                        <DataTrigger Binding="{Binding Maximum, ElementName=ScrollVwrAllPage}" Value="1">
-                            <Setter TargetName="ScrollVwrAllPage" Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

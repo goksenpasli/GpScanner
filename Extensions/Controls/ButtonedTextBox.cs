@@ -23,17 +23,6 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(ButtonedTextBox));
     public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
     public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register("Watermark", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
-    private Visibility copyButtonVisibility = Visibility.Visible;
-    private Visibility fontSizeButtonVisibility = Visibility.Collapsed;
-    private Visibility keyBoardButtonVisibility = Visibility.Collapsed;
-    private Visibility openButtonVisibility = Visibility.Visible;
-    private Visibility pasteButtonVisibility = Visibility.Visible;
-    private Visibility printButtonVisibility = Visibility.Collapsed;
-    private Visibility remainingLengthVisibility = Visibility.Collapsed;
-    private int remainingTextLength;
-    private Visibility resetButtonVisibility = Visibility.Visible;
-    private Visibility textBoxVisibility = Visibility.Visible;
-    private Visibility titleCaseMenuVisibility = Visibility.Collapsed;
 
     static ButtonedTextBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox))); }
 
@@ -64,45 +53,45 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public Visibility CopyButtonVisibility
     {
-        get => copyButtonVisibility;
+        get;
 
         set
         {
-            if (copyButtonVisibility != value)
+            if (field != value)
             {
-                copyButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(CopyButtonVisibility));
             }
         }
-    }
+    } = Visibility.Visible;
 
     public object Description { get => GetValue(DescriptionProperty); set => SetValue(DescriptionProperty, value); }
 
     public Visibility FontSizeButtonVisibility
     {
-        get => fontSizeButtonVisibility;
+        get;
         set
         {
-            if (fontSizeButtonVisibility != value)
+            if (field != value)
             {
-                fontSizeButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(FontSizeButtonVisibility));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility KeyBoardButtonVisibility
     {
-        get => keyBoardButtonVisibility;
+        get;
         set
         {
-            if (keyBoardButtonVisibility != value)
+            if (field != value)
             {
-                keyBoardButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(KeyBoardButtonVisibility));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public ICommand LowerCase { get; } = new RoutedCommand();
 
@@ -110,71 +99,71 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public Visibility OpenButtonVisibility
     {
-        get => openButtonVisibility;
+        get;
 
         set
         {
-            if (openButtonVisibility != value)
+            if (field != value)
             {
-                openButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(OpenButtonVisibility));
             }
         }
-    }
+    } = Visibility.Visible;
 
     public new ICommand Paste { get; } = new RoutedCommand();
 
     public Visibility PasteButtonVisibility
     {
-        get => pasteButtonVisibility;
+        get;
 
         set
         {
-            if (pasteButtonVisibility != value)
+            if (field != value)
             {
-                pasteButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(PasteButtonVisibility));
             }
         }
-    }
+    } = Visibility.Visible;
 
     public ICommand Print { get; } = new RoutedCommand();
 
     public Visibility PrintButtonVisibility
     {
-        get => printButtonVisibility;
+        get;
         set
         {
-            if (printButtonVisibility != value)
+            if (field != value)
             {
-                printButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(PrintButtonVisibility));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public Visibility RemainingLengthVisibility
     {
-        get => remainingLengthVisibility;
+        get;
         set
         {
-            if (remainingLengthVisibility != value)
+            if (field != value)
             {
-                remainingLengthVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(RemainingLengthVisibility));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public int RemainingTextLength
     {
-        get => remainingTextLength;
+        get;
 
         set
         {
-            if (remainingTextLength != value)
+            if (field != value)
             {
-                remainingTextLength = value;
+                field = value;
                 OnPropertyChanged(nameof(RemainingTextLength));
             }
         }
@@ -184,45 +173,45 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public Visibility ResetButtonVisibility
     {
-        get => resetButtonVisibility;
+        get;
 
         set
         {
-            if (resetButtonVisibility != value)
+            if (field != value)
             {
-                resetButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(ResetButtonVisibility));
             }
         }
-    }
+    } = Visibility.Visible;
 
     public Visibility TextBoxVisibility
     {
-        get => textBoxVisibility;
+        get;
         set
         {
-            if (textBoxVisibility != value)
+            if (field != value)
             {
-                textBoxVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(TextBoxVisibility));
             }
         }
-    }
+    } = Visibility.Visible;
 
     public ICommand TitleCase { get; } = new RoutedCommand();
 
     public Visibility TitleCaseMenuVisibility
     {
-        get => titleCaseMenuVisibility;
+        get;
         set
         {
-            if (titleCaseMenuVisibility != value)
+            if (field != value)
             {
-                titleCaseMenuVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(TitleCaseMenuVisibility));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public ICommand UpperCase { get; } = new RoutedCommand();
 

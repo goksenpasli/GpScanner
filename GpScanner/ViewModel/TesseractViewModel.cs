@@ -20,13 +20,6 @@ namespace GpScanner.ViewModel;
 public class TesseractViewModel : InpcBase, IDataErrorInfo
 
 {
-    private List<TessFiles> checkedFiles;
-    private bool ısFolderWritable;
-    private string seçiliDil;
-    private bool showHelpDesc;
-    private string tessdatafolder;
-    private ObservableCollection<TessFiles> tesseractFiles;
-
     public TesseractViewModel(IWindowService windowService, TwainCtrl twainCtrl)
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -83,7 +76,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             {
                 if (parameter is TesseractOcrData ocrData)
                 {
-                    string datafile = Path.Combine(tessdatafolder, ocrData.OcrName);
+                    string datafile = Path.Combine(Tessdatafolder, ocrData.OcrName);
 
                     try
                     {
@@ -120,7 +113,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     finally
                     {
                         ocrData.IsEnabled = true;
-                        string file = Path.Combine(tessdatafolder, ocrData.OcrName);
+                        string file = Path.Combine(Tessdatafolder, ocrData.OcrName);
                         if (File.Exists(file) && new FileInfo(file).Length == 0)
                         {
                             _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", windowService.GetFirstWindow().Title, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -148,12 +141,12 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public List<TessFiles> CheckedFiles
     {
-        get => checkedFiles;
+        get;
         set
         {
-            if (checkedFiles != value)
+            if (field != value)
             {
-                checkedFiles = value;
+                field = value;
                 OnPropertyChanged(nameof(CheckedFiles));
             }
         }
@@ -163,12 +156,12 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public bool IsFolderWritable
     {
-        get => ısFolderWritable;
+        get;
         set
         {
-            if (ısFolderWritable != value)
+            if (field != value)
             {
-                ısFolderWritable = value;
+                field = value;
                 OnPropertyChanged(nameof(IsFolderWritable));
             }
         }
@@ -180,12 +173,12 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string SeçiliDil
     {
-        get => seçiliDil;
+        get;
         set
         {
-            if (seçiliDil != value)
+            if (field != value)
             {
-                seçiliDil = value;
+                field = value;
                 OnPropertyChanged(nameof(SeçiliDil));
             }
         }
@@ -193,12 +186,12 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public bool ShowHelpDesc
     {
-        get => showHelpDesc;
+        get;
         set
         {
-            if (showHelpDesc != value)
+            if (field != value)
             {
-                showHelpDesc = value;
+                field = value;
                 OnPropertyChanged(nameof(ShowHelpDesc));
             }
         }
@@ -206,13 +199,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public string Tessdatafolder
     {
-        get => tessdatafolder;
+        get;
 
         set
         {
-            if (tessdatafolder != value)
+            if (field != value)
             {
-                tessdatafolder = value;
+                field = value;
                 OnPropertyChanged(nameof(Tessdatafolder));
             }
         }
@@ -224,13 +217,13 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> TesseractFiles
     {
-        get => tesseractFiles;
+        get;
 
         set
         {
-            if (tesseractFiles != value)
+            if (field != value)
             {
-                tesseractFiles = value;
+                field = value;
                 OnPropertyChanged(nameof(TesseractFiles));
             }
         }

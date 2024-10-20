@@ -12,13 +12,6 @@ namespace GpScanner.ViewModel;
 public class TranslateViewModel : InpcBase
 {
     private static SpeechSynthesizer speechSynthesizer;
-    private string çeviri;
-    private string çevrilenDil = Settings.Default?.DestinationTranslateLanguage;
-    private string metin;
-    private bool metinBoxIsreadOnly;
-    private string mevcutDil = Settings.Default?.CurrentTranslateLanguage;
-    private string okumaDili;
-    private ObservableCollection<string> taramaGeçmiş = [];
 
     static TranslateViewModel()
     {
@@ -79,13 +72,13 @@ public class TranslateViewModel : InpcBase
 
     public string Çeviri
     {
-        get => çeviri;
+        get;
 
         set
         {
-            if (çeviri != value)
+            if (field != value)
             {
-                çeviri = value;
+                field = value;
                 OnPropertyChanged(nameof(Çeviri));
             }
         }
@@ -93,30 +86,30 @@ public class TranslateViewModel : InpcBase
 
     public string ÇevrilenDil
     {
-        get => çevrilenDil;
+        get;
 
         set
         {
-            if (çevrilenDil != value)
+            if (field != value)
             {
-                çevrilenDil = value;
+                field = value;
                 OnPropertyChanged(nameof(ÇevrilenDil));
                 OnPropertyChanged(nameof(Metin));
             }
         }
-    }
+    } = Settings.Default?.DestinationTranslateLanguage;
 
     public ICommand Değiştir { get; }
 
     public string Metin
     {
-        get => metin;
+        get;
 
         set
         {
-            if (metin != value)
+            if (field != value)
             {
-                metin = value;
+                field = value;
                 OnPropertyChanged(nameof(Metin));
             }
         }
@@ -124,13 +117,13 @@ public class TranslateViewModel : InpcBase
 
     public bool MetinBoxIsreadOnly
     {
-        get => metinBoxIsreadOnly;
+        get;
 
         set
         {
-            if (metinBoxIsreadOnly != value)
+            if (field != value)
             {
-                metinBoxIsreadOnly = value;
+                field = value;
                 OnPropertyChanged(nameof(MetinBoxIsreadOnly));
             }
         }
@@ -138,30 +131,30 @@ public class TranslateViewModel : InpcBase
 
     public string MevcutDil
     {
-        get => mevcutDil;
+        get;
 
         set
         {
-            if (mevcutDil != value)
+            if (field != value)
             {
-                mevcutDil = value;
+                field = value;
                 OnPropertyChanged(nameof(MevcutDil));
                 OnPropertyChanged(nameof(Metin));
             }
         }
-    }
+    } = Settings.Default?.CurrentTranslateLanguage;
 
     public ICommand Oku { get; }
 
     public string OkumaDili
     {
-        get => okumaDili;
+        get;
 
         set
         {
-            if (okumaDili != value)
+            if (field != value)
             {
-                okumaDili = value;
+                field = value;
                 OnPropertyChanged(nameof(OkumaDili));
             }
         }
@@ -171,17 +164,17 @@ public class TranslateViewModel : InpcBase
 
     public ObservableCollection<string> TaramaGeçmiş
     {
-        get => taramaGeçmiş;
+        get;
 
         set
         {
-            if (taramaGeçmiş != value)
+            if (field != value)
             {
-                taramaGeçmiş = value;
+                field = value;
                 OnPropertyChanged(nameof(TaramaGeçmiş));
             }
         }
-    }
+    } = [];
 
     private async void TranslateViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

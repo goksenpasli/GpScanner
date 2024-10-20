@@ -4,21 +4,15 @@ namespace Ocr;
 
 public class Paper : InpcBase
 {
-    private string category;
-    private double height;
-    private string paperType;
-    private Visibility widespreadPaper = Visibility.Collapsed;
-    private double width;
-
     public string Category
     {
-        get => category;
+        get;
 
         set
         {
-            if (category != value)
+            if (field != value)
             {
-                category = value;
+                field = value;
                 OnPropertyChanged(nameof(Category));
             }
         }
@@ -26,13 +20,13 @@ public class Paper : InpcBase
 
     public double Height
     {
-        get => height;
+        get;
 
         set
         {
-            if (height != value)
+            if (field != value)
             {
-                height = value;
+                field = value;
                 OnPropertyChanged(nameof(Height));
             }
         }
@@ -40,13 +34,13 @@ public class Paper : InpcBase
 
     public string PaperType
     {
-        get => paperType;
+        get;
 
         set
         {
-            if (paperType != value)
+            if (field != value)
             {
-                paperType = value;
+                field = value;
                 OnPropertyChanged(nameof(PaperType));
             }
         }
@@ -54,26 +48,26 @@ public class Paper : InpcBase
 
     public Visibility WidespreadPaper
     {
-        get => widespreadPaper;
+        get;
         set
         {
-            if (widespreadPaper != value)
+            if (field != value)
             {
-                widespreadPaper = value;
+                field = value;
                 OnPropertyChanged(nameof(WidespreadPaper));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public double Width
     {
-        get => width;
+        get;
 
         set
         {
-            if (width != value)
+            if (field != value)
             {
-                width = value;
+                field = value;
                 OnPropertyChanged(nameof(Width));
             }
         }

@@ -4,21 +4,15 @@ namespace GpScanner.ViewModel;
 
 public class TessFiles : InpcBase
 {
-    private bool @checked;
-    private string displayName;
-    private bool enabled = true;
-    private double fileSize;
-    private string name;
-
     public bool Checked
     {
-        get => @checked;
+        get;
 
         set
         {
-            if (@checked != value)
+            if (field != value)
             {
-                @checked = value;
+                field = value;
                 OnPropertyChanged(nameof(Checked));
             }
         }
@@ -26,12 +20,12 @@ public class TessFiles : InpcBase
 
     public string DisplayName
     {
-        get => displayName;
+        get;
         set
         {
-            if (displayName != value)
+            if (field != value)
             {
-                displayName = value;
+                field = value;
                 OnPropertyChanged(nameof(DisplayName));
             }
         }
@@ -39,25 +33,25 @@ public class TessFiles : InpcBase
 
     public bool Enabled
     {
-        get => enabled;
+        get;
         set
         {
-            if (enabled != value)
+            if (field != value)
             {
-                enabled = value;
+                field = value;
                 OnPropertyChanged(nameof(Enabled));
             }
         }
-    }
+    } = true;
 
     public double FileSize
     {
-        get => fileSize;
+        get;
         set
         {
-            if (fileSize != value)
+            if (field != value)
             {
-                fileSize = value;
+                field = value;
                 OnPropertyChanged(nameof(FileSize));
             }
         }
@@ -65,13 +59,13 @@ public class TessFiles : InpcBase
 
     public string Name
     {
-        get => name;
+        get;
 
         set
         {
-            if (name != value)
+            if (field != value)
             {
-                name = value;
+                field = value;
                 OnPropertyChanged(nameof(Name));
             }
         }

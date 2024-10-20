@@ -71,99 +71,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     public static DispatcherTimer CameraQrCodeTimer;
     public static Task Filesavetask;
-    private static bool ısAdministrator;
     private readonly object _lockObject = new();
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
     private readonly string[] imagefileextensions = [".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
     private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = new DoubleCollection([1]) };
-    private double allImageRotationAngle;
-    private double allRotateProgressValue;
-    private byte[] cameraQRCodeData;
-    private bool canUndoImage;
-    private int cropAllMargin;
     private int cropAllMaximumWidth;
-    private int cropBottomMargin;
-    private CroppedBitmap croppedOcrBitmap;
-    private int cropRightMargin;
-    private double customDeskewAngle;
-    private byte[] dataBaseQrData;
-    private ObservableCollection<OcrData> dataBaseTextData;
-    private int decodeHeight;
     private bool disposedValue;
-    private string distinctImages;
     private GridLength documentGridLength = new(5, GridUnitType.Star);
-    private bool documentPreviewIsExpanded = true;
-    private bool dragMoveStarted;
     private Task fileloadtask;
-    private int groupSplitCount = 2;
     private double height;
-    private bool helpIsOpened;
-    private bool ıgnoreImageWidthHeight;
-    private byte[] ımgData;
-    private bool ısEven = true;
-    private bool ısOdd = true;
     private bool isMouseDown;
     private bool isRightMouseDown;
     private Window maximizedWindow;
-    private bool mergePdfFileToFirst;
     private Point mousedowncoord;
-    private int pageHeight;
-    private int pageWidth;
-    private ObservableCollection<Paper> papers =
-    [
-        new Paper { Category = "A", Height = 118.9, PaperType = "A0", Width = 84.1 },
-        new Paper { Category = "A", Height = 84.1, PaperType = "A1", Width = 59.4 },
-        new Paper { Category = "A", Height = 59.4, PaperType = "A2", Width = 42 },
-        new Paper { Category = "A", Height = 42, PaperType = "A3", Width = 29.7 },
-        new Paper { Category = "A", Height = 29.7, PaperType = "A4", Width = 21, WidespreadPaper = Visibility.Visible },
-        new Paper { Category = "A", Height = 21, PaperType = "A5", Width = 14.8 },
-        new Paper { Category = "B", Height = 141.4, PaperType = "B0", Width = 100 },
-        new Paper { Category = "B", Height = 100, PaperType = "B1", Width = 70.7 },
-        new Paper { Category = "B", Height = 70.7, PaperType = "B2", Width = 50 },
-        new Paper { Category = "B", Height = 50, PaperType = "B3", Width = 35.3 },
-        new Paper { Category = "B", Height = 35.3, PaperType = "B4", Width = 25 },
-        new Paper { Category = "B", Height = 25, PaperType = "B5", Width = 17.6 },
-        new Paper { Height = 27.94, PaperType = "Letter", Width = 21.59, WidespreadPaper = Visibility.Visible },
-        new Paper { Height = 35.56, PaperType = "Legal", Width = 21.59 },
-        new Paper { Height = 26.67, PaperType = "Executive", Width = 18.415 },
-        new Paper { Category = string.Empty, Height = 0, PaperType = "Original", Width = 0 },
-        new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth },
-    ];
-    private int pdfCompressDpi = 150;
-    private double pdfImportControlProgressValue;
-    private double pdfLoadProgressValue;
-    private int pdfMedianValue;
-    private ObservableCollection<PdfData> pdfPages;
-    private int pdfQuality = 70;
-    private int pdfSplitCount;
-    private bool pdfToolBarControlIsEnabled = true;
-    private SolidColorBrush pdfWatermarkColor = Brushes.Red;
-    private string pdfWatermarkFont = "Arial";
-    private double pdfWatermarkFontAngle = 315d;
-    private double pdfWatermarkFontSize = 72d;
-    private string pdfWaterMarkText;
-    private int printDpi = 300;
-    private bool refreshDocumentList;
-    private int sayfaBaşlangıç = 1;
-    private int sayfaBitiş = 1;
-    private Scanner scanner;
-    private ScannedImage seçiliResim;
-    private int seekIndex = -1;
-    private Tuple<string, int, double, bool, double> selectedCompressionProfile;
-    private PageFlip selectedFlip = PageFlip.NONE;
-    private bool selectedImageWidthHeightIsEqual;
-    private Orientation selectedOrientation = Orientation.Default;
-    private Paper selectedPaper;
-    private PageRotation selectedRotation = PageRotation.NONE;
-    private int selectedTabIndex;
-    private List<ScannedImage[]> splittedIndexImages;
-    private string textSplitList;
-    private Twain twain;
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
-    private ScannedImage undoImage;
-    private int? undoImageIndex;
-    private bool useMozJpeg;
     private double width;
 
     public TwainCtrl()
@@ -2399,8 +2321,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             using WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new(identity);
-            ısAdministrator = principal.IsInRole(WindowsBuiltInRole.Administrator);
-            return ısAdministrator;
+            field = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            return field;
         }
     }
 
@@ -2418,13 +2340,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public double AllImageRotationAngle
     {
-        get => allImageRotationAngle;
+        get;
 
         set
         {
-            if (allImageRotationAngle != value)
+            if (field != value)
             {
-                allImageRotationAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(AllImageRotationAngle));
             }
         }
@@ -2432,12 +2354,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public double AllRotateProgressValue
     {
-        get => allRotateProgressValue;
+        get;
         set
         {
-            if (allRotateProgressValue != value)
+            if (field != value)
             {
-                allRotateProgressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(AllRotateProgressValue));
             }
         }
@@ -2455,13 +2377,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public byte[] CameraQRCodeData
     {
-        get => cameraQRCodeData;
+        get;
 
         set
         {
-            if (cameraQRCodeData != value)
+            if (field != value)
             {
-                cameraQRCodeData = value;
+                field = value;
                 OnPropertyChanged(nameof(CameraQRCodeData));
             }
         }
@@ -2469,13 +2391,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool CanUndoImage
     {
-        get => canUndoImage;
+        get;
 
         set
         {
-            if (canUndoImage != value)
+            if (field != value)
             {
-                canUndoImage = value;
+                field = value;
                 OnPropertyChanged(nameof(CanUndoImage));
             }
         }
@@ -2513,12 +2435,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int CropAllMargin
     {
-        get => cropAllMargin;
+        get;
         set
         {
-            if (cropAllMargin != value)
+            if (field != value)
             {
-                cropAllMargin = value;
+                field = value;
                 OnPropertyChanged(nameof(CropAllMargin));
             }
         }
@@ -2539,12 +2461,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int CropBottomMargin
     {
-        get => cropBottomMargin;
+        get;
         set
         {
-            if (cropBottomMargin != value)
+            if (field != value)
             {
-                cropBottomMargin = value;
+                field = value;
                 OnPropertyChanged(nameof(CropBottomMargin));
             }
         }
@@ -2552,13 +2474,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public CroppedBitmap CroppedOcrBitmap
     {
-        get => croppedOcrBitmap;
+        get;
 
         set
         {
-            if (croppedOcrBitmap != value)
+            if (field != value)
             {
-                croppedOcrBitmap = value;
+                field = value;
                 OnPropertyChanged(nameof(CroppedOcrBitmap));
             }
         }
@@ -2566,12 +2488,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int CropRightMargin
     {
-        get => cropRightMargin;
+        get;
         set
         {
-            if (cropRightMargin != value)
+            if (field != value)
             {
-                cropRightMargin = value;
+                field = value;
                 OnPropertyChanged(nameof(CropRightMargin));
             }
         }
@@ -2579,12 +2501,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public double CustomDeskewAngle
     {
-        get => customDeskewAngle;
+        get;
         set
         {
-            if (customDeskewAngle != value)
+            if (field != value)
             {
-                customDeskewAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(CustomDeskewAngle));
             }
         }
@@ -2594,13 +2516,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public byte[] DataBaseQrData
     {
-        get => dataBaseQrData;
+        get;
 
         set
         {
-            if (dataBaseQrData != value)
+            if (field != value)
             {
-                dataBaseQrData = value;
+                field = value;
                 OnPropertyChanged(nameof(DataBaseQrData));
             }
         }
@@ -2608,13 +2530,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ObservableCollection<OcrData> DataBaseTextData
     {
-        get => dataBaseTextData;
+        get;
 
         set
         {
-            if (dataBaseTextData != value)
+            if (field != value)
             {
-                dataBaseTextData = value;
+                field = value;
                 OnPropertyChanged(nameof(DataBaseTextData));
             }
         }
@@ -2622,13 +2544,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int DecodeHeight
     {
-        get => decodeHeight;
+        get;
 
         set
         {
-            if (decodeHeight != value)
+            if (field != value)
             {
-                decodeHeight = value;
+                field = value;
                 OnPropertyChanged(nameof(DecodeHeight));
             }
         }
@@ -2638,13 +2560,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public string DistinctImages
     {
-        get => distinctImages;
+        get;
 
         set
         {
-            if (distinctImages != value)
+            if (field != value)
             {
-                distinctImages = value;
+                field = value;
                 OnPropertyChanged(nameof(DistinctImages));
             }
         }
@@ -2666,27 +2588,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool DocumentPreviewIsExpanded
     {
-        get => documentPreviewIsExpanded;
+        get;
 
         set
         {
-            if (documentPreviewIsExpanded != value)
+            if (field != value)
             {
-                documentPreviewIsExpanded = value;
+                field = value;
                 OnPropertyChanged(nameof(DocumentPreviewIsExpanded));
             }
         }
-    }
+    } = true;
 
     public bool DragMoveStarted
     {
-        get => dragMoveStarted;
+        get;
 
         set
         {
-            if (dragMoveStarted != value)
+            if (field != value)
             {
-                dragMoveStarted = value;
+                field = value;
                 OnPropertyChanged(nameof(DragMoveStarted));
             }
         }
@@ -2714,25 +2636,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int GroupSplitCount
     {
-        get => groupSplitCount;
+        get;
         set
         {
-            if (groupSplitCount != value)
+            if (field != value)
             {
-                groupSplitCount = value;
+                field = value;
                 OnPropertyChanged(nameof(GroupSplitCount));
             }
         }
-    }
+    } = 2;
 
     public bool HelpIsOpened
     {
-        get => helpIsOpened;
+        get;
         set
         {
-            if (helpIsOpened != value)
+            if (field != value)
             {
-                helpIsOpened = value;
+                field = value;
                 OnPropertyChanged(nameof(HelpIsOpened));
             }
         }
@@ -2740,12 +2662,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool IgnoreImageWidthHeight
     {
-        get => ıgnoreImageWidthHeight;
+        get;
         set
         {
-            if (ıgnoreImageWidthHeight != value)
+            if (field != value)
             {
-                ıgnoreImageWidthHeight = value;
+                field = value;
                 OnPropertyChanged(nameof(IgnoreImageWidthHeight));
             }
         }
@@ -2757,13 +2679,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public byte[] ImgData
     {
-        get => ımgData;
+        get;
 
         set
         {
-            if (ımgData != value)
+            if (field != value)
             {
-                ımgData = value;
+                field = value;
                 OnPropertyChanged(nameof(ImgData));
             }
         }
@@ -2781,29 +2703,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool IsEven
     {
-        get => ısEven;
+        get;
         set
         {
-            if (ısEven != value)
+            if (field != value)
             {
-                ısEven = value;
+                field = value;
                 OnPropertyChanged(nameof(IsEven));
             }
         }
-    }
+    } = true;
 
     public bool IsOdd
     {
-        get => ısOdd;
+        get;
         set
         {
-            if (ısOdd != value)
+            if (field != value)
             {
-                ısOdd = value;
+                field = value;
                 OnPropertyChanged(nameof(IsOdd));
             }
         }
-    }
+    } = true;
 
     public ICommand KayıtYoluBelirle { get; }
 
@@ -2829,12 +2751,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool MergePdfFileToFirst
     {
-        get => mergePdfFileToFirst;
+        get;
         set
         {
-            if (mergePdfFileToFirst != value)
+            if (field != value)
             {
-                mergePdfFileToFirst = value;
+                field = value;
                 OnPropertyChanged(nameof(MergePdfFileToFirst));
             }
         }
@@ -2858,12 +2780,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int PageHeight
     {
-        get => pageHeight;
+        get;
         set
         {
-            if (pageHeight != value)
+            if (field != value)
             {
-                pageHeight = value;
+                field = value;
                 OnPropertyChanged(nameof(PageHeight));
                 OnPropertyChanged(nameof(CropAllMaximumWidth));
             }
@@ -2872,12 +2794,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int PageWidth
     {
-        get => pageWidth;
+        get;
         set
         {
-            if (pageWidth != value)
+            if (field != value)
             {
-                pageWidth = value;
+                field = value;
                 OnPropertyChanged(nameof(PageWidth));
                 OnPropertyChanged(nameof(CropAllMaximumWidth));
             }
@@ -2886,41 +2808,59 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ObservableCollection<Paper> Papers
     {
-        get => papers;
+        get;
 
         set
         {
-            if (papers != value)
+            if (field != value)
             {
-                papers = value;
+                field = value;
                 OnPropertyChanged(nameof(Papers));
             }
         }
-    }
+    } = [
+        new Paper { Category = "A", Height = 118.9, PaperType = "A0", Width = 84.1 },
+        new Paper { Category = "A", Height = 84.1, PaperType = "A1", Width = 59.4 },
+        new Paper { Category = "A", Height = 59.4, PaperType = "A2", Width = 42 },
+        new Paper { Category = "A", Height = 42, PaperType = "A3", Width = 29.7 },
+        new Paper { Category = "A", Height = 29.7, PaperType = "A4", Width = 21, WidespreadPaper = Visibility.Visible },
+        new Paper { Category = "A", Height = 21, PaperType = "A5", Width = 14.8 },
+        new Paper { Category = "B", Height = 141.4, PaperType = "B0", Width = 100 },
+        new Paper { Category = "B", Height = 100, PaperType = "B1", Width = 70.7 },
+        new Paper { Category = "B", Height = 70.7, PaperType = "B2", Width = 50 },
+        new Paper { Category = "B", Height = 50, PaperType = "B3", Width = 35.3 },
+        new Paper { Category = "B", Height = 35.3, PaperType = "B4", Width = 25 },
+        new Paper { Category = "B", Height = 25, PaperType = "B5", Width = 17.6 },
+        new Paper { Height = 27.94, PaperType = "Letter", Width = 21.59, WidespreadPaper = Visibility.Visible },
+        new Paper { Height = 35.56, PaperType = "Legal", Width = 21.59 },
+        new Paper { Height = 26.67, PaperType = "Executive", Width = 18.415 },
+        new Paper { Category = string.Empty, Height = 0, PaperType = "Original", Width = 0 },
+        new Paper { Category = string.Empty, Height = Settings.Default.CustomPaperHeight, PaperType = "Custom", Width = Settings.Default.CustomPaperWidth },
+    ];
 
     public ICommand PasteFileToPdfFile { get; }
 
     public int PdfCompressDpi
     {
-        get => pdfCompressDpi;
+        get;
         set
         {
-            if (pdfCompressDpi != value)
+            if (field != value)
             {
-                pdfCompressDpi = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfCompressDpi));
             }
         }
-    }
+    } = 150;
 
     public double PdfImportControlProgressValue
     {
-        get => pdfImportControlProgressValue;
+        get;
         set
         {
-            if (pdfImportControlProgressValue != value)
+            if (field != value)
             {
-                pdfImportControlProgressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfImportControlProgressValue));
             }
         }
@@ -2936,13 +2876,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public double PdfLoadProgressValue
     {
-        get => pdfLoadProgressValue;
+        get;
 
         set
         {
-            if (pdfLoadProgressValue != value)
+            if (field != value)
             {
-                pdfLoadProgressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfLoadProgressValue));
             }
         }
@@ -2950,13 +2890,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int PdfMedianValue
     {
-        get => pdfMedianValue;
+        get;
 
         set
         {
-            if (pdfMedianValue != value)
+            if (field != value)
             {
-                pdfMedianValue = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfMedianValue));
             }
         }
@@ -2964,13 +2904,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ObservableCollection<PdfData> PdfPages
     {
-        get => pdfPages;
+        get;
 
         set
         {
-            if (pdfPages != value)
+            if (field != value)
             {
-                pdfPages = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPages));
             }
         }
@@ -2978,26 +2918,26 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int PdfQuality
     {
-        get => pdfQuality;
+        get;
         set
         {
-            if (pdfQuality != value)
+            if (field != value)
             {
-                pdfQuality = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfQuality));
             }
         }
-    }
+    } = 70;
 
     public int PdfSplitCount
     {
-        get => pdfSplitCount;
+        get;
 
         set
         {
-            if (pdfSplitCount != value)
+            if (field != value)
             {
-                pdfSplitCount = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfSplitCount));
             }
         }
@@ -3005,16 +2945,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool PdfToolBarControlIsEnabled
     {
-        get => pdfToolBarControlIsEnabled;
+        get;
         set
         {
-            if (pdfToolBarControlIsEnabled != value)
+            if (field != value)
             {
-                pdfToolBarControlIsEnabled = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfToolBarControlIsEnabled));
             }
         }
-    }
+    } = true;
 
     public RelayCommand<object> PdfViewerFullScreen { get; }
 
@@ -3022,69 +2962,69 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public SolidColorBrush PdfWatermarkColor
     {
-        get => pdfWatermarkColor;
+        get;
 
         set
         {
-            if (pdfWatermarkColor != value)
+            if (field != value)
             {
-                pdfWatermarkColor = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfWatermarkColor));
             }
         }
-    }
+    } = Brushes.Red;
 
     public string PdfWatermarkFont
     {
-        get => pdfWatermarkFont;
+        get;
 
         set
         {
-            if (pdfWatermarkFont != value)
+            if (field != value)
             {
-                pdfWatermarkFont = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfWatermarkFont));
             }
         }
-    }
+    } = "Arial";
 
     public double PdfWatermarkFontAngle
     {
-        get => pdfWatermarkFontAngle;
+        get;
 
         set
         {
-            if (pdfWatermarkFontAngle != value)
+            if (field != value)
             {
-                pdfWatermarkFontAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfWatermarkFontAngle));
             }
         }
-    }
+    } = 315d;
 
     public double PdfWatermarkFontSize
     {
-        get => pdfWatermarkFontSize;
+        get;
 
         set
         {
-            if (pdfWatermarkFontSize != value)
+            if (field != value)
             {
-                pdfWatermarkFontSize = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfWatermarkFontSize));
             }
         }
-    }
+    } = 72d;
 
     public string PdfWaterMarkText
     {
-        get => pdfWaterMarkText;
+        get;
 
         set
         {
-            if (pdfWaterMarkText != value)
+            if (field != value)
             {
-                pdfWaterMarkText = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfWaterMarkText));
             }
         }
@@ -3094,17 +3034,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int PrintDpi
     {
-        get => printDpi;
+        get;
 
         set
         {
-            if (printDpi != value)
+            if (field != value)
             {
-                printDpi = value;
+                field = value;
                 OnPropertyChanged(nameof(PrintDpi));
             }
         }
-    }
+    } = 300;
 
     public RelayCommand<object> PrintEypPackageSelectedDocuments { get; }
 
@@ -3114,12 +3054,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool RefreshDocumentList
     {
-        get => refreshDocumentList;
+        get;
         set
         {
-            if (refreshDocumentList != value)
+            if (field != value)
             {
-                refreshDocumentList = value;
+                field = value;
                 OnPropertyChanged(nameof(RefreshDocumentList));
             }
         }
@@ -3185,43 +3125,43 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int SayfaBaşlangıç
     {
-        get => sayfaBaşlangıç;
+        get;
 
         set
         {
-            if (sayfaBaşlangıç != value)
+            if (field != value)
             {
-                sayfaBaşlangıç = value;
+                field = value;
                 OnPropertyChanged(nameof(SayfaBaşlangıç));
             }
         }
-    }
+    } = 1;
 
     public int SayfaBitiş
     {
-        get => sayfaBitiş;
+        get;
 
         set
         {
-            if (sayfaBitiş != value)
+            if (field != value)
             {
-                sayfaBitiş = value;
+                field = value;
                 OnPropertyChanged(nameof(SayfaBitiş));
             }
         }
-    }
+    } = 1;
 
     public ICommand ScanImage { get; }
 
     public Scanner Scanner
     {
-        get => scanner;
+        get;
 
         set
         {
-            if (scanner != value)
+            if (field != value)
             {
-                scanner = value;
+                field = value;
                 OnPropertyChanged(nameof(Scanner));
             }
         }
@@ -3235,13 +3175,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ScannedImage SeçiliResim
     {
-        get => seçiliResim;
+        get;
 
         set
         {
-            if (seçiliResim != value)
+            if (field != value)
             {
-                seçiliResim = value;
+                field = value;
                 OnPropertyChanged(nameof(SeçiliResim));
             }
         }
@@ -3249,27 +3189,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int SeekIndex
     {
-        get => seekIndex;
+        get;
 
         set
         {
-            if (seekIndex != value)
+            if (field != value)
             {
-                seekIndex = value;
+                field = value;
                 OnPropertyChanged(nameof(SeekIndex));
             }
         }
-    }
+    } = -1;
 
     public Tuple<string, int, double, bool, double> SelectedCompressionProfile
     {
-        get => selectedCompressionProfile;
+        get;
 
         set
         {
-            if (selectedCompressionProfile != value)
+            if (field != value)
             {
-                selectedCompressionProfile = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedCompressionProfile));
             }
         }
@@ -3277,25 +3217,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public PageFlip SelectedFlip
     {
-        get => selectedFlip;
+        get;
         set
         {
-            if (selectedFlip != value)
+            if (field != value)
             {
-                selectedFlip = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedFlip));
             }
         }
-    }
+    } = PageFlip.NONE;
 
     public bool SelectedImageWidthHeightIsEqual
     {
-        get => selectedImageWidthHeightIsEqual;
+        get;
         set
         {
-            if (selectedImageWidthHeightIsEqual != value)
+            if (field != value)
             {
-                selectedImageWidthHeightIsEqual = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedImageWidthHeightIsEqual));
             }
         }
@@ -3303,27 +3243,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public Orientation SelectedOrientation
     {
-        get => selectedOrientation;
+        get;
 
         set
         {
-            if (selectedOrientation != value)
+            if (field != value)
             {
-                selectedOrientation = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedOrientation));
             }
         }
-    }
+    } = Orientation.Default;
 
     public Paper SelectedPaper
     {
-        get => selectedPaper;
+        get;
 
         set
         {
-            if (selectedPaper != value)
+            if (field != value)
             {
-                selectedPaper = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedPaper));
             }
         }
@@ -3331,39 +3271,39 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public string SelectedPrinter
     {
-        get => selectedPrinter;
+        get;
         set
         {
-            if (selectedPrinter != value)
+            if (field != value)
             {
-                selectedPrinter = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedPrinter));
             }
         }
-    }
+    } = GetDefaultPrinterName();
 
     public PageRotation SelectedRotation
     {
-        get => selectedRotation;
+        get;
 
         set
         {
-            if (selectedRotation != value)
+            if (field != value)
             {
-                selectedRotation = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedRotation));
             }
         }
-    }
+    } = PageRotation.NONE;
 
     public int SelectedTabIndex
     {
-        get => selectedTabIndex;
+        get;
         set
         {
-            if (selectedTabIndex != value)
+            if (field != value)
             {
-                selectedTabIndex = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedTabIndex));
             }
         }
@@ -3383,12 +3323,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public List<ScannedImage[]> SplittedIndexImages
     {
-        get => splittedIndexImages;
+        get;
         set
         {
-            if (splittedIndexImages != value)
+            if (field != value)
             {
-                splittedIndexImages = value;
+                field = value;
                 OnPropertyChanged(nameof(SplittedIndexImages));
             }
         }
@@ -3400,12 +3340,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public string TextSplitList
     {
-        get => textSplitList;
+        get;
         set
         {
-            if (textSplitList != value)
+            if (field != value)
             {
-                textSplitList = value;
+                field = value;
                 OnPropertyChanged(nameof(TextSplitList));
             }
         }
@@ -3423,12 +3363,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public Twain Twain
     {
-        get => twain;
+        get;
         set
         {
-            if (twain != value)
+            if (field != value)
             {
-                twain = value;
+                field = value;
                 OnPropertyChanged(nameof(Twain));
             }
         }
@@ -3450,13 +3390,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ScannedImage UndoImage
     {
-        get => undoImage;
+        get;
 
         set
         {
-            if (undoImage != value)
+            if (field != value)
             {
-                undoImage = value;
+                field = value;
                 OnPropertyChanged(nameof(UndoImage));
             }
         }
@@ -3464,13 +3404,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public int? UndoImageIndex
     {
-        get => undoImageIndex;
+        get;
 
         set
         {
-            if (undoImageIndex != value)
+            if (field != value)
             {
-                undoImageIndex = value;
+                field = value;
                 OnPropertyChanged(nameof(UndoImageIndex));
             }
         }
@@ -3478,12 +3418,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool UseMozJpeg
     {
-        get => useMozJpeg;
+        get;
         set
         {
-            if (useMozJpeg != value)
+            if (field != value)
             {
-                useMozJpeg = value;
+                field = value;
                 OnPropertyChanged(nameof(UseMozJpeg));
             }
         }
@@ -3680,7 +3620,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 else
                                 {
                                     fileHandler = new PdfFileHandler();
-                                    await AddFilesAsync(filename, fileHandler, decodeHeight);
+                                    await AddFilesAsync(filename, fileHandler, DecodeHeight);
                                 }
 
                                 break;
@@ -3701,20 +3641,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".gif":
                             case ".bmp":
                                 fileHandler = new ImageFileHandler();
-                                await AddFilesAsync(filename, fileHandler, decodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
                                 break;
 
                             case ".heic":
                                 if (CheckWithCurrentOsVersion("10.0.17134"))
                                 {
                                     fileHandler = new ImageFileHandler();
-                                    await AddFilesAsync(filename, fileHandler, decodeHeight);
+                                    await AddFilesAsync(filename, fileHandler, DecodeHeight);
                                 }
                                 break;
 
                             case ".jb2":
                                 fileHandler = new Jb2FileHandler();
-                                await AddFilesAsync(filename, fileHandler, decodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
                                 break;
 
                             case ".zip":
@@ -3779,17 +3719,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                             case ".webp":
                                 fileHandler = new WebpFileHandler();
-                                await AddFilesAsync(filename, fileHandler, decodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
                                 break;
 
                             case ".tiff" or ".tif":
                                 fileHandler = new TiffFileHandler();
-                                await AddFilesAsync(filename, fileHandler, decodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
                                 break;
 
                             case ".xps":
                                 fileHandler = new XpsFileHandler();
-                                await AddFilesAsync(filename, fileHandler, decodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
                                 break;
                         }
                     }
@@ -5161,6 +5101,4 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         using ZipArchive archive = ZipFile.OpenRead(zipfileName);
         archive.Entries?.FirstOrDefault(z => z.FullName == zipcontentfilename)?.ExtractToFile(destinationfilename, true);
     }
-
-    private string selectedPrinter = GetDefaultPrinterName();
 }

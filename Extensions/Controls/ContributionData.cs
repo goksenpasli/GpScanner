@@ -5,18 +5,14 @@ namespace Extensions
 {
     public class ContributionData : InpcBase
     {
-        private DateTime? contrubutionDate;
-        private int count;
-        private Brush stroke;
-
         public DateTime? ContrubutionDate
         {
-            get => contrubutionDate;
+            get;
             set
             {
-                if (contrubutionDate != value)
+                if (field != value)
                 {
-                    contrubutionDate = value;
+                    field = value;
                     OnPropertyChanged(nameof(ContrubutionDate));
                 }
             }
@@ -24,12 +20,12 @@ namespace Extensions
 
         public int Count
         {
-            get => count;
+            get;
             set
             {
-                if (count != value)
+                if (field != value)
                 {
-                    count = value;
+                    field = value;
                     OnPropertyChanged(nameof(Count));
                 }
             }
@@ -37,12 +33,12 @@ namespace Extensions
 
         public Brush Stroke
         {
-            get => stroke;
+            get;
             set
             {
-                if (stroke != value)
+                if (field != value)
                 {
-                    stroke = value;
+                    field = value;
                     OnPropertyChanged(nameof(Stroke));
                 }
             }

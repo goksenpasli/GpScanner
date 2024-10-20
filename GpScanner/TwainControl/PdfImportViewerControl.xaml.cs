@@ -36,53 +36,10 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private readonly Line linebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([1]) };
     private readonly Rectangle rectangleselectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([1]) };
     private readonly Line reverselinebox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeDashArray = new DoubleCollection([1]) };
-    private PdfAnnotations annotations;
-    private string annotationText = string.Empty;
-    private bool applyLandscape = true;
-    private bool applyPortrait = true;
     private Brush combinedLinearBrush;
-    private string çeviri;
-    private string çevrilenDil = "en";
-    private bool drawAnnotation;
-    private bool drawBeziers;
-    private bool drawCurve;
-    private bool drawEllipse;
-    private bool drawImage;
-    private bool drawLine;
-    private bool drawLines;
-    private XImage drawnImage;
-    private bool drawPolygon;
-    private bool drawRect;
-    private bool drawReverseLine;
-    private bool drawRoundedRect;
-    private bool drawString;
-    private XKnownColor graphObjectColor = XKnownColor.Black;
-    private XKnownColor graphObjectFillColor = XKnownColor.Transparent;
-    private XKnownColor graphObjectFirstGradientColor = XKnownColor.Transparent;
-    private XKnownColor graphObjectSecondGradientColor = XKnownColor.Transparent;
-    private string ınkDrawColor = "Black";
-    private BitmapSource ınkSource;
-    private bool ısLinearDraw;
     private bool isDrawMouseDown;
     private bool isMouseDown;
-    private string mevcutDil = "auto";
     private Point mousedowncoord;
-    private bool ocrDialogOpen;
-    private bool ocrProgressIndeterminate;
-    private string ocrText;
-    private XDashStyle penDash = XDashStyle.Solid;
-    private XLineCap penLineCap = XLineCap.Flat;
-    private XLineJoin penLineJoin = XLineJoin.Miter;
-    private double penWidth = 0.5d;
-    private int polygonCount = 3;
-    private string qrText;
-    private XLinearGradientMode selectedGradientMode = XLinearGradientMode.Horizontal;
-    private string selectedInk;
-    private bool singlePage = true;
-    private string text = string.Empty;
-    private double textSize = 12d;
-    private bool toolBoxIsExpanded;
-    private double transparentLevel = 1;
     private XImage xImage;
 
     public PdfImportViewerControl()
@@ -273,7 +230,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 twainCtrl.PdfToolBarControlIsEnabled = false;
                 OcrProgressIndeterminate = true;
-                using PdfDocument pdfDocument = await GenerateOcredPdfPage(PdfViewer, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution, twainCtrl.Scanner?.SelectedTtsLanguage, twainCtrl.SelectedPaper, progress => twainCtrl.PdfImportControlProgressValue = progress);
+                using PdfDocument pdfDocument = await GenerateOcredPdfPage(
+                    PdfViewer,
+                    Settings.Default.JpegQuality,
+                    Settings.Default.ImgLoadResolution,
+                    twainCtrl.Scanner?.SelectedTtsLanguage,
+                    twainCtrl.SelectedPaper,
+                    progress => twainCtrl.PdfImportControlProgressValue = progress);
                 pdfDocument.Save(PdfViewer.PdfFilePath);
                 twainCtrl.PdfToolBarControlIsEnabled = true;
                 OcrDialogOpen = false;
@@ -290,13 +253,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public PdfAnnotations Annotations
     {
-        get => annotations;
+        get;
 
         set
         {
-            if (annotations != value)
+            if (field != value)
             {
-                annotations = value;
+                field = value;
                 OnPropertyChanged(nameof(Annotations));
             }
         }
@@ -304,43 +267,43 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public string AnnotationText
     {
-        get => annotationText;
+        get;
 
         set
         {
-            if (annotationText != value)
+            if (field != value)
             {
-                annotationText = value;
+                field = value;
                 OnPropertyChanged(nameof(AnnotationText));
             }
         }
-    }
+    } = string.Empty;
 
     public bool ApplyLandscape
     {
-        get => applyLandscape;
+        get;
         set
         {
-            if (applyLandscape != value)
+            if (field != value)
             {
-                applyLandscape = value;
+                field = value;
                 OnPropertyChanged(nameof(ApplyLandscape));
             }
         }
-    }
+    } = true;
 
     public bool ApplyPortrait
     {
-        get => applyPortrait;
+        get;
         set
         {
-            if (applyPortrait != value)
+            if (field != value)
             {
-                applyPortrait = value;
+                field = value;
                 OnPropertyChanged(nameof(ApplyPortrait));
             }
         }
-    }
+    } = true;
 
     public RelayCommand<object> ClearInkDrawImage { get; }
 
@@ -373,13 +336,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public string Çeviri
     {
-        get => çeviri;
+        get;
 
         set
         {
-            if (çeviri != value)
+            if (field != value)
             {
-                çeviri = value;
+                field = value;
                 OnPropertyChanged(nameof(Çeviri));
             }
         }
@@ -387,26 +350,26 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public string ÇevrilenDil
     {
-        get => çevrilenDil;
+        get;
         set
         {
-            if (çevrilenDil != value)
+            if (field != value)
             {
-                çevrilenDil = value;
+                field = value;
                 OnPropertyChanged(nameof(ÇevrilenDil));
             }
         }
-    }
+    } = "en";
 
     public bool DrawAnnotation
     {
-        get => drawAnnotation;
+        get;
 
         set
         {
-            if (drawAnnotation != value)
+            if (field != value)
             {
-                drawAnnotation = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawAnnotation));
             }
         }
@@ -414,13 +377,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawBeziers
     {
-        get => drawBeziers;
+        get;
 
         set
         {
-            if (drawBeziers != value)
+            if (field != value)
             {
-                drawBeziers = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawBeziers));
             }
         }
@@ -428,13 +391,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawCurve
     {
-        get => drawCurve;
+        get;
 
         set
         {
-            if (drawCurve != value)
+            if (field != value)
             {
-                drawCurve = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawCurve));
             }
         }
@@ -442,13 +405,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawEllipse
     {
-        get => drawEllipse;
+        get;
 
         set
         {
-            if (drawEllipse != value)
+            if (field != value)
             {
-                drawEllipse = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawEllipse));
             }
         }
@@ -456,13 +419,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawImage
     {
-        get => drawImage;
+        get;
 
         set
         {
-            if (drawImage != value)
+            if (field != value)
             {
-                drawImage = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawImage));
             }
         }
@@ -470,13 +433,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawLine
     {
-        get => drawLine;
+        get;
 
         set
         {
-            if (drawLine != value)
+            if (field != value)
             {
-                drawLine = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawLine));
             }
         }
@@ -484,13 +447,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawLines
     {
-        get => drawLines;
+        get;
 
         set
         {
-            if (drawLines != value)
+            if (field != value)
             {
-                drawLines = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawLines));
             }
         }
@@ -498,13 +461,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XImage DrawnImage
     {
-        get => drawnImage;
+        get;
 
         set
         {
-            if (drawnImage != value)
+            if (field != value)
             {
-                drawnImage = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawnImage));
             }
         }
@@ -512,13 +475,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawPolygon
     {
-        get => drawPolygon;
+        get;
 
         set
         {
-            if (drawPolygon != value)
+            if (field != value)
             {
-                drawPolygon = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawPolygon));
             }
         }
@@ -526,13 +489,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawRect
     {
-        get => drawRect;
+        get;
 
         set
         {
-            if (drawRect != value)
+            if (field != value)
             {
-                drawRect = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawRect));
             }
         }
@@ -540,13 +503,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawReverseLine
     {
-        get => drawReverseLine;
+        get;
 
         set
         {
-            if (drawReverseLine != value)
+            if (field != value)
             {
-                drawReverseLine = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawReverseLine));
             }
         }
@@ -554,13 +517,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawRoundedRect
     {
-        get => drawRoundedRect;
+        get;
 
         set
         {
-            if (drawRoundedRect != value)
+            if (field != value)
             {
-                drawRoundedRect = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawRoundedRect));
             }
         }
@@ -568,13 +531,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool DrawString
     {
-        get => drawString;
+        get;
 
         set
         {
-            if (drawString != value)
+            if (field != value)
             {
-                drawString = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawString));
             }
         }
@@ -584,86 +547,86 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XKnownColor GraphObjectColor
     {
-        get => graphObjectColor;
+        get;
 
         set
         {
-            if (graphObjectColor != value)
+            if (field != value)
             {
-                graphObjectColor = value;
+                field = value;
                 OnPropertyChanged(nameof(GraphObjectColor));
             }
         }
-    }
+    } = XKnownColor.Black;
 
     public XKnownColor GraphObjectFillColor
     {
-        get => graphObjectFillColor;
+        get;
 
         set
         {
-            if (graphObjectFillColor != value)
+            if (field != value)
             {
-                graphObjectFillColor = value;
+                field = value;
                 OnPropertyChanged(nameof(GraphObjectFillColor));
                 OnPropertyChanged(nameof(DrawString));
             }
         }
-    }
+    } = XKnownColor.Transparent;
 
     public XKnownColor GraphObjectFirstGradientColor
     {
-        get => graphObjectFirstGradientColor;
+        get;
         set
         {
-            if (graphObjectFirstGradientColor != value)
+            if (field != value)
             {
-                graphObjectFirstGradientColor = value;
+                field = value;
                 OnPropertyChanged(nameof(GraphObjectFirstGradientColor));
                 OnPropertyChanged(nameof(CombinedLinearBrush));
                 OnPropertyChanged(nameof(IsLinearDraw));
             }
         }
-    }
+    } = XKnownColor.Transparent;
 
     public XKnownColor GraphObjectSecondGradientColor
     {
-        get => graphObjectSecondGradientColor;
+        get;
         set
         {
-            if (graphObjectSecondGradientColor != value)
+            if (field != value)
             {
-                graphObjectSecondGradientColor = value;
+                field = value;
                 OnPropertyChanged(nameof(GraphObjectSecondGradientColor));
                 OnPropertyChanged(nameof(CombinedLinearBrush));
                 OnPropertyChanged(nameof(IsLinearDraw));
             }
         }
-    }
+    } = XKnownColor.Transparent;
 
     public string InkDrawColor
     {
-        get => ınkDrawColor;
+        get;
 
         set
         {
-            if (ınkDrawColor != value)
+            if (field != value)
             {
-                ınkDrawColor = value;
+                field = value;
                 OnPropertyChanged(nameof(InkDrawColor));
             }
         }
-    }
+    } = "Black";
 
     public BitmapSource InkSource
     {
-        get => ınkSource;
+        get;
 
         set
         {
-            if (ınkSource != value)
+            if (field != value)
             {
-                ınkSource = value;
+                field = value;
                 OnPropertyChanged(nameof(InkSource));
             }
         }
@@ -671,13 +634,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool IsLinearDraw
     {
-        get => ısLinearDraw;
+        get;
 
         set
         {
-            if (ısLinearDraw != value)
+            if (field != value)
             {
-                ısLinearDraw = value;
+                field = value;
                 OnPropertyChanged(nameof(IsLinearDraw));
             }
         }
@@ -689,27 +652,27 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public string MevcutDil
     {
-        get => mevcutDil;
+        get;
         set
         {
-            if (mevcutDil != value)
+            if (field != value)
             {
-                mevcutDil = value;
+                field = value;
                 OnPropertyChanged(nameof(MevcutDil));
             }
         }
-    }
+    } = "auto";
 
     public RelayCommand<object> OcrCurrentPdfPage { get; }
 
     public bool OcrDialogOpen
     {
-        get => ocrDialogOpen;
+        get;
         set
         {
-            if (ocrDialogOpen != value)
+            if (field != value)
             {
-                ocrDialogOpen = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrDialogOpen));
             }
         }
@@ -717,13 +680,13 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool OcrProgressIndeterminate
     {
-        get => ocrProgressIndeterminate;
+        get;
 
         set
         {
-            if (ocrProgressIndeterminate != value)
+            if (field != value)
             {
-                ocrProgressIndeterminate = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrProgressIndeterminate));
             }
         }
@@ -731,12 +694,12 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public string OcrText
     {
-        get => ocrText;
+        get;
         set
         {
-            if (ocrText != value)
+            if (field != value)
             {
-                ocrText = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrText));
             }
         }
@@ -748,85 +711,85 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XDashStyle PenDash
     {
-        get => penDash;
+        get;
 
         set
         {
-            if (penDash != value)
+            if (field != value)
             {
-                penDash = value;
+                field = value;
                 OnPropertyChanged(nameof(PenDash));
             }
         }
-    }
+    } = XDashStyle.Solid;
 
     public XLineCap PenLineCap
     {
-        get => penLineCap;
+        get;
 
         set
         {
-            if (penLineCap != value)
+            if (field != value)
             {
-                penLineCap = value;
+                field = value;
                 OnPropertyChanged(nameof(PenLineCap));
             }
         }
-    }
+    } = XLineCap.Flat;
 
     public XLineJoin PenLineJoin
     {
-        get => penLineJoin;
+        get;
 
         set
         {
-            if (penLineJoin != value)
+            if (field != value)
             {
-                penLineJoin = value;
+                field = value;
                 OnPropertyChanged(nameof(PenLineJoin));
             }
         }
-    }
+    } = XLineJoin.Miter;
 
     public double PenWidth
     {
-        get => penWidth;
+        get;
 
         set
         {
-            if (penWidth != value)
+            if (field != value)
             {
-                penWidth = value;
+                field = value;
                 OnPropertyChanged(nameof(PenWidth));
             }
         }
-    }
+    } = 0.5d;
 
     public ObservableCollection<XPoint> Points { get; set; } = [];
 
     public int PolygonCount
     {
-        get => polygonCount;
+        get;
 
         set
         {
-            if (polygonCount != value)
+            if (field != value)
             {
-                polygonCount = value;
+                field = value;
                 OnPropertyChanged(nameof(PolygonCount));
             }
         }
-    }
+    } = 3;
 
     public string QrText
     {
-        get => qrText;
+        get;
 
         set
         {
-            if (qrText != value)
+            if (field != value)
             {
-                qrText = value;
+                field = value;
                 OnPropertyChanged(nameof(QrText));
             }
         }
@@ -844,26 +807,26 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public XLinearGradientMode SelectedGradientMode
     {
-        get => selectedGradientMode;
+        get;
         set
         {
-            if (selectedGradientMode != value)
+            if (field != value)
             {
-                selectedGradientMode = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedGradientMode));
                 OnPropertyChanged(nameof(CombinedLinearBrush));
             }
         }
-    }
+    } = XLinearGradientMode.Horizontal;
 
     public string SelectedInk
     {
-        get => selectedInk;
+        get;
         set
         {
-            if (selectedInk != value)
+            if (field != value)
             {
-                selectedInk = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedInk));
             }
         }
@@ -871,53 +834,53 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public bool SinglePage
     {
-        get => singlePage;
+        get;
         set
         {
-            if (singlePage != value)
+            if (field != value)
             {
-                singlePage = value;
+                field = value;
                 OnPropertyChanged(nameof(SinglePage));
             }
         }
-    }
+    } = true;
 
     public string Text
     {
-        get => text;
+        get;
 
         set
         {
-            if (text != value)
+            if (field != value)
             {
-                text = value;
+                field = value;
                 OnPropertyChanged(nameof(Text));
             }
         }
-    }
+    } = string.Empty;
 
     public double TextSize
     {
-        get => textSize;
+        get;
 
         set
         {
-            if (textSize != value)
+            if (field != value)
             {
-                textSize = value;
+                field = value;
                 OnPropertyChanged(nameof(TextSize));
             }
         }
-    }
+    } = 12d;
 
     public bool ToolBoxIsExpanded
     {
-        get => toolBoxIsExpanded;
+        get;
         set
         {
-            if (toolBoxIsExpanded != value)
+            if (field != value)
             {
-                toolBoxIsExpanded = value;
+                field = value;
                 OnPropertyChanged(nameof(ToolBoxIsExpanded));
             }
         }
@@ -925,16 +888,16 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public double TransparentLevel
     {
-        get => transparentLevel;
+        get;
         set
         {
-            if (transparentLevel != value)
+            if (field != value)
             {
-                transparentLevel = value;
+                field = value;
                 OnPropertyChanged(nameof(TransparentLevel));
             }
         }
-    }
+    } = 1;
 
     public RelayCommand<object> WebAdreseGit { get; }
 
@@ -1120,7 +1083,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper, Action<double> progresscallback=null)
+    private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper, Action<double> progresscallback = null)
     {
         List<string> tempfiles = [];
         ObservableCollection<OcrData> ocrdata;

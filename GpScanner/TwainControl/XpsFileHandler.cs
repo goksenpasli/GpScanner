@@ -19,11 +19,11 @@ namespace TwainControl
             FixedDocumentSequence docSeq = null;
             Application.Current?.Dispatcher?
             .Invoke(
-                () =>
-                {
-                    using XpsDocument xpsDoc = new(filename, FileAccess.Read);
-                    docSeq = xpsDoc.GetFixedDocumentSequence();
-                });
+            () =>
+            {
+                using XpsDocument xpsDoc = new(filename, FileAccess.Read);
+                docSeq = xpsDoc.GetFixedDocumentSequence();
+            });
             return docSeq.DocumentPaginator.PageCount;
         }
 
@@ -44,30 +44,30 @@ namespace TwainControl
             List<BitmapFrame> frames = [];
             await Application.Current?.Dispatcher?
             .InvokeAsync(
-                () =>
-                {
-                    using XpsDocument xpsDoc = new(filename, FileAccess.Read);
-                    FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
-                    int pageCount = docSeq.DocumentPaginator.PageCount;
+            () =>
+            {
+                using XpsDocument xpsDoc = new(filename, FileAccess.Read);
+                FixedDocumentSequence docSeq = xpsDoc.GetFixedDocumentSequence();
+                int pageCount = docSeq.DocumentPaginator.PageCount;
 
-                    for (int i = 0; i < pageCount; i++)
-                    {
-                        using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
-                        RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
-                        rtb.Render(docPage.Visual);
-                        BitmapFrame bitmapFrame = BitmapFrame.Create(rtb);
-                        bitmapFrame.Freeze();
-                        frames.Add(bitmapFrame);
-                    }
-                });
+                for (int i = 0; i < pageCount; i++)
+                {
+                    using DocumentPage docPage = docSeq.DocumentPaginator.GetPage(i);
+                    RenderTargetBitmap rtb = new((int)docPage.Size.Width, (int)docPage.Size.Height, 96, 96, PixelFormats.Default);
+                    rtb.Render(docPage.Visual);
+                    BitmapFrame bitmapFrame = BitmapFrame.Create(rtb);
+                    bitmapFrame.Freeze();
+                    frames.Add(bitmapFrame);
+                }
+            });
             return frames;
         }
 
         public async Task<BitmapFrame> LoadXpsSinglePagesAsync(string filename, int pagenumber = 0)
         {
             return !IsValidFile(filename)
-                ? null
-                : await Application.Current?.Dispatcher?
+                   ? null
+                   : await Application.Current?.Dispatcher?
             .InvokeAsync(
                 () =>
                 {

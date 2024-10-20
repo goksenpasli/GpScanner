@@ -21,7 +21,7 @@ public static class ControlExtensions
 
     private static void UpdateRenderTransform(UIElement element)
     {
-        var flipdirection = GetFlipHorizontally(element);
+        FlowDirection flipdirection = GetFlipHorizontally(element);
         if (flipdirection == FlowDirection.RightToLeft)
         {
             element.RenderTransformOrigin = new Point(0.5, 0.5);

@@ -5,7 +5,6 @@ namespace Ocr;
 public class OcrData : InpcBase
 {
     private Rect rect;
-    private string text;
 
     public Rect Rect
     {
@@ -23,13 +22,13 @@ public class OcrData : InpcBase
 
     public string Text
     {
-        get => text;
+        get;
 
         set
         {
-            if (text != value)
+            if (field != value)
             {
-                text = value;
+                field = value;
                 OnPropertyChanged(nameof(Text));
             }
         }

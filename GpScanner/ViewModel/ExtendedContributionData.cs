@@ -5,16 +5,14 @@ namespace GpScanner.ViewModel;
 
 public class ExtendedContributionData : ContributionData
 {
-    private IEnumerable<string> name;
-
     public IEnumerable<string> Name
     {
-        get => name;
+        get;
         set
         {
-            if (name != value)
+            if (field != value)
             {
-                name = value;
+                field = value;
                 OnPropertyChanged(nameof(Name));
             }
         }

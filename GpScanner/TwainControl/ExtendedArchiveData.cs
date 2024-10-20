@@ -5,19 +5,14 @@ namespace TwainControl;
 
 public class ExtendedArchiveData : ArchiveData
 {
-    private FileAttributes attributes;
-    private bool encrypted;
-    private string hostOs;
-    private string method;
-
     public FileAttributes Attributes
     {
-        get => attributes;
+        get;
         set
         {
-            if (attributes != value)
+            if (field != value)
             {
-                attributes = value;
+                field = value;
                 OnPropertyChanged(nameof(Attributes));
             }
         }
@@ -25,13 +20,13 @@ public class ExtendedArchiveData : ArchiveData
 
     public bool Encrypted
     {
-        get => encrypted;
+        get;
 
         set
         {
-            if (encrypted != value)
+            if (field != value)
             {
-                encrypted = value;
+                field = value;
                 OnPropertyChanged(nameof(Encrypted));
             }
         }
@@ -39,12 +34,12 @@ public class ExtendedArchiveData : ArchiveData
 
     public string HostOs
     {
-        get => hostOs;
+        get;
         set
         {
-            if (hostOs != value)
+            if (field != value)
             {
-                hostOs = value;
+                field = value;
                 OnPropertyChanged(nameof(HostOs));
             }
         }
@@ -52,12 +47,12 @@ public class ExtendedArchiveData : ArchiveData
 
     public string Method
     {
-        get => method;
+        get;
         set
         {
-            if (method != value)
+            if (field != value)
             {
-                method = value;
+                field = value;
                 OnPropertyChanged(nameof(Method));
             }
         }

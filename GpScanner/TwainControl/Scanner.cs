@@ -19,97 +19,9 @@ namespace TwainControl;
 
 public class Scanner : InpcBase, IDataErrorInfo
 {
-    private bool allowCopy = true;
-    private bool allowEdit = true;
-    private bool allowPrint = true;
-    private bool applyDataBaseOcr = Ocr.Ocr.TesseractDataExists;
-    private bool applyMedian;
-    private bool applyPdfSaveOcr;
-    private bool arayüzetkin = true;
-    private string autoCropColor = "Black";
-    private bool autoSave = Directory.Exists(Settings.Default.AutoFolder);
-    private string barcodeContent;
-    private bool borderAnimation;
-    private int boyAdet = 1;
-    private double brightness;
-    private int caretPosition;
-    private ObservableCollection<Chart> chart;
-    private ImageSource copyCroppedImage;
-    private string creatorAppName = $"{TwainCtrl.AppName} {FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).FileVersion}";
-    private double cropBottom;
-    private bool cropDialogExpanded;
-    private double cropLeft;
-    private ImageSource croppedImage;
-    private double croppedImageAngle;
-    private int croppedImageIndex;
-    private BitmapSource croppedImageThumb;
-    private double cropRight;
-    private double cropTop;
-    private bool detectEmptyPage;
-    private bool detectPageSeperator;
-    private bool duplex;
-    private int enAdet = 1;
     private bool fileisPdfFile;
-    private string fileName = "Tarama";
-    private string fileOcrContent;
-    private float fileSize;
-    private string folderName;
-    private int ftpLoadProgressValue;
-    private double hue;
-    private bool ınvertImage;
-    private PdfPageLayout layout = PdfPageLayout.Middle;
-    private double lightness = 1;
     private string localizedPath;
-    private int medianValue;
     private ObservableCollection<string> mergePdfFiles = [];
-    private bool paperBackScan;
-    private bool passwordProtect;
-    private bool pdfBatchNumberIsFirst;
-    private string pdfBatchNumberText = string.Empty;
-    private string pdfFilePath;
-    private XKnownColor pdfPageNumberAlignTextColor = XKnownColor.Black;
-    private bool pdfPageNumberDraw;
-    private double pdfPageNumberSize = 12;
-    private string pdfPageText;
-    private double pdfPageTextAngle = 315d;
-    private string pdfPageTextColor = "Black";
-    private bool pdfPageTextDraw;
-    private double pdfPageTextSize = 32d;
-    private string pdfPassword;
-    private double pdfSaveProgressValue;
-    private string profileName;
-    private TaskbarItemProgressState progressState = TaskbarItemProgressState.None;
-    private IEnumerable<string> qrData;
-    private ObservableCollection<ScannedImage> resimler = [];
-    private double rotateAngle;
-    private double saturation = 1;
-    private string saveFileName;
-    private Brush saveProgressBarForegroundBrush = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
-    private bool saveProgressIndeterminate;
-    private bool scanSeperate;
-    private bool seçili;
-    private int seçiliResimSayısı;
-    private string selectedProfile;
-    private string selectedTtsLanguage;
-    private bool showProgress;
-    private bool showUi;
-    private double sliceCountHeight = 1;
-    private double sliceCountWidth = 2;
-    private string sourceColor = "Transparent";
-    private IList<string> tarayıcılar;
-    private string targetColor = "Transparent";
-    private double threshold;
-    private int toolBarBwThreshold = 160;
-    private CultureInfo uiLanguage;
-    private bool useFilmScanner;
-    private bool useMozJpegEncoding;
-    private bool usePageSeperator;
-    private string userName = Environment.UserName;
-    private string watermark;
-    private double watermarkAngle = 315;
-    private SolidColorBrush watermarkColor = Brushes.Red;
-    private string watermarkFont = "Arial";
-    private double watermarkTextSize = 64;
 
     public Scanner()
     {
@@ -120,69 +32,69 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool AllowCopy
     {
-        get => allowCopy;
+        get;
 
         set
         {
-            if (allowCopy != value)
+            if (field != value)
             {
-                allowCopy = value;
+                field = value;
                 OnPropertyChanged(nameof(AllowCopy));
             }
         }
-    }
+    } = true;
 
     public bool AllowEdit
     {
-        get => allowEdit;
+        get;
 
         set
         {
-            if (allowEdit != value)
+            if (field != value)
             {
-                allowEdit = value;
+                field = value;
                 OnPropertyChanged(nameof(AllowEdit));
             }
         }
-    }
+    } = true;
 
     public bool AllowPrint
     {
-        get => allowPrint;
+        get;
 
         set
         {
-            if (allowPrint != value)
+            if (field != value)
             {
-                allowPrint = value;
+                field = value;
                 OnPropertyChanged(nameof(AllowPrint));
             }
         }
-    }
+    } = true;
 
     public bool ApplyDataBaseOcr
     {
-        get => applyDataBaseOcr;
+        get;
 
         set
         {
-            if (applyDataBaseOcr != value)
+            if (field != value)
             {
-                applyDataBaseOcr = value;
+                field = value;
                 OnPropertyChanged(nameof(ApplyDataBaseOcr));
             }
         }
-    }
+    } = Ocr.Ocr.TesseractDataExists;
 
     public bool ApplyMedian
     {
-        get => applyMedian;
+        get;
 
         set
         {
-            if (applyMedian != value)
+            if (field != value)
             {
-                applyMedian = value;
+                field = value;
                 OnPropertyChanged(nameof(ApplyMedian));
             }
         }
@@ -190,13 +102,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ApplyPdfSaveOcr
     {
-        get => applyPdfSaveOcr;
+        get;
 
         set
         {
-            if (applyPdfSaveOcr != value)
+            if (field != value)
             {
-                applyPdfSaveOcr = value;
+                field = value;
                 OnPropertyChanged(nameof(ApplyPdfSaveOcr));
             }
         }
@@ -204,55 +116,55 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ArayüzEtkin
     {
-        get => arayüzetkin;
+        get;
 
         set
         {
-            if (arayüzetkin != value)
+            if (field != value)
             {
-                arayüzetkin = value;
+                field = value;
                 OnPropertyChanged(nameof(ArayüzEtkin));
             }
         }
-    }
+    } = true;
 
     public string AutoCropColor
     {
-        get => autoCropColor;
+        get;
 
         set
         {
-            if (autoCropColor != value)
+            if (field != value)
             {
-                autoCropColor = value;
+                field = value;
                 OnPropertyChanged(nameof(AutoCropColor));
             }
         }
-    }
+    } = "Black";
 
     public bool AutoSave
     {
-        get => autoSave;
+        get;
 
         set
         {
-            if (autoSave != value)
+            if (field != value)
             {
-                autoSave = value;
+                field = value;
                 OnPropertyChanged(nameof(AutoSave));
             }
         }
-    }
+    } = Directory.Exists(Settings.Default.AutoFolder);
 
     public string BarcodeContent
     {
-        get => barcodeContent;
+        get;
 
         set
         {
-            if (barcodeContent != value)
+            if (field != value)
             {
-                barcodeContent = value;
+                field = value;
                 OnPropertyChanged(nameof(BarcodeContent));
             }
         }
@@ -260,13 +172,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool BorderAnimation
     {
-        get => borderAnimation;
+        get;
 
         set
         {
-            if (borderAnimation != value)
+            if (field != value)
             {
-                borderAnimation = value;
+                field = value;
                 OnPropertyChanged(nameof(BorderAnimation));
             }
         }
@@ -274,27 +186,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int BoyAdet
     {
-        get => boyAdet;
+        get;
 
         set
         {
-            if (boyAdet != value)
+            if (field != value)
             {
-                boyAdet = value;
+                field = value;
                 OnPropertyChanged(nameof(BoyAdet));
             }
         }
-    }
+    } = 1;
 
     public double Brightness
     {
-        get => brightness;
+        get;
 
         set
         {
-            if (brightness != value)
+            if (field != value)
             {
-                brightness = value;
+                field = value;
                 OnPropertyChanged(nameof(Brightness));
             }
         }
@@ -302,13 +214,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int CaretPosition
     {
-        get => caretPosition;
+        get;
 
         set
         {
-            if (caretPosition != value)
+            if (field != value)
             {
-                caretPosition = value;
+                field = value;
                 OnPropertyChanged(nameof(CaretPosition));
             }
         }
@@ -316,13 +228,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ObservableCollection<Chart> Chart
     {
-        get => chart;
+        get;
 
         set
         {
-            if (chart != value)
+            if (field != value)
             {
-                chart = value;
+                field = value;
                 OnPropertyChanged(nameof(Chart));
             }
         }
@@ -330,13 +242,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ImageSource CopyCroppedImage
     {
-        get => copyCroppedImage;
+        get;
 
         set
         {
-            if (copyCroppedImage != value)
+            if (field != value)
             {
-                copyCroppedImage = value;
+                field = value;
                 OnPropertyChanged(nameof(CopyCroppedImage));
             }
         }
@@ -344,27 +256,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string CreatorAppName
     {
-        get => creatorAppName;
+        get;
 
         set
         {
-            if (creatorAppName != value)
+            if (field != value)
             {
-                creatorAppName = value;
+                field = value;
                 OnPropertyChanged(nameof(CreatorAppName));
             }
         }
-    }
+    } = $"{TwainCtrl.AppName} {FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location).FileVersion}";
 
     public double CropBottom
     {
-        get => cropBottom;
+        get;
 
         set
         {
-            if (cropBottom != value)
+            if (field != value)
             {
-                cropBottom = value;
+                field = value;
                 OnPropertyChanged(nameof(CropBottom));
             }
         }
@@ -372,13 +284,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool CropDialogExpanded
     {
-        get => cropDialogExpanded;
+        get;
 
         set
         {
-            if (cropDialogExpanded != value)
+            if (field != value)
             {
-                cropDialogExpanded = value;
+                field = value;
                 OnPropertyChanged(nameof(CropDialogExpanded));
             }
         }
@@ -386,13 +298,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CropLeft
     {
-        get => cropLeft;
+        get;
 
         set
         {
-            if (cropLeft != value)
+            if (field != value)
             {
-                cropLeft = value;
+                field = value;
                 OnPropertyChanged(nameof(CropLeft));
             }
         }
@@ -400,13 +312,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ImageSource CroppedImage
     {
-        get => croppedImage;
+        get;
 
         set
         {
-            if (croppedImage != value)
+            if (field != value)
             {
-                croppedImage = value;
+                field = value;
                 OnPropertyChanged(nameof(CroppedImage));
             }
         }
@@ -414,13 +326,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CroppedImageAngle
     {
-        get => croppedImageAngle;
+        get;
 
         set
         {
-            if (croppedImageAngle != value)
+            if (field != value)
             {
-                croppedImageAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(CroppedImageAngle));
             }
         }
@@ -428,13 +340,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int CroppedImageIndex
     {
-        get => croppedImageIndex;
+        get;
 
         set
         {
-            if (croppedImageIndex != value)
+            if (field != value)
             {
-                croppedImageIndex = value;
+                field = value;
                 OnPropertyChanged(nameof(CroppedImageIndex));
             }
         }
@@ -442,13 +354,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public BitmapSource CroppedImageThumb
     {
-        get => croppedImageThumb;
+        get;
 
         set
         {
-            if (croppedImageThumb != value)
+            if (field != value)
             {
-                croppedImageThumb = value;
+                field = value;
                 OnPropertyChanged(nameof(CroppedImageThumb));
             }
         }
@@ -456,13 +368,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CropRight
     {
-        get => cropRight;
+        get;
 
         set
         {
-            if (cropRight != value)
+            if (field != value)
             {
-                cropRight = value;
+                field = value;
                 OnPropertyChanged(nameof(CropRight));
             }
         }
@@ -470,13 +382,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double CropTop
     {
-        get => cropTop;
+        get;
 
         set
         {
-            if (cropTop != value)
+            if (field != value)
             {
-                cropTop = value;
+                field = value;
                 OnPropertyChanged(nameof(CropTop));
             }
         }
@@ -484,13 +396,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool DetectEmptyPage
     {
-        get => detectEmptyPage;
+        get;
 
         set
         {
-            if (detectEmptyPage != value)
+            if (field != value)
             {
-                detectEmptyPage = value;
+                field = value;
                 OnPropertyChanged(nameof(DetectEmptyPage));
             }
         }
@@ -498,13 +410,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool DetectPageSeperator
     {
-        get => detectPageSeperator;
+        get;
 
         set
         {
-            if (detectPageSeperator != value)
+            if (field != value)
             {
-                detectPageSeperator = value;
+                field = value;
                 OnPropertyChanged(nameof(DetectPageSeperator));
             }
         }
@@ -512,13 +424,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool Duplex
     {
-        get => duplex;
+        get;
 
         set
         {
-            if (duplex != value)
+            if (field != value)
             {
-                duplex = value;
+                field = value;
                 OnPropertyChanged(nameof(Duplex));
             }
         }
@@ -526,17 +438,17 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int EnAdet
     {
-        get => enAdet;
+        get;
 
         set
         {
-            if (enAdet != value)
+            if (field != value)
             {
-                enAdet = value;
+                field = value;
                 OnPropertyChanged(nameof(EnAdet));
             }
         }
-    }
+    } = 1;
 
     public string Error => string.Empty;
 
@@ -556,28 +468,28 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string FileName
     {
-        get => fileName;
+        get;
 
         set
         {
-            if (fileName != value)
+            if (field != value)
             {
-                fileName = value;
+                field = value;
                 OnPropertyChanged(nameof(FileName));
                 OnPropertyChanged(nameof(SaveFileName));
             }
         }
-    }
+    } = "Tarama";
 
     public string FileOcrContent
     {
-        get => fileOcrContent;
+        get;
 
         set
         {
-            if (fileOcrContent != value)
+            if (field != value)
             {
-                fileOcrContent = value;
+                field = value;
                 OnPropertyChanged(nameof(FileOcrContent));
             }
         }
@@ -585,12 +497,12 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public float FileSize
     {
-        get => fileSize;
+        get;
         set
         {
-            if (fileSize != value)
+            if (field != value)
             {
-                fileSize = value;
+                field = value;
                 OnPropertyChanged(nameof(FileSize));
             }
         }
@@ -620,12 +532,12 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string FolderName
     {
-        get => folderName;
+        get;
         set
         {
-            if (folderName != value)
+            if (field != value)
             {
-                folderName = value;
+                field = value;
                 OnPropertyChanged(nameof(FolderName));
             }
         }
@@ -633,13 +545,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int FtpLoadProgressValue
     {
-        get => ftpLoadProgressValue;
+        get;
 
         set
         {
-            if (ftpLoadProgressValue != value)
+            if (field != value)
             {
-                ftpLoadProgressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(FtpLoadProgressValue));
             }
         }
@@ -647,13 +559,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double Hue
     {
-        get => hue;
+        get;
 
         set
         {
-            if (hue != value)
+            if (field != value)
             {
-                hue = value;
+                field = value;
                 OnPropertyChanged(nameof(Hue));
             }
         }
@@ -661,13 +573,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool InvertImage
     {
-        get => ınvertImage;
+        get;
 
         set
         {
-            if (ınvertImage != value)
+            if (field != value)
             {
-                ınvertImage = value;
+                field = value;
                 OnPropertyChanged(nameof(InvertImage));
             }
         }
@@ -675,31 +587,31 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public PdfPageLayout Layout
     {
-        get => layout;
+        get;
 
         set
         {
-            if (layout != value)
+            if (field != value)
             {
-                layout = value;
+                field = value;
                 OnPropertyChanged(nameof(Layout));
             }
         }
-    }
+    } = PdfPageLayout.Middle;
 
     public double Lightness
     {
-        get => lightness;
+        get;
 
         set
         {
-            if (lightness != value)
+            if (field != value)
             {
-                lightness = value;
+                field = value;
                 OnPropertyChanged(nameof(Lightness));
             }
         }
-    }
+    } = 1;
 
     public string LocalizedPath
     {
@@ -717,13 +629,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int MedianValue
     {
-        get => medianValue;
+        get;
 
         set
         {
-            if (medianValue != value)
+            if (field != value)
             {
-                medianValue = value;
+                field = value;
                 OnPropertyChanged(nameof(MedianValue));
             }
         }
@@ -745,13 +657,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool PaperBackScan
     {
-        get => paperBackScan;
+        get;
 
         set
         {
-            if (paperBackScan != value)
+            if (field != value)
             {
-                paperBackScan = value;
+                field = value;
                 OnPropertyChanged(nameof(PaperBackScan));
             }
         }
@@ -759,13 +671,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool PasswordProtect
     {
-        get => passwordProtect;
+        get;
 
         set
         {
-            if (passwordProtect != value)
+            if (field != value)
             {
-                passwordProtect = value;
+                field = value;
                 OnPropertyChanged(nameof(PasswordProtect));
             }
         }
@@ -773,12 +685,12 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool PdfBatchNumberIsFirst
     {
-        get => pdfBatchNumberIsFirst;
+        get;
         set
         {
-            if (pdfBatchNumberIsFirst != value)
+            if (field != value)
             {
-                pdfBatchNumberIsFirst = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfBatchNumberIsFirst));
             }
         }
@@ -786,26 +698,26 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string PdfBatchNumberText
     {
-        get => pdfBatchNumberText;
+        get;
         set
         {
-            if (pdfBatchNumberText != value)
+            if (field != value)
             {
-                pdfBatchNumberText = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfBatchNumberText));
             }
         }
-    }
+    } = string.Empty;
 
     public string PdfFilePath
     {
-        get => pdfFilePath;
+        get;
 
         set
         {
-            if (pdfFilePath != value)
+            if (field != value)
             {
-                pdfFilePath = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfFilePath));
             }
         }
@@ -813,27 +725,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public XKnownColor PdfPageNumberAlignTextColor
     {
-        get => pdfPageNumberAlignTextColor;
+        get;
 
         set
         {
-            if (pdfPageNumberAlignTextColor != value)
+            if (field != value)
             {
-                pdfPageNumberAlignTextColor = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPageNumberAlignTextColor));
             }
         }
-    }
+    } = XKnownColor.Black;
 
     public bool PdfPageNumberDraw
     {
-        get => pdfPageNumberDraw;
+        get;
 
         set
         {
-            if (pdfPageNumberDraw != value)
+            if (field != value)
             {
-                pdfPageNumberDraw = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPageNumberDraw));
             }
         }
@@ -841,26 +753,26 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double PdfPageNumberSize
     {
-        get => pdfPageNumberSize;
+        get;
         set
         {
-            if (pdfPageNumberSize != value)
+            if (field != value)
             {
-                pdfPageNumberSize = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPageNumberSize));
             }
         }
-    }
+    } = 12;
 
     public string PdfPageText
     {
-        get => pdfPageText;
+        get;
 
         set
         {
-            if (pdfPageText != value)
+            if (field != value)
             {
-                pdfPageText = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPageText));
             }
         }
@@ -868,41 +780,41 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double PdfPageTextAngle
     {
-        get => pdfPageTextAngle;
+        get;
 
         set
         {
-            if (pdfPageTextAngle != value)
+            if (field != value)
             {
-                pdfPageTextAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPageTextAngle));
             }
         }
-    }
+    } = 315d;
 
     public string PdfPageTextColor
     {
-        get => pdfPageTextColor;
+        get;
 
         set
         {
-            if (pdfPageTextColor != value)
+            if (field != value)
             {
-                pdfPageTextColor = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPageTextColor));
             }
         }
-    }
+    } = "Black";
 
     public bool PdfPageTextDraw
     {
-        get => pdfPageTextDraw;
+        get;
 
         set
         {
-            if (pdfPageTextDraw != value)
+            if (field != value)
             {
-                pdfPageTextDraw = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPageTextDraw));
             }
         }
@@ -910,27 +822,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double PdfPageTextSize
     {
-        get => pdfPageTextSize;
+        get;
 
         set
         {
-            if (pdfPageTextSize != value)
+            if (field != value)
             {
-                pdfPageTextSize = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPageTextSize));
             }
         }
-    }
+    } = 32d;
 
     public string PdfPassword
     {
-        get => pdfPassword;
+        get;
 
         set
         {
-            if (pdfPassword != value)
+            if (field != value)
             {
-                pdfPassword = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfPassword));
             }
         }
@@ -938,13 +850,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double PdfSaveProgressValue
     {
-        get => pdfSaveProgressValue;
+        get;
 
         set
         {
-            if (pdfSaveProgressValue != value)
+            if (field != value)
             {
-                pdfSaveProgressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfSaveProgressValue));
             }
         }
@@ -952,13 +864,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string ProfileName
     {
-        get => profileName;
+        get;
 
         set
         {
-            if (profileName != value)
+            if (field != value)
             {
-                profileName = value;
+                field = value;
                 OnPropertyChanged(nameof(ProfileName));
             }
         }
@@ -966,27 +878,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public TaskbarItemProgressState ProgressState
     {
-        get => progressState;
+        get;
 
         set
         {
-            if (progressState != value)
+            if (field != value)
             {
-                progressState = value;
+                field = value;
                 OnPropertyChanged(nameof(ProgressState));
             }
         }
-    }
+    } = TaskbarItemProgressState.None;
 
     public IEnumerable<string> QrData
     {
-        get => qrData;
+        get;
 
         set
         {
-            if (qrData != value)
+            if (field != value)
             {
-                qrData = value;
+                field = value;
                 OnPropertyChanged(nameof(QrData));
             }
         }
@@ -994,27 +906,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public ObservableCollection<ScannedImage> Resimler
     {
-        get => resimler;
+        get;
 
         set
         {
-            if (resimler != value)
+            if (field != value)
             {
-                resimler = value;
+                field = value;
                 OnPropertyChanged(nameof(Resimler));
             }
         }
-    }
+    } = [];
 
     public double RotateAngle
     {
-        get => rotateAngle;
+        get;
 
         set
         {
-            if (rotateAngle != value)
+            if (field != value)
             {
-                rotateAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(RotateAngle));
             }
         }
@@ -1022,17 +934,17 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double Saturation
     {
-        get => saturation;
+        get;
 
         set
         {
-            if (saturation != value)
+            if (field != value)
             {
-                saturation = value;
+                field = value;
                 OnPropertyChanged(nameof(Saturation));
             }
         }
-    }
+    } = 1;
 
     public string SaveFileName
     {
@@ -1044,22 +956,22 @@ public class Scanner : InpcBase, IDataErrorInfo
                 foreach (KeyValuePair<string, string> entry in FileContextMenuDictionary())
                 {
                     tempfilename = tempfilename.Replace(entry.Key, entry.Value);
-                    saveFileName = tempfilename;
+                    field = tempfilename;
                 }
             }
             else
             {
-                saveFileName = FileName;
+                field = FileName;
             }
 
-            return saveFileName;
+            return field;
         }
 
         set
         {
-            if (saveFileName != value)
+            if (field != value)
             {
-                saveFileName = value;
+                field = value;
                 OnPropertyChanged(nameof(SaveFileName));
             }
         }
@@ -1067,27 +979,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public Brush SaveProgressBarForegroundBrush
     {
-        get => saveProgressBarForegroundBrush;
+        get;
 
         set
         {
-            if (saveProgressBarForegroundBrush != value)
+            if (field != value)
             {
-                saveProgressBarForegroundBrush = value;
+                field = value;
                 OnPropertyChanged(nameof(SaveProgressBarForegroundBrush));
             }
         }
-    }
+    } = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
 
     public bool SaveProgressIndeterminate
     {
-        get => saveProgressIndeterminate;
+        get;
 
         set
         {
-            if (saveProgressIndeterminate != value)
+            if (field != value)
             {
-                saveProgressIndeterminate = value;
+                field = value;
                 OnPropertyChanged(nameof(SaveProgressIndeterminate));
             }
         }
@@ -1095,12 +1007,12 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ScanSeperate
     {
-        get => scanSeperate;
+        get;
         set
         {
-            if (scanSeperate != value)
+            if (field != value)
             {
-                scanSeperate = value;
+                field = value;
                 OnPropertyChanged(nameof(ScanSeperate));
             }
         }
@@ -1108,13 +1020,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool Seçili
     {
-        get => seçili;
+        get;
 
         set
         {
-            if (seçili != value)
+            if (field != value)
             {
-                seçili = value;
+                field = value;
                 OnPropertyChanged(nameof(Seçili));
             }
         }
@@ -1122,13 +1034,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int SeçiliResimSayısı
     {
-        get => seçiliResimSayısı;
+        get;
 
         set
         {
-            if (seçiliResimSayısı != value)
+            if (field != value)
             {
-                seçiliResimSayısı = value;
+                field = value;
                 OnPropertyChanged(nameof(SeçiliResimSayısı));
             }
         }
@@ -1136,13 +1048,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string SelectedProfile
     {
-        get => selectedProfile;
+        get;
 
         set
         {
-            if (selectedProfile != value)
+            if (field != value)
             {
-                selectedProfile = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedProfile));
             }
         }
@@ -1150,13 +1062,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string SelectedTtsLanguage
     {
-        get => selectedTtsLanguage;
+        get;
 
         set
         {
-            if (selectedTtsLanguage != value)
+            if (field != value)
             {
-                selectedTtsLanguage = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedTtsLanguage));
             }
         }
@@ -1164,13 +1076,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ShowProgress
     {
-        get => showProgress;
+        get;
 
         set
         {
-            if (showProgress != value)
+            if (field != value)
             {
-                showProgress = value;
+                field = value;
                 OnPropertyChanged(nameof(ShowProgress));
             }
         }
@@ -1178,13 +1090,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool ShowUi
     {
-        get => showUi;
+        get;
 
         set
         {
-            if (showUi != value)
+            if (field != value)
             {
-                showUi = value;
+                field = value;
                 OnPropertyChanged(nameof(ShowUi));
             }
         }
@@ -1192,55 +1104,55 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double SliceCountHeight
     {
-        get => sliceCountHeight;
+        get;
 
         set
         {
-            if (sliceCountHeight != value)
+            if (field != value)
             {
-                sliceCountHeight = value;
+                field = value;
                 OnPropertyChanged(nameof(SliceCountHeight));
             }
         }
-    }
+    } = 1;
 
     public double SliceCountWidth
     {
-        get => sliceCountWidth;
+        get;
 
         set
         {
-            if (sliceCountWidth != value)
+            if (field != value)
             {
-                sliceCountWidth = value;
+                field = value;
                 OnPropertyChanged(nameof(SliceCountWidth));
             }
         }
-    }
+    } = 2;
 
     public string SourceColor
     {
-        get => sourceColor;
+        get;
 
         set
         {
-            if (sourceColor != value)
+            if (field != value)
             {
-                sourceColor = value;
+                field = value;
                 OnPropertyChanged(nameof(SourceColor));
             }
         }
-    }
+    } = "Transparent";
 
     public IList<string> Tarayıcılar
     {
-        get => tarayıcılar;
+        get;
 
         set
         {
-            if (tarayıcılar != value)
+            if (field != value)
             {
-                tarayıcılar = value;
+                field = value;
                 OnPropertyChanged(nameof(Tarayıcılar));
             }
         }
@@ -1248,27 +1160,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string TargetColor
     {
-        get => targetColor;
+        get;
 
         set
         {
-            if (targetColor != value)
+            if (field != value)
             {
-                targetColor = value;
+                field = value;
                 OnPropertyChanged(nameof(TargetColor));
             }
         }
-    }
+    } = "Transparent";
 
     public double Threshold
     {
-        get => threshold;
+        get;
 
         set
         {
-            if (threshold != value)
+            if (field != value)
             {
-                threshold = value;
+                field = value;
                 OnPropertyChanged(nameof(Threshold));
             }
         }
@@ -1276,26 +1188,26 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public int ToolBarBwThreshold
     {
-        get => toolBarBwThreshold;
+        get;
 
         set
         {
-            if (toolBarBwThreshold != value)
+            if (field != value)
             {
-                toolBarBwThreshold = value;
+                field = value;
                 OnPropertyChanged(nameof(ToolBarBwThreshold));
             }
         }
-    }
+    } = 160;
 
     public CultureInfo UiLanguage
     {
-        get => uiLanguage;
+        get;
         set
         {
-            if (uiLanguage != value)
+            if (field != value)
             {
-                uiLanguage = value;
+                field = value;
                 OnPropertyChanged(nameof(UiLanguage));
             }
         }
@@ -1303,12 +1215,12 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool UseFilmScanner
     {
-        get => useFilmScanner;
+        get;
         set
         {
-            if (useFilmScanner != value)
+            if (field != value)
             {
-                useFilmScanner = value;
+                field = value;
                 OnPropertyChanged(nameof(UseFilmScanner));
             }
         }
@@ -1316,13 +1228,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool UseMozJpegEncoding
     {
-        get => useMozJpegEncoding;
+        get;
 
         set
         {
-            if (useMozJpegEncoding != value)
+            if (field != value)
             {
-                useMozJpegEncoding = value;
+                field = value;
                 OnPropertyChanged(nameof(UseMozJpegEncoding));
             }
         }
@@ -1330,13 +1242,13 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public bool UsePageSeperator
     {
-        get => usePageSeperator;
+        get;
 
         set
         {
-            if (usePageSeperator != value)
+            if (field != value)
             {
-                usePageSeperator = value;
+                field = value;
                 OnPropertyChanged(nameof(UsePageSeperator));
             }
         }
@@ -1344,27 +1256,27 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public string UserName
     {
-        get => userName;
+        get;
 
         set
         {
-            if (userName != value)
+            if (field != value)
             {
-                userName = value;
+                field = value;
                 OnPropertyChanged(nameof(UserName));
             }
         }
-    }
+    } = Environment.UserName;
 
     public string Watermark
     {
-        get => watermark;
+        get;
 
         set
         {
-            if (watermark != value)
+            if (field != value)
             {
-                watermark = value;
+                field = value;
                 OnPropertyChanged(nameof(Watermark));
             }
         }
@@ -1372,59 +1284,59 @@ public class Scanner : InpcBase, IDataErrorInfo
 
     public double WatermarkAngle
     {
-        get => watermarkAngle;
+        get;
 
         set
         {
-            if (watermarkAngle != value)
+            if (field != value)
             {
-                watermarkAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(WatermarkAngle));
             }
         }
-    }
+    } = 315;
 
     public SolidColorBrush WatermarkColor
     {
-        get => watermarkColor;
+        get;
 
         set
         {
-            if (watermarkColor != value)
+            if (field != value)
             {
-                watermarkColor = value;
+                field = value;
                 OnPropertyChanged(nameof(WatermarkColor));
             }
         }
-    }
+    } = Brushes.Red;
 
     public string WatermarkFont
     {
-        get => watermarkFont;
+        get;
 
         set
         {
-            if (watermarkFont != value)
+            if (field != value)
             {
-                watermarkFont = value;
+                field = value;
                 OnPropertyChanged(nameof(WatermarkFont));
             }
         }
-    }
+    } = "Arial";
 
     public double WatermarkTextSize
     {
-        get => watermarkTextSize;
+        get;
 
         set
         {
-            if (watermarkTextSize != value)
+            if (field != value)
             {
-                watermarkTextSize = value;
+                field = value;
                 OnPropertyChanged(nameof(WatermarkTextSize));
             }
         }
-    }
+    } = 64;
 
     public string this[string columnName] => columnName switch
     {

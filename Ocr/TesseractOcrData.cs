@@ -2,33 +2,28 @@
 
 public class TesseractOcrData : InpcBase
 {
-    private bool ısEnabled = true;
-    private string ocrLangName;
-    private string ocrName;
-    private double progressValue;
-
     public bool IsEnabled
     {
-        get => ısEnabled;
+        get;
 
         set
         {
-            if (ısEnabled != value)
+            if (field != value)
             {
-                ısEnabled = value;
+                field = value;
                 OnPropertyChanged(nameof(IsEnabled));
             }
         }
-    }
+    } = true;
 
     public string OcrLangName
     {
-        get => ocrLangName;
+        get;
         set
         {
-            if (ocrLangName != value)
+            if (field != value)
             {
-                ocrLangName = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrLangName));
             }
         }
@@ -36,13 +31,13 @@ public class TesseractOcrData : InpcBase
 
     public string OcrName
     {
-        get => ocrName;
+        get;
 
         set
         {
-            if (ocrName != value)
+            if (field != value)
             {
-                ocrName = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrName));
             }
         }
@@ -50,13 +45,13 @@ public class TesseractOcrData : InpcBase
 
     public double ProgressValue
     {
-        get => progressValue;
+        get;
 
         set
         {
-            if (progressValue != value)
+            if (field != value)
             {
-                progressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(ProgressValue));
             }
         }

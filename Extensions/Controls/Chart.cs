@@ -4,33 +4,29 @@ namespace Extensions;
 
 public class Chart : InpcBase
 {
-    private Brush chartBrush = Brushes.Gray;
-    private double chartValue;
-    private string description = string.Empty;
-
     public Brush ChartBrush
     {
-        get => chartBrush;
+        get;
 
         set
         {
-            if (chartBrush != value)
+            if (field != value)
             {
-                chartBrush = value;
+                field = value;
                 OnPropertyChanged(nameof(ChartBrush));
             }
         }
-    }
+    } = Brushes.Gray;
 
     public double ChartValue
     {
-        get => chartValue;
+        get;
 
         set
         {
-            if (chartValue != value)
+            if (field != value)
             {
-                chartValue = value;
+                field = value;
                 OnPropertyChanged(nameof(ChartValue));
             }
         }
@@ -38,15 +34,15 @@ public class Chart : InpcBase
 
     public string Description
     {
-        get => description;
+        get;
 
         set
         {
-            if (description != value)
+            if (field != value)
             {
-                description = value;
+                field = value;
                 OnPropertyChanged(nameof(Description));
             }
         }
-    }
+    } = string.Empty;
 }

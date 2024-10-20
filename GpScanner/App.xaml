@@ -184,7 +184,6 @@
                         SearchTextContentVisibility="Collapsed"
                         SnapTick="True" />
                     <Expander Grid.Column="2"
-                        d:IsExpanded="True"
                         ExpandDirection="Right"
                         IsExpanded="{Binding DocumentViewerPanelIsExpanded, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                         <local:TranslateView MaxWidth="400" ViewModel:ThumbnailTranslateViewModel.AttachedText="{Binding DataContext.PdfFileContent, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=2}}" />

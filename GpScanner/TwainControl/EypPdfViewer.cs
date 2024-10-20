@@ -24,8 +24,6 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 {
     public static readonly DependencyProperty EypFilePathProperty = DependencyProperty.Register("EypFilePath", typeof(string), typeof(EypPdfViewer), new PropertyMetadata(null, Changed));
     private readonly string[] eypcontentfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx", ".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip"];
-    private ObservableCollection<string> eypAttachments;
-    private ObservableCollection<string> eypNonSuportedAttachments;
 
     public EypPdfViewer()
     {
@@ -169,12 +167,12 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public ObservableCollection<string> EypAttachments
     {
-        get => eypAttachments;
+        get;
         set
         {
-            if (eypAttachments != value)
+            if (field != value)
             {
-                eypAttachments = value;
+                field = value;
                 OnPropertyChanged(nameof(EypAttachments));
             }
         }
@@ -184,12 +182,12 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     public ObservableCollection<string> EypNonSuportedAttachments
     {
-        get => eypNonSuportedAttachments;
+        get;
         set
         {
-            if (eypNonSuportedAttachments != value)
+            if (field != value)
             {
-                eypNonSuportedAttachments = value;
+                field = value;
                 OnPropertyChanged(nameof(EypNonSuportedAttachments));
             }
         }

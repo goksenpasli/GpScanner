@@ -24,13 +24,6 @@ namespace TwainControl;
 /// </summary>
 public partial class ToolBox : UserControl, INotifyPropertyChanged
 {
-    private bool autoRotate;
-    private double borderSize;
-    private bool compressImage = true;
-    private bool resizeRatioImage;
-    private PageRotation selectedRotation = PageRotation.NONE;
-    private double toolBoxPdfMergeProgressValue;
-
     public ToolBox()
     {
         InitializeComponent();
@@ -255,12 +248,12 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public bool AutoRotate
     {
-        get => autoRotate;
+        get;
         set
         {
-            if (autoRotate != value)
+            if (field != value)
             {
-                autoRotate = value;
+                field = value;
                 OnPropertyChanged(nameof(AutoRotate));
             }
         }
@@ -270,13 +263,13 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public double BorderSize
     {
-        get => borderSize;
+        get;
 
         set
         {
-            if (borderSize != value)
+            if (field != value)
             {
-                borderSize = value;
+                field = value;
                 OnPropertyChanged(nameof(BorderSize));
             }
         }
@@ -284,17 +277,17 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public bool CompressImage
     {
-        get => compressImage;
+        get;
 
         set
         {
-            if (compressImage != value)
+            if (field != value)
             {
-                compressImage = value;
+                field = value;
                 OnPropertyChanged(nameof(CompressImage));
             }
         }
-    }
+    } = true;
 
     public ICommand InvertImage { get; }
 
@@ -308,13 +301,13 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public bool ResizeRatioImage
     {
-        get => resizeRatioImage;
+        get;
 
         set
         {
-            if (resizeRatioImage != value)
+            if (field != value)
             {
-                resizeRatioImage = value;
+                field = value;
                 OnPropertyChanged(nameof(ResizeRatioImage));
             }
         }
@@ -322,16 +315,16 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public PageRotation SelectedRotation
     {
-        get => selectedRotation;
+        get;
         set
         {
-            if (selectedRotation != value)
+            if (field != value)
             {
-                selectedRotation = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedRotation));
             }
         }
-    }
+    } = PageRotation.NONE;
 
     public ICommand SetWatermark { get; }
 
@@ -341,13 +334,13 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     public double ToolBoxPdfMergeProgressValue
     {
-        get => toolBoxPdfMergeProgressValue;
+        get;
 
         set
         {
-            if (toolBoxPdfMergeProgressValue != value)
+            if (field != value)
             {
-                toolBoxPdfMergeProgressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(ToolBoxPdfMergeProgressValue));
             }
         }

@@ -56,16 +56,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty WholeWordProperty = DependencyProperty.Register("WholeWord", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty ZoomEnabledProperty = DependencyProperty.Register("ZoomEnabled", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
-    private bool autoFitContent;
     private bool disposedValue;
-    private IEnumerable<int> pages;
-    private PdfBookmarkCollection pdfBookmarks;
-    private ObservableCollection<PdfMatch> pdfMatches;
-    private string pdfTextContent;
     private ScrollViewer scrollvwr;
-    private PdfMatch searchPdfMatch;
-    private string searchTextContent;
-    private int toplamSayfa;
 
     static PdfViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer))); }
 
@@ -174,6 +166,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
         ZoomDecrease = new RelayCommand<object>(parameter => Zoom = Math.Max(MinZoom, Zoom - ZoomIncreaseLevel), parameter => true);
 
+        PageIncrease = new RelayCommand<object>(parameter => Sayfa = Math.Min(ToplamSayfa, Sayfa + 1), parameter => Sayfa < ToplamSayfa);
+
+        PageDecrease = new RelayCommand<object>(parameter => Sayfa = Math.Max(0, Sayfa - 1), parameter => Sayfa > 1);
+
         ReadPdfText = new RelayCommand<object>(
             parameter =>
             {
@@ -228,13 +224,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public bool AutoFitContent
     {
-        get => autoFitContent;
+        get;
 
         set
         {
-            if (autoFitContent != value)
+            if (field != value)
             {
-                autoFitContent = value;
+                field = value;
                 OnPropertyChanged(nameof(AutoFitContent));
             }
         }
@@ -264,16 +260,20 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public FitImageOrientation Orientation { get => (FitImageOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
+    public RelayCommand<object> PageDecrease { get; }
+
+    public RelayCommand<object> PageIncrease { get; }
+
     [Browsable(false)]
     public IEnumerable<int> Pages
     {
-        get => pages;
+        get;
 
         set
         {
-            if (pages != value)
+            if (field != value)
             {
-                pages = value;
+                field = value;
                 OnPropertyChanged(nameof(Pages));
             }
         }
@@ -281,13 +281,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public PdfBookmarkCollection PdfBookmarks
     {
-        get => pdfBookmarks;
+        get;
 
         set
         {
-            if (pdfBookmarks != value)
+            if (field != value)
             {
-                pdfBookmarks = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfBookmarks));
             }
         }
@@ -297,13 +297,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ObservableCollection<PdfMatch> PdfMatches
     {
-        get => pdfMatches;
+        get;
 
         set
         {
-            if (pdfMatches != value)
+            if (field != value)
             {
-                pdfMatches = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfMatches));
             }
         }
@@ -311,13 +311,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public string PdfTextContent
     {
-        get => pdfTextContent;
+        get;
 
         set
         {
-            if (pdfTextContent != value)
+            if (field != value)
             {
-                pdfTextContent = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfTextContent));
             }
         }
@@ -347,13 +347,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public PdfMatch SearchPdfMatch
     {
-        get => searchPdfMatch;
+        get;
 
         set
         {
-            if (searchPdfMatch != value)
+            if (field != value)
             {
-                searchPdfMatch = value;
+                field = value;
                 OnPropertyChanged(nameof(SearchPdfMatch));
             }
         }
@@ -363,13 +363,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public string SearchTextContent
     {
-        get => searchTextContent;
+        get;
 
         set
         {
-            if (searchTextContent != value)
+            if (field != value)
             {
-                searchTextContent = value;
+                field = value;
                 OnPropertyChanged(nameof(SearchTextContent));
             }
         }
@@ -390,13 +390,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     [Browsable(false)]
     public int ToplamSayfa
     {
-        get => toplamSayfa;
+        get;
 
         set
         {
-            if (toplamSayfa != value)
+            if (field != value)
             {
-                toplamSayfa = value;
+                field = value;
                 OnPropertyChanged(nameof(ToplamSayfa));
             }
         }

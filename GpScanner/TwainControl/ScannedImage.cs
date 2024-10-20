@@ -10,27 +10,17 @@ namespace TwainControl;
 
 public class ScannedImage : InpcBase
 {
-    private bool animate;
-    private string filePath;
-    private double flipAngle;
-    private int ındex;
-    private BitmapFrame resim;
-    private BitmapSource resimThumb;
-    private double rotationAngle;
-    private SolidColorBrush scannedImageNotifyBrush;
-    private bool seçili;
-
     public ScannedImage() { PropertyChanged += ScannedImage_PropertyChangedAsync; }
 
     public bool Animate
     {
-        get => animate;
+        get;
 
         set
         {
-            if (animate != value)
+            if (field != value)
             {
-                animate = value;
+                field = value;
                 OnPropertyChanged(nameof(Animate));
             }
         }
@@ -38,13 +28,13 @@ public class ScannedImage : InpcBase
 
     public string FilePath
     {
-        get => filePath;
+        get;
 
         set
         {
-            if (filePath != value)
+            if (field != value)
             {
-                filePath = value;
+                field = value;
                 OnPropertyChanged(nameof(FilePath));
             }
         }
@@ -52,12 +42,12 @@ public class ScannedImage : InpcBase
 
     public double FlipAngle
     {
-        get => flipAngle;
+        get;
         set
         {
-            if (flipAngle != value)
+            if (field != value)
             {
-                flipAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(FlipAngle));
             }
         }
@@ -65,29 +55,29 @@ public class ScannedImage : InpcBase
 
     public int Index
     {
-        get => ındex;
+        get;
 
         set
         {
-            if (ındex == value)
+            if (field == value)
             {
                 return;
             }
 
-            ındex = value;
+            field = value;
             OnPropertyChanged(nameof(Index));
         }
     }
 
     public BitmapFrame Resim
     {
-        get => resim;
+        get;
 
         set
         {
-            if (resim != value)
+            if (field != value)
             {
-                resim = value;
+                field = value;
                 OnPropertyChanged(nameof(Resim));
             }
         }
@@ -95,13 +85,13 @@ public class ScannedImage : InpcBase
 
     public BitmapSource ResimThumb
     {
-        get => resimThumb;
+        get;
 
         set
         {
-            if (resimThumb != value)
+            if (field != value)
             {
-                resimThumb = value;
+                field = value;
                 OnPropertyChanged(nameof(ResimThumb));
             }
         }
@@ -109,13 +99,13 @@ public class ScannedImage : InpcBase
 
     public double RotationAngle
     {
-        get => rotationAngle;
+        get;
 
         set
         {
-            if (rotationAngle != value)
+            if (field != value)
             {
-                rotationAngle = value;
+                field = value;
                 OnPropertyChanged(nameof(RotationAngle));
             }
         }
@@ -123,12 +113,12 @@ public class ScannedImage : InpcBase
 
     public SolidColorBrush ScannedImageNotifyBrush
     {
-        get => scannedImageNotifyBrush;
+        get;
         set
         {
-            if (scannedImageNotifyBrush != value)
+            if (field != value)
             {
-                scannedImageNotifyBrush = value;
+                field = value;
                 OnPropertyChanged(nameof(ScannedImageNotifyBrush));
             }
         }
@@ -136,13 +126,13 @@ public class ScannedImage : InpcBase
 
     public bool Seçili
     {
-        get => seçili;
+        get;
 
         set
         {
-            if (seçili != value)
+            if (field != value)
             {
-                seçili = value;
+                field = value;
                 OnPropertyChanged(nameof(Seçili));
             }
         }

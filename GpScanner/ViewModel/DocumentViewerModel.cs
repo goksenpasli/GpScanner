@@ -17,10 +17,6 @@ namespace GpScanner.ViewModel;
 
 public class DocumentViewerModel : InpcBase
 {
-    private IEnumerable<string> directoryAllPdfFiles;
-    private string filePath;
-    private int ındex;
-    private string pdfFileContent;
     private string title;
 
     public DocumentViewerModel(IScannerService scannerService, IFileService fileService)
@@ -77,13 +73,13 @@ public class DocumentViewerModel : InpcBase
 
     public IEnumerable<string> DirectoryAllPdfFiles
     {
-        get => directoryAllPdfFiles;
+        get;
 
         set
         {
-            if (directoryAllPdfFiles != value)
+            if (field != value)
             {
-                directoryAllPdfFiles = value;
+                field = value;
                 OnPropertyChanged(nameof(DirectoryAllPdfFiles));
             }
         }
@@ -91,13 +87,13 @@ public class DocumentViewerModel : InpcBase
 
     public string FilePath
     {
-        get => filePath;
+        get;
 
         set
         {
-            if (filePath != value)
+            if (field != value)
             {
-                filePath = value;
+                field = value;
                 OnPropertyChanged(nameof(FilePath));
                 OnPropertyChanged(nameof(Title));
             }
@@ -108,13 +104,13 @@ public class DocumentViewerModel : InpcBase
 
     public int Index
     {
-        get => ındex;
+        get;
 
         set
         {
-            if (ındex != value)
+            if (field != value)
             {
-                ındex = value;
+                field = value;
                 OnPropertyChanged(nameof(Index));
             }
         }
@@ -122,13 +118,13 @@ public class DocumentViewerModel : InpcBase
 
     public string PdfFileContent
     {
-        get => pdfFileContent;
+        get;
 
         set
         {
-            if (pdfFileContent != value)
+            if (field != value)
             {
-                pdfFileContent = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfFileContent));
             }
         }

@@ -20,19 +20,6 @@ namespace TwainControl;
 public partial class DrawControl : UserControl, INotifyPropertyChanged
 {
     public static readonly DependencyProperty TemporaryImageProperty = DependencyProperty.Register("TemporaryImage", typeof(ImageSource), typeof(DrawControl), new PropertyMetadata(null));
-    private bool drawControlContextMenu;
-    private Cursor drawCursor;
-    private Ellipse ellipse = new();
-    private bool highlighter;
-    private bool ıgnorePressure;
-    private bool @lock = true;
-    private Rectangle rectangle = new();
-    private SolidColorBrush selectedBrush;
-    private string selectedColor = "Black";
-    private StylusTip selectedStylus = StylusTip.Ellipse;
-    private bool silentApply;
-    private bool smooth;
-    private double stylusHeight = 3d;
     private double stylusWidth = 3d;
 
     public DrawControl()
@@ -86,13 +73,13 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public bool DrawControlContextMenu
     {
-        get => drawControlContextMenu;
+        get;
 
         set
         {
-            if (drawControlContextMenu != value)
+            if (field != value)
             {
-                drawControlContextMenu = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawControlContextMenu));
             }
         }
@@ -100,13 +87,13 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public Cursor DrawCursor
     {
-        get => drawCursor;
+        get;
 
         set
         {
-            if (drawCursor != value)
+            if (field != value)
             {
-                drawCursor = value;
+                field = value;
                 OnPropertyChanged(nameof(DrawCursor));
             }
         }
@@ -114,29 +101,29 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public Ellipse Ellipse
     {
-        get => ellipse;
+        get;
 
         set
         {
-            if (ellipse != value)
+            if (field != value)
             {
-                ellipse = value;
+                field = value;
                 OnPropertyChanged(nameof(Ellipse));
             }
         }
-    }
+    } = new();
 
     public RelayCommand<object> FitImage { get; }
 
     public bool Highlighter
     {
-        get => highlighter;
+        get;
 
         set
         {
-            if (highlighter != value)
+            if (field != value)
             {
-                highlighter = value;
+                field = value;
                 OnPropertyChanged(nameof(Highlighter));
             }
         }
@@ -144,13 +131,13 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public bool IgnorePressure
     {
-        get => ıgnorePressure;
+        get;
 
         set
         {
-            if (ıgnorePressure != value)
+            if (field != value)
             {
-                ıgnorePressure = value;
+                field = value;
                 OnPropertyChanged(nameof(IgnorePressure));
             }
         }
@@ -158,43 +145,43 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public bool Lock
     {
-        get => @lock;
+        get;
 
         set
         {
-            if (@lock != value)
+            if (field != value)
             {
-                @lock = value;
+                field = value;
                 OnPropertyChanged(nameof(Lock));
             }
         }
-    }
+    } = true;
 
     public Rectangle Rectangle
     {
-        get => rectangle;
+        get;
 
         set
         {
-            if (rectangle != value)
+            if (field != value)
             {
-                rectangle = value;
+                field = value;
                 OnPropertyChanged(nameof(Rectangle));
             }
         }
-    }
+    } = new();
 
     public RelayCommand<object> SaveEditedImage { get; }
 
     public SolidColorBrush SelectedBrush
     {
-        get => selectedBrush;
+        get;
 
         set
         {
-            if (selectedBrush != value)
+            if (field != value)
             {
-                selectedBrush = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedBrush));
             }
         }
@@ -202,44 +189,44 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public string SelectedColor
     {
-        get => selectedColor;
+        get;
 
         set
         {
-            if (selectedColor != value)
+            if (field != value)
             {
-                selectedColor = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedColor));
                 OnPropertyChanged(nameof(StylusHeight));
                 OnPropertyChanged(nameof(stylusWidth));
             }
         }
-    }
+    } = "Black";
 
     public StylusTip SelectedStylus
     {
-        get => selectedStylus;
+        get;
 
         set
         {
-            if (selectedStylus != value)
+            if (field != value)
             {
-                selectedStylus = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedStylus));
                 OnPropertyChanged(nameof(StylusHeight));
                 OnPropertyChanged(nameof(stylusWidth));
             }
         }
-    }
+    } = StylusTip.Ellipse;
 
     public bool SilentApply
     {
-        get => silentApply;
+        get;
         set
         {
-            if (silentApply != value)
+            if (field != value)
             {
-                silentApply = value;
+                field = value;
                 OnPropertyChanged(nameof(SilentApply));
             }
         }
@@ -247,13 +234,13 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public bool Smooth
     {
-        get => smooth;
+        get;
 
         set
         {
-            if (smooth != value)
+            if (field != value)
             {
-                smooth = value;
+                field = value;
                 OnPropertyChanged(nameof(Smooth));
             }
         }
@@ -261,17 +248,17 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public double StylusHeight
     {
-        get => stylusHeight;
+        get;
 
         set
         {
-            if (stylusHeight != value)
+            if (field != value)
             {
-                stylusHeight = value;
+                field = value;
                 OnPropertyChanged(nameof(StylusHeight));
             }
         }
-    }
+    } = 3d;
 
     public double StylusWidth
     {

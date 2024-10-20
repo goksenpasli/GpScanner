@@ -35,7 +35,6 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
     private readonly List<string> imagefileextensions = [".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
-    private double compressionProgress;
     private ListBox listbox;
 
     static Compressor() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor))); }
@@ -122,13 +121,13 @@ public class Compressor : Control, INotifyPropertyChanged
 
     public double CompressionProgress
     {
-        get => compressionProgress;
+        get;
 
         set
         {
-            if (compressionProgress != value)
+            if (field != value)
             {
-                compressionProgress = value;
+                field = value;
                 OnPropertyChanged(nameof(CompressionProgress));
                 OnProgressChanged(CompressionProgress);
             }

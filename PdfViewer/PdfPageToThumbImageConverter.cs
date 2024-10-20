@@ -11,21 +11,19 @@ namespace PdfViewer;
 
 public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverter
 {
-    private int dpi = 20;
-
     public int Dpi
     {
-        get => dpi;
+        get;
 
         set
         {
-            if (dpi != value)
+            if (field != value)
             {
-                dpi = value;
+                field = value;
                 OnPropertyChanged(nameof(Dpi));
             }
         }
-    }
+    } = 20;
 
     public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
     {

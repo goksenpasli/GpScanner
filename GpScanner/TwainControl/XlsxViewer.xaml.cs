@@ -1,10 +1,13 @@
 ﻿using ExcelDataReader;
+using Extensions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,28 +21,49 @@ namespace TwainControl
     public partial class XlsxViewer : UserControl, INotifyPropertyChanged
     {
         public static readonly DependencyProperty XlsxDataFilePathProperty = DependencyProperty.Register("XlsxDataFilePath", typeof(string), typeof(XlsxViewer), new PropertyMetadata(null, XlsxDataFilePathChanged));
-        private double progress;
-        private string search;
-        private DataTable selectedTable;
-        private DataTableCollection tablolar;
 
         public XlsxViewer()
         {
             InitializeComponent();
             DataContext = this;
             PropertyChanged += XlsxViewer_PropertyChanged;
+            CopyRows = new RelayCommand<object>(
+                parameter =>
+                {
+                    IList selectedItems = parameter as IList;
+                    StringBuilder stringBuilder = new();
+                    foreach (DataRowView item in selectedItems)
+                    {
+                        _ = stringBuilder.AppendLine(string.Join("\t", item.Row.ItemArray));
+                    }
+                    try
+                    {
+                        Clipboard.SetText(stringBuilder.ToString());
+                    }
+                    catch (COMException ex)
+                    {
+                        const uint CLIPBRD_E_CANT_OPEN = 0x800401D0;
+                        if ((uint)ex.ErrorCode != CLIPBRD_E_CANT_OPEN)
+                        {
+                            throw;
+                        }
+                    }
+                },
+                parameter => parameter is IList selecteditems && selecteditems?.Count > 0);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        public RelayCommand<object> CopyRows { get; }
+
         public double Progress
         {
-            get => progress;
+            get;
             set
             {
-                if (progress != value)
+                if (field != value)
                 {
-                    progress = value;
+                    field = value;
                     OnPropertyChanged(nameof(Progress));
                 }
             }
@@ -47,12 +71,12 @@ namespace TwainControl
 
         public string Search
         {
-            get => search;
+            get;
             set
             {
-                if (search != value)
+                if (field != value)
                 {
-                    search = value;
+                    field = value;
                     OnPropertyChanged(nameof(Search));
                 }
             }
@@ -60,13 +84,13 @@ namespace TwainControl
 
         public DataTable SelectedTable
         {
-            get => selectedTable;
+            get;
 
             set
             {
-                if (selectedTable != value)
+                if (field != value)
                 {
-                    selectedTable = value;
+                    field = value;
 
                     OnPropertyChanged(nameof(SelectedTable));
                 }
@@ -75,13 +99,13 @@ namespace TwainControl
 
         public DataTableCollection Tablolar
         {
-            get => tablolar;
+            get;
 
             set
             {
-                if (tablolar != value)
+                if (field != value)
                 {
-                    tablolar = value;
+                    field = value;
                     OnPropertyChanged(nameof(Tablolar));
                 }
             }

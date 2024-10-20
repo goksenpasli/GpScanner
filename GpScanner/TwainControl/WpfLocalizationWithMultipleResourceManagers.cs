@@ -89,7 +89,6 @@ public class Translation : DependencyObject
 public class TranslationSource : INotifyPropertyChanged
 {
     private readonly Dictionary<string, ResourceManager> resourceManagerDictionary = [];
-    private CultureInfo currentCulture = CultureInfo.InstalledUICulture;
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -97,18 +96,18 @@ public class TranslationSource : INotifyPropertyChanged
 
     public CultureInfo CurrentCulture
     {
-        get => currentCulture;
+        get;
 
         set
         {
-            if (currentCulture != value)
+            if (field != value)
             {
-                currentCulture = value;
+                field = value;
 
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty));
             }
         }
-    }
+    } = CultureInfo.InstalledUICulture;
 
     public string this[string key]
     {
@@ -118,7 +117,7 @@ public class TranslationSource : INotifyPropertyChanged
             if (resourceManagerDictionary.ContainsKey(SplitName(key).Item1))
             {
                 translation = resourceManagerDictionary[SplitName(key).Item1]
-                    .GetString(SplitName(key).Item2, currentCulture);
+                    .GetString(SplitName(key).Item2, CurrentCulture);
             }
 
             return translation ?? key;

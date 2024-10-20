@@ -48,18 +48,17 @@ namespace GpScanner.ViewModel
             { "UZBEK", "Flag_of_Uzbekistan.png" },
         };
         private const string basePath = "pack://application:,,,/GpScanner;component/Resources/";
-        private Uri flagUri;
 
         public SplashViewModel() { FlagUri = GetFlag(Settings.Default.DefaultLang); }
 
         public Uri FlagUri
         {
-            get => flagUri;
+            get;
             set
             {
-                if (flagUri != value)
+                if (field != value)
                 {
-                    flagUri = value;
+                    field = value;
                     OnPropertyChanged(nameof(FlagUri));
                 }
             }

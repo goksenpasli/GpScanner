@@ -48,14 +48,6 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     private double _startRotateY;
     private Viewport3D _viewport;
     private bool disposedValue;
-    private Visibility openButtonVisibility = Visibility.Collapsed;
-    private IEnumerable<int> pages;
-    private Visibility panoramaButtonVisibility;
-    private Visibility printButtonVisibility = Visibility.Collapsed;
-    private int sayfa = 1;
-    private TiffBitmapDecoder tiffdecoder;
-    private Visibility tifNavigasyonButtonEtkin = Visibility.Collapsed;
-    private bool toolBarIsEnabled = true;
 
     static ImageViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ImageViewer), new FrameworkPropertyMetadata(typeof(ImageViewer))); }
 
@@ -160,17 +152,17 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public Visibility OpenButtonVisibility
     {
-        get => openButtonVisibility;
+        get;
 
         set
         {
-            if (openButtonVisibility != value)
+            if (field != value)
             {
-                openButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(OpenButtonVisibility));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public FitImageOrientation Orientation { get => (FitImageOrientation)GetValue(OrientationProperty); set => SetValue(OrientationProperty, value); }
 
@@ -181,13 +173,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     [Browsable(false)]
     public IEnumerable<int> Pages
     {
-        get => pages;
+        get;
 
         set
         {
-            if (pages != value)
+            if (field != value)
             {
-                pages = value;
+                field = value;
                 OnPropertyChanged(nameof(Pages));
             }
         }
@@ -195,13 +187,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public Visibility PanoramaButtonVisibility
     {
-        get => panoramaButtonVisibility;
+        get;
 
         set
         {
-            if (panoramaButtonVisibility != value)
+            if (field != value)
             {
-                panoramaButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(PanoramaButtonVisibility));
             }
         }
@@ -211,17 +203,17 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public Visibility PrintButtonVisibility
     {
-        get => printButtonVisibility;
+        get;
 
         set
         {
-            if (printButtonVisibility != value)
+            if (field != value)
             {
-                printButtonVisibility = value;
+                field = value;
                 OnPropertyChanged(nameof(PrintButtonVisibility));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public int PrintDpi { get => (int)GetValue(PrintDpiProperty); set => SetValue(PrintDpiProperty, value); }
 
@@ -235,17 +227,17 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public int Sayfa
     {
-        get => sayfa;
+        get;
 
         set
         {
-            if (sayfa != value)
+            if (field != value)
             {
-                sayfa = value;
+                field = value;
                 OnPropertyChanged(nameof(Sayfa));
             }
         }
-    }
+    } = 1;
 
     public bool SnapTick { get => (bool)GetValue(SnapTickProperty); set => SetValue(SnapTickProperty, value); }
 
@@ -256,13 +248,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     [Browsable(false)]
     public TiffBitmapDecoder TiffDecoder
     {
-        get => tiffdecoder;
+        get;
 
         set
         {
-            if (tiffdecoder != value)
+            if (field != value)
             {
-                tiffdecoder = value;
+                field = value;
                 OnPropertyChanged(nameof(TiffDecoder));
             }
         }
@@ -270,31 +262,31 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public Visibility TifNavigasyonButtonEtkin
     {
-        get => tifNavigasyonButtonEtkin;
+        get;
 
         set
         {
-            if (tifNavigasyonButtonEtkin != value)
+            if (field != value)
             {
-                tifNavigasyonButtonEtkin = value;
+                field = value;
                 OnPropertyChanged(nameof(TifNavigasyonButtonEtkin));
             }
         }
-    }
+    } = Visibility.Collapsed;
 
     public bool ToolBarIsEnabled
     {
-        get => toolBarIsEnabled;
+        get;
 
         set
         {
-            if (toolBarIsEnabled != value)
+            if (field != value)
             {
-                toolBarIsEnabled = value;
+                field = value;
                 OnPropertyChanged(nameof(ToolBarIsEnabled));
             }
         }
-    }
+    } = true;
 
     public Visibility ToolBarVisibility { get => (Visibility)GetValue(ToolBarVisibilityProperty); set => SetValue(ToolBarVisibilityProperty, value); }
 

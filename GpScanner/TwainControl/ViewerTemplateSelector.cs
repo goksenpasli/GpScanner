@@ -16,13 +16,13 @@ namespace TwainControl
 
         public DataTemplate Img { get; set; }
 
+        public DataTemplate Jb2 { get; set; }
+
         public DataTemplate Pdf { get; set; }
 
         public DataTemplate Vid { get; set; }
 
         public DataTemplate Webp { get; set; }
-
-        public DataTemplate Jb2 { get; set; }
 
         public DataTemplate Xlsx { get; set; }
 

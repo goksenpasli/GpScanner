@@ -17,13 +17,6 @@ namespace Extensions
         public static readonly DependencyProperty ContributionsProperty = DependencyProperty.Register("Contributions", typeof(ObservableCollection<ContributionData>), typeof(ContributionControl), new PropertyMetadata(null, Changed));
         public static readonly DependencyProperty SelectedContributionProperty = DependencyProperty.Register("SelectedContribution", typeof(ContributionData), typeof(ContributionControl), new PropertyMetadata(null));
         public static readonly DependencyProperty ZeroContributionColorProperty = DependencyProperty.Register("ZeroContributionColor", typeof(Color), typeof(ContributionControl), new PropertyMetadata(Colors.Gray));
-        private IEnumerable<string> days;
-        private int maxContribution;
-        private int? monthDateTotalContribution;
-        private IEnumerable<string> months;
-        private int? monthTotalContribution;
-        private string selectedDay;
-        private string selectedMonth;
 
         static ContributionControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ContributionControl), new FrameworkPropertyMetadata(typeof(ContributionControl))); }
 
@@ -66,12 +59,12 @@ namespace Extensions
         [Browsable(false)]
         public IEnumerable<string> Days
         {
-            get => days;
+            get;
             set
             {
-                if (days != value)
+                if (field != value)
                 {
-                    days = value;
+                    field = value;
                     OnPropertyChanged(nameof(Days));
                 }
             }
@@ -80,12 +73,12 @@ namespace Extensions
         [Browsable(false)]
         public int MaxContribution
         {
-            get => maxContribution;
+            get;
             set
             {
-                if (maxContribution != value)
+                if (field != value)
                 {
-                    maxContribution = value;
+                    field = value;
                     OnPropertyChanged(nameof(MaxContribution));
                 }
             }
@@ -95,13 +88,13 @@ namespace Extensions
 
         public int? MonthDateTotalContribution
         {
-            get => monthDateTotalContribution;
+            get;
 
             set
             {
-                if (monthDateTotalContribution != value)
+                if (field != value)
                 {
-                    monthDateTotalContribution = value;
+                    field = value;
                     OnPropertyChanged(nameof(MonthDateTotalContribution));
                 }
             }
@@ -110,12 +103,12 @@ namespace Extensions
         [Browsable(false)]
         public IEnumerable<string> Months
         {
-            get => months;
+            get;
             set
             {
-                if (months != value)
+                if (field != value)
                 {
-                    months = value;
+                    field = value;
                     OnPropertyChanged(nameof(Months));
                 }
             }
@@ -124,12 +117,12 @@ namespace Extensions
         [Browsable(false)]
         public int? MonthTotalContribution
         {
-            get => monthTotalContribution;
+            get;
             set
             {
-                if (monthTotalContribution != value)
+                if (field != value)
                 {
-                    monthTotalContribution = value;
+                    field = value;
                     OnPropertyChanged(nameof(MonthTotalContribution));
                 }
             }
@@ -142,12 +135,12 @@ namespace Extensions
         [Browsable(false)]
         public string SelectedDay
         {
-            get => selectedDay;
+            get;
             set
             {
-                if (selectedDay != value)
+                if (field != value)
                 {
-                    selectedDay = value;
+                    field = value;
                     OnPropertyChanged(nameof(SelectedDay));
                 }
             }
@@ -156,12 +149,12 @@ namespace Extensions
         [Browsable(false)]
         public string SelectedMonth
         {
-            get => selectedMonth;
+            get;
             set
             {
-                if (selectedMonth != value)
+                if (field != value)
                 {
-                    selectedMonth = value;
+                    field = value;
                     OnPropertyChanged(nameof(SelectedMonth));
                 }
             }

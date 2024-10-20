@@ -26,20 +26,7 @@ namespace DvdBurner
         private static Task Burntask;
         private static Task Erasetask;
         private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
-        private string actionText;
-        private SolidColorBrush actionTextForeground = Brushes.Black;
-        private string cdLabel = DateTime.Now.ToString();
-        private long discMaxSize = (int)DiscSizes.CD;
-        private Dictionary<string, string> drives;
-        private bool eject = true;
-        private bool ısCdWriterAvailable = true;
         private ListBox lb;
-        private Brush progressForegroundBrush;
-        private bool progressIndeterminate;
-        private double progressValue;
-        private DiscSizes selectedDiscSize = DiscSizes.CD;
-        private dynamic selectedDrive;
-        private long totalFileSize;
 
         static Burner() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner))); }
 
@@ -222,13 +209,13 @@ namespace DvdBurner
 
         public string ActionText
         {
-            get => actionText;
+            get;
 
             set
             {
-                if (actionText != value)
+                if (field != value)
                 {
-                    actionText = value;
+                    field = value;
                     OnPropertyChanged(nameof(ActionText));
                 }
             }
@@ -236,55 +223,55 @@ namespace DvdBurner
 
         public SolidColorBrush ActionTextForeground
         {
-            get => actionTextForeground;
+            get;
 
             set
             {
-                if (actionTextForeground != value)
+                if (field != value)
                 {
-                    actionTextForeground = value;
+                    field = value;
                     OnPropertyChanged(nameof(ActionTextForeground));
                 }
             }
-        }
+        } = Brushes.Black;
 
         public RelayCommand<object> BurnDvd { get; }
 
         public string CdLabel
         {
-            get => cdLabel;
+            get;
 
             set
             {
-                if (cdLabel != value)
+                if (field != value)
                 {
-                    cdLabel = value;
+                    field = value;
                     OnPropertyChanged(nameof(CdLabel));
                 }
             }
-        }
+        } = DateTime.Now.ToString();
 
         public long DiscMaxSize
         {
-            get => discMaxSize;
+            get;
             set
             {
-                if (discMaxSize != value)
+                if (field != value)
                 {
-                    discMaxSize = value;
+                    field = value;
                     OnPropertyChanged(nameof(DiscMaxSize));
                 }
             }
-        }
+        } = (int)DiscSizes.CD;
 
         public Dictionary<string, string> Drives
         {
-            get => drives;
+            get;
             set
             {
-                if (drives != value)
+                if (field != value)
                 {
-                    drives = value;
+                    field = value;
                     OnPropertyChanged(nameof(Drives));
                 }
             }
@@ -292,17 +279,17 @@ namespace DvdBurner
 
         public bool Eject
         {
-            get => eject;
+            get;
 
             set
             {
-                if (eject != value)
+                if (field != value)
                 {
-                    eject = value;
+                    field = value;
                     OnPropertyChanged(nameof(Eject));
                 }
             }
-        }
+        } = true;
 
         public RelayCommand<object> EraseDvd { get; }
 
@@ -312,25 +299,25 @@ namespace DvdBurner
 
         public bool IsCdWriterAvailable
         {
-            get => ısCdWriterAvailable;
+            get;
             set
             {
-                if (ısCdWriterAvailable != value)
+                if (field != value)
                 {
-                    ısCdWriterAvailable = value;
+                    field = value;
                     OnPropertyChanged(nameof(IsCdWriterAvailable));
                 }
             }
-        }
+        } = true;
 
         public Brush ProgressForegroundBrush
         {
-            get => progressForegroundBrush;
+            get;
             set
             {
-                if (progressForegroundBrush != value)
+                if (field != value)
                 {
-                    progressForegroundBrush = value;
+                    field = value;
                     OnPropertyChanged(nameof(ProgressForegroundBrush));
                 }
             }
@@ -338,13 +325,13 @@ namespace DvdBurner
 
         public bool ProgressIndeterminate
         {
-            get => progressIndeterminate;
+            get;
 
             set
             {
-                if (progressIndeterminate != value)
+                if (field != value)
                 {
-                    progressIndeterminate = value;
+                    field = value;
                     OnPropertyChanged(nameof(ProgressIndeterminate));
                 }
             }
@@ -352,13 +339,13 @@ namespace DvdBurner
 
         public double ProgressValue
         {
-            get => progressValue;
+            get;
 
             set
             {
-                if (progressValue != value)
+                if (field != value)
                 {
-                    progressValue = value;
+                    field = value;
                     OnPropertyChanged(nameof(ProgressValue));
                 }
             }
@@ -372,25 +359,25 @@ namespace DvdBurner
 
         public DiscSizes SelectedDiscSize
         {
-            get => selectedDiscSize;
+            get;
             set
             {
-                if (selectedDiscSize != value)
+                if (field != value)
                 {
-                    selectedDiscSize = value;
+                    field = value;
                     OnPropertyChanged(nameof(SelectedDiscSize));
                 }
             }
-        }
+        } = DiscSizes.CD;
 
         public dynamic SelectedDrive
         {
-            get => selectedDrive;
+            get;
             set
             {
-                if (selectedDrive != value)
+                if (field != value)
                 {
-                    selectedDrive = value;
+                    field = value;
                     OnPropertyChanged(nameof(SelectedDrive));
                 }
             }
@@ -398,12 +385,12 @@ namespace DvdBurner
 
         public long TotalFileSize
         {
-            get => totalFileSize;
+            get;
             set
             {
-                if (totalFileSize != value)
+                if (field != value)
                 {
-                    totalFileSize = value;
+                    field = value;
                     OnPropertyChanged(nameof(TotalFileSize));
                 }
             }

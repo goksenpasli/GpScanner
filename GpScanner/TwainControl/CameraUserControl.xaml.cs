@@ -16,13 +16,6 @@ namespace TwainControl;
 /// </summary>
 public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 {
-    private bool detectQRCode;
-    private CapDevice device;
-    private FilterInfo[] liste = CapDevice.DeviceMonikers;
-    private byte[] resimData;
-    private double rotation = 180;
-    private FilterInfo seçiliKamera;
-
     public CameraUserControl()
     {
         InitializeComponent();
@@ -52,13 +45,13 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public bool DetectQRCode
     {
-        get => detectQRCode;
+        get;
 
         set
         {
-            if (detectQRCode != value)
+            if (field != value)
             {
-                detectQRCode = value;
+                field = value;
                 OnPropertyChanged(nameof(DetectQRCode));
             }
         }
@@ -66,13 +59,13 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public CapDevice Device
     {
-        get => device;
+        get;
 
         set
         {
-            if (device != value)
+            if (field != value)
             {
-                device = value;
+                field = value;
                 OnPropertyChanged(nameof(Device));
             }
         }
@@ -86,29 +79,29 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public FilterInfo[] Liste
     {
-        get => liste;
+        get;
 
         set
         {
-            if (liste != value)
+            if (field != value)
             {
-                liste = value;
+                field = value;
                 OnPropertyChanged(nameof(Liste));
             }
         }
-    }
+    } = CapDevice.DeviceMonikers;
 
     public ICommand Oynat { get; }
 
     public byte[] ResimData
     {
-        get => resimData;
+        get;
 
         set
         {
-            if (resimData != value)
+            if (field != value)
             {
-                resimData = value;
+                field = value;
                 OnPropertyChanged(nameof(ResimData));
             }
         }
@@ -116,27 +109,27 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public double Rotation
     {
-        get => rotation;
+        get;
 
         set
         {
-            if (rotation != value)
+            if (field != value)
             {
-                rotation = value;
+                field = value;
                 OnPropertyChanged(nameof(Rotation));
             }
         }
-    }
+    } = 180;
 
     public FilterInfo SeçiliKamera
     {
-        get => seçiliKamera;
+        get;
 
         set
         {
-            if (seçiliKamera != value)
+            if (field != value)
             {
-                seçiliKamera = value;
+                field = value;
                 OnPropertyChanged(nameof(SeçiliKamera));
             }
         }

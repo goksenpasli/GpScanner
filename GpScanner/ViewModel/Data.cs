@@ -6,34 +6,29 @@ namespace GpScanner.ViewModel;
 
 public class Data : InpcBase
 {
-    private string fileContent = string.Empty;
-    private string fileName;
-    private int ıd;
-    private string qrData;
-
     public string FileContent
     {
-        get => fileContent;
+        get;
 
         set
         {
-            if (fileContent != value)
+            if (field != value)
             {
-                fileContent = value;
+                field = value;
                 OnPropertyChanged(nameof(FileContent));
             }
         }
-    }
+    } = string.Empty;
 
     public string FileName
     {
-        get => fileName;
+        get;
 
         set
         {
-            if (fileName != value)
+            if (field != value)
             {
-                fileName = value;
+                field = value;
                 OnPropertyChanged(nameof(FileName));
             }
         }
@@ -43,13 +38,13 @@ public class Data : InpcBase
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id
     {
-        get => ıd;
+        get;
 
         set
         {
-            if (ıd != value)
+            if (field != value)
             {
-                ıd = value;
+                field = value;
                 OnPropertyChanged(nameof(Id));
             }
         }
@@ -57,13 +52,13 @@ public class Data : InpcBase
 
     public string QrData
     {
-        get => qrData;
+        get;
 
         set
         {
-            if (qrData != value)
+            if (field != value)
             {
-                qrData = value;
+                field = value;
                 OnPropertyChanged(nameof(QrData));
             }
         }

@@ -15,8 +15,6 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 {
     public static readonly DependencyPropertyKey PageNumberProperty = DependencyProperty.RegisterReadOnly("PageNumber", typeof(int), typeof(XpsViewer), new PropertyMetadata(0));
     public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register("XpsDataFilePath", typeof(string), typeof(XpsViewer), new PropertyMetadata(null, XpsDataFilePathChanged));
-    private IDocumentPaginatorSource document;
-    public int PageNumber => (int)GetValue(PageNumberProperty.DependencyProperty);
 
     public XpsViewer()
     {
@@ -25,21 +23,23 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
         Viewer?.AddHandler(ScrollViewer.ScrollChangedEvent, new ScrollChangedEventHandler(ScrollChangedEvent));
     }
 
-    private void ScrollChangedEvent(object sender, ScrollChangedEventArgs e) => SetValue(PageNumberProperty, Viewer?.MasterPageNumber);
-
     public event PropertyChangedEventHandler PropertyChanged;
 
-    public IDocumentPaginatorSource Document {
-        get => document;
+    public IDocumentPaginatorSource Document
+    {
+        get;
 
-        set {
-            if (document != value)
+        set
+        {
+            if (field != value)
             {
-                document = value;
+                field = value;
                 OnPropertyChanged(nameof(Document));
             }
         }
     }
+
+    public int PageNumber => (int)GetValue(PageNumberProperty.DependencyProperty);
 
     public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
 
@@ -99,4 +99,6 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
             dlg.PrintDocument(paginator, string.Empty);
         }
     }
+
+    private void ScrollChangedEvent(object sender, ScrollChangedEventArgs e) => SetValue(PageNumberProperty, Viewer?.MasterPageNumber);
 }

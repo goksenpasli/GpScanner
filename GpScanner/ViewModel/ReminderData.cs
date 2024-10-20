@@ -7,20 +7,14 @@ namespace GpScanner.ViewModel
 {
     public class ReminderData : InpcBase
     {
-        private string açıklama;
-        private string fileName;
-        private int ıd;
-        private bool seen;
-        private DateTime tarih;
-
         public string Açıklama
         {
-            get => açıklama;
+            get;
             set
             {
-                if (açıklama != value)
+                if (field != value)
                 {
-                    açıklama = value;
+                    field = value;
                     OnPropertyChanged(nameof(Açıklama));
                 }
             }
@@ -28,12 +22,12 @@ namespace GpScanner.ViewModel
 
         public string FileName
         {
-            get => fileName;
+            get;
             set
             {
-                if (fileName != value)
+                if (field != value)
                 {
-                    fileName = value;
+                    field = value;
                     OnPropertyChanged(nameof(FileName));
                 }
             }
@@ -43,12 +37,12 @@ namespace GpScanner.ViewModel
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id
         {
-            get => ıd;
+            get;
             set
             {
-                if (ıd != value)
+                if (field != value)
                 {
-                    ıd = value;
+                    field = value;
                     OnPropertyChanged(nameof(Id));
                 }
             }
@@ -56,12 +50,12 @@ namespace GpScanner.ViewModel
 
         public bool Seen
         {
-            get => seen;
+            get;
             set
             {
-                if (seen != value)
+                if (field != value)
                 {
-                    seen = value;
+                    field = value;
                     OnPropertyChanged(nameof(Seen));
                 }
             }
@@ -69,12 +63,12 @@ namespace GpScanner.ViewModel
 
         public DateTime Tarih
         {
-            get => tarih;
+            get;
             set
             {
-                if (tarih != value)
+                if (field != value)
                 {
-                    tarih = value;
+                    field = value;
                     OnPropertyChanged(nameof(Tarih));
                 }
             }

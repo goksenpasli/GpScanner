@@ -5,21 +5,18 @@ namespace Extensions.Controls;
 
 public class SubtitleContent : InpcBase
 {
-    private SolidColorBrush backgroundColor;
     private TimeSpan endTime;
-    private string segment;
     private TimeSpan startTime;
-    private string text;
 
     public SolidColorBrush BackgroundColor
     {
-        get => backgroundColor;
+        get;
 
         set
         {
-            if (backgroundColor != value)
+            if (field != value)
             {
-                backgroundColor = value;
+                field = value;
                 OnPropertyChanged(nameof(BackgroundColor));
             }
         }
@@ -41,12 +38,12 @@ public class SubtitleContent : InpcBase
 
     public string Segment
     {
-        get => segment;
+        get;
         set
         {
-            if (segment != value)
+            if (field != value)
             {
-                segment = value;
+                field = value;
                 OnPropertyChanged(nameof(Segment));
             }
         }
@@ -68,13 +65,13 @@ public class SubtitleContent : InpcBase
 
     public string Text
     {
-        get => text;
+        get;
 
         set
         {
-            if (text != value)
+            if (field != value)
             {
-                text = value;
+                field = value;
                 OnPropertyChanged(nameof(Text));
             }
         }

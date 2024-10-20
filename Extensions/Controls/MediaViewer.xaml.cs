@@ -115,13 +115,6 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     private Point _startPoint;
     private double _startRotateX;
     private double _startRotateY;
-    private ObservableCollection<SubtitleContent> parsedSubtitle;
-    private string saveTranslateLanguage = "tr";
-    private string searchSubtitle;
-    private int selectedEncodingCodePage = 65001;
-    private bool showOsdInfo;
-    private bool translate;
-    private int translateSaveProgress;
 
     public MediaViewer()
     {
@@ -529,13 +522,13 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Browsable(false)]
     public ObservableCollection<SubtitleContent> ParsedSubtitle
     {
-        get => parsedSubtitle;
+        get;
 
         set
         {
-            if (parsedSubtitle != value)
+            if (field != value)
             {
-                parsedSubtitle = value;
+                field = value;
                 OnPropertyChanged(nameof(ParsedSubtitle));
             }
         }
@@ -566,26 +559,26 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     public string SaveTranslateLanguage
     {
-        get => saveTranslateLanguage;
+        get;
         set
         {
-            if (saveTranslateLanguage != value)
+            if (field != value)
             {
-                saveTranslateLanguage = value;
+                field = value;
                 OnPropertyChanged(nameof(SaveTranslateLanguage));
             }
         }
-    }
+    } = "tr";
 
     public string SearchSubtitle
     {
-        get => searchSubtitle;
+        get;
 
         set
         {
-            if (searchSubtitle != value)
+            if (field != value)
             {
-                searchSubtitle = value;
+                field = value;
                 OnPropertyChanged(nameof(SearchSubtitle));
             }
         }
@@ -593,16 +586,16 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     public int SelectedEncodingCodePage
     {
-        get => selectedEncodingCodePage;
+        get;
         set
         {
-            if (selectedEncodingCodePage != value)
+            if (field != value)
             {
-                selectedEncodingCodePage = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedEncodingCodePage));
             }
         }
-    }
+    } = 65001;
 
     public RelayCommand<object> SetSubtitleMargin { get; }
 
@@ -614,12 +607,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     public bool ShowOsdInfo
     {
-        get => showOsdInfo;
+        get;
         set
         {
-            if (showOsdInfo != value)
+            if (field != value)
             {
-                showOsdInfo = value;
+                field = value;
                 OnPropertyChanged(nameof(ShowOsdInfo));
             }
         }
@@ -702,12 +695,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Category("Subtitle")]
     public bool Translate
     {
-        get => translate;
+        get;
         set
         {
-            if (translate != value)
+            if (field != value)
             {
-                translate = value;
+                field = value;
                 OnPropertyChanged(nameof(Translate));
             }
         }
@@ -715,12 +708,12 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
 
     public int TranslateSaveProgress
     {
-        get => translateSaveProgress;
+        get;
         set
         {
-            if (translateSaveProgress != value)
+            if (field != value)
             {
-                translateSaveProgress = value;
+                field = value;
                 OnPropertyChanged(nameof(TranslateSaveProgress));
             }
         }

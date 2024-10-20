@@ -61,92 +61,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
-    private int allPdfPage = 1;
-    private string aramaMetni;
-    private ObservableCollection<string> barcodeList = [];
-    private DateTime başlangıçTarihi;
-    private bool batchDialogOpen;
-    private string batchFolder;
-    private ObservableCollection<TessFiles> batchFolderProcessedFileList;
-    private ObservableCollection<TessFiles> batchImageFileExtensions =
-        [
-        new TessFiles() { Name = ".tiff", Checked = true },
-        new TessFiles() { Name = ".tif", Checked = true },
-        new TessFiles() { Name = ".jpg", Checked = true },
-        new TessFiles() { Name = ".jpe", Checked = true },
-        new TessFiles() { Name = ".gif", Checked = true },
-        new TessFiles() { Name = ".jpeg", Checked = true },
-        new TessFiles() { Name = ".jfif", Checked = true },
-        new TessFiles() { Name = ".png", Checked = true },
-        new TessFiles() { Name = ".bmp", Checked = true },
-        new TessFiles() { Name = ".jb2", Checked = true },
-        new TessFiles() { Name = ".webp", Checked = false, Enabled = WebP.WebpDllExists },
-        ];
-    private ObservableCollection<BatchTxtOcr> batchTxtOcrs;
-    private DateTime bitişTarihi;
-    private ObservableCollection<string> burnFiles = [];
-    private string calendarDesc;
-    private XmlLanguage calendarLang;
-    private bool calendarPanelIsExpanded;
-    private int checkedPdfCount;
-    private ObservableCollection<BatchPdfData> compressedFiles = [];
-    private ObservableCollection<ContributionData> contributionData;
-    private int contributionDocumentCount;
-    private double contributionPreviewSize = 120;
     private int cycleIndex;
-    private bool detectBarCode = true;
-    private bool documentPanelIsExpanded;
-    private ObservableCollection<Scanner> dosyalar;
-    private string errorLogPath;
-    private double fileLoadProgress;
-    private ObservableCollection<string> fileSystemWatcherProcessedFileList;
-    private int flagProgress;
-    private double fold = 0.3;
-    private string ftpPassword = string.Empty;
-    private string ftpSite = string.Empty;
-    private string ftpUserName = string.Empty;
-    private int ındexedFileCount;
-    private bool ısAdministrator;
-    private bool ısSqlQuery = true;
-    private FlowDirection langFlowDirection = FlowDirection.LeftToRight;
-    private bool listBoxBorderAnimation;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
-    private double mirror;
-    private DateTime notifyDate = DateTime.Today;
-    private bool ocrAllPdfPages;
-    private double ocrAllPdfPagesProgress;
-    private bool ocrısBusy;
-    private int? ocrPdfThumbnailPageNumber;
-    private string patchFileName;
-    private string patchProfileName;
-    private string patchTag;
-    private PdfViewer.FitImageOrientation pdfAllPageOrientation = PdfViewer.FitImageOrientation.Width;
-    private bool pdfBatchRunning;
-    private bool pdfCompressorItemToggle;
-    private double pdfMergeProgressValue;
-    private Brush progressBarForegroundBrush = Brushes.Green;
-    private double ripple;
-    private ObservableCollection<OcrData> scannedText = [];
-    private string seçiliDil;
-    private TessFiles selectedBatchFile;
     private Size selectedCompressorProfile;
-    private ContributionData selectedContribution;
-    private int selectedContributionYear = DateTime.Now.Year;
-    private string selectedFtp;
-    private ReminderData selectedReminder;
     private Size selectedSize;
-    private bool showUnindexedFileWarn;
-    private bool shutdown;
-    private List<Data> sqlQueryData;
-    private string sqlText = string.Empty;
-    private TesseractViewModel tesseractViewModel;
-    private long totalFileSize;
-    private TranslateViewModel translateViewModel;
-    private ObservableCollection<string> unIndexedFiles;
-    private IEnumerable<IGrouping<int, ContributionData>> yearlyGroupData;
-    private double zipProgress;
-    private bool zipProgressIndeterminate;
 
     public GpScannerViewModel(IWindowService windowService, TwainCtrl twainCtrl)
     {
@@ -1253,17 +1172,17 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int AllPdfPage
     {
-        get => allPdfPage;
+        get;
 
         set
         {
-            if (allPdfPage != value)
+            if (field != value)
             {
-                allPdfPage = value;
+                field = value;
                 OnPropertyChanged(nameof(AllPdfPage));
             }
         }
-    }
+    } = 1;
 
     public RelayCommand<object> AppBringToFront { get; }
 
@@ -1273,13 +1192,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string AramaMetni
     {
-        get => aramaMetni;
+        get;
 
         set
         {
-            if (aramaMetni != value)
+            if (field != value)
             {
-                aramaMetni = value;
+                field = value;
                 OnPropertyChanged(nameof(AramaMetni));
             }
         }
@@ -1298,26 +1217,26 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<string> BarcodeList
     {
-        get => barcodeList;
+        get;
 
         set
         {
-            if (barcodeList != value)
+            if (field != value)
             {
-                barcodeList = value;
+                field = value;
                 OnPropertyChanged(nameof(BarcodeList));
             }
         }
-    }
+    } = [];
 
     public DateTime BaşlangıçTarihi
     {
-        get => başlangıçTarihi;
+        get;
         set
         {
-            if (başlangıçTarihi != value)
+            if (field != value)
             {
-                başlangıçTarihi = value;
+                field = value;
                 OnPropertyChanged(nameof(BaşlangıçTarihi));
             }
         }
@@ -1325,13 +1244,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool BatchDialogOpen
     {
-        get => batchDialogOpen;
+        get;
 
         set
         {
-            if (batchDialogOpen != value)
+            if (field != value)
             {
-                batchDialogOpen = value;
+                field = value;
                 OnPropertyChanged(nameof(BatchDialogOpen));
             }
         }
@@ -1339,13 +1258,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string BatchFolder
     {
-        get => batchFolder;
+        get;
 
         set
         {
-            if (batchFolder != value)
+            if (field != value)
             {
-                batchFolder = value;
+                field = value;
                 OnPropertyChanged(nameof(BatchFolder));
             }
         }
@@ -1353,12 +1272,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> BatchFolderProcessedFileList
     {
-        get => batchFolderProcessedFileList;
+        get;
         set
         {
-            if (batchFolderProcessedFileList != value)
+            if (field != value)
             {
-                batchFolderProcessedFileList = value;
+                field = value;
                 OnPropertyChanged(nameof(BatchFolderProcessedFileList));
             }
         }
@@ -1374,28 +1293,40 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<TessFiles> BatchImageFileExtensions
     {
-        get => batchImageFileExtensions;
+        get;
         set
         {
-            if (batchImageFileExtensions != value)
+            if (field != value)
             {
-                batchImageFileExtensions = value;
+                field = value;
                 OnPropertyChanged(nameof(BatchImageFileExtensions));
             }
         }
-    }
+    } = [
+        new TessFiles() { Name = ".tiff", Checked = true },
+        new TessFiles() { Name = ".tif", Checked = true },
+        new TessFiles() { Name = ".jpg", Checked = true },
+        new TessFiles() { Name = ".jpe", Checked = true },
+        new TessFiles() { Name = ".gif", Checked = true },
+        new TessFiles() { Name = ".jpeg", Checked = true },
+        new TessFiles() { Name = ".jfif", Checked = true },
+        new TessFiles() { Name = ".png", Checked = true },
+        new TessFiles() { Name = ".bmp", Checked = true },
+        new TessFiles() { Name = ".jb2", Checked = true },
+        new TessFiles() { Name = ".webp", Checked = false, Enabled = WebP.WebpDllExists },
+        ];
 
     public RelayCommand<object> BatchMergeSelectedFiles { get; }
 
     public ObservableCollection<BatchTxtOcr> BatchTxtOcrs
     {
-        get => batchTxtOcrs;
+        get;
 
         set
         {
-            if (batchTxtOcrs != value)
+            if (field != value)
             {
-                batchTxtOcrs = value;
+                field = value;
                 OnPropertyChanged(nameof(BatchTxtOcrs));
             }
         }
@@ -1403,12 +1334,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public DateTime BitişTarihi
     {
-        get => bitişTarihi;
+        get;
         set
         {
-            if (bitişTarihi != value)
+            if (field != value)
             {
-                bitişTarihi = value;
+                field = value;
                 OnPropertyChanged(nameof(BitişTarihi));
             }
         }
@@ -1416,25 +1347,25 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<string> BurnFiles
     {
-        get => burnFiles;
+        get;
         set
         {
-            if (burnFiles != value)
+            if (field != value)
             {
-                burnFiles = value;
+                field = value;
                 OnPropertyChanged(nameof(BurnFiles));
             }
         }
-    }
+    } = [];
 
     public string CalendarDesc
     {
-        get => calendarDesc;
+        get;
         set
         {
-            if (calendarDesc != value)
+            if (field != value)
             {
-                calendarDesc = value;
+                field = value;
                 OnPropertyChanged(nameof(CalendarDesc));
             }
         }
@@ -1442,13 +1373,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public XmlLanguage CalendarLang
     {
-        get => calendarLang;
+        get;
 
         set
         {
-            if (calendarLang != value)
+            if (field != value)
             {
-                calendarLang = value;
+                field = value;
                 OnPropertyChanged(nameof(CalendarLang));
             }
         }
@@ -1456,12 +1387,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool CalendarPanelIsExpanded
     {
-        get => calendarPanelIsExpanded;
+        get;
         set
         {
-            if (calendarPanelIsExpanded != value)
+            if (field != value)
             {
-                calendarPanelIsExpanded = value;
+                field = value;
                 OnPropertyChanged(nameof(CalendarPanelIsExpanded));
             }
         }
@@ -1475,13 +1406,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int CheckedPdfCount
     {
-        get => checkedPdfCount;
+        get;
 
         set
         {
-            if (checkedPdfCount != value)
+            if (field != value)
             {
-                checkedPdfCount = value;
+                field = value;
                 OnPropertyChanged(nameof(CheckedPdfCount));
             }
         }
@@ -1495,28 +1426,28 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<BatchPdfData> CompressedFiles
     {
-        get => compressedFiles;
+        get;
 
         set
         {
-            if (compressedFiles != value)
+            if (field != value)
             {
-                compressedFiles = value;
+                field = value;
                 OnPropertyChanged(nameof(CompressedFiles));
             }
         }
-    }
+    } = [];
 
     public List<Size> CompressorList { get; } = new List<Size>() { { new Size(72, 80) }, { new Size(96, 75) }, { new Size(120, 70) }, { new Size(150, 65) }, { new Size(200, 60) }, };
 
     public ObservableCollection<ContributionData> ContributionData
     {
-        get => contributionData;
+        get;
         set
         {
-            if (contributionData != value)
+            if (field != value)
             {
-                contributionData = value;
+                field = value;
                 OnPropertyChanged(nameof(ContributionData));
             }
         }
@@ -1524,13 +1455,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int ContributionDocumentCount
     {
-        get => contributionDocumentCount;
+        get;
 
         set
         {
-            if (contributionDocumentCount != value)
+            if (field != value)
             {
-                contributionDocumentCount = value;
+                field = value;
                 OnPropertyChanged(nameof(ContributionDocumentCount));
             }
         }
@@ -1538,16 +1469,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public double ContributionPreviewSize
     {
-        get => contributionPreviewSize;
+        get;
         set
         {
-            if (contributionPreviewSize != value)
+            if (field != value)
             {
-                contributionPreviewSize = value;
+                field = value;
                 OnPropertyChanged(nameof(ContributionPreviewSize));
             }
         }
-    }
+    } = 120;
 
     public ICommand CycleSelectedDocuments { get; }
 
@@ -1557,27 +1488,27 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool DetectBarCode
     {
-        get => detectBarCode;
+        get;
 
         set
         {
-            if (detectBarCode != value)
+            if (field != value)
             {
-                detectBarCode = value;
+                field = value;
                 OnPropertyChanged(nameof(DetectBarCode));
             }
         }
-    }
+    } = true;
 
     public bool DocumentPanelIsExpanded
     {
-        get => documentPanelIsExpanded;
+        get;
 
         set
         {
-            if (documentPanelIsExpanded != value)
+            if (field != value)
             {
-                documentPanelIsExpanded = value;
+                field = value;
                 OnPropertyChanged(nameof(DocumentPanelIsExpanded));
             }
         }
@@ -1585,13 +1516,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<Scanner> Dosyalar
     {
-        get => dosyalar;
+        get;
 
         set
         {
-            if (dosyalar != value)
+            if (field != value)
             {
-                dosyalar = value;
+                field = value;
                 OnPropertyChanged(nameof(Dosyalar));
             }
         }
@@ -1607,12 +1538,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string ErrorLogPath
     {
-        get => errorLogPath;
+        get;
         set
         {
-            if (errorLogPath != value)
+            if (field != value)
             {
-                errorLogPath = value;
+                field = value;
                 OnPropertyChanged(nameof(ErrorLogPath));
             }
         }
@@ -1622,13 +1553,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public double FileLoadProgress
     {
-        get => fileLoadProgress;
+        get;
 
         set
         {
-            if (fileLoadProgress != value)
+            if (field != value)
             {
-                fileLoadProgress = value;
+                field = value;
                 OnPropertyChanged(nameof(FileLoadProgress));
             }
         }
@@ -1636,12 +1567,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<string> FileSystemWatcherProcessedFileList
     {
-        get => fileSystemWatcherProcessedFileList;
+        get;
         set
         {
-            if (fileSystemWatcherProcessedFileList != value)
+            if (field != value)
             {
-                fileSystemWatcherProcessedFileList = value;
+                field = value;
                 OnPropertyChanged(nameof(FileSystemWatcherProcessedFileList));
             }
         }
@@ -1649,12 +1580,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int FlagProgress
     {
-        get => flagProgress;
+        get;
         set
         {
-            if (flagProgress != value)
+            if (field != value)
             {
-                flagProgress = value;
+                field = value;
                 OnPropertyChanged(nameof(FlagProgress));
             }
         }
@@ -1664,59 +1595,59 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public double Fold
     {
-        get => fold;
+        get;
 
         set
         {
-            if (fold != value)
+            if (field != value)
             {
-                fold = value;
+                field = value;
                 OnPropertyChanged(nameof(Fold));
             }
         }
-    }
+    } = 0.3;
 
     public string FtpPassword
     {
-        get => ftpPassword;
+        get;
 
         set
         {
-            if (ftpPassword != value)
+            if (field != value)
             {
-                ftpPassword = value;
+                field = value;
                 OnPropertyChanged(nameof(FtpPassword));
             }
         }
-    }
+    } = string.Empty;
 
     public string FtpSite
     {
-        get => ftpSite;
+        get;
 
         set
         {
-            if (ftpSite != value)
+            if (field != value)
             {
-                ftpSite = value;
+                field = value;
                 OnPropertyChanged(nameof(FtpSite));
             }
         }
-    }
+    } = string.Empty;
 
     public string FtpUserName
     {
-        get => ftpUserName;
+        get;
 
         set
         {
-            if (ftpUserName != value)
+            if (field != value)
             {
-                ftpUserName = value;
+                field = value;
                 OnPropertyChanged(nameof(FtpUserName));
             }
         }
-    }
+    } = string.Empty;
 
     public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
 
@@ -1724,13 +1655,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int IndexedFileCount
     {
-        get => ındexedFileCount;
+        get;
 
         set
         {
-            if (ındexedFileCount != value)
+            if (field != value)
             {
-                ındexedFileCount = value;
+                field = value;
                 OnPropertyChanged(nameof(IndexedFileCount));
             }
         }
@@ -1742,14 +1673,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             using WindowsIdentity identity = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new(identity);
-            ısAdministrator = principal.IsInRole(WindowsBuiltInRole.Administrator);
-            return ısAdministrator;
+            field = principal.IsInRole(WindowsBuiltInRole.Administrator);
+            return field;
         }
         set
         {
-            if (ısAdministrator != value)
+            if (field != value)
             {
-                ısAdministrator = value;
+                field = value;
                 OnPropertyChanged(nameof(IsAdministrator));
             }
         }
@@ -1757,39 +1688,39 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool IsSqlQuery
     {
-        get => ısSqlQuery;
+        get;
         set
         {
-            if (ısSqlQuery != value)
+            if (field != value)
             {
-                ısSqlQuery = value;
+                field = value;
                 OnPropertyChanged(nameof(IsSqlQuery));
             }
         }
-    }
+    } = true;
 
     public FlowDirection LangFlowDirection
     {
-        get => langFlowDirection;
+        get;
         set
         {
-            if (langFlowDirection != value)
+            if (field != value)
             {
-                langFlowDirection = value;
+                field = value;
                 OnPropertyChanged(nameof(LangFlowDirection));
             }
         }
-    }
+    } = FlowDirection.LeftToRight;
 
     public bool ListBoxBorderAnimation
     {
-        get => listBoxBorderAnimation;
+        get;
 
         set
         {
-            if (listBoxBorderAnimation != value)
+            if (field != value)
             {
-                listBoxBorderAnimation = value;
+                field = value;
                 OnPropertyChanged(nameof(ListBoxBorderAnimation));
             }
         }
@@ -1837,12 +1768,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public double Mirror
     {
-        get => mirror;
+        get;
         set
         {
-            if (mirror != value)
+            if (field != value)
             {
-                mirror = value;
+                field = value;
                 OnPropertyChanged(nameof(Mirror));
             }
         }
@@ -1863,25 +1794,25 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public DateTime NotifyDate
     {
-        get => notifyDate;
+        get;
         set
         {
-            if (notifyDate != value)
+            if (field != value)
             {
-                notifyDate = value;
+                field = value;
                 OnPropertyChanged(nameof(NotifyDate));
             }
         }
-    }
+    } = DateTime.Today;
 
     public bool OcrAllPdfPages
     {
-        get => ocrAllPdfPages;
+        get;
         set
         {
-            if (ocrAllPdfPages != value)
+            if (field != value)
             {
-                ocrAllPdfPages = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrAllPdfPages));
             }
         }
@@ -1889,12 +1820,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public double OcrAllPdfPagesProgress
     {
-        get => ocrAllPdfPagesProgress;
+        get;
         set
         {
-            if (ocrAllPdfPagesProgress != value)
+            if (field != value)
             {
-                ocrAllPdfPagesProgress = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrAllPdfPagesProgress));
             }
         }
@@ -1902,13 +1833,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool OcrIsBusy
     {
-        get => ocrısBusy;
+        get;
 
         set
         {
-            if (ocrısBusy != value)
+            if (field != value)
             {
-                ocrısBusy = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrIsBusy));
             }
         }
@@ -1920,12 +1851,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int? OcrPdfThumbnailPageNumber
     {
-        get => ocrPdfThumbnailPageNumber;
+        get;
         set
         {
-            if (ocrPdfThumbnailPageNumber != value)
+            if (field != value)
             {
-                ocrPdfThumbnailPageNumber = value;
+                field = value;
                 OnPropertyChanged(nameof(OcrPdfThumbnailPageNumber));
             }
         }
@@ -1937,13 +1868,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string PatchFileName
     {
-        get => patchFileName;
+        get;
 
         set
         {
-            if (patchFileName != value)
+            if (field != value)
             {
-                patchFileName = value;
+                field = value;
                 OnPropertyChanged(nameof(PatchFileName));
             }
         }
@@ -1951,13 +1882,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string PatchProfileName
     {
-        get => patchProfileName?.Split('|')[0];
+        get => field?.Split('|')[0];
 
         set
         {
-            if (patchProfileName != value)
+            if (field != value)
             {
-                patchProfileName = value;
+                field = value;
                 OnPropertyChanged(nameof(PatchProfileName));
             }
         }
@@ -1965,13 +1896,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string PatchTag
     {
-        get => patchTag;
+        get;
 
         set
         {
-            if (patchTag != value)
+            if (field != value)
             {
-                patchTag = value;
+                field = value;
                 OnPropertyChanged(nameof(PatchTag));
             }
         }
@@ -1979,26 +1910,26 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public PdfViewer.FitImageOrientation PdfAllPageOrientation
     {
-        get => pdfAllPageOrientation;
+        get;
         set
         {
-            if (pdfAllPageOrientation != value)
+            if (field != value)
             {
-                pdfAllPageOrientation = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfAllPageOrientation));
             }
         }
-    }
+    } = PdfViewer.FitImageOrientation.Width;
 
     public bool PdfBatchRunning
     {
-        get => pdfBatchRunning;
+        get;
 
         set
         {
-            if (pdfBatchRunning != value)
+            if (field != value)
             {
-                pdfBatchRunning = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfBatchRunning));
             }
         }
@@ -2008,12 +1939,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool PdfCompressorItemToggle
     {
-        get => pdfCompressorItemToggle;
+        get;
         set
         {
-            if (pdfCompressorItemToggle != value)
+            if (field != value)
             {
-                pdfCompressorItemToggle = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfCompressorItemToggle));
             }
         }
@@ -2021,13 +1952,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public double PdfMergeProgressValue
     {
-        get => pdfMergeProgressValue;
+        get;
 
         set
         {
-            if (pdfMergeProgressValue != value)
+            if (field != value)
             {
-                pdfMergeProgressValue = value;
+                field = value;
                 OnPropertyChanged(nameof(PdfMergeProgressValue));
             }
         }
@@ -2043,17 +1974,17 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public Brush ProgressBarForegroundBrush
     {
-        get => progressBarForegroundBrush;
+        get;
 
         set
         {
-            if (progressBarForegroundBrush != value)
+            if (field != value)
             {
-                progressBarForegroundBrush = value;
+                field = value;
                 OnPropertyChanged(nameof(ProgressBarForegroundBrush));
             }
         }
-    }
+    } = Brushes.Green;
 
     public ICommand RegisterSti { get; }
 
@@ -2067,12 +1998,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public double Ripple
     {
-        get => ripple;
+        get;
         set
         {
-            if (ripple != value)
+            if (field != value)
             {
-                ripple = value;
+                field = value;
                 OnPropertyChanged(nameof(Ripple));
             }
         }
@@ -2092,29 +2023,29 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<OcrData> ScannedText
     {
-        get => scannedText;
+        get;
 
         set
         {
-            if (scannedText != value)
+            if (field != value)
             {
-                scannedText = value;
+                field = value;
                 OnPropertyChanged(nameof(ScannedText));
             }
         }
-    }
+    } = [];
 
     public ScannerData ScannerData { get; set; }
 
     public string SeçiliDil
     {
-        get => seçiliDil;
+        get;
 
         set
         {
-            if (seçiliDil != value)
+            if (field != value)
             {
-                seçiliDil = value;
+                field = value;
                 OnPropertyChanged(nameof(SeçiliDil));
             }
         }
@@ -2122,12 +2053,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public TessFiles SelectedBatchFile
     {
-        get => selectedBatchFile;
+        get;
         set
         {
-            if (selectedBatchFile != value)
+            if (field != value)
             {
-                selectedBatchFile = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedBatchFile));
             }
         }
@@ -2148,12 +2079,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ContributionData SelectedContribution
     {
-        get => selectedContribution;
+        get;
         set
         {
-            if (selectedContribution != value)
+            if (field != value)
             {
-                selectedContribution = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedContribution));
             }
         }
@@ -2161,26 +2092,26 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int SelectedContributionYear
     {
-        get => selectedContributionYear;
+        get;
         set
         {
-            if (selectedContributionYear != value)
+            if (field != value)
             {
-                selectedContributionYear = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedContributionYear));
             }
         }
-    }
+    } = DateTime.Now.Year;
 
     public string SelectedFtp
     {
-        get => selectedFtp;
+        get;
 
         set
         {
-            if (selectedFtp != value)
+            if (field != value)
             {
-                selectedFtp = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedFtp));
             }
         }
@@ -2188,12 +2119,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ReminderData SelectedReminder
     {
-        get => selectedReminder;
+        get;
         set
         {
-            if (selectedReminder != value)
+            if (field != value)
             {
-                selectedReminder = value;
+                field = value;
                 OnPropertyChanged(nameof(SelectedReminder));
             }
         }
@@ -2229,13 +2160,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool ShowUnindexedFileWarn
     {
-        get => showUnindexedFileWarn;
+        get;
 
         set
         {
-            if (showUnindexedFileWarn != value)
+            if (field != value)
             {
-                showUnindexedFileWarn = value;
+                field = value;
                 OnPropertyChanged(nameof(ShowUnindexedFileWarn));
             }
         }
@@ -2243,13 +2174,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool Shutdown
     {
-        get => shutdown;
+        get;
 
         set
         {
-            if (shutdown != value)
+            if (field != value)
             {
-                shutdown = value;
+                field = value;
                 OnPropertyChanged(nameof(Shutdown));
             }
         }
@@ -2257,13 +2188,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public List<Data> SqlQueryData
     {
-        get => sqlQueryData;
+        get;
 
         set
         {
-            if (sqlQueryData != value)
+            if (field != value)
             {
-                sqlQueryData = value;
+                field = value;
                 OnPropertyChanged(nameof(SqlQueryData));
             }
         }
@@ -2271,17 +2202,17 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public string SqlText
     {
-        get => sqlText;
+        get;
 
         set
         {
-            if (sqlText != value)
+            if (field != value)
             {
-                sqlText = value;
+                field = value;
                 OnPropertyChanged(nameof(SqlText));
             }
         }
-    }
+    } = string.Empty;
 
     public RelayCommand<object> StartDateBack { get; }
 
@@ -2297,13 +2228,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public TesseractViewModel TesseractViewModel
     {
-        get => tesseractViewModel;
+        get;
 
         set
         {
-            if (tesseractViewModel != value)
+            if (field != value)
             {
-                tesseractViewModel = value;
+                field = value;
                 OnPropertyChanged(nameof(TesseractViewModel));
             }
         }
@@ -2313,12 +2244,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public long TotalFileSize
     {
-        get => totalFileSize;
+        get;
         set
         {
-            if (totalFileSize != value)
+            if (field != value)
             {
-                totalFileSize = value;
+                field = value;
                 OnPropertyChanged(nameof(TotalFileSize));
             }
         }
@@ -2326,13 +2257,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public TranslateViewModel TranslateViewModel
     {
-        get => translateViewModel;
+        get;
 
         set
         {
-            if (translateViewModel != value)
+            if (field != value)
             {
-                translateViewModel = value;
+                field = value;
                 OnPropertyChanged(nameof(TranslateViewModel));
             }
         }
@@ -2348,12 +2279,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ObservableCollection<string> UnIndexedFiles
     {
-        get => unIndexedFiles;
+        get;
         set
         {
-            if (unIndexedFiles != value)
+            if (field != value)
             {
-                unIndexedFiles = value;
+                field = value;
                 OnPropertyChanged(nameof(UnIndexedFiles));
             }
         }
@@ -2373,12 +2304,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public IEnumerable<IGrouping<int, ContributionData>> YearlyGroupData
     {
-        get => yearlyGroupData;
+        get;
         set
         {
-            if (yearlyGroupData != value)
+            if (field != value)
             {
-                yearlyGroupData = value;
+                field = value;
                 OnPropertyChanged(nameof(YearlyGroupData));
             }
         }
@@ -2388,12 +2319,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public double ZipProgress
     {
-        get => zipProgress;
+        get;
         set
         {
-            if (zipProgress != value)
+            if (field != value)
             {
-                zipProgress = value;
+                field = value;
                 OnPropertyChanged(nameof(ZipProgress));
             }
         }
@@ -2401,12 +2332,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool ZipProgressIndeterminate
     {
-        get => zipProgressIndeterminate;
+        get;
         set
         {
-            if (zipProgressIndeterminate != value)
+            if (field != value)
             {
-                zipProgressIndeterminate = value;
+                field = value;
                 OnPropertyChanged(nameof(ZipProgressIndeterminate));
             }
         }

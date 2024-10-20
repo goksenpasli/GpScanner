@@ -18,7 +18,6 @@ namespace Extensions
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(NumericUpDown), new PropertyMetadata(Orientation.Horizontal));
         public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register("StringFormat", typeof(string), typeof(NumericUpDown), new PropertyMetadata(null));
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(decimal), typeof(NumericUpDown), new FrameworkPropertyMetadata(0m, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
-        private bool mouseSelectAllText = true;
 
         static NumericUpDown() { DefaultStyleKeyProperty?.OverrideMetadata(typeof(NumericUpDown), new FrameworkPropertyMetadata(typeof(NumericUpDown))); }
 
@@ -42,16 +41,16 @@ namespace Extensions
 
         public bool MouseSelectAllText
         {
-            get => mouseSelectAllText;
+            get;
             set
             {
-                if (mouseSelectAllText != value)
+                if (field != value)
                 {
-                    mouseSelectAllText = value;
+                    field = value;
                     OnPropertyChanged(nameof(MouseSelectAllText));
                 }
             }
-        }
+        } = true;
 
         public RelayCommand<object> NumberDecrease { get; }
 
