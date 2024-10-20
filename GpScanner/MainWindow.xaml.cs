@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using TwainControl;
@@ -113,9 +114,9 @@ public partial class MainWindow : Window
 
     private void DocumentGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
-        if (sender is Grid grid)
+        if (sender is Grid grid && e.OriginalSource is Run)
         {
-            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(grid.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(grid.ToRenderTargetBitmap().Resize(230,370).BitmapSourceToBitmap().GetHicon());
             TwainCtrl.DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
             _ = DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
             e.Handled = true;

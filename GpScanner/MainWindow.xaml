@@ -1024,7 +1024,7 @@
                                                             <RowDefinition />
                                                         </Grid.RowDefinitions>
                                                         <CheckBox Grid.ColumnSpan="3"
-                                                            Margin="0,0,45,0"
+                                                            Margin="0,0,60,0"
                                                             VerticalAlignment="Center"
                                                             VerticalContentAlignment="Center"
                                                             IsChecked="{Binding Seçili}">
@@ -1032,24 +1032,13 @@
                                                                 <InlineUIContainer BaselineAlignment="Center">
                                                                     <Image Width="16"
                                                                         Height="16"
+                                                                        d:Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}"
                                                                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, Path=FileName, IsAsync=True}" />
                                                                 </InlineUIContainer>
-                                                                <InlineUIContainer BaselineAlignment="Center">
-                                                                    <Extensions:ContentToggleButton d:Content="FileName"
-                                                                        ArrowVisibility="Collapsed"
-                                                                        Background="{x:Null}"
-                                                                        BorderBrush="{x:Null}"
-                                                                        Content="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}">
-                                                                        <Extensions:ContentToggleButton.OverContent>
-                                                                            <Extensions:FileBreadCrumbControl VerticalAlignment="Center"
-                                                                                Background="{StaticResource BorderBackground}"
-                                                                                FilePath="{Binding Mode=OneWay, Path=FileName}"
-                                                                                InternalBackground="{StaticResource BorderBackground}"
-                                                                                Orientation="Vertical" />
-                                                                        </Extensions:ContentToggleButton.OverContent>
-                                                                    </Extensions:ContentToggleButton>
-                                                                </InlineUIContainer>
                                                                 <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
+                                                                <Run d:Text="FileName"
+                                                                    Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
+                                                                    ToolTip="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
                                                             </TextBlock>
                                                         </CheckBox>
                                                         <TextBlock Grid.Column="2" HorizontalAlignment="Right">
