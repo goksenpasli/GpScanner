@@ -928,7 +928,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     Multiselect = true
                 };
 
-                if (CheckWithCurrentOsVersion("10.0.17134"))
+                if (ImageFileHandler.CheckWithCurrentOsVersion("10.0.17134"))
                 {
                     openFileDialog.Filter += "|Heic Dosyası (*.heic)|*.heic";
                 }
@@ -1093,7 +1093,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         SaveFileList = new RelayCommand<object>(
             parameter =>
             {
-                SaveFileDialog saveFileDialog = new() { Filter = "Belge Liste Dosyası (*.txt)|*.txt", FileName = "Filedata.txt" };
+                SaveFileDialog saveFileDialog = new() { Filter = "Belge Liste Dosyası (*.txt)|*.txt", FileName = $"{Translation.GetResStringValue("FILE")}" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     using StreamWriter file = new(saveFileDialog.FileName);
@@ -3640,16 +3640,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".png":
                             case ".gif":
                             case ".bmp":
+                            case ".heic":
                                 fileHandler = new ImageFileHandler();
                                 await AddFilesAsync(filename, fileHandler, DecodeHeight);
-                                break;
-
-                            case ".heic":
-                                if (CheckWithCurrentOsVersion("10.0.17134"))
-                                {
-                                    fileHandler = new ImageFileHandler();
-                                    await AddFilesAsync(filename, fileHandler, DecodeHeight);
-                                }
                                 break;
 
                             case ".jb2":
@@ -4000,14 +3993,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         CameraQrCodeTimer?.Stop();
-    }
-
-    private bool CheckWithCurrentOsVersion(string version)
-    {
-        string osversion = $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}.{Environment.OSVersion.Version.Build}";
-        Version current = new(osversion);
-        Version compare = new(version);
-        return current >= compare;
     }
 
     private Int32Rect CropPreviewImage(ImageSource imageSource)

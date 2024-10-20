@@ -11,6 +11,14 @@ namespace TwainControl
 {
     public class ImageFileHandler : ILoadFileHandler
     {
+        public static bool CheckWithCurrentOsVersion(string compareversion)
+        {
+            string osversion = $"{Environment.OSVersion.Version.Major}.{Environment.OSVersion.Version.Minor}.{Environment.OSVersion.Version.Build}";
+            Version current = new(osversion);
+            Version compare = new(compareversion);
+            return current >= compare;
+        }
+
         Task<IEnumerable<BitmapFrame>> ILoadFileHandler.LoadXpsPagesAsync(string filename) => throw new NotImplementedException();
 
         public Task<MemoryStream> ConvertToImageStreamAsync(byte[] fileData, int pageNumber) => throw new NotImplementedException();
@@ -22,6 +30,7 @@ namespace TwainControl
             return Path.GetExtension(filename.ToLowerInvariant()) switch
             {
                 ".jpg" or ".jpeg" or ".jfif" or ".jpe" or ".png" or ".gif" or ".bmp" => true,
+                ".heic" => CheckWithCurrentOsVersion("10.0.17134"),
                 _ => false,
             };
         }

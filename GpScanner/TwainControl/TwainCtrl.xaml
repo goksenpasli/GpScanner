@@ -303,26 +303,30 @@
                                     <FlowDocumentScrollViewer IsSelectionEnabled="False" VerticalScrollBarVisibility="Auto">
                                         <FlowDocument IsOptimalParagraphEnabled="True">
                                             <Paragraph>
-                                                <Rectangle Width="120"
-                                                    Height="35"
-                                                    Stroke="Cyan" />
+                                                <Paragraph.Resources>
+                                                    <Style TargetType="Rectangle">
+                                                        <Setter Property="Height" Value="35" />
+                                                        <Setter Property="Width" Value="120" />
+                                                    </Style>
+                                                </Paragraph.Resources>
+                                                <Rectangle Stroke="Cyan" />
                                                 <Run Text="{local:Loc CYANCONTROL}" />
                                                 <LineBreak />
-                                                <Rectangle Width="120" Height="35">
+                                                <Rectangle Visibility="{Binding ScanSettingsExpanderIsExpanded, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}">
                                                     <Rectangle.Fill>
                                                         <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference CbFolderFormat}}" />
                                                     </Rectangle.Fill>
                                                 </Rectangle>
                                                 <Run Text="{local:Loc FOLDERFORMAT}" />
                                                 <LineBreak />
-                                                <Rectangle Width="120" Height="35">
+                                                <Rectangle>
                                                     <Rectangle.Fill>
                                                         <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference AutoScanPathBtn}}" />
                                                     </Rectangle.Fill>
                                                 </Rectangle>
                                                 <Run Text="{local:Loc AUTOFOLDERHELP}" />
                                                 <LineBreak />
-                                                <Rectangle Width="240" Height="35">
+                                                <Rectangle Visibility="{Binding ScanSettingsExpanderIsExpanded, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}">
                                                     <Rectangle.Fill>
                                                         <VisualBrush Stretch="Fill" Visual="{Binding Source={x:Reference SpDelay}}" />
                                                     </Rectangle.Fill>
@@ -857,8 +861,7 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-                                    <StackPanel x:Name="SpDelay"
-                                        Grid.Column="1"
+                                    <StackPanel Grid.Column="1"
                                         Background="{StaticResource BorderBackground}"
                                         Orientation="Horizontal">
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
@@ -870,7 +873,8 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <Extensions:NumericUpDown local:Policy.PolicyName="ScanDelay"
+                                        <Extensions:NumericUpDown x:Name="SpDelay"
+                                            local:Policy.PolicyName="ScanDelay"
                                             Interval="1"
                                             IsReadOnly="True"
                                             Maximum="120"
