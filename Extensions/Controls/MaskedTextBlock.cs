@@ -23,6 +23,10 @@ public class MaskedTextBlock : TextBlock
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         MaskedTextBlock maskedTextBlock = d as MaskedTextBlock;
+        if (maskedTextBlock.Mask is null)
+        {
+            return;
+        }
         maskedTextBlock._provider = new MaskedTextProvider(maskedTextBlock.Mask, CultureInfo.CurrentCulture);
         _ = maskedTextBlock._provider.Set(string.IsNullOrWhiteSpace(maskedTextBlock.UnmaskedText) ? string.Empty : e.NewValue as string);
         maskedTextBlock.Text = maskedTextBlock._provider.ToDisplayString();
@@ -30,6 +34,10 @@ public class MaskedTextBlock : TextBlock
 
     private void MaskedTextBlock_Loaded(object sender, RoutedEventArgs e)
     {
+        if (Mask is null)
+        {
+            return;
+        }
         _provider = new MaskedTextProvider(Mask, CultureInfo.CurrentCulture);
         _ = _provider.Set(string.IsNullOrWhiteSpace(UnmaskedText) ? string.Empty : UnmaskedText);
         _provider.PromptChar = PromptChar;

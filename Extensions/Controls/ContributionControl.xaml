@@ -106,7 +106,7 @@
                                             <TextBlock>
                                                 <Run Text="{Binding Count}" />
                                                 <LineBreak />
-                                                <Run Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" />
+                                                <Run Text="{Binding ContrubutionDate}" />
                                             </TextBlock>
                                         </Rectangle.ToolTip>
                                     </Rectangle>

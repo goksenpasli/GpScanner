@@ -157,7 +157,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="11"
                                 FontWeight="Bold"
-                                Text="{Binding ToplamOran, RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat=\{0:F0\}}" />
+                                Text="{Binding ToplamOran, RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat={}{0:F0}%}" />
                         </Grid>
                         <ProgressBar Grid.Row="1"
                             Grid.ColumnSpan="2"

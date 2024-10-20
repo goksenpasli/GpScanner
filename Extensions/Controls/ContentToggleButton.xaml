@@ -2,6 +2,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:Extensions">
+    <StreamGeometry x:Key="ArrowGeometry">F1M0,0L2.667,2.66665 5.3334,0 5.3334,-1.78168 2.6667,0.88501 0,-1.78168 0,0z</StreamGeometry>
     <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="local:ContentToggleButton">
         <Setter Property="Background">
             <Setter.Value>
@@ -55,7 +56,7 @@
                                 Margin="2"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Data="{DynamicResource ArrowGeometry}"
+                                Data="{StaticResource ArrowGeometry}"
                                 Fill="#606060"
                                 Focusable="False"
                                 Visibility="{Binding ArrowVisibility, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />

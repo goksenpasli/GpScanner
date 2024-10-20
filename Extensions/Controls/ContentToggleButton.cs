@@ -1,8 +1,12 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Markup;
 
 namespace Extensions;
 
+[DefaultProperty("Content")]
+[ContentProperty("Content")]
 public class ContentToggleButton : ToggleButton
 {
     public static readonly DependencyProperty AlwaysOnTopProperty = DependencyProperty.RegisterAttached("AlwaysOnTop", typeof(bool), typeof(ContentToggleButton), new PropertyMetadata(true, OnTopChanged));
