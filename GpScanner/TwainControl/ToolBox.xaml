@@ -75,7 +75,9 @@
                         <Border Background="{StaticResource BorderBackground}"
                             BorderBrush="{StaticResource GroupBoxBackGround}"
                             BorderThickness="1">
-                            <Grid Width="200" Height="200">
+                            <Grid x:Name="Grid"
+                                Width="200"
+                                Height="200">
                                 <ProgressBar Background="{x:Null}"
                                     Maximum="1"
                                     Value="{Binding ToolBoxPdfMergeProgressValue, RelativeSource={RelativeSource AncestorType=local:ToolBox}}" />
@@ -85,11 +87,17 @@
                                     d:FontSize="25"
                                     d:Text="Watermark"
                                     FontFamily="{Binding Scanner.WatermarkFont}"
-                                    FontSize="{Binding Scanner.WatermarkTextSize, Converter={StaticResource FontSizeConverter}}"
                                     Foreground="{Binding Scanner.WatermarkColor, Mode=OneWay}"
                                     Opacity="0.33"
                                     RenderTransformOrigin="0.5,0.5"
                                     Text="{Binding Scanner.Watermark, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <TextBlock.FontSize>
+                                        <MultiBinding Converter="{StaticResource FontSizeConverter}">
+                                            <Binding Mode="OneWay" Path="Scanner.WatermarkTextSize" />
+                                            <Binding Mode="OneWay" Path="Scanner.CroppedImage" />
+                                            <Binding ElementName="Grid" Mode="OneWay" />
+                                        </MultiBinding>
+                                    </TextBlock.FontSize>
                                     <TextBlock.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform />

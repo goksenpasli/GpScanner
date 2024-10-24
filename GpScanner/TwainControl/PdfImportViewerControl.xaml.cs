@@ -1175,11 +1175,11 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     private async void PdfImportViewerControl_MouseMove(object sender, MouseEventArgs e)
     {
-        if (e.OriginalSource is not Image img || img.Parent is not ScrollViewer scrollviewer || DataContext is not TwainCtrl twainCtrl)
+        if (e.OriginalSource is not Image img || img.Parent is not ScrollViewer scrollviewer || DataContext is not TwainCtrl twainCtrl || scrollviewer.Parent is not Grid grid)
         {
             return;
         }
-
+        Canvas cnv = grid.Children[1] as Canvas;
         Point mousemovecoord = e.GetPosition(scrollviewer);
         double x1 = Math.Min(mousedowncoord.X, mousemovecoord.X);
         double x2 = Math.Max(mousedowncoord.X, mousemovecoord.X);

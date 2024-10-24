@@ -1776,18 +1776,16 @@
             Foreground="{StaticResource GroupBoxBackGround}"
             Maximum="1"
             Value="{Binding PdfImportControlProgressValue}" />
-        <Grid Grid.Row="2">
-            <local:EypPdfViewer x:Name="PdfViewer"
-                d:OpenButtonVisibility="Visible"
-                local:Policy.PolicyName="EypPdfViewer"
-                x:FieldModifier="public"
-                AutoFitContent="True"
-                OpenButtonVisibility="{Binding PdfToolBarControlIsEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
-                Orientation="Height"
-                PreviewMouseDown="PdfImportViewerControl_MouseDown"
-                PreviewMouseMove="PdfImportViewerControl_MouseMove"
-                PrintButtonVisibility="Visible" />
-            <Canvas x:Name="cnv" d:IsHidden="True" />
-        </Grid>
+        <local:EypPdfViewer x:Name="PdfViewer"
+            Grid.Row="2"
+            d:OpenButtonVisibility="Visible"
+            local:Policy.PolicyName="EypPdfViewer"
+            x:FieldModifier="public"
+            AutoFitContent="True"
+            OpenButtonVisibility="{Binding PdfToolBarControlIsEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
+            Orientation="Height"
+            PreviewMouseDown="PdfImportViewerControl_MouseDown"
+            PreviewMouseMove="PdfImportViewerControl_MouseMove"
+            PrintButtonVisibility="Visible" />
     </Grid>
 </UserControl>
