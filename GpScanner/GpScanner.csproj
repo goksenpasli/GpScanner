@@ -210,6 +210,7 @@
     <Compile Include="ViewModel\FileType.cs" />
     <Compile Include="ViewModel\FoldEffect.cs" />
     <Compile Include="ViewModel\GpScannerViewModel.cs" />
+    <Compile Include="ViewModel\IdleTimeIndexer.cs" />
     <Compile Include="ViewModel\IFileService.cs" />
     <Compile Include="ViewModel\IScannerService.cs" />
     <Compile Include="ViewModel\IWindowService.cs" />

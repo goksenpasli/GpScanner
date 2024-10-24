@@ -116,6 +116,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition />
+                <ColumnDefinition Width="80" />
             </Grid.ColumnDefinitions>
             <ToggleButton HorizontalAlignment="Left"
                 VerticalAlignment="Top"
@@ -220,6 +221,16 @@
                     </Border>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
+            <Button Grid.Column="4"
+                twainctrl:Policy.PolicyName="CancelUnindexedBatchOcr"
+                Command="{Binding CancelUnindexedBatchOcr}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Width="32"
+                        Height="32"
+                        Source="/TwainControl;component/Icons/delete.png" />
+                    <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc STOP}" />
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </UserControl>

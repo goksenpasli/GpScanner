@@ -901,6 +901,7 @@
                                             VerticalContentAlignment="Center"
                                             local:Policy.PolicyName="SelectedRotation"
                                             Background="{DynamicResource BorderBackground}"
+                                            BorderBrush="{x:Null}"
                                             SelectedValue="{Binding SelectedRotation}"
                                             SelectedValuePath="Tag">
                                             <ListBox.ItemsPanel>
@@ -962,6 +963,7 @@
                                         <ListBox VerticalContentAlignment="Center"
                                             local:Policy.PolicyName="SelectedFlip"
                                             Background="{DynamicResource BorderBackground}"
+                                            BorderBrush="{x:Null}"
                                             SelectedValue="{Binding SelectedFlip}"
                                             SelectedValuePath="Tag">
                                             <ListBox.ItemContainerStyle>

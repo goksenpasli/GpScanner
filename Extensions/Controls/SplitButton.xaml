@@ -62,7 +62,43 @@
                                     VerticalAlignment="Center"
                                     Data="{StaticResource ArrowGeometry}"
                                     Fill="#606060"
-                                    Focusable="False" />
+                                    Focusable="False"
+                                    RenderTransformOrigin="0.5,0.5">
+                                    <Path.Style>
+                                        <Style TargetType="Path">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType=local:SplitButton}}" Value="Bottom">
+                                                    <Setter Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="0" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType=local:SplitButton}}" Value="Top">
+                                                    <Setter Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="180" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType=local:SplitButton}}" Value="Left">
+                                                    <Setter Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="90" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding PlacementMode, RelativeSource={RelativeSource AncestorType=local:SplitButton}}" Value="Right">
+                                                    <Setter Property="RenderTransform">
+                                                        <Setter.Value>
+                                                            <RotateTransform Angle="270" />
+                                                        </Setter.Value>
+                                                    </Setter>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
                             </ToggleButton.Resources>
                             <ToggleButton.Style>
                                 <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="ToggleButton">

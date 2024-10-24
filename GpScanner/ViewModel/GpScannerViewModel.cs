@@ -52,6 +52,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public static readonly string ProfileFolder = $"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}";
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
+    public CancellationTokenSource unindexedfileocrcancellationToken;
     private const string MinimumVcVersion = "14.21.27702";
     private const int NetFxMinVersion = 461808;
     private static readonly SemaphoreSlim LogSemaphore = new(1, 1);
@@ -66,6 +67,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
     private Size selectedCompressorProfile;
     private Size selectedSize;
+    private readonly IdleTimeIndexer ıdleTimeIndexer;
 
     public GpScannerViewModel(IWindowService windowService, TwainCtrl twainCtrl)
     {
@@ -87,6 +89,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         GenerateJumpList();
         LoadRemainder = new RelayCommand<object>(async parameter => await LoadRemainderDatas(), parameter => true);
         LoadRemainder.Execute(null);
+        ıdleTimeIndexer = new(this, Settings.Default.IdleMinuteIndex);
+        RunIdleIndexOperation();
 
         RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => IsAdministrator);
 
@@ -269,18 +273,23 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 int slicecount = UnIndexedFiles.Count > Settings.Default.BatchOcrProcessorCount ? UnIndexedFiles.Count / Settings.Default.BatchOcrProcessorCount : 1;
                 List<Task> Tasks = [];
                 OcrIsBusy = true;
+                unindexedfileocrcancellationToken = new CancellationTokenSource();
                 foreach (List<string> unIndexedFile in TwainCtrl.ChunkBy(UnIndexedFiles.ToList(), slicecount))
                 {
                     Task task = Task.Run(
                         async () =>
                         {
-                            for (int j = 0; j < unIndexedFile.Count; j++)
+                            foreach (string item in unIndexedFile)
                             {
+                                if (unindexedfileocrcancellationToken?.IsCancellationRequested != false)
+                                {
+                                    continue;
+                                }
                                 try
                                 {
-                                    string ocrText = await ProcessFileAsync(unIndexedFile[j]);
-                                    await SaveOcrTextToFileAsync(unIndexedFile[j], ocrText);
-                                    _ = await Application.Current?.Dispatcher?.InvokeAsync(() => UnIndexedFiles?.Remove(unIndexedFile[j]));
+                                    string ocrText = await ProcessFileAsync(item);
+                                    await SaveOcrTextToFileAsync(item, ocrText);
+                                    _ = await Application.Current?.Dispatcher?.InvokeAsync(() => UnIndexedFiles?.Remove(item));
                                     IndexedFileCount = i++;
                                 }
                                 catch (Exception ex)
@@ -292,7 +301,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                     GC.Collect();
                                 }
                             }
-                        });
+                        },
+                        unindexedfileocrcancellationToken.Token);
                     Tasks.Add(task);
                 }
                 await Task.WhenAll(Tasks);
@@ -839,6 +849,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             });
 
         CancelOcr = new RelayCommand<object>(parameter => Ocr.Ocr.ocrcancellationToken?.Cancel());
+
+        CancelUnindexedBatchOcr = new RelayCommand<object>(parameter => unindexedfileocrcancellationToken?.Cancel());
 
         DateBack = new RelayCommand<object>(
             parameter =>
@@ -1401,6 +1413,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public ICommand CancelBatchOcr { get; }
 
     public ICommand CancelOcr { get; }
+
+    public RelayCommand<object> CancelUnindexedBatchOcr { get; }
 
     public ICommand ChangeDataFolder { get; }
 
@@ -2889,6 +2903,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
 
+        if (e.PropertyName is "ApplyIdleIndexOcr")
+        {
+            RunIdleIndexOperation();
+        }
+
         Settings.Default.Save();
     }
 
@@ -3370,6 +3389,18 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         catch (Exception ex)
         {
             _ = MessageBox.Show(ex.Message, appname, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+        }
+    }
+
+    private void RunIdleIndexOperation()
+    {
+        if (Settings.Default.ApplyIdleIndexOcr)
+        {
+            ıdleTimeIndexer.StartIdleOcrTimer();
+        }
+        else
+        {
+            ıdleTimeIndexer.StopIdleOcrTimer();
         }
     }
 

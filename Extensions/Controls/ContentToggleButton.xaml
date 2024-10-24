@@ -59,10 +59,39 @@
                                 Data="{StaticResource ArrowGeometry}"
                                 Fill="#606060"
                                 Focusable="False"
+                                RenderTransformOrigin="0.5,0.5"
                                 Visibility="{Binding ArrowVisibility, RelativeSource={RelativeSource AncestorType={x:Type ToggleButton}}}" />
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding PlacementMode, RelativeSource={RelativeSource Mode=Self}}" Value="Bottom">
+                            <Setter TargetName="path" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="0" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding PlacementMode, RelativeSource={RelativeSource Mode=Self}}" Value="Top">
+                            <Setter TargetName="path" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding PlacementMode, RelativeSource={RelativeSource Mode=Self}}" Value="Left">
+                            <Setter TargetName="path" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="90" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding PlacementMode, RelativeSource={RelativeSource Mode=Self}}" Value="Right">
+                            <Setter TargetName="path" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="270" />
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
                         <Trigger Property="UIElement.IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Border.BorderBrush" Value="#3C7FB1" />
                             <Setter TargetName="border" Property="Panel.Background" Value="#BEE6FD" />

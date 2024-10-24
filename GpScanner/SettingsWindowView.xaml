@@ -980,6 +980,7 @@
                                             TextWrapping="Wrap" />
                                     </StackPanel>
                                 </Button>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <TextBlock VerticalAlignment="Center"
                                     Text="{twainctrl:Loc UNINDEXED}"
                                     TextWrapping="Wrap" />
@@ -988,6 +989,31 @@
                                     Maximum="360"
                                     Minimum="30"
                                     Value="{Binding Path=UnindexedFileCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Path=ApplyIdleIndexOcr, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock>
+                                            <Run Text="{twainctrl:Loc UNINDEXED}" />
+                                            <LineBreak />
+                                            <Run Text="{twainctrl:Loc Auto}" />
+                                            <Run Text="{twainctrl:Loc START}" />
+                                        </TextBlock>
+                                        <Extensions:NumericUpDown Interval="1"
+                                            IsEnabled="{Binding Path=ApplyIdleIndexOcr, Mode=OneWay, Source={x:Static properties:Settings.Default}}"
+                                            IsReadOnly="True"
+                                            Maximum="120"
+                                            Minimum="1"
+                                            Value="{Binding Path=IdleMinuteIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                            <Extensions:NumericUpDown.ToolTip>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Path=IdleMinuteIndex, Mode=OneWay, Source={x:Static properties:Settings.Default}}" />
+                                                    <Run Text="{twainctrl:Loc MINUTE}" />
+                                                    <Run Text="{twainctrl:Loc EMPTY}" />
+                                                </TextBlock>
+                                            </Extensions:NumericUpDown.ToolTip>
+                                        </Extensions:NumericUpDown>
+                                    </StackPanel>
+                                </CheckBox>
                             </StackPanel>
                         </ScrollViewer>
                     </GroupBox>

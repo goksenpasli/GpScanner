@@ -648,5 +648,29 @@ namespace GpScanner.Properties {
                 this["ContributionListBoxSize"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int IdleMinuteIndex {
+            get {
+                return ((int)(this["IdleMinuteIndex"]));
+            }
+            set {
+                this["IdleMinuteIndex"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ApplyIdleIndexOcr {
+            get {
+                return ((bool)(this["ApplyIdleIndexOcr"]));
+            }
+            set {
+                this["ApplyIdleIndexOcr"] = value;
+            }
+        }
     }
 }
