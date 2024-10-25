@@ -75,31 +75,20 @@
             </ListBox.ItemContainerStyle>
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <StackPanel>
-                        <ContentControl HorizontalAlignment="Center"
-                            d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}"
-                            Content="{Binding IsAsync=True, Mode=OneWay}"
-                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                        <Extensions:ButtonedTextBox HorizontalAlignment="Center"
-                            d:Description="FileName"
-                            d:Text="FileName"
-                            Background="{x:Null}"
-                            BorderBrush="{x:Null}"
-                            CopyButtonVisibility="Collapsed"
-                            Focusable="False"
-                            IsReadOnly="True"
-                            PasteButtonVisibility="Collapsed"
-                            ResetButtonVisibility="Collapsed"
-                            Text="{Binding Mode=OneWay}"
-                            TextBoxVisibility="Collapsed">
-                            <Extensions:ButtonedTextBox.Description>
-                                <TextBlock HorizontalAlignment="Center">
-                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
-                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource PdfFileNameToInfoConverter}}" />
-                                </TextBlock>
-                            </Extensions:ButtonedTextBox.Description>
-                        </Extensions:ButtonedTextBox>
-                    </StackPanel>
+                    <Grid Width="150" Height="250">
+                        <StackPanel VerticalAlignment="Center">
+                            <ContentControl HorizontalAlignment="Center"
+                                d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}"
+                                Content="{Binding IsAsync=True, Mode=OneWay}"
+                                ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                            <TextBlock HorizontalAlignment="Center"
+                                d:Text="FileName"
+                                TextWrapping="Wrap">
+                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource PdfFileNameToInfoConverter}}" />
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
             <ListBox.ItemsPanel>
