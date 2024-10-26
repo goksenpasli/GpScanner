@@ -7,13 +7,19 @@ namespace Extensions
 {
     public class ExtendedMessageBox : Control
     {
+        public static readonly DependencyProperty CheckDescriptionProperty = DependencyProperty.Register("CheckDescription", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty CheckVisibilityProperty = DependencyProperty.Register("CheckVisibility", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
         public static readonly DependencyProperty CustomContentProperty = DependencyProperty.Register("CustomContent", typeof(object), typeof(ExtendedMessageBox), new PropertyMetadata(null));
-        public static readonly DependencyProperty IsCustomContentVisibleProperty = DependencyProperty.Register("IsCustomContentVisible", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty CustomContentVisibleProperty = DependencyProperty.Register("CustomContentVisible", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty HiddenCaptionProperty = DependencyProperty.Register("HiddenCaption", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty HiddenDescriptionExpandedProperty = DependencyProperty.Register("HiddenDescriptionExpanded", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
+        public static readonly DependencyProperty HiddenDescriptionProperty = DependencyProperty.Register("HiddenDescription", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty HiddenDescriptionVisibilityProperty = DependencyProperty.Register("HiddenDescriptionVisibility", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
         public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty ShowNoButtonProperty = DependencyProperty.Register("ShowNoButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
-        public static readonly DependencyProperty ShowYesButtonProperty = DependencyProperty.Register("ShowYesButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Visible));
+        public static readonly DependencyProperty NoButtonProperty = DependencyProperty.Register("NoButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
-        public static readonly DependencyProperty YesButtonContentProperty = DependencyProperty.Register("YesButtonContent", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata("Yes"));
+        public static readonly DependencyProperty YesButtonProperty = DependencyProperty.Register("YesButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Visible));
         private static Grid _overlayGrid;
         private Button _noButton;
         private Button _yesButton;
@@ -21,19 +27,31 @@ namespace Extensions
 
         static ExtendedMessageBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedMessageBox), new FrameworkPropertyMetadata(typeof(ExtendedMessageBox))); }
 
+        public string CheckDescription { get => (string)GetValue(CheckDescriptionProperty); set => SetValue(CheckDescriptionProperty, value); }
+
+        public Visibility CheckVisibility { get => (Visibility)GetValue(CheckVisibilityProperty); set => SetValue(CheckVisibilityProperty, value); }
+
         public object CustomContent { get => GetValue(CustomContentProperty); set => SetValue(CustomContentProperty, value); }
 
-        public Visibility IsCustomContentVisible { get => (Visibility)GetValue(IsCustomContentVisibleProperty); set => SetValue(IsCustomContentVisibleProperty, value); }
+        public Visibility CustomContentVisible { get => (Visibility)GetValue(CustomContentVisibleProperty); set => SetValue(CustomContentVisibleProperty, value); }
+
+        public string HiddenCaption { get => (string)GetValue(HiddenCaptionProperty); set => SetValue(HiddenCaptionProperty, value); }
+
+        public string HiddenDescription { get => (string)GetValue(HiddenDescriptionProperty); set => SetValue(HiddenDescriptionProperty, value); }
+
+        public bool HiddenDescriptionExpanded { get => (bool)GetValue(HiddenDescriptionExpandedProperty); set => SetValue(HiddenDescriptionExpandedProperty, value); }
+
+        public Visibility HiddenDescriptionVisibility { get => (Visibility)GetValue(HiddenDescriptionVisibilityProperty); set => SetValue(HiddenDescriptionVisibilityProperty, value); }
+
+        public bool IsChecked { get => (bool)GetValue(IsCheckedProperty); set => SetValue(IsCheckedProperty, value); }
 
         public string Message { get => (string)GetValue(MessageProperty); set => SetValue(MessageProperty, value); }
 
-        public Visibility ShowNoButton { get => (Visibility)GetValue(ShowNoButtonProperty); set => SetValue(ShowNoButtonProperty, value); }
-
-        public Visibility ShowYesButton { get => (Visibility)GetValue(ShowYesButtonProperty); set => SetValue(ShowYesButtonProperty, value); }
+        public Visibility NoButton { get => (Visibility)GetValue(NoButtonProperty); set => SetValue(NoButtonProperty, value); }
 
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
-        public string YesButtonContent { get => (string)GetValue(YesButtonContentProperty); set => SetValue(YesButtonContentProperty, value); }
+        public Visibility YesButton { get => (Visibility)GetValue(YesButtonProperty); set => SetValue(YesButtonProperty, value); }
 
         private Action OnNoAction { get; set; }
 
@@ -54,23 +72,30 @@ namespace Extensions
             }
         }
 
-        public void ShowDialog(Window window, string message, string title, Visibility yesbuttonvisibility = Visibility.Visible, Visibility nobuttonvisibility = Visibility.Collapsed, Action onYesAction = null, Action onNoAction = null)
+        public void ShowDialog(Window window, string message, string title = null, Action onYesAction = null, Action onNoAction = null)
         {
             dialog = new()
             {
                 CustomContent = CustomContent,
-                IsCustomContentVisible = IsCustomContentVisible,
+                CustomContentVisible = CustomContentVisible,
+                HiddenDescription = HiddenDescription,
+                HiddenDescriptionExpanded = HiddenDescriptionExpanded,
+                HiddenDescriptionVisibility = HiddenDescriptionVisibility,
+                HiddenCaption = HiddenCaption,
+                CheckDescription = CheckDescription,
+                CheckVisibility = CheckVisibility,
+                IsChecked = IsChecked,
                 Message = message,
                 Title = title,
-                ShowYesButton = yesbuttonvisibility,
-                ShowNoButton = nobuttonvisibility,
+                YesButton = YesButton,
+                NoButton = NoButton,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
             _overlayGrid = window.FindVisualChildren<Grid>().FirstOrDefault();
             if (_overlayGrid is not null)
             {
-                _ = (_overlayGrid?.Children.Add(dialog));
+                _ = _overlayGrid?.Children.Add(dialog);
                 dialog.OnYesAction = onYesAction;
                 dialog.OnNoAction = onNoAction;
             }

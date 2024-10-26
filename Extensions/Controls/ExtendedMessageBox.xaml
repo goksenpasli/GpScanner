@@ -3,21 +3,24 @@
     xmlns:local="clr-namespace:Extensions">
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Style TargetType="{x:Type local:ExtendedMessageBox}">
+        <Setter Property="Background" Value="{DynamicResource BorderBackground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource GroupBoxBackGround}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:ExtendedMessageBox}">
                     <Border Padding="1"
-                        Background="{DynamicResource BorderBackground}"
-                        BorderBrush="{DynamicResource GroupBoxBackGround}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="1">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <ContentPresenter Width="64"
-                                    Height="64"
-                                    Margin="5,10,10,0"
+                                <ContentPresenter Width="96"
+                                    Height="96"
+                                    Margin="10"
                                     Content="{TemplateBinding CustomContent}"
-                                    Visibility="{TemplateBinding IsCustomContentVisible}" />
-                                <TextBlock HorizontalAlignment="Center"
+                                    Visibility="{TemplateBinding CustomContentVisible}" />
+                                <TextBlock Margin="0,0,5,0"
+                                    HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
                                     TextAlignment="Center">
                                     <Run FontSize="18" Text="{TemplateBinding Title}" />
@@ -25,10 +28,23 @@
                                     <Run FontSize="12" Text="{TemplateBinding Message}" />
                                 </TextBlock>
                             </StackPanel>
-                            <UniformGrid HorizontalAlignment="Center" Columns="2">
+                            <CheckBox Content="{TemplateBinding CheckDescription}"
+                                IsChecked="{TemplateBinding IsChecked}"
+                                Visibility="{TemplateBinding CheckVisibility}" />
+                            <Expander MaxWidth="300"
+                                Header="{TemplateBinding HiddenCaption}"
+                                IsExpanded="{TemplateBinding HiddenDescriptionExpanded}"
+                                Visibility="{TemplateBinding HiddenDescriptionVisibility}">
+                                <TextBlock Text="{TemplateBinding HiddenDescription}" TextWrapping="Wrap" />
+                            </Expander>
+                            <Grid HorizontalAlignment="Center">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
                                 <Button x:Name="Yes"
                                     Margin="5"
-                                    Visibility="{TemplateBinding ShowYesButton}">
+                                    Visibility="{TemplateBinding YesButton}">
                                     <Button.Content>
                                         <Image Width="32" Height="32">
                                             <Image.Source>
@@ -41,8 +57,9 @@
                                     </Button.Content>
                                 </Button>
                                 <Button x:Name="No"
+                                    Grid.Column="1"
                                     Margin="5"
-                                    Visibility="{TemplateBinding ShowNoButton}">
+                                    Visibility="{TemplateBinding NoButton}">
                                     <Button.Content>
                                         <Image Width="32" Height="32">
                                             <Image.Source>
@@ -54,7 +71,7 @@
                                         </Image>
                                     </Button.Content>
                                 </Button>
-                            </UniformGrid>
+                            </Grid>
                         </StackPanel>
                     </Border>
                 </ControlTemplate>
