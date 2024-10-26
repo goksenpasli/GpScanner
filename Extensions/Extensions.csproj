@@ -77,6 +77,7 @@
     <Compile Include="Controls\CheckComboBox.cs" />
     <Compile Include="Controls\ContributionControl.cs" />
     <Compile Include="Controls\ContributionData.cs" />
+    <Compile Include="Controls\ExtendedMessageBox.cs" />
     <Compile Include="Controls\FadedToolTipControl.cs" />
     <Compile Include="Controls\FileBreadCrumbControl.cs" />
     <Compile Include="Controls\FitImageOrientation.cs" />
@@ -170,6 +171,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CheckComboBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ExtendedMessageBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

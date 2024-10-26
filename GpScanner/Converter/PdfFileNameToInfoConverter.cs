@@ -30,7 +30,7 @@ public sealed class PdfFileNameToInfoConverter : DependencyObject, IValueConvert
             .AppendLine(reader?.Info?.Author)
             .Append(reader?.Info?.CreationDate.AddHours(DateTimeOffset.Now.Offset.Hours))
             .AppendLine()
-            .Append($"{reader?.FileSize / 1048576d:##.##}")
+            .Append($"{reader?.FileSize / 1048576d:F}")
             .AppendLine(" MB");
             return stringBuilder?.ToString();
         }
