@@ -2,6 +2,8 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace Extensions
 {
@@ -18,9 +20,14 @@ namespace Extensions
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
         public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty NoButtonProperty = DependencyProperty.Register("NoButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty NoEnabledProperty = DependencyProperty.Register("NoEnabled", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(true));
+        public static readonly DependencyProperty ProgressBarVisibilityProperty = DependencyProperty.Register("ProgressBarVisibility", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty ProgressValueProperty = DependencyProperty.Register("ProgressValue", typeof(double), typeof(ExtendedMessageBox), new PropertyMetadata(0d));
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty YesButtonProperty = DependencyProperty.Register("YesButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Visible));
+        public static readonly DependencyProperty YesEnabledProperty = DependencyProperty.Register("YesEnabled", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(true));
         private static Grid _overlayGrid;
+        private static Rectangle blockrectangle;
         private Button _noButton;
         private Button _yesButton;
         private ExtendedMessageBox dialog;
@@ -49,9 +56,17 @@ namespace Extensions
 
         public Visibility NoButton { get => (Visibility)GetValue(NoButtonProperty); set => SetValue(NoButtonProperty, value); }
 
+        public bool NoEnabled { get => (bool)GetValue(NoEnabledProperty); set => SetValue(NoEnabledProperty, value); }
+
+        public Visibility ProgressBarVisibility { get => (Visibility)GetValue(ProgressBarVisibilityProperty); set => SetValue(ProgressBarVisibilityProperty, value); }
+
+        public double ProgressValue { get => (double)GetValue(ProgressValueProperty); set => SetValue(ProgressValueProperty, value); }
+
         public string Title { get => (string)GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
 
         public Visibility YesButton { get => (Visibility)GetValue(YesButtonProperty); set => SetValue(YesButtonProperty, value); }
+
+        public bool YesEnabled { get => (bool)GetValue(YesEnabledProperty); set => SetValue(YesEnabledProperty, value); }
 
         private Action OnNoAction { get; set; }
 
@@ -72,7 +87,7 @@ namespace Extensions
             }
         }
 
-        public void ShowDialog(Window window, string message, string title = null, Action onYesAction = null, Action onNoAction = null)
+        public void ShowDialog(Window window, string message, string title = null, Action onYesAction = null, Action onNoAction = null, bool ismodal = true)
         {
             dialog = new()
             {
@@ -89,19 +104,37 @@ namespace Extensions
                 Title = title,
                 YesButton = YesButton,
                 NoButton = NoButton,
+                YesEnabled = YesEnabled,
+                NoEnabled = NoEnabled,
+                ProgressBarVisibility = ProgressBarVisibility,
+                ProgressValue = ProgressValue,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            _overlayGrid = window.FindVisualChildren<Grid>().FirstOrDefault();
-            if (_overlayGrid is not null)
+            _overlayGrid = window?.FindVisualChildren<Grid>()?.FirstOrDefault();
+            if (_overlayGrid is null)
             {
-                _ = _overlayGrid?.Children.Add(dialog);
-                dialog.OnYesAction = onYesAction;
-                dialog.OnNoAction = onNoAction;
+                throw new ArgumentNullException(nameof(_overlayGrid), "window should contain at least one grid control.");
             }
+            if (ismodal && blockrectangle is null)
+            {
+                blockrectangle = new Rectangle { Fill = Brushes.Transparent, IsHitTestVisible = true };
+                _ = _overlayGrid.Children.Add(blockrectangle);
+            }
+            _ = _overlayGrid.Children.Add(dialog);
+            dialog.OnYesAction = onYesAction;
+            dialog.OnNoAction = onNoAction;
         }
 
-        private void CloseDialog() => _overlayGrid?.Children?.Remove(this);
+        private void CloseDialog()
+        {
+            if (_overlayGrid.Children.OfType<ExtendedMessageBox>()?.Count() == 1)
+            {
+                _overlayGrid.Children.Remove(blockrectangle);
+                blockrectangle = null;
+            }
+            _overlayGrid.Children.Remove(this);
+        }
 
         private void OnNoButtonClick()
         {
