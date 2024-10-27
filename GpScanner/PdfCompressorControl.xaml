@@ -173,6 +173,31 @@
                                             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                             VirtualizingPanel.ScrollUnit="Pixel"
                                             VirtualizingPanel.VirtualizationMode="Recycling">
+                                            <ListBox.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Command="{Binding Parent.Parent.SelectAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="{twainctrl:Loc ALL}">
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16"
+                                                                Height="16"
+                                                                Source="/TwainControl;component/Icons/selectall.png" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    <MenuItem Command="{Binding Parent.Parent.DeselectAllFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="{twainctrl:Loc NONE}">
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16"
+                                                                Height="16"
+                                                                Source="/TwainControl;component/Icons/none.png" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    <MenuItem Command="{Binding Parent.Parent.InverseSelectFile, RelativeSource={RelativeSource Mode=TemplatedParent}}" Header="{twainctrl:Loc REVERSE}">
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16"
+                                                                Height="16"
+                                                                Source="/TwainControl;component/Icons/inverse.png" />
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                </ContextMenu>
+                                            </ListBox.ContextMenu>
                                             <ListBox.ItemContainerStyle>
                                                 <Style TargetType="{x:Type ListBoxItem}">
                                                     <Style.Triggers>

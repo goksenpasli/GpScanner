@@ -1,4 +1,5 @@
-﻿using GpScanner.ViewModel;
+﻿using Extensions;
+using GpScanner.ViewModel;
 using PdfCompressor;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,43 @@ namespace GpScanner
         {
             InitializeComponent();
             Compressor.ProgressChanged += Compressor_ProgressChanged;
+            DeselectAllFile = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (BatchPdfData item in Compressor.BatchPdfList)
+                    {
+                        item.IsChecked = false;
+                    }
+                },
+                parameter => true);
+            SelectAllFile = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (BatchPdfData item in Compressor.BatchPdfList)
+                    {
+                        item.IsChecked = true;
+                    }
+                },
+                parameter => true);
+            InverseSelectFile = new RelayCommand<object>(
+                parameter =>
+                {
+                    foreach (BatchPdfData item in Compressor.BatchPdfList)
+                    {
+                        item.IsChecked = !item.IsChecked;
+                    }
+                },
+                parameter => true);
+
         }
 
+        public RelayCommand<object> DeselectAllFile { get; }
+
+        public RelayCommand<object> InverseSelectFile { get; }
+
         public double ProgressValue => (double)GetValue(ProgressValueProperty.DependencyProperty);
+
+        public RelayCommand<object> SelectAllFile { get; }
 
         private void ComboBox_CompressorListSourceUpdated(object sender, DataTransferEventArgs e)
         {
