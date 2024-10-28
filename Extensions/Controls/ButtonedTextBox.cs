@@ -325,7 +325,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message);
+            ExtendedMessageBox extendedMessageBox = new();
+            extendedMessageBox.ShowDialog(Window.GetWindow(this), ex.Message);
         }
     }
 

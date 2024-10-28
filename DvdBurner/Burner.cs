@@ -14,7 +14,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
-using MessageBox = System.Windows.MessageBox;
 
 namespace DvdBurner
 {
@@ -44,7 +43,7 @@ namespace DvdBurner
                 IsCdWriterAvailable = false;
                 return;
             }
-
+            ExtendedMessageBox extendedMessageBox = new();
             Drives = GetCdWriters(g_DiscMaster);
 
             BurnDvd = new RelayCommand<object>(
@@ -52,7 +51,7 @@ namespace DvdBurner
                 {
                     if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
-                        _ = MessageBox.Show(WarnText, AppName);
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), WarnText, AppName);
                         return;
                     }
 
@@ -111,7 +110,7 @@ namespace DvdBurner
                 {
                     if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
-                        _ = MessageBox.Show(WarnText, AppName);
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), WarnText, AppName);
                         return;
                     }
 
@@ -130,7 +129,7 @@ namespace DvdBurner
                 {
                     if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
-                        _ = MessageBox.Show(WarnText, AppName);
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), WarnText, AppName);
                         return;
                     }
                     if (parameter is string file && Files?.Remove(file) == true)
@@ -145,7 +144,7 @@ namespace DvdBurner
                 {
                     if (Burntask?.IsCompleted == false || Erasetask?.IsCompleted == false)
                     {
-                        _ = MessageBox.Show(WarnText, AppName);
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), WarnText, AppName);
                         return;
                     }
 
@@ -191,7 +190,7 @@ namespace DvdBurner
                     [
                         .. from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType),
                     ];
-                    _ = MessageBox.Show(string.Join("\n", supportedformats), AppName);
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), string.Join("\n", supportedformats), AppName);
                     recorder = null;
                 },
                 parameter => SelectedDrive is not null);

@@ -33,7 +33,8 @@ namespace Extensions.Controls
 
         private void DisplayError(string message)
         {
-            _ = MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Information);
+            ExtendedMessageBox extendedMessageBox = new();
+            extendedMessageBox.ShowDialog(Window.GetWindow(this), message, "Error");
             ClearDisplay();
         }
 

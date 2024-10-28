@@ -111,7 +111,7 @@ namespace Extensions
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            _overlayGrid = window?.FindVisualChildren<Grid>()?.FirstOrDefault();
+            _overlayGrid = window?.GetFirstVisualChild<Grid>();
             if (_overlayGrid is null)
             {
                 throw new ArgumentNullException(nameof(_overlayGrid), "window should contain at least one grid control.");
@@ -119,8 +119,12 @@ namespace Extensions
             if (ismodal && blockrectangle is null)
             {
                 blockrectangle = new Rectangle { Fill = Brushes.Transparent, IsHitTestVisible = true };
+                Grid.SetColumnSpan(blockrectangle, _overlayGrid.ColumnDefinitions.Count);
+                Grid.SetRowSpan(blockrectangle, _overlayGrid.RowDefinitions.Count);
                 _ = _overlayGrid.Children.Add(blockrectangle);
             }
+            Grid.SetColumnSpan(dialog, _overlayGrid.ColumnDefinitions.Count);
+            Grid.SetRowSpan(dialog, _overlayGrid.RowDefinitions.Count);
             _ = _overlayGrid.Children.Add(dialog);
             dialog.OnYesAction = onYesAction;
             dialog.OnNoAction = onNoAction;
