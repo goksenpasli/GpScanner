@@ -26,7 +26,7 @@ namespace GpScanner
                         item.IsChecked = false;
                     }
                 },
-                parameter => true);
+                parameter => Compressor?.BatchPdfList?.Count > 0);
             SelectAllFile = new RelayCommand<object>(
                 parameter =>
                 {
@@ -35,7 +35,7 @@ namespace GpScanner
                         item.IsChecked = true;
                     }
                 },
-                parameter => true);
+                parameter => Compressor?.BatchPdfList?.Count > 0);
             InverseSelectFile = new RelayCommand<object>(
                 parameter =>
                 {
@@ -44,7 +44,7 @@ namespace GpScanner
                         item.IsChecked = !item.IsChecked;
                     }
                 },
-                parameter => true);
+                parameter => Compressor?.BatchPdfList?.Count > 0);
 
         }
 

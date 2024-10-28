@@ -59,6 +59,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
     private readonly string AppName;
+    private readonly IdleTimeIndexer ıdleTimeIndexer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
@@ -67,7 +68,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
     private Size selectedCompressorProfile;
     private Size selectedSize;
-    private readonly IdleTimeIndexer ıdleTimeIndexer;
 
     public GpScannerViewModel(IWindowService windowService, TwainCtrl twainCtrl)
     {
@@ -3097,7 +3097,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         try
         {
             using AppDbContext context = new();
-            return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.AsNoTracking().ToListAsync())?.Where(z => z.Seen)?.OrderBy(z => z.Tarih)]);
+            List<ReminderData> reminders = await context.ReminderData.AsNoTracking().Where(z => z.Seen).OrderBy(z => z.Tarih).ToListAsync();
+            return new ObservableCollection<ReminderData>(reminders);
         }
         catch (Exception)
         {
@@ -3251,7 +3252,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private async Task LoadRemainderDatas()
     {
-        ScannerData = new ScannerData { Reminder = await ReminderYükle(), GörülenReminder = await GörülenReminderYükle() };
+        ScannerData = new ScannerData { Reminder = await Task.Run(() => ReminderYükle()), GörülenReminder = await Task.Run(() => GörülenReminderYükle()) };
 
         if (Settings.Default.NotifyCalendar && ScannerData?.Reminder?.Any(z => z.Tarih < DateTime.Today.AddDays(Settings.Default.NotifyCalendarDateValue)) == true)
         {
@@ -3361,7 +3362,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         try
         {
             using AppDbContext context = new();
-            return new ObservableCollection<ReminderData>([.. (await context.ReminderData?.AsNoTracking().ToListAsync())?.Where(z => z.Tarih > DateTime.Today && !z.Seen)?.OrderBy(z => z.Tarih)]);
+            List<ReminderData> reminders = await context.ReminderData.AsNoTracking().Where(z => z.Tarih > DateTime.Today && !z.Seen).OrderBy(z => z.Tarih).ToListAsync();
+            return new ObservableCollection<ReminderData>(reminders);
         }
         catch (Exception)
         {

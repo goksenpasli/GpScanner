@@ -1901,7 +1901,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is Viewer pdfviewer && MessageBox.Show($"{Translation.GetResStringValue("BW")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
-                    BitmapImage image = bitmapImage.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
+                    BitmapImage image = bitmapImage.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff);
                     using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image);
                     PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(pdfviewer.PdfFilePath);
@@ -3581,7 +3581,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static PdfDocument RenderPdfPage(Viewer pdfviewer, BitmapImage image) => PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider)?.GenerateFromBitmapSourcePdf(pdfviewer.Sayfa - 1, image);
+    public static PdfDocument RenderPdfPage(Viewer pdfviewer, BitmapImage image)
+    {
+        PdfDocument document = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider)?.GenerateFromBitmapSourcePdf(pdfviewer.Sayfa - 1, image);
+        document.ApplyDefaultPdfCompression();
+        return document;
+    }
 
     public static void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
     {

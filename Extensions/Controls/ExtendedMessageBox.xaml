@@ -69,14 +69,16 @@
                                 <Button x:Name="Yes"
                                     Margin="5"
                                     d:Visibility="Visible"
+                                    Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
                                     IsEnabled="{TemplateBinding YesEnabled}"
                                     Visibility="{TemplateBinding YesButton}">
                                     <Button.Content>
                                         <Image Width="32" Height="32">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="294" />
+                                                    <Binding Source="Comres.dll" />
+                                                    <Binding Source="8" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
@@ -86,14 +88,16 @@
                                     Grid.Column="1"
                                     Margin="5"
                                     d:Visibility="Visible"
+                                    Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
                                     IsEnabled="{TemplateBinding NoEnabled}"
                                     Visibility="{TemplateBinding NoButton}">
                                     <Button.Content>
                                         <Image Width="32" Height="32">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="131" />
+                                                    <Binding Source="Comres.dll" />
+                                                    <Binding Source="13" />
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
