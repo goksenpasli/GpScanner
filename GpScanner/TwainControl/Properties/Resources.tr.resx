@@ -784,4 +784,7 @@ BELGE EKLE</value>
   <data name="COMPUTER" xml:space="preserve">
     <value>BİLGİSAYAR</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>BİR TARAYICIDAN FAZLASI</value>
+  </data>
 </root>

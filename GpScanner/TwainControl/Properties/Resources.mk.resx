@@ -786,4 +786,7 @@
   <data name="COMPUTER" xml:space="preserve">
     <value>Компјутер</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Повеќе од прелистувач</value>
+  </data>
 </root>

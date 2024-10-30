@@ -2,6 +2,8 @@
 using GpScanner.Properties;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using TwainControl;
 
 namespace GpScanner.ViewModel
 {
@@ -49,7 +51,12 @@ namespace GpScanner.ViewModel
         };
         private const string basePath = "pack://application:,,,/GpScanner;component/Resources/";
 
-        public SplashViewModel() { FlagUri = GetFlag(Settings.Default.DefaultLang); }
+        public SplashViewModel()
+        {
+            FlagUri = GetFlag(Settings.Default.DefaultLang);
+            TranslationSource.Instance.CurrentCulture = ChangeApplicationLanguage(Settings.Default.DefaultLang);
+            SplashText = Translation.GetResStringValue("SPLASHTEXT");
+        }
 
         public Uri FlagUri
         {
@@ -62,6 +69,61 @@ namespace GpScanner.ViewModel
                     OnPropertyChanged(nameof(FlagUri));
                 }
             }
+        }
+
+        public string SplashText
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(SplashText));
+                }
+            }
+        }
+
+        public static CultureInfo ChangeApplicationLanguage(string lang)
+        {
+            return lang switch
+            {
+                "" or "TÜRKÇE" => new CultureInfo("tr-TR"),
+                "ENGLISH" => new CultureInfo("en-US"),
+                "FRANÇAIS" => new CultureInfo("fr-FR"),
+                "ITALIANO" => new CultureInfo("it-IT"),
+                "عربي" or "فلسطين" or "لبنان" => new CultureInfo("ar-AR"),
+                "РУССКИЙ" => new CultureInfo("ru-RU"),
+                "DEUTSCH" => new CultureInfo("de-DE"),
+                "日本" => new CultureInfo("ja-JP"),
+                "DUTCH" or "BELGIË" => new CultureInfo("nl-NL"),
+                "CZECH" => new CultureInfo("cs-CZ"),
+                "ESPAÑOL" => new CultureInfo("es-ES"),
+                "中國人" => new CultureInfo("zh-CN"),
+                "УКРАЇНСЬКА" => new CultureInfo("uk-UA"),
+                "ΕΛΛΗΝΙΚΑ" => new CultureInfo("el"),
+                "AZƏRBAYCAN" => new CultureInfo("az"),
+                "БЕЛАРУСКАЯ" => new CultureInfo("be"),
+                "БЪЛГАРСКИ" => new CultureInfo("bg"),
+                "DANSK" => new CultureInfo("da"),
+                "HRVATSKI" => new CultureInfo("hr"),
+                "भारतीय" => new CultureInfo("gu"),
+                "PORTUGUÊS" => new CultureInfo("pt"),
+                "INDONESIA" => new CultureInfo("id"),
+                "ՀԱՅԵՐԵՆ" => new CultureInfo("hy"),
+                "ROMÂNĂ" => new CultureInfo("ro"),
+                "MAGYAR" => new CultureInfo("hu"),
+                "SVENSKA" => new CultureInfo("sv"),
+                "SUOMI" => new CultureInfo("fi"),
+                "MALAYSIAN" => new CultureInfo("ms"),
+                "ایرانی" => new CultureInfo("fa"),
+                "МАКЕДОНСКИ" => new CultureInfo("mk"),
+                "ქართველი" => new CultureInfo("ka"),
+                "한국인" => new CultureInfo("ko"),
+                "UZBEK" => new CultureInfo("uz"),
+                "TÜRKMEN" => new CultureInfo("tk"),
+                _ => new CultureInfo("en-US")
+            };
         }
 
         public static Uri GetFlag(string language)

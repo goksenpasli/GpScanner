@@ -786,4 +786,7 @@ Resminama goşuň</value>
   <data name="COMPUTER" xml:space="preserve">
     <value>Kompýuter</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Brauzerden has köp</value>
+  </data>
 </root>

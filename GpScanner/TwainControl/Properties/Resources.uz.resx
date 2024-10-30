@@ -786,4 +786,7 @@ Hujjat qo'shing</value>
   <data name="COMPUTER" xml:space="preserve">
     <value>Kompyuter</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Brauzerdan ko'proq</value>
+  </data>
 </root>

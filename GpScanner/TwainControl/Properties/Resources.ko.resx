@@ -781,4 +781,7 @@ PDF</value>
   <data name="COMPUTER" xml:space="preserve">
     <value>컴퓨터</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>브라우저 이상</value>
+  </data>
 </root>

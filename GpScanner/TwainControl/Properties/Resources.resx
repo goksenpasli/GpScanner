@@ -809,4 +809,7 @@
   <data name="COMPUTER" xml:space="preserve">
     <value />
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value />
+  </data>
 </root>

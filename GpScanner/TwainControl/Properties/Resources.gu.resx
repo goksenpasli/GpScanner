@@ -771,4 +771,7 @@
   <data name="COMPUTER" xml:space="preserve">
     <value>કોમ્પ્યુટર</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>બ્રાઉઝર કરતાં વધુ</value>
+  </data>
 </root>

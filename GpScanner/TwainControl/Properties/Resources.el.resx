@@ -771,4 +771,7 @@
   <data name="COMPUTER" xml:space="preserve">
     <value>ΗΛΕΚΤΡΟΝΙΚΟΣ ΥΠΟΛΟΓΙΣΤΗΣ</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Περισσότερο από ένα πρόγραμμα περιήγησης</value>
+  </data>
 </root>

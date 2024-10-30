@@ -1346,6 +1346,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SPLASHTEXT {
+            get {
+                return ResourceManager.GetString("SPLASHTEXT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SPLITSORT {
             get {
                 return ResourceManager.GetString("SPLITSORT", resourceCulture);

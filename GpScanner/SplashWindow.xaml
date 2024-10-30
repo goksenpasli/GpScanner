@@ -63,7 +63,8 @@
                         <GeometryModel3D.Material>
                             <DiffuseMaterial>
                                 <DiffuseMaterial.Brush>
-                                    <ImageBrush ImageSource="{Binding FlagUri}"
+                                    <ImageBrush d:ImageSource="/Resources/flag-of-Turkey.png"
+                                        ImageSource="{Binding FlagUri}"
                                         Opacity="0.15"
                                         Stretch="None" />
                                 </DiffuseMaterial.Brush>
@@ -91,5 +92,12 @@
                 </ModelVisual3D.Content>
             </ModelVisual3D>
         </Viewport3D>
+        <TextBlock Margin="0,0,0,120"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            d:Text="BİR TARAYICIDAN FAZLASI"
+            FontSize="14"
+            Foreground="White"
+            Text="{Binding SplashText}" />
     </Grid>
 </Window>

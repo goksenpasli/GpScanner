@@ -774,4 +774,7 @@
   <data name="COMPUTER" xml:space="preserve">
     <value>DATOR</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Mer än en webbläsare</value>
+  </data>
 </root>

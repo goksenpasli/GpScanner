@@ -771,4 +771,7 @@
   <data name="COMPUTER" xml:space="preserve">
     <value>POČÍTAČ</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Více než prohlížeč</value>
+  </data>
 </root>

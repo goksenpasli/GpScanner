@@ -786,4 +786,7 @@
   <data name="COMPUTER" xml:space="preserve">
     <value>کامپیوتر</value>
   </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>بیش از یک مرورگر</value>
+  </data>
 </root>
