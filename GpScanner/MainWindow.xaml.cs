@@ -116,7 +116,7 @@ public partial class MainWindow : Window
     {
         if (sender is Grid grid && e.OriginalSource is Run)
         {
-            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(grid.ToRenderTargetBitmap().Resize(230,370).BitmapSourceToBitmap().GetHicon());
+            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(grid.ToRenderTargetBitmap().Resize(230, 370).BitmapSourceToBitmap().GetHicon());
             TwainCtrl.DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
             _ = DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
             e.Handled = true;
@@ -272,7 +272,10 @@ public partial class MainWindow : Window
         {
             if (e.PropertyName is "Resimler")
             {
-                ViewModel.ReloadFileDatas();
+                string savefilename = TwainCtrl.Scanner.PdfFilePath;
+                FileInfo fi = new(savefilename);
+                Scanner scanner = new() { FileName = savefilename, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F };
+                ViewModel.Dosyalar?.Add(scanner);
             }
 
             if (e.PropertyName is "DetectPageSeperator" && ViewModel.DetectBarCode)

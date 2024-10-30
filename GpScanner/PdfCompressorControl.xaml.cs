@@ -1,9 +1,12 @@
 ﻿using Extensions;
 using GpScanner.ViewModel;
 using PdfCompressor;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using TwainControl;
 
 namespace GpScanner
 {
@@ -69,7 +72,17 @@ namespace GpScanner
         {
             if (e.Source is Button button && button.IsEnabled && button.DataContext is GpScannerViewModel gpScannerViewModel)
             {
-                gpScannerViewModel.ReloadFileDatas(false);
+                foreach (BatchPdfData item in Compressor.BatchPdfList.Where(z => z.IsChecked))
+                {
+                    FileInfo fi = new(item.Filename);
+                    Scanner scanner = new()
+                    {
+                        FileName = Path.Combine(Path.GetDirectoryName(item.Filename), $"{Path.GetFileNameWithoutExtension(item.Filename)}_Compressed.pdf"),
+                        FolderName = fi?.Directory?.Name,
+                        FileSize = (float)(fi.Length / 1048576F * item.CompressionRatio /100)
+                    };
+                    gpScannerViewModel.Dosyalar?.Add(scanner);
+                }
             }
         }
 

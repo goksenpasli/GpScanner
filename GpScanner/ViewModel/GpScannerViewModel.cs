@@ -105,8 +105,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         async () =>
                         {
                             List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
-                            pdffilelist.ToArray().MergePdf().Save(PdfGeneration.GetPdfScanPath());
-                            await Application.Current?.Dispatcher?.InvokeAsync(() => ReloadFileDatas());
+                            string savefilename = PdfGeneration.GetPdfScanPath();
+                            pdffilelist.ToArray().MergePdf().Save(savefilename);
+                            FileInfo fi = new(savefilename);
+                            Scanner scanner = new() { FileName = savefilename, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F };
+                            await Application.Current?.Dispatcher?.InvokeAsync(() => Dosyalar?.Add(scanner));
                         });
                     return;
                 }
