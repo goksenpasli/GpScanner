@@ -1531,6 +1531,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     pdfviewer.EypAttachments = null;
                     pdfviewer.EypNonSuportedAttachments = null;
+                    ClosedPdfFilePath = pdfviewer.PdfFilePath;
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.Source = null;
                     pdfviewer.Sayfa = 1;
@@ -2156,6 +2157,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                           {
                                               maximizedWindow = null;
                                               pdfImportViewerControl.PdfViewer.Source = null;
+                                              ClosedPdfFilePath = pdfImportViewerControl.PdfViewer.PdfFilePath;
                                               pdfImportViewerControl.PdfViewer.PdfFilePath = null;
                                               pdfImportViewerControl.PdfViewer.EypAttachments = null;
                                               pdfImportViewerControl.PdfViewer.EypNonSuportedAttachments = null;
@@ -2416,6 +2418,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public ICommand ClearPdfHistory { get; }
+
+    public string ClosedPdfFilePath
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(ClosedPdfFilePath));
+            }
+        }
+    }
 
     public ICommand ClosePdfFile { get; }
 

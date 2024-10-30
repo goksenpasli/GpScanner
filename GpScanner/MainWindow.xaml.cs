@@ -345,12 +345,19 @@ public partial class MainWindow : Window
 
             if (e.PropertyName is "RefreshDocumentList" && TwainCtrl?.RefreshDocumentList == true)
             {
-                DateTime başlangıç = ViewModel.BaşlangıçTarihi;
-                DateTime bitiş = ViewModel.BitişTarihi;
-                ViewModel.ReloadFileDatas(false);
-                ViewModel.BaşlangıçTarihi = başlangıç;
-                ViewModel.BitişTarihi = bitiş;
+                string closedfile = TwainCtrl.ClosedPdfFilePath;
+                ViewModel.RefreshItems<Scanner>(
+                    ViewModel.Dosyalar,
+                    item => item.FileName == closedfile,
+                    item =>
+                    {
+                        item.FileName = null;
+                        item.FileName = closedfile;
+                    });
+                TwainCtrl.ClosedPdfFilePath = null;
+                TwainCtrl.PdfImportViewer.PdfViewer.PdfFilePath = null;
                 TwainCtrl.RefreshDocumentList = false;
+                ViewModel.ReloadDocumentViewerFiles();
             }
         }
     }

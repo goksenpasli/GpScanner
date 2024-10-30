@@ -2452,6 +2452,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool NeedAppUpdate() => Settings.Default.CheckAppUpdate && DateTime.Now > Settings.Default.LastCheckDate.AddDays(Settings.Default.UpdateInterval);
 
+    public void RefreshItems<T>(ObservableCollection<T> collection, Func<T, bool> predicate, Action<T> refreshAction)
+    {
+        foreach (T item in collection.Where(predicate).ToList())
+        {
+            refreshAction(item);
+        }
+    }
+
     public void RegisterBatchImageFileWatcher(Paper paper, string batchfolder, string batchsavefolder)
     {
         if (!Directory.Exists(batchfolder) || !Directory.Exists(batchsavefolder) || paper is null)
@@ -2491,13 +2499,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                            };
     }
 
-    public async void ReloadFileDatas(bool dateapplytoday = true)
+    public void ReloadDocumentViewerFiles()
     {
-        Dosyalar = await GetScannerFileData();
-        ReloadDocumentViewerFiles();
-        if (dateapplytoday)
+        if (WindowService?.GetActiveWindow()?.DataContext is DocumentViewerModel documentViewerModel)
         {
-            BaşlangıçTarihi = BitişTarihi = DateTime.Today;
+            IEnumerable<string> files = documentViewerModel.DirectoryAllPdfFiles;
+            string currentfile = documentViewerModel.FilePath;
+            documentViewerModel.DirectoryAllPdfFiles = null;
+            documentViewerModel.DirectoryAllPdfFiles = files;
+            documentViewerModel.FilePath = null;
+            documentViewerModel.FilePath = currentfile;
         }
     }
 
@@ -3128,19 +3139,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         List<string> folders = [.. Settings.Default.AdditionalIndexFolders.OfType<string>(), Twainsettings.Settings.Default.AutoFolder,];
         MultiFolderWatcher.Watch(this, folders);
-    }
-
-    private void ReloadDocumentViewerFiles()
-    {
-        if (WindowService?.GetActiveWindow()?.DataContext is DocumentViewerModel documentViewerModel)
-        {
-            IEnumerable<string> files = documentViewerModel.DirectoryAllPdfFiles;
-            string currentfile = documentViewerModel.FilePath;
-            documentViewerModel.DirectoryAllPdfFiles = null;
-            documentViewerModel.DirectoryAllPdfFiles = files;
-            documentViewerModel.FilePath = null;
-            documentViewerModel.FilePath = currentfile;
-        }
     }
 
     private async Task<ObservableCollection<ReminderData>> ReminderYükle()
