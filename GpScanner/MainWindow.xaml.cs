@@ -351,6 +351,7 @@ public partial class MainWindow : Window
                     item => item.FileName == closedfile,
                     item =>
                     {
+                        item.FileSize =new FileInfo(closedfile).Length / 1048576F;
                         item.FileName = null;
                         item.FileName = closedfile;
                     });

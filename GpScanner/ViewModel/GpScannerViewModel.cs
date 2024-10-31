@@ -23,6 +23,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Markup;
@@ -2503,10 +2504,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         if (WindowService?.GetActiveWindow()?.DataContext is DocumentViewerModel documentViewerModel)
         {
-            IEnumerable<string> files = documentViewerModel.DirectoryAllPdfFiles;
             string currentfile = documentViewerModel.FilePath;
-            documentViewerModel.DirectoryAllPdfFiles = null;
-            documentViewerModel.DirectoryAllPdfFiles = files;
+            CollectionViewSource.GetDefaultView(documentViewerModel.DirectoryAllPdfFiles)?.Refresh();
             documentViewerModel.FilePath = null;
             documentViewerModel.FilePath = currentfile;
         }

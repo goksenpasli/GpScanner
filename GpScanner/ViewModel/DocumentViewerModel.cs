@@ -2,6 +2,7 @@
 using GpScanner.Properties;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.IO;
@@ -24,8 +25,8 @@ public class DocumentViewerModel : InpcBase
         PropertyChanged += DocumentViewerModel_PropertyChanged;
         List<string> files = fileService.GetFileNames();
         files?.Sort(new StrCmpLogicalComparer());
-        DirectoryAllPdfFiles = files;
-        Index = Array.IndexOf(DirectoryAllPdfFiles.ToArray(), FilePath);
+        DirectoryAllPdfFiles =new ObservableCollection<string>(files);
+        Index = Array.IndexOf([.. DirectoryAllPdfFiles], FilePath);
         Back = new RelayCommand<object>(
             parameter =>
             {
@@ -71,7 +72,7 @@ public class DocumentViewerModel : InpcBase
 
     public ICommand Back { get; }
 
-    public IEnumerable<string> DirectoryAllPdfFiles
+    public ObservableCollection<string> DirectoryAllPdfFiles
     {
         get;
 
