@@ -6,6 +6,7 @@ using Ocr;
 using PdfCompressor;
 using PdfSharp.Pdf;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -2423,26 +2424,27 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
 
         ObservableCollection<Scanner> list = [];
+        ConcurrentBag<Scanner> templist = [];
         try
         {
             List<string> allfilepaths = [.. Settings.Default.AdditionalIndexFolders.OfType<string>(), Twainsettings.Settings.Default.AutoFolder,];
-
             return await Task.Run(
                 () =>
                 {
                     List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
                     files.Sort(new StrCmpLogicalComparer());
-                    for (int i = 0; i < files.Count; i++)
-                    {
-                        string dosya = files[i];
-                        FileInfo fi = new(dosya);
-                        if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
+                    _ = Parallel.ForEach(
+                        files,
+                        dosya =>
                         {
-                            list.Add(new Scanner { FileName = dosya, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F });
-                        }
-                        FileLoadProgress = (i + 1) / (double)files.Count;
-                    }
-                    return list;
+                            FileInfo fi = new(dosya);
+                            if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
+                            {
+                                templist.Add(new Scanner { FileName = dosya, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F });
+                            }
+                            FileLoadProgress = templist.Count / (double)files.Count;
+                        });
+                    return new ObservableCollection<Scanner>(templist);
                 });
         }
         catch (UnauthorizedAccessException)

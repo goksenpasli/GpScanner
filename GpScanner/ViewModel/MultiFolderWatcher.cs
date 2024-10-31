@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using TwainControl;
 
 namespace GpScanner.ViewModel
 {
@@ -25,15 +26,13 @@ namespace GpScanner.ViewModel
         {
             try
             {
-                using (AppDbContext context = new())
+                using AppDbContext context = new();
+                foreach (Data item in context?.Data?.Where(z => z.FileName == oldFullPath))
                 {
-                    foreach (Data item in context?.Data?.Where(z => z.FileName == oldFullPath))
-                    {
-                        item.FileName = newFullPath;
-                    }
-                    _ = context.SaveChanges();
+                    item.FileName = newFullPath;
                 }
-                gpScannerViewModel.Dosyalar = await gpScannerViewModel.GetScannerFileData();
+                gpScannerViewModel.RefreshItems<Scanner>(gpScannerViewModel.Dosyalar, item => item.FileName == oldFullPath, item => item.FileName = newFullPath);
+                _ = context.SaveChanges();
             }
             catch (Exception ex)
             {
