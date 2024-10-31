@@ -2432,7 +2432,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 () =>
                 {
                     List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
-                    files.Sort(new StrCmpLogicalComparer());
                     _ = Parallel.ForEach(
                         files,
                         dosya =>
@@ -2444,7 +2443,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                             }
                             FileLoadProgress = templist.Count / (double)files.Count;
                         });
-                    return new ObservableCollection<Scanner>(templist);
+                    List<Scanner> list = [.. templist];
+                    list.Sort(new ScannerStrCmpLogicalComparer());
+                    templist = null;
+                    return new ObservableCollection<Scanner>(list);
                 });
         }
         catch (UnauthorizedAccessException)
