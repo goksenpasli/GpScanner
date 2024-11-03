@@ -1119,7 +1119,8 @@
                 Foreground="Red"
                 Opacity="0.5"
                 RenderTransformOrigin="0.5,0.5"
-                Text="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}">
+                Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
                 <TextBlock.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform />

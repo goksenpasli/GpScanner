@@ -28,6 +28,7 @@
                 <ResourceDictionary Source="/TwainControl;component/CommonResource.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <Converter:XKnownColorToBrushConverter x:Key="XKnownColorToBrushConverter" />
+            <Converter:PdfPageCountConverter x:Key="PdfPageCountConverter" />
             <Converter:Base64StringToStrokeCollectionConverter x:Key="Base64StringToStrokeCollectionConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
@@ -108,6 +109,9 @@
                         <MenuItem.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel Margin="2" Orientation="Horizontal">
+                                    <TextBlock VerticalAlignment="Center"
+                                        Tag="{Binding Mode=OneWay, Converter={StaticResource PdfPageCountConverter}}"
+                                        Text="{Binding Tag.Result, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}" />
                                     <Pdfviewer:PdfShadowedImage x:Name="PdfImg"
                                         Width="128"
                                         Height="128"

@@ -239,6 +239,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     progress => twainCtrl.PdfImportControlProgressValue = progress);
                 pdfDocument.Save(PdfViewer.PdfFilePath);
                 twainCtrl.PdfToolBarControlIsEnabled = true;
+                OcrProgressIndeterminate = false;
                 OcrDialogOpen = false;
                 OcrDialogOpen = true;
             },
