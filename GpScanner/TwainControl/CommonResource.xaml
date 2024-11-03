@@ -15,6 +15,7 @@
         <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Converter:ResourceLanguageStringConverter x:Key="ResourceLanguageStringConverter" />
+    <Converter:PdfPageCountConverter x:Key="PdfPageCountConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
     <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
@@ -1110,6 +1111,24 @@
                     </MultiBinding>
                 </PdfViewer:PdfShadowedImage.Tag>
             </PdfViewer:PdfShadowedImage>
+            <TextBlock Grid.Row="1"
+                Grid.RowSpan="2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                FontSize="64"
+                Foreground="Red"
+                Opacity="0.5"
+                RenderTransformOrigin="0.5,0.5"
+                Text="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}">
+                <TextBlock.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform />
+                        <SkewTransform />
+                        <RotateTransform Angle="315" />
+                        <TranslateTransform />
+                    </TransformGroup>
+                </TextBlock.RenderTransform>
+            </TextBlock>
         </Grid>
     </DataTemplate>
     <DataTemplate x:Key="EypViewerTemplate">

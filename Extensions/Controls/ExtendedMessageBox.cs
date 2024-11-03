@@ -18,6 +18,7 @@ namespace Extensions
         public static readonly DependencyProperty HiddenDescriptionProperty = DependencyProperty.Register("HiddenDescription", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty HiddenDescriptionVisibilityProperty = DependencyProperty.Register("HiddenDescriptionVisibility", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
         public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty NoButtonProperty = DependencyProperty.Register("NoButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
         public static readonly DependencyProperty NoEnabledProperty = DependencyProperty.Register("NoEnabled", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(true));
@@ -51,6 +52,8 @@ namespace Extensions
         public Visibility HiddenDescriptionVisibility { get => (Visibility)GetValue(HiddenDescriptionVisibilityProperty); set => SetValue(HiddenDescriptionVisibilityProperty, value); }
 
         public bool IsChecked { get => (bool)GetValue(IsCheckedProperty); set => SetValue(IsCheckedProperty, value); }
+
+        public bool IsIndeterminate { get => (bool)GetValue(IsIndeterminateProperty); set => SetValue(IsIndeterminateProperty, value); }
 
         public string Message { get => (string)GetValue(MessageProperty); set => SetValue(MessageProperty, value); }
 
@@ -89,6 +92,10 @@ namespace Extensions
 
         public void ShowDialog(Window window, string message, string title = null, Action onYesAction = null, Action onNoAction = null, bool ismodal = true)
         {
+            if (window is null)
+            {
+                throw new ArgumentNullException(nameof(window), "The window parameter cannot be null.");
+            }
             dialog = new()
             {
                 CustomContent = CustomContent,
@@ -108,13 +115,14 @@ namespace Extensions
                 NoEnabled = NoEnabled,
                 ProgressBarVisibility = ProgressBarVisibility,
                 ProgressValue = ProgressValue,
+                IsIndeterminate = IsIndeterminate,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            _overlayGrid = window?.GetFirstVisualChild<Grid>();
+            _overlayGrid = window.GetFirstVisualChild<Grid>();
             if (_overlayGrid is null)
             {
-                throw new ArgumentNullException(nameof(_overlayGrid), "window should contain at least one grid control.");
+                throw new InvalidOperationException("window should contain at least one grid control.");
             }
             if (ismodal && blockrectangle is null)
             {

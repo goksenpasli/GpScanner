@@ -25,6 +25,8 @@ namespace GpScanner;
 public partial class MainWindow : Window
 {
     public static CollectionViewSource cvs;
+    private bool _dataBaseBackupTaskStarted;
+    private bool _isClosingTaskRunning;
 
     public MainWindow()
     {
@@ -266,6 +268,12 @@ public partial class MainWindow : Window
         }
     }
 
+    private void ShowExtendedMessageBox(string message, bool showProgress)
+    {
+        ExtendedMessageBox extendedMessageBox = new() { YesButton = showProgress ? Visibility.Collapsed : Visibility.Visible, ProgressBarVisibility = showProgress ? Visibility.Visible : Visibility.Collapsed, IsIndeterminate = showProgress };
+        extendedMessageBox.ShowDialog(this, message, Title);
+    }
+
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         if (DataContext is GpScannerViewModel ViewModel)
@@ -351,7 +359,7 @@ public partial class MainWindow : Window
                     item => item.FileName == closedfile,
                     item =>
                     {
-                        item.FileSize =new FileInfo(closedfile).Length / 1048576F;
+                        item.FileSize = new FileInfo(closedfile).Length / 1048576F;
                         item.FileName = null;
                         item.FileName = closedfile;
                     });
@@ -363,15 +371,31 @@ public partial class MainWindow : Window
         }
     }
 
-    private void Window_Closing(object sender, CancelEventArgs e)
+    private async void Window_Closing(object sender, CancelEventArgs e)
     {
         if (TwainCtrl.Filesavetask?.IsCompleted == false || (DataContext as GpScannerViewModel)?.Filesavetask?.IsCompleted == false)
         {
-            _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), Title);
+            ShowExtendedMessageBox(Translation.GetResStringValue("TASKSRUNNING"), false);
             e.Cancel = true;
             return;
         }
-        BackupDatabaseFile();
+
+        if (_isClosingTaskRunning)
+        {
+            e.Cancel = true;
+            return;
+        }
+
+        if (!_dataBaseBackupTaskStarted)
+        {
+            ShowExtendedMessageBox(Translation.GetResStringValue("BACKUPDB"), true);
+            _dataBaseBackupTaskStarted = true;
+            _isClosingTaskRunning = true;
+            e.Cancel = true;
+            await Task.Run(BackupDatabaseFile);
+            _isClosingTaskRunning = false;
+            Close();
+        }
         StillImageHelper.KillServer(Title);
     }
 }

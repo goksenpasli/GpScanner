@@ -2311,7 +2311,10 @@
                                 Minimum="0"
                                 NumericUpdownTextBoxVisibility="Collapsed"
                                 Value="{Binding SeekIndex}" />
-                            <TextBlock VerticalAlignment="Center" Text="{Binding SeçiliResim.Index, Mode=OneWay}" />
+                            <TextBlock VerticalAlignment="Center"
+                                d:Text="0"
+                                FontSize="16"
+                                Text="{Binding SeçiliResim.Index, Mode=OneWay}" />
                             <Button local:Policy.PolicyName="ResimSil"
                                 Background="{x:Null}"
                                 BorderBrush="{x:Null}"

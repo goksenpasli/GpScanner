@@ -1045,7 +1045,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         LoadGroupFilesMonth = new RelayCommand<object>(
             async parameter =>
             {
-                List<ScannerFileDatas> files = GetContributionFiles();
+                List<ScannerFileDatas> files = await GetContributionFilesAsync();
                 ObservableCollection<ContributionData> contributiondata = await GetContributionData(files, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
                 YearlyGroupData = contributiondata?.GroupBy(z => z.ContrubutionDate.Value.Month);
             },
@@ -2814,16 +2814,18 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         return null;
     }
 
-    private List<ScannerFileDatas> GetContributionFiles()
+    private async Task<List<ScannerFileDatas>> GetContributionFilesAsync()
     {
-        return Dosyalar?.Select(
-            scanner =>
-            {
-                string parentDirectoryName = Directory.GetParent(scanner.FileName)?.Name;
-                _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
-                return new ScannerFileDatas() { Scanner = scanner, ParentDate = parsedDateTime };
-            })
-        .ToList();
+        return await Task.Run(
+            () => Dosyalar?.Where(scanner => Directory.GetParent(scanner.FileName) is not null)
+            .Select(
+                scanner =>
+                {
+                    string parentDirectoryName = Directory.GetParent(scanner.FileName).Name;
+                    _ = DateTime.TryParse(parentDirectoryName, out DateTime parsedDateTime);
+                    return new ScannerFileDatas() { Scanner = scanner, ParentDate = parsedDateTime };
+                })
+            .ToList());
     }
 
     private Tuple<XmlLanguage, string> GetLanguageSettings(string lang)
@@ -2873,9 +2875,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         try
         {
-            List<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z?.FileName?.ToLowerInvariant()))).Select(z => z.FileName).ToList();
+            HashSet<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z?.FileName?.ToLowerInvariant()))).Select(z => z.FileName).ToHashSet();
             using AppDbContext context = new();
-            List<string> scannedDatabaseFiles = (await context?.Data?.AsNoTracking()?.ToListAsync())?.Select(x => x.FileName).ToList();
+            List<string> scannedDatabaseFiles = await context?.Data?.AsNoTracking()?.Select(x => x.FileName).ToListAsync();
             if (scannerunindexedfiles is not null && scannedDatabaseFiles is not null)
             {
                 return new ObservableCollection<string>(scannerunindexedfiles.Except(scannedDatabaseFiles));
@@ -2998,7 +3000,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         if (e.PropertyName is "SelectedContributionYear")
         {
-            List<ScannerFileDatas> files = GetContributionFiles();
+            List<ScannerFileDatas> files = await GetContributionFilesAsync();
             if (files?.Any() == true)
             {
                 DateTime firstdate = new(SelectedContributionYear, 1, 1);
