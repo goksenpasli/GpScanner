@@ -3006,7 +3006,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 DateTime firstdate = new(SelectedContributionYear, 1, 1);
                 DateTime lastdate = new(SelectedContributionYear, 12, 31);
                 ContributionData = await GetContributionData(files, firstdate, lastdate);
-                ContributionDocumentCount = ContributionData.Sum(z => z.Count);
+                ContributionData todaycontribution = ContributionData?.FirstOrDefault(item => item.ContrubutionDate == DateTime.Today);
+                if (todaycontribution is not null)
+                {
+                    todaycontribution.Stroke = new SolidColorBrush(Colors.Blue);
+                }
+                ContributionDocumentCount = ContributionData?.Sum(z => z.Count) ?? 0;
             }
         }
 
