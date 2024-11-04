@@ -18,8 +18,8 @@
                         BorderThickness="{TemplateBinding BorderThickness}">
                         <StackPanel>
                             <StackPanel Orientation="Horizontal">
-                                <ContentPresenter Width="96"
-                                    Height="96"
+                                <ContentPresenter Width="{TemplateBinding CustomContentWidth}"
+                                    Height="{TemplateBinding CustomContentHeight}"
                                     Margin="10"
                                     d:Content="Object"
                                     d:Visibility="Visible"

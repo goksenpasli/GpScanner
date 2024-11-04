@@ -9,7 +9,7 @@ namespace TwainControl.Converter;
 
 public sealed class PdfPageCountConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is string path ? GetPageCount(path) : Translation.GetResStringValue("ERROR");
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is string path ? GetPageCount(path) : 0;
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 
@@ -18,6 +18,10 @@ public sealed class PdfPageCountConverter : IValueConverter
         return await Task.Run(
             () =>
             {
+                if (!PdfViewer.PdfViewer.IsValidPdfFile(path))
+                {
+                    return 0;
+                }
                 using PdfDocument pdfDocument = PdfReader.Open(path, PdfDocumentOpenMode.InformationOnly);
                 return pdfDocument?.PageCount;
             });

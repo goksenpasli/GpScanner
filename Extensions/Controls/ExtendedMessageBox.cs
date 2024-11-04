@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -11,13 +12,16 @@ namespace Extensions
     {
         public static readonly DependencyProperty CheckDescriptionProperty = DependencyProperty.Register("CheckDescription", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty CheckVisibilityProperty = DependencyProperty.Register("CheckVisibility", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty CustomContentHeightProperty = DependencyProperty.Register("CustomContentHeight", typeof(double), typeof(ExtendedMessageBox), new PropertyMetadata(96d));
         public static readonly DependencyProperty CustomContentProperty = DependencyProperty.Register("CustomContent", typeof(object), typeof(ExtendedMessageBox), new PropertyMetadata(null));
         public static readonly DependencyProperty CustomContentVisibleProperty = DependencyProperty.Register("CustomContentVisible", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
+        public static readonly DependencyProperty CustomContentWidthProperty = DependencyProperty.Register("CustomContentWidth", typeof(double), typeof(ExtendedMessageBox), new PropertyMetadata(96d));
         public static readonly DependencyProperty HiddenCaptionProperty = DependencyProperty.Register("HiddenCaption", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty HiddenDescriptionExpandedProperty = DependencyProperty.Register("HiddenDescriptionExpanded", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
         public static readonly DependencyProperty HiddenDescriptionProperty = DependencyProperty.Register("HiddenDescription", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty HiddenDescriptionVisibilityProperty = DependencyProperty.Register("HiddenDescriptionVisibility", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
         public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register("IsChecked", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
+        public static readonly DependencyProperty IsDraggableProperty = DependencyProperty.Register("IsDraggable", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
         public static readonly DependencyProperty IsIndeterminateProperty = DependencyProperty.Register("IsIndeterminate", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(false));
         public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty NoButtonProperty = DependencyProperty.Register("NoButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Collapsed));
@@ -29,6 +33,9 @@ namespace Extensions
         public static readonly DependencyProperty YesEnabledProperty = DependencyProperty.Register("YesEnabled", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(true));
         private static Grid _overlayGrid;
         private static Rectangle blockrectangle;
+        private Point _dragStartPoint;
+        private Thickness _initialMargin;
+        private bool _isDragging;
         private Button _noButton;
         private Button _yesButton;
         private ExtendedMessageBox dialog;
@@ -41,7 +48,11 @@ namespace Extensions
 
         public object CustomContent { get => GetValue(CustomContentProperty); set => SetValue(CustomContentProperty, value); }
 
+        public double CustomContentHeight { get => (double)GetValue(CustomContentHeightProperty); set => SetValue(CustomContentHeightProperty, value); }
+
         public Visibility CustomContentVisible { get => (Visibility)GetValue(CustomContentVisibleProperty); set => SetValue(CustomContentVisibleProperty, value); }
+
+        public double CustomContentWidth { get => (double)GetValue(CustomContentWidthProperty); set => SetValue(CustomContentWidthProperty, value); }
 
         public string HiddenCaption { get => (string)GetValue(HiddenCaptionProperty); set => SetValue(HiddenCaptionProperty, value); }
 
@@ -52,6 +63,8 @@ namespace Extensions
         public Visibility HiddenDescriptionVisibility { get => (Visibility)GetValue(HiddenDescriptionVisibilityProperty); set => SetValue(HiddenDescriptionVisibilityProperty, value); }
 
         public bool IsChecked { get => (bool)GetValue(IsCheckedProperty); set => SetValue(IsCheckedProperty, value); }
+
+        public bool IsDraggable { get => (bool)GetValue(IsDraggableProperty); set => SetValue(IsDraggableProperty, value); }
 
         public bool IsIndeterminate { get => (bool)GetValue(IsIndeterminateProperty); set => SetValue(IsIndeterminateProperty, value); }
 
@@ -88,6 +101,9 @@ namespace Extensions
             {
                 _noButton.Click += (s, e) => OnNoButtonClick();
             }
+            MouseDown += OnMouseDown;
+            MouseMove += OnMouseMove;
+            MouseUp += OnMouseUp;
         }
 
         public void ShowDialog(Window window, string message, string title = null, Action onYesAction = null, Action onNoAction = null, bool ismodal = true)
@@ -117,7 +133,10 @@ namespace Extensions
                 ProgressValue = ProgressValue,
                 IsIndeterminate = IsIndeterminate,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
+                VerticalAlignment = VerticalAlignment.Center,
+                CustomContentHeight = CustomContentHeight,
+                CustomContentWidth = CustomContentWidth,
+                IsDraggable = IsDraggable,
             };
             _overlayGrid = window.GetFirstVisualChild<Grid>();
             if (_overlayGrid is null)
@@ -146,6 +165,41 @@ namespace Extensions
                 blockrectangle = null;
             }
             _overlayGrid.Children.Remove(this);
+        }
+
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed && IsDraggable)
+            {
+                _isDragging = true;
+                _dragStartPoint = e.GetPosition(_overlayGrid);
+                _initialMargin = Margin;
+                _ = CaptureMouse();
+            }
+        }
+
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (_isDragging)
+            {
+                Point currentPosition = e.GetPosition(_overlayGrid);
+                double offsetX = currentPosition.X - _dragStartPoint.X;
+                double offsetY = currentPosition.Y - _dragStartPoint.Y;
+                double newLeft = _initialMargin.Left + offsetX;
+                double newTop = _initialMargin.Top + offsetY;
+                newLeft = Math.Max(-_overlayGrid.ActualWidth + ActualWidth, Math.Min(newLeft, _overlayGrid.ActualWidth - ActualWidth));
+                newTop = Math.Max(-_overlayGrid.ActualHeight + ActualHeight, Math.Min(newTop, _overlayGrid.ActualHeight - ActualHeight));
+                Margin = new Thickness(newLeft, newTop, 0, 0);
+            }
+        }
+
+        private void OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (_isDragging)
+            {
+                _isDragging = false;
+                ReleaseMouseCapture();
+            }
         }
 
         private void OnNoButtonClick()
