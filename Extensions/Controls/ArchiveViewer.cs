@@ -66,6 +66,40 @@ namespace Extensions
                 },
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
 
+            ArşivDosyaSil = new RelayCommand<object>(
+                parameter =>
+                {
+                    try
+                    {
+                        if (parameter is ArchiveData archiveData)
+                        {
+                            ExtendedMessageBox extendedmessagebox = new() { NoButton = Visibility.Visible, YesButton = Visibility.Visible, };
+                            extendedmessagebox.ShowDialog(
+                                Window.GetWindow(this),
+                                string.Empty,
+                                "DOSYA SİL",
+                                () =>
+                                {
+                                    using FileStream zipToOpen = new(ArchivePath, FileMode.Open);
+                                    using ZipArchive archive = new(zipToOpen, ZipArchiveMode.Update);
+                                    if (archive != null)
+                                    {
+                                        ZipArchiveEntry entry = archive.GetEntry(archiveData.DosyaAdı);
+                                        entry?.Delete();
+                                        _ = Arşivİçerik?.Remove(archiveData);
+                                        ToplamOran = GetCompressedRatio();
+                                        TotalFilesCount = GetArchiveFileCount(archive);
+                                    }
+                                });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException(ex?.Message);
+                    }
+                },
+                parameter => !string.IsNullOrWhiteSpace(ArchivePath) && Arşivİçerik?.Count > 1 && string.Equals(Path.GetExtension(ArchivePath), ".zip", StringComparison.InvariantCultureIgnoreCase));
+
             TümünüSeç = new RelayCommand<object>(
                 parameter =>
                 {
@@ -94,6 +128,8 @@ namespace Extensions
         public string ArchivePath { get => (string)GetValue(ArchivePathProperty); set => SetValue(ArchivePathProperty, value); }
 
         public RelayCommand<object> ArşivDosyaEkle { get; }
+
+        public RelayCommand<object> ArşivDosyaSil { get; }
 
         public ObservableCollection<ArchiveData> Arşivİçerik
         {
@@ -298,7 +334,7 @@ namespace Extensions
                         using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
                         if (archive is not null)
                         {
-                            TotalFilesCount = archive.Entries?.Count(z => z.Length > 0) ?? 0;
+                            TotalFilesCount = GetArchiveFileCount(archive);
                             foreach (ZipArchiveEntry item in archive.Entries?.Where(z => z.Length > 0))
                             {
                                 ArchiveData archiveData = new()
@@ -320,8 +356,7 @@ namespace Extensions
                     {
                         throw new ArgumentException(ex?.Message);
                     }
-
-                    ToplamOran = (double)Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / Arşivİçerik.Sum(z => z.Boyut) * 100;
+                    ToplamOran = GetCompressedRatio();
                 });
             cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
             return Arşivİçerik;
@@ -379,5 +414,9 @@ namespace Extensions
                              : null;
             }
         }
+
+        private int GetArchiveFileCount(ZipArchive archive) => archive.Entries?.Count(z => z.Length > 0) ?? 0;
+
+        private double GetCompressedRatio() => (double)Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / Arşivİçerik.Sum(z => z.Boyut) * 100;
     }
 }

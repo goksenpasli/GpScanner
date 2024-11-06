@@ -388,9 +388,9 @@ public static class BitmapMethods
 
     public static async Task<BitmapImage> RotateImageAsync(this BitmapFrame bitmapFrame, double angle)
     {
-        if (angle is not -1 and not 1)
+        if (angle is not -1 and not 1 and not 2 and not -2)
         {
-            throw new ArgumentOutOfRangeException(nameof(angle), "angle should be -1 or 1");
+            throw new ArgumentOutOfRangeException(nameof(angle), "angle should be -1 or 1 or -2 or 2");
         }
 
         TransformedBitmap transformedBitmap = new(bitmapFrame, new RotateTransform(angle * 90));

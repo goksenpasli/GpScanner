@@ -1897,6 +1897,35 @@
                                                 </Canvas>
                                             </Button>
                                         </Extensions:BadgeControl>
+                                        <Button local:Policy.PolicyName="TümünüOtomatikDöndür"
+                                            Command="{Binding TümünüOtomatikDöndür}"
+                                            RenderTransformOrigin="0.5,0.5">
+                                            <Canvas Width="24" Height="24">
+                                                <Image Width="24"
+                                                    Height="24"
+                                                    RenderTransformOrigin="0.5,0.5">
+                                                    <Image.RenderTransform>
+                                                        <TransformGroup>
+                                                            <RotateTransform Angle="-180" />
+                                                        </TransformGroup>
+                                                    </Image.RenderTransform>
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="1" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                                <Image Width="16" Height="16">
+                                                    <Image.Source>
+                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                            <Binding Source="Shell32.dll" />
+                                                            <Binding Source="238" />
+                                                        </MultiBinding>
+                                                    </Image.Source>
+                                                </Image>
+                                            </Canvas>
+                                        </Button>
                                         <Separator />
                                         <Button local:Policy.PolicyName="Tümünüİşaretle"
                                             BorderBrush="Cyan"

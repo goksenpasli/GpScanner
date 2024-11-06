@@ -31,6 +31,10 @@ public static class Ocr
 
     private static string TesseractPath { get; }
 
+    public static int GetImageOrientation(this byte[] image) => GetImageOrientationInternal(image, null);
+
+    public static int GetImageOrientation(this string imagePath) => GetImageOrientationInternal(null, imagePath);
+
     public static ObservableCollection<OcrData> GetOcrData(this string dosya, string tesseractlanguage)
     {
         if (!File.Exists(dosya))
@@ -100,6 +104,21 @@ public static class Ocr
     }
 
     private static TesseractEngine CreateTesseractEngine(string tesseractLanguage) => new(TesseractPath, tesseractLanguage, EngineMode.LstmOnly);
+
+    private static int GetImageOrientationInternal(byte[] imageBytes, string imagePath)
+    {
+        if (!File.Exists($@"{TesseractPath}\osd.traineddata"))
+        {
+            throw new FileNotFoundException("Orientation and Script Detection Tesseract File Missing.\nDownload File And Try Again.");
+        }
+        using TesseractEngine engine = CreateTesseractEngine("osd");
+        using Pix pixImage = imageBytes != null ? Pix.LoadFromMemory(imageBytes) : Pix.LoadFromFile(imagePath!);
+        using Page page = engine.Process(pixImage, PageSegMode.AutoOsd);
+        using PageIterator pageIter = page.AnalyseLayout();
+        pageIter.Begin();
+        ElementProperties pageProps = pageIter.GetProperties();
+        return (int)pageProps.Orientation;
+    }
 
     private static ObservableCollection<OcrData> GetOcrData(this byte[] dosya, string tesseractlanguage, PageIteratorLevel pageIteratorLevel)
     {

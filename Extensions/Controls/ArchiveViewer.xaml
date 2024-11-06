@@ -8,6 +8,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
     </ResourceDictionary.MergedDictionaries>
+    <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:FilePathToIconConverter x:Key="FilePathToIconConverter" />
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <Style TargetType="local:ArchiveViewer">
@@ -85,6 +86,28 @@
                             </ListView.ItemContainerStyle>
                             <ListView.View>
                                 <GridView>
+                                    <GridViewColumn Width="32">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock>
+                                                    <Hyperlink Command="{Binding ArşivDosyaSil, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        TextDecorations="None">
+                                                        <InlineUIContainer BaselineAlignment="Center">
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="131" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </InlineUIContainer>
+                                                    </Hyperlink>
+                                                </TextBlock>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
                                     <GridViewColumn Width="48">
                                         <GridViewColumn.Header>
                                             <CheckBox Command="{Binding TümünüSeç, RelativeSource={RelativeSource Mode=TemplatedParent}}" />

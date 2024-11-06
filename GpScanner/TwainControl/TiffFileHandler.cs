@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
@@ -45,9 +46,11 @@ namespace TwainControl
                         () =>
                         {
                             TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
-                            BitmapImage image = decoder.Frames[i].ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
-                            image.Freeze();
-                            BitmapFrame frame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(image.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(image);
+                            BitmapFrame bitmapframe = decoder.Frames[i];
+                            bitmapframe.Freeze();
+                            BitmapImage bitmapimage = bitmapframe.Format == PixelFormats.BlackWhite ? bitmapframe.ToTiffJpegByteArray(Format.Tiff).ToBitmapImage() : bitmapframe.ToTiffJpegByteArray(Format.TiffRenkli).ToBitmapImage();
+                            bitmapimage.Freeze();
+                            BitmapFrame frame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(bitmapimage.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(bitmapimage);
                             frame.Freeze();
                             return frame;
                         });
