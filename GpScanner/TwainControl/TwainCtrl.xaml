@@ -544,6 +544,27 @@
                                                             </Image>
                                                         </MenuItem.Icon>
                                                     </MenuItem>
+                                                    <Separator />
+                                                    <MenuItem IsCheckable="True"
+                                                        IsChecked="{Binding Path=AutoRotateBasedText, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsEnabled="{Binding TesseractOrientationFileExists}">
+                                                        <MenuItem.Header>
+                                                            <TextBlock>
+                                                                <Run Text="{local:Loc DOCUMENT}" />
+                                                                <Run Text="{local:Loc AUTOROTATE}" />
+                                                            </TextBlock>
+                                                        </MenuItem.Header>
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="238" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
                                                 </StackPanel>
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
@@ -578,20 +599,43 @@
                                             <Border Background="{StaticResource BorderBackground}"
                                                 BorderBrush="{StaticResource GroupBoxBackGround}"
                                                 BorderThickness="1">
-                                                <MenuItem Header="{local:Loc SHOWFILE}"
-                                                    IsCheckable="True"
-                                                    IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}">
-                                                    <MenuItem.Icon>
-                                                        <Image Width="16" Height="16">
-                                                            <Image.Source>
-                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                    <Binding Source="Shell32.dll" />
-                                                                    <Binding Source="1" />
-                                                                </MultiBinding>
-                                                            </Image.Source>
-                                                        </Image>
-                                                    </MenuItem.Icon>
-                                                </MenuItem>
+                                                <StackPanel>
+                                                    <MenuItem Header="{local:Loc SHOWFILE}"
+                                                        IsCheckable="True"
+                                                        IsChecked="{Binding ShowFile, Source={x:Static properties:Settings.Default}}">
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="1" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                    <Separator />
+                                                    <MenuItem IsCheckable="True"
+                                                        IsChecked="{Binding Path=AutoRotateBasedText, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                        IsEnabled="{Binding TesseractOrientationFileExists}">
+                                                        <MenuItem.Header>
+                                                            <TextBlock>
+                                                                <Run Text="{local:Loc DOCUMENT}" />
+                                                                <Run Text="{local:Loc AUTOROTATE}" />
+                                                            </TextBlock>
+                                                        </MenuItem.Header>
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="238" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
+                                                </StackPanel>
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>

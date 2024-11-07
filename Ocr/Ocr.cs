@@ -29,7 +29,7 @@ public static class Ocr
 
     public static bool TesseractDataExists { get; }
 
-    private static string TesseractPath { get; }
+    public static string TesseractPath { get; }
 
     public static int GetImageOrientation(this byte[] image) => GetImageOrientationInternal(image, null);
 

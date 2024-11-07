@@ -102,6 +102,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Camera.PropertyChanged += CameraUserControl_PropertyChanged;
         TranslationSource.Instance.PropertyChanged += Language_PropertyChanged;
         SelectedPaper = Settings.Default.LockSelectedPaper ? Papers.FirstOrDefault(z => z.PaperType == Settings.Default.DefaultPaper) : Papers.FirstOrDefault(z => z.PaperType == "A4");
+        OnPropertyChanged(nameof(TesseractOrientationFileExists));
         DependencyPropertyDescriptor.FromProperty(MediaViewer.MediaPositionProperty, typeof(MediaViewer))?.AddValueChanged(mediaViewer, OnMediaPositionChanged);
         Loaded += TwainCtrl_Loaded;
 
@@ -276,55 +277,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 NumericUpDown numericUpDown = new() { Minimum = 1, Maximum = Environment.ProcessorCount, Value = 4, IsReadOnly = true };
                 int parallelcount = (int)numericUpDown.Value;
                 extendedmessagebox.CustomContent = numericUpDown;
-                int i = 0;
-                string error = null;
                 extendedmessagebox.ShowDialog(
                     Window.GetWindow(this),
                     Translation.GetResStringValue("LONGTIMEJOB"),
                     $"{Translation.GetResStringValue("ALL")} {Translation.GetResStringValue("AUTOROTATE")}",
-                    async () =>
-                    {
-                        await Task.Run(
-                            () =>
-                            {
-                                ParallelOptions parallelOptions = new() { MaxDegreeOfParallelism = parallelcount };
-                                _ = Parallel.ForEach(
-                                    Scanner.Resimler,
-                                    parallelOptions,
-                                    async image =>
-                                    {
-                                        try
-                                        {
-                                            int orientation = image.Resim.ToTiffJpegByteArray(Format.Jpg).GetImageOrientation();
-                                            if (orientation == 1)
-                                            {
-                                                image.Resim = await RotateImage(image, -1);
-                                            }
-                                            if (orientation == 2)
-                                            {
-                                                image.Resim = await RotateImage(image, -2);
-                                            }
-                                            if (orientation == 3)
-                                            {
-                                                image.Resim = await RotateImage(image, 1);
-                                            }
-                                            Dispatcher.CurrentDispatcher.Invoke(() => AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count);
-                                            i++;
-                                        }
-                                        catch (Exception ex)
-                                        {
-                                            error = ex.Message;
-                                        }
-                                    });
-                            });
-                        if (error is not null)
-                        {
-                            MessageBox.Show(error, Window.GetWindow(this)?.Title, MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        }
-                    });
+                    async () => await AutoRotateBasedTextOrientation(Scanner.Resimler, parallelcount));
                 GC.Collect();
             },
-            parameter => Scanner?.Resimler?.Any() == true);
+            parameter => Scanner?.Resimler?.Any() == true && TesseractOrientationFileExists);
 
         ToolBoxManualDeskewImage = new RelayCommand<object>(
             async parameter =>
@@ -3422,6 +3382,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand Tersiniİşaretle { get; }
 
+    public bool TesseractOrientationFileExists
+    {
+        get => File.Exists($@"{Ocr.Ocr.TesseractPath}\osd.traineddata");
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(TesseractOrientationFileExists));
+            }
+        }
+    }
+
     public string TextSplitList
     {
         get;
@@ -4047,6 +4020,43 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private bool AnyScannerExist() => Scanner?.Tarayıcılar?.Count > 0;
 
+    private async Task AutoRotateBasedTextOrientation(ObservableCollection<ScannedImage> scannedImages, int parallelcount)
+    {
+        int i = 0;
+        await Task.Run(
+            () =>
+            {
+                ParallelOptions parallelOptions = new() { MaxDegreeOfParallelism = parallelcount };
+                _ = Parallel.ForEach(
+                    scannedImages,
+                    parallelOptions,
+                    async image =>
+                    {
+                        try
+                        {
+                            int orientation = image.Resim.ToTiffJpegByteArray(Format.Jpg).GetImageOrientation();
+                            if (orientation == 1)
+                            {
+                                image.Resim = await RotateImage(image, -1);
+                            }
+                            if (orientation == 2)
+                            {
+                                image.Resim = await RotateImage(image, -2);
+                            }
+                            if (orientation == 3)
+                            {
+                                image.Resim = await RotateImage(image, 1);
+                            }
+                            _ = Dispatcher.CurrentDispatcher.Invoke(() => AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count);
+                            i++;
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    });
+            });
+    }
+
     private void ButtonedTextBox_GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e) => Scanner.CaretPosition = (sender as ButtonedTextBox)?.CaretIndex ?? 0;
 
     private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -4151,6 +4161,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         else if (e.PropertyName is "AutoCropImage" && Settings.Default.AutoCropImage)
         {
             Settings.Default.CropScan = false;
+        }
+
+        if (e.PropertyName is "AutoRotateBasedText" && Settings.Default.AutoRotateBasedText && !TesseractOrientationFileExists)
+        {
+            Settings.Default.AutoRotateBasedText = false;
         }
 
         Settings.Default.Save();
@@ -4895,6 +4910,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 for (int i = 0; i < Scanner.Resimler.Count; i++)
                 {
                     ScannedImage item = Scanner.Resimler[i];
+                    if (Settings.Default.AutoRotateBasedText && TesseractOrientationFileExists)
+                    {
+                        await AutoRotateBasedTextOrientation([item], 1);
+                    }
                     Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
                     DataBaseTextData = await GetImageOcrData(item);
                     await SavePdfImageAsync(item.Resim, Scanner.PdfFilePath, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
@@ -4907,6 +4926,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 for (int i = 0; i < Scanner.Resimler.Count; i++)
                 {
                     ScannedImage item = Scanner.Resimler[i];
+                    if (Settings.Default.AutoRotateBasedText && TesseractOrientationFileExists)
+                    {
+                        await AutoRotateBasedTextOrientation([item], 1);
+                    }
                     Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(item.Resim);
                     OnPropertyChanged(nameof(Scanner.DetectPageSeperator));
                     Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
@@ -5077,7 +5100,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         BitmapFrame bitmapFrame = BitmapFrame.Create(evrak);
         bitmapFrame.Freeze();
         evrak = null;
-        Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation, FlipAngle = (double)SelectedFlip });
+        ScannedImage item = new() { Resim = bitmapFrame, RotationAngle = (double)SelectedRotation, FlipAngle = (double)SelectedFlip };
+        if (Settings.Default.AutoRotateBasedText && TesseractOrientationFileExists)
+        {
+            _ = AutoRotateBasedTextOrientation([item], 1).ConfigureAwait(true).GetAwaiter();
+        }
+        Scanner?.Resimler?.Add(item);
     }
 
     private void TwainCtrl_Loaded(object sender, RoutedEventArgs e) => InitializeTwainControl();
@@ -5170,6 +5198,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Settings.Default.Right = PageWidth - CropAllMargin;
         }
 
+        if (e.PropertyName is "TesseractOrientationFileExists" && !TesseractOrientationFileExists)
+        {
+            Settings.Default.AutoRotateBasedText = false;
+        }
     }
 
     private void ZipExtractSingleFile(string zipfileName, string zipcontentfilename, string destinationfilename)
