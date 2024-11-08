@@ -777,4 +777,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Повече от браузър</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Файлът за ориентация и откриване на скриптове трябва да бъде изтеглен, за да работи автоматично въртене</value>
+  </data>
 </root>

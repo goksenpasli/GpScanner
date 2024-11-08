@@ -777,4 +777,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Ավելի քան զննարկիչ</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract Orientation- ը եւ Script հայտնաբերման ֆայլը պետք է ներբեռնվեն ավտոմատ ռոտացիայի աշխատանքի համար</value>
+  </data>
 </root>

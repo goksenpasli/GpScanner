@@ -777,4 +777,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Lebih daripada penyemak imbas</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Orientasi tesseract dan fail pengesanan skrip harus dimuat turun untuk kerja putaran automatik</value>
+  </data>
 </root>

@@ -777,4 +777,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Több, mint böngésző</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>A Tesseract orientáció és a szkriptdetektálási fájlt le kell tölteni a munka automatikus rotációjára</value>
+  </data>
 </root>

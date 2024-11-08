@@ -787,4 +787,7 @@ BELGE EKLE</value>
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>BİR TARAYICIDAN FAZLASI</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract oryantasyon ve komut dosyası algılama dosyası, otomatik döndürmenin çalışması için indirilmelidir.</value>
+  </data>
 </root>

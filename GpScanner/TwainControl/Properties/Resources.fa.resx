@@ -789,4 +789,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>بیش از یک مرورگر</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>پرونده جهت گیری Tesseract و پرونده تشخیص اسکریپت باید برای کار در چرخش خودکار بارگیری شود</value>
+  </data>
 </root>

@@ -789,4 +789,7 @@ Hujjat qo'shing</value>
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Brauzerdan ko'proq</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesserakt avtomatik aylantirish ishiga yuklab olinishi kerak</value>
+  </data>
 </root>

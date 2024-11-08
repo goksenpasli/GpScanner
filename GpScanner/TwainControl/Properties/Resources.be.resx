@@ -777,4 +777,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Больш, чым браўзэр</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Арыентацыя Tesseract і файл выяўлення сцэнарыя павінны быць загружаны для працы па кручэнні аўтаматычнай працы</value>
+  </data>
 </root>

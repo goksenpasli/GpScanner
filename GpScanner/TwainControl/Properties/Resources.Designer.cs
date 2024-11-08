@@ -1409,6 +1409,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string TESSERACTORIENTATIONFILEWARNING {
+            get {
+                return ResourceManager.GetString("TESSERACTORIENTATIONFILEWARNING", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string TEXT {
             get {
                 return ResourceManager.GetString("TEXT", resourceCulture);

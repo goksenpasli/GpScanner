@@ -777,4 +777,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Mai mult decât un browser</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Fișierul de orientare a tesseractului și detectarea scriptului trebuie descărcat pentru a funcționa automat</value>
+  </data>
 </root>

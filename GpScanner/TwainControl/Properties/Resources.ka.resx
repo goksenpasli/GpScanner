@@ -784,4 +784,7 @@ PDF</value>
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>ბრაუზერზე მეტი</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract- ის ორიენტაცია და სკრიპტის გამოვლენის ფაილი უნდა ჩამოტვირთოთ ავტო როტაციის დასამუშავებლად</value>
+  </data>
 </root>

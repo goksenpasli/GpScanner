@@ -774,4 +774,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Más que un navegador</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>El archivo de orientación y detección de script de tesseract debe descargarse para trabajar la rotación automática</value>
+  </data>
 </root>

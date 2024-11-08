@@ -550,8 +550,21 @@
                                                         IsEnabled="{Binding TesseractOrientationFileExists}">
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run Text="{local:Loc DOCUMENT}" />
-                                                                <Run Text="{local:Loc AUTOROTATE}" />
+                                                                <Run BaselineAlignment="Center" Text="{local:Loc DOCUMENT}" />
+                                                                <Run BaselineAlignment="Center" Text="{local:Loc AUTOROTATE}" />
+                                                                <InlineUIContainer BaselineAlignment="Center">
+                                                                    <Image Width="16"
+                                                                        Height="16"
+                                                                        ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
+                                                                        ToolTipService.ShowOnDisabled="True">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Shell32.dll" />
+                                                                                <Binding Source="23" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                </InlineUIContainer>
                                                             </TextBlock>
                                                         </MenuItem.Header>
                                                         <MenuItem.Icon>
@@ -620,8 +633,21 @@
                                                         IsEnabled="{Binding TesseractOrientationFileExists}">
                                                         <MenuItem.Header>
                                                             <TextBlock>
-                                                                <Run Text="{local:Loc DOCUMENT}" />
-                                                                <Run Text="{local:Loc AUTOROTATE}" />
+                                                                <Run BaselineAlignment="Center" Text="{local:Loc DOCUMENT}" />
+                                                                <Run BaselineAlignment="Center" Text="{local:Loc AUTOROTATE}" />
+                                                                <InlineUIContainer BaselineAlignment="Center">
+                                                                    <Image Width="16"
+                                                                        Height="16"
+                                                                        ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
+                                                                        ToolTipService.ShowOnDisabled="True">
+                                                                        <Image.Source>
+                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                                <Binding Source="Shell32.dll" />
+                                                                                <Binding Source="23" />
+                                                                            </MultiBinding>
+                                                                        </Image.Source>
+                                                                    </Image>
+                                                                </InlineUIContainer>
                                                             </TextBlock>
                                                         </MenuItem.Header>
                                                         <MenuItem.Icon>
@@ -1943,7 +1969,9 @@
                                         </Extensions:BadgeControl>
                                         <Button local:Policy.PolicyName="TümünüOtomatikDöndür"
                                             Command="{Binding TümünüOtomatikDöndür}"
-                                            RenderTransformOrigin="0.5,0.5">
+                                            RenderTransformOrigin="0.5,0.5"
+                                            ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
+                                            ToolTipService.ShowOnDisabled="True">
                                             <Canvas Width="24" Height="24">
                                                 <Image Width="24"
                                                     Height="24"

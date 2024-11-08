@@ -777,4 +777,7 @@
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>Mer än en webbläsare</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract Orientation och skriptdetekteringsfil bör laddas ner för att fungera auto rotation</value>
+  </data>
 </root>

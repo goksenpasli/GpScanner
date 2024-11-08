@@ -781,4 +781,7 @@ TO FILE</value>
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>MORE THAN A SCANNER</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract Orientation and Script Detection File Should Be Downloaded To Work Auto Rotation</value>
+  </data>
 </root>

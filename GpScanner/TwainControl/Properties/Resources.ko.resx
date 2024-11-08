@@ -784,4 +784,7 @@ PDF</value>
   <data name="SPLASHTEXT" xml:space="preserve">
     <value>브라우저 이상</value>
   </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>자동 회전 작업을 위해 TesserAct 방향 및 스크립트 감지 파일을 다운로드해야합니다.</value>
+  </data>
 </root>

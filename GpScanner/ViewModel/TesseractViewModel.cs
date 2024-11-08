@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TwainControl;
@@ -61,6 +62,10 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         {
                             File.Delete(filepath);
                             TesseractFiles = GetTesseractFiles(Tessdatafolder);
+                            if (Path.GetFileName(filepath) == "osd.traineddata" && windowService.GetFirstWindow() is MainWindow mainWindow)
+                            {
+                                mainWindow.twainCtrl.TesseractOrientationFileExists = false;
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -80,26 +85,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
                     try
                     {
-                        using HttpClient client = new();
-                        _ = client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537");
-
-                        HttpResponseMessage response = await client.GetAsync($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}", HttpCompletionOption.ResponseHeadersRead);
-                        _ = response.EnsureSuccessStatusCode();
-
-                        using Stream contentStream = await response.Content.ReadAsStreamAsync();
-                        using FileStream fileStream = new(datafile, FileMode.Create, FileAccess.Write, FileShare.None);
-
-                        const int bufferSize = 8192;
-                        byte[] buffer = new byte[bufferSize];
-                        int bytesRead;
-                        ocrData.IsEnabled = false;
-                        while ((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
-                        {
-                            await fileStream.WriteAsync(buffer, 0, bytesRead);
-                            ocrData.ProgressValue = fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
-                        }
-                        buffer = null;
-                        ocrData.IsEnabled = true;
+                        await DownloadTesseractFile(ocrData, datafile);
                         TesseractFiles = GetTesseractFiles(Tessdatafolder);
                     }
                     catch (Exception ex)
@@ -114,11 +100,21 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                     {
                         ocrData.IsEnabled = true;
                         string file = Path.Combine(Tessdatafolder, ocrData.OcrName);
-                        if (File.Exists(file) && new FileInfo(file).Length == 0)
+                        if (File.Exists(file))
                         {
-                            _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", windowService.GetFirstWindow().Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                            File.Delete(file);
-                            TesseractFiles = GetTesseractFiles(Tessdatafolder);
+                            if (new FileInfo(file).Length == 0)
+                            {
+                                _ = MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("EMPTY")}", windowService.GetFirstWindow().Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                                File.Delete(file);
+                                TesseractFiles = GetTesseractFiles(Tessdatafolder);
+                            }
+                            else
+                            {
+                                if (ocrData.OcrName == "osd.traineddata" && windowService.GetFirstWindow() is MainWindow mainWindow)
+                                {
+                                    mainWindow.twainCtrl.TesseractOrientationFileExists = true;
+                                }
+                            }
                         }
                     }
                 }
@@ -269,6 +265,30 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             return null;
         }
         return null;
+    }
+
+    private async Task DownloadTesseractFile(TesseractOcrData ocrData, string datafile)
+    {
+        using HttpClient client = new();
+        _ = client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537");
+
+        HttpResponseMessage response = await client.GetAsync($"https://github.com/tesseract-ocr/tessdata_best/raw/main/{ocrData.OcrName}", HttpCompletionOption.ResponseHeadersRead);
+        _ = response.EnsureSuccessStatusCode();
+
+        using Stream contentStream = await response.Content.ReadAsStreamAsync();
+        using FileStream fileStream = new(datafile, FileMode.Create, FileAccess.Write, FileShare.None);
+
+        const int bufferSize = 8192;
+        byte[] buffer = new byte[bufferSize];
+        int bytesRead;
+        ocrData.IsEnabled = false;
+        while ((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
+        {
+            await fileStream.WriteAsync(buffer, 0, bytesRead);
+            ocrData.ProgressValue = fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
+        }
+        buffer = null;
+        ocrData.IsEnabled = true;
     }
 
     private bool FolderWritable(string folderPath)
