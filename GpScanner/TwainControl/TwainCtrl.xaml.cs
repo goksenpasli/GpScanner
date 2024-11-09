@@ -1981,7 +1981,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     string filepath = pdfviewer.PdfFilePath;
                     double oldsize = new FileInfo(filepath).Length;
                     PdfCompressor pdfcompressor = new() { UseMozJpeg = UseMozJpeg, Dpi = PdfCompressDpi, Quality = PdfQuality, };
-                    pdfcompressor.ProgressChanged += (_, e) => Dispatcher.CurrentDispatcher.Invoke(() => PdfImportControlProgressValue = e);
+                    pdfcompressor.ProgressChanged += (_, e) => Dispatcher.Invoke(() => PdfImportControlProgressValue = e);
                     PdfToolBarControlIsEnabled = false;
                     using PdfDocument pdfdocument = await pdfcompressor.Compress(filepath);
                     if (pdfdocument is null)
@@ -4047,7 +4047,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             {
                                 image.Resim = await RotateImage(image, 1);
                             }
-                            _ = Dispatcher.CurrentDispatcher.Invoke(() => AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count);
+                            _ = Dispatcher.Invoke(() => AllRotateProgressValue = (i + 1) / (double)Scanner.Resimler.Count);
                             i++;
                         }
                         catch (Exception)

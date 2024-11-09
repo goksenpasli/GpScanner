@@ -37,6 +37,7 @@
             <Extensions:FolderPathToIconConverter x:Key="FolderPathToIconConverter" />
             <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameConverter" />
             <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
+            <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Image x:Key="TimeIcon"
                 Width="16"
                 Height="16"
@@ -556,6 +557,7 @@
                                                                     <Image Width="16"
                                                                         Height="16"
                                                                         ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
+                                                                        ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                                                         ToolTipService.ShowOnDisabled="True">
                                                                         <Image.Source>
                                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -639,6 +641,7 @@
                                                                     <Image Width="16"
                                                                         Height="16"
                                                                         ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
+                                                                        ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                                                         ToolTipService.ShowOnDisabled="True">
                                                                         <Image.Source>
                                                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1971,6 +1974,7 @@
                                             Command="{Binding TümünüOtomatikDöndür}"
                                             RenderTransformOrigin="0.5,0.5"
                                             ToolTip="{local:Loc TESSERACTORIENTATIONFILEWARNING}"
+                                            ToolTipService.IsEnabled="{Binding IsEnabled, Converter={StaticResource ReverseBooleanConverter}, RelativeSource={RelativeSource Mode=Self}}"
                                             ToolTipService.ShowOnDisabled="True">
                                             <Canvas Width="24" Height="24">
                                                 <Image Width="24"

@@ -292,7 +292,11 @@
                                     </StackPanel>
                                 </Button>
                                 <Button Command="{Binding MergePdfListToCurrentFile}">
-                                    <StackPanel Orientation="Horizontal">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
                                         <Image Width="32" Height="32">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -301,11 +305,13 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock VerticalAlignment="Center">
+                                        <TextBlock Grid.Column="1"
+                                            VerticalAlignment="Center"
+                                            TextWrapping="Wrap">
                                             <Run Text="{local:Loc FILE}" />
                                             <Run Text="{local:Loc MERGEPDF}" />
                                         </TextBlock>
-                                    </StackPanel>
+                                    </Grid>
                                 </Button>
                                 <Button Command="{Binding MergePdfListToFile}">
                                     <StackPanel Orientation="Horizontal">
