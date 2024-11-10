@@ -2793,6 +2793,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> ManualDeskewImage { get; }
 
+    public int MaxPreviewWidth
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(MaxPreviewWidth));
+            }
+        }
+    } = 400;
+
     public bool MergePdfFileToFirst
     {
         get;
@@ -2815,6 +2828,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> MergePdfListToFile { get; }
 
     public ICommand MergeSelectedImagesToPdfFile { get; }
+
+    public int MinPreviewWidth
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(MinPreviewWidth));
+            }
+        }
+    } = 85;
 
     public RelayCommand<object> MoveToNextTabCommand { get; }
 
@@ -4481,15 +4507,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (Keyboard.Modifiers == ModifierKeys.Control)
         {
-            double change = e.Delta > 0 ? .05 : -.05;
-            if (ImgViewer.Zoom + change <= 0.01)
-            {
-                ImgViewer.Zoom = 0.01;
-            }
-            else
-            {
-                ImgViewer.Zoom += change;
-            }
+            ImgViewer.Zoom = e.Delta > 0 ? ImgViewer.Zoom + .05 : ImgViewer.Zoom + -.05;
+            ImgViewer.Zoom = Math.Max(ImgViewer.MinZoom, Math.Min(ImgViewer.MaxZoom, ImgViewer.Zoom));
         }
     }
 
@@ -4544,19 +4563,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             return;
         }
-
         Settings.Default.PreviewWidth += e.Delta > 0 ? 10 : -10;
-        if (Settings.Default.PreviewWidth <= 85)
-        {
-            Settings.Default.PreviewWidth = 85;
-        }
-
-        if (Settings.Default.PreviewWidth < 400)
-        {
-            return;
-        }
-
-        Settings.Default.PreviewWidth = 400;
+        Settings.Default.PreviewWidth = Math.Max(MinPreviewWidth, Math.Min(MaxPreviewWidth, Settings.Default.PreviewWidth));
     }
 
     private List<T> MixLists<T>(List<T>[] lists)
@@ -4604,6 +4612,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.Resimler.Insert(targetIdx, droppedData);
         Scanner.Resimler.RemoveAt(remIdx);
         Scanner.RefreshIndexNumbers();
+    }
+
+    private void PdfImportViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (Keyboard.Modifiers == ModifierKeys.Control)
+        {
+            if (e.Delta > 0)
+            {
+                PdfImportViewer?.PdfViewer?.ZoomIncrease?.Execute(null);
+            }
+            else
+            {
+                PdfImportViewer?.PdfViewer?.ZoomDecrease?.Execute(null);
+            }
+        }
     }
 
     private async Task PdfPageRangeSaveFileAsync(string loadfilename, string savefilename, int start, int end)

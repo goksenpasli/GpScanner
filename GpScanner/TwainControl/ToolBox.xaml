@@ -10,7 +10,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:properties="clr-namespace:TwainControl.Properties"
     d:DataContext="{d:DesignInstance Type=local:TwainCtrl}"
-    d:DesignHeight="588"
+    d:DesignHeight="500"
     d:DesignWidth="640"
     local:Translation.ResourceManager="{x:Static properties:Resources.ResourceManager}"
     Loaded="UserControl_Loaded"
@@ -213,7 +213,7 @@
                             </Button>
                         </UniformGrid>
                     </UniformGrid>
-                    <UniformGrid Columns="2" Rows="12">
+                    <UniformGrid Columns="2" Rows="9">
                         <UniformGrid Columns="2">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
@@ -525,66 +525,78 @@
                                 CommandParameter="{Binding Scanner.CroppedImage}"
                                 Content="{local:Loc DESKEW}" />
                         </UniformGrid>
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
-                        <Extensions:ContentToggleButton local:Policy.PolicyName="SourceColor" Background="{Binding Scanner.SourceColor, Mode=OneWay}">
-                            <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
-                            <Extensions:ContentToggleButton.OverContent>
-                                <Extensions:ColorPicker Width="350"
-                                    Height="250"
-                                    HexCode="{Binding Scanner.SourceColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    PredefinedColorVisibility="Visible" />
-                            </Extensions:ContentToggleButton.OverContent>
-                        </Extensions:ContentToggleButton>
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc DSTCOLOR}" />
-                        <Extensions:ContentToggleButton local:Policy.PolicyName="TargetColor" Background="{Binding Scanner.TargetColor, Mode=OneWay}">
-                            <TextBlock d:Text="Blue" Text="{Binding Scanner.TargetColor, Mode=OneWay}" />
-                            <Extensions:ContentToggleButton.OverContent>
-                                <Extensions:ColorPicker Width="350"
-                                    Height="250"
-                                    HexCode="{Binding Scanner.TargetColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    PredefinedColorVisibility="Visible" />
-                            </Extensions:ContentToggleButton.OverContent>
-                        </Extensions:ContentToggleButton>
-                        <TextBlock Text="{local:Loc THRESHOLD}" />
-                        <Slider VerticalAlignment="Center"
-                            local:Policy.PolicyName="Threshold"
-                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
-                            Maximum="128"
-                            Minimum="0"
-                            Value="{Binding Scanner.Threshold, Delay=100}" />
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc HUE}" />
-                        <Slider local:Policy.PolicyName="Hue"
-                            Background="{DynamicResource Colorfull}"
-                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
-                            Maximum="1"
-                            Minimum="0"
-                            Value="{Binding Scanner.Hue, Delay=100}" />
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc SATURATION}" />
-                        <Slider local:Policy.PolicyName="Saturation"
-                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
-                            Maximum="2"
-                            Minimum="0"
-                            Value="{Binding Scanner.Saturation, Delay=100}">
-                            <Slider.Background>
-                                <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
-                                    <GradientStop Offset="0" Color="Gray" />
-                                    <GradientStop Offset="1" Color="White" />
-                                </LinearGradientBrush>
-                            </Slider.Background>
-                        </Slider>
-                        <TextBlock VerticalAlignment="Center" Text="{local:Loc LIGHTNESS}" />
-                        <Slider local:Policy.PolicyName="Lightness"
-                            IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
-                            Maximum="1"
-                            Minimum="0"
-                            Value="{Binding Scanner.Lightness, Delay=100}">
-                            <Slider.Background>
-                                <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
-                                    <GradientStop Offset="0" Color="Black" />
-                                    <GradientStop Offset="1" Color="White" />
-                                </LinearGradientBrush>
-                            </Slider.Background>
-                        </Slider>
+                        <UniformGrid Columns="2">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SRCCOLOR}" />
+                            <Extensions:ContentToggleButton local:Policy.PolicyName="SourceColor" Background="{Binding Scanner.SourceColor, Mode=OneWay}">
+                                <TextBlock d:Text="Red" Text="{Binding Scanner.SourceColor, Mode=OneWay}" />
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ColorPicker Width="350"
+                                        Height="250"
+                                        HexCode="{Binding Scanner.SourceColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        PredefinedColorVisibility="Visible" />
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
+                        </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc DSTCOLOR}" />
+                            <Extensions:ContentToggleButton local:Policy.PolicyName="TargetColor" Background="{Binding Scanner.TargetColor, Mode=OneWay}">
+                                <TextBlock d:Text="Blue" Text="{Binding Scanner.TargetColor, Mode=OneWay}" />
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:ColorPicker Width="350"
+                                        Height="250"
+                                        HexCode="{Binding Scanner.TargetColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        PredefinedColorVisibility="Visible" />
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
+                        </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <TextBlock Text="{local:Loc THRESHOLD}" />
+                            <Slider VerticalAlignment="Center"
+                                local:Policy.PolicyName="Threshold"
+                                IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                                Maximum="128"
+                                Minimum="0"
+                                Value="{Binding Scanner.Threshold, Delay=100}" />
+                        </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc HUE}" />
+                            <Slider local:Policy.PolicyName="Hue"
+                                Background="{DynamicResource Colorfull}"
+                                IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                                Maximum="1"
+                                Minimum="0"
+                                Value="{Binding Scanner.Hue, Delay=100}" />
+                        </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc SATURATION}" />
+                            <Slider local:Policy.PolicyName="Saturation"
+                                IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                                Maximum="2"
+                                Minimum="0"
+                                Value="{Binding Scanner.Saturation, Delay=100}">
+                                <Slider.Background>
+                                    <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                        <GradientStop Offset="0" Color="Gray" />
+                                        <GradientStop Offset="1" Color="White" />
+                                    </LinearGradientBrush>
+                                </Slider.Background>
+                            </Slider>
+                        </UniformGrid>
+                        <UniformGrid Columns="2">
+                            <TextBlock VerticalAlignment="Center" Text="{local:Loc LIGHTNESS}" />
+                            <Slider local:Policy.PolicyName="Lightness"
+                                IsEnabled="{Binding ElementName=BtnApply, Path=IsEnabled}"
+                                Maximum="1"
+                                Minimum="0"
+                                Value="{Binding Scanner.Lightness, Delay=100}">
+                                <Slider.Background>
+                                    <LinearGradientBrush ice:Freeze="true" StartPoint="0,0.5" EndPoint="1,0.5">
+                                        <GradientStop Offset="0" Color="Black" />
+                                        <GradientStop Offset="1" Color="White" />
+                                    </LinearGradientBrush>
+                                </Slider.Background>
+                            </Slider>
+                        </UniformGrid>
                         <Button local:Policy.PolicyName="ResetCroppedImage"
                             Command="{Binding ResetCroppedImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
                             Content="{local:Loc RESET}" />

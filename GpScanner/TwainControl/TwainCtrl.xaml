@@ -1563,8 +1563,8 @@
                                         <Slider Grid.Row="1"
                                             HorizontalAlignment="Center"
                                             AutoToolTipPlacement="TopLeft"
-                                            Maximum="400"
-                                            Minimum="85"
+                                            Maximum="{Binding MaxPreviewWidth}"
+                                            Minimum="{Binding MinPreviewWidth}"
                                             Orientation="Vertical"
                                             SmallChange="1"
                                             Style="{StaticResource Slider}"
@@ -2520,7 +2520,7 @@
                             Height="32"
                             Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                     </TabItem.Header>
-                    <local:PdfImportViewerControl x:Name="PdfImportViewer" x:FieldModifier="public" />
+                    <local:PdfImportViewerControl PreviewMouseWheel="PdfImportViewer_PreviewMouseWheel" x:Name="PdfImportViewer" x:FieldModifier="public" />
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>

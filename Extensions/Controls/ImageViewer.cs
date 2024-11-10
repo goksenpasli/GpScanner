@@ -28,6 +28,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty DecodeHeightProperty = DependencyProperty.Register("DecodeHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(300, DecodeHeightChangedAsync));
     public static readonly DependencyProperty FovProperty = DependencyProperty.Register("Fov", typeof(double), typeof(ImageViewer), new PropertyMetadata(95d, FovChanged));
     public static readonly DependencyProperty ImageFilePathProperty = DependencyProperty.Register("ImageFilePath", typeof(string), typeof(ImageViewer), new PropertyMetadata(null, ImageFilePathChangedAsync));
+    public static readonly DependencyProperty MaxZoomProperty = DependencyProperty.Register("MaxZoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(10d));
+    public static readonly DependencyProperty MinZoomProperty = DependencyProperty.Register("MinZoom", typeof(double), typeof(ImageViewer), new PropertyMetadata(0.1d));
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(ImageViewer), new PropertyMetadata(FitImageOrientation.None, OrientationChanged));
     public static readonly DependencyProperty OriginalPixelHeightProperty = DependencyProperty.Register("OriginalPixelHeight", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
     public static readonly DependencyProperty OriginalPixelWidthProperty = DependencyProperty.Register("OriginalPixelWidth", typeof(int), typeof(ImageViewer), new PropertyMetadata(0));
@@ -149,6 +151,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 
     public string ImageFilePath { get => (string)GetValue(ImageFilePathProperty); set => SetValue(ImageFilePathProperty, value); }
+
+    public double MaxZoom { get => (double)GetValue(MaxZoomProperty); set => SetValue(MaxZoomProperty, value); }
+
+    public double MinZoom { get => (double)GetValue(MinZoomProperty); set => SetValue(MinZoomProperty, value); }
 
     public Visibility OpenButtonVisibility
     {
