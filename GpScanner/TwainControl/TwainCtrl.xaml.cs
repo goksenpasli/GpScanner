@@ -4651,6 +4651,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         foreach (IGrouping<string, ScannedImage> group in Scanner.Resimler?.GroupBy(z => z.FilePath))
         {
+            if (group.Key is null)
+            {
+                continue;
+            }
+
             if (!colorMap.TryGetValue(group.Key, out Brush solidColorBrush))
             {
                 solidColorBrush = new SolidColorBrush(Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256)));

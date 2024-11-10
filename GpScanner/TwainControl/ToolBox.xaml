@@ -213,7 +213,7 @@
                             </Button>
                         </UniformGrid>
                     </UniformGrid>
-                    <UniformGrid Columns="2" Rows="13">
+                    <UniformGrid Columns="2" Rows="12">
                         <UniformGrid Columns="2">
                             <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Text="{local:Loc WIDTHCOUNT}" />
@@ -419,14 +419,20 @@
                                 </Button.Content>
                             </Button>
                         </Grid>
-                        <TextBlock HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Text="{local:Loc TEXT}" />
-                        <UniformGrid Columns="2">
-                            <TextBox MaxWidth="200"
-                                VerticalContentAlignment="Center"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                d:Text="Watermark"
+                                CopyButtonVisibility="Collapsed"
+                                Description="{local:Loc TEXT}"
+                                OpenButtonVisibility="Collapsed"
                                 Text="{Binding Scanner.Watermark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                            <Extensions:ContentToggleButton Background="{Binding Scanner.WatermarkColor, Mode=OneWay}">
+                            <Extensions:ContentToggleButton Grid.Column="1"
+                                Width="32"
+                                Background="{Binding Scanner.WatermarkColor, Mode=OneWay}">
                                 <Extensions:ContentToggleButton.OverContent>
                                     <Extensions:ColorPicker Width="350"
                                         Height="250"
@@ -434,25 +440,54 @@
                                         PredefinedColorVisibility="Visible" />
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
+                        </Grid>
+                        <UniformGrid Columns="2">
+                            <StackPanel HorizontalAlignment="Center"
+                                IsEnabled="{Binding Scanner.CroppedImageThumb, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
+                                Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
+                                <Slider Width="50"
+                                    AutoToolTipPlacement="TopLeft"
+                                    Maximum="1024"
+                                    Minimum="12"
+                                    SmallChange="1"
+                                    Value="{Binding Scanner.WatermarkTextSize}" />
+                            </StackPanel>
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
+                                <Slider Width="50"
+                                    AutoToolTipPlacement="TopLeft"
+                                    Maximum="360"
+                                    Minimum="0"
+                                    SmallChange="1"
+                                    Value="{Binding Scanner.WatermarkAngle}" />
+                            </StackPanel>
                         </UniformGrid>
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTSIZE}" />
-                            <Slider Width="50"
-                                AutoToolTipPlacement="TopLeft"
-                                Maximum="1024"
-                                Minimum="12"
-                                SmallChange="1"
-                                Value="{Binding Scanner.WatermarkTextSize}" />
-                        </StackPanel>
-                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Text="{local:Loc TEXTANGLE}" />
-                            <Slider Width="50"
-                                AutoToolTipPlacement="TopLeft"
-                                Maximum="360"
-                                Minimum="0"
-                                SmallChange="1"
-                                Value="{Binding Scanner.WatermarkAngle}" />
-                        </StackPanel>
+                        <UniformGrid Columns="2">
+                            <TextBlock HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Text="{local:Loc FONT}" />
+                            <ComboBox Margin="0,0,-1,0"
+                                VerticalContentAlignment="Center"
+                                local:Policy.PolicyName="WatermarkFont"
+                                ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
+                                SelectedValue="{Binding Scanner.WatermarkFont}"
+                                SelectedValuePath="Source">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                                <ComboBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <VirtualizingStackPanel />
+                                    </ItemsPanelTemplate>
+                                </ComboBox.ItemsPanel>
+                            </ComboBox>
+                        </UniformGrid>
+                        <Button local:Policy.PolicyName="SetWatermark"
+                            Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
+                            Content="{local:Loc DRAWTEXT}" />
                         <UniformGrid Columns="2">
                             <Button local:Policy.PolicyName="AutoCropImage" Command="{Binding AutoCropImage, RelativeSource={RelativeSource AncestorType=local:ToolBox}}">
                                 <StackPanel Orientation="Horizontal">
@@ -480,31 +515,6 @@
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
                         </UniformGrid>
-                        <UniformGrid Columns="2">
-                            <TextBlock HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                Text="{local:Loc FONT}" />
-                            <ComboBox Margin="0,0,-1,0"
-                                VerticalContentAlignment="Center"
-                                local:Policy.PolicyName="WatermarkFont"
-                                ItemsSource="{Binding Source={x:Static Fonts.SystemFontFamilies}}"
-                                SelectedValue="{Binding Scanner.WatermarkFont}"
-                                SelectedValuePath="Source">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <TextBlock FontFamily="{Binding Mode=OneWay}" Text="{Binding Mode=OneWay}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                                <ComboBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <VirtualizingStackPanel />
-                                    </ItemsPanelTemplate>
-                                </ComboBox.ItemsPanel>
-                            </ComboBox>
-                        </UniformGrid>
-                        <Button local:Policy.PolicyName="SetWatermark"
-                            Command="{Binding SetWatermark, RelativeSource={RelativeSource AncestorType=local:ToolBox}}"
-                            Content="{local:Loc DRAWTEXT}" />
                         <UniformGrid Columns="2">
                             <Extensions:NumericUpDown IsReadOnly="True"
                                 Maximum="3"
