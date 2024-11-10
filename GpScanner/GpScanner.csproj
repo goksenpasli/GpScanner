@@ -167,6 +167,9 @@
     <Compile Include="MiniDocumentView.xaml.cs">
       <DependentUpon>MiniDocumentView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="MiniHelpWindow.xaml.cs">
+      <DependentUpon>MiniHelpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PdfCompressorControl.xaml.cs">
       <DependentUpon>PdfCompressorControl.xaml</DependentUpon>
     </Compile>
@@ -234,6 +237,9 @@
     <Compile Include="YearContributionView.xaml.cs">
       <DependentUpon>YearContributionView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="YearGroupView.xaml.cs">
+      <DependentUpon>YearGroupView.xaml</DependentUpon>
+    </Compile>
     <Page Include="BatchDialogView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -270,6 +276,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="MiniHelpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PdfCompressorControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -303,6 +313,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="YearContributionView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="YearGroupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

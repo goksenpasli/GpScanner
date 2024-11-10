@@ -2245,6 +2245,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand Tersiniİşaretle { get; }
 
+    public bool TesseractAnyLanguageSelected => TesseractViewModel?.TesseractFiles?.Count(z => z.Checked) > 0;
+
     public TesseractViewModel TesseractViewModel
     {
         get;

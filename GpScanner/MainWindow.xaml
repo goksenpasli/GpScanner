@@ -89,7 +89,6 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
-        <Converter:MonthContributionDataFileNameConverter x:Key="MonthContributionDataFileNameConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
             MaxNumber="100"
@@ -456,74 +455,7 @@
                         </Image>
                         <Extensions:ContentToggleButton.OverContent>
                             <GroupBox>
-                                <FlowDocumentScrollViewer Width="250" VerticalScrollBarVisibility="Disabled">
-                                    <FlowDocument>
-                                        <Paragraph>
-                                            <TextBlock>
-                                                <Run BaselineAlignment="Center" Text=".NET Framework 4.7.2" />
-                                                <InlineUIContainer BaselineAlignment="Center">
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Style>
-                                                            <Style TargetType="Image">
-                                                                <Setter Property="Source">
-                                                                    <Setter.Value>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Comres.dll" />
-                                                                            <Binding Source="10" />
-                                                                        </MultiBinding>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding NetFxVersionSupported}" Value="true">
-                                                                        <Setter Property="Source">
-                                                                            <Setter.Value>
-                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                    <Binding Source="Comres.dll" />
-                                                                                    <Binding Source="8" />
-                                                                                </MultiBinding>
-                                                                            </Setter.Value>
-                                                                        </Setter>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Image.Style>
-                                                    </Image>
-                                                </InlineUIContainer>
-                                            </TextBlock>
-                                            <TextBlock>
-                                                <Run BaselineAlignment="Center" Text="Visual C++ 2019 Runtime" />
-                                                <InlineUIContainer BaselineAlignment="Center">
-                                                    <Image Width="16" Height="16">
-                                                        <Image.Style>
-                                                            <Style TargetType="Image">
-                                                                <Setter Property="Source">
-                                                                    <Setter.Value>
-                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                            <Binding Source="Comres.dll" />
-                                                                            <Binding Source="10" />
-                                                                        </MultiBinding>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding TesseractVisualCRuntimeInstalled}" Value="true">
-                                                                        <Setter Property="Source">
-                                                                            <Setter.Value>
-                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                    <Binding Source="Comres.dll" />
-                                                                                    <Binding Source="8" />
-                                                                                </MultiBinding>
-                                                                            </Setter.Value>
-                                                                        </Setter>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </Image.Style>
-                                                    </Image>
-                                                </InlineUIContainer>
-                                            </TextBlock>
-                                        </Paragraph>
-                                    </FlowDocument>
-                                </FlowDocumentScrollViewer>
+                                <local:MiniHelpWindow />
                             </GroupBox>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
@@ -861,87 +793,7 @@
                                 TopMost="False">
                                 <Extensions:ContentToggleButton.OverContent>
                                     <Border BorderBrush="{StaticResource GroupBoxBackGround}" BorderThickness="1">
-                                        <ItemsControl ItemsSource="{Binding YearlyGroupData}">
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate>
-                                                    <Grid Background="{StaticResource BorderBackground}">
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <Button x:Name="Btn"
-                                                                Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
-                                                                CommandParameter="{Binding Mode=OneWay}">
-                                                                <StackPanel Orientation="Horizontal">
-                                                                    <Image Width="32" Height="32">
-                                                                        <Image.Source>
-                                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                <Binding Source="zipfldr.dll" />
-                                                                                <Binding Source="0" />
-                                                                            </MultiBinding>
-                                                                        </Image.Source>
-                                                                    </Image>
-                                                                    <TextBlock VerticalAlignment="Center">
-                                                                        <Run Text="{twainctrl:Loc MONTH}" />
-                                                                        <Run Text="{Binding Key, Mode=OneWay}" />
-                                                                    </TextBlock>
-                                                                </StackPanel>
-                                                            </Button>
-                                                            <TextBlock x:Name="TbView"
-                                                                VerticalAlignment="Center"
-                                                                FontFamily="Webdings"
-                                                                FontSize="20"
-                                                                Foreground="Red"
-                                                                IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
-                                                                Text="N" />
-                                                        </StackPanel>
-                                                        <Extensions:FadedToolTipControl Background="{StaticResource BorderBackground}"
-                                                            BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                            PopupParent="{Binding ElementName=TbView}"
-                                                            Position="Bottom"
-                                                            ShowCloseButton="Visible"
-                                                            TimeToClose="{x:Static sys:Int32.MaxValue}"
-                                                            TimeToShow="2000">
-                                                            <Extensions:FadedToolTipControl.Style>
-                                                                <Style TargetType="Extensions:FadedToolTipControl">
-                                                                    <Style.Triggers>
-                                                                        <DataTrigger Binding="{Binding ElementName=TbView, Path=IsMouseOver}" Value="true">
-                                                                            <Setter Property="Show" Value="True" />
-                                                                        </DataTrigger>
-                                                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="true">
-                                                                            <Setter Property="Show" Value="True" />
-                                                                        </DataTrigger>
-                                                                    </Style.Triggers>
-                                                                </Style>
-                                                            </Extensions:FadedToolTipControl.Style>
-                                                            <Extensions:ResizablePanel Width="720"
-                                                                Height="480"
-                                                                MinWidth="360"
-                                                                MinHeight="240"
-                                                                Background="{x:Null}"
-                                                                BorderBrush="Transparent">
-                                                                <ListBox ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
-                                                                    ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
-                                                                    VirtualizingPanel.CacheLengthUnit="Pixel"
-                                                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                                                    VirtualizingPanel.ScrollUnit="Pixel"
-                                                                    VirtualizingPanel.VirtualizationMode="Standard">
-                                                                    <ListBox.ItemsPanel>
-                                                                        <ItemsPanelTemplate>
-                                                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                                                                ItemSize="165,165"
-                                                                                SpacingMode="None" />
-                                                                        </ItemsPanelTemplate>
-                                                                    </ListBox.ItemsPanel>
-                                                                </ListBox>
-                                                            </Extensions:ResizablePanel>
-                                                        </Extensions:FadedToolTipControl>
-                                                    </Grid>
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <UniformGrid Columns="1" Rows="12" />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                        </ItemsControl>
+                                        <local:YearGroupView />
                                     </Border>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
