@@ -26,6 +26,19 @@ public class ScannedImage : InpcBase
         }
     }
 
+    public Brush FileGroupColor
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(FileGroupColor));
+            }
+        }
+    } = Brushes.Black;
+
     public string FilePath
     {
         get;

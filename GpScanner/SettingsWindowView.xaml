@@ -420,6 +420,11 @@
                                                 Text="3" />
                                         </Canvas>
                                     </ToggleButton>
+                                    <ToggleButton IsChecked="{Binding Path=ShowFileGroupIndicator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                        <Ellipse Width="8"
+                                            Height="8"
+                                            Fill="Red" />
+                                    </ToggleButton>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"

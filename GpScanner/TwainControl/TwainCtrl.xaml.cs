@@ -4168,6 +4168,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             Settings.Default.AutoRotateBasedText = false;
         }
 
+        if (Settings.Default.ShowFileGroupIndicator)
+        {
+            Scanner.Resimler.CollectionChanged -= Resimler_CollectionChanged;
+            Scanner.Resimler.CollectionChanged += Resimler_CollectionChanged;
+        }
+        else
+        {
+            Scanner.Resimler.CollectionChanged -= Resimler_CollectionChanged;
+        }
+
         Settings.Default.Save();
     }
 
@@ -4632,6 +4642,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         _ = Scanner.Resimler?.Remove(item);
         ToolBox.ResetCropMargin();
         GC.Collect();
+    }
+
+    private void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        Dictionary<string, Brush> colorMap = [];
+        Random random = new();
+
+        foreach (IGrouping<string, ScannedImage> group in Scanner.Resimler?.GroupBy(z => z.FilePath))
+        {
+            if (!colorMap.TryGetValue(group.Key, out Brush solidColorBrush))
+            {
+                solidColorBrush = new SolidColorBrush(Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256)));
+                solidColorBrush.Freeze();
+                colorMap[group.Key] = solidColorBrush;
+            }
+
+            foreach (ScannedImage image in group)
+            {
+                image.FileGroupColor = solidColorBrush;
+            }
+        }
     }
 
     private async Task ReverseFileAsync(string loadfilename, string savefilename)

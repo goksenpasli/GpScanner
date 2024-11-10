@@ -613,5 +613,17 @@ namespace TwainControl.Properties {
                 this["AutoRotateBasedText"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowFileGroupIndicator {
+            get {
+                return ((bool)(this["ShowFileGroupIndicator"]));
+            }
+            set {
+                this["ShowFileGroupIndicator"] = value;
+            }
+        }
     }
 }

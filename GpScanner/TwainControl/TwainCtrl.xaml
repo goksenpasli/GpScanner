@@ -1848,6 +1848,13 @@
                                                                     FontWeight="Bold"
                                                                     Text="{Binding Index, Mode=OneWay}"
                                                                     Visibility="{Binding DocumentNumberVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}" />
+                                                                <Ellipse Canvas.Left="1"
+                                                                    Canvas.Top="1"
+                                                                    Width="8"
+                                                                    Height="8"
+                                                                    d:Visibility="Visible"
+                                                                    Fill="{Binding FileGroupColor, Mode=OneWay}"
+                                                                    Visibility="{Binding Path=ShowFileGroupIndicator, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                                             </Canvas>
                                                         </StackPanel>
                                                     </ControlTemplate>
