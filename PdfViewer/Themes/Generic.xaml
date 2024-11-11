@@ -291,14 +291,79 @@
                                                 Height="240"
                                                 MinWidth="320"
                                                 MinHeight="240">
-                                                <Extensions:ButtonedTextBox IsReadOnly="True"
-                                                    OpenButtonVisibility="Collapsed"
-                                                    PrintButtonVisibility="Visible"
-                                                    ResetButtonVisibility="Collapsed"
-                                                    Text="{Binding PdfTextContent, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    TextWrapping="Wrap"
-                                                    TitleCaseMenuVisibility="Visible"
-                                                    VerticalScrollBarVisibility="Auto" />
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Extensions:ButtonedTextBox IsReadOnly="True"
+                                                        OpenButtonVisibility="Collapsed"
+                                                        PrintButtonVisibility="Visible"
+                                                        ResetButtonVisibility="Collapsed"
+                                                        Text="{Binding PdfTextContent, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        TextWrapping="Wrap"
+                                                        TitleCaseMenuVisibility="Visible"
+                                                        VerticalScrollBarVisibility="Auto" />
+                                                    <UniformGrid Grid.Column="1" Columns="2">
+                                                        <ToggleButton Background="{DynamicResource BorderBackground}" Command="{Binding SpeechViewModel.Oku, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                                            <ToggleButton.Style>
+                                                                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="{x:Type ToggleButton}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
+                                                                            <Setter Property="Content">
+                                                                                <Setter.Value>
+                                                                                    <TextBlock FontFamily="Webdings"
+                                                                                        FontSize="42"
+                                                                                        Foreground="Blue"
+                                                                                        Text=";" />
+                                                                                </Setter.Value>
+                                                                            </Setter>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
+                                                                            <Setter Property="Content">
+                                                                                <Setter.Value>
+                                                                                    <TextBlock FontFamily="Webdings"
+                                                                                        FontSize="42"
+                                                                                        Foreground="Blue"
+                                                                                        Text="4" />
+                                                                                </Setter.Value>
+                                                                            </Setter>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </ToggleButton.Style>
+                                                        </ToggleButton>
+                                                        <Button Command="{Binding SpeechViewModel.Dur, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
+                                                            <Image Width="32" Height="32">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="131" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </Button>
+                                                    </UniformGrid>
+                                                    <ComboBox Grid.Row="1"
+                                                        ItemsSource="{Binding SpeechViewModel.TtsDilleri, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        SelectedItem="{Binding SpeechViewModel.OkumaDili, RelativeSource={RelativeSource TemplatedParent}}">
+                                                        <ComboBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <VirtualizingStackPanel />
+                                                            </ItemsPanelTemplate>
+                                                        </ComboBox.ItemsPanel>
+                                                    </ComboBox>
+                                                    <CheckBox Grid.Row="1"
+                                                        Grid.Column="1"
+                                                        VerticalAlignment="Center"
+                                                        VerticalContentAlignment="Center"
+                                                        Content="ALL PAGES"
+                                                        IsChecked="{Binding SpeechViewModel.SpeechAllPages, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                </Grid>
                                             </Extensions:ResizablePanel>
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>

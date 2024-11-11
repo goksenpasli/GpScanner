@@ -9,6 +9,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Printing;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -65,6 +66,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         PropertyChanged += PdfViewer_PropertyChanged;
         SizeChanged += PdfViewer_SizeChanged;
+        SpeechViewModel = new SpeechViewModel(this);
+
         DosyaAç = new RelayCommand<object>(
             parameter =>
             {
@@ -174,7 +177,15 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                PdfTextContent = null;
                 PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
+                StringBuilder stringBuilder = new();
+                PdfAllTextContent = null;
+                for (int i = 0; i < pdfDocument.PageCount; i++)
+                {
+                    _ = stringBuilder.Append(pdfDocument.GetPdfText(i));
+                }
+                PdfAllTextContent = stringBuilder.ToString();
             },
             parameter => File.Exists(PdfFilePath));
 
@@ -275,6 +286,19 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 field = value;
                 OnPropertyChanged(nameof(Pages));
+            }
+        }
+    }
+
+    public string PdfAllTextContent
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(PdfAllTextContent));
             }
         }
     }
@@ -382,6 +406,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public bool SnapTick { get => (bool)GetValue(SnapTickProperty); set => SetValue(SnapTickProperty, value); }
 
     public ImageSource Source { get => (ImageSource)GetValue(SourceProperty); set => SetValue(SourceProperty, value); }
+
+    public SpeechViewModel SpeechViewModel { get; set; }
 
     public Visibility TifNavigasyonButtonEtkin { get => (Visibility)GetValue(TifNavigasyonButtonEtkinProperty); set => SetValue(TifNavigasyonButtonEtkinProperty, value); }
 
@@ -639,22 +665,29 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && IsValidPdfFile(e.NewValue as string))
+        if (d is PdfViewer pdfViewer)
         {
-            try
+            if (IsValidPdfFile(e.NewValue as string))
             {
-                using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
-                int dpi = pdfViewer.Dpi;
-                pdfViewer.Sayfa = 1;
-                int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 72 * dpi);
-                int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 72 * dpi);
-                pdfViewer.ToplamSayfa = pdfDoc.PageCount;
-                pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
-                pdfViewer.Source = await ConvertToImgAsync(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
+                try
+                {
+                    using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
+                    int dpi = pdfViewer.Dpi;
+                    pdfViewer.Sayfa = 1;
+                    int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 72 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 72 * dpi);
+                    pdfViewer.ToplamSayfa = pdfDoc.PageCount;
+                    pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
+                    pdfViewer.Source = await ConvertToImgAsync(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
+                }
+                catch (Exception)
+                {
+                    pdfViewer.Source = null;
+                }
             }
-            catch (Exception)
+            else
             {
-                pdfViewer.Source = null;
+                pdfViewer.SpeechViewModel?.Dur?.Execute(null);
             }
         }
     }

@@ -3206,6 +3206,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         using AppDbContext context = new();
         _ = context.Data.Add(new Data { FileName = fileName, FileContent = ocrText });
+        ocrText = null;
         _ = await context.SaveChangesAsync();
     }
 

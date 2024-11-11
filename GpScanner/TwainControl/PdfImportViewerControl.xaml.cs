@@ -1088,7 +1088,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     {
         List<string> tempfiles = [];
         ObservableCollection<OcrData> ocrdata;
-        OcrText = string.Empty;
+        OcrText = null;
         for (int i = 0; i < pdfViewer.ToplamSayfa; i++)
         {
             ocrdata = await (await Viewer.ConvertToImgAsync(pdfViewer.PdfFilePath, i + 1, dpi)).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg).OcrAsync(ocrlang);

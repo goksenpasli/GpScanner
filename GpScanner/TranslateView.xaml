@@ -117,28 +117,20 @@
                         <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
                             <Setter Property="Content">
                                 <Setter.Value>
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="131" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <TextBlock FontFamily="Webdings"
+                                        FontSize="42"
+                                        Foreground="Blue"
+                                        Text=";" />
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
                             <Setter Property="Content">
                                 <Setter.Value>
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="137" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <TextBlock FontFamily="Webdings"
+                                        FontSize="42"
+                                        Foreground="Blue"
+                                        Text="4" />
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
@@ -175,28 +167,20 @@
                         <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="true">
                             <Setter Property="Content">
                                 <Setter.Value>
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="131" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <TextBlock FontFamily="Webdings"
+                                        FontSize="42"
+                                        Foreground="Blue"
+                                        Text=";" />
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsChecked, RelativeSource={RelativeSource Mode=Self}}" Value="false">
                             <Setter Property="Content">
                                 <Setter.Value>
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="137" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
+                                    <TextBlock FontFamily="Webdings"
+                                        FontSize="42"
+                                        Foreground="Blue"
+                                        Text="4" />
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>

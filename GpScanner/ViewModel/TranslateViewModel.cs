@@ -16,7 +16,7 @@ public class TranslateViewModel : InpcBase
     static TranslateViewModel()
     {
         speechSynthesizer = new SpeechSynthesizer();
-        TtsDilleri = speechSynthesizer.GetInstalledVoices()?.Select(z => z.VoiceInfo?.Name)?.ToList();
+        TtsDilleri = speechSynthesizer?.GetInstalledVoices()?.Select(z => z.VoiceInfo?.Name)?.ToList();
     }
 
     public TranslateViewModel()
@@ -26,8 +26,8 @@ public class TranslateViewModel : InpcBase
             parameter =>
             {
                 TaramaGeçmiş?.Add(Metin);
-                Metin = string.Empty;
-                Çeviri = string.Empty;
+                Metin = null;
+                Çeviri = null;
             },
             parameter => !string.IsNullOrWhiteSpace(Metin));
 
@@ -185,6 +185,7 @@ public class TranslateViewModel : InpcBase
         if (e.PropertyName is "OkumaDili" && !string.IsNullOrEmpty(OkumaDili))
         {
             speechSynthesizer ??= new SpeechSynthesizer();
+            speechSynthesizer.SpeakAsyncCancelAll();
             speechSynthesizer.SelectVoice(OkumaDili);
         }
         if (e.PropertyName is "MevcutDil" or "ÇevrilenDil")

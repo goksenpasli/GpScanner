@@ -2520,7 +2520,9 @@
                             Height="32"
                             Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                     </TabItem.Header>
-                    <local:PdfImportViewerControl PreviewMouseWheel="PdfImportViewer_PreviewMouseWheel" x:Name="PdfImportViewer" x:FieldModifier="public" />
+                    <local:PdfImportViewerControl x:Name="PdfImportViewer"
+                        x:FieldModifier="public"
+                        PreviewMouseWheel="PdfImportViewer_PreviewMouseWheel" />
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
