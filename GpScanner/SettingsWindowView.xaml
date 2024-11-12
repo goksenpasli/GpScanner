@@ -316,10 +316,17 @@
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         IsChecked="{Binding DefaultThumbPictureAutoResize, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                        <TextBlock>
-                                            <Run Text="{twainctrl:Loc Auto}" />
+                                        <TextBlock IsEnabled="{Binding DefaultThumbPictureAutoResize, Mode=OneWay, Source={x:Static twainproperties:Settings.Default}}" TextAlignment="Center">
+                                            <Run BaselineAlignment="Center" Text="{twainctrl:Loc Auto}" />
                                             <LineBreak />
-                                            <sys:String>256px</sys:String>
+                                            <InlineUIContainer BaselineAlignment="Center">
+                                                <Extensions:NumericUpDown VerticalAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    Maximum="512"
+                                                    Minimum="96"
+                                                    Value="{Binding AutomaticThumbSize, Mode=TwoWay, Source={x:Static twainproperties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
+                                            </InlineUIContainer>
+                                            <TextBlock VerticalAlignment="Center" Text="px" />
                                         </TextBlock>
                                     </CheckBox>
                                     <ComboBox VerticalContentAlignment="Center"

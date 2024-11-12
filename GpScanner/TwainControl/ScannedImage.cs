@@ -189,7 +189,7 @@ public class ScannedImage : InpcBase
             Resim.Freeze();
             if (Settings.Default.DefaultThumbPictureAutoResize)
             {
-                double resizeratio = Math.Min(256d / Resim.PixelWidth, 256d / Resim.PixelHeight);
+                double resizeratio = Math.Min(Settings.Default.AutomaticThumbSize / (double)Resim.PixelWidth, Settings.Default.AutomaticThumbSize / (double)Resim.PixelHeight);
                 ResimThumb = Resim.Resize(resizeratio);
                 return;
             }

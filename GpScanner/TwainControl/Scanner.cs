@@ -1386,7 +1386,7 @@ public class Scanner : InpcBase, IDataErrorInfo
             BitmapSource bitmapSource = (BitmapSource)CroppedImage;
             if (Settings.Default.DefaultThumbPictureAutoResize)
             {
-                double resizeratio = Math.Min(256d / bitmapSource.PixelWidth, 256d / bitmapSource.PixelHeight);
+                double resizeratio = Math.Min(Settings.Default.AutomaticThumbSize / (double)bitmapSource.PixelWidth, Settings.Default.AutomaticThumbSize / (double)bitmapSource.PixelHeight);
                 CroppedImageThumb = bitmapSource.Resize(resizeratio);
                 return;
             }

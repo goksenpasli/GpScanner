@@ -625,5 +625,17 @@ namespace TwainControl.Properties {
                 this["ShowFileGroupIndicator"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("256")]
+        public int AutomaticThumbSize {
+            get {
+                return ((int)(this["AutomaticThumbSize"]));
+            }
+            set {
+                this["AutomaticThumbSize"] = value;
+            }
+        }
     }
 }

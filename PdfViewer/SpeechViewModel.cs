@@ -29,11 +29,11 @@ namespace PdfViewer
                             speechSynthesizer.Resume();
                             return;
                         case SynthesizerState.Ready:
-                            _ = SpeechAllPages ? speechSynthesizer.SpeakAsync(pdfViewer?.PdfAllTextContent) : speechSynthesizer.SpeakAsync(pdfViewer?.PdfTextContent);
+                            _ = SpeechAllPages ? speechSynthesizer.SpeakAsync(string.Concat(pdfViewer?.PdfAllPagesContent?.SelectMany(z => z.Values))) : speechSynthesizer.SpeakAsync(pdfViewer?.PdfTextContent);
                             break;
                     }
                 },
-                parameter => !string.IsNullOrEmpty(OkumaDili));
+                parameter => !string.IsNullOrEmpty(OkumaDili) && !string.IsNullOrWhiteSpace(pdfViewer?.PdfTextContent));
 
             Dur = new RelayCommand<object>(parameter => speechSynthesizer?.SpeakAsyncCancelAll(), parameter => !string.IsNullOrEmpty(OkumaDili));
         }

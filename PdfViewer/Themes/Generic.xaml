@@ -300,14 +300,31 @@
                                                         <RowDefinition />
                                                         <RowDefinition Height="Auto" />
                                                     </Grid.RowDefinitions>
-                                                    <Extensions:ButtonedTextBox IsReadOnly="True"
-                                                        OpenButtonVisibility="Collapsed"
-                                                        PrintButtonVisibility="Visible"
-                                                        ResetButtonVisibility="Collapsed"
-                                                        Text="{Binding PdfTextContent, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                                        TextWrapping="Wrap"
-                                                        TitleCaseMenuVisibility="Visible"
-                                                        VerticalScrollBarVisibility="Auto" />
+                                                    <ListBox HorizontalContentAlignment="Stretch"
+                                                        ItemsSource="{Binding PdfAllPagesContent, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                        SelectedValue="{Binding PdfTextContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        SelectedValuePath="Value"
+                                                        VirtualizingPanel.CacheLengthUnit="Pixel"
+                                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                        VirtualizingPanel.ScrollUnit="Pixel"
+                                                        VirtualizingPanel.VirtualizationMode="Recycling">
+                                                        <ListBox.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Extensions:ButtonedTextBox Height="96"
+                                                                    Description="{Binding Key, Mode=OneWay}"
+                                                                    IsReadOnly="True"
+                                                                    OpenButtonVisibility="Collapsed"
+                                                                    PasteButtonVisibility="Collapsed"
+                                                                    PrintButtonVisibility="Visible"
+                                                                    ResetButtonVisibility="Collapsed"
+                                                                    Text="{Binding Value, Mode=OneWay}"
+                                                                    TextWrapping="Wrap"
+                                                                    TitleCaseMenuVisibility="Collapsed"
+                                                                    VerticalScrollBarVisibility="Auto" />
+                                                            </DataTemplate>
+                                                        </ListBox.ItemTemplate>
+                                                    </ListBox>
                                                     <UniformGrid Grid.Column="1" Columns="2">
                                                         <ToggleButton Background="{DynamicResource BorderBackground}" Command="{Binding SpeechViewModel.Oku, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
                                                             <ToggleButton.Style>

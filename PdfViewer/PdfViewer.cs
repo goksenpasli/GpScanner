@@ -9,7 +9,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Printing;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -177,15 +176,11 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PdfTextContent = null;
-                PdfTextContent = pdfDocument.GetPdfText(Sayfa - 1);
-                StringBuilder stringBuilder = new();
-                PdfAllTextContent = null;
+                PdfAllPagesContent = [];
                 for (int i = 0; i < pdfDocument.PageCount; i++)
                 {
-                    _ = stringBuilder.Append(pdfDocument.GetPdfText(i));
+                    PdfAllPagesContent.Add(new Dictionary<int, string> { { i + 1, pdfDocument.GetPdfText(i) } });
                 }
-                PdfAllTextContent = stringBuilder.ToString();
             },
             parameter => File.Exists(PdfFilePath));
 
@@ -290,7 +285,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public string PdfAllTextContent
+    public ObservableCollection<Dictionary<int, string>> PdfAllPagesContent
     {
         get;
         set
@@ -298,7 +293,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             if (field != value)
             {
                 field = value;
-                OnPropertyChanged(nameof(PdfAllTextContent));
+                OnPropertyChanged(nameof(PdfAllPagesContent));
             }
         }
     }
@@ -751,6 +746,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         if (e.PropertyName is "SearchPdfMatch" && SearchPdfMatch is not null)
         {
             Sayfa = SearchPdfMatch.Page + 1;
+        }
+        if (e.PropertyName is "PdfTextContent")
+        {
+            SpeechViewModel?.Dur?.Execute(null);
         }
     }
 
