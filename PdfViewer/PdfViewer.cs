@@ -42,6 +42,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty OpenButtonVisibilityProperty = DependencyProperty.Register("OpenButtonVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(FitImageOrientation), typeof(PdfViewer), new PropertyMetadata(FitImageOrientation.Width, Changed));
     public static readonly DependencyProperty PdfFilePathProperty = DependencyProperty.Register("PdfFilePath", typeof(string), typeof(PdfViewer), new PropertyMetadata(null, PdfFilePathChanged));
+    public static readonly DependencyProperty PdfScrollBarVisibilityProperty = DependencyProperty.Register("PdfScrollBarVisibility", typeof(ScrollBarVisibility), typeof(PdfViewer), new PropertyMetadata(ScrollBarVisibility.Auto));
     public static readonly DependencyProperty PdfTextContentVisibilityProperty = DependencyProperty.Register("PdfTextContentVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty PrintButtonVisibilityProperty = DependencyProperty.Register("PrintButtonVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty PrintDpiProperty = DependencyProperty.Register("PrintDpi", typeof(int), typeof(PdfViewer), new PropertyMetadata(300));
@@ -53,6 +54,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty SourceProperty = DependencyProperty.Register("Source", typeof(ImageSource), typeof(PdfViewer), new PropertyMetadata(null, SourceChanged));
     public static readonly DependencyProperty TifNavigasyonButtonEtkinProperty = DependencyProperty.Register("TifNavigasyonButtonEtkin", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty ToolBarVisibilityProperty = DependencyProperty.Register("ToolBarVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty UpDownButtonVisibilityProperty = DependencyProperty.Register("UpDownButtonVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty WholeWordProperty = DependencyProperty.Register("WholeWord", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty ZoomEnabledProperty = DependencyProperty.Register("ZoomEnabled", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
@@ -328,6 +330,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    public ScrollBarVisibility PdfScrollBarVisibility { get => (ScrollBarVisibility)GetValue(PdfScrollBarVisibilityProperty); set => SetValue(PdfScrollBarVisibilityProperty, value); }
+
     public string PdfTextContent
     {
         get;
@@ -422,6 +426,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             }
         }
     }
+
+    public Visibility UpDownButtonVisibility { get => (Visibility)GetValue(UpDownButtonVisibilityProperty); set => SetValue(UpDownButtonVisibilityProperty, value); }
 
     public bool WholeWord { get => (bool)GetValue(WholeWordProperty); set => SetValue(WholeWordProperty, value); }
 
@@ -763,6 +769,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private void Scrollvwr_Drop(object sender, DragEventArgs e)
     {
+        if (OpenButtonVisibility is Visibility.Hidden or Visibility.Collapsed)
+        {
+            return;
+        }
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
         if (IsValidPdfFile(droppedfiles?[0]))
         {

@@ -117,12 +117,13 @@
                             Command="{Binding PageDecrease, RelativeSource={RelativeSource TemplatedParent}}"
                             Content="é"
                             FontFamily="Wingdings"
-                            FontSize="16" />
+                            FontSize="16"
+                            Visibility="{Binding UpDownButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Grid Grid.Row="1">
                             <ScrollViewer x:Name="ScrollVwr"
                                 AllowDrop="True"
-                                HorizontalScrollBarVisibility="Auto"
-                                VerticalScrollBarVisibility="Auto">
+                                HorizontalScrollBarVisibility="{Binding PdfScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                VerticalScrollBarVisibility="{Binding PdfScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Image RenderTransformOrigin="0.5,0.5"
                                     ScrollViewer.CanContentScroll="True"
                                     Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"
@@ -141,7 +142,8 @@
                             Command="{Binding PageIncrease, RelativeSource={RelativeSource TemplatedParent}}"
                             Content="ê"
                             FontFamily="Wingdings"
-                            FontSize="16" />
+                            FontSize="16"
+                            Visibility="{Binding UpDownButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                         <ContentControl x:Name="Cnt"
                             Grid.Row="3"
                             Grid.ColumnSpan="2"

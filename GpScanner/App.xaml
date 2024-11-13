@@ -574,7 +574,9 @@
                     Height="155"
                     AutoFitContent="True"
                     EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    ToolBarVisibility="Collapsed" />
+                    PdfScrollBarVisibility="Hidden"
+                    ToolBarVisibility="Collapsed"
+                    UpDownButtonVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="DocumentViewerMonthPreviewXlsxTemplate">
                 <twain:XlsxViewer Width="155"

@@ -1170,10 +1170,25 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         EditWithControlPanel = new RelayCommand<object>(
             parameter =>
             {
-                if (windowService.GetActiveWindow() is MainWindow mainWindow && parameter is string filepath && PdfViewer.PdfViewer.IsValidPdfFile(filepath))
+                if (windowService.GetActiveWindow() is MainWindow mainWindow && parameter is string filepath)
                 {
-                    mainWindow.twainCtrl.PdfImportViewer.PdfViewer.PdfFilePath = filepath;
-                    mainWindow.twainCtrl.SelectedTabIndex = 3;
+                    if (string.Equals(Path.GetExtension(filepath), ".xps", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        mainWindow.twainCtrl.xpsViewer.XpsDataFilePath = filepath;
+                        mainWindow.twainCtrl.SelectedTabIndex = 4;
+                        return;
+                    }
+                    if (string.Equals(Path.GetExtension(filepath), ".eyp", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        mainWindow.twainCtrl.PdfImportViewer.PdfViewer.EypFilePath = filepath;
+                        mainWindow.twainCtrl.SelectedTabIndex = 3;
+                        return;
+                    }
+                    if (PdfViewer.PdfViewer.IsValidPdfFile(filepath))
+                    {
+                        mainWindow.twainCtrl.PdfImportViewer.PdfViewer.PdfFilePath = filepath;
+                        mainWindow.twainCtrl.SelectedTabIndex = 3;
+                    }
                 }
             },
             parameter => true);
