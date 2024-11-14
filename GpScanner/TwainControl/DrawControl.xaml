@@ -35,6 +35,7 @@
                 Cursor="{Binding DrawCursor, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                 EditingMode="{Binding ElementName=CbEdit, Path=SelectedItem}"
                 IsEnabled="{Binding ElementName=Img, Path=ImageSource, Converter={StaticResource NullableToBooleanConverter}}"
+                PreviewMouseWheel="Ink_PreviewMouseWheel"
                 UseCustomCursor="True">
                 <local:ZoomableInkCanvas.ContextMenu>
                     <ContextMenu>
@@ -175,6 +176,16 @@
                 <Extension:NumericUpDown Interval="1"
                     Minimum="0.5"
                     Value="{Binding StylusHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" />
+                <Button Command="{Binding CopyBitmapFile, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="134" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Button>
                 <Button local:Policy.PolicyName="SaveEditedImage"
                     Command="{Binding SaveEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                     CommandParameter="{Binding SeçiliResim}">
@@ -203,6 +214,7 @@
                 <Extension:ContentToggleButton Padding="2" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
                     <Rectangle Width="24"
                         Height="24"
+                        d:Fill="Black"
                         Fill="{Binding SelectedBrush}" />
                     <Extension:ContentToggleButton.OverContent>
                         <Border BorderThickness="1">

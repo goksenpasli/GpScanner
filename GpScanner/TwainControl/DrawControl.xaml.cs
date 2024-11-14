@@ -64,12 +64,16 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             },
             parameter => TemporaryImage is not null);
 
+        CopyBitmapFile = new RelayCommand<object>(parameter => Clipboard.SetImage(SaveInkCanvasToImage()), parameter => TemporaryImage is not null);
+
         FitImage = new RelayCommand<object>(parameter => Ink.CurrentZoom = ActualHeight / TemporaryImage?.Height ?? 1, parameter => TemporaryImage is not null);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
     public RelayCommand<object> ClearTemporaryImage { get; }
+
+    public RelayCommand<object> CopyBitmapFile { get; }
 
     public bool DrawControlContextMenu
     {
@@ -413,6 +417,15 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 SelectedBrush = new SolidColorBrush(DrawingAttribute.Color);
                 GenerateCustomCursor();
             }
+        }
+    }
+
+    private void Ink_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+    {
+        if (Keyboard.Modifiers == ModifierKeys.Control)
+        {
+            Ink.CurrentZoom = e.Delta > 0 ? Ink.CurrentZoom + .005 : Ink.CurrentZoom + -.005;
+            Ink.CurrentZoom = Math.Max(Ink.MinZoom, Math.Min(Ink.MaxZoom, Ink.CurrentZoom));
         }
     }
 

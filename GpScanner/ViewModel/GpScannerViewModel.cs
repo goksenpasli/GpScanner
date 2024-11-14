@@ -1184,6 +1184,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         mainWindow.twainCtrl.SelectedTabIndex = 3;
                         return;
                     }
+                    if (BatchImageFileExtensions?.Select(z => z.Name)?.Contains(Path.GetExtension(filepath).ToLowerInvariant()) == true)
+                    {
+                        BitmapImage bitmapImage = new(new Uri(filepath));
+                        bitmapImage?.Freeze();
+                        mainWindow.twainCtrl.drawControl.TemporaryImage = bitmapImage;
+                        mainWindow.twainCtrl.SelectedTabIndex = 1;
+                        return;
+                    }
                     if (PdfViewer.PdfViewer.IsValidPdfFile(filepath))
                     {
                         mainWindow.twainCtrl.PdfImportViewer.PdfViewer.PdfFilePath = filepath;
