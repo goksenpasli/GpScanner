@@ -3410,7 +3410,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public bool TesseractOrientationFileExists
     {
-        get => File.Exists($@"{Ocr.Ocr.TesseractPath}\osd.traineddata");
+        get;
         set
         {
             if (field != value)
@@ -3419,7 +3419,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OnPropertyChanged(nameof(TesseractOrientationFileExists));
             }
         }
-    }
+    } = File.Exists($@"{Ocr.Ocr.TesseractPath}\osd.traineddata");
 
     public string TextSplitList
     {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Markup;
@@ -18,6 +19,7 @@ namespace GpScanner;
 public partial class App : Application
 {
     private MainWindow mainwindow;
+    private Thread splashThread = null;
     private SplashWindow splashWindow;
 
     private void Application_Startup(object sender, StartupEventArgs e)
@@ -26,15 +28,22 @@ public partial class App : Application
         Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
 #endif
         FrameworkElement.LanguageProperty.OverrideMetadata(typeof(Run), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));
-
         if (Settings.Default.ShowSplash)
         {
-            splashWindow = new SplashWindow();
-            splashWindow.Show();
+            splashThread = new Thread(
+                () =>
+                {
+                    splashWindow = new SplashWindow();
+                    splashWindow.Show();
+                    Dispatcher.Run();
+                });
+            splashThread.SetApartmentState(ApartmentState.STA);
+            splashThread.Start();
         }
 
         mainwindow = new MainWindow();
         mainwindow.Loaded += Window_Loaded;
+
         if (e.Args.Contains("/silent") && Settings.Default.StartWithWindows)
         {
             Settings.Default.MinimizeTray = true;
@@ -50,7 +59,6 @@ public partial class App : Application
 
         foreach (string arg in e.Args)
         {
-
             if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
             {
                 List<Process> processes = [.. StillImageHelper.GetAllGPScannerProcess()];
@@ -88,5 +96,13 @@ public partial class App : Application
         e.Handled = true;
     }
 
-    private void Window_Loaded(object sender, RoutedEventArgs e) => splashWindow?.Close();
+    private void Window_Loaded(object sender, RoutedEventArgs e)
+    {
+        splashWindow?.Dispatcher.Invoke(splashWindow.Close);
+        if (splashThread?.IsAlive == true)
+        {
+            splashWindow.Dispatcher.InvokeShutdown();
+            splashThread.Join();
+        }
+    }
 }

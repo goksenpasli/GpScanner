@@ -15,6 +15,19 @@
     WindowStyle="None"
     mc:Ignorable="d">
     <Grid>
+        <Grid.Triggers>
+            <EventTrigger RoutedEvent="Window.Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation Storyboard.TargetName="EllipseBrush"
+                            Storyboard.TargetProperty="Color"
+                            From="Red"
+                            To="Green"
+                            Duration="0:0:1.5" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Grid.Triggers>
         <Image Source="/splash.png">
             <Image.Effect>
                 <DropShadowEffect BlurRadius="20"
@@ -99,5 +112,12 @@
             FontSize="14"
             Foreground="White"
             Text="{Binding SplashText}" />
+        <Ellipse Width="13"
+            Height="13"
+            Margin="388,344,79,123">
+            <Ellipse.Fill>
+                <SolidColorBrush x:Name="EllipseBrush" Color="Red" />
+            </Ellipse.Fill>
+        </Ellipse>
     </Grid>
 </Window>
