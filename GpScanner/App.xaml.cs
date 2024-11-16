@@ -104,5 +104,6 @@ public partial class App : Application
             splashWindow.Dispatcher.InvokeShutdown();
             splashThread.Join();
         }
+        mainwindow.Activate();
     }
 }
