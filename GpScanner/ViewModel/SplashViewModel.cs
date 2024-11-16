@@ -2,7 +2,10 @@
 using GpScanner.Properties;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Globalization;
+using System.Windows;
+using System.Windows.Threading;
 using TwainControl;
 
 namespace GpScanner.ViewModel
@@ -50,12 +53,27 @@ namespace GpScanner.ViewModel
             { "UZBEK", "Flag_of_Uzbekistan.png" },
         };
         private const string basePath = "pack://application:,,,/GpScanner;component/Resources/";
+        private DispatcherTimer flaganimationtimer;
 
         public SplashViewModel()
         {
             FlagUri = GetFlag(Settings.Default.DefaultLang);
+            GenerateFlagAnimation();
             TranslationSource.Instance.CurrentCulture = ChangeApplicationLanguage(Settings.Default.DefaultLang);
             SplashText = Translation.GetResStringValue("SPLASHTEXT");
+        }
+
+        public int FlagProgress
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(FlagProgress));
+                }
+            }
         }
 
         public Uri FlagUri
@@ -134,6 +152,29 @@ namespace GpScanner.ViewModel
                 return new Uri(fullPath);
             }
             return new Uri($"{basePath}{LanguageFlags["TÜRKÇE"]}");
+        }
+
+        private void GenerateFlagAnimation()
+        {
+            if (DesignerProperties.GetIsInDesignMode(new DependencyObject()))
+            {
+                return;
+            }
+            int direction = 1;
+            flaganimationtimer = new(DispatcherPriority.SystemIdle) { Interval = TimeSpan.FromMilliseconds(25) };
+            flaganimationtimer.Tick += (sender, e) =>
+                                       {
+                                           if (FlagProgress >= 85)
+                                           {
+                                               direction = -1;
+                                           }
+                                           if (FlagProgress <= 15)
+                                           {
+                                               direction = 1;
+                                           }
+                                           FlagProgress += direction;
+                                       };
+            flaganimationtimer.Start();
         }
     }
 }
