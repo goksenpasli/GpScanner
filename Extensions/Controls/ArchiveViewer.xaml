@@ -149,8 +149,13 @@
                                         Header="SIKIŞTIRILMIŞ&#x0a;BOYUT" />
                                     <GridViewColumn Width="70"
                                         local:GridViewSort.PropertyName="DosyaTipi"
-                                        DisplayMemberBinding="{Binding DosyaTipi, Mode=OneWay}"
-                                        Header="TİP" />
+                                        DisplayMemberBinding="{Binding DosyaTipi, Mode=OneWay}">
+                                        <GridViewColumn.Header>
+                                            <local:CheckComboBox Width="32"
+                                                Items="{Binding ArchiveFileTypes, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
+                                                Watermark="TİP" />
+                                        </GridViewColumn.Header>
+                                    </GridViewColumn>
                                     <GridViewColumn Width="45"
                                         local:GridViewSort.PropertyName="Oran"
                                         Header="ORAN">

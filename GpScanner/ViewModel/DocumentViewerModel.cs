@@ -25,7 +25,7 @@ public class DocumentViewerModel : InpcBase
         PropertyChanged += DocumentViewerModel_PropertyChanged;
         List<string> files = fileService.GetFileNames();
         files?.Sort(new StrCmpLogicalComparer());
-        DirectoryAllPdfFiles =new ObservableCollection<string>(files);
+        DirectoryAllPdfFiles = [.. files];
         Index = Array.IndexOf([.. DirectoryAllPdfFiles], FilePath);
         Back = new RelayCommand<object>(
             parameter =>

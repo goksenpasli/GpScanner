@@ -13,6 +13,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interop;
 using static Extensions.ExtensionMethods;
+using static Extensions.ShellIcon;
 
 namespace Extensions
 {
@@ -124,6 +125,19 @@ namespace Extensions
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableCollection<CheckBoxItem> ArchiveFileTypes
+        {
+            get;
+            set
+            {
+                if (field != value)
+                {
+                    field = value;
+                    OnPropertyChanged(nameof(ArchiveFileTypes));
+                }
+            }
+        }
 
         public string ArchivePath { get => (string)GetValue(ArchivePathProperty); set => SetValue(ArchivePathProperty, value); }
 
@@ -326,6 +340,7 @@ namespace Extensions
         protected virtual async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string ArchiveFilePath)
         {
             Arşivİçerik = [];
+            ArchiveFileTypes = [];
             await Task.Run(
                 async () =>
                 {
@@ -341,6 +356,7 @@ namespace Extensions
                                 {
                                     SıkıştırılmışBoyut = item.CompressedLength,
                                     DosyaAdı = item.Name,
+                                    DosyaTipi = GetFileType(item.Name, new SHFILEINFO()),
                                     TamYol = item.FullName,
                                     Boyut = item.Length,
                                     Oran = (float)item.CompressedLength / item.Length,
@@ -348,7 +364,17 @@ namespace Extensions
                                     Crc = null
                                 };
                                 archiveData.PropertyChanged += ArchiveData_PropertyChanged;
-                                await Dispatcher.InvokeAsync(() => Arşivİçerik.Add(archiveData));
+                                CheckBoxItem checkBoxItem = new() { Name = archiveData.DosyaTipi };
+                                checkBoxItem.PropertyChanged += CheckBoxItem_PropertyChanged;
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        Arşivİçerik.Add(archiveData);
+                                        if (!ArchiveFileTypes.Any(z => z.Name == checkBoxItem.Name))
+                                        {
+                                            ArchiveFileTypes.Add(checkBoxItem);
+                                        }
+                                    });
                             }
                         }
                     }
@@ -410,6 +436,20 @@ namespace Extensions
                                 {
                                     ArchiveData archiveData = x as ArchiveData;
                                     return archiveData?.DosyaAdı?.Contains(Search, StringComparison.CurrentCultureIgnoreCase) == true;
+                                })
+                             : null;
+            }
+        }
+
+        private void CheckBoxItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is "IsChecked")
+            {
+                cvs.Filter = ArchiveFileTypes?.Any(z => z.IsChecked) == true
+                             ? (x =>
+                                {
+                                    ArchiveData archiveData = x as ArchiveData;
+                                    return ArchiveFileTypes.Any(z => z.IsChecked && archiveData.DosyaTipi == z.Name);
                                 })
                              : null;
             }

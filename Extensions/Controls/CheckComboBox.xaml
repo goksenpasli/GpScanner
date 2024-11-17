@@ -36,7 +36,9 @@
                                                 BorderBrush="{TemplateBinding Border.BorderBrush}"
                                                 BorderThickness="{TemplateBinding Border.BorderThickness}"
                                                 SnapsToDevicePixels="True">
-                                                <ScrollViewer Padding="{TemplateBinding Control.Padding}" Focusable="False">
+                                                <ScrollViewer Padding="{TemplateBinding Control.Padding}"
+                                                    Focusable="False"
+                                                    VerticalScrollBarVisibility="Auto">
                                                     <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
                                                 </ScrollViewer>
                                             </Border>

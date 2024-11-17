@@ -1564,7 +1564,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 List<ScannedImage> scannedImages = Scanner.Resimler.Reverse().ToList();
-                Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
+                Scanner.Resimler = [.. scannedImages];
                 Scanner.RefreshIndexNumbers();
             },
             parameter => Scanner?.Resimler?.Count > 1);
@@ -1573,7 +1573,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 List<ScannedImage> scannedImages = [.. Scanner.Resimler];
-                Scanner.Resimler = new ObservableCollection<ScannedImage>(GroupByFirstLastList(scannedImages, GroupSplitCount));
+                Scanner.Resimler = [.. GroupByFirstLastList(scannedImages, GroupSplitCount)];
                 Scanner.RefreshIndexNumbers();
             },
             parameter => Scanner?.Resimler?.Count > 1);
@@ -1625,7 +1625,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     List<ScannedImage> scannedImages = [.. Scanner.Resimler];
                     scannedImages.Reverse(start, end - start + 1);
-                    Scanner.Resimler = new ObservableCollection<ScannedImage>(scannedImages);
+                    Scanner.Resimler = [.. scannedImages];
                     Scanner.RefreshIndexNumbers();
                 }
             },
@@ -4315,7 +4315,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         items.Sort((a, b) => indexSelector(a) % 2 != indexSelector(b) % 2 ? indexSelector(a) % 2 == 1 ? -1 : 1 : indexSelector(a) % 2 == 0 ? indexSelector(b).CompareTo(indexSelector(a)) : indexSelector(a).CompareTo(indexSelector(b)));
 
-        return new ObservableCollection<T>(items);
+        return [.. items];
     }
 
     private ObservableCollection<T> FirstLastSequence<T>(ObservableCollection<T> images)
@@ -5075,7 +5075,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             collection[i] = collection[j];
             collection[j] = temp;
         }
-        return new ObservableCollection<T>(collection);
+        return [.. collection];
     }
 
     private List<T[]> SplitArray<T>(T[] array, params int[] indices)

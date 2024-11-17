@@ -218,8 +218,8 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         List<string> files = TwainCtrl.EypFileExtract(filename);
         if (files is not null)
         {
-            EypAttachments = new ObservableCollection<string>(files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant())));
-            EypNonSuportedAttachments = new ObservableCollection<string>(files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant())));
+            EypAttachments = [.. files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant()))];
+            EypNonSuportedAttachments = [.. files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant()))];
             using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLowerInvariant()) == ".pdf"), PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
             return document?.FullPath;
         }

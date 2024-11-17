@@ -2512,6 +2512,7 @@
                         </Extensions:ButtonedTextBox>
                         <local:SimpleArchiveViewer x:Name="ArchiveVwr"
                             Grid.Row="1"
+                            x:FieldModifier="public"
                             AllowDrop="True"
                             Style="{StaticResource SimpleArchiveViewerStyle}" />
                     </Grid>

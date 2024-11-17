@@ -1184,6 +1184,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         mainWindow.twainCtrl.SelectedTabIndex = 3;
                         return;
                     }
+                    if (new string[] { ".zip", ".rar", ".7z" }.Any(z => string.Equals(z, Path.GetExtension(filepath), StringComparison.InvariantCultureIgnoreCase)))
+                    {
+                        mainWindow.twainCtrl.ArchiveVwr.ArchivePath = filepath;
+                        mainWindow.twainCtrl.SelectedTabIndex = 2;
+                        return;
+                    }
                     if (BatchImageFileExtensions?.Select(z => z.Name)?.Contains(Path.GetExtension(filepath).ToLowerInvariant()) == true)
                     {
                         BitmapImage bitmapImage = new(new Uri(filepath));
@@ -2830,7 +2836,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
 
             IEnumerable<ContributionData> collection = contributiondata.Where(z => z.ContrubutionDate >= first && z.ContrubutionDate <= last).OrderBy(z => z.ContrubutionDate);
-            return new ObservableCollection<ContributionData>(collection);
+            return [.. collection];
         }
         catch (Exception ex)
         {
@@ -2905,7 +2911,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             List<string> scannedDatabaseFiles = await context?.Data?.AsNoTracking()?.Select(x => x.FileName).ToListAsync();
             if (scannerunindexedfiles is not null && scannedDatabaseFiles is not null)
             {
-                return new ObservableCollection<string>(scannerunindexedfiles.Except(scannedDatabaseFiles));
+                return [.. scannerunindexedfiles.Except(scannedDatabaseFiles)];
             }
         }
         catch (Exception)
@@ -2922,7 +2928,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             using AppDbContext context = new();
             List<ReminderData> reminders = await context.ReminderData.AsNoTracking().Where(z => z.Seen).OrderBy(z => z.Tarih).ToListAsync();
-            return new ObservableCollection<ReminderData>(reminders);
+            return [.. reminders];
         }
         catch (Exception)
         {
@@ -3105,7 +3111,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private ObservableCollection<TessFiles> OrderBatchFiles(ObservableCollection<TessFiles> batchFolderProcessedFileList) => new(batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer()));
+    private ObservableCollection<TessFiles> OrderBatchFiles(ObservableCollection<TessFiles> batchFolderProcessedFileList) => [.. batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer())];
 
     private async Task<string> ProcessFileAsync(string unIndexedFile)
     {
@@ -3182,7 +3188,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             using AppDbContext context = new();
             List<ReminderData> reminders = await context.ReminderData.AsNoTracking().Where(z => z.Tarih > DateTime.Today && !z.Seen).OrderBy(z => z.Tarih).ToListAsync();
-            return new ObservableCollection<ReminderData>(reminders);
+            return [.. reminders];
         }
         catch (Exception)
         {

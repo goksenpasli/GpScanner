@@ -245,8 +245,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             if (Directory.Exists(tesseractfolder))
             {
                 string[] defaultTtsLang = Settings.Default?.DefaultTtsLang?.Split('+');
-                ObservableCollection<TessFiles> tesseractfiles = new(
-                    Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
+                ObservableCollection<TessFiles> tesseractfiles = [.. Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
                     .Select(
                         filePath =>
                         {
@@ -255,7 +254,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                             TessFiles tessfiles = new() { DisplayName = displayName, Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName), FileSize = new FileInfo(filePath).Length / 1_048_576d };
                             tessfiles.PropertyChanged += Tess_PropertyChanged;
                             return tessfiles;
-                        }));
+                        })];
                 CheckedFiles = tesseractfiles?.Where(item => item.Checked).ToList();
                 return tesseractfiles;
             }

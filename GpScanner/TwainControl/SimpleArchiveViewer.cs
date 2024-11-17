@@ -13,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Interop;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
+using static Extensions.ShellIcon;
 
 namespace TwainControl;
 
@@ -111,6 +112,7 @@ public class SimpleArchiveViewer : ArchiveViewer
     protected override async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string ArchiveFilePath)
     {
         Arşivİçerik = [];
+        ArchiveFileTypes = [];
         await Task.Run(
             async () =>
             {
@@ -126,6 +128,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                             {
                                 SıkıştırılmışBoyut = (long)item.PackedSize,
                                 DosyaAdı = item.FileName,
+                                DosyaTipi = GetFileType(item.FileName, new SHFILEINFO()),
                                 TamYol = item.FileName,
                                 Boyut = (long)item.Size,
                                 Oran = (float)item.PackedSize / item.Size,
@@ -137,7 +140,17 @@ public class SimpleArchiveViewer : ArchiveViewer
                                 Encrypted = item.IsEncrypted
                             };
                             archiveData.PropertyChanged += ArchiveData_PropertyChanged;
-                            await Dispatcher.InvokeAsync(() => Arşivİçerik.Add(archiveData));
+                            CheckBoxItem checkBoxItem = new() { Name = archiveData.DosyaTipi };
+                            checkBoxItem.PropertyChanged += CheckBoxItem_PropertyChanged;
+                            await Dispatcher.InvokeAsync(
+                                () =>
+                                {
+                                    Arşivİçerik.Add(archiveData);
+                                    if (!ArchiveFileTypes.Any(z => z.Name == checkBoxItem.Name))
+                                    {
+                                        ArchiveFileTypes.Add(checkBoxItem);
+                                    }
+                                });
                         }
                     }
                 }
@@ -157,6 +170,20 @@ public class SimpleArchiveViewer : ArchiveViewer
         if (e.PropertyName is "IsChecked")
         {
             CheckedCount = Arşivİçerik?.Count(z => z.IsChecked) ?? 0;
+        }
+    }
+
+    private void CheckBoxItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "IsChecked")
+        {
+            cvs.Filter = ArchiveFileTypes?.Any(z => z.IsChecked) == true
+                         ? (x =>
+                            {
+                                ArchiveData archiveData = x as ArchiveData;
+                                return ArchiveFileTypes.Any(z => z.IsChecked && archiveData.DosyaTipi == z.Name);
+                            })
+                         : null;
         }
     }
 

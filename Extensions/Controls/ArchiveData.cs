@@ -1,12 +1,9 @@
 ﻿using System;
-using static Extensions.ShellIcon;
 
 namespace Extensions;
 
 public class ArchiveData : InpcBase
 {
-    private string dosyaTipi;
-
     public long Boyut
     {
         get;
@@ -50,12 +47,13 @@ public class ArchiveData : InpcBase
 
     public string DosyaTipi
     {
-        get => GetFileType(DosyaAdı, new SHFILEINFO());
+        get;
+
         set
         {
-            if (dosyaTipi != value)
+            if (field != value)
             {
-                dosyaTipi = value;
+                field = value;
                 OnPropertyChanged(nameof(DosyaTipi));
             }
         }

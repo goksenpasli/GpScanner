@@ -237,8 +237,13 @@
                             Header="SIKIŞTIRILMIŞ&#xA;BOYUT" />
                         <GridViewColumn Width="70"
                             Extensions:GridViewSort.PropertyName="DosyaTipi"
-                            DisplayMemberBinding="{Binding DosyaTipi, Mode=OneWay}"
-                            Header="TİP" />
+                            DisplayMemberBinding="{Binding DosyaTipi, Mode=OneWay}">
+                            <GridViewColumn.Header>
+                                <Extensions:CheckComboBox Width="32"
+                                    Items="{Binding ArchiveFileTypes, RelativeSource={RelativeSource AncestorType=Extensions:ArchiveViewer}}"
+                                    Watermark="TİP" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
                         <GridViewColumn Width="45"
                             Extensions:GridViewSort.PropertyName="Oran"
                             Header="ORAN">
@@ -892,7 +897,7 @@
             </Trigger>
             <MultiTrigger>
                 <MultiTrigger.Conditions>
-                    <Condition Property="IsGrouping" Value="true" />
+                    <Condition Property="ItemsControl.IsGrouping" Value="true" />
                     <Condition Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="false" />
                 </MultiTrigger.Conditions>
                 <Setter Property="ScrollViewer.CanContentScroll" Value="false" />
