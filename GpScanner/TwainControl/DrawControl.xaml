@@ -193,6 +193,18 @@
                         Height="24"
                         Source="/TwainControl;component/Icons/save.png" />
                 </Button>
+                <Button local:Policy.PolicyName="SaveAllEditedImage"
+                    Command="{Binding SaveAllEditedImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
+                    CommandParameter="{Binding Scanner.Resimler}">
+                    <Image Width="24" Height="24">
+                        <Image.Source>
+                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                <Binding Source="Shell32.dll" />
+                                <Binding Source="223" />
+                            </MultiBinding>
+                        </Image.Source>
+                    </Image>
+                </Button>
                 <Button Command="{Binding FitImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}" CommandParameter="{Binding SeçiliResim}">
                     <Image Width="24" Height="24">
                         <Image.Source>

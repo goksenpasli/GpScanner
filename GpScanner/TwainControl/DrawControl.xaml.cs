@@ -1,7 +1,9 @@
 ﻿using Extensions;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -39,7 +41,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                 }
                 if (SilentApply)
                 {
-                    scannedImage.Resim = SaveInkCanvasToImage();
+                    scannedImage.Resim = SaveInkCanvasToImage(TemporaryImage, Ink);
                     scannedImage.ScannedImageNotifyBrush = System.Windows.Media.Brushes.Yellow;
                     return;
                 }
@@ -48,10 +50,39 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                     return;
                 }
 
-                scannedImage.Resim = SaveInkCanvasToImage();
+                scannedImage.Resim = SaveInkCanvasToImage(TemporaryImage, Ink);
                 scannedImage.ScannedImageNotifyBrush = System.Windows.Media.Brushes.Yellow;
             },
-            parameter => parameter is ScannedImage && TemporaryImage is not null);
+            parameter => TemporaryImage is not null);
+
+        SaveAllEditedImage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is not ObservableCollection<ScannedImage> scannedImages)
+                {
+                    return;
+                }
+
+                if (MessageBox.Show(
+                    $"{Translation.GetResStringValue("GRAPH")} {Translation.GetResStringValue("ALL")} {Translation.GetResStringValue("APPLY")}",
+                    Window.GetWindow(this)?.Title,
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
+                    MessageBoxResult.No) !=
+                MessageBoxResult.Yes)
+                {
+                    return;
+                }
+
+                foreach (ScannedImage scannedImage in scannedImages.Where(z => z.Seçili))
+                {
+                    TemporaryImage = scannedImage.Resim;
+                    scannedImage.Resim = SaveInkCanvasToImage(TemporaryImage, Ink);
+                    scannedImage.ScannedImageNotifyBrush = System.Windows.Media.Brushes.Yellow;
+                }
+
+            },
+            parameter => TemporaryImage is not null);
 
         ClearTemporaryImage = new RelayCommand<object>(
             parameter =>
@@ -64,7 +95,7 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             },
             parameter => TemporaryImage is not null);
 
-        CopyBitmapFile = new RelayCommand<object>(parameter => Clipboard.SetImage(SaveInkCanvasToImage()), parameter => TemporaryImage is not null);
+        CopyBitmapFile = new RelayCommand<object>(parameter => Clipboard.SetImage(SaveInkCanvasToImage(TemporaryImage, Ink)), parameter => TemporaryImage is not null);
 
         FitImage = new RelayCommand<object>(parameter => Ink.CurrentZoom = ActualHeight / TemporaryImage?.Height ?? 1, parameter => TemporaryImage is not null);
     }
@@ -174,6 +205,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
             }
         }
     } = new();
+
+    public RelayCommand<object> SaveAllEditedImage { get; }
 
     public RelayCommand<object> SaveEditedImage { get; }
 
@@ -295,26 +328,6 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         return CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
     }
 
-    public BitmapFrame SaveInkCanvasToImage()
-    {
-        BitmapSource temporaryimage = (BitmapSource)TemporaryImage;
-        if (temporaryimage is null)
-        {
-            return null;
-        }
-        RenderTargetBitmap renderTargetBitmap = new(temporaryimage.PixelWidth, temporaryimage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
-        DrawingVisual dv = new();
-        using (DrawingContext ctx = dv.RenderOpen())
-        {
-            ctx?.DrawRectangle(new VisualBrush(Ink), null, new Rect(0, 0, temporaryimage.PixelWidth, temporaryimage.PixelHeight));
-        }
-        renderTargetBitmap?.Render(dv);
-        renderTargetBitmap?.Freeze();
-        BitmapFrame image = BitmapFrame.Create(renderTargetBitmap);
-        image?.Freeze();
-        return image;
-    }
-
     protected override void OnDrop(DragEventArgs e)
     {
         if (e.Data.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && scannedImage?.Resim is not null)
@@ -430,4 +443,24 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
     }
 
     private void OnZoomChanged(object sender, EventArgs e) => GenerateCustomCursor();
+
+    private BitmapFrame SaveInkCanvasToImage(ImageSource imageSource, Visual visual)
+    {
+        if (imageSource is not BitmapSource temporaryimage)
+        {
+            return null;
+        }
+
+        RenderTargetBitmap renderTargetBitmap = new(temporaryimage.PixelWidth, temporaryimage.PixelHeight, 96, 96, PixelFormats.Pbgra32);
+        DrawingVisual dv = new();
+        using (DrawingContext ctx = dv.RenderOpen())
+        {
+            ctx?.DrawRectangle(new VisualBrush(visual), null, new Rect(0, 0, temporaryimage.PixelWidth, temporaryimage.PixelHeight));
+        }
+        renderTargetBitmap?.Render(dv);
+        renderTargetBitmap?.Freeze();
+        BitmapFrame image = BitmapFrame.Create(renderTargetBitmap.ToBitmapImage());
+        image?.Freeze();
+        return image;
+    }
 }
