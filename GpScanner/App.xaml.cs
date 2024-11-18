@@ -33,10 +33,13 @@ public partial class App : Application
             splashThread = new Thread(
                 () =>
                 {
-                    splashWindow = new SplashWindow();
+                    splashWindow = new SplashWindow() { Topmost = true };
                     splashWindow.Show();
                     Dispatcher.Run();
-                });
+                })
+            {
+                IsBackground = true
+            };
             splashThread.SetApartmentState(ApartmentState.STA);
             splashThread.Start();
         }
@@ -49,36 +52,24 @@ public partial class App : Application
             Settings.Default.MinimizeTray = true;
             Settings.Default.ShowTrayIcon = true;
             mainwindow.WindowState = WindowState.Minimized;
-            mainwindow.Show();
             mainwindow.ShowInTaskbar = false;
         }
-        else
-        {
-            mainwindow.Show();
-        }
+        mainwindow.Show();
 
         foreach (string arg in e.Args)
         {
-            if (arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
+            if (!arg.StartsWith(StillImageHelper.DEVICE_PREFIX, StringComparison.InvariantCultureIgnoreCase))
             {
-                List<Process> processes = [.. StillImageHelper.GetAllGPScannerProcess()];
-                if (!processes.Any())
+                continue;
+            }
+            List<Process> processes = [.. StillImageHelper.GetAllGPScannerProcess()];
+            StillImageHelper.FirstLanuchScan = !processes.Any();
+            foreach (Process process in processes)
+            {
+                StillImageHelper.ActivateProcess(process);
+                if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX, MainWindow?.Title))
                 {
-                    StillImageHelper.FirstLanuchScan = true;
-                    return;
-                }
-
-                if (processes.Any())
-                {
-                    StillImageHelper.FirstLanuchScan = false;
-                    foreach (Process process in processes)
-                    {
-                        StillImageHelper.ActivateProcess(process);
-                        if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX, MainWindow?.Title))
-                        {
-                            Environment.Exit(0);
-                        }
-                    }
+                    Environment.Exit(0);
                 }
             }
         }
@@ -86,12 +77,13 @@ public partial class App : Application
 
     private void Current_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
     {
-        _ = Current.Dispatcher
-        .Invoke(
-            async () =>
+        _ = Dispatcher.BeginInvoke(
+            () =>
             {
-                _ = MessageBox.Show(e.Exception?.Message, MainWindow?.Title, MessageBoxButton.OK, MessageBoxImage.Warning);
-                await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", e.Exception.StackTrace);
+                string message = $"[{DateTime.Now:G}] {e.Exception.Message}";
+                string stackTrace = e.Exception.StackTrace;
+                _ = MessageBox.Show(message, MainWindow?.Title ?? "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _ = GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", $"{message}\n{stackTrace}").ConfigureAwait(false);
             });
         e.Handled = true;
     }
@@ -99,11 +91,8 @@ public partial class App : Application
     private void Window_Loaded(object sender, RoutedEventArgs e)
     {
         splashWindow?.Dispatcher.Invoke(splashWindow.Close);
-        if (splashThread?.IsAlive == true)
-        {
-            splashWindow.Dispatcher.InvokeShutdown();
-            splashThread.Join();
-        }
+        mainwindow.Topmost = true;
+        mainwindow.Topmost = false;
         mainwindow.Activate();
     }
 }

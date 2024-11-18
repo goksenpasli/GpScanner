@@ -1122,6 +1122,7 @@
                 VerticalAlignment="Center"
                 FontSize="64"
                 Foreground="Red"
+                IsHitTestVisible="False"
                 Opacity="0.5"
                 RenderTransformOrigin="0.5,0.5"
                 Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"

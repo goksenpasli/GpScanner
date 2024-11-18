@@ -2276,6 +2276,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public bool TesseractAnyLanguageSelected => TesseractViewModel?.TesseractFiles?.Count(z => z.Checked) > 0;
 
+    public bool TesseractOrientationLanguageAvailable => TesseractViewModel?.TesseractFiles?.Any(z => z.Name == "osd") == true;
+
     public TesseractViewModel TesseractViewModel
     {
         get;

@@ -3,7 +3,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -75,12 +74,20 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
                     return;
                 }
 
-                foreach (ScannedImage scannedImage in scannedImages.Where(z => z.Seçili))
+                int count = scannedImages.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    TemporaryImage = scannedImage.Resim;
-                    scannedImage.Resim = await SaveInkCanvasToImage(TemporaryImage, Ink);
-                    scannedImage.ScannedImageNotifyBrush = System.Windows.Media.Brushes.Yellow;
-                    TemporaryImage = null;
+                    if (scannedImages[i].Seçili)
+                    {
+                        TemporaryImage = scannedImages[i].Resim;
+                        scannedImages[i].Resim = await SaveInkCanvasToImage(TemporaryImage, Ink);
+                        scannedImages[i].ScannedImageNotifyBrush = System.Windows.Media.Brushes.Yellow;
+                        TemporaryImage = null;
+                        if (DataContext is TwainCtrl twainCtrl)
+                        {
+                            twainCtrl.AllRotateProgressValue = (i + 1) / (double)count;
+                        }
+                    }
                 }
             },
             parameter => TemporaryImage is not null);

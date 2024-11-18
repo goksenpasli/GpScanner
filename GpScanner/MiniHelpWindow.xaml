@@ -106,6 +106,37 @@
                         </Image>
                     </InlineUIContainer>
                 </TextBlock>
+                <TextBlock>
+                    <Run BaselineAlignment="Center" Text="Tesseract Orientation Language Available" />
+                    <InlineUIContainer BaselineAlignment="Center">
+                        <Image Width="16" Height="16">
+                            <Image.Style>
+                                <Style TargetType="Image">
+                                    <Setter Property="Source">
+                                        <Setter.Value>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Comres.dll" />
+                                                <Binding Source="10" />
+                                            </MultiBinding>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TesseractOrientationLanguageAvailable}" Value="true">
+                                            <Setter Property="Source">
+                                                <Setter.Value>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Comres.dll" />
+                                                        <Binding Source="8" />
+                                                    </MultiBinding>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Image.Style>
+                        </Image>
+                    </InlineUIContainer>
+                </TextBlock>
             </Paragraph>
         </FlowDocument>
     </FlowDocumentScrollViewer>
