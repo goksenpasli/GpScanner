@@ -26,7 +26,7 @@ public class ScannedImage : InpcBase
         }
     }
 
-    public Brush FileGroupColor
+    public SolidColorBrush FileGroupColor
     {
         get;
         set
@@ -37,7 +37,7 @@ public class ScannedImage : InpcBase
                 OnPropertyChanged(nameof(FileGroupColor));
             }
         }
-    } = Brushes.Black;
+    } = Brushes.Gray;
 
     public string FilePath
     {

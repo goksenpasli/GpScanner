@@ -4669,7 +4669,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
     {
-        Dictionary<string, Brush> colorMap = [];
+        Dictionary<string, SolidColorBrush> colorMap = [];
         Random random = new();
 
         foreach (IGrouping<string, ScannedImage> group in Scanner.Resimler?.GroupBy(z => z.FilePath))
@@ -4679,9 +4679,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 continue;
             }
 
-            if (!colorMap.TryGetValue(group.Key, out Brush solidColorBrush))
+            if (!colorMap.TryGetValue(group.Key, out SolidColorBrush solidColorBrush))
             {
-                solidColorBrush = new SolidColorBrush(Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256)));
+                solidColorBrush = new SolidColorBrush(Color.FromArgb(128, (byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256)));
                 solidColorBrush.Freeze();
                 colorMap[group.Key] = solidColorBrush;
             }
