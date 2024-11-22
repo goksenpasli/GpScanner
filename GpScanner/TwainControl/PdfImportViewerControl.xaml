@@ -240,7 +240,9 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <ListBox ItemsSource="{Binding Scanner.MergePdfFiles}"
+                            <ListBox AllowDrop="True"
+                                Drop="ListBox_Drop"
+                                ItemsSource="{Binding Scanner.MergePdfFiles}"
                                 VirtualizingPanel.CacheLengthUnit="Pixel"
                                 VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                 VirtualizingPanel.ScrollUnit="Pixel"
@@ -331,8 +333,7 @@
                     </Extensions:ResizablePanel>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
-                Command="{Binding LoadPdfExtractFile}"
+            <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
                 StaysOpen="True"
                 TopMost="False">
@@ -675,7 +676,7 @@
                     </Image>
                 </Button.Content>
             </Button>
-            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Extensions:ContentToggleButton.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -792,7 +793,7 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Extensions:ContentToggleButton ArrowVisibility="Collapsed" IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Canvas Width="16" Height="16">
                     <TextBlock Canvas.Top="0"
                         FontSize="10"
@@ -1579,7 +1580,7 @@
                             </Extensions:ResizablePanel>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <TextBlock FontFamily="Wingdings"
                             FontSize="16"
                             Text="7" />
@@ -1618,7 +1619,7 @@
                             </Border>
                         </Extensions:ContentToggleButton.OverContent>
                     </Extensions:ContentToggleButton>
-                    <Extensions:ContentToggleButton ArrowVisibility="Collapsed" DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                    <Extensions:ContentToggleButton DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                         <Image Width="16" Height="16">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

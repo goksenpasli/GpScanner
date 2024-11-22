@@ -1142,6 +1142,17 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         return pdfpages;
     }
 
+    private void ListBox_Drop(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetData(DataFormats.FileDrop) is string[] droppedfiles && droppedfiles?.Length > 0 && DataContext is TwainCtrl twainCtrl)
+        {
+            foreach (string file in from string file in droppedfiles where Viewer.IsValidPdfFile(file) select file)
+            {
+                twainCtrl.Scanner.MergePdfFiles.Add(file);
+            }
+        }
+    }
+
     private void PdfImportViewerControl_MouseDown(object sender, MouseButtonEventArgs e)
     {
         if (e.OriginalSource is not Image img || img.Parent is not ScrollViewer scrollviewer || e.LeftButton != MouseButtonState.Pressed)
