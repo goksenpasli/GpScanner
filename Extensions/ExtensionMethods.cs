@@ -276,7 +276,7 @@ public static class ExtensionMethods
         {
             return null;
         }
-        JpegBitmapEncoder encoder = new();
+        PngBitmapEncoder encoder = new();//Probably Win11 kb5046740 error will be reverted
         encoder.Frames.Add(BitmapFrame.Create(bitmapsource));
         MemoryStream memoryStream = new();
         encoder.Save(memoryStream);
