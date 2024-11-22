@@ -360,8 +360,7 @@ public static class ExtensionMethods
 
                 case Format.Jpg:
                     JpegBitmapEncoder jpgencoder = new() { QualityLevel = jpegquality };
-                    BitmapFrame item = frame;
-                    jpgencoder.Frames.Add(item);
+                    jpgencoder.Frames.Add(frame);
                     jpgencoder.Save(outStream);
                     return outStream.ToArray();
 
