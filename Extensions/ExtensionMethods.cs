@@ -255,9 +255,8 @@ public static class ExtensionMethods
             return null;
         }
 
-        MemoryStream memoryStream = new(imageData);
         BitmapImage bmp = new();
-        memoryStream.Position = 0;
+        MemoryStream memoryStream = new(imageData) { Position = 0 };
         bmp.BeginInit();
         bmp.CacheOption = BitmapCacheOption.None;
         bmp.CreateOptions = BitmapCreateOptions.IgnoreColorProfile;

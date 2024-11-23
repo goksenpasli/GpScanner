@@ -1290,7 +1290,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 double height = Math.Abs(mousemovecoord.Y - mousedowncoord.Y);
                 double coordx = x1 + scrollviewer.HorizontalOffset;
                 double coordy = y1 + scrollviewer.VerticalOffset;
-                byte[] imgdata = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+                byte[] imgdata = BitmapFrame.Create((BitmapSource)img.Source).CaptureScreen(coordx, coordy, width, height, scrollviewer);
                 if (imgdata is not null)
                 {
                     OcrProgressIndeterminate = true;

@@ -340,7 +340,7 @@ public partial class MainWindow : Window
                 ViewModel.ListBoxBorderAnimation = TwainCtrl.DragMoveStarted;
             }
 
-            if (e.PropertyName is "CameraQRCodeData" && TwainCtrl?.CameraQRCodeData is not null)
+            if (e.PropertyName is "CameraQRCodeData")
             {
                 ViewModel.AddBarcodeToList(TwainCtrl?.Scanner?.BarcodeContent);
             }

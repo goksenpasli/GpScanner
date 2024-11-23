@@ -23,7 +23,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         Unloaded += CameraUserControl_Unloaded;
         PropertyChanged += CameraUserControl_PropertyChanged;
 
-        KameradanResimYükle = new RelayCommand<object>(parameter => ResimData = CameraEncodeBitmapImage().ToArray(), parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
+        KameradanResimYükle = new RelayCommand<object>(parameter => ResimData = CameraEncodeBitmapImage(), parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
 
         Durdur = new RelayCommand<object>(parameter => Device?.Stop(), parameter => SeçiliKamera is not null && Device?.IsRunning == true);
 
@@ -35,7 +35,10 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", AddExtension = true, Title = "Kaydet" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    File.WriteAllBytes(saveFileDialog.FileName, CameraEncodeBitmapImage().ToArray());
+                    using FileStream fileStream = new(saveFileDialog.FileName, FileMode.Create);
+                    JpegBitmapEncoder encoder = new();
+                    encoder.Frames.Add(CameraEncodeBitmapImage());
+                    encoder.Save(fileStream);
                 }
             },
             parameter => SeçiliKamera is not null && Device?.BitmapSource is not null);
@@ -93,7 +96,7 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     public ICommand Oynat { get; }
 
-    public byte[] ResimData
+    public BitmapFrame ResimData
     {
         get;
 
@@ -135,14 +138,11 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public MemoryStream CameraEncodeBitmapImage()
+    public BitmapFrame CameraEncodeBitmapImage()
     {
-        using MemoryStream stream = new();
-        JpegBitmapEncoder encoder = new();
-        encoder.Frames.Add(BitmapFrame.Create(new TransformedBitmap(Device?.BitmapSource, new RotateTransform(Rotation))));
-        encoder.QualityLevel = 90;
-        encoder?.Save(stream);
-        return stream;
+        BitmapFrame bitmapframe = BitmapFrame.Create(new TransformedBitmap(Device?.BitmapSource, new RotateTransform(Rotation)));
+        bitmapframe?.Freeze();
+        return bitmapframe;
     }
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

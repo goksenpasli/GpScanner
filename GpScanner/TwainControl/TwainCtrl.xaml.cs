@@ -1426,7 +1426,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Settings.Default.ImgLoadResolution);
                 if (ms is not null)
                 {
-                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
+                    BitmapFrame bitmapFrame = ms.GenerateBitmapFrameFromMemoryStream();
                     bitmapFrame?.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     Scanner?.Resimler.Add(scannedImage);
@@ -1706,7 +1706,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 byte[] filedata = await Viewer.ReadAllFileAsync(pdfViewer.PdfFilePath);
                 using MemoryStream ms = await Viewer.ConvertToImgStreamAsync(filedata, PdfImportViewer.PdfViewer.Sayfa, Settings.Default.ImgLoadResolution);
-                BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
+                BitmapFrame bitmapFrame = ms.GenerateBitmapFrameFromMemoryStream();
                 filedata = null;
                 using PdfDocument document = bitmapFrame.MedianFilterBitmap(PdfMedianValue).GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution);
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("PAGENUMBER")} {pdfViewer.Sayfa}.pdf" };
@@ -2268,7 +2268,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is MediaViewer mediaViewer && mediaViewer.FindName("grid") is Grid grid)
                 {
                     using MemoryStream ms = new(grid.ToRenderTargetBitmap().ToTiffJpegByteArray(Format.Jpg));
-                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
+                    BitmapFrame bitmapFrame = ms.GenerateBitmapFrameFromMemoryStream();
                     bitmapFrame.Freeze();
                     Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame });
                 }
@@ -3990,7 +3990,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 case PdfFileHandler:
                     byte[] fileData = await Viewer.ReadAllFileAsync(filename);
                     ms = await fileHandler.ConvertToImageStreamAsync(fileData, i);
-                    bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
+                    bitmapFrame = ms.GenerateBitmapFrameFromMemoryStream();
                     break;
 
                 case WebpFileHandler:
@@ -4094,10 +4094,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         if (e.PropertyName is "ResimData" && cameraUserControl.ResimData is not null)
         {
-            using MemoryStream ms = new(cameraUserControl.ResimData);
-            BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
-            bitmapFrame.Freeze();
-            Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame });
+            Scanner?.Resimler?.Add(new ScannedImage { Resim = cameraUserControl.ResimData });
         }
 
         if (e.PropertyName is not "DetectQRCode")
@@ -4111,9 +4108,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             QrCode.QrCode qrcode = new();
             CameraQrCodeTimer.Tick += (s, f2) =>
                                       {
-                                          CameraQRCodeData = cameraUserControl.CameraEncodeBitmapImage().ToArray();
-                                          Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(CameraQRCodeData);
-                                          OnPropertyChanged(nameof(CameraQRCodeData));
+                                          Scanner.BarcodeContent = qrcode.GetImageBarcodeResult(cameraUserControl.CameraEncodeBitmapImage());
+                                          if (!string.IsNullOrWhiteSpace(Scanner.BarcodeContent))
+                                          {
+                                              OnPropertyChanged(nameof(CameraQRCodeData));
+                                          }
                                       };
             CameraQrCodeTimer?.Start();
             return;
@@ -4485,12 +4484,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             height = Math.Abs(y2 - y1);
             double coordx = x1 + scrollviewer.HorizontalOffset;
             double coordy = y1 + scrollviewer.VerticalOffset;
-            ImgData = BitmapMethods.CaptureScreen(coordx, coordy, width, height, scrollviewer, BitmapFrame.Create((BitmapSource)img.Source));
+            ImgData = BitmapFrame.Create((BitmapSource)img.Source).CaptureScreen(coordx, coordy, width, height, scrollviewer);
 
             if (Keyboard.Modifiers == ModifierKeys.Shift && ImgData is not null)
             {
                 using MemoryStream ms = new(ImgData);
-                BitmapFrame bitmapframe = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
+                BitmapFrame bitmapframe = ms.GenerateBitmapFrameFromMemoryStream();
                 bitmapframe.Freeze();
                 ScannedImage item = new() { Resim = bitmapframe };
                 Scanner.Resimler.Add(item);

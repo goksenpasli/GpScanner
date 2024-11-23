@@ -57,7 +57,7 @@ public class DocumentViewerModel : InpcBase
                 if (parameter is ImageSource imageSource)
                 {
                     using MemoryStream ms = new(imageSource.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg));
-                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
+                    BitmapFrame bitmapFrame = ms.GenerateBitmapFrameFromMemoryStream();
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, FilePath = FilePath, Resim = bitmapFrame };
                     scannerService.GetScanner()?.Resimler?.Add(scannedImage);

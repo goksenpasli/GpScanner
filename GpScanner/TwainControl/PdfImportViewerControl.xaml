@@ -281,7 +281,8 @@
                             </ListBox>
                             <CheckBox Grid.Row="1"
                                 Content="{local:Loc ADDFIRST}"
-                                IsChecked="{Binding MergePdfFileToFirst}" />
+                                IsChecked="{Binding MergePdfFileToFirst}"
+                                IsEnabled="{Binding Source={x:Reference MergePdf}, Path=IsEnabled}" />
                             <UniformGrid Grid.Row="2"
                                 Columns="3"
                                 IsEnabled="{Binding PdfToolBarControlIsEnabled}">
@@ -293,7 +294,7 @@
                                         <TextBlock VerticalAlignment="Center" Text="{local:Loc FILE}" />
                                     </StackPanel>
                                 </Button>
-                                <Button Command="{Binding MergePdfListToCurrentFile}">
+                                <Button x:Name="MergePdf" Command="{Binding MergePdfListToCurrentFile}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />

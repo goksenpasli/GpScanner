@@ -84,7 +84,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 {
                     byte[] filedata = await ReadAllFileAsync(PdfFilePath);
                     using MemoryStream ms = await ConvertToImgStreamAsync(filedata, sayfa, Settings.Default.ImgLoadResolution);
-                    BitmapFrame bitmapFrame = BitmapMethods.GenerateImageDocumentBitmapFrame(ms);
+                    BitmapFrame bitmapFrame = ms.GenerateBitmapFrameFromMemoryStream();
                     bitmapFrame.Freeze();
                     ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                     twainCtrl?.Scanner?.Resimler?.Add(scannedImage);
