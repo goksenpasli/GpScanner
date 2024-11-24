@@ -37,6 +37,7 @@
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FolderPathToIconConverter x:Key="FolderPathToIconConverter" />
             <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameConverter" />
+            <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameThumbConverter" DecodeHeight="{Binding Mode=OneWay, Source={x:Static SystemParameters.PrimaryScreenWidth}}" />
             <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Image x:Key="TimeIcon"
@@ -1860,7 +1861,7 @@
                                                                     <TextBlock.ToolTip>
                                                                         <Image Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
                                                                             Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
-                                                                            Source="{Binding Resim, Mode=OneWay}" />
+                                                                            Source="{Binding Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameThumbConverter}}" />
                                                                     </TextBlock.ToolTip>
                                                                 </TextBlock>
                                                             </Canvas>

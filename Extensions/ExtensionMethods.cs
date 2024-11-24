@@ -269,7 +269,7 @@ public static class ExtensionMethods
         return bmp;
     }
 
-    public static BitmapImage ToBitmapImage(this BitmapSource bitmapsource, double decodeheight = 0)
+    public static BitmapImage ToBitmapImage(this BitmapSource bitmapsource, int decodeheight = 0)
     {
         if (bitmapsource is null)
         {
@@ -279,14 +279,14 @@ public static class ExtensionMethods
         BitmapImage bitmapImage = new();
         bitmapImage.BeginInit();
         bitmapImage.CacheOption = BitmapCacheOption.None;
-        bitmapImage.DecodePixelHeight = (int)decodeheight;
+        bitmapImage.DecodePixelHeight = decodeheight;
         bitmapImage.StreamSource = memoryStream;
         bitmapImage.EndInit();
         bitmapImage.Freeze();
         return bitmapImage;
     }
 
-    public static BitmapImage ToBitmapImage(this Image bitmap, ImageFormat format, double decodeheight = 0)
+    public static BitmapImage ToBitmapImage(this Image bitmap, ImageFormat format, int decodeheight = 0)
     {
         if (bitmap is null)
         {
@@ -298,7 +298,7 @@ public static class ExtensionMethods
         memoryStream.Position = 0;
         BitmapImage image = new();
         image.BeginInit();
-        image.DecodePixelHeight = (int)decodeheight;
+        image.DecodePixelHeight = decodeheight;
         image.CacheOption = BitmapCacheOption.None;
         image.StreamSource = memoryStream;
         image.EndInit();
