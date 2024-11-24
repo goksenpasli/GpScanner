@@ -23,6 +23,43 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+            <Extensions:ButtonedTextBox IsEnabled="{Binding SelectedTable, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
+                OpenButtonVisibility="Collapsed"
+                Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="{twaincontrol:Loc TEXT}" />
+            <DataGrid Grid.Row="1"
+                d:ItemsSource="{d:SampleData}"
+                CanUserAddRows="False"
+                CanUserDeleteRows="False"
+                ContextMenuService.IsEnabled="{Binding SelectedTable, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
+                EnableColumnVirtualization="True"
+                IsReadOnly="True"
+                ItemsSource="{Binding SelectedTable}"
+                SelectionMode="Extended"
+                SelectionUnit="FullRow"
+                VirtualizingPanel.CacheLengthUnit="Pixel"
+                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                VirtualizingPanel.ScrollUnit="Pixel"
+                VirtualizingPanel.VirtualizationMode="Recycling">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding CopyRows}"
+                            CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
+                            Header="{twaincontrol:Loc COPY}">
+                            <MenuItem.Icon>
+                                <Image Width="16" Height="16">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="134" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+            </DataGrid>
             <ListBox x:Name="LbSayfalar"
                 Grid.Row="2"
                 d:ItemsSource="{d:SampleData}"
@@ -67,43 +104,6 @@
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
             </ListBox>
-            <Extensions:ButtonedTextBox
-                IsEnabled="{Binding SelectedTable, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
-                OpenButtonVisibility="Collapsed"
-                Text="{Binding Search, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                Watermark="{twaincontrol:Loc TEXT}" />
-            <DataGrid Grid.Row="1"
-                d:ItemsSource="{d:SampleData}"
-                CanUserAddRows="False"
-                CanUserDeleteRows="False"
-                EnableColumnVirtualization="True"
-                IsReadOnly="True"
-                ItemsSource="{Binding SelectedTable}"
-                SelectionMode="Extended"
-                SelectionUnit="FullRow"
-                VirtualizingPanel.CacheLengthUnit="Pixel"
-                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                VirtualizingPanel.ScrollUnit="Pixel"
-                VirtualizingPanel.VirtualizationMode="Recycling">
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Command="{Binding CopyRows}"
-                            CommandParameter="{Binding PlacementTarget.SelectedItems, RelativeSource={RelativeSource AncestorType=ContextMenu}}"
-                            Header="{twaincontrol:Loc COPY}">
-                            <MenuItem.Icon>
-                                <Image Width="16" Height="16">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="134" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
-            </DataGrid>
             <ProgressBar Grid.Row="3"
                 Height="3"
                 Value="{Binding Progress, Mode=OneWay}" />

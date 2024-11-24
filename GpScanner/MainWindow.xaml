@@ -481,7 +481,6 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
                         <ScrollViewer HorizontalScrollBarVisibility="Auto"
@@ -623,6 +622,7 @@
                                     </UniformGrid>
                                     <ListBox VerticalContentAlignment="Center"
                                         Background="{StaticResource BorderBackground}"
+                                        BorderBrush="{x:Null}"
                                         SelectedValue="{Binding PdfAllPageOrientation}"
                                         SelectedValuePath="Tag">
                                         <ListBox.ItemsPanel>
@@ -739,6 +739,7 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="23*" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="31*" />
                             </Grid.RowDefinitions>
                             <RepeatButton Grid.RowSpan="2"
@@ -811,8 +812,17 @@
                                 Content="è"
                                 FontFamily="Wingdings"
                                 FontSize="16" />
+                            <ProgressBar Grid.Row="2"
+                                Grid.ColumnSpan="7"
+                                Height="3"
+                                Background="{StaticResource BorderBackground}"
+                                BorderBrush="{StaticResource BorderBackground}"
+                                Foreground="{StaticResource GroupBoxBackGround}"
+                                IsIndeterminate="{Binding ZipProgressIndeterminate}"
+                                Maximum="1"
+                                Value="{Binding ZipProgress}" />
                             <Extensions:ButtonedTextBox x:Name="TbSearch"
-                                Grid.Row="2"
+                                Grid.Row="3"
                                 Grid.Column="0"
                                 Grid.ColumnSpan="7"
                                 VerticalContentAlignment="Center"
@@ -824,16 +834,8 @@
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"
                                 Watermark="{twainctrl:Loc DOCUMENT}" />
                         </Grid>
-                        <ProgressBar Grid.Row="3"
-                            Height="3"
-                            Background="{StaticResource BorderBackground}"
-                            BorderBrush="{StaticResource BorderBackground}"
-                            Foreground="{StaticResource GroupBoxBackGround}"
-                            IsIndeterminate="{Binding ZipProgressIndeterminate}"
-                            Maximum="1"
-                            Value="{Binding ZipProgress}" />
                         <ListBox x:Name="LbDoc"
-                            Grid.Row="4"
+                            Grid.Row="3"
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             Extensions:ScrollDragDrop.ScrollOnDragDrop="True"

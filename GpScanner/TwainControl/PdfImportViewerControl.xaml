@@ -1295,7 +1295,9 @@
                                     <TextBlock VerticalAlignment="Center" Text="{Binding Mode=OneWay, StringFormat=\{0:P0\}}" />
                                     <Rectangle Width="16" Height="16">
                                         <Rectangle.Fill>
-                                            <SolidColorBrush Opacity="{Binding Mode=OneWay}" Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                            <SolidColorBrush ice:Freeze="True"
+                                                Opacity="{Binding Mode=OneWay}"
+                                                Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </Rectangle.Fill>
                                     </Rectangle>
                                 </StackPanel>
@@ -1336,10 +1338,10 @@
                                 Height="16"
                                 d:Stroke="Black">
                                 <Ellipse.Stroke>
-                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                    <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Ellipse.Stroke>
                                 <Ellipse.Fill>
-                                    <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                    <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Ellipse.Fill>
                             </Ellipse>
                         </ToggleButton.Content>
@@ -1352,7 +1354,7 @@
                                 Y1="0"
                                 Y2="16">
                                 <Line.Stroke>
-                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                    <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Line.Stroke>
                             </Line>
                         </ToggleButton.Content>
@@ -1365,7 +1367,7 @@
                                 Y1="0"
                                 Y2="16">
                                 <Line.Stroke>
-                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                    <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Line.Stroke>
                             </Line>
                         </ToggleButton.Content>
@@ -1376,10 +1378,10 @@
                                 Height="16"
                                 d:Stroke="Black">
                                 <Rectangle.Stroke>
-                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                    <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Rectangle.Stroke>
                                 <Rectangle.Fill>
-                                    <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                    <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Rectangle.Fill>
                             </Rectangle>
                         </ToggleButton.Content>
@@ -1392,10 +1394,10 @@
                                 RadiusX="3"
                                 RadiusY="3">
                                 <Rectangle.Stroke>
-                                    <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                    <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Rectangle.Stroke>
                                 <Rectangle.Fill>
-                                    <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                    <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                 </Rectangle.Fill>
                             </Rectangle>
                         </ToggleButton.Content>
@@ -1416,7 +1418,7 @@
                                         Data="M 10.506667,247.04 L 88.906667,120.64 L 150.506667,225.44 L 274.506667,74.24"
                                         StrokeThickness="20">
                                         <Path.Stroke>
-                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                            <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </Path.Stroke>
                                     </Path>
                                 </Viewbox>
@@ -1438,7 +1440,7 @@
                                         Data="M 10,100 C 100,100 200,200 200,200"
                                         StrokeThickness="20">
                                         <Path.Stroke>
-                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                            <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </Path.Stroke>
                                     </Path>
                                 </Viewbox>
@@ -1461,7 +1463,7 @@
                                         Data="M 10,100 C 100,0 200,200 300,100"
                                         StrokeThickness="20">
                                         <Path.Stroke>
-                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                            <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </Path.Stroke>
                                     </Path>
                                 </Viewbox>
@@ -1484,10 +1486,10 @@
                                         Data="F1 M 19.6015,19.6015L 21.6741,6.51512L 9.86878,0.499996L 0.5,9.86878L 6.51513,21.6741L 19.6015,19.6015 Z "
                                         StrokeThickness="1">
                                         <Path.Stroke>
-                                            <SolidColorBrush Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                            <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </Path.Stroke>
                                         <Path.Fill>
-                                            <SolidColorBrush Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                            <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectFillColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </Path.Fill>
                                     </Path>
                                 </Viewbox>
@@ -1596,7 +1598,7 @@
                                         BorderThickness="2"
                                         Text="{Binding Text}">
                                         <TextBox.BorderBrush>
-                                            <SolidColorBrush Color="{Binding GraphObjectFillColor, Converter={StaticResource XKnownColorToBrushConverter}}" />
+                                            <SolidColorBrush ice:Freeze="True" Color="{Binding GraphObjectFillColor, Converter={StaticResource XKnownColorToBrushConverter}}" />
                                         </TextBox.BorderBrush>
                                     </TextBox>
                                     <Extensions:NumericUpDown Width="80"
