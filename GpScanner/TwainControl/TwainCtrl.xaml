@@ -29,6 +29,7 @@
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
             <Converter:EnumOrientationToConvertedLanguageTextConverter x:Key="EnumOrientationToConvertedLanguageTextConverter" />
             <Converter:CentimetersToInchesConverter x:Key="CentimetersToInchesConverter" />
+            <Converter:DivideConverter x:Key="DivideConverter" />
             <Converter:FileDateContextMenuConverter x:Key="FileDateContextMenuConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="ListFilePathToIconConverter" IconSize="extraLarge" />
@@ -1850,6 +1851,18 @@
                                                                     FontWeight="Bold"
                                                                     Text="{Binding Index, Mode=OneWay}"
                                                                     Visibility="{Binding DocumentNumberVisible, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static properties:Settings.Default}}" />
+                                                                <TextBlock Canvas.Left="0"
+                                                                    Canvas.Top="0"
+                                                                    FontFamily="Webdings"
+                                                                    FontSize="20"
+                                                                    Foreground="Green"
+                                                                    Text="N">
+                                                                    <TextBlock.ToolTip>
+                                                                        <Image Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
+                                                                            Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
+                                                                            Source="{Binding Resim, Mode=OneWay}" />
+                                                                    </TextBlock.ToolTip>
+                                                                </TextBlock>
                                                             </Canvas>
                                                         </StackPanel>
                                                     </ControlTemplate>
