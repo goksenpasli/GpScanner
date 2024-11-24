@@ -18,6 +18,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <converter:ContributionOptimalViewportConverter x:Key="ContributionOptimalViewportConverter" />
+        <converter:ContributionDataToGraphConverter x:Key="ContributionDataToGraphConverter" />
         <Extensions:ContributionToColorConverter x:Key="ContributionToColorConverter" />
     </UserControl.Resources>
     <GroupBox>
@@ -62,176 +63,197 @@
                 </UniformGrid>
             </StackPanel>
         </GroupBox.Header>
-        <Extensions:ContributionControl Contributions="{Binding ContributionData}" SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}">
-            <Extensions:ContributionControl.Template>
-                <ControlTemplate TargetType="{x:Type Extensions:ContributionControl}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0"
-                            Grid.Column="0"
-                            VerticalAlignment="Center"
-                            FontSize="9">
-                            <Run Text="{Binding MonthDateTotalContribution, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <sys:String>/</sys:String>
-                            <Run Text="{Binding MonthTotalContribution, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                            <Hyperlink Command="{Binding ResetDate, RelativeSource={RelativeSource Mode=TemplatedParent}}" TextDecorations="None">
-                                <Run FontWeight="Bold" Text="X" />
-                            </Hyperlink>
-                        </TextBlock>
-                        <ListBox Grid.Row="0"
-                            Grid.Column="1"
-                            FontSize="9"
-                            ItemsSource="{Binding Months, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                            SelectedItem="{Binding SelectedMonth, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="12" Rows="1" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Padding" Value="0" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                        </ListBox>
-                        <ListBox Grid.Row="1"
-                            Grid.Column="0"
-                            FontSize="9"
-                            ItemsSource="{Binding Days, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                            SelectedItem="{Binding SelectedDay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="1" Rows="7" />
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Padding" Value="0" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                        </ListBox>
-                        <ListBox Grid.Row="1"
-                            Grid.Column="1"
-                            HorizontalContentAlignment="Stretch"
-                            VerticalContentAlignment="Stretch"
-                            d:ItemsSource="{d:SampleData ItemCount=15}"
-                            ItemsSource="{Binding Contributions, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                            ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                            ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                            SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                            VirtualizingPanel.CacheLengthUnit="Pixel"
-                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                            VirtualizingPanel.ScrollUnit="Pixel"
-                            VirtualizingPanel.VirtualizationMode="Standard">
-                            <ListBox.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="{Binding ContributionColumnCount, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContributionControl}}}" Rows="{Binding ContributionRowCount, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContributionControl}}}">
-                                        <UniformGrid.LayoutTransform>
-                                            <TransformGroup>
-                                                <RotateTransform Angle="90" />
-                                                <ScaleTransform ScaleX="-1" />
-                                            </TransformGroup>
-                                        </UniformGrid.LayoutTransform>
-                                    </UniformGrid>
-                                </ItemsPanelTemplate>
-                            </ListBox.ItemsPanel>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Rectangle d:Stroke="Black"
-                                        Stroke="{Binding Stroke}"
-                                        ToolTipService.InitialShowDelay="100">
-                                        <Rectangle.Fill>
-                                            <MultiBinding Converter="{StaticResource ContributionToColorConverter}">
-                                                <Binding Path="Count" />
-                                                <Binding Path="MaxContribution" RelativeSource="{RelativeSource AncestorType={x:Type Extensions:ContributionControl}}" />
-                                                <Binding Path="ContributionColor" RelativeSource="{RelativeSource AncestorType={x:Type Extensions:ContributionControl}}" />
-                                                <Binding Path="ZeroContributionColor" RelativeSource="{RelativeSource AncestorType={x:Type Extensions:ContributionControl}}" />
-                                            </MultiBinding>
-                                        </Rectangle.Fill>
-                                        <Rectangle.Style>
-                                            <Style TargetType="{x:Type Rectangle}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Count}" Value="0">
-                                                        <Setter Property="ToolTipService.IsEnabled" Value="False" />
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Rectangle.Style>
-                                        <Rectangle.ToolTip>
-                                            <ToolTip>
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto" />
-                                                        <RowDefinition />
-                                                    </Grid.RowDefinitions>
-                                                    <TextBlock><Run FontWeight="Bold" Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" /><LineBreak /><Run Text="{Binding Count}" /></TextBlock>
-                                                    <ListBox Grid.Row="1"
-                                                        Width="{Binding ContributionListBoxSize, Mode=OneWay, Source={x:Static Properties:Settings.Default}}"
-                                                        Height="{Binding ContributionListBoxSize, Mode=OneWay, Source={x:Static Properties:Settings.Default}}"
-                                                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                                        ScrollViewer.VerticalScrollBarVisibility="Disabled"
-                                                        VirtualizingPanel.CacheLengthUnit="Pixel"
-                                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                                        VirtualizingPanel.ScrollUnit="Pixel"
-                                                        VirtualizingPanel.VirtualizationMode="Standard">
-                                                        <ListBox.ItemsSource>
-                                                            <MultiBinding Converter="{StaticResource ContributionOptimalViewportConverter}">
-                                                                <Binding Path="Name" />
-                                                                <Binding Path="DataContext.ContributionPreviewSize" Source="{x:Reference UserControl}" />
-                                                            </MultiBinding>
-                                                        </ListBox.ItemsSource>
-                                                        <ListBox.Style>
-                                                            <Style TargetType="{x:Type ListBox}">
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static Properties:Settings.Default}}" Value="true">
-                                                                        <Setter Property="ItemTemplateSelector" Value="{DynamicResource ContributionViewerSelector}" />
-                                                                        <Setter Property="ItemsPanel">
-                                                                            <Setter.Value>
-                                                                                <ItemsPanelTemplate>
-                                                                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
-                                                                                </ItemsPanelTemplate>
-                                                                            </Setter.Value>
-                                                                        </Setter>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static Properties:Settings.Default}}" Value="false">
-                                                                        <Setter Property="ItemTemplate" Value="{StaticResource ContributionTextTemplate}" />
-                                                                        <Setter Property="ItemsPanel">
-                                                                            <Setter.Value>
-                                                                                <ItemsPanelTemplate>
-                                                                                    <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                                                                        ItemSize="250,18"
-                                                                                        SpacingMode="None" />
-                                                                                </ItemsPanelTemplate>
-                                                                            </Setter.Value>
-                                                                        </Setter>
-                                                                    </DataTrigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </ListBox.Style>
-                                                    </ListBox>
-                                                </Grid>
-                                            </ToolTip>
-                                        </Rectangle.ToolTip>
-                                    </Rectangle>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                            <ListBox.ItemContainerStyle>
-                                <Style TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Margin" Value="0" />
-                                    <Setter Property="Padding" Value="0" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                        </ListBox>
-                    </Grid>
-                </ControlTemplate>
-            </Extensions:ContributionControl.Template>
-        </Extensions:ContributionControl>
+        <Grid>
+            <Extensions:GraphControl Margin="0,10,0,0"
+                ContextMenuVisibility="Collapsed"
+                GraphContentVisibility="Collapsed"
+                IsContextMenuEnabled="False"
+                LineColor="Blue"
+                LineGraphVisibility="Visible"
+                LineThickness="1"
+                Opacity="0.4"
+                Series="{Binding ContributionData, Mode=OneWay, Converter={StaticResource ContributionDataToGraphConverter}}"
+                SeriesTextVisibility="Collapsed"
+                ValueTextVisibility="Collapsed" />
+            <Extensions:ContributionControl Contributions="{Binding ContributionData}" SelectedContribution="{Binding SelectedContribution, Mode=TwoWay}">
+                <Extensions:ContributionControl.Template>
+                    <ControlTemplate TargetType="{x:Type Extensions:ContributionControl}">
+                        <Grid Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Background="Transparent"
+                                FontSize="9">
+                                <Run Text="{Binding MonthDateTotalContribution, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <sys:String>/</sys:String>
+                                <Run Text="{Binding MonthTotalContribution, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                <Hyperlink Command="{Binding ResetDate, RelativeSource={RelativeSource Mode=TemplatedParent}}" TextDecorations="None">
+                                    <Run FontWeight="Bold" Text="X" />
+                                </Hyperlink>
+                            </TextBlock>
+                            <ListBox Grid.Row="0"
+                                Grid.Column="1"
+                                Background="Transparent"
+                                BorderBrush="{x:Null}"
+                                FontSize="9"
+                                ItemsSource="{Binding Months, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                SelectedItem="{Binding SelectedMonth, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="12" Rows="1" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Padding" Value="0" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                            <ListBox Grid.Row="1"
+                                Grid.Column="0"
+                                Background="Transparent"
+                                BorderBrush="{x:Null}"
+                                FontSize="9"
+                                ItemsSource="{Binding Days, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                SelectedItem="{Binding SelectedDay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="1" Rows="7" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Padding" Value="0" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                            <ListBox Grid.Row="1"
+                                Grid.Column="1"
+                                HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                d:ItemsSource="{d:SampleData ItemCount=15}"
+                                Background="Transparent"
+                                BorderBrush="{x:Null}"
+                                ItemsSource="{Binding Contributions, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                Opacity="0.9"
+                                ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                                ScrollViewer.VerticalScrollBarVisibility="Hidden"
+                                SelectedItem="{Binding SelectedContribution, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                VirtualizingPanel.CacheLengthUnit="Pixel"
+                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                VirtualizingPanel.ScrollUnit="Pixel"
+                                VirtualizingPanel.VirtualizationMode="Standard">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="{Binding ContributionColumnCount, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContributionControl}}}" Rows="{Binding ContributionRowCount, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContributionControl}}}">
+                                            <UniformGrid.LayoutTransform>
+                                                <TransformGroup>
+                                                    <RotateTransform Angle="90" />
+                                                    <ScaleTransform ScaleX="-1" />
+                                                </TransformGroup>
+                                            </UniformGrid.LayoutTransform>
+                                        </UniformGrid>
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Rectangle d:Stroke="Black"
+                                            Stroke="{Binding Stroke}"
+                                            ToolTipService.InitialShowDelay="100">
+                                            <Rectangle.Fill>
+                                                <MultiBinding Converter="{StaticResource ContributionToColorConverter}">
+                                                    <Binding Path="Count" />
+                                                    <Binding Path="MaxContribution" RelativeSource="{RelativeSource AncestorType={x:Type Extensions:ContributionControl}}" />
+                                                    <Binding Path="ContributionColor" RelativeSource="{RelativeSource AncestorType={x:Type Extensions:ContributionControl}}" />
+                                                    <Binding Path="ZeroContributionColor" RelativeSource="{RelativeSource AncestorType={x:Type Extensions:ContributionControl}}" />
+                                                </MultiBinding>
+                                            </Rectangle.Fill>
+                                            <Rectangle.Style>
+                                                <Style TargetType="{x:Type Rectangle}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Count}" Value="0">
+                                                            <Setter Property="ToolTipService.IsEnabled" Value="False" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Rectangle.Style>
+                                            <Rectangle.ToolTip>
+                                                <ToolTip>
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto" />
+                                                            <RowDefinition />
+                                                        </Grid.RowDefinitions>
+                                                        <TextBlock><Run FontWeight="Bold" Text="{Binding ContrubutionDate, StringFormat=\{0:d\}}" /><LineBreak /><Run Text="{Binding Count}" /></TextBlock>
+                                                        <ListBox Grid.Row="1"
+                                                            Width="{Binding ContributionListBoxSize, Mode=OneWay, Source={x:Static Properties:Settings.Default}}"
+                                                            Height="{Binding ContributionListBoxSize, Mode=OneWay, Source={x:Static Properties:Settings.Default}}"
+                                                            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                                            ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                                            VirtualizingPanel.CacheLengthUnit="Pixel"
+                                                            VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                                            VirtualizingPanel.ScrollUnit="Pixel"
+                                                            VirtualizingPanel.VirtualizationMode="Standard">
+                                                            <ListBox.ItemsSource>
+                                                                <MultiBinding Converter="{StaticResource ContributionOptimalViewportConverter}">
+                                                                    <Binding Path="Name" />
+                                                                    <Binding Path="DataContext.ContributionPreviewSize" Source="{x:Reference UserControl}" />
+                                                                </MultiBinding>
+                                                            </ListBox.ItemsSource>
+                                                            <ListBox.Style>
+                                                                <Style TargetType="{x:Type ListBox}">
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static Properties:Settings.Default}}" Value="true">
+                                                                            <Setter Property="ItemTemplateSelector" Value="{DynamicResource ContributionViewerSelector}" />
+                                                                            <Setter Property="ItemsPanel">
+                                                                                <Setter.Value>
+                                                                                    <ItemsPanelTemplate>
+                                                                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False" SpacingMode="None" />
+                                                                                    </ItemsPanelTemplate>
+                                                                                </Setter.Value>
+                                                                            </Setter>
+                                                                        </DataTrigger>
+                                                                        <DataTrigger Binding="{Binding ContributionIsImageMode, Mode=OneWay, Source={x:Static Properties:Settings.Default}}" Value="false">
+                                                                            <Setter Property="ItemTemplate" Value="{StaticResource ContributionTextTemplate}" />
+                                                                            <Setter Property="ItemsPanel">
+                                                                                <Setter.Value>
+                                                                                    <ItemsPanelTemplate>
+                                                                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                                                            ItemSize="250,18"
+                                                                                            SpacingMode="None" />
+                                                                                    </ItemsPanelTemplate>
+                                                                                </Setter.Value>
+                                                                            </Setter>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </ListBox.Style>
+                                                        </ListBox>
+                                                    </Grid>
+                                                </ToolTip>
+                                            </Rectangle.ToolTip>
+                                        </Rectangle>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="{x:Type ListBoxItem}">
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="Padding" Value="0" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </Grid>
+                    </ControlTemplate>
+                </Extensions:ContributionControl.Template>
+            </Extensions:ContributionControl>
+        </Grid>
     </GroupBox>
 </UserControl>

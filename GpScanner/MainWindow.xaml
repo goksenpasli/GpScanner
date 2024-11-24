@@ -730,54 +730,48 @@
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
-                            <RepeatButton twainctrl:Policy.PolicyName="DateBack"
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="23*" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="31*" />
+                            </Grid.RowDefinitions>
+                            <RepeatButton Grid.RowSpan="2"
+                                twainctrl:Policy.PolicyName="DateBack"
                                 Command="{Binding DateBack}"
                                 Content="ç"
                                 FontFamily="Wingdings"
                                 FontSize="16" />
-                            <StackPanel Grid.Column="1">
-                                <StackPanel Orientation="Horizontal">
-                                    <RepeatButton Command="{Binding StartDateBack}"
-                                        Content="ç"
-                                        FontFamily="Wingdings"
-                                        FontSize="16" />
-                                    <DatePicker twainctrl:Policy.PolicyName="BaşlangıçTarihi"
-                                        DisplayDateEnd="{Binding BitişTarihi}"
-                                        Language="{Binding CalendarLang}"
-                                        SelectedDate="{Binding BaşlangıçTarihi}" />
-                                    <RepeatButton Command="{Binding StartDateForward}"
-                                        Content="è"
-                                        FontFamily="Wingdings"
-                                        FontSize="16" />
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <RepeatButton Command="{Binding EndDateBack}"
-                                        Content="ç"
-                                        FontFamily="Wingdings"
-                                        FontSize="16" />
-                                    <DatePicker twainctrl:Policy.PolicyName="BitişTarihi"
-                                        DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
-                                        DisplayDateStart="{Binding BaşlangıçTarihi}"
-                                        Language="{Binding CalendarLang}"
-                                        SelectedDate="{Binding BitişTarihi}" />
-                                    <RepeatButton Command="{Binding EndDateForward}"
-                                        Content="è"
-                                        FontFamily="Wingdings"
-                                        FontSize="16" />
-                                </StackPanel>
-                            </StackPanel>
-                            <RepeatButton Grid.Column="2"
+                            <RepeatButton Grid.Column="1"
+                                Command="{Binding StartDateBack}"
+                                Content="ç"
+                                FontFamily="Wingdings"
+                                FontSize="16" />
+                            <DatePicker Grid.Column="2"
+                                twainctrl:Policy.PolicyName="BaşlangıçTarihi"
+                                DisplayDateEnd="{Binding BitişTarihi}"
+                                Language="{Binding CalendarLang}"
+                                SelectedDate="{Binding BaşlangıçTarihi}" />
+                            <RepeatButton Grid.Column="3"
+                                Command="{Binding StartDateForward}"
+                                Content="è"
+                                FontFamily="Wingdings"
+                                FontSize="16" />
+                            <RepeatButton Grid.RowSpan="2"
+                                Grid.Column="4"
                                 twainctrl:Policy.PolicyName="DateForward"
                                 Command="{Binding DateForward}"
                                 Content="è"
                                 FontFamily="Wingdings"
                                 FontSize="16" />
-                            <Button Grid.Column="3" Command="{Binding SetDateToday}">
+                            <Button Grid.RowSpan="2"
+                                Grid.Column="5"
+                                Command="{Binding SetDateToday}">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -787,7 +781,8 @@
                                     </Image.Source>
                                 </Image>
                             </Button>
-                            <Extensions:ContentToggleButton Grid.Column="4"
+                            <Extensions:ContentToggleButton Grid.RowSpan="2"
+                                Grid.Column="6"
                                 Command="{Binding LoadGroupFilesMonth}"
                                 StaysOpen="True"
                                 TopMost="False">
@@ -797,16 +792,35 @@
                                     </Border>
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
+                            <RepeatButton Grid.Row="1"
+                                Grid.Column="1"
+                                Command="{Binding EndDateBack}"
+                                Content="ç"
+                                FontFamily="Wingdings"
+                                FontSize="16" />
+                            <DatePicker Grid.Row="1"
+                                Grid.Column="2"
+                                twainctrl:Policy.PolicyName="BitişTarihi"
+                                DisplayDateEnd="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}"
+                                DisplayDateStart="{Binding BaşlangıçTarihi}"
+                                Language="{Binding CalendarLang}"
+                                SelectedDate="{Binding BitişTarihi}" />
+                            <RepeatButton Grid.Row="1"
+                                Grid.Column="3"
+                                Command="{Binding EndDateForward}"
+                                Content="è"
+                                FontFamily="Wingdings"
+                                FontSize="16" />
                             <Extensions:ButtonedTextBox x:Name="TbSearch"
-                                Grid.Column="5"
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Grid.ColumnSpan="7"
                                 VerticalContentAlignment="Center"
                                 d:Watermark="{twainctrl:Loc DOCUMENT}"
                                 twainctrl:Policy.PolicyName="AramaMetni"
-                                CopyButtonVisibility="Collapsed"
                                 FontSize="22"
                                 KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
-                                ResetButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"
                                 Watermark="{twainctrl:Loc DOCUMENT}" />
                         </Grid>

@@ -2804,7 +2804,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OnPropertyChanged(nameof(MaxPreviewWidth));
             }
         }
-    } = 400;
+    } = 512;
 
     public bool MergePdfFileToFirst
     {
@@ -2840,7 +2840,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OnPropertyChanged(nameof(MinPreviewWidth));
             }
         }
-    } = 85;
+    } = 96;
 
     public RelayCommand<object> MoveToNextTabCommand { get; }
 
