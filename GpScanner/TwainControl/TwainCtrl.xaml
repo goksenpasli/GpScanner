@@ -37,7 +37,7 @@
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FolderPathToIconConverter x:Key="FolderPathToIconConverter" />
             <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameConverter" />
-            <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameThumbConverter" DecodeHeight="{Binding Mode=OneWay, Source={x:Static SystemParameters.PrimaryScreenWidth}}" />
+            <Converter:BitmapFrameToBitmapFrameConverter x:Key="BitmapFrameToBitmapFrameThumbConverter" DecodeHeight="{Binding Mode=OneWay, Source={x:Static SystemParameters.PrimaryScreenHeight}}" />
             <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <Image x:Key="TimeIcon"
