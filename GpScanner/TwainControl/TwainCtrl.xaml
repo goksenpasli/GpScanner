@@ -467,29 +467,26 @@
                                                     <Trigger Property="IsChecked" Value="True">
                                                         <Setter Property="Content">
                                                             <Setter.Value>
-                                                                <Grid>
+                                                                <StackPanel Orientation="Horizontal">
                                                                     <Image Height="32"
                                                                         Source="/TwainControl;component/Icons/adf.png"
                                                                         Visibility="{Binding Adf, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                                                     <TextBlock VerticalAlignment="Center"
-                                                                        FontWeight="Bold"
-                                                                        Foreground="White"
                                                                         Text="{local:Loc ADF}"
                                                                         TextWrapping="Wrap" />
-                                                                </Grid>
+                                                                </StackPanel>
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Trigger>
                                                     <Trigger Property="IsChecked" Value="False">
                                                         <Setter Property="Content">
                                                             <Setter.Value>
-                                                                <Grid>
+                                                                <StackPanel Orientation="Horizontal">
                                                                     <Image Height="32" Source="/TwainControl;component/Icons/flatbed.png" />
                                                                     <TextBlock VerticalAlignment="Center"
-                                                                        FontWeight="Bold"
                                                                         Text="{local:Loc FLATBED}"
                                                                         TextWrapping="Wrap" />
-                                                                </Grid>
+                                                                </StackPanel>
                                                             </Setter.Value>
                                                         </Setter>
                                                     </Trigger>
@@ -696,7 +693,6 @@
                                         <ColumnDefinition />
                                         <ColumnDefinition />
                                         <ColumnDefinition />
-                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <ListBox local:Policy.PolicyName="Mode"
                                         Background="{DynamicResource BorderBackground}"
@@ -766,6 +762,18 @@
                                                                 </MultiBinding>
                                                             </Image.Source>
                                                         </Image>
+                                                        <ToggleButton Background="{x:Null}"
+                                                            BorderBrush="{x:Null}"
+                                                            IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="certmgr.dll" />
+                                                                        <Binding Source="9" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </ToggleButton>
                                                     </StackPanel>
                                                     <Viewbox Grid.Column="2">
                                                         <DockPanel LastChildFill="True">
@@ -829,17 +837,7 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-                                    <ToggleButton Grid.Column="2" IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                        <Image Width="24" Height="24">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="certmgr.dll" />
-                                                    <Binding Source="9" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </ToggleButton>
-                                    <Extensions:ContentToggleButton Grid.Column="3"
+                                    <Extensions:ContentToggleButton Grid.Column="2"
                                         local:Policy.PolicyName="ScanProfiles"
                                         ArrowVisibility="Collapsed">
                                         <Extensions:ContentToggleButton.OverContent>

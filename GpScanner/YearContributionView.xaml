@@ -64,7 +64,7 @@
             </StackPanel>
         </GroupBox.Header>
         <Grid>
-            <Extensions:GraphControl Margin="0,10,0,0"
+            <Extensions:GraphControl Margin="26,10,0,0"
                 ContextMenuVisibility="Collapsed"
                 GraphContentVisibility="Collapsed"
                 IsContextMenuEnabled="False"
