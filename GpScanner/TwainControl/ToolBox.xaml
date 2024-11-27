@@ -142,7 +142,7 @@
                                         TextDecorations="None">
                                         <Run FontFamily="Wingdings"
                                             FontSize="16"
-                                            Foreground="Black"
+                                            Foreground="Cyan"
                                             Text="ç" />
                                     </Hyperlink>
                                 </TextBlock>

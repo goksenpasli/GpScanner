@@ -119,7 +119,16 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 BitmapFrame bitmapFrame = TwainCtrl.GenerateBitmapFrame((BitmapSource)Scanner.CroppedImage);
                 bitmapFrame.Freeze();
-                ScannedImage scannedImage = new() { Seçili = false, Resim = bitmapFrame };
+                ScannedImage scannedImage;
+                if (Keyboard.Modifiers == ModifierKeys.Alt && (Scanner.EnAdet > 1 || Scanner.BoyAdet > 1))
+                {
+                    BitmapFrame bitmap = BitmapFrame.Create(RenderImageWithGrid(bitmapFrame, Scanner.BoyAdet, Scanner.EnAdet, Brushes.Black).ToBitmapImage());
+                    scannedImage = new() { Seçili = false, Resim = bitmap };
+                    Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
+                    scannedImage = null;
+                    return;
+                }
+                scannedImage = new() { Seçili = false, Resim = bitmapFrame };
                 Scanner?.Resimler.Insert(Scanner.CroppedImageIndex, scannedImage);
                 scannedImage = null;
             },
@@ -424,6 +433,38 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         {
             gfx.DrawImage(xImage, box);
         }
+    }
+
+    private RenderTargetBitmap RenderImageWithGrid(ImageSource imageSource, int n, int m, Brush gridBrush, double thickness = 1)
+    {
+        double imageWidth = imageSource.Width;
+        double imageHeight = imageSource.Height;
+
+        DrawingVisual drawingVisual = new();
+        using (DrawingContext dc = drawingVisual.RenderOpen())
+        {
+            dc.DrawImage(imageSource, new Rect(0, 0, imageWidth, imageHeight));
+            double cellWidth = imageWidth / m;
+            double cellHeight = imageHeight / n;
+            Pen gridPen = new(gridBrush, thickness);
+
+            for (int i = 1; i < m; i++)
+            {
+                double x = i * cellWidth;
+                dc.DrawLine(gridPen, new Point(x, 0), new Point(x, imageHeight));
+            }
+
+            for (int i = 1; i < n; i++)
+            {
+                double y = i * cellHeight;
+                dc.DrawLine(gridPen, new Point(0, y), new Point(imageWidth, y));
+            }
+        }
+
+        RenderTargetBitmap renderTargetBitmap = new((int)imageWidth, (int)imageHeight, 96, 96, PixelFormats.Pbgra32);
+        renderTargetBitmap.Render(drawingVisual);
+        renderTargetBitmap.Freeze();
+        return renderTargetBitmap;
     }
 
     private BitmapSource ResizeOrCompressImage(BitmapFrame image, double width, double height)
