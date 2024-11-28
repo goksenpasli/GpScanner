@@ -545,6 +545,12 @@
                                             </Image>
                                         </Canvas>
                                     </ToggleButton>
+                                    <ToggleButton IsChecked="{Binding Path=ShowFileSizeGraph, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <TextBlock FontFamily="Webdings"
+                                            FontSize="16"
+                                            Foreground="Blue"
+                                            Text="" />
+                                    </ToggleButton>
                                 </StackPanel>
                             </ScrollViewer>
                             <Separator Margin="0,1,0,1" />

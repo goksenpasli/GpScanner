@@ -1613,6 +1613,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public ObservableCollection<Chart> FilesChartList
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(FilesChartList));
+            }
+        }
+    }
+
     public ObservableCollection<string> FileSystemWatcherProcessedFileList
     {
         get;
@@ -2700,6 +2713,18 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         Settings.Default.Save();
     }
 
+    private void DrawFileSizeGraph(bool showfilegraph = false)
+    {
+        if (!showfilegraph || MainWindow.cvs?.View is not ICollectionView collection)
+        {
+            return;
+        }
+        foreach (Scanner file in collection)
+        {
+            FilesChartList.Add(new Chart() { ChartBrush=Brushes.Blue, ChartValue = Math.Round(file.FileSize, 2), Description = Path.GetFileName(file.FileName) });
+        }
+    }
+
     private async Task FileSystemWatcherOcrFile(Paper paper, string batchsavefolder, string currentfilepath, string currentfilename)
     {
         try
@@ -2946,9 +2971,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 AramaMetni = string.Empty;
             }
-
             if (MainWindow.cvs is not null)
             {
+                FilesChartList = [];
                 MainWindow.cvs.Filter += (s, x) =>
                                          {
                                              Scanner scanner = (Scanner)x.Item;
@@ -2966,6 +2991,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                                  x.Accepted = false;
                                              }
                                          };
+                DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
             }
         }
 
@@ -2990,12 +3016,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     using AppDbContext context = new();
                     return context.Data.AsNoTracking().ToList().Where(z => z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0).Select(z => new { z.FileName }).ToList();
                 });
-
+            FilesChartList = [];
             MainWindow.cvs.Filter += (s, x) =>
                                      {
                                          Scanner scanner = (Scanner)x.Item;
                                          x.Accepted = Path.GetFileNameWithoutExtension(scanner.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0 || datas?.Any(z => z.FileName == scanner.FileName) == true;
                                      };
+            DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
             ZipProgressIndeterminate = false;
             datas = null;
         }

@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PageRangeDocumentPaginator.cs" />
+    <Compile Include="Controls\PieControl.cs" />
     <Compile Include="Controls\ResizablePanel.cs" />
     <Compile Include="Controls\ResizeDirections.cs" />
     <Compile Include="Controls\RGB.cs" />

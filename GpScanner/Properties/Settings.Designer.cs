@@ -672,5 +672,17 @@ namespace GpScanner.Properties {
                 this["ApplyIdleIndexOcr"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowFileSizeGraph {
+            get {
+                return ((bool)(this["ShowFileSizeGraph"]));
+            }
+            set {
+                this["ShowFileSizeGraph"] = value;
+            }
+        }
     }
 }

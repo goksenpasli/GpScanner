@@ -1195,6 +1195,18 @@
                 </StatusBarItem>
                 <StatusBarItem HorizontalAlignment="Right">
                     <StackPanel Orientation="Horizontal">
+                        <Extensions:PieControl Width="16"
+                            Height="16"
+                            Series="{Binding FilesChartList, Mode=OneWay}"
+                            Visibility="{Binding Path=ShowFileSizeGraph, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Extensions:PieControl.ToolTip>
+                                <ToolTip>
+                                    <Extensions:PieControl Width="640"
+                                        Height="480"
+                                        Series="{Binding FilesChartList, Mode=OneWay}" />
+                                </ToolTip>
+                            </Extensions:PieControl.ToolTip>
+                        </Extensions:PieControl>
                         <TextBlock VerticalAlignment="Center"
                             FontWeight="Bold"
                             Foreground="Red"

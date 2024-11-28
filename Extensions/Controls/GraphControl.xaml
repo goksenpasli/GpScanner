@@ -50,4 +50,5 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style TargetType="local:PieControl" />
 </ResourceDictionary>
