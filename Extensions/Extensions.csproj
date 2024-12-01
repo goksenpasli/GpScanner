@@ -115,6 +115,7 @@
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />
     <Compile Include="FolderDialog.cs" />
+    <Compile Include="HyperlinkTextBlock.cs" />
     <Compile Include="IgnoreMouseWheelBehavior.cs" />
     <Compile Include="ProgressBarExtensions.cs" />
     <Compile Include="Properties\Settings.Designer.cs">

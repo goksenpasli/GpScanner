@@ -85,6 +85,18 @@
                     Minimum="1"
                     Style="{DynamicResource Slider}"
                     Value="{Binding SubTitleSize}" />
+                <CheckBox VerticalAlignment="Center"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalContentAlignment="Center"
+                    IsChecked="{Binding SubtitleIsHyperlinked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <StackPanel IsEnabled="{Binding SubtitleIsHyperlinked, Mode=OneWay}" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="WEB HYPERLINK" />
+                        <ComboBox DisplayMemberPath="Key"
+                            ItemsSource="{Binding SearchEngine}"
+                            SelectedValue="{Binding SearchUrl}"
+                            SelectedValuePath="Value" />
+                    </StackPanel>
+                </CheckBox>
                 <local:ColorPicker ColorPickerColumnCount="10"
                     HexCode="{Binding SubTitleColor, Mode=TwoWay}"
                     PredefinedColorVisibility="Visible" />

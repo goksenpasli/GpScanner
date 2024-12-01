@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using WebPWrapper;
 using static Extensions.ExtensionMethods;
 using Brush = System.Windows.Media.Brush;
@@ -435,7 +436,7 @@ public static class BitmapMethods
         }
     }
 
-    public static RenderTargetBitmap ÜstüneResimÇiz(this ImageSource Source, Point konum, Brush brushes, DpiScale dpiScale, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
+    public static RenderTargetBitmap ÜstüneMetinÇiz(this ImageSource Source, Point konum, Brush brushes, DpiScale dpiScale, double emSize = 64, string metin = null, double angle = 315, string font = "Arial")
     {
         FlowDirection flowDirection = CultureInfo.CurrentCulture == CultureInfo.GetCultureInfo("ar-AR") ? FlowDirection.RightToLeft : FlowDirection.LeftToRight;
         FormattedText formattedText = new(metin, CultureInfo.CurrentCulture, flowDirection, new Typeface(font), emSize, brushes, dpiScale.PixelsPerDip) { TextAlignment = TextAlignment.Center };

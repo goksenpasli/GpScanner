@@ -34,6 +34,7 @@ public partial class App : Application
                 () =>
                 {
                     splashWindow = new SplashWindow() { Topmost = true };
+                    splashWindow.MouseLeftButtonDown += (s, e) => splashWindow.DragMove();
                     splashWindow.Show();
                     Dispatcher.Run();
                 })
@@ -93,6 +94,6 @@ public partial class App : Application
         splashWindow?.Dispatcher.Invoke(splashWindow.Close);
         mainwindow.Topmost = true;
         mainwindow.Topmost = false;
-        mainwindow.Activate();
+        _ = mainwindow.Activate();
     }
 }

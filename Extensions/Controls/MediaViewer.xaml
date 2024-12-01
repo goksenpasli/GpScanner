@@ -310,9 +310,11 @@
                                             <TextBlock Margin="{Binding SubTitleMargin}"
                                                 HorizontalAlignment="{Binding SubTitleHorizontalAlignment}"
                                                 VerticalAlignment="{Binding SubTitleVerticalAlignment}"
+                                                local:HyperlinkTextBlock.Adress="{Binding SearchUrl}"
+                                                local:HyperlinkTextBlock.IsHyperlinked="{Binding SubtitleIsHyperlinked}"
+                                                local:HyperlinkTextBlock.TextWithLinks="{Binding SubTitle}"
                                                 FontSize="{Binding SubTitleSize}"
                                                 Foreground="{Binding SubTitleColor}"
-                                                Text="{Binding SubTitle}"
                                                 Visibility="{Binding SubTitleVisibility}">
                                                 <TextBlock.Style>
                                                     <Style TargetType="TextBlock">

@@ -13,6 +13,8 @@
     twaincontrol:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+        <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
         <Converter:RandomColorBrushConverter x:Key="RandomColorBrushConverter" />
     </UserControl.Resources>
     <Grid>

@@ -71,7 +71,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
         SetWatermark = new RelayCommand<object>(
             parameter => Scanner.CroppedImage =
             Scanner.CroppedImage
-            .ÜstüneResimÇiz(new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), Scanner.WatermarkColor, VisualTreeHelper.GetDpi(this), Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont),
+            .ÜstüneMetinÇiz(new Point(Scanner.CroppedImage.Width / 2, Scanner.CroppedImage.Height / 2), Scanner.WatermarkColor, VisualTreeHelper.GetDpi(this), Scanner.WatermarkTextSize, Scanner.Watermark, Scanner.WatermarkAngle, Scanner.WatermarkFont),
             parameter => Scanner?.CroppedImage is not null && !string.IsNullOrWhiteSpace(Scanner?.Watermark));
 
         WebAdreseGit =

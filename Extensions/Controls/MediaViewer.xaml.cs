@@ -1,6 +1,7 @@
 ﻿using Extensions.Properties;
 using Microsoft.Win32;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
@@ -570,6 +571,8 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     } = "tr";
 
+    public Dictionary<string, string> SearchEngine { get; } = new() { { "Google", "https://www.google.com/search?q=" }, { "Wikipedia", "http://en.wikipedia.org/w/index.php?search=" }, { "DuckDuckGo", "https://duckduckgo.com/?q=" }, };
+
     public string SearchSubtitle
     {
         get;
@@ -583,6 +586,19 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
             }
         }
     }
+
+    public string SearchUrl
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(SearchUrl));
+            }
+        }
+    } = "https://www.google.com/search?q=";
 
     public int SelectedEncodingCodePage
     {
@@ -642,6 +658,19 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
     public HorizontalAlignment SubTitleHorizontalAlignment { get => (HorizontalAlignment)GetValue(SubTitleHorizontalAlignmentProperty); set => SetValue(SubTitleHorizontalAlignmentProperty, value); }
+
+    public bool SubtitleIsHyperlinked
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(SubtitleIsHyperlinked));
+            }
+        }
+    }
 
     [Description("Subtitle Controls")]
     [Category("Subtitle")]
