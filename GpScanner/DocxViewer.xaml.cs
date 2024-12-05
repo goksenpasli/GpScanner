@@ -44,7 +44,8 @@ namespace GpScanner
                     }
                     if (Path.GetExtension(uriString.ToLowerInvariant()) == ".docx")
                     {
-                        using DocX document = DocX.Load(uriString);
+                        using FileStream fileStream = new(uriString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                        using DocX document = DocX.Load(fileStream);
                         viewer.Fd.Document = DocxFlowDocument(document);
                         return;
                     }

@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Extensions">
-    <Style TargetType="local:MaskedTextBox">
+    <Style TargetType="local:RegexTextBox">
         <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}" />
         <Setter Property="BorderBrush" Value="#ABADB3" />
         <Setter Property="BorderThickness" Value="1" />
@@ -30,6 +30,9 @@
                         <Trigger Property="IsKeyboardFocused" Value="True">
                             <Setter TargetName="border" Property="BorderBrush" Value="#FF569DE5" />
                         </Trigger>
+                        <DataTrigger Binding="{Binding IsValid, RelativeSource={RelativeSource Mode=Self}}" Value="false">
+                            <Setter TargetName="border" Property="BorderBrush" Value="Red" />
+                        </DataTrigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>

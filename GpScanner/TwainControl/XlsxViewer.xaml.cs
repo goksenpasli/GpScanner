@@ -129,7 +129,7 @@ namespace TwainControl
 
                     if (File.Exists(uriString))
                     {
-                        using FileStream fs = File.Open(uriString, FileMode.Open, FileAccess.Read);
+                        using FileStream fs = File.Open(uriString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                         viewer.Tablolar = Path.GetExtension(uriString) switch
                         {
                             ".csv" => (await viewer.StreamToDtAsync(fs, true)).Tables,

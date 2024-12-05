@@ -8,7 +8,6 @@ namespace Extensions;
 
 public class MaskedTextBox : TextBox
 {
-    public static readonly DependencyProperty ClearButtonVisibilityProperty = DependencyProperty.Register("ClearButtonVisibility", typeof(Visibility), typeof(MaskedTextBox), new PropertyMetadata(Visibility.Collapsed));
     public static readonly DependencyProperty IncludeLiteralsProperty = DependencyProperty.Register("IncludeLiterals", typeof(bool), typeof(MaskedTextBox), new UIPropertyMetadata(true, OnIncludeLiteralsPropertyChanged));
     public static readonly DependencyProperty IncludePromptProperty = DependencyProperty.Register("IncludePrompt", typeof(bool), typeof(MaskedTextBox), new UIPropertyMetadata(false, OnIncludePromptPropertyChanged));
     public static readonly DependencyProperty MaskProperty = DependencyProperty.Register("Mask", typeof(string), typeof(MaskedTextBox), new UIPropertyMetadata("<>", OnMaskPropertyChanged));
@@ -25,18 +24,19 @@ public class MaskedTextBox : TextBox
     /// </summary>
     private bool _isSyncingTextAndValueProperties;
 
-    static MaskedTextBox() { TextProperty.OverrideMetadata(typeof(MaskedTextBox), new FrameworkPropertyMetadata(OnTextChanged)); }
+    static MaskedTextBox()
+    {
+        DefaultStyleKeyProperty.OverrideMetadata(typeof(MaskedTextBox), new FrameworkPropertyMetadata(typeof(MaskedTextBox)));
+        TextProperty.OverrideMetadata(typeof(MaskedTextBox), new FrameworkPropertyMetadata(OnTextChanged));
+    }
 
     public MaskedTextBox()
     {
-        _ = CommandBindings.Add(new CommandBinding(Reset, ResetCommand));
         _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Paste, Paste));
         _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Cut, null, CanCut));
     }
 
     public event RoutedPropertyChangedEventHandler<object> ValueChanged { add => AddHandler(ValueChangedEvent, value); remove => RemoveHandler(ValueChangedEvent, value); }
-
-    public Visibility ClearButtonVisibility { get => (Visibility)GetValue(ClearButtonVisibilityProperty); set => SetValue(ClearButtonVisibilityProperty, value); }
 
     public bool IncludeLiterals { get => (bool)GetValue(IncludeLiteralsProperty); set => SetValue(IncludeLiteralsProperty, value); }
 
@@ -45,8 +45,6 @@ public class MaskedTextBox : TextBox
     public string Mask { get => (string)GetValue(MaskProperty); set => SetValue(MaskProperty, value); }
 
     public char PromptChar { get => (char)GetValue(PromptCharProperty); set => SetValue(PromptCharProperty, value); }
-
-    public ICommand Reset { get; } = new RoutedCommand();
 
     public bool SelectAllOnGotFocus { get => (bool)GetValue(SelectAllOnGotFocusProperty); set => SetValue(SelectAllOnGotFocusProperty, value); }
 
@@ -475,8 +473,6 @@ public class MaskedTextBox : TextBox
     private void RemoveTextFromStart(int endPosition) => RemoveText(0, endPosition);
 
     private void RemoveTextToEnd(int startPosition) => RemoveText(startPosition, Text.Length - startPosition);
-
-    private void ResetCommand(object sender, ExecutedRoutedEventArgs e) => Value = null;
 
     private void SyncTextAndValueProperties(DependencyProperty p, object newValue)
     {

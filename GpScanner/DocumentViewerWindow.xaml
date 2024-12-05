@@ -52,13 +52,14 @@
             Width="3"
             HorizontalAlignment="Stretch"
             Background="{StaticResource GroupBoxBackGround}" />
-        <ContentControl x:Name="cnt"
+        <ContentControl x:Name="Cnt"
             Grid.RowSpan="3"
             Grid.Column="2"
             d:ContentTemplate="{StaticResource PdfViewerDocumentViewerTemplateFull}"
             d:ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
             Content="{Binding FilePath, IsAsync=True, Mode=OneWay}"
-            ContentTemplateSelector="{StaticResource DocumentViewerSelector}" />
+            ContentTemplateSelector="{StaticResource DocumentViewerSelector}"
+            PreviewMouseWheel="Cnt_PreviewMouseWheel" />
         <ListBox x:Name="Lb"
             Grid.Row="1"
             Grid.Column="0"

@@ -157,14 +157,16 @@
                                                 Command="{Binding RemoveFile, RelativeSource={RelativeSource AncestorType=local:Burner}}"
                                                 CommandParameter="{Binding Mode=OneWay}"
                                                 TextDecorations="None">
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="131" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
+                                                <InlineUIContainer BaselineAlignment="Center">
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="131" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                </InlineUIContainer>
                                             </Hyperlink>
                                             <Image Width="16"
                                                 Height="16"

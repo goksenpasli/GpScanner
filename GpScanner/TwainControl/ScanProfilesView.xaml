@@ -86,17 +86,20 @@
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock VerticalAlignment="Center">
-                                <InlineUIContainer>
-                                    <Image Width="16"
-                                        Height="16"
-                                        Source="/TwainControl;component/Icons/delete.png" />
-                                </InlineUIContainer><Run d:Text="Profile"
-                                    BaselineAlignment="Center"
-                                    Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" /><Hyperlink local:Policy.PolicyName="RemoveProfile"
+                                <Hyperlink local:Policy.PolicyName="RemoveProfile"
                                     BaselineAlignment="Center"
                                     Command="{Binding DataContext.RemoveProfile, ElementName=UserControl}"
                                     CommandParameter="{Binding Mode=OneWay}"
-                                    TextDecorations="None" /></TextBlock>
+                                    TextDecorations="None">
+                                    <InlineUIContainer BaselineAlignment="Center">
+                                        <Image Width="16"
+                                            Height="16"
+                                            Source="/TwainControl;component/Icons/delete.png" />
+                                    </InlineUIContainer>
+                                </Hyperlink><Run d:Text="Profile"
+                                    BaselineAlignment="Center"
+                                    Text="{Binding Converter={StaticResource SplitConverter}, Mode=OneWay}" />
+                            </TextBlock>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>

@@ -69,6 +69,12 @@
             <Style TargetType="Extensions:ButtonedTextBox">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>
+            <Style TargetType="Extensions:RegexTextBox">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
+            <Style TargetType="Extensions:MaskedTextBox">
+                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
+            </Style>
             <Style TargetType="PasswordBox">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>

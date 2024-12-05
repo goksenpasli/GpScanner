@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using Ocr;
 using PdfCompressor;
 using PdfSharp.Pdf;
+using SevenZipExtractor;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shell;
 using System.Windows.Threading;
+using System.Xml.Linq;
 using TwainControl;
 using WebPWrapper;
 using Xceed.Words.NET;
@@ -1159,6 +1161,56 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         CloseApp = new RelayCommand<object>(parameter => windowService.GetFirstWindow().Close(), parameter => true);
 
+        AddEsclData = new RelayCommand<object>(
+            async parameter =>
+            {
+                XDocument xDocument = await ESCLScanner.GetScannerCapabilitiesAsync($"{EsclUrl}:{EsclPort}");
+                if (xDocument is not null)
+                {
+                    string scannerName = xDocument?.Root?.Element("ScannerCapabilities")?.Element("ScannerConfiguration")?.Element("Manufacturer")?.Value;
+                    scannerName ??= xDocument?.Root?.Element("ScannerCapabilities")?.Element("ScannerConfiguration")?.Element("Model")?.Value;
+                    string esclscanner = $"{scannerName}|{EsclUrl}:{EsclPort}";
+                    if (!Twainsettings.Settings.Default.EsclScanners.Contains(esclscanner))
+                    {
+                        _ = Twainsettings.Settings.Default.EsclScanners.Add(esclscanner);
+                        Twainsettings.Settings.Default.Save();
+                        Twainsettings.Settings.Default.Reload();
+                    }
+                }
+            },
+            parameter => true);
+
+        RemoveEsclScanner = new RelayCommand<object>(
+            parameter =>
+            {
+                Twainsettings.Settings.Default.EsclScanners.Remove(parameter as string);
+                Twainsettings.Settings.Default.Save();
+                Twainsettings.Settings.Default.Reload();
+            },
+            parameter => true);
+
+        CheckStatusData = new RelayCommand<object>(
+            async parameter =>
+            {
+                XDocument xDocument = await ESCLScanner.GetScannerStatusAsync($"{EsclUrl}:{EsclPort}");
+                if (xDocument is not null)
+                {
+                    _ = MessageBox.Show(xDocument.ToString(), windowService.GetActiveWindow().Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            },
+            parameter => true);
+
+        CheckCapabilitiesData = new RelayCommand<object>(
+            async parameter =>
+            {
+                XDocument xDocument = await ESCLScanner.GetScannerCapabilitiesAsync($"{EsclUrl}:{EsclPort}");
+                if (xDocument is not null)
+                {
+                    _ = MessageBox.Show(xDocument.ToString(), windowService.GetActiveWindow().Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            },
+            parameter => true);
+
         AppBringToFront = new RelayCommand<object>(
             parameter =>
             {
@@ -1209,6 +1261,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     }
 
     public RelayCommand<object> AddAdditionalIndexFolder { get; }
+
+    public RelayCommand<object> AddEsclData { get; }
 
     public ICommand AddFtpSites { get; }
 
@@ -1452,6 +1506,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand ChangeDataFolder { get; }
 
+    public RelayCommand<object> CheckCapabilitiesData { get; }
+
     public int CheckedPdfCount
     {
         get;
@@ -1465,6 +1521,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     }
+
+    public RelayCommand<object> CheckStatusData { get; }
 
     public ICommand CheckUpdate { get; }
 
@@ -1593,6 +1651,32 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 field = value;
                 OnPropertyChanged(nameof(ErrorLogPath));
+            }
+        }
+    }
+
+    public string EsclPort
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(EsclPort));
+            }
+        }
+    }
+
+    public string EsclUrl
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(EsclUrl));
             }
         }
     }
@@ -2050,6 +2134,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public ICommand RegisterSti { get; }
 
     public RelayCommand<object> RemoveAdditionalIndexFolder { get; }
+
+    public RelayCommand<object> RemoveEsclScanner { get; }
 
     public ICommand RemovePatchProfile { get; }
 
@@ -2721,8 +2807,29 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
         foreach (Scanner file in collection)
         {
-            FilesChartList.Add(new Chart() { ChartBrush=Brushes.Blue, ChartValue = Math.Round(file.FileSize, 2), Description = Path.GetFileName(file.FileName) });
+            FilesChartList.Add(new Chart() { ChartBrush = Brushes.Blue, ChartValue = Math.Round(file.FileSize, 2), Description = Path.GetFileName(file.FileName) });
         }
+    }
+
+    private bool ExistsInArchive(string filename, bool apply = false)
+    {
+        if (apply)
+        {
+            try
+            {
+                string[] archivetypes = [".zip", ".rar", ".7z"];
+                if (archivetypes.Contains(Path.GetExtension(filename).ToLowerInvariant()))
+                {
+                    using ArchiveFile archive = new(filename);
+                    return archive?.Entries?.Any(z => z.FileName.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        return false;
     }
 
     private async Task FileSystemWatcherOcrFile(Paper paper, string batchsavefolder, string currentfilepath, string currentfilename)
@@ -3020,7 +3127,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             MainWindow.cvs.Filter += (s, x) =>
                                      {
                                          Scanner scanner = (Scanner)x.Item;
-                                         x.Accepted = Path.GetFileNameWithoutExtension(scanner.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0 || datas?.Any(z => z.FileName == scanner.FileName) == true;
+                                         bool filearchivefilter = ExistsInArchive(scanner.FileName, Settings.Default.SearchInArchiveFiles);
+                                         bool filenamefilter = Path.GetFileNameWithoutExtension(scanner.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0;
+                                         bool filecontentfilter = datas?.Any(z => z.FileName == scanner.FileName) == true;
+                                         x.Accepted = filenamefilter || filecontentfilter || filearchivefilter;
                                      };
             DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
             ZipProgressIndeterminate = false;
@@ -3154,8 +3264,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 break;
 
             case ".docx":
-                using (DocX document = DocX.Load(unIndexedFile))
+                using (FileStream fileStream = new(unIndexedFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                 {
+                    using DocX document = DocX.Load(fileStream);
                     _ = ocrTextBuilder.Append(document.Text);
                 }
                 break;

@@ -83,7 +83,7 @@ namespace Extensions
                                 {
                                     using FileStream zipToOpen = new(ArchivePath, FileMode.Open);
                                     using ZipArchive archive = new(zipToOpen, ZipArchiveMode.Update);
-                                    if (archive != null)
+                                    if (archive is not null)
                                     {
                                         ZipArchiveEntry entry = archive.GetEntry(archiveData.DosyaAdı);
                                         entry?.Delete();

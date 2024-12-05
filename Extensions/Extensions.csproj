@@ -93,6 +93,7 @@
     <Compile Include="Controls\NumericUpDown.cs" />
     <Compile Include="Controls\PageRangeDocumentPaginator.cs" />
     <Compile Include="Controls\PieControl.cs" />
+    <Compile Include="Controls\RegexTextBox.cs" />
     <Compile Include="Controls\ResizablePanel.cs" />
     <Compile Include="Controls\ResizeDirections.cs" />
     <Compile Include="Controls\RGB.cs" />
@@ -197,6 +198,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\NumericUpDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\RegexTextBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -684,5 +684,17 @@ namespace GpScanner.Properties {
                 this["ShowFileSizeGraph"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SearchInArchiveFiles {
+            get {
+                return ((bool)(this["SearchInArchiveFiles"]));
+            }
+            set {
+                this["SearchInArchiveFiles"] = value;
+            }
+        }
     }
 }

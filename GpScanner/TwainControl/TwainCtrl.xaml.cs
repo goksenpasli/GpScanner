@@ -112,8 +112,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 Scanner.ArayüzEtkin = false;
-                Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
-                Twain.StartScanning(DefaultScanSettings());
+                if (Settings.Default.SeçiliTarayıcı.Contains("|http"))
+                {
+                    BitmapImage bitmapimage = await ESCLScanner.ScanDocumentAsync(Settings.Default.SeçiliTarayıcı.Split('|')[1], (int)Settings.Default.Çözünürlük);
+                    if (bitmapimage is not null)
+                    {
+                        bitmapimage.Freeze();
+                        Scanner.Resimler.Add(new ScannedImage() { Resim = BitmapFrame.Create(bitmapimage) });
+                    }
+                }
+                else
+                {
+                    Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
+                    Twain.StartScanning(DefaultScanSettings());
+                }
                 Twain.ScanningComplete += ScanComplete;
             },
             parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy(nameof(ScanImage)));
@@ -132,8 +144,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 Scanner.Resimler = [];
                 Scanner.Resimler.CollectionChanged -= Scanner.Resimler_CollectionChanged;
                 Scanner.Resimler.CollectionChanged += Scanner.Resimler_CollectionChanged;
-                Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
-                Twain.StartScanning(DefaultScanSettings());
+                if (Settings.Default.SeçiliTarayıcı.Contains("|http"))
+                {
+                    BitmapImage bitmapimage = await ESCLScanner.ScanDocumentAsync(Settings.Default.SeçiliTarayıcı.Split('|')[1], (int)Settings.Default.Çözünürlük);
+                    if (bitmapimage is not null)
+                    {
+                        bitmapimage.Freeze();
+                        Scanner.Resimler.Add(new ScannedImage() { Resim = BitmapFrame.Create(bitmapimage) });
+                    }
+                }
+                else
+                {
+                    Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
+                    Twain.StartScanning(DefaultScanSettings());
+                }
                 Twain.ScanningComplete += FastScanComplete;
             },
             parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Scanner?.AutoSave == true && FileNameValid(Scanner?.FileName) && Policy.CheckPolicy(nameof(FastScanImage)));
@@ -4511,6 +4535,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    private void InitializeEsclScannersControl()
+    {
+        if (Settings.Default?.EsclScanners?.Count > 0)
+        {
+            foreach (string item in Settings.Default.EsclScanners)
+            {
+                Scanner.Tarayıcılar.Add(item);
+            }
+        }
+    }
+
     private void InitializeTwainControl()
     {
         try
@@ -5166,7 +5201,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner?.Resimler?.Add(item);
     }
 
-    private void TwainCtrl_Loaded(object sender, RoutedEventArgs e) => InitializeTwainControl();
+    private void TwainCtrl_Loaded(object sender, RoutedEventArgs e)
+    {
+        InitializeTwainControl();
+        InitializeEsclScannersControl();
+
+    }
 
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {

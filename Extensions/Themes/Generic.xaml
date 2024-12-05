@@ -8,6 +8,7 @@
         <ResourceDictionary Source="/Extensions;component/Controls/ResizablePanel.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/NumericUpDown.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/MaskedTextBox.xaml" />
+        <ResourceDictionary Source="/Extensions;component/Controls/RegexTextBox.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/ImageViewer.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/GraphControl.xaml" />
         <ResourceDictionary Source="/Extensions;component/Controls/FadedToolTipControl.xaml" />

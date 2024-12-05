@@ -112,7 +112,7 @@ public static class Ocr
             throw new FileNotFoundException("Orientation and Script Detection Tesseract File Missing.\nDownload File And Try Again.");
         }
         using TesseractEngine engine = CreateTesseractEngine("osd");
-        using Pix pixImage = imageBytes != null ? Pix.LoadFromMemory(imageBytes) : Pix.LoadFromFile(imagePath!);
+        using Pix pixImage = imageBytes is not null ? Pix.LoadFromMemory(imageBytes) : Pix.LoadFromFile(imagePath!);
         using Page page = engine.Process(pixImage, PageSegMode.AutoOsd);
         using PageIterator pageIter = page.AnalyseLayout();
         pageIter.Begin();
