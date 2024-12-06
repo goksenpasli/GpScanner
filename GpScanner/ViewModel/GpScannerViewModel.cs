@@ -2811,14 +2811,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private bool ExistsInArchive(string filename, bool apply = false)
+    private bool ExistsInArchive(string filename, bool apply = false, long filesize = 5_242_880)
     {
         if (apply)
         {
             try
             {
                 string[] archivetypes = [".zip", ".rar", ".7z"];
-                if (archivetypes.Contains(Path.GetExtension(filename).ToLowerInvariant()))
+                if (archivetypes.Contains(Path.GetExtension(filename).ToLowerInvariant()) && new FileInfo(filename).Length <= filesize)
                 {
                     using ArchiveFile archive = new(filename);
                     return archive?.Entries?.Any(z => z.FileName.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;
@@ -3127,7 +3127,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             MainWindow.cvs.Filter += (s, x) =>
                                      {
                                          Scanner scanner = (Scanner)x.Item;
-                                         bool filearchivefilter = ExistsInArchive(scanner.FileName, Settings.Default.SearchInArchiveFiles);
+                                         bool filearchivefilter = ExistsInArchive(scanner.FileName, Settings.Default.SearchInArchiveFiles, Settings.Default.SearchInArchiveFileLimit * 1_048_576);
                                          bool filenamefilter = Path.GetFileNameWithoutExtension(scanner.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0;
                                          bool filecontentfilter = datas?.Any(z => z.FileName == scanner.FileName) == true;
                                          x.Accepted = filenamefilter || filecontentfilter || filearchivefilter;

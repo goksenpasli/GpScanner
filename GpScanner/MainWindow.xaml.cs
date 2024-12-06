@@ -364,7 +364,6 @@ public partial class MainWindow : Window
                         item.FileName = closedfile;
                     });
                 TwainCtrl.ClosedPdfFilePath = null;
-                TwainCtrl.PdfImportViewer.PdfViewer.PdfFilePath = null;
                 TwainCtrl.RefreshDocumentList = false;
                 ViewModel.ReloadDocumentViewerFiles();
             }

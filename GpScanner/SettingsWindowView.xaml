@@ -412,27 +412,6 @@
                                         </Extensions:ContentToggleButton.OverContent>
                                     </Extensions:ContentToggleButton>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <ToggleButton IsChecked="{Binding Path=DocumentNumberVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}" ToolTip="{twainctrl:Loc PAGENUMBER}">
-                                        <Canvas Width="16" Height="16">
-                                            <TextBlock Canvas.Top="0"
-                                                FontSize="10"
-                                                Text="1" />
-                                            <TextBlock Canvas.Left="4"
-                                                Canvas.Top="2"
-                                                FontSize="10"
-                                                Text="2" />
-                                            <TextBlock Canvas.Left="8"
-                                                Canvas.Top="4"
-                                                FontSize="10"
-                                                Text="3" />
-                                        </Canvas>
-                                    </ToggleButton>
-                                    <ToggleButton IsChecked="{Binding Path=ShowFileGroupIndicator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
-                                        <Ellipse Width="8"
-                                            Height="8"
-                                            Fill="Red" />
-                                    </ToggleButton>
-                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <CheckBox VerticalAlignment="Center"
                                         VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="PlayNotificationAudio"
@@ -545,6 +524,7 @@
                                             </Image>
                                         </Canvas>
                                     </ToggleButton>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                     <ToggleButton IsChecked="{Binding Path=SearchInArchiveFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                         <Canvas Width="32" Height="32">
                                             <Image Width="32" Height="32">
@@ -565,12 +545,13 @@
                                             </Image>
                                         </Canvas>
                                     </ToggleButton>
-                                    <ToggleButton IsChecked="{Binding Path=ShowFileSizeGraph, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                        <TextBlock FontFamily="Webdings"
-                                            FontSize="16"
-                                            Foreground="Blue"
-                                            Text="" />
-                                    </ToggleButton>
+                                    <Extensions:NumericUpDown FontWeight="Bold"
+                                        Interval="1"
+                                        IsEnabled="{Binding Path=SearchInArchiveFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                        Maximum="1024"
+                                        Minimum="0"
+                                        StringFormat="{}{0} MB"
+                                        Value="{Binding SearchInArchiveFileLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                                 </StackPanel>
                             </ScrollViewer>
                             <Separator Margin="0,1,0,1" />
@@ -788,6 +769,34 @@
                                                 Height="16"
                                                 Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                         </Canvas>
+                                    </ToggleButton>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <ToggleButton IsChecked="{Binding Path=DocumentNumberVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}" ToolTip="{twainctrl:Loc PAGENUMBER}">
+                                        <Canvas Width="16" Height="16">
+                                            <TextBlock Canvas.Top="0"
+                                                FontSize="10"
+                                                Text="1" />
+                                            <TextBlock Canvas.Left="4"
+                                                Canvas.Top="2"
+                                                FontSize="10"
+                                                Text="2" />
+                                            <TextBlock Canvas.Left="8"
+                                                Canvas.Top="4"
+                                                FontSize="10"
+                                                Text="3" />
+                                        </Canvas>
+                                    </ToggleButton>
+                                    <ToggleButton IsChecked="{Binding Path=ShowFileGroupIndicator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                        <Ellipse Width="8"
+                                            Height="8"
+                                            Fill="Red" />
+                                    </ToggleButton>
+                                    <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                    <ToggleButton IsChecked="{Binding Path=ShowFileSizeGraph, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                        <TextBlock FontFamily="Webdings"
+                                            FontSize="16"
+                                            Foreground="Blue"
+                                            Text="" />
                                     </ToggleButton>
                                 </StackPanel>
                             </ScrollViewer>

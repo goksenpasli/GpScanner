@@ -1,5 +1,4 @@
-﻿using PdfSharp.Pdf;
-using PdfSharp.Pdf.IO;
+﻿using PdfiumViewer;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ public sealed class PdfPageCountConverter : IValueConverter
                 {
                     return 0;
                 }
-                using PdfDocument pdfDocument = PdfReader.Open(path, PdfDocumentOpenMode.InformationOnly);
+                using PdfDocument pdfDocument = PdfDocument.Load(path);
                 return pdfDocument?.PageCount;
             });
     }
