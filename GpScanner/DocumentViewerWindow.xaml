@@ -77,18 +77,21 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="150" Height="250">
-                        <StackPanel VerticalAlignment="Center">
-                            <ContentControl HorizontalAlignment="Center"
-                                d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}"
-                                Content="{Binding IsAsync=True, Mode=OneWay}"
-                                ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
-                            <TextBlock HorizontalAlignment="Center"
-                                d:Text="FileName"
-                                TextWrapping="Wrap">
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
-                                <Run Text="{Binding Mode=OneWay, Converter={StaticResource PdfFileNameToInfoConverter}}" />
-                            </TextBlock>
-                        </StackPanel>
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <ContentControl HorizontalAlignment="Center"
+                            d:ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}"
+                            Content="{Binding IsAsync=True, Mode=OneWay}"
+                            ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
+                        <TextBlock Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            d:Text="FileName"
+                            TextWrapping="Wrap">
+                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource FileNameExtractConverter}}" />
+                            <Run Text="{Binding Mode=OneWay, Converter={StaticResource PdfFileNameToInfoConverter}}" />
+                        </TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

@@ -28,6 +28,7 @@
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Button Grid.Row="0"
                                 Grid.Column="0"
@@ -76,7 +77,10 @@
                             <Button Grid.Row="0"
                                 Grid.Column="11"
                                 Background="Tan"
-                                Content="-" />
+                                Content="-" />  <Button Grid.Row="0"
+                                Grid.Column="12"
+                                Background="Tan"
+                                Content="+" />
                             <Button Grid.Row="1"
                                 Grid.Column="0"
                                 Content="q" />
@@ -112,7 +116,9 @@
                                 Content="ğ" />
                             <Button Grid.Row="1"
                                 Grid.Column="11"
-                                Content="ü" />
+                                Content="ü" />  <Button Grid.Row="1"
+                                Grid.Column="12"
+                                Content="/" />
                             <Button Grid.Row="2"
                                 Grid.Column="0"
                                 Content="a" />
@@ -148,7 +154,9 @@
                                 Content="i" />
                             <Button Grid.Row="2"
                                 Grid.Column="11"
-                                Content="," />
+                                Content="," />  <Button Grid.Row="2"
+                                Grid.Column="12"
+                                Content=":" />
                             <Button Grid.Row="3"
                                 Grid.Column="0"
                                 Background="Cyan"
@@ -186,9 +194,11 @@
                                 Content="ç" />
                             <Button Grid.Row="3"
                                 Grid.Column="10"
-                                Content="." />
-                            <Button Grid.Row="3"
+                                Content="." />   <Button Grid.Row="3"
                                 Grid.Column="11"
+                                Content="\" />
+                            <Button Grid.Row="3"
+                                Grid.Column="12"
                                 Background="Yellow"
                                 Tag="Backspace">
                                 <TextBlock FontFamily="Wingdings"
