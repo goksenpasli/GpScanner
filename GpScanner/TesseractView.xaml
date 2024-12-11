@@ -17,6 +17,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <Extension:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+        <Converter:TesseractDataFilesContentLengthConverter x:Key="TesseractDataFilesContentLengthConverter" />
         <Converter:NumberRangeToColorConverter x:Key="ListBoxNumberRangeToColorConverter"
             MaxNumber="6"
             MinNumber="1" />
@@ -82,6 +83,12 @@
                                         Minimum="0"
                                         Value="{Binding ProgressValue}" />
                                     <TextBlock Grid.Column="1" Text="{Binding OcrLangName}" />
+                                    <TextBlock Grid.Column="1"
+                                        HorizontalAlignment="Right"
+                                        d:Text="0 MB"
+                                        Tag="{Binding OcrName, Converter={StaticResource TesseractDataFilesContentLengthConverter}}"
+                                        Text="{Binding Path=Tag.Result, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}" />
+
                                 </Grid>
                             </Button>
                         </DataTemplate>

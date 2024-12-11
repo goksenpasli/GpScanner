@@ -18,6 +18,7 @@ namespace Extensions
         {
             Loaded += (s, e) =>
                       {
+                          UpdateSelectedItems();
                           if (string.IsNullOrEmpty(SelectedItems))
                           {
                               Text = Watermark;

@@ -42,19 +42,7 @@ namespace GpScanner
                     {
                         return;
                     }
-                    if (Path.GetExtension(uriString.ToLowerInvariant()) == ".docx")
-                    {
-                        using FileStream fileStream = new(uriString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                        using DocX document = DocX.Load(fileStream);
-                        viewer.Fd.Document = DocxFlowDocument(document);
-                        return;
-                    }
-                    if (Path.GetExtension(uriString.ToLowerInvariant()) is ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
-                    {
-                        System.Windows.Documents.Paragraph paragraph = new();
-                        paragraph.Inlines.Add(File.ReadAllText(uriString));
-                        viewer.Fd.Document = new FlowDocument(paragraph);
-                    }
+                    viewer.Fd.Document = viewer.GetFlowDocument(uriString);
                 }
             }
             catch (Exception ex)
@@ -154,6 +142,34 @@ namespace GpScanner
             };
 
             return inline;
+        }
+
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+            {
+                if (Path.GetExtension(droppedfiles[0]).ToLowerInvariant() is ".docx" or ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
+                {
+                    DocxDataFilePath = droppedfiles[0];
+                }
+            }
+        }
+
+        private FlowDocument GetFlowDocument(string uriString)
+        {
+            if (Path.GetExtension(uriString.ToLowerInvariant()) == ".docx")
+            {
+                using FileStream fileStream = new(uriString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using DocX document = DocX.Load(fileStream);
+                return DocxFlowDocument(document);
+            }
+            if (Path.GetExtension(uriString.ToLowerInvariant()) is ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
+            {
+                System.Windows.Documents.Paragraph paragraph = new();
+                paragraph.Inlines.Add(File.ReadAllText(uriString));
+                return new FlowDocument(paragraph);
+            }
+            return null;
         }
     }
 }

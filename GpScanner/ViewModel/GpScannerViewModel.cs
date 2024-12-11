@@ -2184,6 +2184,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ScannerData ScannerData { get; set; }
 
+    public ObservableCollection<CheckBoxItem> SearchArchiveTypes
+    {
+        get;
+        set;
+    } = [new() { Name = ".zip", IsChecked = true }, new() { Name = ".rar", IsChecked = true }, new() { Name = ".7z", IsChecked = true }, new() { Name = ".tar", IsChecked = true }, new() { Name = ".gzip", IsChecked = true }, new()
+    {
+        Name = ".arj",
+        IsChecked = true
+    }];
+
     public string SeçiliDil
     {
         get;
@@ -2817,8 +2827,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             try
             {
-                string[] archivetypes = [".zip", ".rar", ".7z"];
-                if (archivetypes.Contains(Path.GetExtension(filename).ToLowerInvariant()) && new FileInfo(filename).Length <= filesize)
+                if (SearchArchiveTypes.Where(z => z.IsChecked).Select(z => z.Name).Contains(Path.GetExtension(filename).ToLowerInvariant()) && new FileInfo(filename).Length <= filesize)
                 {
                     using ArchiveFile archive = new(filename);
                     return archive?.Entries?.Any(z => z.FileName.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;

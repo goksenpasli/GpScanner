@@ -113,6 +113,17 @@ namespace TwainControl
 
         public string XlsxDataFilePath { get => (string)GetValue(XlsxDataFilePathProperty); set => SetValue(XlsxDataFilePathProperty, value); }
 
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+            {
+                if (Path.GetExtension(droppedfiles[0]).ToLowerInvariant() is ".csv" or ".xls" or ".xlsx" or ".xlsb")
+                {
+                    XlsxDataFilePath = droppedfiles[0];
+                }
+            }
+        }
+
         protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private static async void XlsxDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -130,12 +141,11 @@ namespace TwainControl
                     if (File.Exists(uriString))
                     {
                         using FileStream fs = File.Open(uriString, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                        viewer.Tablolar = Path.GetExtension(uriString) switch
+                        viewer.Tablolar = await viewer.GetDataTableCollection(fs, uriString);
+                        if (viewer.Tablolar is not null)
                         {
-                            ".csv" => (await viewer.StreamToDtAsync(fs, true)).Tables,
-                            _ => (await viewer.StreamToDtAsync(fs)).Tables,
-                        };
-                        viewer.SelectedTable = viewer.Tablolar[0];
+                            viewer.SelectedTable = viewer.Tablolar[0];
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -143,6 +153,16 @@ namespace TwainControl
                     throw new ArgumentException(ex?.Message);
                 }
             }
+        }
+
+        private async Task<DataTableCollection> GetDataTableCollection(FileStream fs, string uriString)
+        {
+            return Path.GetExtension(uriString) switch
+            {
+                ".csv" => (await StreamToDtAsync(fs, true)).Tables,
+                ".xls" or ".xlsx" or ".xlsb" => (await StreamToDtAsync(fs)).Tables,
+                _ => null,
+            };
         }
 
         private async Task<DataSet> StreamToDtAsync(FileStream stream, bool isCsv = false)
@@ -182,7 +202,7 @@ namespace TwainControl
                 if (!string.IsNullOrWhiteSpace(Search))
                 {
                     IEnumerable<DataRow> filteredrows = defaulttable.Rows.OfType<DataRow>().Where(z => z.ItemArray.Any(rowitem => rowitem is not null && rowitem is string content && content.IndexOf(Search, StringComparison.OrdinalIgnoreCase) >= 0));
-                    if (filteredrows.Any())
+                    if (filteredrows?.Any() == true)
                     {
                         SelectedTable = filteredrows.CopyToDataTable();
                         SelectedTable.TableName = tablename;

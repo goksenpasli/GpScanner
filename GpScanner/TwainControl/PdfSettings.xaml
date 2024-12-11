@@ -119,7 +119,7 @@
             </GroupBox>
             <Separator />
             <UniformGrid local:Policy.PolicyName="SaveQuality" Columns="2">
-                <HeaderedContentControl>
+                <HeaderedContentControl Margin="1">
                     <HeaderedContentControl.Header>
                         <TextBlock>
                             <Run Text="{local:Loc RES}" />
@@ -134,7 +134,7 @@
                         Ticks="72, 96, 120, 150, 200, 300, 450, 600, 1200, 2400, 4800"
                         Value="{Binding Path=ImgLoadResolution, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
                 </HeaderedContentControl>
-                <HeaderedContentControl>
+                <HeaderedContentControl Margin="1">
                     <HeaderedContentControl.Header>
                         <TextBlock>
                             <Run Text="{local:Loc BW}" />

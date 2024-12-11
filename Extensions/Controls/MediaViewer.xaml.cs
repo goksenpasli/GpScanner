@@ -1,4 +1,5 @@
-﻿using Extensions.Properties;
+﻿using Extensions;
+using Extensions.Properties;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -856,6 +857,17 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         double x = r * Math.Cos(t);
         double z = r * Math.Sin(t);
         return new Point3D(x, y, z);
+    }
+
+    protected override void OnDrop(DragEventArgs e)
+    {
+        if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+        {
+            if (VideoFileExtensions?.Split('|')?[1]?.Split(';')?.Contains($"*{Path.GetExtension(droppedfiles[0])}") == true)
+            {
+                MediaDataFilePath = droppedfiles[0];
+            }
+        }
     }
 
     protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

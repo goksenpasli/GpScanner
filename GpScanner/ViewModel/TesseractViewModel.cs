@@ -281,10 +281,12 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         byte[] buffer = new byte[bufferSize];
         int bytesRead;
         ocrData.IsEnabled = false;
+        long? contentLength = response.Content.Headers.ContentLength;
+        ocrData.OcrFileSize = Math.Round((double)(contentLength / 1_048_576d), 2);
         while ((bytesRead = await contentStream.ReadAsync(buffer, 0, bufferSize)) > 0)
         {
             await fileStream.WriteAsync(buffer, 0, bytesRead);
-            ocrData.ProgressValue = fileStream.Length / (double)response.Content.Headers.ContentLength * 100;
+            ocrData.ProgressValue = fileStream.Length / (double)contentLength * 100;
         }
         buffer = null;
         ocrData.IsEnabled = true;
@@ -372,7 +374,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new() { OcrName = "fas.traineddata", OcrLangName = "Persian" },
             new() { OcrName = "fin.traineddata", OcrLangName = "Finnish" },
             new() { OcrName = "fra.traineddata", OcrLangName = "French" },
-            new() { OcrName = "frk.traineddata", OcrLangName = "Frankish" },
             new() { OcrName = "frm.traineddata", OcrLangName = "Middle French" },
             new() { OcrName = "gle.traineddata", OcrLangName = "Irish" },
             new() { OcrName = "glg.traineddata", OcrLangName = "Galician" },
@@ -399,7 +400,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new() { OcrName = "kir.traineddata", OcrLangName = "Kirghiz" },
             new() { OcrName = "kmr.traineddata", OcrLangName = "Kurdish (Kurmanji)" },
             new() { OcrName = "kor.traineddata", OcrLangName = "Korean" },
-            new() { OcrName = "kur.traineddata", OcrLangName = "Kurdish (Sorani)" },
             new() { OcrName = "lao.traineddata", OcrLangName = "Lao" },
             new() { OcrName = "lat.traineddata", OcrLangName = "Latin" },
             new() { OcrName = "lav.traineddata", OcrLangName = "Latvian" },
@@ -413,8 +413,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new() { OcrName = "mya.traineddata", OcrLangName = "Burmese" },
             new() { OcrName = "nep.traineddata", OcrLangName = "Nepali" },
             new() { OcrName = "nld.traineddata", OcrLangName = "Dutch" },
-            new() { OcrName = "nno.traineddata", OcrLangName = "Norwegian Nynorsk" },
-            new() { OcrName = "nob.traineddata", OcrLangName = "Norwegian" },
             new() { OcrName = "oci.traineddata", OcrLangName = "Occitan" },
             new() { OcrName = "ori.traineddata", OcrLangName = "Oriya" },
             new() { OcrName = "osd.traineddata", OcrLangName = "Orientation and Script Detection" },
@@ -441,7 +439,6 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new() { OcrName = "tat.traineddata", OcrLangName = "Tatar" },
             new() { OcrName = "tel.traineddata", OcrLangName = "Telugu" },
             new() { OcrName = "tgk.traineddata", OcrLangName = "Tajik" },
-            new() { OcrName = "tgl.traineddata", OcrLangName = "Tagalog" },
             new() { OcrName = "tha.traineddata", OcrLangName = "Thai" },
             new() { OcrName = "tir.traineddata", OcrLangName = "Tigrinya" },
             new() { OcrName = "ton.traineddata", OcrLangName = "Tongan" },
@@ -452,9 +449,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             new() { OcrName = "uzb.traineddata", OcrLangName = "Uzbek" },
             new() { OcrName = "uzb_cyrl.traineddata", OcrLangName = "Uzbek (Cyrillic)" },
             new() { OcrName = "vie.traineddata", OcrLangName = "Vietnamese" },
-            new() { OcrName = "yor.traineddata", OcrLangName = "Yoruba" },
-            new() { OcrName = "zho.traineddata", OcrLangName = "Chinese" },
-            new() { OcrName = "zul.traineddata", OcrLangName = "Zulu" }];
+            new() { OcrName = "yor.traineddata", OcrLangName = "Yoruba" }];
     }
 
     private void TesseractViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

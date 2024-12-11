@@ -77,7 +77,8 @@
                             <Button Grid.Row="0"
                                 Grid.Column="11"
                                 Background="Tan"
-                                Content="-" />  <Button Grid.Row="0"
+                                Content="-" />
+                            <Button Grid.Row="0"
                                 Grid.Column="12"
                                 Background="Tan"
                                 Content="+" />
@@ -116,7 +117,8 @@
                                 Content="ğ" />
                             <Button Grid.Row="1"
                                 Grid.Column="11"
-                                Content="ü" />  <Button Grid.Row="1"
+                                Content="ü" />
+                            <Button Grid.Row="1"
                                 Grid.Column="12"
                                 Content="/" />
                             <Button Grid.Row="2"
@@ -154,7 +156,8 @@
                                 Content="i" />
                             <Button Grid.Row="2"
                                 Grid.Column="11"
-                                Content="," />  <Button Grid.Row="2"
+                                Content="," />
+                            <Button Grid.Row="2"
                                 Grid.Column="12"
                                 Content=":" />
                             <Button Grid.Row="3"
@@ -194,7 +197,8 @@
                                 Content="ç" />
                             <Button Grid.Row="3"
                                 Grid.Column="10"
-                                Content="." />   <Button Grid.Row="3"
+                                Content="." />
+                            <Button Grid.Row="3"
                                 Grid.Column="11"
                                 Content="\" />
                             <Button Grid.Row="3"

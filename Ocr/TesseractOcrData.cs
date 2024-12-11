@@ -16,6 +16,19 @@ public class TesseractOcrData : InpcBase
         }
     } = true;
 
+    public double OcrFileSize
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(OcrFileSize));
+            }
+        }
+    }
+
     public string OcrLangName
     {
         get;

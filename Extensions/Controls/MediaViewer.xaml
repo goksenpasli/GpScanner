@@ -10,6 +10,7 @@
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
     d:DesignHeight="384"
     d:DesignWidth="570"
+    AllowDrop="True"
     SnapsToDevicePixels="True"
     UseLayoutRounding="True"
     mc:Ignorable="d">
