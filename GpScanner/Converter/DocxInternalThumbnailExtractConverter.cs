@@ -30,10 +30,7 @@ public sealed class DocxInternalThumbnailExtractConverter : IValueConverter
         {
             return ShellIcon.GetExtensionIconBySize(filename, ShellIcon.SizeType.jumbo);
         }
-        using MemoryStream ms = new();
-        entry.Open().CopyTo(ms);
-        ms.Position = 0;
-        using Bitmap bitmap = new(ms);
+        using Bitmap bitmap = new(entry.Open());
         return bitmap?.ToBitmapImage(ImageFormat.Png, 145);
     }
 

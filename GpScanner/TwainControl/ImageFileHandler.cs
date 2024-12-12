@@ -49,6 +49,6 @@ namespace TwainControl
 
         public Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename) => throw new NotImplementedException();
 
-        public BitmapFrame LoadWebpImage(int decodeheight, string filename) => throw new NotImplementedException();
+        public Task<BitmapFrame> LoadWebpImage(int decodeheight, string filename, bool fullresolution = true) => throw new NotImplementedException();
     }
 }

@@ -955,7 +955,8 @@
             OpenButtonVisibility="Collapsed"
             PanoramaButtonVisibility="Collapsed"
             PrintButtonVisibility="Visible"
-            Source="{Binding Path=DataContext, Converter={StaticResource WebpFileToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+            Tag="{Binding Path=DataContext, Converter={StaticResource WebpFileToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
     <DataTemplate x:Key="Jb2Template">
         <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"

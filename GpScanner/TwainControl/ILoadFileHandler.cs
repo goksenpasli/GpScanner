@@ -17,7 +17,7 @@ namespace TwainControl
 
         Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename);
 
-        BitmapFrame LoadWebpImage(int decodeheight, string filename);
+        Task<BitmapFrame> LoadWebpImage(int decodeheight, string filename, bool fullresolution = true);
 
         Task<IEnumerable<BitmapFrame>> LoadXpsPagesAsync(string filename);
     }

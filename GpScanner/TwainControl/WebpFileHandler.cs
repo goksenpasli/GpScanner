@@ -21,16 +21,18 @@ namespace TwainControl
 
         public Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename) => throw new NotImplementedException();
 
-        public BitmapFrame LoadWebpImage(int decodeheight, string filename)
+        public async Task<BitmapFrame> LoadWebpImage(int decodeheight, string filename, bool fullresolution = true)
         {
-            if (!IsValidFile(filename))
-            {
-                return null;
-            }
-            BitmapImage main = (BitmapImage)filename.WebpDecode(true, decodeheight);
-            BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
-            bitmapFrame.Freeze();
-            return bitmapFrame;
+            return !IsValidFile(filename)
+                   ? null
+                   : await Task.Run(
+                () =>
+                {
+                    BitmapImage main = (BitmapImage)filename.WebpDecode(fullresolution, decodeheight);
+                    BitmapFrame bitmapFrame = Settings.Default.DefaultPictureResizeRatio != 100 ? BitmapFrame.Create(main.Resize(Settings.Default.DefaultPictureResizeRatio / 100d)) : BitmapFrame.Create(main);
+                    bitmapFrame.Freeze();
+                    return bitmapFrame;
+                });
         }
 
         public Task<IEnumerable<BitmapFrame>> LoadXpsPagesAsync(string filename) => throw new NotImplementedException();

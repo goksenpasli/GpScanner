@@ -4018,7 +4018,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     break;
 
                 case WebpFileHandler:
-                    bitmapFrame = fileHandler.LoadWebpImage(decodeHeight, filename);
+                    bitmapFrame =await fileHandler.LoadWebpImage(decodeHeight, filename);
                     break;
 
                 case XpsFileHandler:

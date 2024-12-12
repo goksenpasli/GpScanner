@@ -7,7 +7,7 @@ using TwainControl;
 
 namespace GpScanner.Converter;
 
-public class TesseractDataFilesContentLengthConverter : IValueConverter
+public sealed class TesseractDataFilesContentLengthConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
@@ -24,7 +24,7 @@ public class TesseractDataFilesContentLengthConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 
-    private static async Task<string> FetchContentLengthAsync(string url)
+    private async Task<string> FetchContentLengthAsync(string url)
     {
         try
         {

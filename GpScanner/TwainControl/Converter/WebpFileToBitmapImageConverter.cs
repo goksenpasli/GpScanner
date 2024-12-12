@@ -13,7 +13,7 @@ public sealed class WebpFileToBitmapImageConverter : IValueConverter
         if (value is string filepath && File.Exists(filepath) && WebP.WebpDllExists)
         {
             WebpFileHandler fileHandler = new();
-            return fileHandler.LoadWebpImage(0, filepath);
+            return parameter is string converterparameter && int.TryParse(converterparameter, out int decodeheight) ? fileHandler.LoadWebpImage(decodeheight, filepath, false) : fileHandler.LoadWebpImage(0, filepath);
         }
         return null;
     }
