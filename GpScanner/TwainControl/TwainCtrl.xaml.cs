@@ -2193,7 +2193,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfImportViewerControl.PdfViewer.EypFilePath = file;
                 }
                 pdfImportViewerControl.DataContext = this;
-                maximizedWindow = new() { Owner = Window.GetWindow(this), WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = file, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
+                maximizedWindow = new()
+                {
+                    Owner = Window.GetWindow(this),
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    Title = file,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    UseLayoutRounding = true,
+                    Icon = ShellIcon.GetFileIconBySize(file, 0)
+                };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -2216,7 +2225,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 ImageViewer imageViewer = new() { PanoramaButtonVisibility = Visibility.Collapsed, PrintButtonVisibility = Visibility.Visible, ImageFilePath = parameter as string };
-                maximizedWindow = new() { Owner = Window.GetWindow(this), WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
+                maximizedWindow = new()
+                {
+                    Owner = Window.GetWindow(this),
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    Title = AppName,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    UseLayoutRounding = true,
+                    Icon = ShellIcon.GetFileIconBySize(imageViewer.ImageFilePath, 0)
+                };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -2233,7 +2251,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 XmlViewerControl xmlViewerControl = new();
                 XmlViewerControlModel.SetXmlContent(xmlViewerControl, parameter as string);
-                maximizedWindow = new() { Owner = Window.GetWindow(this), WindowState = WindowState.Maximized, ShowInTaskbar = true, Title = AppName, WindowStartupLocation = WindowStartupLocation.CenterOwner, UseLayoutRounding = true };
+                maximizedWindow = new()
+                {
+                    Owner = Window.GetWindow(this),
+                    WindowState = WindowState.Maximized,
+                    ShowInTaskbar = true,
+                    Title = AppName,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner,
+                    UseLayoutRounding = true,
+                    Icon = ShellIcon.GetFileIconBySize(parameter as string, 0)
+                };
                 maximizedWindow.Closed += (s, e) =>
                                           {
                                               maximizedWindow = null;
@@ -4018,7 +4045,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     break;
 
                 case WebpFileHandler:
-                    bitmapFrame =await fileHandler.LoadWebpImage(decodeHeight, filename);
+                    bitmapFrame = await fileHandler.LoadWebpImage(decodeHeight, filename);
                     break;
 
                 case XpsFileHandler:

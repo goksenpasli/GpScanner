@@ -14,6 +14,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Data.Entity;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
 using System.IO.Compression;
@@ -66,7 +67,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private readonly IdleTimeIndexer ıdleTimeIndexer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
-    private readonly List<string> unindexedfileextensions = [".pdf", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
+    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
     private int cycleIndex;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
@@ -373,6 +374,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                 {
                     documentViewerModel.FilePath = filepath;
+                    documentViewerWindow.Icon = ShellIcon.GetFileIconBySize(filepath, 0);
                     documentViewerWindow.Show();
                     documentViewerWindow.Lb?.ScrollIntoView(filepath);
                 }
@@ -3265,7 +3267,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         string extension = Path.GetExtension(unIndexedFile.ToLowerInvariant());
         StringBuilder ocrTextBuilder = new();
-
+        ObservableCollection<OcrData> ocrData;
         switch (extension)
         {
             case ".pdf" when PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile):
@@ -3280,8 +3282,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
                 break;
 
+            case ".webp":
+                WebP webP = new();
+                ocrData = await webP.Load(unIndexedFile).ToBitmapImage(ImageFormat.Jpeg).ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
+                break;
+
             default:
-                ObservableCollection<OcrData> ocrData = await unIndexedFile.OcrAsync(Settings.Default.DefaultTtsLang);
+                ocrData = await unIndexedFile.OcrAsync(Settings.Default.DefaultTtsLang);
                 _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
                 break;
         }

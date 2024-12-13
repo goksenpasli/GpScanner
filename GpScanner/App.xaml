@@ -35,6 +35,7 @@
             <Converter:DocxInternalThumbnailExtractConverter x:Key="DocxInternalThumbnailExtractConverter" />
             <Converter:XlsxInternalThumbnailExtractConverter x:Key="XlsxInternalThumbnailExtractConverter" />
             <converter:PdfPageCountConverter x:Key="PdfPageCountConverter" />
+            <System:Double x:Key="Zero">0</System:Double>
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
                 <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
@@ -467,8 +468,21 @@
                     Height="150"
                     IsHitTestVisible="False"
                     ShowShadow="True"
-                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
-                    Tag="{Binding Path=DataContext, ConverterParameter=150, Converter={StaticResource WebpFileToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
+                    <PdfViewer:PdfShadowedImage.Tag>
+                        <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
+                            <Binding IsAsync="True"
+                                Mode="OneWay"
+                                Path="DataContext"
+                                RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                UpdateSourceTrigger="PropertyChanged" />
+                            <Binding Mode="OneWay"
+                                Path="Width"
+                                RelativeSource="{RelativeSource Mode=Self}"
+                                UpdateSourceTrigger="PropertyChanged" />
+                        </MultiBinding>
+                    </PdfViewer:PdfShadowedImage.Tag>
+                </PdfViewer:PdfShadowedImage>
             </DataTemplate>
             <DataTemplate x:Key="Jb2MonthTemplateMini">
                 <PdfViewer:PdfShadowedImage Width="150"
@@ -494,8 +508,20 @@
                 <PdfViewer:PdfShadowedImage Width="150"
                     Height="150"
                     ShowShadow="True"
-                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
-                    Tag="{Binding Path=DataContext, ConverterParameter=150, Converter={StaticResource WebpFileToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
+                    <PdfViewer:PdfShadowedImage.Tag>
+                        <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
+                            <Binding IsAsync="True"
+                                Mode="OneWay"
+                                Path="DataContext"
+                                RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                UpdateSourceTrigger="PropertyChanged" />
+                            <Binding Mode="OneWay"
+                                Path="Width"
+                                RelativeSource="{RelativeSource Mode=Self}"
+                                UpdateSourceTrigger="PropertyChanged" />
+                        </MultiBinding>
+                    </PdfViewer:PdfShadowedImage.Tag>
                     <PdfViewer:PdfShadowedImage.InputBindings>
                         <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
                             <MouseBinding.CommandParameter>
@@ -511,20 +537,50 @@
                 </PdfViewer:PdfShadowedImage>
             </DataTemplate>
             <DataTemplate x:Key="Jb2Template">
-                <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                    OpenButtonVisibility="Collapsed"
+                <Extensions:ImageViewer OpenButtonVisibility="Collapsed"
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Visible"
                     Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
                     Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="WebpTemplate">
-                <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                    OpenButtonVisibility="Collapsed"
+                <Extensions:ImageViewer OpenButtonVisibility="Collapsed"
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Visible"
-                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
-                    Tag="{Binding Path=DataContext, Converter={StaticResource WebpFileToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
+                    <Extensions:ImageViewer.Tag>
+                        <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
+                            <Binding IsAsync="True"
+                                Mode="OneWay"
+                                Path="DataContext"
+                                RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                UpdateSourceTrigger="PropertyChanged" />
+                            <Binding Mode="OneWay"
+                                Path="ActualWidth"
+                                RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                UpdateSourceTrigger="PropertyChanged" />
+                        </MultiBinding>
+                    </Extensions:ImageViewer.Tag>
+                </Extensions:ImageViewer>
+            </DataTemplate>
+            <DataTemplate x:Key="WebpTemplateFull">
+                <Extensions:ImageViewer OpenButtonVisibility="Collapsed"
+                    PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Visible"
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
+                    <Extensions:ImageViewer.Tag>
+                        <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
+                            <Binding IsAsync="True"
+                                Mode="OneWay"
+                                Path="DataContext"
+                                RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                UpdateSourceTrigger="PropertyChanged" />
+                            <Binding Mode="OneWay"
+                                Source="{StaticResource Zero}"
+                                UpdateSourceTrigger="PropertyChanged" />
+                        </MultiBinding>
+                    </Extensions:ImageViewer.Tag>
+                </Extensions:ImageViewer>
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateFull">
                 <Grid>
@@ -727,7 +783,7 @@
                 Jb2="{StaticResource Jb2Template}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
-                Webp="{StaticResource WebpTemplate}"
+                Webp="{StaticResource WebpTemplateFull}"
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
@@ -784,10 +840,10 @@
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
-                Jb2="{StaticResource Jb2TemplateMini}"
+                Jb2="{StaticResource Jb2Template}"
                 Pdf="{StaticResource UnIndexedPdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
-                Webp="{StaticResource WebpTemplateMini}"
+                Webp="{StaticResource WebpTemplate}"
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"
