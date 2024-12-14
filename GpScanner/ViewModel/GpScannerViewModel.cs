@@ -2565,7 +2565,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         if (!Directory.Exists(Twainsettings.Settings.Default.AutoFolder))
         {
-            return null;
+            return [];
         }
 
         ObservableCollection<Scanner> list = [];
@@ -3284,22 +3284,22 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 break;
 
             case ".xlsx" or ".xls" or ".xlsb" or ".csv":
-                _ = await Application.Current.Dispatcher
-                .InvokeAsync(
-                    async () =>
+                await Application.Current?.Dispatcher?
+                .Invoke(
+                async () =>
+                {
+                    using FileStream fileStream = File.Open(unIndexedFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    XlsxViewer xlsxViewer = new();
+                    DataTableCollection datatablecollection = await xlsxViewer.GetDataTableCollection(fileStream, unIndexedFile);
+                    foreach (DataTable dataTable in datatablecollection)
                     {
-                        using FileStream fileStream = File.Open(unIndexedFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                        XlsxViewer xlsxViewer = new();
-                        DataTableCollection datatablecollection = await xlsxViewer.GetDataTableCollection(fileStream, unIndexedFile);
-                        foreach (DataTable dataTable in datatablecollection)
+                        foreach (DataRow row in dataTable.Rows.OfType<DataRow>())
                         {
-                            foreach (DataRow row in dataTable.Rows.OfType<DataRow>())
-                            {
-                                string rowString = string.Join("\t", dataTable.Columns.OfType<DataColumn>().Select(col => row[col]?.ToString() ?? string.Empty));
-                                _ = ocrTextBuilder.Append(rowString).Append(" ");
-                            }
+                            string rowString = string.Join("\t", dataTable.Columns.OfType<DataColumn>().Select(col => row[col]?.ToString() ?? string.Empty));
+                            _ = ocrTextBuilder.Append(rowString).Append(" ");
                         }
-                    });
+                    }
+                });
                 break;
 
             case ".webp":
