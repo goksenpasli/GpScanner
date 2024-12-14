@@ -96,7 +96,7 @@ public partial class MainWindow : Window
             }
             if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)
             {
-                List<string> DroppedPdfFiles = files.Where(PdfViewer.PdfViewer.IsValidPdfFile).ToList();
+                List<string> DroppedPdfFiles = [.. files.Where(PdfViewer.PdfViewer.IsValidPdfFile)];
                 await Task.Run(
                     () =>
                     {

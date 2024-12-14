@@ -178,13 +178,13 @@ namespace Extensions
         {
             if (Contributions?.Any() == true && e.PropertyName is "SelectedMonth" or "SelectedDay")
             {
-                List<ContributionData> contributionsForSelectedMonth = Contributions.Where(z => z.ContrubutionDate.Value.ToString("MMM") == SelectedMonth).ToList();
+                List<ContributionData> contributionsForSelectedMonth = [.. Contributions.Where(z => z.ContrubutionDate.Value.ToString("MMM") == SelectedMonth)];
                 foreach (ContributionData item in Contributions)
                 {
                     item.Stroke = item.ContrubutionDate.HasValue && item.ContrubutionDate.Value.ToString("MMM") == SelectedMonth ? Brushes.Red : null;
                 }
                 MonthTotalContribution = contributionsForSelectedMonth.Sum(z => z.Count);
-                List<ContributionData> contributionsForSelectedDay = contributionsForSelectedMonth.Where(z => z.ContrubutionDate.Value.ToString("ddd") == SelectedDay).ToList();
+                List<ContributionData> contributionsForSelectedDay = [.. contributionsForSelectedMonth.Where(z => z.ContrubutionDate.Value.ToString("ddd") == SelectedDay)];
                 MonthDateTotalContribution = contributionsForSelectedDay.Sum(z => z.Count);
             }
         }

@@ -143,10 +143,9 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 await Task.Run(
                     async () =>
                     {
-                        listcroppedimages = Scanner.Resimler
+                        listcroppedimages = [.. Scanner.Resimler
                         .Where(z => z.Seçili)
-                        .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))
-                        .ToList();
+                        .SelectMany(scannedimage => CropImageToList(scannedimage.Resim, (int)Scanner.SliceCountWidth, (int)Scanner.SliceCountHeight).Select(croppedBitmap => new ScannedImage { Resim = BitmapFrame.Create(croppedBitmap) }))];
                         pdfdocument = await listcroppedimages.GeneratePdfAsync(Format.Jpg, Paper, Settings.Default.JpegQuality, null, Settings.Default.ImgLoadResolution, progress => Scanner.PdfSaveProgressValue = progress);
                     });
                 string savefolder = CreateSaveFolder("SPLIT");
@@ -181,7 +180,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                 await Task.Run(
                     () =>
                     {
-                        listcroppedimages = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                        listcroppedimages = [.. Scanner.Resimler.Where(z => z.Seçili)];
                         File.WriteAllBytes(path, listcroppedimages.CombineImages(orientation).ToTiffJpegByteArray(Format.Jpg));
                     });
                 WebAdreseGit.Execute(savefolder);
@@ -198,7 +197,7 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
             {
                 PageOrientation pageOrientation = Keyboard.Modifiers == ModifierKeys.Alt ? PageOrientation.Portrait : PageOrientation.Landscape;
                 string savefolder = CreateSaveFolder("MERGE");
-                List<ScannedImage> seçiliresimler = Scanner.Resimler.Where(z => z.Seçili).ToList();
+                List<ScannedImage> seçiliresimler = [.. Scanner.Resimler.Where(z => z.Seçili)];
                 PdfDocument pdfdocument = new();
                 PdfPage page = null;
                 int imageindex = 0;

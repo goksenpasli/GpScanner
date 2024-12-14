@@ -109,7 +109,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     await Task.Run(
                         async () =>
                         {
-                            List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
+                            List<string> pdffilelist = [.. Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName)];
                             string savefilename = PdfGeneration.GetPdfScanPath();
                             pdffilelist.ToArray().MergePdf().Save(savefilename);
                             FileInfo fi = new(savefilename);
@@ -127,7 +127,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         await Task.Run(
                             () =>
                             {
-                                List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
+                                List<string> pdffilelist = [.. Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName)];
                                 pdffilelist.ToArray().MergePdf().Save(saveFileDialog.FileName);
                             });
                     }
@@ -154,7 +154,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 await Task.Run(
                     () =>
                     {
-                        List<string> pdffilelist = Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName).ToList();
+                        List<string> pdffilelist = [.. Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName)];
                         using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
                         for (int i = 0; i < pdffilelist.Count; i++)
                         {
@@ -770,7 +770,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         BatchMergeSelectedFiles = new RelayCommand<object>(
             async parameter =>
             {
-                string[] files = BatchFolderProcessedFileList.Where(z => z.Checked).Select(z => z.Name).ToArray();
+                string[] files = [.. BatchFolderProcessedFileList.Where(z => z.Checked).Select(z => z.Name)];
                 if (files.All(z => File.Exists(z)))
                 {
                     await files.SavePdfFilesAsync();
@@ -892,7 +892,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     return;
                 }
-                List<Scanner> listboxFiles = MainWindow.cvs.View.OfType<Scanner>().ToList();
+                List<Scanner> listboxFiles = [.. MainWindow.cvs.View.OfType<Scanner>()];
                 Scanner currentFile = listboxFiles.Where(z => z.Seçili).ElementAtOrDefault(cycleIndex);
                 if (currentFile is null)
                 {
@@ -1125,7 +1125,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     await Task.Run(
                         () =>
                         {
-                            List<string> zippedfiles = data.Where(z => z.Count > 0).SelectMany(z => ((ExtendedContributionData)z).Name).ToList();
+                            List<string> zippedfiles = [.. data.Where(z => z.Count > 0).SelectMany(z => ((ExtendedContributionData)z).Name)];
                             using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
                             for (int i = 0; i < zippedfiles.Count; i++)
                             {
@@ -2315,7 +2315,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public int[] SettingsPagePdfDpiList { get; } = PdfViewer.PdfViewer.DpiList;
 
-    public int[] SettingsPagePictureResizeList { get; } = Enumerable.Range(5, 100).Where(z => z % 5 == 0).ToArray();
+    public int[] SettingsPagePictureResizeList { get; } = [.. Enumerable.Range(5, 100).Where(z => z % 5 == 0)];
 
     public bool ShowUnindexedFileWarn
     {
@@ -2555,7 +2555,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             return Translation.GetResStringValue("DEFAULTSCANNAME");
         }
 
-        List<string> patchcodes = Settings.Default.PatchCodes.Cast<string>().ToList();
+        List<string> patchcodes = [.. Settings.Default.PatchCodes.Cast<string>()];
         string matchingPatchCode = patchcodes?.Find(z => z.Split('|')[0] == qrcodetag);
         return matchingPatchCode?.Split('|')[1] ?? Translation.GetResStringValue("DEFAULTSCANNAME");
     }
@@ -3204,7 +3204,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private void InitializeBatchFiles(out List<string> files, out int slicecount, out Scanner scanner, out List<Task> Tasks)
     {
-        files = FastFileSearch.EnumerateFilepaths(BatchFolder).Where(file => BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLowerInvariant())).ToList();
+        files = [.. FastFileSearch.EnumerateFilepaths(BatchFolder).Where(file => BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLowerInvariant()))];
         slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
         scanner = ToolBox.Scanner;
         scanner.ProgressState = TaskbarItemProgressState.Normal;
@@ -3344,7 +3344,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         try
         {
             using AppDbContext context = new();
-            List<ReminderData> reminders = await context.ReminderData.AsNoTracking().Where(z => z.Tarih > DateTime.Today && !z.Seen).OrderBy(z => z.Tarih).ToListAsync();
+            List<ReminderData> reminders = await context.ReminderData.AsNoTracking().Where(z => z.Tarih >= DateTime.Today && !z.Seen).OrderBy(z => z.Tarih).ToListAsync();
             return [.. reminders];
         }
         catch (Exception)

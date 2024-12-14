@@ -1036,7 +1036,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     StringCollection clipboardFiles = Clipboard.GetFileDropList();
                     if (clipboardFiles?.Count > 0)
                     {
-                        await AddFiles(clipboardFiles.Cast<string>().ToArray(), DecodeHeight);
+                        await AddFiles([.. clipboardFiles.Cast<string>()], DecodeHeight);
                     }
                 }
                 Clipboard.Clear();
@@ -1102,7 +1102,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                     else if (tiffFileHandler.IsValidFile(filename))
                     {
-                        List<BitmapFrame> list = (await tiffFileHandler.LoadTiffPagesAsync(filename)).ToList();
+                        List<BitmapFrame> list = [.. (await tiffFileHandler.LoadTiffPagesAsync(filename))];
                         for (int i = list.Count - 1; i >= 0; i--)
                         {
                             BitmapFrame bitmapFrame = list[i];
@@ -1170,7 +1170,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     Scanner.MergePdfFiles.Insert(0, currentfile);
                 }
-                string[] files = Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
+                string[] files = [.. Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase))];
                 PdfToolBarControlIsEnabled = false;
                 files.MergePdf().Save(currentfile);
                 Scanner?.MergePdfFiles?.Clear();
@@ -1183,7 +1183,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         MergePdfListToFile = new RelayCommand<object>(
             parameter =>
             {
-                string[] files = Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToArray();
+                string[] files = [.. Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase))];
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("MERGE")}" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
@@ -1319,8 +1319,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (Clipboard.ContainsFileDropList())
                 {
                     StringCollection clipboardFiles = Clipboard.GetFileDropList();
-                    List<string> clipboardPdfFiles = clipboardFiles.Cast<string>().Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)).ToList();
-                    List<string> clipboardImageFiles = clipboardFiles.Cast<string>().Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant())).ToList();
+                    List<string> clipboardPdfFiles = [.. clipboardFiles.Cast<string>().Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase))];
+                    List<string> clipboardImageFiles = [.. clipboardFiles.Cast<string>().Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant()))];
                     if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
                     {
                         PdfToolBarControlIsEnabled = false;
@@ -1587,7 +1587,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ReverseData = new RelayCommand<object>(
             parameter =>
             {
-                List<ScannedImage> scannedImages = Scanner.Resimler.Reverse().ToList();
+                List<ScannedImage> scannedImages = [.. Scanner.Resimler.Reverse()];
                 Scanner.Resimler = [.. scannedImages];
                 Scanner.RefreshIndexNumbers();
             },
@@ -2107,7 +2107,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 if (!string.IsNullOrWhiteSpace(TextSplitList))
                 {
-                    SplittedIndexImages = SplitArray(Scanner.Resimler.ToArray(), TextSplitList.Split(',').Select(z => int.TryParse(z, out int result) ? result : 0).ToArray());
+                    SplittedIndexImages = SplitArray(Scanner.Resimler.ToArray(), [.. TextSplitList.Split(',').Select(z => int.TryParse(z, out int result) ? result : 0)]);
                 }
             },
             parameter => Scanner?.Resimler?.Count > 1);
@@ -3591,7 +3591,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    public static List<List<T>> ChunkBy<T>(IEnumerable<T> source, int chunkSize) => source.Select((x, i) => new { Index = i, Value = x }).GroupBy(x => x.Index / chunkSize).Select(x => x.Select(v => v.Value).ToList()).ToList();
+    public static List<List<T>> ChunkBy<T>(IEnumerable<T> source, int chunkSize) => [.. source.Select((x, i) => new { Index = i, Value = x }).GroupBy(x => x.Index / chunkSize).Select(x => x.Select(v => v.Value).ToList())];
 
     public static List<string> EypFileExtract(string eypfilepath)
     {
@@ -4423,7 +4423,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         List<List<T>> splitLists = [];
         for (int i = 0; i < splitCount; i++)
         {
-            splitLists.Add(scannedImages.Skip(i * splitIndex).Take(splitIndex).ToList());
+            splitLists.Add([.. scannedImages.Skip(i * splitIndex).Take(splitIndex)]);
         }
         return MixLists([.. splitLists]);
     }
@@ -5148,9 +5148,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             int startIndex = i == 0 ? 0 : indices[i - 1];
             int length = i == 0 ? indices[i] : indices[i] - indices[i - 1];
-            parts.Add(array.Skip(startIndex).Take(length).ToArray());
+            parts.Add([.. array.Skip(startIndex).Take(length)]);
         }
-        parts.Add(array.Skip(indices[indices.Length - 1]).ToArray());
+        parts.Add([.. array.Skip(indices[indices.Length - 1])]);
         return parts;
     }
 

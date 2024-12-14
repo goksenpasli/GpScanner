@@ -194,7 +194,7 @@ public class SimpleArchiveViewer : ArchiveViewer
             throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
         }
         using ArchiveFile archiveFile = new(archivepath);
-        ArchiveData[] archivedata = list.ToArray();
+        ArchiveData[] archivedata = [.. list];
         for (int i = 0; i < archivedata.Length; i++)
         {
             ArchiveData item = archivedata[i];

@@ -108,10 +108,10 @@ public static class ExtensionMethods
             {
                 try
                 {
-                    List<string> files = Directory.EnumerateFiles(currentPath, pattern).ToList();
+                    List<string> files = [.. Directory.EnumerateFiles(currentPath, pattern)];
                     _ = Parallel.ForEach(files, fileName => filesNames.Add(fileName));
 
-                    List<string> directories = Directory.EnumerateDirectories(currentPath).ToList();
+                    List<string> directories = [.. Directory.EnumerateDirectories(currentPath)];
                     _ = Parallel.ForEach(directories, directory => pendingQueue.Add(directory));
                 }
                 catch (UnauthorizedAccessException)
