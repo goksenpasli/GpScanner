@@ -68,7 +68,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private readonly IdleTimeIndexer ıdleTimeIndexer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
-    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx"];
+    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv"];
     private int cycleIndex;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);

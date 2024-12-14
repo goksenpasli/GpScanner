@@ -78,6 +78,5 @@ public class Policy : DependencyObject
         {
             uIElement.Visibility = CheckPolicy((string)e.NewValue) ? Visibility.Visible : Visibility.Collapsed;
         }
-
     }
 }

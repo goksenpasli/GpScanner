@@ -14,7 +14,6 @@ public sealed class WebpFileToBitmapImageConverter : IMultiValueConverter
         {
             WebpFileHandler fileHandler = new();
             return decodeheight != 0d ? fileHandler.LoadWebpImage((int)decodeheight, filepath, false) : fileHandler.LoadWebpImage(0, filepath);
-
         }
         return null;
     }

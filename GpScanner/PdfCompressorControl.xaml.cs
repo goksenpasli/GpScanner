@@ -48,7 +48,6 @@ namespace GpScanner
                     }
                 },
                 parameter => Compressor?.BatchPdfList?.Count > 0);
-
         }
 
         public RelayCommand<object> DeselectAllFile { get; }

@@ -70,7 +70,6 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
     /// <summary>
     /// Owner of the displayed items.
     /// </summary>
-
     /// <summary>
     /// Previously set visibility of the vertical scroll bar.
     /// </summary>
