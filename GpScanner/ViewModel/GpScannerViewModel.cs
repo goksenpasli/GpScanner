@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Configuration;
+using System.Data;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Drawing.Imaging;
@@ -67,7 +68,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private readonly IdleTimeIndexer ıdleTimeIndexer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
     private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
-    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx"];
+    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx"];
     private int cycleIndex;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
@@ -3279,6 +3280,22 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     using DocX document = DocX.Load(fileStream);
                     _ = ocrTextBuilder.Append(document.Text);
+                }
+                break;
+
+            case ".xlsx" or ".xls" or ".xlsb" or ".csv":
+                using (FileStream fileStream = File.Open(unIndexedFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    XlsxViewer xlsxViewer = new();
+                    DataTableCollection datatablecollection = await xlsxViewer.GetDataTableCollection(fileStream, unIndexedFile);
+                    foreach (DataTable dataTable in datatablecollection)
+                    {
+                        foreach (DataRow row in dataTable.Rows.OfType<DataRow>())
+                        {
+                            string rowString = string.Join("\t", dataTable.Columns.OfType<DataColumn>().Select(col => row[col]?.ToString() ?? string.Empty));
+                            _ = ocrTextBuilder.Append(rowString).Append(" ");
+                        }
+                    }
                 }
                 break;
 

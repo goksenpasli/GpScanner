@@ -113,6 +113,16 @@ namespace TwainControl
 
         public string XlsxDataFilePath { get => (string)GetValue(XlsxDataFilePathProperty); set => SetValue(XlsxDataFilePathProperty, value); }
 
+        public async Task<DataTableCollection> GetDataTableCollection(FileStream fs, string uriString)
+        {
+            return Path.GetExtension(uriString) switch
+            {
+                ".csv" => (await StreamToDtAsync(fs, true)).Tables,
+                ".xls" or ".xlsx" or ".xlsb" => (await StreamToDtAsync(fs)).Tables,
+                _ => null,
+            };
+        }
+
         protected override void OnDrop(DragEventArgs e)
         {
             if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
@@ -153,16 +163,6 @@ namespace TwainControl
                     throw new ArgumentException(ex?.Message);
                 }
             }
-        }
-
-        private async Task<DataTableCollection> GetDataTableCollection(FileStream fs, string uriString)
-        {
-            return Path.GetExtension(uriString) switch
-            {
-                ".csv" => (await StreamToDtAsync(fs, true)).Tables,
-                ".xls" or ".xlsx" or ".xlsb" => (await StreamToDtAsync(fs)).Tables,
-                _ => null,
-            };
         }
 
         private async Task<DataSet> StreamToDtAsync(FileStream stream, bool isCsv = false)
