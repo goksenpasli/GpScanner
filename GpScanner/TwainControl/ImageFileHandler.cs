@@ -21,8 +21,6 @@ namespace TwainControl
 
         Task<IEnumerable<BitmapFrame>> ILoadFileHandler.LoadXpsPagesAsync(string filename) => throw new NotImplementedException();
 
-        public Task<MemoryStream> ConvertToImageStreamAsync(byte[] fileData, int pageNumber) => throw new NotImplementedException();
-
         public int GetPageCount(string filename) => 1;
 
         public bool IsValidFile(string filename)
@@ -46,6 +44,8 @@ namespace TwainControl
             bitmapFrame.Freeze();
             return bitmapFrame;
         }
+
+        public Task<BitmapImage> LoadPdfAsync(string filename, int pageNumber) => throw new NotImplementedException();
 
         public Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename) => throw new NotImplementedException();
 

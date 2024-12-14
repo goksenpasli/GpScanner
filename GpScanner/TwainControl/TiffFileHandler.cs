@@ -12,8 +12,6 @@ namespace TwainControl
 {
     public class TiffFileHandler : ILoadFileHandler
     {
-        public Task<MemoryStream> ConvertToImageStreamAsync(byte[] fileData, int pageNumber) => throw new NotImplementedException();
-
         public int GetPageCount(string filename)
         {
             TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
@@ -29,6 +27,8 @@ namespace TwainControl
             };
         }
         public Task<BitmapFrame> LoadImageAsync(string filename) => throw new NotImplementedException();
+
+        public Task<BitmapImage> LoadPdfAsync(string filename, int pageNumber) => throw new NotImplementedException();
 
         public async Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename)
         {

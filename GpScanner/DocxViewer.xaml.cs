@@ -26,6 +26,17 @@ namespace GpScanner
 
         public string DocxDataFilePath { get => (string)GetValue(DocxDataFilePathProperty); set => SetValue(DocxDataFilePathProperty, value); }
 
+        protected override void OnDrop(DragEventArgs e)
+        {
+            if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
+            {
+                if (Path.GetExtension(droppedfiles[0]).ToLowerInvariant() is ".docx" or ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
+                {
+                    DocxDataFilePath = droppedfiles[0];
+                }
+            }
+        }
+
         private static BlockUIContainer BlockUIContainerGetPicture(Picture picture)
         {
             System.Windows.Controls.Image image = new() { Source = BitmapFrame.Create(picture.Stream, BitmapCreateOptions.None, BitmapCacheOption.None) };
@@ -142,17 +153,6 @@ namespace GpScanner
             };
 
             return inline;
-        }
-
-        protected override void OnDrop(DragEventArgs e)
-        {
-            if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
-            {
-                if (Path.GetExtension(droppedfiles[0]).ToLowerInvariant() is ".docx" or ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
-                {
-                    DocxDataFilePath = droppedfiles[0];
-                }
-            }
         }
 
         private FlowDocument GetFlowDocument(string uriString)

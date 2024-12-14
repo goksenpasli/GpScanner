@@ -70,10 +70,10 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         SpeechViewModel = new SpeechViewModel(this);
 
         DosyaAç = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Pdf Dosyaları (*.pdf)|*.pdf" };
-                if (openFileDialog.ShowDialog() == true && IsValidPdfFile(openFileDialog.FileName))
+                if (openFileDialog.ShowDialog() == true && await IsValidPdfFileAsync(openFileDialog.FileName))
                 {
                     PdfFilePath = openFileDialog.FileName;
                 }
@@ -447,7 +447,7 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         try
         {
-            return !IsValidPdfFile(pdffilepath)
+            return !await IsValidPdfFileAsync(pdffilepath)
                    ? throw new ArgumentNullException(nameof(pdffilepath), "pdf is not valid")
                    : await Task.Run(
                 () =>
@@ -664,11 +664,25 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    private static async Task<bool> IsValidPdfFileAsync(string filename)
+    {
+        if (!File.Exists(filename))
+        {
+            return false;
+        }
+
+        byte[] buffer = new byte[4];
+        using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
+        int bytesRead = await fs.ReadAsync(buffer, 0, buffer.Length);
+        byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
+        return bytesRead == buffer.Length && buffer.SequenceEqual(pdfheader);
+    }
+
     private static async void PdfFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is PdfViewer pdfViewer)
         {
-            if (IsValidPdfFile(e.NewValue as string))
+            if (await IsValidPdfFileAsync(e.NewValue as string))
             {
                 try
                 {
@@ -767,14 +781,14 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private void Scrollvwr_Drop(object sender, DragEventArgs e)
+    private async void Scrollvwr_Drop(object sender, DragEventArgs e)
     {
         if (OpenButtonVisibility is Visibility.Hidden or Visibility.Collapsed)
         {
             return;
         }
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if (IsValidPdfFile(droppedfiles?[0]))
+        if (await IsValidPdfFileAsync(droppedfiles?[0]))
         {
             PdfFilePath = droppedfiles?[0];
         }

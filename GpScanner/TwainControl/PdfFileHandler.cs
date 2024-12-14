@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using TwainControl.Properties;
@@ -10,15 +9,13 @@ namespace TwainControl
 {
     public class PdfFileHandler : ILoadFileHandler
     {
-        public async Task<MemoryStream> ConvertToImageStreamAsync(byte[] fileData, int pageNumber) => fileData is null ? null : await Viewer.ConvertToImgStreamAsync(fileData, pageNumber, Settings.Default.ImgLoadResolution);
-
         public int GetPageCount(string filename) => Viewer.PdfPageCount(filename);
 
         public bool IsValidFile(string filename) => Viewer.IsValidPdfFile(filename);
 
         public Task<BitmapFrame> LoadImageAsync(string filename) => throw new NotImplementedException();
 
-        public async Task<BitmapImage> LoadImageAsync(string filename, int pageNumber) => !IsValidFile(filename) ? null : await Viewer.ConvertToImgAsync(filename, pageNumber, Settings.Default.ImgLoadResolution);
+        public async Task<BitmapImage> LoadPdfAsync(string filename, int pageNumber) => await Viewer.ConvertToImgAsync(filename, pageNumber, Settings.Default.ImgLoadResolution);
 
         public Task<IEnumerable<BitmapFrame>> LoadTiffPagesAsync(string filename) => throw new NotImplementedException();
 

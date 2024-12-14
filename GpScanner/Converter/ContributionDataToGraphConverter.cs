@@ -1,9 +1,7 @@
 ﻿using Extensions;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
 namespace GpScanner.Converter;

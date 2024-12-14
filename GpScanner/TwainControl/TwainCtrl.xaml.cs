@@ -327,12 +327,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         InvertSelectedImage = new RelayCommand<object>(
             parameter =>
             {
+                bool bw = Keyboard.Modifiers == ModifierKeys.Alt;
+                bool grayscale = Keyboard.Modifiers == ModifierKeys.Shift;
                 if (MessageBox.Show($"{Translation.GetResStringValue("LONGTIMEJOB")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.No)
                 {
                     return;
                 }
-                bool bw = Keyboard.Modifiers == ModifierKeys.Alt;
-                bool grayscale = Keyboard.Modifiers == ModifierKeys.Shift;
                 foreach (ScannedImage item in GetSelectedImages())
                 {
                     if (bw)
@@ -1095,7 +1095,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         for (int i = pdfFileHandler.GetPageCount(filename); i >= 1; i--)
                         {
-                            BitmapFrame bitmapFrame = BitmapFrame.Create(await pdfFileHandler.LoadImageAsync(filename, i));
+                            BitmapFrame bitmapFrame = BitmapFrame.Create(await pdfFileHandler.LoadPdfAsync(filename, i));
                             bitmapFrame?.Freeze();
                             Scanner?.Resimler?.Insert(scannedImage.Index, new ScannedImage() { Resim = bitmapFrame });
                         }
@@ -4032,16 +4032,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         int totalPageCount = fileHandler.GetPageCount(filename);
-        MemoryStream ms;
         BitmapFrame bitmapFrame;
         for (int i = 1; i <= totalPageCount; i++)
         {
             switch (fileHandler)
             {
                 case PdfFileHandler:
-                    byte[] fileData = await Viewer.ReadAllFileAsync(filename);
-                    ms = await fileHandler.ConvertToImageStreamAsync(fileData, i);
-                    bitmapFrame = ms.GenerateBitmapFrameFromMemoryStream();
+                    bitmapFrame = BitmapFrame.Create((await fileHandler.LoadPdfAsync(filename, i)).ToBitmapImage());
                     break;
 
                 case WebpFileHandler:

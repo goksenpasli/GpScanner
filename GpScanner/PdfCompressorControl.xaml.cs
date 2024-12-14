@@ -79,7 +79,7 @@ namespace GpScanner
                     {
                         FileName = Path.Combine(Path.GetDirectoryName(item.Filename), $"{Path.GetFileNameWithoutExtension(item.Filename)}_Compressed.pdf"),
                         FolderName = fi?.Directory?.Name,
-                        FileSize = (float)(fi.Length / 1048576F * item.CompressionRatio /100)
+                        FileSize = (float)(fi.Length / 1048576F * item.CompressionRatio / 100)
                     };
                     gpScannerViewModel.Dosyalar?.Add(scanner);
                 }

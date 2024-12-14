@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
-using System.Windows;
 using System.Windows.Data;
 using WebPWrapper;
 
@@ -18,6 +17,7 @@ public sealed class WebpFileToBitmapImageConverter : IMultiValueConverter
 
         }
         return null;
-        }
+    }
+
     public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture) => throw new NotImplementedException();
 }
