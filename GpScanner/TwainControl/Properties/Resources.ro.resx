@@ -780,4 +780,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Fișierul de orientare a tesseractului și detectarea scriptului trebuie descărcat pentru a funcționa automat</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Folosiți concurs de text PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Dacă acest lucru este marcat, textele PDF sunt utilizate ca OCR.</value>
+  </data>
 </root>

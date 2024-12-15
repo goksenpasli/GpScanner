@@ -986,6 +986,24 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string PDFINTERNAL {
+            get {
+                return ResourceManager.GetString("PDFINTERNAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string PDFINTERNALDESC {
+            get {
+                return ResourceManager.GetString("PDFINTERNALDESC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string PDFPROTECT {
             get {
                 return ResourceManager.GetString("PDFPROTECT", resourceCulture);

@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Ο προσανατολισμός του Tesseract και το αρχείο ανίχνευσης σεναρίου πρέπει να μεταφορτωθούν για να λειτουργήσουν αυτόματη περιστροφή</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Χρησιμοποιήστε διαγωνισμό κειμένου PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Εάν αυτό επισημανθεί, τα κείμενα PDF χρησιμοποιούνται ως OCR.</value>
+  </data>
 </root>

@@ -787,4 +787,10 @@ PDF</value>
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>자동 회전 작업을 위해 TesserAct 방향 및 스크립트 감지 파일을 다운로드해야합니다.</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF 텍스트 콘테스트를 사용하십시오</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>이것이 표시되면 PDF 텍스트는 OCR로 사용됩니다.</value>
+  </data>
 </root>

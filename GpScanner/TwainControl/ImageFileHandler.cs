@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using PdfiumViewer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,6 +23,8 @@ namespace TwainControl
         Task<IEnumerable<BitmapFrame>> ILoadFileHandler.LoadXpsPagesAsync(string filename) => throw new NotImplementedException();
 
         public int GetPageCount(string filename) => 1;
+
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => throw new NotImplementedException();
 
         public bool IsValidFile(string filename)
         {

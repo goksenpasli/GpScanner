@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tezator oriyentasiya və skript aşkarlama faylı iş avtomatik fırlanma üçün yüklənməlidir</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF Mətn Yarışmasından istifadə edin</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Bu qeyd olunarsa, PDF mətnləri OCR kimi istifadə olunur.</value>
+  </data>
 </root>

@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>ટેસરેક્ટ ઓરિએન્ટેશન અને સ્ક્રિપ્ટ ડિટેક્શન ફાઇલને કામ કરવા માટે ઓટો રોટેશન માટે ડાઉનલોડ કરવું જોઈએ</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>પીડીએફ ટેક્સ્ટ હરીફાઈનો ઉપયોગ કરો</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>જો આ ચિહ્નિત થયેલ છે, તો પીડીએફ ગ્રંથોનો ઉપયોગ ઓસીઆર તરીકે થાય છે.</value>
+  </data>
 </root>

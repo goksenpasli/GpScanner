@@ -780,4 +780,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>A Tesseract orientáció és a szkriptdetektálási fájlt le kell tölteni a munka automatikus rotációjára</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Használja a PDF szövegversenyt</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Ha ezt megjelölik, a PDF szövegeket OCR -ként használják.</value>
+  </data>
 </root>

@@ -1,6 +1,9 @@
 ﻿using Extensions;
+using PdfiumViewer;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -10,6 +13,8 @@ namespace TwainControl;
 
 public class ScannedImage : InpcBase
 {
+    private bool pdfHasText;
+
     public ScannedImage() { PropertyChanged += ScannedImage_PropertyChangedAsync; }
 
     public bool Animate
@@ -66,6 +71,20 @@ public class ScannedImage : InpcBase
         }
     }
 
+    public IEnumerable<PdfCharacterInformation> GetPdfCharacterInformations
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(GetPdfCharacterInformations));
+                OnPropertyChanged(nameof(PdfHasText));
+            }
+        }
+    }
+
     public int Index
     {
         get;
@@ -79,6 +98,19 @@ public class ScannedImage : InpcBase
 
             field = value;
             OnPropertyChanged(nameof(Index));
+        }
+    }
+
+    public bool PdfHasText
+    {
+        get => GetPdfCharacterInformations?.Any() == true;
+        set
+        {
+            if (pdfHasText != value)
+            {
+                pdfHasText = value;
+                OnPropertyChanged(nameof(PdfHasText));
+            }
         }
     }
 

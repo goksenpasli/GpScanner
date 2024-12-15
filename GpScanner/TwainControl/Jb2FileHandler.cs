@@ -1,5 +1,6 @@
 ﻿using Extensions;
 using JBig2Decoder;
+using PdfiumViewer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,8 @@ namespace TwainControl
     public class Jb2FileHandler : ILoadFileHandler
     {
         public int GetPageCount(string filename) => 1;
+
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => throw new NotImplementedException();
 
         public bool IsValidFile(string filename)
         {

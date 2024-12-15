@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Soubor orientace tesseract a detekce skriptu by měl být stažen pro práci s automatickou rotací</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Použijte textovou soutěž PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Pokud je to označeno, texty PDF se používají jako OCR.</value>
+  </data>
 </root>

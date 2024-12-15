@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>يجب تنزيل ملف Tesseract Direction and Script</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>استخدم مسابقة نص PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>إذا تم وضع علامة على ذلك ، يتم استخدام نصوص PDF كـ OCR.</value>
+  </data>
 </root>

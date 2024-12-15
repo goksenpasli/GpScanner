@@ -792,4 +792,10 @@ Hujjat qo'shing</value>
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tesserakt avtomatik aylantirish ishiga yuklab olinishi kerak</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF matni tanlovidan foydalaning</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Agar bu belgilangan bo'lsa, PDF matnlari OCR sifatida ishlatiladi.</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using PdfiumViewer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,8 @@ namespace TwainControl
             TiffBitmapDecoder decoder = new(new Uri(filename), BitmapCreateOptions.None, BitmapCacheOption.None);
             return decoder.Frames.Count;
         }
+
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => throw new NotImplementedException();
 
         public bool IsValidFile(string filename)
         {

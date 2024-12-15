@@ -815,4 +815,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value />
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tesseract取向和脚本检测文件应下载以自动旋转</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>使用PDF文字比赛</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>如果标记了这一点，则将PDF文本用作OCR。</value>
+  </data>
 </root>

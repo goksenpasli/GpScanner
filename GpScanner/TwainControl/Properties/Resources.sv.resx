@@ -780,4 +780,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tesseract Orientation och skriptdetekteringsfil bör laddas ner för att fungera auto rotation</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Använd PDF -texttävling</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Om detta är markerat används PDF -texter som OCR.</value>
+  </data>
 </root>

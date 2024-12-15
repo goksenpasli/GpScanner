@@ -780,4 +780,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Файлът за ориентация и откриване на скриптове трябва да бъде изтеглен, за да работи автоматично въртене</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Използвайте PDF Text Contest</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Ако това е маркирано, PDF текстовете се използват като OCR.</value>
+  </data>
 </root>

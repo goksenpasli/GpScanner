@@ -780,4 +780,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Арыентацыя Tesseract і файл выяўлення сцэнарыя павінны быць загружаны для працы па кручэнні аўтаматычнай працы</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Выкарыстоўвайце тэкставы конкурс PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Калі гэта адзначана, тэксты PDF выкарыстоўваюцца ў якасці OCR.</value>
+  </data>
 </root>

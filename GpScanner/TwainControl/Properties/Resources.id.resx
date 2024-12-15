@@ -780,4 +780,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Orientasi tesseract dan file deteksi skrip harus diunduh untuk bekerja rotasi otomatis</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Gunakan Kontes Teks PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Jika ini ditandai, teks PDF digunakan sebagai OCR.</value>
+  </data>
 </root>

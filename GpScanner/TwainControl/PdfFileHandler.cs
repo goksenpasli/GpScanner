@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PdfiumViewer;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
@@ -10,6 +11,8 @@ namespace TwainControl
     public class PdfFileHandler : ILoadFileHandler
     {
         public int GetPageCount(string filename) => Viewer.PdfPageCount(filename);
+
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => Viewer.CharacterInformations;
 
         public bool IsValidFile(string filename) => Viewer.IsValidPdfFile(filename);
 

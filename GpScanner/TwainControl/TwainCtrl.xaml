@@ -1889,6 +1889,12 @@
                                                                             Source="{Binding Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameThumbConverter}}" />
                                                                     </TextBlock.ToolTip>
                                                                 </TextBlock>
+                                                                <TextBlock Canvas.Right="0"
+                                                                    Canvas.Bottom="0"
+                                                                    FontFamily="Wingdings"
+                                                                    FontSize="20"
+                                                                    Text="2" Foreground="Blue"
+                                                                    Visibility="{Binding PdfHasText, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
                                                             </Canvas>
                                                         </StackPanel>
                                                     </ControlTemplate>

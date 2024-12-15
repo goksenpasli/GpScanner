@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PdfiumViewer;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace TwainControl
             });
             return docSeq.DocumentPaginator.PageCount;
         }
+
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => throw new NotImplementedException();
 
         public bool IsValidFile(string filename) => Path.GetExtension(filename.ToLowerInvariant()) == ".xps";
 

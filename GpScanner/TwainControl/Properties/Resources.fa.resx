@@ -792,4 +792,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>پرونده جهت گیری Tesseract و پرونده تشخیص اسکریپت باید برای کار در چرخش خودکار بارگیری شود</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>از مسابقه متن PDF استفاده کنید</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>اگر این علامت گذاری شود ، از متون PDF به عنوان OCR استفاده می شود.</value>
+  </data>
 </root>

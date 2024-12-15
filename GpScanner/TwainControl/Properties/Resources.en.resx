@@ -784,4 +784,10 @@ TO FILE</value>
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tesseract Orientation and Script Detection File Should Be Downloaded To Work Auto Rotation</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Use PDF Text Contest</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>If this is marked, PDF texts are used as OCR.</value>
+  </data>
 </root>

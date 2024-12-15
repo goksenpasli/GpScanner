@@ -792,4 +792,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Датотеката за ориентација и откривање на скрипти треба да се преземе за да работи автоматска ротација</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Користете натпревар за текст PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Ако ова е обележано, PDF текстовите се користат како OCR.</value>
+  </data>
 </root>

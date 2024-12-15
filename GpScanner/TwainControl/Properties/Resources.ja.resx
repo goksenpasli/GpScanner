@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tesseractオリエンテーションとスクリプト検出ファイルは、自動ローテーションを機能させるためにダウンロードする必要があります</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDFテキストコンテストを使用します</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>これにマークされている場合、PDFテキストはOCRとして使用されます。</value>
+  </data>
 </root>

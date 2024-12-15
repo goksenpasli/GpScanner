@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Файл ориентации Tesseract и обнаружения скриптов должен быть загружен для работы автоматической ротации</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Используйте текстовый конкурс PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Если это помечено, тексты PDF используются в качестве OCR.</value>
+  </data>
 </root>

@@ -780,4 +780,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tesseract Orientation- ը եւ Script հայտնաբերման ֆայլը պետք է ներբեռնվեն ավտոմատ ռոտացիայի աշխատանքի համար</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Օգտագործեք PDF տեքստի մրցույթ</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Եթե ​​դա նշվում է, PDF տեքստերը օգտագործվում են որպես OCR:</value>
+  </data>
 </root>

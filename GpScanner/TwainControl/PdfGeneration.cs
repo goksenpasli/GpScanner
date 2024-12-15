@@ -176,7 +176,7 @@ public static class PdfGeneration
         return document;
     }
 
-    public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, List<ObservableCollection<OcrData>> ScannedText = null, Action<double> progressCallback = null)
+    public static PdfDocument GeneratePdf(this List<string> imagefiles, Paper paper, Action<double> progressCallback = null)
     {
         if (imagefiles?.Count == 0)
         {
@@ -197,21 +197,11 @@ public static class PdfGeneration
                 if (xImage.PixelWidth < xImage.PixelHeight)
                 {
                     page.Orientation = PageOrientation.Portrait;
-                    if (ScannedText?.ElementAtOrDefault(i) is not null)
-                    {
-                        WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
-                    }
-
                     gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
                 }
                 else
                 {
                     page.Orientation = PageOrientation.Landscape;
-                    if (ScannedText?.ElementAtOrDefault(i) is not null)
-                    {
-                        WritePdfTextContent(xImage, ScannedText[i], page, gfx, XBrushes.Transparent);
-                    }
-
                     gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
                 }
                 progressCallback?.Invoke((i + 1) / (double)imagefiles.Count);
@@ -228,69 +218,63 @@ public static class PdfGeneration
         catch (Exception ex)
         {
             imagefiles = null;
-            ScannedText = null;
             throw new ArgumentException(ex?.Message);
         }
 
         return document;
     }
 
-    public static PdfDocument GeneratePdf(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, Format format, Paper paper, int jpegquality = 80, int dpi = 120)
+    public static PdfDocument GeneratePdf(this BitmapSource bitmapFrame, ObservableCollection<OcrData> scannedText, Format format, Paper paper, int jpegQuality = 80, int dpi = 120)
     {
-        if (bitmapframe is null)
+        if (bitmapFrame is null)
         {
-            throw new ArgumentNullException(nameof(bitmapframe), "bitmapframe can not be null");
+            throw new ArgumentNullException(nameof(bitmapFrame), "bitmapFrame cannot be null");
         }
 
         try
         {
             using PdfDocument document = new();
             PdfPage page = document.AddPage();
-            XSize size = GetPageSize(paper, bitmapframe, page);
+            XSize size = GetPageSize(paper, bitmapFrame, page);
+            bool resizePaper = paper.GetPaperSize() != PageSize.Undefined;
             using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-            byte[] data = null;
-            MemoryStream ms;
-            bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
-            if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
+            byte[] imageData;
+            using (MemoryStream ms = new())
             {
-                using MozJpeg.MozJpeg mozJpeg = new();
-                BitmapSource resizedimage = resizepaper ? bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi) : bitmapframe;
-                data = mozJpeg.Encode(resizedimage.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
-                ms = new MemoryStream(data);
-                resizedimage = null;
-            }
-            else
-            {
-                BitmapSource resizedimage;
+                BitmapSource resizedImage = resizePaper ? bitmapFrame.Resize(page.Width, page.Height, 0, dpi, dpi) : bitmapFrame;
                 if (format == Format.Tiff)
                 {
-                    BitmapImage bitmapImage = bitmapframe.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff);
-                    resizedimage = resizepaper ? bitmapImage.Resize(page.Width, page.Height, 0, dpi, dpi) : bitmapImage;
-                    bitmapImage = null;
+                    BitmapImage bwImage = bitmapFrame.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff);
+                    resizedImage = resizePaper ? bwImage.Resize(page.Width, page.Height, 0, dpi, dpi) : bwImage;
+                    imageData = resizedImage?.ToTiffJpegByteArray(format, jpegQuality);
+                }
+                else if (Scanner.UseMozJpegEncoding)
+                {
+                    using MozJpeg.MozJpeg mozJpeg = new();
+                    imageData = mozJpeg.Encode(resizedImage.BitmapSourceToBitmap(), jpegQuality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                 }
                 else
                 {
-                    resizedimage = resizepaper ? bitmapframe.Resize(page.Width, page.Height, 0, dpi, dpi) : bitmapframe;
+                    imageData = resizedImage?.ToTiffJpegByteArray(format, jpegQuality);
                 }
 
-                ms = new MemoryStream(resizedimage?.ToTiffJpegByteArray(format, jpegquality));
-                resizedimage = null;
-            }
+                ms.Write(imageData, 0, imageData.Length);
+                _ = ms.Seek(0, SeekOrigin.Begin);
+                using XImage xImage = XImage.FromStream(ms);
 
-            using XImage xImage = XImage.FromStream(ms);
+                if (scannedText is not null)
+                {
+                    WritePdfTextContent(bitmapFrame, scannedText, page, gfx, XBrushes.Transparent);
+                }
 
-            if (ScannedText is not null)
-            {
-                WritePdfTextContent(bitmapframe, ScannedText, page, gfx, XBrushes.Transparent);
-            }
-
-            if (page.Orientation == PageOrientation.Portrait)
-            {
-                gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
-            }
-            else
-            {
-                gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                if (page.Orientation == PageOrientation.Portrait)
+                {
+                    gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                }
+                else
+                {
+                    gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+                }
             }
 
             if (Scanner.PasswordProtect)
@@ -298,97 +282,74 @@ public static class PdfGeneration
                 document.ApplyPdfSecurity();
             }
             document.ApplyDefaultPdfCompression();
-            ms?.Dispose();
-            ms = null;
-            data = null;
-            bitmapframe = null;
+
             return document;
         }
         catch (Exception ex)
         {
-            throw new ArgumentException(ex?.Message);
+            throw new ArgumentException(ex.Message, ex);
         }
     }
 
-    public static Task<PdfDocument> GeneratePdfAsync(this List<ScannedImage> bitmapFrames, Format format, Paper paper, int jpegquality = 80, List<ObservableCollection<OcrData>> ScannedText = null, int dpi = 120, Action<double> progressCallback = null)
+    public static async Task<PdfDocument> GeneratePdfAsync(this List<ScannedImage> bitmapFrames,
+                                                           Format format,
+                                                           Paper paper,
+                                                           int jpegQuality = 80,
+                                                           List<ObservableCollection<OcrData>> scannedText = null,
+                                                           int dpi = 120,
+                                                           Action<double> progressCallback = null)
     {
-        if (bitmapFrames?.Count == 0)
+        if (bitmapFrames == null || bitmapFrames.Count == 0)
         {
-            throw new ArgumentOutOfRangeException(nameof(bitmapFrames), "bitmap frames count should be greater than zero");
+            throw new ArgumentOutOfRangeException(nameof(bitmapFrames), "Bitmap frames count should be greater than zero.");
         }
 
         using PdfDocument document = new();
+
         try
         {
             Scanner.ProgressState = TaskbarItemProgressState.Normal;
+
             for (int i = 0; i < bitmapFrames.Count; i++)
             {
-                ScannedImage scannedimage = bitmapFrames[i];
+                ScannedImage scannedImage = bitmapFrames[i];
                 PdfPage page = document.AddPage();
-                XSize size = GetPageSize(paper, scannedimage, page);
-                bool resizepaper = paper.GetPaperSize() != PageSize.Undefined;
+                XSize pageSize = GetPageSize(paper, scannedImage, page);
+                bool resizePaper = paper.GetPaperSize() != PageSize.Undefined;
+
+                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                BitmapSource resizedImage;
+
                 if (Scanner.UseMozJpegEncoding && format != Format.Tiff)
                 {
-                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                    using MozJpeg.MozJpeg mozJpeg = new();
-                    BitmapSource resizedimage = resizepaper ? scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi) : scannedimage.Resim;
-                    byte[] data = mozJpeg.Encode(resizedimage.BitmapSourceToBitmap(), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
-                    using MemoryStream ms = new(data);
-                    using XImage xImage = XImage.FromStream(ms);
-                    resizedimage = null;
-                    data = null;
-
-                    if (ScannedText?[i] is not null)
-                    {
-                        WritePdfTextContent(scannedimage.Resim, ScannedText[i], page, gfx, XBrushes.Transparent);
-                    }
-
-                    if (page.Orientation == PageOrientation.Portrait)
-                    {
-                        gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                    }
-                    else
-                    {
-                        gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
-                    }
+                    resizedImage = resizePaper ? scannedImage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi) : scannedImage.Resim;
+                    byte[] imageData = EncodeImageWithMozJpeg(resizedImage, jpegQuality);
+                    using MemoryStream imageStream = new(imageData);
+                    using XImage xImage = XImage.FromStream(imageStream);
+                    DrawImageOnPage(gfx, xImage, page, pageSize);
                 }
                 else
                 {
-                    using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                    BitmapSource resizedimage;
-                    if (format == Format.Tiff)
-                    {
-                        BitmapImage bitmapImage = scannedimage.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff);
-                        resizedimage = resizepaper ? bitmapImage.Resize(page.Width, page.Height, 0, dpi, dpi) : bitmapImage;
-                        bitmapImage = null;
-                    }
-                    else
-                    {
-                        resizedimage = resizepaper ? scannedimage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi) : scannedimage.Resim;
-                    }
-
-                    using MemoryStream ms = new(resizedimage?.ToTiffJpegByteArray(format, jpegquality));
-                    using XImage xImage = XImage.FromStream(ms);
-                    resizedimage = null;
-
-                    if (ScannedText?[i] is not null)
-                    {
-                        WritePdfTextContent(scannedimage.Resim, ScannedText?[i], page, gfx, XBrushes.Transparent);
-                    }
-
-                    if (page.Orientation == PageOrientation.Portrait)
-                    {
-                        gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
-                    }
-                    else
-                    {
-                        gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
-                    }
+                    resizedImage = format == Format.Tiff ? ProcessTiffImage(scannedImage.Resim, resizePaper, page, dpi) : (resizePaper ? scannedImage.Resim.Resize(page.Width, page.Height, 0, dpi, dpi) : scannedImage.Resim);
+                    byte[] imageData = resizedImage.ToTiffJpegByteArray(format, jpegQuality);
+                    using MemoryStream imageStream = new(imageData);
+                    using XImage xImage = XImage.FromStream(imageStream);
+                    DrawImageOnPage(gfx, xImage, page, pageSize);
                 }
+
+                AddTextContentIfNeeded(scannedImage.Resim, scannedText?[i], page, gfx);
+
+                if (Settings.Default.UsePdfInternalTextData)
+                {
+                    ObservableCollection<OcrData> pdfInternalOcrData = TwainCtrl.ConvertPdfCharacterToOcrData(scannedImage.Resim.PixelHeight, scannedImage.Resim.PixelWidth, scannedImage.GetPdfCharacterInformations, Settings.Default.ImgLoadResolution);
+                    AddTextContentIfNeeded(scannedImage.Resim, pdfInternalOcrData, page, gfx);
+                }
+
                 progressCallback?.Invoke((i + 1) / (double)bitmapFrames.Count);
+
                 if (Settings.Default.RemoveProcessedImage)
                 {
-                    scannedimage.Resim = null;
+                    scannedImage.Resim = null;
                 }
             }
 
@@ -402,12 +363,10 @@ public static class PdfGeneration
         }
         catch (Exception ex)
         {
-            bitmapFrames = null;
-            ScannedText = null;
-            throw new ArgumentException(ex?.Message);
+            throw new ArgumentException(ex.Message, ex);
         }
 
-        return Task.FromResult(document);
+        return await Task.FromResult(document);
     }
 
     public static PdfDocument GenerateWatermarkedPdf(this PdfDocument pdfdocument, int sayfa, double rotation, SolidColorBrush textcolor, double textsize, string text, string font)
@@ -538,6 +497,14 @@ public static class PdfGeneration
         return [.. jpgfiles];
     }
 
+    private static void AddTextContentIfNeeded(BitmapSource image, ObservableCollection<OcrData> textData, PdfPage page, XGraphics gfx)
+    {
+        if (textData != null)
+        {
+            WritePdfTextContent(image, textData, page, gfx, XBrushes.Transparent);
+        }
+    }
+
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) => new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);
 
     private static void ApplyPdfSecurity(this PdfDocument document)
@@ -552,6 +519,18 @@ public static class PdfGeneration
         }
     }
 
+    private static void DrawImageOnPage(XGraphics gfx, XImage xImage, PdfPage page, XSize size)
+    {
+        if (page.Orientation == PageOrientation.Portrait)
+        {
+            gfx.DrawImage(xImage, 0, 0, size.Width, size.Height);
+        }
+        else
+        {
+            gfx.DrawImage(xImage, 0, 0, size.Height, size.Width);
+        }
+    }
+
     private static void DrawPdfOcrGfx(this XGraphics gfx, XBrush xBrush, XTextFormatter textformatter, OcrData item, XRect adjustedBounds)
     {
         int adjustedFontSize = CalculateFontSize(item.Text, adjustedBounds, gfx);
@@ -561,6 +540,12 @@ public static class PdfGeneration
         double horizontalOffset = (adjustedBounds.Width - adjustedTextSize.Width) / 2;
         adjustedBounds.Offset(horizontalOffset, verticalOffset);
         textformatter.DrawString(item.Text, font, xBrush, adjustedBounds);
+    }
+
+    private static byte[] EncodeImageWithMozJpeg(BitmapSource image, int quality)
+    {
+        using MozJpeg.MozJpeg mozJpeg = new();
+        return mozJpeg.Encode(image.BitmapSourceToBitmap(), quality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
     }
 
     private static XSize GetPageSize(Paper paper, ScannedImage scannedimage, PdfPage page) => GetPageSize(paper, scannedimage, page, img => img.Resim.PixelWidth, img => img.Resim.PixelHeight);
@@ -595,6 +580,13 @@ public static class PdfGeneration
         }
 
         return size;
+    }
+
+    private static BitmapSource ProcessTiffImage(BitmapSource image, bool resizePaper, PdfPage page, int dpi)
+    {
+        BitmapImage bwImage = image.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff);
+
+        return resizePaper ? bwImage.Resize(page.Width, page.Height, 0, dpi, dpi) : bwImage;
     }
 
     private static void WritePdfTextContent(this BitmapSource bitmapframe, ObservableCollection<OcrData> ScannedText, PdfPage page, XGraphics gfx, XBrush xBrush)

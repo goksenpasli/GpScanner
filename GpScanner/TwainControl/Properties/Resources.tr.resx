@@ -790,4 +790,10 @@ BELGE EKLE</value>
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tesseract oryantasyon ve komut dosyası algılama dosyası, otomatik döndürmenin çalışması için indirilmelidir.</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF METİN İÇERİĞİNİ KULLAN</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Bu İşaretlenirse Ocr Yapılmadan Pdf Metinleri Ocr Olarak Kullanılır</value>
+  </data>
 </root>

@@ -792,4 +792,10 @@ Resminama goşuň</value>
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tepter Çykyş we skript kesgitleme faýly awtoulag aýlanmagy üçin göçürilmeli</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF tekst bäsleşigini ulanyň</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Bu bellenen bolsa, pdf tekstleri OCR hökmünde ulanylýar.</value>
+  </data>
 </root>

@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using PdfiumViewer;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,6 +13,8 @@ namespace TwainControl
     public class WebpFileHandler : ILoadFileHandler
     {
         public int GetPageCount(string filename) => 1;
+
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => throw new NotImplementedException();
 
         public bool IsValidFile(string filename) => Path.GetExtension(filename.ToLowerInvariant()) == ".webp";
 

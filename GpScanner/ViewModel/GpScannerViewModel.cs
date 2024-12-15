@@ -2570,6 +2570,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         ObservableCollection<Scanner> list = [];
         ConcurrentBag<Scanner> templist = [];
+        object _progressLock = new();
         try
         {
             List<string> allfilepaths = [.. Settings.Default.AdditionalIndexFolders.OfType<string>(), Twainsettings.Settings.Default.AutoFolder,];
@@ -2577,6 +2578,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 () =>
                 {
                     List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
+                    int totalFiles = files.Count;
                     _ = Parallel.ForEach(
                         files,
                         dosya =>
@@ -2586,7 +2588,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                             {
                                 templist.Add(new Scanner { FileName = dosya, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F });
                             }
-                            FileLoadProgress = templist.Count / (double)files.Count;
+                            lock (_progressLock)
+                            {
+                                FileLoadProgress = templist.Count / (double)totalFiles;
+                            }
                         });
                     List<Scanner> list = [.. templist];
                     list.Sort(new ScannerStrCmpLogicalComparer());

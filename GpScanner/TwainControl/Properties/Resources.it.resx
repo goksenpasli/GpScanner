@@ -777,4 +777,10 @@
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Il file di orientamento e di rilevamento degli script tesseract deve essere scaricato per lavorare a rotazione automatica</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Usa il concorso di testo PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Se questo è contrassegnato, i testi PDF vengono utilizzati come OCR.</value>
+  </data>
 </root>

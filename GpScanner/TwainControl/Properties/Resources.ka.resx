@@ -787,4 +787,10 @@ PDF</value>
   <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
     <value>Tesseract- ის ორიენტაცია და სკრიპტის გამოვლენის ფაილი უნდა ჩამოტვირთოთ ავტო როტაციის დასამუშავებლად</value>
   </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>გამოიყენეთ PDF ტექსტის კონკურსი</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>თუ ეს აღინიშნება, PDF ტექსტები გამოიყენება როგორც OCR.</value>
+  </data>
 </root>

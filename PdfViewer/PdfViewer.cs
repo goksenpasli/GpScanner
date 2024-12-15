@@ -31,7 +31,7 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 namespace PdfViewer;
 
 [TemplatePart(Name = "ScrollVwr", Type = typeof(ScrollViewer))]
-public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
+public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 {
     public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
     public static readonly DependencyProperty BookmarkContentVisibilityProperty = DependencyProperty.Register("BookmarkContentVisibility", typeof(Visibility), typeof(PdfViewer), new PropertyMetadata(Visibility.Visible));
@@ -225,6 +225,8 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public static IEnumerable<PdfCharacterInformation> CharacterInformations { get; private set; }
 
     public static int[] DpiList { get; } = [12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200];
 
@@ -445,11 +447,13 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public static async Task<BitmapImage> ConvertToImgAsync(string pdffilepath, int page, int dpi = 72)
     {
+        if (string.IsNullOrEmpty(pdffilepath) || !await IsValidPdfFileAsync(pdffilepath))
+        {
+            throw new ArgumentException("Invalid PDF file", nameof(pdffilepath));
+        }
         try
         {
-            return !await IsValidPdfFileAsync(pdffilepath)
-                   ? throw new ArgumentNullException(nameof(pdffilepath), "pdf is not valid")
-                   : await Task.Run(
+            return await Task.Run(
                 () =>
                 {
                     using PdfDocument pdfDoc = PdfDocument.Load(pdffilepath);
@@ -465,10 +469,18 @@ public class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         return null;
                     }
-
                     bitmapImage.Freeze();
+                    try
+                    {
+                        CharacterInformations = pdfDoc.GetCharacterInformation(page - 1);
+                    }
+                    catch (Exception)
+                    {
+                    }
                     return bitmapImage;
-                });
+
+                })
+            .ConfigureAwait(false);
         }
         catch (Exception)
         {
