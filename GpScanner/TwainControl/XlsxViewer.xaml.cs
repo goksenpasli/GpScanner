@@ -115,7 +115,7 @@ namespace TwainControl
 
         public async Task<DataTableCollection> GetDataTableCollection(FileStream fs, string uriString)
         {
-            return Path.GetExtension(uriString) switch
+            return Path.GetExtension(uriString).ToLowerInvariant() switch
             {
                 ".csv" => (await StreamToDtAsync(fs, true)).Tables,
                 ".xls" or ".xlsx" or ".xlsb" => (await StreamToDtAsync(fs)).Tables,
