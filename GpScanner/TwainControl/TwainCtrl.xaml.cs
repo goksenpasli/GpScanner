@@ -42,6 +42,7 @@ using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
 using TwainWpf.Wpf;
+using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
 using static TwainControl.DrawControl;
 using Application = System.Windows.Application;
@@ -2338,6 +2339,28 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is XpsViewer xpsViewer && File.Exists(xpsViewer.XpsDataFilePath));
 
+        SaveDocxFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is ScannedImage scannedImage && scannedImage is not null)
+                {
+                    SaveFileDialog saveFileDialog = new() { Filter = "Docx Dosyası (*.docx)|*.docx", FileName = $"{Scanner.SaveFileName}{scannedImage.Index}" };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        ObservableCollection<OcrData> ocrtext = ConvertPdfCharacterToOcrData(scannedImage.Resim.PixelHeight, scannedImage.Resim.PixelWidth, scannedImage.GetPdfCharacterInformations, Settings.Default.ImgLoadResolution, true);
+                        using DocX document = DocX.Create(saveFileDialog.FileName);
+                        Xceed.Document.NET.Paragraph p = document.InsertParagraph();
+                        foreach (OcrData item in ocrtext)
+                        {
+                            _ = p.Append(item.Text.Replace("\uFFFE", ""));
+                            _ = p.FontSize(Math.Round(item.FontSize));
+                        }
+                        document.Save();
+                    }
+                }
+            },
+            parameter => true);
+
         PrintSelectedDocuments = new RelayCommand<object>(
             parameter =>
             {
@@ -3211,6 +3234,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand RotateSelectedPage { get; }
 
+    public RelayCommand<object> SaveDocxFile { get; }
+
     public ICommand SaveFileList { get; }
 
     public ICommand SaveProfile { get; }
@@ -3592,7 +3617,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public static List<List<T>> ChunkBy<T>(IEnumerable<T> source, int chunkSize) => [.. source.Select((x, i) => new { Index = i, Value = x }).GroupBy(x => x.Index / chunkSize).Select(x => x.Select(v => v.Value).ToList())];
 
-    public static ObservableCollection<OcrData> ConvertPdfCharacterToOcrData(int imageheight, int imagewidth, IEnumerable<PdfiumViewer.PdfCharacterInformation> pdfCharacterInformations = null, int imageLoadResolution = 200)
+    public static ObservableCollection<OcrData> ConvertPdfCharacterToOcrData(int imageheight, int imagewidth, IEnumerable<PdfiumViewer.PdfCharacterInformation> pdfCharacterInformations = null, int imageLoadResolution = 200, bool docxformat = false)
     {
         if (pdfCharacterInformations is null)
         {
@@ -3604,14 +3629,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         double pagewidth = (double)imagewidth / imageLoadResolution * PointsPerInch;
         double widthScale = imagewidth / pagewidth;
         double heightScale = imageheight / pageheight;
-        foreach (PdfCharacterInformation character in MergeCharactersToWords(pdfCharacterInformations))
+        foreach (PdfCharacterInformation character in MergeCharactersToWords(pdfCharacterInformations, docxformat))
         {
             double x = character.Bounds.X * widthScale;
             double y = (pageheight - character.Bounds.Y) * heightScale;
             double width = Math.Abs(character.Bounds.Width) * widthScale;
             double height = Math.Abs(character.Bounds.Height) * heightScale;
             Rect rect = new(x, y, width, height);
-            ocrDatas.Add(new OcrData() { Rect = rect, Text = character.Word });
+            ocrDatas.Add(new OcrData() { FontSize = character.FontSize, Rect = rect, Text = character.Word });
         }
         return ocrDatas;
     }
@@ -4021,19 +4046,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return true;
     }
 
-    private static PdfCharacterInformation CreateWordFromCharacters(List<PdfiumViewer.PdfCharacterInformation> characters)
+    private static PdfCharacterInformation CreateWordFromCharacters(List<PdfCharacterInformation> characters)
     {
         if (characters?.Any() == false)
         {
             throw new ArgumentException("Characters list cannot be empty");
         }
 
-        PdfiumViewer.PdfCharacterInformation firstChar = characters[0];
-        PdfiumViewer.PdfCharacterInformation lastChar = characters.Last();
+        PdfCharacterInformation firstChar = characters[0];
+        PdfCharacterInformation lastChar = characters.Last();
 
         RectangleF bounds = new(firstChar.Bounds.Left, firstChar.Bounds.Top, lastChar.Bounds.Right - firstChar.Bounds.Left, firstChar.Bounds.Height);
 
-        return new PdfCharacterInformation { Word = string.Concat(characters.Select(c => c.Character)), Bounds = bounds };
+        return new PdfCharacterInformation { FontSize = firstChar.FontSize, Word = string.Concat(characters.Select(c => c.Character)), Bounds = bounds };
     }
 
     private static string GetDefaultPrinterName()
@@ -4043,23 +4068,27 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return GetDefaultPrinter(printerNameBuffer, ref bufferSize) ? (printerNameBuffer?.ToString()) : null;
     }
 
-    private static IEnumerable<PdfCharacterInformation> MergeCharactersToWords(IEnumerable<PdfiumViewer.PdfCharacterInformation> characters)
+    private static IEnumerable<PdfCharacterInformation> MergeCharactersToWords(IEnumerable<PdfiumViewer.PdfCharacterInformation> characters, bool docxformat = false)
     {
         List<PdfCharacterInformation> words = [];
-        List<PdfiumViewer.PdfCharacterInformation> currentWord = [];
+        List<PdfCharacterInformation> currentWord = [];
         foreach (PdfiumViewer.PdfCharacterInformation character in characters)
         {
             if (character.Character is ' ' or '\n' or '\r')
             {
                 if (currentWord.Any())
                 {
+                    if (docxformat)
+                    {
+                        currentWord.Add(new PdfCharacterInformation() { Character = character.Character });
+                    }
                     words.Add(CreateWordFromCharacters(currentWord));
                     currentWord.Clear();
                 }
             }
             else
             {
-                currentWord.Add(character);
+                currentWord.Add(new PdfCharacterInformation() { Bounds = character.Bounds, Character = character.Character, FontSize = character.FontSize, });
             }
         }
 

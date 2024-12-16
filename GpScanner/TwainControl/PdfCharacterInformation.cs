@@ -8,6 +8,10 @@ public partial class TwainCtrl
     {
         public RectangleF Bounds { get; set; }
 
+        public char Character { get; set; }
+
+        public double FontSize { get; set; }
+
         public string Word { get; set; }
     }
 }

@@ -1893,8 +1893,24 @@
                                                                     Canvas.Bottom="0"
                                                                     FontFamily="Wingdings"
                                                                     FontSize="20"
-                                                                    Text="2" Foreground="Blue"
+                                                                    Foreground="Blue"
+                                                                    Text="2"
                                                                     Visibility="{Binding PdfHasText, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                                                <TextBlock Canvas.Top="0"
+                                                                    Canvas.Right="0"
+                                                                    Visibility="{Binding PdfHasText, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                                    <Hyperlink local:Policy.PolicyName="SaveDocx"
+                                                                        BaselineAlignment="Center"
+                                                                        Command="{Binding DataContext.SaveDocxFile, ElementName=UserControl}"
+                                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                                        TextDecorations="None">
+                                                                        <InlineUIContainer>
+                                                                            <Image Width="16"
+                                                                                Height="16"
+                                                                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.docx}" />
+                                                                        </InlineUIContainer>
+                                                                    </Hyperlink>
+                                                                </TextBlock>
                                                             </Canvas>
                                                         </StackPanel>
                                                     </ControlTemplate>
