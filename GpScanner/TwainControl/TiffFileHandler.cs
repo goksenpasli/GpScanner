@@ -19,7 +19,7 @@ namespace TwainControl
             return decoder.Frames.Count;
         }
 
-        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => throw new NotImplementedException();
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => null;
 
         public bool IsValidFile(string filename)
         {

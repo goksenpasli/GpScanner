@@ -26,7 +26,7 @@ namespace TwainControl
             return docSeq.DocumentPaginator.PageCount;
         }
 
-        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => throw new NotImplementedException();
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => null;
 
         public bool IsValidFile(string filename) => Path.GetExtension(filename.ToLowerInvariant()) == ".xps";
 

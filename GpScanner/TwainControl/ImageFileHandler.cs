@@ -24,7 +24,7 @@ namespace TwainControl
 
         public int GetPageCount(string filename) => 1;
 
-        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => throw new NotImplementedException();
+        public IEnumerable<PdfCharacterInformation> GetPdfCharacters() => null;
 
         public bool IsValidFile(string filename)
         {
