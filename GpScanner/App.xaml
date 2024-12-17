@@ -16,7 +16,6 @@
     xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     xmlns:twain="clr-namespace:TwainControl;assembly=TwainControl"
-    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
     Startup="Application_Startup"
     mc:Ignorable="d">
     <Application.Resources>
@@ -123,7 +122,7 @@
                         RenderTransformOrigin="0.5,0.5"
                         UseLayoutRounding="True">
                         <Viewbox Width="18" Height="18">
-                            <TextBlock d:Text="{twainctrl:Loc STOP}" Foreground="White">
+                            <TextBlock d:Text="{twain:Loc STOP}" Foreground="White">
                                 <TextBlock.Text>
                                     <MultiBinding Converter="{StaticResource ResourceLanguageStringConverter}">
                                         <Binding Mode="OneWay" Source="STOP" />
@@ -376,7 +375,7 @@
                                 </Image>
                             </Button.Content>
                         </Button>
-                        <Button twainctrl:Policy.PolicyName="RemoveCurrentPdfPage"
+                        <Button twain:Policy.PolicyName="RemoveCurrentPdfPage"
                             Command="{Binding RemoveCurrentPdfPage}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
                             IsEnabled="{Binding PdfToolBarControlIsEnabled}">
@@ -704,7 +703,7 @@
                 <twain:XmlViewerControl Grid.Row="1" twain:XmlViewerControlModel.XmlContent="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DocxViewerThumbTemplate">
-                <local:DocxViewer DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <twain:DocxViewer DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DocxViewerInternalThumbTemplate">
                 <Image Width="145"
@@ -717,7 +716,7 @@
                     Source="{Binding Path=DataContext, Mode=OneWay, Converter={StaticResource XlsxInternalThumbnailExtractConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DocumentViewerMonthPreviewDocxViewerTemplate">
-                <local:DocxViewer Width="155"
+                <twain:DocxViewer Width="155"
                     Height="155"
                     DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>

@@ -161,9 +161,6 @@
     <Compile Include="DocumentViewerWindow.xaml.cs">
       <DependentUpon>DocumentViewerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DocxViewer.xaml.cs">
-      <DependentUpon>DocxViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Include="DvdBurnerControl.xaml.cs">
       <DependentUpon>DvdBurnerControl.xaml</DependentUpon>
     </Compile>
@@ -251,10 +248,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="DocumentViewerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="DocxViewer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

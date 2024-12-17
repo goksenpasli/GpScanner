@@ -1,5 +1,4 @@
-﻿using GpScanner.ViewModel;
-using System;
+﻿using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,7 +12,7 @@ using FormattedText = Xceed.Document.NET.FormattedText;
 using Paragraph = Xceed.Document.NET.Paragraph;
 using Run = System.Windows.Documents.Run;
 
-namespace GpScanner
+namespace TwainControl
 {
     /// <summary>
     /// Interaction logic for DocxViewer.xaml
@@ -58,7 +57,7 @@ namespace GpScanner
             }
             catch (Exception ex)
             {
-                _ = Application.Current?.Dispatcher?.InvokeAsync(async () => await GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", ex.StackTrace));
+                throw new ArgumentException(ex?.Message);
             }
         }
 

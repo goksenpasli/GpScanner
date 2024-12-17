@@ -945,6 +945,9 @@
             Height="256"
             Source="{Binding Converter={StaticResource FilePathToIconLargeConverter}, Mode=OneWay}" />
     </DataTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerDocxTemplate">
+        <local:DocxViewer DocxDataFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+    </DataTemplate>
     <DataTemplate x:Key="EmptyEypListBoxTemplate">
         <Image Width="256"
             Height="256"
@@ -1267,6 +1270,7 @@
         <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
     <local:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
+        Docx="{StaticResource SimpleArchiveViewerDocxTemplate}"
         Empty="{StaticResource EmptyTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
         Jb2="{StaticResource Jb2Template}"
@@ -1277,7 +1281,7 @@
         Xml="{StaticResource XmlViewerTemplate}"
         Zip="{StaticResource ZipViewerTemplate}" />
     <local:ViewerTemplateSelector x:Key="SimpleArchiveViewerSelector"
-        Docx="{StaticResource SimpleArchiveViewerEmptyTemplate}"
+        Docx="{StaticResource SimpleArchiveViewerDocxTemplate}"
         Empty="{StaticResource SimpleArchiveViewerEmptyTemplate}"
         Eyp="{StaticResource SimpleArchiveViewerEypViewerTemplate}"
         Img="{StaticResource SimpleArchiveViewerImgViewerTemplate}"
@@ -1290,6 +1294,7 @@
         Xps="{StaticResource SimpleArchiveViewerXpsViewerTemplate}"
         Zip="{StaticResource SimpleArchiveViewerZipViewerTemplate}" />
     <local:ViewerTemplateSelector x:Key="PdfEypListBoxViewerSelector"
+        Docx="{StaticResource SimpleArchiveViewerDocxTemplate}"
         Eyp="{StaticResource EypViewerTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
         Jb2="{StaticResource Jb2Template}"
