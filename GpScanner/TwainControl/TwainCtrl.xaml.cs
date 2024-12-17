@@ -972,6 +972,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2|" +
                         "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp;*.jb2|" +
                         "Pdf Dosyası (*.pdf)|*.pdf|" +
+                        "Docx Dosyası (*.docx)|*.docx|" +
                         "Xps Dosyası (*.xps)|*.xps|" +
                         "Eyp Dosyası (*.eyp)|*.eyp|" +
                         "Webp Dosyası (*.webp)|*.webp|" +
@@ -3896,6 +3897,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     {
                                         SelectedTabIndex = 6;
                                         xlsxViewer.XlsxDataFilePath = filename;
+                                    });
+                                break;
+                            
+                            case ".docx":
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        SelectedTabIndex = 8;
+                                        docxViewer.DocxDataFilePath = filename;
                                     });
                                 break;
 

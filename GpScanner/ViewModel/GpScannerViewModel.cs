@@ -1233,6 +1233,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         mainWindow.twainCtrl.SelectedTabIndex = 4;
                         return;
                     }
+                    if (string.Equals(Path.GetExtension(filepath), ".docx", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        mainWindow.twainCtrl.docxViewer.DocxDataFilePath = filepath;
+                        mainWindow.twainCtrl.SelectedTabIndex = 8;
+                        return;
+                    }
                     if (string.Equals(Path.GetExtension(filepath), ".eyp", StringComparison.InvariantCultureIgnoreCase))
                     {
                         mainWindow.twainCtrl.PdfImportViewer.PdfViewer.EypFilePath = filepath;

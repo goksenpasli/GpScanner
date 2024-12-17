@@ -2700,6 +2700,14 @@
                     </TabItem.Header>
                     <local:CameraUserControl x:Name="Camera" />
                 </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Image Width="32"
+                            Height="32"
+                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.docx}" />
+                    </TabItem.Header>
+                    <local:DocxViewer x:Name="docxViewer" x:FieldModifier="public" />
+                </TabItem>
             </TabControl>
         </GroupBox>
     </Grid>
