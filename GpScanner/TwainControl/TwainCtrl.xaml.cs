@@ -588,26 +588,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
-                if (Keyboard.Modifiers == ModifierKeys.Alt)
-                {
-                    if (saveFileDialog.ShowDialog() == true)
-                    {
-                        int i = 0;
-                        foreach (ScannedImage scannedImage in GetSelectedImages())
-                        {
-                            Scanner.PdfFilePath = Path.GetDirectoryName(saveFileDialog.FileName).SetUniqueFile(Scanner.SaveFileName, "pdf");
-                            await SavePdfImageAsync(scannedImage, Scanner.PdfFilePath, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
-                            Scanner.PdfSaveProgressValue = (i + 1) / (double)Scanner.Resimler.Count;
-                            i++;
-                        }
-                    }
-                    return;
-                }
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     Filesavetask = Task.Run(
                         async () =>
                         {
+                            if (altkeypressed)
+                            {
+                                int selectedimagecount = GetSelectedImages().Count;
+                                for (int i = 0; i < selectedimagecount; i++)
+                                {
+                                    Scanner.PdfFilePath = Path.GetDirectoryName(saveFileDialog.FileName).SetUniqueFile(Scanner.SaveFileName, "pdf");
+                                    await SavePdfImageAsync(GetSelectedImages()[i], Scanner.PdfFilePath, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
+                                    Scanner.PdfSaveProgressValue = (i + 1) / (double)selectedimagecount;
+                                }
+                                Scanner.PdfSaveProgressValue = 0;
+                                return;
+                            }
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, false, Settings.Default.ImgLoadResolution);
@@ -1293,12 +1291,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 PdfToolBarControlIsEnabled = true;
                 pdfviewer.Sayfa = 1;
                 NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                if (!Settings.Default.RemoveProcessedImage)
-                {
-                    return;
-                }
-
-                SeçiliListeTemizle.Execute(null);
+                await RemoveProcessedImages();
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
 
@@ -1319,57 +1312,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 string[] processedFiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporaryPdf] : [temporaryPdf, pdfFilePath];
                 if (Clipboard.ContainsFileDropList())
                 {
-                    StringCollection clipboardFiles = Clipboard.GetFileDropList();
-                    List<string> clipboardPdfFiles = [.. clipboardFiles.Cast<string>().Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase))];
-                    List<string> clipboardImageFiles = [.. clipboardFiles.Cast<string>().Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant()))];
-                    if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
-                    {
-                        PdfToolBarControlIsEnabled = false;
-                        await Task.Run(
-                            () =>
-                            {
-                                if (clipboardPdfFiles.Any())
-                                {
-                                    clipboardPdfFiles.Add(pdfFilePath);
-                                    clipboardPdfFiles.ToArray().MergePdf().Save(pdfFilePath);
-                                }
-
-                                if (clipboardImageFiles.Any())
-                                {
-                                    using (PdfDocument document = clipboardImageFiles.GeneratePdf(SelectedPaper, progress => Scanner.PdfSaveProgressValue = progress))
-                                    {
-                                        document.Save(temporaryPdf);
-                                    }
-
-                                    processedFiles.MergePdf().Save(pdfFilePath);
-                                }
-                            });
-                        PdfToolBarControlIsEnabled = true;
-                        pdfviewer.Sayfa = 1;
-                        NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
-                    }
+                    await ProcessDropFileList(pdfviewer, pdfFilePath, temporaryPdf, processedFiles);
                 }
 
                 if (Clipboard.ContainsImage())
                 {
-                    BitmapSource image = Clipboard.GetImage();
-                    if (image is not null)
-                    {
-                        BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
-                        PdfToolBarControlIsEnabled = false;
-                        await Task.Run(
-                            () =>
-                            {
-                                using (PdfDocument pdfDocument = bitmapFrame.GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution))
-                                {
-                                    pdfDocument.Save(temporaryPdf);
-                                }
-                                processedFiles.MergePdf().Save(pdfFilePath);
-                            });
-                        PdfToolBarControlIsEnabled = true;
-                        pdfviewer.Sayfa = 1;
-                        NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
-                    }
+                    await ProcessImageFile(pdfviewer, pdfFilePath, temporaryPdf, processedFiles);
                 }
                 Clipboard.Clear();
             },
@@ -3899,7 +3847,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                         xlsxViewer.XlsxDataFilePath = filename;
                                     });
                                 break;
-                            
+
                             case ".docx":
                                 await Dispatcher.InvokeAsync(
                                     () =>
@@ -4811,6 +4759,61 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 outputDocument.ApplyDefaultPdfCompression();
                 outputDocument.Save(savefilename);
             });
+    }
+
+    private async Task ProcessDropFileList(Viewer pdfviewer, string pdfFilePath, string temporaryPdf, string[] processedFiles)
+    {
+        StringCollection clipboardFiles = Clipboard.GetFileDropList();
+        List<string> clipboardPdfFiles = [.. clipboardFiles.Cast<string>().Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase))];
+        List<string> clipboardImageFiles = [.. clipboardFiles.Cast<string>().Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant()))];
+        if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
+        {
+            PdfToolBarControlIsEnabled = false;
+            await Task.Run(
+                () =>
+                {
+                    if (clipboardPdfFiles.Any())
+                    {
+                        clipboardPdfFiles.Add(pdfFilePath);
+                        clipboardPdfFiles.ToArray().MergePdf().Save(pdfFilePath);
+                    }
+
+                    if (clipboardImageFiles.Any())
+                    {
+                        using (PdfDocument document = clipboardImageFiles.GeneratePdf(SelectedPaper, progress => Scanner.PdfSaveProgressValue = progress))
+                        {
+                            document.Save(temporaryPdf);
+                        }
+
+                        processedFiles.MergePdf().Save(pdfFilePath);
+                    }
+                });
+            PdfToolBarControlIsEnabled = true;
+            pdfviewer.Sayfa = 1;
+            NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
+        }
+    }
+
+    private async Task ProcessImageFile(Viewer pdfviewer, string pdfFilePath, string temporaryPdf, string[] processedFiles)
+    {
+        BitmapSource image = Clipboard.GetImage();
+        if (image is not null)
+        {
+            BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
+            PdfToolBarControlIsEnabled = false;
+            await Task.Run(
+                () =>
+                {
+                    using (PdfDocument pdfDocument = bitmapFrame.GeneratePdf(null, Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution))
+                    {
+                        pdfDocument.Save(temporaryPdf);
+                    }
+                    processedFiles.MergePdf().Save(pdfFilePath);
+                });
+            PdfToolBarControlIsEnabled = true;
+            pdfviewer.Sayfa = 1;
+            NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
+        }
     }
 
     private async Task RemoveProcessedImages(bool notifyimage = false)
