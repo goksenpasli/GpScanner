@@ -810,8 +810,8 @@
                     <GroupBox Grid.Row="3" IsEnabled="{Binding Path=SeçiliTarayıcı, Source={x:Static twainproperties:Settings.Default}, Converter={StaticResource StringNullableToBooleanConverter}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="5*" />
                                 <ColumnDefinition Width="2*" />
-                                <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <UniformGrid Columns="3"
                                 IsEnabled="{Binding IsAdministrator, ValidatesOnDataErrors=True}"
@@ -875,12 +875,24 @@
                                             TextWrapping="Wrap" />
                                     </StackPanel>
                                 </Button>
-                                <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                    CopyButtonVisibility="Collapsed"
-                                    OpenButtonVisibility="Collapsed"
-                                    PasteButtonVisibility="Collapsed"
-                                    Text="{Binding StartupMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                    Watermark="{twainctrl:Loc STARTUPMSG}" />
+                                <UniformGrid Columns="2">
+                                    <Button twainctrl:Policy.PolicyName="InstallPortablePackage" Command="{Binding InstallPortablePackage}">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Msi.dll" />
+                                                    <Binding Source="2" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
+                                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                                        CopyButtonVisibility="Collapsed"
+                                        OpenButtonVisibility="Collapsed"
+                                        PasteButtonVisibility="Collapsed"
+                                        Text="{Binding StartupMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                        Watermark="{twainctrl:Loc STARTUPMSG}" />
+                                </UniformGrid>
                             </UniformGrid>
                             <ListBox Grid.Column="1"
                                 Background="{x:Null}"

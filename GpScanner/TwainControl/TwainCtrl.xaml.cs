@@ -3590,6 +3590,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return ocrDatas;
     }
 
+    public static void ExtractAndHandleFiles(string zipFilePath, string extractPath)
+    {
+        using ZipArchive archive = ZipFile.OpenRead(zipFilePath);
+        foreach (ZipArchiveEntry entry in archive.Entries)
+        {
+            string destinationFile = Path.Combine(extractPath, entry.FullName);
+            try
+            {
+                _ = Directory.CreateDirectory(Path.GetDirectoryName(destinationFile));
+                entry.ExtractToFile(destinationFile, true);
+            }
+            catch (IOException) when (IsFileLocked(destinationFile))
+            {
+                ScheduleFileReplacement(entry, destinationFile);
+            }
+        }
+    }
+
     public static List<string> EypFileExtract(string eypfilepath)
     {
         try
@@ -4026,6 +4044,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return GetDefaultPrinter(printerNameBuffer, ref bufferSize) ? (printerNameBuffer?.ToString()) : null;
     }
 
+    private static bool IsFileLocked(string filePath)
+    {
+        try
+        {
+            _ = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            return false;
+        }
+        catch (IOException)
+        {
+            return true;
+        }
+    }
+
     private static IEnumerable<PdfCharacterInformation> MergeCharactersToWords(IEnumerable<PdfiumViewer.PdfCharacterInformation> characters, bool docxformat = false)
     {
         List<PdfCharacterInformation> words = [];
@@ -4056,6 +4087,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         return words;
+    }
+
+    [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+    private static extern bool MoveFileEx(string lpExistingFileName, string lpNewFileName, MoveFileFlags dwFlags);
+
+    private static void ScheduleFileReplacement(ZipArchiveEntry entry, string destinationFile)
+    {
+        string tempFile = Path.GetTempFileName();
+        entry.ExtractToFile(tempFile, overwrite: true);
+        _ = MoveFileEx(tempFile, destinationFile, MoveFileFlags.MOVEFILE_DELAY_UNTIL_REBOOT);
     }
 
     private async Task AddAttachmentFileAsync(string[] files, string loadfilename, string savefilename)

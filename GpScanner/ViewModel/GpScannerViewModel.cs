@@ -1183,6 +1183,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
+        InstallPortablePackage = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new() { FileName = "GpScannerPortable.zip", Filter = "Zip Package (*.zip)|*.zip", Multiselect = false };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    string extractpath = $"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}";
+                    TwainCtrl.ExtractAndHandleFiles(openFileDialog.FileName, extractpath);
+                    Shutdown = true;
+                }
+            },
+            parameter => IsAdministrator);
+
         RemoveEsclScanner = new RelayCommand<object>(
             parameter =>
             {
@@ -1820,6 +1833,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     }
+
+    public RelayCommand<object> InstallPortablePackage { get; }
 
     public bool IsAdministrator
     {
