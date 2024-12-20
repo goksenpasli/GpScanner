@@ -1625,6 +1625,7 @@
                                     VirtualizingPanel.VirtualizationMode="Recycling">
                                     <ListBox.ItemContainerStyle>
                                         <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Margin" Value="2" />
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate>
@@ -1889,6 +1890,11 @@
                                                                             Source="{Binding Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameThumbConverter}}" />
                                                                     </TextBlock.ToolTip>
                                                                 </TextBlock>
+                                                                <Image Canvas.Right="0"
+                                                                    Canvas.Bottom="0"
+                                                                    Width="16"
+                                                                    Height="16"
+                                                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, Path=FilePath}" />
                                                                 <TextBlock Canvas.Right="0"
                                                                     Canvas.Bottom="0"
                                                                     FontFamily="Wingdings"

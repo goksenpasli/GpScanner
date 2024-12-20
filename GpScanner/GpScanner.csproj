@@ -96,8 +96,8 @@
     <Reference Include="PdfSharp.Charting-wpf, Version=1.51.5185.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <HintPath>..\packages\PDFsharp-wpf.1.51.5185-beta\lib\net30\PdfSharp.Charting-wpf.dll</HintPath>
     </Reference>
-    <Reference Include="SevenZipExtractor, Version=1.0.16.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SevenZipExtractor.1.0.17\lib\net45\SevenZipExtractor.dll</HintPath>
+    <Reference Include="SevenZipExtractor, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SevenZipExtractor.1.0.19\lib\net45\SevenZipExtractor.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -474,11 +474,11 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.props'))" />
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
-    <Error Condition="!Exists('..\packages\SevenZipExtractor.1.0.17\build\SevenZipExtractor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SevenZipExtractor.1.0.17\build\SevenZipExtractor.targets'))" />
     <Error Condition="!Exists('..\packages\bblanchon.PDFium.Win32.133.0.6899\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\bblanchon.PDFium.Win32.133.0.6899\build\net461\bblanchon.PDFium.Win32.targets'))" />
+    <Error Condition="!Exists('..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />
-  <Import Project="..\packages\SevenZipExtractor.1.0.17\build\SevenZipExtractor.targets" Condition="Exists('..\packages\SevenZipExtractor.1.0.17\build\SevenZipExtractor.targets')" />
   <Import Project="..\packages\bblanchon.PDFium.Win32.133.0.6899\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\packages\bblanchon.PDFium.Win32.133.0.6899\build\net461\bblanchon.PDFium.Win32.targets')" />
+  <Import Project="..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets" Condition="Exists('..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets')" />
 </Project>
