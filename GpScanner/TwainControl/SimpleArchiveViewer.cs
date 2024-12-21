@@ -52,7 +52,7 @@ public class SimpleArchiveViewer : ArchiveViewer
         SeçiliAyıkla = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder("Kaydedilecek Klasörü Seçin.", new WindowInteropHelper(Window.GetWindow(this)).Handle);
+                string path = FolderDialog.SelectFolder(Translation.GetResStringValue("AUTOFOLDER"), new WindowInteropHelper(Window.GetWindow(this)).Handle);
                 if (!string.IsNullOrEmpty(path))
                 {
                     ExtractSelectedFiles(ArchivePath, Arşivİçerik.Where(z => z.IsChecked), path);

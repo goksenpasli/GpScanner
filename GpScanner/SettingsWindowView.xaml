@@ -100,8 +100,8 @@
                     <GroupBox>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition />
+                                <ColumnDefinition Width="11*" />
+                                <ColumnDefinition Width="5*" />
                             </Grid.ColumnDefinitions>
                             <ListBox Margin="1"
                                 VerticalContentAlignment="Center"
@@ -894,53 +894,37 @@
                                         Watermark="{twainctrl:Loc STARTUPMSG}" />
                                 </UniformGrid>
                             </UniformGrid>
-                            <ListBox Grid.Column="1"
-                                Background="{x:Null}"
-                                BorderBrush="{x:Null}"
-                                SelectedIndex="{Binding ButtonScanMode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
-                                <ListBox.Resources>
-                                    <Style TargetType="{x:Type ListBoxItem}">
-                                        <Setter Property="Template">
-                                            <Setter.Value>
-                                                <ControlTemplate>
-                                                    <RadioButton VerticalAlignment="Center"
-                                                        VerticalContentAlignment="Center"
-                                                        Content="{TemplateBinding ContentPresenter.Content}"
-                                                        IsChecked="{Binding IsSelected, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
-                                                </ControlTemplate>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Style>
-                                </ListBox.Resources>
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <UniformGrid Columns="2" />
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                                <ListBoxItem HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center">
-                                    <ListBoxItem.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Width="32" Height="32">
-                                                <Image.Source>
-                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                        <Binding Source="Shell32.dll" />
-                                                        <Binding Source="201" />
-                                                    </MultiBinding>
-                                                </Image.Source>
-                                            </Image>
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SCAN}" />
-                                        </StackPanel>
-                                    </ListBoxItem.Content>
-                                </ListBoxItem>
-                                <ListBoxItem HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    VerticalContentAlignment="Center"
-                                    IsEnabled="{Binding Path=AutoSave, Source={x:Static twainctrl:ToolBox.Scanner}}">
-                                    <ListBoxItem.Content>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Canvas Width="32" Height="32">
+                            <ScrollViewer Grid.Column="1"
+                                HorizontalScrollBarVisibility="Auto"
+                                Template="{StaticResource HorizontalScrollViewerTemplate}"
+                                VerticalScrollBarVisibility="Disabled">
+                                <ListBox Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
+                                    SelectedIndex="{Binding ButtonScanMode, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                    <ListBox.Resources>
+                                        <Style TargetType="{x:Type ListBoxItem}">
+                                            <Setter Property="Template">
+                                                <Setter.Value>
+                                                    <ControlTemplate>
+                                                        <RadioButton VerticalAlignment="Center"
+                                                            VerticalContentAlignment="Center"
+                                                            Content="{TemplateBinding ContentPresenter.Content}"
+                                                            IsChecked="{Binding IsSelected, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                    </ControlTemplate>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </ListBox.Resources>
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="2" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBoxItem HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center">
+                                        <ListBoxItem.Content>
+                                            <StackPanel Orientation="Horizontal">
                                                 <Image Width="32" Height="32">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -949,17 +933,37 @@
                                                         </MultiBinding>
                                                     </Image.Source>
                                                 </Image>
-                                                <Image Canvas.Left="0"
-                                                    Canvas.Bottom="0"
-                                                    Width="20"
-                                                    Height="20"
-                                                    Source="/TwainControl;component/Icons/save.png" />
-                                            </Canvas>
-                                            <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FASTSCAN}" />
-                                        </StackPanel>
-                                    </ListBoxItem.Content>
-                                </ListBoxItem>
-                            </ListBox>
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc SCAN}" />
+                                            </StackPanel>
+                                        </ListBoxItem.Content>
+                                    </ListBoxItem>
+                                    <ListBoxItem HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        VerticalContentAlignment="Center"
+                                        IsEnabled="{Binding Path=AutoSave, Source={x:Static twainctrl:ToolBox.Scanner}}">
+                                        <ListBoxItem.Content>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Canvas Width="32" Height="32">
+                                                    <Image Width="32" Height="32">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="201" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <Image Canvas.Left="0"
+                                                        Canvas.Bottom="0"
+                                                        Width="20"
+                                                        Height="20"
+                                                        Source="/TwainControl;component/Icons/save.png" />
+                                                </Canvas>
+                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc FASTSCAN}" />
+                                            </StackPanel>
+                                        </ListBoxItem.Content>
+                                    </ListBoxItem>
+                                </ListBox>
+                            </ScrollViewer>
                         </Grid>
                     </GroupBox>
                     <GroupBox Grid.Row="4">

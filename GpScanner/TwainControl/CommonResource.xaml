@@ -1252,7 +1252,9 @@
             DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
     </DataTemplate>
     <DataTemplate x:Key="SimpleArchiveViewerZipViewerTemplate">
-        <local:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+        <local:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+            DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+            Template="{DynamicResource DefaultArchiveViewerTemplate}" />
     </DataTemplate>
     <DataTemplate x:Key="SimpleArchiveViewerEypViewerTemplate">
         <local:EypPdfViewer AutoFitContent="True"
