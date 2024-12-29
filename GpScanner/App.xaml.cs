@@ -20,7 +20,7 @@ namespace GpScanner;
 public partial class App : Application
 {
     private MainWindow mainwindow;
-    private Thread splashThread = null;
+    private Thread splashThread;
     private SplashWindow splashWindow;
 
     private void Application_Startup(object sender, StartupEventArgs e)
@@ -84,7 +84,7 @@ public partial class App : Application
             {
                 string message = $"[{DateTime.Now:G}] {e.Exception.Message}";
                 string stackTrace = e.Exception.StackTrace;
-                ExtendedMessageBox extendedMessageBox = new ();
+                ExtendedMessageBox extendedMessageBox = new() { YesIconType = IconType.Warn };
                 IWindowService windowService = new WindowService();
                 extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), message, MainWindow.Title);
                 _ = GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", $"{message}\n{stackTrace}").ConfigureAwait(false);

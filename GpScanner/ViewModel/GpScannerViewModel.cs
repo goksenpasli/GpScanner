@@ -490,7 +490,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
                 _ = Process.Start(
                     $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\twux32.exe",
-                    $"/w:{new WindowInteropHelper(windowService.GetFirstWindow()).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                    $"/w:{new WindowInteropHelper(windowService.GetActiveWindow()).Handle} https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -537,7 +537,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     Settings.Default.Save();
                     Settings.Default.Reload();
                     ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("RESTARTAPP"), AppName);
+                    extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), Translation.GetResStringValue("RESTARTAPP"), AppName);
                 }
             },
             parameter => true);
@@ -859,7 +859,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     Twainsettings.Settings.Default.Reset();
                     Settings.Default.Reset();
                     ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("RESTARTAPP"), AppName);
+                    extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), Translation.GetResStringValue("RESTARTAPP"), AppName);
                 }
             });
 
@@ -1098,7 +1098,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         _ = await context.Database.ExecuteSqlCommandAsync(TransactionalBehavior.DoNotEnsureTransaction, "VACUUM;");
                         _ = await context.SaveChangesAsync();
                         ExtendedMessageBox extendedMessageBox = new();
-                        extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("SUCCESS"), AppName);
+                        extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), Translation.GetResStringValue("SUCCESS"), AppName);
                     }
                 }
                 catch (Exception ex)
@@ -1157,7 +1157,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     if (driveInfo.DriveType == DriveType.CDRom)
                     {
                         ExtendedMessageBox extendedMessageBox = new();
-                        extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), $"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName);
+                        extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), $"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName);
                         return;
                     }
                     Settings.Default.DataBaseBackUpFolder = path;
@@ -1219,7 +1219,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (xDocument is not null)
                 {
                     ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), xDocument.ToString(), AppName);
+                    extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), xDocument.ToString(), AppName);
                 }
             },
             parameter => true);
@@ -1231,7 +1231,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (xDocument is not null)
                 {
                     ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), xDocument.ToString(), AppName);
+                    extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), xDocument.ToString(), AppName);
                 }
             },
             parameter => true);

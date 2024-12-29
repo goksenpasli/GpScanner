@@ -77,12 +77,53 @@
                                     Visibility="{TemplateBinding YesButton}">
                                     <Button.Content>
                                         <Image Width="32" Height="32">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Comres.dll" />
-                                                    <Binding Source="8" />
-                                                </MultiBinding>
-                                            </Image.Source>
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}}" Value="{x:Static local:IconType.Default}">
+                                                            <Setter Property="Source">
+                                                                <Setter.Value>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Comres.dll" />
+                                                                        <Binding Source="8" />
+                                                                    </MultiBinding>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}}" Value="{x:Static local:IconType.Warn}">
+                                                            <Setter Property="Source">
+                                                                <Setter.Value>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Comres.dll" />
+                                                                        <Binding Source="16" />
+                                                                    </MultiBinding>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}}" Value="{x:Static local:IconType.Error}">
+                                                            <Setter Property="Source">
+                                                                <Setter.Value>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Comres.dll" />
+                                                                        <Binding Source="10" />
+                                                                    </MultiBinding>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding YesIconType, RelativeSource={RelativeSource AncestorType=local:ExtendedMessageBox}}" Value="{x:Static local:IconType.Wait}">
+                                                            <Setter Property="Source">
+                                                                <Setter.Value>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Comres.dll" />
+                                                                        <Binding Source="7" />
+                                                                    </MultiBinding>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+
                                         </Image>
                                     </Button.Content>
                                 </Button>

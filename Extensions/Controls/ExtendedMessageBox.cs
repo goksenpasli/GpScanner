@@ -8,6 +8,14 @@ using System.Windows.Shapes;
 
 namespace Extensions
 {
+    public enum IconType
+    {
+        Default = 0,
+        Warn = 1,
+        Error = 2,
+        Wait = 3,
+    }
+
     public class ExtendedMessageBox : Control
     {
         public static readonly DependencyProperty CheckDescriptionProperty = DependencyProperty.Register("CheckDescription", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
@@ -31,6 +39,7 @@ namespace Extensions
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
         public static readonly DependencyProperty YesButtonProperty = DependencyProperty.Register("YesButton", typeof(Visibility), typeof(ExtendedMessageBox), new PropertyMetadata(Visibility.Visible));
         public static readonly DependencyProperty YesEnabledProperty = DependencyProperty.Register("YesEnabled", typeof(bool), typeof(ExtendedMessageBox), new PropertyMetadata(true));
+        public static readonly DependencyProperty YesIconTypeProperty = DependencyProperty.Register("YesIconType", typeof(IconType), typeof(ExtendedMessageBox), new PropertyMetadata(IconType.Default));
         private static Grid _overlayGrid;
         private static Rectangle blockrectangle;
         private Point _dragStartPoint;
@@ -83,6 +92,8 @@ namespace Extensions
         public Visibility YesButton { get => (Visibility)GetValue(YesButtonProperty); set => SetValue(YesButtonProperty, value); }
 
         public bool YesEnabled { get => (bool)GetValue(YesEnabledProperty); set => SetValue(YesEnabledProperty, value); }
+
+        public IconType YesIconType { get => (IconType)GetValue(YesIconTypeProperty); set => SetValue(YesIconTypeProperty, value); }
 
         private Action OnNoAction { get; set; }
 
@@ -137,24 +148,34 @@ namespace Extensions
                 CustomContentHeight = CustomContentHeight,
                 CustomContentWidth = CustomContentWidth,
                 IsDraggable = IsDraggable,
+                YesIconType = YesIconType,
+                OnYesAction = onYesAction,
+                OnNoAction = onNoAction
             };
-            _overlayGrid = window.GetFirstVisualChild<Grid>();
-            if (_overlayGrid is null)
-            {
-                throw new InvalidOperationException("window should contain at least one grid control.");
-            }
+
+            _overlayGrid = window.GetFirstVisualChild<Grid>() ?? throw new InvalidOperationException("The window must contain at least one Grid control.");
             if (ismodal && blockrectangle is null)
             {
                 blockrectangle = new Rectangle { Fill = Brushes.Transparent, IsHitTestVisible = true };
-                Grid.SetColumnSpan(blockrectangle, _overlayGrid.ColumnDefinitions.Count);
-                Grid.SetRowSpan(blockrectangle, _overlayGrid.RowDefinitions.Count);
+                if (_overlayGrid.ColumnDefinitions.Count > 0)
+                {
+                    Grid.SetColumnSpan(blockrectangle, _overlayGrid.ColumnDefinitions.Count);
+                }
+                if (_overlayGrid.RowDefinitions.Count > 0)
+                {
+                    Grid.SetRowSpan(blockrectangle, _overlayGrid.RowDefinitions.Count);
+                }
                 _ = _overlayGrid.Children.Add(blockrectangle);
             }
-            Grid.SetColumnSpan(dialog, _overlayGrid.ColumnDefinitions.Count);
-            Grid.SetRowSpan(dialog, _overlayGrid.RowDefinitions.Count);
+            if (_overlayGrid.ColumnDefinitions.Count > 0)
+            {
+                Grid.SetColumnSpan(dialog, _overlayGrid.ColumnDefinitions.Count);
+            }
+            if (_overlayGrid.RowDefinitions.Count > 0)
+            {
+                Grid.SetRowSpan(dialog, _overlayGrid.RowDefinitions.Count);
+            }
             _ = _overlayGrid.Children.Add(dialog);
-            dialog.OnYesAction = onYesAction;
-            dialog.OnNoAction = onNoAction;
         }
 
         private void CloseDialog()
