@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using Extensions;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +10,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
 using TwainControl;
 
 namespace GpScanner.ViewModel;
@@ -51,11 +51,11 @@ public static class StillImageHelper
         ];
     }
 
-    public static void KillServer(string title)
+    public static void KillServer()
     {
         if (_serverRunning)
         {
-            _ = SendMessage(Process.GetCurrentProcess(), MSG_KILL_PIPE_SERVER, title);
+            _ = SendMessage(Process.GetCurrentProcess(), MSG_KILL_PIPE_SERVER);
         }
     }
 
@@ -102,7 +102,7 @@ public static class StillImageHelper
         }
     }
 
-    public static bool SendMessage(Process recipient, string msg, string appname)
+    public static bool SendMessage(Process recipient, string msg)
     {
         try
         {
@@ -114,7 +114,9 @@ public static class StillImageHelper
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex?.Message, appname, MessageBoxButton.OK, MessageBoxImage.Error);
+            IWindowService windowService = new WindowService();
+            ExtendedMessageBox extendedMessageBox = new();
+            extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), ex?.Message, windowService.GetFirstWindow().Title);
         }
 
         return false;

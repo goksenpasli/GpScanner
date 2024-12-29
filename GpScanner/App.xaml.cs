@@ -1,4 +1,5 @@
-﻿using GpScanner.Properties;
+﻿using Extensions;
+using GpScanner.Properties;
 using GpScanner.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -68,7 +69,7 @@ public partial class App : Application
             foreach (Process process in processes)
             {
                 StillImageHelper.ActivateProcess(process);
-                if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX, MainWindow?.Title))
+                if (StillImageHelper.SendMessage(process, StillImageHelper.DEVICE_PREFIX))
                 {
                     Environment.Exit(0);
                 }
@@ -83,7 +84,9 @@ public partial class App : Application
             {
                 string message = $"[{DateTime.Now:G}] {e.Exception.Message}";
                 string stackTrace = e.Exception.StackTrace;
-                _ = MessageBox.Show(message, MainWindow?.Title ?? "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ExtendedMessageBox extendedMessageBox = new ();
+                IWindowService windowService = new WindowService();
+                extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), message, MainWindow.Title);
                 _ = GpScannerViewModel.WriteToLogFile($@"{GpScannerViewModel.ProfileFolder}\{GpScannerViewModel.ErrorFile}", $"{message}\n{stackTrace}").ConfigureAwait(false);
             });
         e.Handled = true;

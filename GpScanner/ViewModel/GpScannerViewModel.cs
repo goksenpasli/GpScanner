@@ -536,7 +536,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     _ = Settings.Default.AdditionalIndexFolders.Add(folderpath);
                     Settings.Default.Save();
                     Settings.Default.Reload();
-                    _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("RESTARTAPP"), AppName);
                 }
             },
             parameter => true);
@@ -686,7 +687,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
                 if (path == Twainsettings.Settings.Default.AutoFolder)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("NO ACTION"), AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("NO ACTION"), AppName);
                     return;
                 }
                 Settings.Default.BatchFolder = path;
@@ -699,7 +701,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
                 BatchFolderProcessedFileList = [];
@@ -797,7 +800,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
 
@@ -854,7 +858,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     Twainsettings.Settings.Default.Reset();
                     Settings.Default.Reset();
-                    _ = MessageBox.Show(Translation.GetResStringValue("RESTARTAPP"), AppName);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("RESTARTAPP"), AppName);
                 }
             });
 
@@ -1092,7 +1097,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     {
                         _ = await context.Database.ExecuteSqlCommandAsync(TransactionalBehavior.DoNotEnsureTransaction, "VACUUM;");
                         _ = await context.SaveChangesAsync();
-                        _ = MessageBox.Show(Translation.GetResStringValue("SUCCESS"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                        ExtendedMessageBox extendedMessageBox = new();
+                        extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), Translation.GetResStringValue("SUCCESS"), AppName);
                     }
                 }
                 catch (Exception ex)
@@ -1150,7 +1156,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     DriveInfo driveInfo = new(path);
                     if (driveInfo.DriveType == DriveType.CDRom)
                     {
-                        _ = MessageBox.Show($"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        ExtendedMessageBox extendedMessageBox = new();
+                        extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), $"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName);
                         return;
                     }
                     Settings.Default.DataBaseBackUpFolder = path;
@@ -1211,7 +1218,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 XDocument xDocument = await ESCLScanner.GetScannerStatusAsync($"{EsclUrl}:{EsclPort}");
                 if (xDocument is not null)
                 {
-                    _ = MessageBox.Show(xDocument.ToString(), windowService.GetActiveWindow().Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), xDocument.ToString(), AppName);
                 }
             },
             parameter => true);
@@ -1222,7 +1230,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 XDocument xDocument = await ESCLScanner.GetScannerCapabilitiesAsync($"{EsclUrl}:{EsclPort}");
                 if (xDocument is not null)
                 {
-                    _ = MessageBox.Show(xDocument.ToString(), windowService.GetActiveWindow().Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(windowService.GetFirstWindow(), xDocument.ToString(), AppName);
                 }
             },
             parameter => true);
@@ -3418,7 +3427,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
         catch (Exception ex)
         {
-            _ = MessageBox.Show(ex.Message, appname, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+            ExtendedMessageBox extendedMessageBox = new();
+            extendedMessageBox.ShowDialog(WindowService.GetFirstWindow(), ex.Message, AppName);
         }
     }
 

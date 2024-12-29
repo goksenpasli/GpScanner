@@ -136,7 +136,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
                 GC.Collect();
@@ -168,7 +169,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
 
@@ -194,7 +196,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
                 ExtendedMessageBox extendedmessagebox = new()
@@ -561,12 +564,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 string path = FolderDialog.SelectFolder(Translation.GetResStringValue("AUTOFOLDER"), new WindowInteropHelper(Window.GetWindow(this)).Handle, Settings.Default.AutoFolder);
                 string oldpath = Settings.Default.AutoFolder;
+                ExtendedMessageBox extendedMessageBox = new();
                 if (!string.IsNullOrEmpty(path))
                 {
                     DriveInfo driveInfo = new(path);
                     if (driveInfo.DriveType == DriveType.CDRom)
                     {
-                        _ = MessageBox.Show($"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), $"{Translation.GetResStringValue("ERROR")}\n{Translation.GetResStringValue("INVALIDFILENAME")}", AppName);
                         return;
                     }
                     Settings.Default.AutoFolder = path;
@@ -575,7 +579,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 if (!string.IsNullOrWhiteSpace(oldpath) && oldpath != Settings.Default.AutoFolder)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("AUTOFOLDERCHANGE"), AppName, MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("AUTOFOLDERCHANGE"), AppName);
                 }
             },
             parameter => true);
@@ -840,7 +844,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (Filesavetask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
 
@@ -877,7 +882,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     _ = sb.Append(item.Key).Append(' ').AppendLine(DateTime.Today.ToString(item.Key, TranslationSource.Instance.CurrentCulture));
                 }
                 _ = sb.AppendLine().AppendLine(Translation.GetResStringValue("FOLDERFORMAT"));
-                _ = MessageBox.Show(sb.ToString(), AppName);
+                ExtendedMessageBox extendedMessageBox = new();
+                extendedMessageBox.ShowDialog(Window.GetWindow(this), sb.ToString(), AppName);
             },
             parameter => true);
 
@@ -934,10 +940,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (openFileDialog.ShowDialog() == true)
                 {
                     string dllpath = $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\x86\pdfium.dll";
+                    ExtendedMessageBox extendedMessageBox = new();
                     try
                     {
                         ZipExtractSingleFile(openFileDialog.FileName, "runtimes/win-x86/native/pdfium.dll", dllpath);
-                        _ = MessageBox.Show($"{Translation.GetResStringValue("INSTALLED")}\n{Translation.GetResStringValue("RESTARTAPP")}", AppName);
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), $"{Translation.GetResStringValue("INSTALLED")}\n{Translation.GetResStringValue("RESTARTAPP")}", AppName);
                     }
                     catch (Exception)
                     {
@@ -946,10 +953,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             string sourcedllpath = $"{Path.GetTempPath()}pdfium.dll";
                             ZipExtractSingleFile(openFileDialog.FileName, "runtimes/win-x86/native/pdfium.dll", sourcedllpath);
                             AddPendingFileRenameOperation(sourcedllpath, dllpath);
-                            _ = MessageBox.Show($"{Translation.GetResStringValue("RESTARTCOMP")}", AppName);
+                            extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("RESTARTCOMP"), AppName);
                             return;
                         }
-                        _ = MessageBox.Show($"{Translation.GetResStringValue("FOLDERACCESS")}", AppName);
+                        extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("FOLDERACCESS"), AppName);
                     }
                 }
             },
@@ -960,7 +967,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 if (fileloadtask?.IsCompleted == false)
                 {
-                    _ = MessageBox.Show(Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
                     return;
                 }
 
@@ -1291,6 +1299,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 PdfToolBarControlIsEnabled = true;
                 pdfviewer.Sayfa = 1;
                 NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+                ClosedPdfFilePath = pdfFilePath;
+                RefreshDocumentList = true;
                 await RemoveProcessedImages();
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1310,15 +1320,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 string pdfFilePath = pdfviewer.PdfFilePath;
                 string temporaryPdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
                 string[] processedFiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporaryPdf] : [temporaryPdf, pdfFilePath];
+                PdfToolBarControlIsEnabled = false;
                 if (Clipboard.ContainsFileDropList())
                 {
-                    await ProcessDropFileList(pdfviewer, pdfFilePath, temporaryPdf, processedFiles);
+                    await ProcessDropFileList(pdfFilePath, temporaryPdf, processedFiles);
                 }
 
                 if (Clipboard.ContainsImage())
                 {
-                    await ProcessImageFile(pdfviewer, pdfFilePath, temporaryPdf, processedFiles);
+                    await ProcessImageFile(pdfFilePath, temporaryPdf, processedFiles);
                 }
+                PdfToolBarControlIsEnabled = true;
+                pdfviewer.Sayfa = 1;
+                NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
+                ClosedPdfFilePath = pdfFilePath;
+                RefreshDocumentList = true;
                 Clipboard.Clear();
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -1359,7 +1375,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 .AppendLine()
                 .Append($"{reader.FileSize / 1048576d:F}")
                 .AppendLine(" MB");
-                _ = MessageBox.Show(stringBuilder.ToString(), AppName);
+                ExtendedMessageBox extendedMessageBox = new();
+                extendedMessageBox.ShowDialog(Window.GetWindow(this), stringBuilder.ToString(), AppName);
             },
             parameter => parameter is string filepath && File.Exists(filepath));
 
@@ -1650,7 +1667,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is ScannedImage scannedImage && scannedImage?.Resim is not null)
                 {
                     Clipboard.SetImage(scannedImage.Resim.ToBitmapImage());
-                    _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("COPYCLIPBOARD"), AppName);
                 }
             },
             parameter => true);
@@ -1967,7 +1985,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     pdfviewer.PdfFilePath = null;
                     pdfviewer.PdfFilePath = filepath;
                     double compressionratio = newsize / oldsize;
-                    _ = MessageBox.Show($"{Translation.GetResStringValue("SUCCESS")}\n{compressionratio:P2}", AppName, MessageBoxButton.OK, MessageBoxImage.Information);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    extendedMessageBox.ShowDialog(Window.GetWindow(this), $"{Translation.GetResStringValue("SUCCESS")}\n{compressionratio:P2}", AppName);
                 }
             },
             parameter => parameter is Viewer pdfviewer && File.Exists(pdfviewer.PdfFilePath));
@@ -3941,7 +3960,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (fileloadtask?.IsCompleted == false)
         {
-            _ = MessageBox.Show(Window.GetWindow(this), Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
+            ExtendedMessageBox extendedMessageBox = new();
+            extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
             return;
         }
 
@@ -4011,16 +4031,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-    private static bool CheckFileSaveProgress()
-    {
-        if (Filesavetask?.IsCompleted == false)
-        {
-            _ = MessageBox.Show(Translation.GetResStringValue("TASKSRUNNING"), AppName);
-            return false;
-        }
-        return true;
-    }
 
     private static PdfCharacterInformation CreateWordFromCharacters(List<PdfCharacterInformation> characters)
     {
@@ -4262,6 +4272,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         CameraQrCodeTimer?.Stop();
+    }
+
+    private bool CheckFileSaveProgress()
+    {
+        if (Filesavetask?.IsCompleted == false)
+        {
+            ExtendedMessageBox extendedMessageBox = new();
+            extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
+            return false;
+        }
+        return true;
     }
 
     private Int32Rect CropPreviewImage(ImageSource imageSource)
@@ -4802,14 +4823,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    private async Task ProcessDropFileList(Viewer pdfviewer, string pdfFilePath, string temporaryPdf, string[] processedFiles)
+    private async Task ProcessDropFileList(string pdfFilePath, string temporaryPdf, string[] processedFiles)
     {
         StringCollection clipboardFiles = Clipboard.GetFileDropList();
         List<string> clipboardPdfFiles = [.. clipboardFiles.Cast<string>().Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase))];
         List<string> clipboardImageFiles = [.. clipboardFiles.Cast<string>().Where(z => imagefileextensions.Contains(Path.GetExtension(z).ToLowerInvariant()))];
         if (clipboardPdfFiles.Any() || clipboardImageFiles.Any())
         {
-            PdfToolBarControlIsEnabled = false;
             await Task.Run(
                 () =>
                 {
@@ -4829,19 +4849,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         processedFiles.MergePdf().Save(pdfFilePath);
                     }
                 });
-            PdfToolBarControlIsEnabled = true;
-            pdfviewer.Sayfa = 1;
-            NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
         }
     }
 
-    private async Task ProcessImageFile(Viewer pdfviewer, string pdfFilePath, string temporaryPdf, string[] processedFiles)
+    private async Task ProcessImageFile(string pdfFilePath, string temporaryPdf, string[] processedFiles)
     {
         BitmapSource image = Clipboard.GetImage();
         if (image is not null)
         {
             BitmapFrame bitmapFrame = GenerateBitmapFrame(image);
-            PdfToolBarControlIsEnabled = false;
             await Task.Run(
                 () =>
                 {
@@ -4851,9 +4867,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                     processedFiles.MergePdf().Save(pdfFilePath);
                 });
-            PdfToolBarControlIsEnabled = true;
-            pdfviewer.Sayfa = 1;
-            NotifyPdfChange(pdfviewer, temporaryPdf, pdfFilePath);
         }
     }
 

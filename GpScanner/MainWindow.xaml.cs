@@ -56,61 +56,50 @@ public partial class MainWindow : Window
 
     private async void ContentControl_DropAsync(object sender, DragEventArgs e)
     {
-        if (e.OriginalSource is Image image && image.TemplatedParent is PdfViewer.PdfViewer pdfviewer)
+        if (e.OriginalSource is not Image image || image.TemplatedParent is not PdfViewer.PdfViewer pdfviewer)
         {
-            string pdfFilePath = (string)pdfviewer.DataContext;
-            string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+            return;
+        }
+        string pdfFilePath = pdfviewer.DataContext as string ?? throw new ArgumentException("Invalid PDF file path.");
+        string temporarypdf = $"{Path.GetTempPath()}{Guid.NewGuid()}.pdf";
+        try
+        {
             if (e?.Data?.GetData(typeof(ScannedImage)) is ScannedImage droppedData)
             {
-                try
+                int currentPage = pdfviewer.Sayfa;
+                droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
+                string[] mergedFiles = Keyboard.Modifiers switch
                 {
-                    int curpage = pdfviewer.Sayfa;
-                    droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
-                    string[] processedfiles = [temporarypdf, pdfFilePath];
-                    if (Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Shift))
-                    {
-                        await TwainCtrl.RemovePdfPageAsync(pdfFilePath, curpage, curpage);
-                        processedfiles?.MergePdf()?.Save(pdfFilePath);
-                        await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
-                        TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                        return;
-                    }
+                    ModifierKeys.Alt | ModifierKeys.Shift => [temporarypdf, pdfFilePath],
+                    ModifierKeys.Shift => [temporarypdf, pdfFilePath],
+                    ModifierKeys.Alt => [pdfFilePath, temporarypdf],
+                    _ => [temporarypdf, pdfFilePath]
+                };
 
-                    if (Keyboard.Modifiers == ModifierKeys.Shift)
-                    {
-                        processedfiles?.MergePdf()?.Save(pdfFilePath);
-                        await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, curpage - 1);
-                        TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                        return;
-                    }
-
-                    string[] pdffiles = Keyboard.Modifiers == ModifierKeys.Alt ? [pdfFilePath, temporarypdf] : [temporarypdf, pdfFilePath];
-                    pdffiles?.MergePdf()?.Save(pdfFilePath);
-                    TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                    return;
-                }
-                catch (Exception ex)
+                if ((Keyboard.Modifiers & (ModifierKeys.Alt | ModifierKeys.Shift)) == (ModifierKeys.Alt | ModifierKeys.Shift))
                 {
-                    throw new ArgumentException(ex?.Message);
+                    await TwainCtrl.RemovePdfPageAsync(pdfFilePath, currentPage, currentPage);
                 }
+                mergedFiles.MergePdf()?.Save(pdfFilePath);
+                await TwainCtrl.ArrangeFileAsync(pdfFilePath, pdfFilePath, 0, currentPage - 1);
             }
             if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)
             {
                 List<string> DroppedPdfFiles = [.. files.Where(PdfViewer.PdfViewer.IsValidPdfFile)];
-                await Task.Run(
-                    () =>
-                    {
-                        if (DroppedPdfFiles?.Any() == true)
-                        {
-                            DroppedPdfFiles.Add(pdfFilePath);
-                            DroppedPdfFiles?.ToArray()?.MergePdf()?.Save(pdfFilePath);
-                        }
-                    });
-
-                pdfviewer.Sayfa = 1;
-                TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
-                DroppedPdfFiles = null;
+                if (DroppedPdfFiles?.Any() == true)
+                {
+                    DroppedPdfFiles.Add(pdfFilePath);
+                    await Task.Run(() => DroppedPdfFiles.ToArray().MergePdf()?.Save(pdfFilePath));
+                    pdfviewer.Sayfa = 1;
+                }
             }
+            TwainCtrl.NotifyPdfChange(pdfviewer, temporarypdf, pdfFilePath);
+            TwainCtrl.ClosedPdfFilePath = pdfFilePath;
+            TwainCtrl.RefreshDocumentList = true;
+        }
+        catch (Exception ex)
+        {
+            throw new ArgumentException($"An error occurred while processing the drop operation: {ex.Message}");
         }
     }
 
@@ -152,7 +141,7 @@ public partial class MainWindow : Window
             {
                 Settings.Default.Reset();
                 Twainsettings.Settings.Default.Reset();
-                _ = MessageBox.Show(this, Translation.GetResStringValue("RESTARTAPP"));
+                ShowExtendedMessageBox(Translation.GetResStringValue("RESTARTAPP"), false);
             }
             if (Settings.Default.RegisterBatchWatcher)
             {
@@ -235,7 +224,7 @@ public partial class MainWindow : Window
 
         if (!string.IsNullOrWhiteSpace(Settings.Default.StartupMessage))
         {
-            _ = MessageBox.Show(this, Settings.Default.StartupMessage, Title, MessageBoxButton.OK, MessageBoxImage.Information);
+            ShowExtendedMessageBox(Settings.Default.StartupMessage, false);
         }
     }
 
@@ -263,7 +252,7 @@ public partial class MainWindow : Window
             {
                 TwainCtrl.Scanner.ApplyPdfSaveOcr = false;
                 TwainCtrl.Scanner.ApplyDataBaseOcr = false;
-                _ = MessageBox.Show($"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("TESSLANGSELECT")}", Title);
+                ShowExtendedMessageBox($"{Translation.GetResStringValue("SETTİNGS")}{Environment.NewLine}{Translation.GetResStringValue("TESSLANGSELECT")}", false);
             }
         }
     }
@@ -348,7 +337,7 @@ public partial class MainWindow : Window
             if (e.PropertyName is "UsePageSeperator" && TwainCtrl?.Scanner?.UsePageSeperator == true && Settings.Default.PatchCodes.Count == 0)
             {
                 TwainCtrl.Scanner.UsePageSeperator = false;
-                _ = MessageBox.Show($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("QRDETECT")}", Title);
+                ShowExtendedMessageBox($"{Translation.GetResStringValue("NOPATCHCODE")}\n{Translation.GetResStringValue("SETTİNGS")}=>{Translation.GetResStringValue("QRDETECT")}", false);
             }
 
             if (e.PropertyName is "RefreshDocumentList" && TwainCtrl?.RefreshDocumentList == true)
@@ -395,6 +384,6 @@ public partial class MainWindow : Window
             _isClosingTaskRunning = false;
             Close();
         }
-        StillImageHelper.KillServer(Title);
+        StillImageHelper.KillServer();
     }
 }

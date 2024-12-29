@@ -125,7 +125,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                     filedata = null;
                     using Image image = Image.FromStream(ms);
                     Clipboard.SetImage(image.ToBitmapImage(ImageFormat.Jpeg));
-                    _ = MessageBox.Show(Translation.GetResStringValue("COPYCLIPBOARD"), Window.GetWindow(this)?.Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                    ExtendedMessageBox extendedMessageBox = new();
+                    Window window = Window.GetWindow(this);
+                    extendedMessageBox.ShowDialog(window, Translation.GetResStringValue("COPYCLIPBOARD"), window.Title);
                 }
             },
             parameter => true);
