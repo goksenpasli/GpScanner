@@ -10,4 +10,6 @@ public class WindowService : IWindowService
     public Window GetFirstWindow() => Application.Current?.Windows?.OfType<Window>()?.FirstOrDefault();
 
     public T GetFirstWindow<T>() where T : Window => Application.Current?.Windows?.OfType<T>()?.FirstOrDefault();
+
+    public Window GetLastWindow() => Application.Current?.Windows?.OfType<Window>()?.LastOrDefault();
 }

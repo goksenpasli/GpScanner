@@ -27,6 +27,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -1169,7 +1170,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         ApplyCustomSize = new RelayCommand<object>(parameter => SelectedSize = new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight), parameter => true);
 
-        CloseApp = new RelayCommand<object>(parameter => windowService.GetFirstWindow().Close(), parameter => true);
+        CloseApp = new RelayCommand<object>(parameter =>
+        {
+            Window window = windowService.GetLastWindow();
+            if (window?.GetFirstVisualChild<Grid>()?.Children?.OfType<ExtendedMessageBox>()?.Any() == true)
+            {
+                return;
+            }
+            window?.Close();
+        }, parameter => true);
 
         AddEsclData = new RelayCommand<object>(
             async parameter =>

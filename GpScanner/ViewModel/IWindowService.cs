@@ -9,4 +9,6 @@ public interface IWindowService
     Window GetFirstWindow();
 
     T GetFirstWindow<T>() where T : Window;
+
+    Window GetLastWindow();
 }
