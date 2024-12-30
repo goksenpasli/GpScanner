@@ -5,6 +5,7 @@ using Ocr;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace GpScanner;
 public partial class MainWindow : Window
 {
     public static CollectionViewSource cvs;
+    private const int _AboutSysMenuID = 1001;
     private bool _dataBaseBackupTaskStarted;
     private bool _isClosingTaskRunning;
 
@@ -133,7 +135,7 @@ public partial class MainWindow : Window
 
     private void MW_ContentRendered(object sender, EventArgs e)
     {
-        this.SystemMenu();
+        SystemMenu(this);
         string[] commandLineArgs = Environment.GetCommandLineArgs();
         if (DataContext is GpScannerViewModel ViewModel)
         {
@@ -263,6 +265,14 @@ public partial class MainWindow : Window
         extendedMessageBox.ShowDialog(this, message, Title);
     }
 
+    private void SystemMenu(MainWindow mainwindow)
+    {
+        IntPtr systemMenuHandle = new WindowInteropHelper(mainwindow).Handle.GetSystemMenu(false);
+        _ = systemMenuHandle.InsertMenu(7, WindowExtensions.MF_BYPOSITION, _AboutSysMenuID, Translation.GetResStringValue("ABOUT"));
+        HwndSource source = HwndSource.FromHwnd(new WindowInteropHelper(mainwindow).Handle);
+        source?.AddHook(WndProc);
+    }
+
     private async void TwainCtrl_PropertyChangedAsync(object sender, PropertyChangedEventArgs e)
     {
         if (DataContext is GpScannerViewModel ViewModel)
@@ -385,5 +395,22 @@ public partial class MainWindow : Window
             Close();
         }
         StillImageHelper.KillServer();
+    }
+
+    [DebuggerStepThrough]
+    private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+    {
+        if (msg == WindowExtensions.WM_SYSCOMMAND)
+        {
+            switch (wParam.ToInt32())
+            {
+                case _AboutSysMenuID:
+                    _ = Process.Start("https://github.com/goksenpasli");
+                    handled = true;
+                    break;
+            }
+        }
+
+        return IntPtr.Zero;
     }
 }

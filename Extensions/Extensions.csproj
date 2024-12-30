@@ -163,6 +163,7 @@
     <Compile Include="Shader\SharpenEffect.cs" />
     <Compile Include="ShellIcon.cs" />
     <Compile Include="TranslateViewModel.cs" />
+    <Compile Include="WindowExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\Calculator.xaml">

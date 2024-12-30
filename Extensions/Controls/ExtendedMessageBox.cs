@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -50,6 +52,8 @@ namespace Extensions
         private ExtendedMessageBox dialog;
 
         static ExtendedMessageBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ExtendedMessageBox), new FrameworkPropertyMetadata(typeof(ExtendedMessageBox))); }
+
+        public bool BlockAltF4 { get; set; }
 
         public string CheckDescription { get => (string)GetValue(CheckDescriptionProperty); set => SetValue(CheckDescriptionProperty, value); }
 
@@ -117,7 +121,7 @@ namespace Extensions
             MouseUp += OnMouseUp;
         }
 
-        public void ShowDialog(Window window, string message, string title = null, Action onYesAction = null, Action onNoAction = null, bool ismodal = true)
+        public void ShowDialog(Window window, string message, string title = null, Action onYesAction = null, Action onNoAction = null)
         {
             if (window is null)
             {
@@ -152,9 +156,8 @@ namespace Extensions
                 OnYesAction = onYesAction,
                 OnNoAction = onNoAction
             };
-
             _overlayGrid = window.GetFirstVisualChild<Grid>() ?? throw new InvalidOperationException("The window must contain at least one Grid control.");
-            if (ismodal && blockrectangle is null)
+            if (blockrectangle is null)
             {
                 blockrectangle = new Rectangle { Fill = Brushes.Transparent, IsHitTestVisible = true };
                 if (_overlayGrid.ColumnDefinitions.Count > 0)
@@ -175,11 +178,24 @@ namespace Extensions
             {
                 Grid.SetRowSpan(dialog, _overlayGrid.RowDefinitions.Count);
             }
+            window.DisableCloseButton(true);
             _ = _overlayGrid.Children.Add(dialog);
+        }
+
+        protected override void OnInitialized(EventArgs e)
+        {
+            base.OnInitialized(e);
+            BlockAltF4 = true;
+            IntPtr hwnd = new WindowInteropHelper(Window.GetWindow(this)).Handle;
+            HwndSource source = HwndSource.FromHwnd(hwnd);
+            source?.AddHook(WndProc);
         }
 
         private void CloseDialog()
         {
+            BlockAltF4 = false;
+            Window window = Window.GetWindow(_overlayGrid);
+            window.DisableCloseButton(false);
             if (_overlayGrid.Children.OfType<ExtendedMessageBox>()?.Count() == 1)
             {
                 _overlayGrid.Children.Remove(blockrectangle);
@@ -233,6 +249,23 @@ namespace Extensions
         {
             OnYesAction?.Invoke();
             CloseDialog();
+        }
+
+        [DebuggerStepThrough]
+        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+        {
+            if (BlockAltF4)
+            {
+                if (msg == WindowExtensions.WM_SYSKEYDOWN && wParam.ToInt32() == WindowExtensions.VK_F4)
+                {
+                    handled = true;
+                }
+                if (msg == WindowExtensions.WM_SYSCOMMAND && wParam.ToInt32() == WindowExtensions.SC_CLOSE)
+                {
+                    handled = true;
+                }
+            }
+            return IntPtr.Zero;
         }
     }
 }
