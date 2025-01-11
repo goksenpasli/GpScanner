@@ -156,24 +156,20 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 await Task.Run(
                     () =>
                     {
-                        List<string> pdffilelist = [.. Dosyalar.Where(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)).Select(z => z.FileName)];
+                        List<string> filelist = [.. Dosyalar.Where(z => z.Seçili).Select(z => z.FileName)];
                         using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
-                        for (int i = 0; i < pdffilelist.Count; i++)
+                        for (int i = 0; i < filelist.Count; i++)
                         {
-                            string fPath = pdffilelist[i];
+                            string fPath = filelist[i];
                             _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
-                            ZipProgress = (i + 1) / (double)pdffilelist.Count;
+                            ZipProgress = (i + 1) / (double)filelist.Count;
                         }
                         ZipProgressIndeterminate = true;
                     });
                 ZipProgress = 0;
                 ZipProgressIndeterminate = false;
             },
-            parameter =>
-            {
-                CheckedPdfCount = Dosyalar?.Count(z => z.Seçili && string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)) ?? 0;
-                return CheckedPdfCount > 0;
-            });
+            parameter => Dosyalar?.Count(z => z.Seçili) > 0);
 
         OcrPage = new RelayCommand<object>(
             async parameter =>
@@ -376,9 +372,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                 {
                     documentViewerModel.FilePath = filepath;
-                    documentViewerWindow.Icon = ShellIcon.GetFileIconBySize(filepath, 0);
+                    documentViewerWindow.Icon = ShellIcon.GetFileIconBySize(filepath, ShellIcon.SizeType.large);
                     documentViewerWindow.Show();
                     documentViewerWindow.Lb?.ScrollIntoView(filepath);
+                    if (!RecentFiles.Contains(filepath))
+                    {
+                        RecentFiles.Add(filepath);
+                    }
                 }
             },
             parameter => parameter is string filepath && File.Exists(filepath));
@@ -1170,15 +1170,17 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         ApplyCustomSize = new RelayCommand<object>(parameter => SelectedSize = new Size(Settings.Default.CustomWidth, Settings.Default.CustomHeight), parameter => true);
 
-        CloseApp = new RelayCommand<object>(parameter =>
-        {
-            Window window = windowService.GetLastWindow();
-            if (window?.GetFirstVisualChild<Grid>()?.Children?.OfType<ExtendedMessageBox>()?.Any() == true)
+        CloseApp = new RelayCommand<object>(
+            parameter =>
             {
-                return;
-            }
-            window?.Close();
-        }, parameter => true);
+                Window window = windowService.GetLastWindow();
+                if (window?.GetFirstVisualChild<Grid>()?.Children?.OfType<ExtendedMessageBox>()?.Any() == true)
+                {
+                    return;
+                }
+                window?.Close();
+            },
+            parameter => true);
 
         AddEsclData = new RelayCommand<object>(
             async parameter =>
@@ -2172,6 +2174,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     } = Brushes.Green;
+
+    public ObservableCollection<string> RecentFiles { get; set; } = [];
 
     public ICommand RegisterSti { get; }
 

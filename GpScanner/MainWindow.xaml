@@ -519,7 +519,12 @@
                                             <Image Width="32"
                                                 Height="32"
                                                 Source="/TwainControl;component/Icons/selectall.png" />
-                                            <TextBlock Canvas.Top="7"
+                                            <Image Canvas.Right="3"
+                                                Canvas.Bottom="3"
+                                                Width="16"
+                                                Height="16"
+                                                Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                            <TextBlock Canvas.Top="0"
                                                 Width="32"
                                                 HorizontalAlignment="Center"
                                                 VerticalAlignment="Center"
@@ -1249,6 +1254,70 @@
                                 </MultiBinding>
                             </Image.Source>
                         </Image>
+                        <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}">
+                            <Extensions:ContentToggleButton.OverContent>
+                                <Extensions:ResizablePanel Width="420"
+                                    Height="480"
+                                    MinWidth="420"
+                                    MinHeight="480">
+                                    <ListBox HorizontalContentAlignment="Stretch"
+                                        VerticalContentAlignment="Stretch"
+                                        ItemsSource="{Binding RecentFiles}"
+                                        VirtualizingPanel.CacheLengthUnit="Pixel"
+                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                        VirtualizingPanel.ScrollUnit="Pixel"
+                                        VirtualizingPanel.VirtualizationMode="Standard">
+                                        <ListBox.ItemContainerStyle>
+                                            <Style TargetType="ListBoxItem">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate>
+                                                            <Border Width="188"
+                                                                Height="303"
+                                                                BorderBrush="Black"
+                                                                BorderThickness="1">
+                                                                <Grid>
+                                                                    <ContentControl Margin="0,18,0,0"
+                                                                        Content="{Binding Mode=OneWay, IsAsync=True}"
+                                                                        ContentTemplateSelector="{StaticResource ThumbViewerSelector}" />
+                                                                    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Top">
+                                                                        <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                                                                            Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType=Window}}"
+                                                                            CommandParameter="{Binding Mode=OneWay}"
+                                                                            TextDecorations="None">
+                                                                            <Run FontFamily="Wingdings 2"
+                                                                                FontSize="18"
+                                                                                FontWeight="Bold"
+                                                                                Foreground="Cyan"
+                                                                                Text="4" />
+                                                                        </Hyperlink>
+                                                                    </TextBlock>
+                                                                </Grid>
+                                                            </Border>
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListBox.ItemContainerStyle>
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                    ItemSize="190,305"
+                                                    SpacingMode="None" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+                                </Extensions:ResizablePanel>
+                            </Extensions:ContentToggleButton.OverContent>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="239" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </Extensions:ContentToggleButton>
                         <Extensions:ContentToggleButton Background="{x:Null}"
                             BorderBrush="{x:Null}"
                             IsChecked="{Binding CalendarPanelIsExpanded, Mode=OneWay}">
