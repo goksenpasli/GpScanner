@@ -62,6 +62,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public CancellationTokenSource unindexedfileocrcancellationToken;
     private const string MinimumVcVersion = "14.21.27702";
     private const int NetFxMinVersion = 461808;
+    private const int ZipMaxFileCount = 65536;
+    private const long ZipMaxFileSize = 4096;
     private static readonly SemaphoreSlim LogSemaphore = new(1, 1);
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
@@ -161,7 +163,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         for (int i = 0; i < filelist.Count; i++)
                         {
                             string fPath = filelist[i];
-                            _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
+                            _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath), CompressionLevel.Fastest);
                             ZipProgress = (i + 1) / (double)filelist.Count;
                         }
                         ZipProgressIndeterminate = true;
@@ -169,7 +171,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 ZipProgress = 0;
                 ZipProgressIndeterminate = false;
             },
-            parameter => Dosyalar?.Count(z => z.Seçili) > 0);
+            parameter =>
+            {
+                int count = Dosyalar?.Count(z => z.Seçili) ?? 0;
+                return count is > 0 and < ZipMaxFileCount && TotalFileSize < ZipMaxFileSize;
+            });
 
         OcrPage = new RelayCommand<object>(
             async parameter =>
@@ -1138,7 +1144,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                             for (int i = 0; i < zippedfiles.Count; i++)
                             {
                                 string fPath = zippedfiles[i];
-                                _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
+                                _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath), CompressionLevel.Fastest);
                             }
                             ZipProgressIndeterminate = true;
                         });

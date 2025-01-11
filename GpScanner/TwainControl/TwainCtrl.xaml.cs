@@ -5185,7 +5185,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         {
             string fPath = Path.Combine(Path.GetTempPath(), $"{seçiliresimler[i].Index}.jpg");
             File.WriteAllBytes(fPath, seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
-            _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath));
+            _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath), CompressionLevel.NoCompression);
             File.Delete(fPath);
             progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
         }

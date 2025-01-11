@@ -54,11 +54,14 @@ namespace Extensions
                 parameter => !string.IsNullOrWhiteSpace(ArchivePath));
 
             ArşivDosyaEkle = new RelayCommand<object>(
-                parameter =>
+                async parameter =>
                 {
                     try
                     {
-                        AddFilesToZip(ArchivePath, SelectedFiles);
+                        string temppath = ArchivePath;
+                        await AddFilesToZipAsync(ArchivePath, SelectedFiles);
+                        ArchivePath = null;
+                        ArchivePath = temppath;
                     }
                     catch (Exception ex)
                     {
@@ -294,7 +297,7 @@ namespace Extensions
             return null;
         }
 
-        protected void LoadDroppedZipFile(string[] droppedfiles)
+        protected async void LoadDroppedZipFile(string[] droppedfiles)
         {
             if (droppedfiles.Contains(ArchivePath))
             {
@@ -302,11 +305,8 @@ namespace Extensions
             }
             if (File.Exists(ArchivePath) && ArşivDosyaEkle.CanExecute(null))
             {
-                string temppath = ArchivePath;
                 SelectedFiles = droppedfiles;
                 ArşivDosyaEkle.Execute(null);
-                ArchivePath = null;
-                ArchivePath = temppath;
                 return;
             }
             SaveFileDialog saveFileDialog = new() { Filter = "Zip File (*.zip)|*.zip", AddExtension = true, FileName = "File" };
@@ -316,13 +316,7 @@ namespace Extensions
                 {
                     return;
                 }
-                using (ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update))
-                {
-                    foreach (string path in droppedfiles)
-                    {
-                        _ = archive.CreateEntryFromFile(path, Path.GetFileName(path));
-                    }
-                }
+                await AddFilesToZipAsync(saveFileDialog.FileName, droppedfiles);
                 ArchivePath = saveFileDialog.FileName;
             }
         }
@@ -404,19 +398,26 @@ namespace Extensions
             }
         }
 
-        private void AddFilesToZip(string zipPath, string[] files)
+        private async Task AddFilesToZipAsync(string zipPath, string[] files)
         {
-            if (Path.GetExtension(zipPath) != ".zip" || files?.Length == 0 || files.Contains(zipPath))
-            {
-                return;
-            }
+            await Task.Run(
+                async () =>
+                {
+                    if (!string.Equals(Path.GetExtension(zipPath), ".zip", StringComparison.InvariantCultureIgnoreCase) || files?.Length is <= 0 or > 65535 || files.Contains(zipPath))
+                    {
+                        return;
+                    }
 
-            using ZipArchive zipArchive = ZipFile.Open(zipPath, ZipArchiveMode.Update);
-            foreach (string file in files)
-            {
-                FileInfo fileInfo = new(file);
-                _ = zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
-            }
+                    using ZipArchive zipArchive = ZipFile.Open(zipPath, ZipArchiveMode.Update);
+                    int filescount = files.Length;
+                    for (int i = 0; i < filescount; i++)
+                    {
+                        string file = files[i];
+                        FileInfo fileInfo = new(file);
+                        _ = zipArchive.CreateEntryFromFile(fileInfo.FullName, fileInfo.Name);
+                        await Dispatcher.InvokeAsync(() => SetValue(ProgressProperty, (i + 1) / (double)filescount));
+                    }
+                });
         }
 
         private void ArchiveData_PropertyChanged(object sender, PropertyChangedEventArgs e)
