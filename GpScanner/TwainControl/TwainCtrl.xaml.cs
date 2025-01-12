@@ -978,7 +978,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2|" +
                         "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp;*.jb2|" +
                         "Pdf Dosyası (*.pdf)|*.pdf|" +
-                        "Docx Dosyası (*.docx)|*.docx|" +
+                        "Docx Dosyası (*.docx;*.odt)|*.docx;*.odt|" +
                         "Xps Dosyası (*.xps)|*.xps|" +
                         "Eyp Dosyası (*.eyp)|*.eyp|" +
                         "Webp Dosyası (*.webp)|*.webp|" +
@@ -3887,6 +3887,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
 
                             case ".docx":
+                            case ".odt":
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {

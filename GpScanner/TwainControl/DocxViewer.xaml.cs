@@ -29,7 +29,7 @@ namespace TwainControl
         {
             if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
             {
-                if (Path.GetExtension(droppedfiles[0]).ToLowerInvariant() is ".docx" or ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log")
+                if (Path.GetExtension(droppedfiles[0]).ToLowerInvariant() is ".docx" or ".txt" or ".xml" or ".xsl" or ".xslt" or ".xaml" or ".log" or ".odt")
                 {
                     DocxDataFilePath = droppedfiles[0];
                 }
@@ -166,6 +166,12 @@ namespace TwainControl
             {
                 System.Windows.Documents.Paragraph paragraph = new();
                 paragraph.Inlines.Add(File.ReadAllText(uriString));
+                return new FlowDocument(paragraph);
+            }
+            if (Path.GetExtension(uriString.ToLowerInvariant()) is ".odt")
+            {
+                System.Windows.Documents.Paragraph paragraph = new();
+                paragraph.Inlines.Add(OdtReader.ParseOdtFile(uriString));
                 return new FlowDocument(paragraph);
             }
             return null;

@@ -49,7 +49,7 @@ namespace TwainControl
                         ".xps" => Xps,
                         ".webp" => Webp,
                         ".jb2" => Jb2,
-                        ".docx" or ".txt" => Docx,
+                        ".docx" or ".txt" or ".odt" => Docx,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
                         ".csv" or ".xls" or ".xlsx" or ".xlsb" or ".ods" => Xlsx,
                         _ => imgext.Contains(ext) ? Img : archiveext.Contains(ext) ? Zip : videoext.Contains(ext) ? Vid : Empty

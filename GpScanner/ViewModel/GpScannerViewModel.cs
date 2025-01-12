@@ -70,8 +70,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private readonly string AppName;
     private readonly IdleTimeIndexer ıdleTimeIndexer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
-    private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".ods", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
-    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods"];
+    private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".ods", ".odt", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
+    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods", ".odt"];
     private int cycleIndex;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
@@ -3333,6 +3333,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     using DocX document = DocX.Load(fileStream);
                     _ = ocrTextBuilder.Append(document.Text);
                 }
+                break;
+
+            case ".odt":
+                _ = ocrTextBuilder.Append(OdtReader.ParseOdtFile(unIndexedFile));
                 break;
 
             case ".xlsx" or ".xls" or ".xlsb" or ".csv" or ".ods":
