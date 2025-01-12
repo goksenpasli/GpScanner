@@ -51,7 +51,7 @@ namespace TwainControl
                         ".jb2" => Jb2,
                         ".docx" or ".txt" => Docx,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
-                        ".csv" or ".xls" or ".xlsx" or ".xlsb" => Xlsx,
+                        ".csv" or ".xls" or ".xlsx" or ".xlsb" or ".ods" => Xlsx,
                         _ => imgext.Contains(ext) ? Img : archiveext.Contains(ext) ? Zip : videoext.Contains(ext) ? Vid : Empty
                     };
                 }

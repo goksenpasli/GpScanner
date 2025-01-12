@@ -70,8 +70,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private readonly string AppName;
     private readonly IdleTimeIndexer ıdleTimeIndexer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
-    private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
-    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv"];
+    private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".ods", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
+    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods"];
     private int cycleIndex;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
@@ -537,7 +537,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         AddAdditionalIndexFolder = new RelayCommand<object>(
             parameter =>
             {
-                string folderpath = FolderDialog.SelectFolder($"{Translation.GetResStringValue("GRAPHFOLDER")}\n{Translation.GetResStringValue("UNINDEXED")}", new WindowInteropHelper(windowService.GetActiveWindow()).Handle);
+                string folderpath = FolderDialog.SelectFolder($"{Translation.GetResStringValue("GRAPHFOLDER")}\n{Translation.GetResStringValue("UNINDEXED")}", null);
                 if (!string.IsNullOrEmpty(folderpath) && !Settings.Default.AdditionalIndexFolders.Contains(folderpath))
                 {
                     _ = Settings.Default.AdditionalIndexFolders.Add(folderpath);
@@ -627,9 +627,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchFolder = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder(
-                    $"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", BatchImageFileExtensions.Where(z => z.Checked).Select(z => z.Name))}",
-                    new WindowInteropHelper(windowService.GetFirstWindow()).Handle);
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("GRAPHFOLDER")}\n{string.Join(" ", BatchImageFileExtensions.Where(z => z.Checked).Select(z => z.Name))}", null);
                 if (!string.IsNullOrEmpty(path))
                 {
                     BatchFolder = path;
@@ -640,7 +638,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchSaveFolder = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("PDFFOLDER")}", new WindowInteropHelper(windowService.GetFirstWindow()).Handle);
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("PDFFOLDER")}", null);
                 if (!string.IsNullOrEmpty(path))
                 {
                     Settings.Default.BatchSaveFolder = path;
@@ -687,7 +685,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetBatchWatchFolder = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("BATCHDESC")}", new WindowInteropHelper(windowService.GetFirstWindow()).Handle);
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("BATCHDESC")}", null);
                 if (string.IsNullOrEmpty(path))
                 {
                     return;
@@ -1157,7 +1155,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         SetDbBackUpFolder = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}", new WindowInteropHelper(windowService.GetActiveWindow()).Handle, Settings.Default.DataBaseBackUpFolder);
+                string path = FolderDialog.SelectFolder($"{Translation.GetResStringValue("AUTOFOLDER")}\n{Translation.GetResStringValue("BACKUPDB")}", null, Settings.Default.DataBaseBackUpFolder);
                 if (!string.IsNullOrEmpty(path))
                 {
                     DriveInfo driveInfo = new(path);
@@ -3337,7 +3335,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
                 break;
 
-            case ".xlsx" or ".xls" or ".xlsb" or ".csv":
+            case ".xlsx" or ".xls" or ".xlsb" or ".csv" or ".ods":
                 await Application.Current?.Dispatcher?
                 .Invoke(
                 async () =>

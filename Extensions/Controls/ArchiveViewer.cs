@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Interop;
 using static Extensions.ExtensionMethods;
 using static Extensions.ShellIcon;
 
@@ -117,7 +116,7 @@ namespace Extensions
             SeçiliAyıkla = new RelayCommand<object>(
                 parameter =>
                 {
-                    string path = FolderDialog.SelectFolder("Kaydedilecek Klasörü Seçin.", new WindowInteropHelper(Window.GetWindow(this)).Handle);
+                    string path = FolderDialog.SelectFolder("Kaydedilecek Klasörü Seçin.", null);
                     if (!string.IsNullOrEmpty(path))
                     {
                         ExtractSelectedFiles(ArchivePath, Arşivİçerik.Where(z => z.IsChecked), path);

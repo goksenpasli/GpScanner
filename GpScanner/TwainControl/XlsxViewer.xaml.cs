@@ -119,6 +119,7 @@ namespace TwainControl
             {
                 ".csv" => (await StreamToDtAsync(fs, true)).Tables,
                 ".xls" or ".xlsx" or ".xlsb" => (await StreamToDtAsync(fs)).Tables,
+                ".ods" => (await OdsReader.ReadOdsFile(fs, uriString)).Tables,
                 _ => null,
             };
         }
@@ -127,7 +128,7 @@ namespace TwainControl
         {
             if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
             {
-                if (Path.GetExtension(droppedfiles[0]).ToLowerInvariant() is ".csv" or ".xls" or ".xlsx" or ".xlsb")
+                if (Path.GetExtension(droppedfiles[0]).ToLowerInvariant() is ".csv" or ".xls" or ".xlsx" or ".xlsb" or ".ods")
                 {
                     XlsxDataFilePath = droppedfiles[0];
                 }

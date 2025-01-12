@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Interop;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 using static Extensions.ShellIcon;
@@ -52,7 +51,7 @@ public class SimpleArchiveViewer : ArchiveViewer
         SeçiliAyıkla = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder(Translation.GetResStringValue("AUTOFOLDER"), new WindowInteropHelper(Window.GetWindow(this)).Handle);
+                string path = FolderDialog.SelectFolder(Translation.GetResStringValue("AUTOFOLDER"), null);
                 if (!string.IsNullOrEmpty(path))
                 {
                     ExtractSelectedFiles(ArchivePath, Arşivİçerik.Where(z => z.IsChecked), path);
@@ -189,7 +188,7 @@ public class SimpleArchiveViewer : ArchiveViewer
 
     private new void ExtractSelectedFiles(string archivepath, IEnumerable<ArchiveData> list, string destinationfolder)
     {
-        if (string.IsNullOrWhiteSpace(destinationfolder) || !Directory.Exists(destinationfolder))
+        if (!Directory.Exists(destinationfolder))
         {
             throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
         }

@@ -562,7 +562,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         KayıtYoluBelirle = new RelayCommand<object>(
             parameter =>
             {
-                string path = FolderDialog.SelectFolder(Translation.GetResStringValue("AUTOFOLDER"), new WindowInteropHelper(Window.GetWindow(this)).Handle, Settings.Default.AutoFolder);
+                string path = FolderDialog.SelectFolder(Translation.GetResStringValue("AUTOFOLDER"), null, Settings.Default.AutoFolder);
                 string oldpath = Settings.Default.AutoFolder;
                 ExtendedMessageBox extendedMessageBox = new();
                 if (!string.IsNullOrEmpty(path))
@@ -983,7 +983,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         "Eyp Dosyası (*.eyp)|*.eyp|" +
                         "Webp Dosyası (*.webp)|*.webp|" +
                         "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz|" +
-                        "Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv)|*.xls;*.xlsx;*.xlsb;*.csv|" +
+                        "Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv;*.ods)|*.xls;*.xlsx;*.xlsb;*.csv;*.ods|" +
                         "Belge Liste Dosyası (*.txt)|*.txt",
                     Multiselect = true
                 };
@@ -1521,7 +1521,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         LoadXlsFile = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Filter = "Excel Dosyası(*.xls; *.xlsx; *.xlsb; *.csv) | *.xls; *.xlsx; *.xlsb; *.csv", Multiselect = false };
+                OpenFileDialog openFileDialog = new() { Filter = "Excel Dosyası(*.xls; *.xlsx; *.xlsb; *.csv; *.ods) | *.xls; *.xlsx; *.xlsb; *.csv; *.ods", Multiselect = false };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     xlsxViewer.XlsxDataFilePath = openFileDialog.FileName;
@@ -3877,6 +3877,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".xlsx":
                             case ".xlsb":
                             case ".csv":
+                            case ".ods":
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 
 namespace Extensions
@@ -35,9 +36,10 @@ namespace Extensions
             BROWSEFILEJUNCTIONS = 0x00010000
         }
 
-        public static string SelectFolder(string Description, IntPtr Owner = default, string InitialPath = null)
+        public static string SelectFolder(string Description, IntPtr? Owner = null, string InitialPath = null)
         {
-            BROWSEINFO bi = new() { Owner = Owner, Description = Description, Root = ThisPC(), Flags = (uint)(BIF.RETURNONLYFSDIRS | BIF.NEWDIALOGSTYLE), Callback = OnBrowseEvent, lParam = PIDLFromPath(InitialPath) };
+            IntPtr ownerHandle = Owner ?? GetDefaultOwner();
+            BROWSEINFO bi = new() { Owner = ownerHandle, Description = Description, Root = ThisPC(), Flags = (uint)(BIF.RETURNONLYFSDIRS | BIF.NEWDIALOGSTYLE), Callback = OnBrowseEvent, lParam = PIDLFromPath(InitialPath) };
 
             IntPtr Buffer = Marshal.AllocHGlobal(MAX_PATH * 2);
             IntPtr pidl = IntPtr.Zero;
@@ -64,6 +66,26 @@ namespace Extensions
                 }
             }
         }
+
+        private static IntPtr GetDefaultOwner()
+        {
+            IntPtr foregroundWindow = GetForegroundWindow();
+            if (foregroundWindow != IntPtr.Zero)
+            {
+                return foregroundWindow;
+            }
+
+            IntPtr mainWindow = Process.GetCurrentProcess().MainWindowHandle;
+            if (mainWindow != IntPtr.Zero)
+            {
+                return mainWindow;
+            }
+
+            return IntPtr.Zero;
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr GetForegroundWindow();
 
         private static int OnBrowseEvent(IntPtr hWnd, int msg, IntPtr lParam, IntPtr lpData)
         {
