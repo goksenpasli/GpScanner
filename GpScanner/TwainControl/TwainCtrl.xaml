@@ -1939,9 +1939,7 @@
                                                                             <TranslateTransform />
                                                                         </TransformGroup>
                                                                     </ToggleButton.RenderTransform>
-                                                                    <PdfViewer:PdfShadowedImage d:Source="/GpScanner;component/scanner.ico"
-                                                                        ShadowColor="{Binding FileGroupColor, Mode=OneWay}"
-                                                                        ShowShadow="{Binding Path=ShowFileGroupIndicator, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                                                    <PdfViewer:PdfShadowedImage d:Source="/GpScanner;component/scanner.ico">
                                                                         <PdfViewer:PdfShadowedImage.Source>
                                                                             <PriorityBinding>
                                                                                 <Binding IsAsync="True"
@@ -1962,8 +1960,17 @@
                                                                     Canvas.Top="0"
                                                                     FontFamily="Webdings"
                                                                     FontSize="20"
-                                                                    Foreground="Green"
                                                                     Text="N">
+                                                                    <TextBlock.Style>
+                                                                        <Style TargetType="TextBlock">
+                                                                            <Setter Property="Foreground" Value="Green" />
+                                                                            <Style.Triggers>
+                                                                                <DataTrigger Binding="{Binding Path=ShowFileGroupIndicator, Mode=OneWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" Value="true">
+                                                                                    <Setter Property="Foreground" Value="{Binding FileGroupColor, Mode=OneWay}" />
+                                                                                </DataTrigger>
+                                                                            </Style.Triggers>
+                                                                        </Style>
+                                                                    </TextBlock.Style>
                                                                     <TextBlock.ToolTip>
                                                                         <Image Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
                                                                             Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
