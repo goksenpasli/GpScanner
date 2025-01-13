@@ -62,8 +62,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public CancellationTokenSource unindexedfileocrcancellationToken;
     private const string MinimumVcVersion = "14.21.27702";
     private const int NetFxMinVersion = 461808;
-    private const int ZipMaxFileCount = 65536;
-    private const long ZipMaxFileSize = 4096;
     private static readonly SemaphoreSlim LogSemaphore = new(1, 1);
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
@@ -156,26 +154,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
                 await Task.Run(
-                    () =>
+                    async () =>
                     {
                         List<string> filelist = [.. Dosyalar.Where(z => z.Seçili).Select(z => z.FileName)];
-                        using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
-                        for (int i = 0; i < filelist.Count; i++)
-                        {
-                            string fPath = filelist[i];
-                            _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath), CompressionLevel.Fastest);
-                            ZipProgress = (i + 1) / (double)filelist.Count;
-                        }
                         ZipProgressIndeterminate = true;
+                        await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName);
                     });
                 ZipProgress = 0;
                 ZipProgressIndeterminate = false;
             },
-            parameter =>
-            {
-                int count = Dosyalar?.Count(z => z.Seçili) ?? 0;
-                return count is > 0 and < ZipMaxFileCount && TotalFileSize < ZipMaxFileSize;
-            });
+            parameter => Dosyalar?.Count(z => z.Seçili) > 0);
 
         OcrPage = new RelayCommand<object>(
             async parameter =>

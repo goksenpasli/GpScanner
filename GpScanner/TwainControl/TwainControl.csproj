@@ -78,6 +78,9 @@
     <Reference Include="SevenZipExtractor, Version=1.0.19.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\SevenZipExtractor.1.0.19\lib\net45\SevenZipExtractor.dll</HintPath>
     </Reference>
+    <Reference Include="SharpCompress, Version=0.24.0.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\SharpCompress.0.24.0\lib\net45\SharpCompress.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="System.Data.DataSetExtensions" />

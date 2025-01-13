@@ -1,6 +1,9 @@
 ﻿using Extensions;
 using SevenZipExtractor;
+using SharpCompress.Writers;
+using SharpCompress.Writers.Zip;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -92,6 +95,20 @@ public class SimpleArchiveViewer : ArchiveViewer
                 OnPropertyChanged(nameof(ThumbFile));
             }
         }
+    }
+
+    public static async Task ZipCompress(IList files, string savepath)
+    {
+        await Task.Run(
+            () =>
+            {
+                using FileStream zip = File.OpenWrite(savepath);
+                using IWriter zipWriter = WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.Deflate) { UseZip64 = true });
+                foreach (string dosya in files)
+                {
+                    zipWriter.Write(Path.GetFileName(dosya), dosya);
+                }
+            });
     }
 
     protected override void OnDrop(DragEventArgs e)
