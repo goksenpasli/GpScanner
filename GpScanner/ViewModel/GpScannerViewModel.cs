@@ -157,11 +157,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     async () =>
                     {
                         List<string> filelist = [.. Dosyalar.Where(z => z.Seçili).Select(z => z.FileName)];
-                        ZipProgressIndeterminate = true;
-                        await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName);
+                        await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = progress));
                     });
-                ZipProgress = 0;
-                ZipProgressIndeterminate = false;
             },
             parameter => Dosyalar?.Count(z => z.Seçili) > 0);
 

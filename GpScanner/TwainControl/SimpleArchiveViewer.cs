@@ -97,16 +97,19 @@ public class SimpleArchiveViewer : ArchiveViewer
         }
     }
 
-    public static async Task ZipCompress(IList files, string savepath)
+    public static async Task ZipCompress(IList files, string savepath, IProgress<double> progress)
     {
         await Task.Run(
             () =>
             {
                 using FileStream zip = File.OpenWrite(savepath);
                 using IWriter zipWriter = WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.Deflate) { UseZip64 = true });
-                foreach (string dosya in files)
+                int count = files.Count;
+                for (int i = 0; i < count; i++)
                 {
+                    string dosya = (string)files[i];
                     zipWriter.Write(Path.GetFileName(dosya), dosya);
+                    progress?.Report((i + 1) / (double)count);
                 }
             });
     }
