@@ -90,15 +90,10 @@
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
-        <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
-            MaxNumber="100"
-            MinNumber="5" />
-        <Converter:NumberRangeToColorConverter x:Key="UpdateNumberRangeToColorConverter"
-            MaxNumber="120"
-            MinNumber="1" />
-        <Converter:NumberRangeToColorConverter x:Key="ComboBoxPdfNumberRangeToColorConverter"
-            MaxNumber="1200"
-            MinNumber="12" />
+        <Converter:NumberRangeToColorConverter x:Key="ComboBoxSizeToColorConverter"
+            MaxNumber="425"
+            MinNumber="190"
+            ReverseColors="True" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
         <Style x:Key="ListBoxAnimationStyle" TargetType="{x:Type ListBox}">
             <Setter Property="BorderBrush" Value="Transparent" />
@@ -603,6 +598,11 @@
                                             </Button>
                                         </StackPanel>
                                     </ComboBoxItem>
+                                    <ComboBox.ItemContainerStyle>
+                                        <Style TargetType="ComboBoxItem">
+                                            <Setter Property="Foreground" Value="{Binding Mode=OneWay, RelativeSource={RelativeSource Mode=Self}, Path=Tag.Width, Converter={StaticResource ComboBoxSizeToColorConverter}}" />
+                                        </Style>
+                                    </ComboBox.ItemContainerStyle>
                                 </ComboBox>
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <TextBlock VerticalAlignment="Center">

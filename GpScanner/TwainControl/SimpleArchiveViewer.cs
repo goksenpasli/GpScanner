@@ -97,7 +97,7 @@ public class SimpleArchiveViewer : ArchiveViewer
         }
     }
 
-    public static async Task ZipCompress(IList files, string savepath, IProgress<double> progress)
+    public static async Task ZipCompress(List<string> files, string savepath, IProgress<double> progress = null)
     {
         await Task.Run(
             () =>
@@ -107,7 +107,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                 int count = files.Count;
                 for (int i = 0; i < count; i++)
                 {
-                    string dosya = (string)files[i];
+                    string dosya = files[i];
                     zipWriter.Write(Path.GetFileName(dosya), dosya);
                     progress?.Report((i + 1) / (double)count);
                 }

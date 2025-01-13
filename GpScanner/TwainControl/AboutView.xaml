@@ -147,6 +147,13 @@
                         SevenZipExtractor
                     </Hyperlink>
                 </TextBlock>
+                <TextBlock>
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit"
+                        Command="{Binding WebAdreseGit}"
+                        CommandParameter="https://github.com/adamhathcock/sharpcompress">
+                        SharpCompress
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.DataContext>

@@ -306,7 +306,7 @@
                                             </ComboBox.ToolTip>
                                             <ComboBox.ItemContainerStyle>
                                                 <Style TargetType="ComboBoxItem">
-                                                    <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                                    <Setter Property="Foreground" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
                                                 </Style>
                                             </ComboBox.ItemContainerStyle>
                                         </ComboBox>
@@ -345,7 +345,7 @@
                                             </ComboBox.ToolTip>
                                             <ComboBox.ItemContainerStyle>
                                                 <Style TargetType="ComboBoxItem">
-                                                    <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
+                                                    <Setter Property="Foreground" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxNumberRangeToColorConverter}}" />
                                                 </Style>
                                             </ComboBox.ItemContainerStyle>
                                         </ComboBox>
@@ -361,7 +361,7 @@
                                             SelectedItem="{Binding DefaultThumbNailDpi, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                             <ComboBox.ItemContainerStyle>
                                                 <Style TargetType="ComboBoxItem">
-                                                    <Setter Property="Background" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxPdfNumberRangeToColorConverter}}" />
+                                                    <Setter Property="Foreground" Value="{Binding Mode=OneWay, Converter={StaticResource ComboBoxPdfNumberRangeToColorConverter}}" />
                                                 </Style>
                                             </ComboBox.ItemContainerStyle>
                                         </ComboBox>
