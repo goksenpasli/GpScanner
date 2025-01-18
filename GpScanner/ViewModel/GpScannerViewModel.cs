@@ -75,6 +75,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
     private Size selectedCompressorProfile;
     private Size selectedSize;
+    private CancellationTokenSource zipfilecancellationToken;
 
     public GpScannerViewModel(IWindowService windowService, TwainCtrl twainCtrl)
     {
@@ -153,12 +154,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     return;
                 }
-                await Task.Run(
-                    async () =>
-                    {
-                        List<string> filelist = [.. Dosyalar.Where(z => z.Seçili).Select(z => z.FileName)];
-                        await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = progress));
-                    });
+                zipfilecancellationToken = new CancellationTokenSource();
+                List<string> filelist = [.. Dosyalar.Where(z => z.Seçili).Select(z => z.FileName)];
+                await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = progress), zipfilecancellationToken);
             },
             parameter => Dosyalar?.Count(z => z.Seçili) > 0);
 
@@ -855,6 +853,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         CancelOcr = new RelayCommand<object>(parameter => Ocr.Ocr.ocrcancellationToken?.Cancel());
 
+        CancelZipFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show($"{Translation.GetResStringValue("COMPRESS")} {Translation.GetResStringValue("STOP")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    zipfilecancellationToken?.Cancel();
+                }
+            },
+            parameter => zipfilecancellationToken?.IsCancellationRequested == false);
+
         CancelUnindexedBatchOcr = new RelayCommand<object>(parameter => unindexedfileocrcancellationToken?.Cancel());
 
         DateBack = new RelayCommand<object>(
@@ -1534,6 +1542,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public ICommand CancelOcr { get; }
 
     public RelayCommand<object> CancelUnindexedBatchOcr { get; }
+
+    public RelayCommand<object> CancelZipFile { get; }
 
     public ICommand ChangeDataFolder { get; }
 

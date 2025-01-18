@@ -3,13 +3,13 @@ using SevenZipExtractor;
 using SharpCompress.Writers;
 using SharpCompress.Writers.Zip;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
@@ -97,7 +97,7 @@ public class SimpleArchiveViewer : ArchiveViewer
         }
     }
 
-    public static async Task ZipCompress(List<string> files, string savepath, IProgress<double> progress = null)
+    public static async Task ZipCompress(List<string> files, string savepath, IProgress<double> progress = null, CancellationTokenSource cancellationTokenSource = null)
     {
         await Task.Run(
             () =>
@@ -110,6 +110,11 @@ public class SimpleArchiveViewer : ArchiveViewer
                     string dosya = files[i];
                     zipWriter.Write(Path.GetFileName(dosya), dosya);
                     progress?.Report((i + 1) / (double)count);
+                    if (cancellationTokenSource?.IsCancellationRequested == true)
+                    {
+                        progress?.Report(1);
+                        return;
+                    }
                 }
             });
     }

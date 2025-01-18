@@ -659,6 +659,8 @@
                                         Height="32"
                                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                 </Button>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfZipBirleştir"
@@ -677,6 +679,12 @@
                                             Text="ZIP" />
                                     </Canvas>
                                 </Button>
+                                <Button Command="{Binding CancelZipFile}">
+                                    <Image Width="16"
+                                        Height="16"
+                                        Source="/TwainControl;component/Icons/delete.png" />
+                                </Button>
+                                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <Extensions:ContentToggleButton twainctrl:Policy.PolicyName="DvdBurnerControl" ArrowVisibility="Collapsed">
                                     <Image Width="32" Height="32">
                                         <Image.Source>

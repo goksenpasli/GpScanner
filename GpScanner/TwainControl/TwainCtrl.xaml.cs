@@ -23,6 +23,7 @@ using System.Printing;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -81,6 +82,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int cropAllMaximumWidth;
     private bool disposedValue;
     private GridLength documentGridLength = new(5, GridUnitType.Star);
+    private CancellationTokenSource fileloadcancellationToken;
     private Task fileloadtask;
     private double height;
     private bool isMouseDown;
@@ -996,10 +998,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (openFileDialog.ShowDialog() == true)
                 {
                     GC.Collect();
-                    await AddFiles(openFileDialog.FileNames, DecodeHeight);
+                    fileloadcancellationToken = new CancellationTokenSource();
+                    await AddFiles(openFileDialog.FileNames, DecodeHeight, fileloadcancellationToken);
                 }
             },
             parameter => Policy.CheckPolicy(nameof(LoadImage)));
+
+        CancelLoadFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show($"{Translation.GetResStringValue("FILE")} {Translation.GetResStringValue("STOP")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    fileloadcancellationToken?.Cancel();
+                }
+            },
+            parameter => fileloadcancellationToken?.IsCancellationRequested == false);
 
         LoadXpsFile = new RelayCommand<object>(
             parameter =>
@@ -2461,6 +2474,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    public RelayCommand<object> CancelLoadFile { get; }
+
     public bool CanUndoImage
     {
         get;
@@ -3771,8 +3786,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         inputDocument.Save(savepath);
     }
 
-    public Task AddFiles(string[] filenames, int decodeheight)
+    public Task AddFiles(string[] filenames, int decodeheight, CancellationTokenSource cancellationTokenSource = null)
     {
+        if (cancellationTokenSource?.IsCancellationRequested == true)
+        {
+            filenames = null;
+            PdfLoadProgressValue = 0;
+            return Task.CompletedTask;
+        }
         fileloadtask = Task.Run(
             async () =>
             {
@@ -3795,7 +3816,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 else
                                 {
                                     fileHandler = new PdfFileHandler();
-                                    await AddFilesAsync(filename, fileHandler, DecodeHeight);
+                                    await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
                                 }
 
                                 break;
@@ -3817,12 +3838,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             case ".bmp":
                             case ".heic":
                                 fileHandler = new ImageFileHandler();
-                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
                                 break;
 
                             case ".jb2":
                                 fileHandler = new Jb2FileHandler();
-                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
                                 break;
 
                             case ".zip":
@@ -3898,17 +3919,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                             case ".webp":
                                 fileHandler = new WebpFileHandler();
-                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
                                 break;
 
                             case ".tiff" or ".tif":
                                 fileHandler = new TiffFileHandler();
-                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
                                 break;
 
                             case ".xps":
                                 fileHandler = new XpsFileHandler();
-                                await AddFilesAsync(filename, fileHandler, DecodeHeight);
+                                await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
                                 break;
                         }
                     }
@@ -4130,7 +4151,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    private async Task AddFilesAsync(string filename, ILoadFileHandler fileHandler, int decodeHeight = 0)
+    private async Task AddFilesAsync(string filename, ILoadFileHandler fileHandler, int decodeHeight = 0, CancellationTokenSource cancellationTokenSource = null)
     {
         if (!fileHandler.IsValidFile(filename))
         {
@@ -4141,6 +4162,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         BitmapFrame bitmapFrame;
         for (int i = 1; i <= totalPageCount; i++)
         {
+            if (cancellationTokenSource?.IsCancellationRequested == true)
+            {
+                _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
+                return;
+            }
             switch (fileHandler)
             {
                 case PdfFileHandler:

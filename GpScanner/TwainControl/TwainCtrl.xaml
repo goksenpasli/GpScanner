@@ -2214,33 +2214,44 @@
                     Maximum="1"
                     Value="{Binding AllRotateProgressValue}" />
                 <UniformGrid Grid.Row="3" Columns="3">
-                    <Button HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
-                        local:Policy.PolicyName="LoadImage"
-                        Command="{Binding LoadImage}">
-                        <Grid>
-                            <ProgressBar Background="{x:Null}"
-                                BorderBrush="{x:Null}"
-                                Maximum="1"
-                                Value="{Binding PdfLoadProgressValue}" />
-                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="Shell32.dll" />
-                                            <Binding Source="139" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <Image Width="32"
-                                    Height="32"
-                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                <TextBlock VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Text="{local:Loc FILE}" />
-                            </StackPanel>
-                        </Grid>
-                    </Button>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            local:Policy.PolicyName="LoadImage"
+                            Command="{Binding LoadImage}">
+                            <Grid>
+                                <ProgressBar Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
+                                    Maximum="1"
+                                    Value="{Binding PdfLoadProgressValue}" />
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="Shell32.dll" />
+                                                <Binding Source="139" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <Image Width="32"
+                                        Height="32"
+                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Text="{local:Loc FILE}" />
+                                </StackPanel>
+                            </Grid>
+                        </Button>
+                        <Button Grid.Column="1" Command="{Binding CancelLoadFile}">
+                            <Image Width="16"
+                                Height="16"
+                                Source="/TwainControl;component/Icons/delete.png" />
+                        </Button>
+                    </Grid>
                     <Extensions:SplitButton HorizontalContentAlignment="Stretch"
                         VerticalContentAlignment="Stretch"
                         local:Policy.PolicyName="SeçiliKaydet"
