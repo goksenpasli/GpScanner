@@ -2865,6 +2865,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             return;
         }
+        FilesChartList = [];
         foreach (Scanner file in collection)
         {
             FilesChartList.Add(new Chart() { ChartBrush = Brushes.Blue, ChartValue = Math.Round(file.FileSize, 2), Description = Path.GetFileName(file.FileName) });
@@ -3139,7 +3140,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
             if (MainWindow.cvs is not null)
             {
-                FilesChartList = [];
                 MainWindow.cvs.Filter += (s, x) =>
                                          {
                                              Scanner scanner = (Scanner)x.Item;
@@ -3175,25 +3175,31 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 return;
             }
 
-            var datas = await Task.Run(
-                () =>
-                {
-                    ZipProgressIndeterminate = true;
-                    using AppDbContext context = new();
-                    return context.Data.AsNoTracking().ToList().Where(z => z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0).Select(z => new { z.FileName }).ToList();
-                });
-            FilesChartList = [];
-            MainWindow.cvs.Filter += (s, x) =>
-                                     {
-                                         Scanner scanner = (Scanner)x.Item;
-                                         bool filearchivefilter = ExistsInArchive(scanner.FileName, Settings.Default.SearchInArchiveFiles, Settings.Default.SearchInArchiveFileLimit * 1_048_576);
-                                         bool filenamefilter = Path.GetFileNameWithoutExtension(scanner.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0;
-                                         bool filecontentfilter = datas?.Any(z => z.FileName == scanner.FileName) == true;
-                                         x.Accepted = filenamefilter || filecontentfilter || filearchivefilter;
-                                     };
-            DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
-            ZipProgressIndeterminate = false;
-            datas = null;
+            try
+            {
+                var datas = await Task.Run(
+                    () =>
+                    {
+                        ZipProgressIndeterminate = true;
+                        using AppDbContext context = new();
+                        return context.Data.AsNoTracking().ToList().Where(z => z.FileContent?.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0).Select(z => new { z.FileName });
+                    });
+                MainWindow.cvs.Filter += (s, x) =>
+                                         {
+                                             Scanner scanner = (Scanner)x.Item;
+                                             bool filearchivefilter = ExistsInArchive(scanner.FileName, Settings.Default.SearchInArchiveFiles, Settings.Default.SearchInArchiveFileLimit * 1_048_576);
+                                             bool filenamefilter = Path.GetFileNameWithoutExtension(scanner.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0;
+                                             bool filecontentfilter = datas?.Any(z => z.FileName == scanner.FileName) == true;
+                                             x.Accepted = filenamefilter || filecontentfilter || filearchivefilter;
+                                         };
+                DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
+                ZipProgressIndeterminate = false;
+                datas = null;
+            }
+            finally
+            {
+                ZipProgressIndeterminate = false;
+            }
         }
 
         if (e.PropertyName is "SeçiliDil")

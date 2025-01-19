@@ -642,7 +642,10 @@
                     IsHitTestVisible="False"
                     ShowShadow="True">
                     <PdfViewer:ShadowedImage.Source>
-                        <BitmapImage DecodePixelHeight="150" UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        <BitmapImage CacheOption="None"
+                            CreateOptions="None"
+                            DecodePixelHeight="150"
+                            UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                     </PdfViewer:ShadowedImage.Source>
                 </PdfViewer:ShadowedImage>
             </DataTemplate>
@@ -652,7 +655,10 @@
                     IsHitTestVisible="False"
                     ShowShadow="True">
                     <PdfViewer:ShadowedImage.Source>
-                        <BitmapImage DecodePixelHeight="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        <BitmapImage CacheOption="None"
+                            CreateOptions="None"
+                            DecodePixelHeight="150"
+                            UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                     </PdfViewer:ShadowedImage.Source>
                 </PdfViewer:ShadowedImage>
             </DataTemplate>
