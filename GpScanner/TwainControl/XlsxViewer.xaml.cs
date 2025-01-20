@@ -184,7 +184,7 @@ namespace TwainControl
                                     FilterRow =
                                     (rowReader) =>
                                     {
-                                        Progress = Math.Ceiling(rowReader.Depth / (double)rowReader.RowCount * 100);
+                                        Progress = (rowReader.Depth + 1) / (double)rowReader.RowCount * 100;
                                         return true;
                                     },
                                     EmptyColumnNamePrefix = "Kolon"

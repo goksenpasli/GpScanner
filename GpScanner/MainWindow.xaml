@@ -486,7 +486,8 @@
                             Template="{StaticResource HorizontalScrollViewerTemplate}"
                             VerticalScrollBarVisibility="Disabled">
                             <StackPanel Background="{StaticResource BorderBackground}" Orientation="Horizontal">
-                                <Extensions:SplitButton twainctrl:Policy.PolicyName="Tümünüİşaretle"
+                                <Extensions:SplitButton x:Name="SelectAll"
+                                    twainctrl:Policy.PolicyName="Tümünüİşaretle"
                                     BorderBrush="Cyan"
                                     Command="{Binding Tümünüİşaretle}">
                                     <Extensions:SplitButton.InternalContent>
@@ -846,6 +847,7 @@
                                 d:Watermark="{twainctrl:Loc DOCUMENT}"
                                 twainctrl:Policy.PolicyName="AramaMetni"
                                 FontSize="22"
+                                IsEnabled="{Binding ElementName=SelectAll, Path=IsEnabled}"
                                 KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"

@@ -645,11 +645,10 @@
                                 </Grid>
                                 <Grid Grid.Row="2" Grid.ColumnSpan="3">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100*" />
-                                        <ColumnDefinition Width="100*" />
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition Width="99*" />
-                                        <ColumnDefinition Width="100*" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <ToggleButton d:IsChecked="True"
                                         IsChecked="{Binding Adf, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
@@ -797,12 +796,7 @@
                                             </Border>
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
-                                    <Button Grid.Column="2" Command="{Binding CancelScan}">
-                                        <Image Width="16"
-                                            Height="16"
-                                            Source="/TwainControl;component/Icons/delete.png" />
-                                    </Button>
-                                    <Extensions:SplitButton Grid.Column="3"
+                                    <Extensions:SplitButton Grid.Column="2"
                                         local:Policy.PolicyName="FastScanImage"
                                         Command="{Binding FastScanImage}"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}">
@@ -890,7 +884,7 @@
                                         </Extensions:SplitButton.InternalContent>
                                     </Extensions:SplitButton>
                                     <Button x:Name="AutoScanPathBtn"
-                                        Grid.Column="4"
+                                        Grid.Column="3"
                                         local:Policy.PolicyName="KayıtYoluBelirle"
                                         Command="{Binding KayıtYoluBelirle}"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}">

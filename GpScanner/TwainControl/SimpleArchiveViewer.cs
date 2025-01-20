@@ -146,8 +146,10 @@ public class SimpleArchiveViewer : ArchiveViewer
                     if (archive is not null)
                     {
                         TotalFilesCount = archive.Entries?.Count(z => z.Size > 0) ?? 0;
-                        foreach (Entry item in archive.Entries?.Where(z => z.Size > 0))
+                        List<Entry> list = archive.Entries?.Where(z => z.Size > 0).ToList();
+                        for (int i = 0; i < list.Count; i++)
                         {
+                            Entry item = list[i];
                             ExtendedArchiveData archiveData = new()
                             {
                                 SıkıştırılmışBoyut = (long)item.PackedSize,
@@ -170,6 +172,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                                 () =>
                                 {
                                     Arşivİçerik.Add(archiveData);
+                                    ToplamOran = (i + 1) / (double)TotalFilesCount * 100;
                                     if (!ArchiveFileTypes.Any(z => z.Name == checkBoxItem.Name))
                                     {
                                         ArchiveFileTypes.Add(checkBoxItem);

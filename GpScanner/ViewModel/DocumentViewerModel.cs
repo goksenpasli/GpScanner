@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -150,10 +149,10 @@ public class DocumentViewerModel : InpcBase
         if (e.PropertyName is "FilePath")
         {
             PdfFileContent = await Task.Run(
-                async () =>
+                () =>
                 {
                     using AppDbContext context = new();
-                    return string.Join(" ", (await context?.Data?.AsNoTracking()?.ToListAsync())?.Where(z => z.FileName == FilePath)?.Select(z => z.FileContent));
+                    return string.Join(" ", context?.Data?.AsNoTracking()?.Where(z => z.FileName == FilePath)?.Select(z => z.FileContent));
                 });
 
             if (!string.IsNullOrWhiteSpace(PdfFileContent))

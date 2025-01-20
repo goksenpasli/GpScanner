@@ -343,8 +343,10 @@ namespace Extensions
                         if (archive is not null)
                         {
                             TotalFilesCount = GetArchiveFileCount(archive);
-                            foreach (ZipArchiveEntry item in archive.Entries?.Where(z => z.Length > 0))
+                            List<ZipArchiveEntry> list = archive.Entries?.Where(z => z.Length > 0).ToList();
+                            for (int i = 0; i < list.Count; i++)
                             {
+                                ZipArchiveEntry item = list[i];
                                 ArchiveData archiveData = new()
                                 {
                                     SıkıştırılmışBoyut = item.CompressedLength,
@@ -363,6 +365,7 @@ namespace Extensions
                                     () =>
                                     {
                                         Arşivİçerik.Add(archiveData);
+                                        ToplamOran = (i + 1) / (double)TotalFilesCount * 100;
                                         if (!ArchiveFileTypes.Any(z => z.Name == checkBoxItem.Name))
                                         {
                                             ArchiveFileTypes.Add(checkBoxItem);

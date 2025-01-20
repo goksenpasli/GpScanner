@@ -90,7 +90,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private Window maximizedWindow;
     private Point mousedowncoord;
     private GridLength twainGuiControlLength = new(3, GridUnitType.Star);
-    private CancellationTokenSource twainscancancellationToken;
     private double width;
 
     public TwainCtrl()
@@ -114,7 +113,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             async parameter =>
             {
                 GC.Collect();
-                twainscancancellationToken = new CancellationTokenSource();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 Scanner.ArayüzEtkin = false;
                 if (Settings.Default.SeçiliTarayıcı.Contains("|http"))
@@ -145,7 +143,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
                 GC.Collect();
-                twainscancancellationToken = new CancellationTokenSource();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 Scanner.ArayüzEtkin = false;
                 Scanner.Resimler = [];
@@ -1016,16 +1013,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             },
             parameter => fileloadcancellationToken?.IsCancellationRequested == false);
-
-        CancelScan = new RelayCommand<object>(
-            parameter =>
-            {
-                if (MessageBox.Show($"{Translation.GetResStringValue("SCAN")} {Translation.GetResStringValue("STOP")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
-                {
-                    twainscancancellationToken?.Cancel();
-                }
-            },
-            parameter => !Scanner.ArayüzEtkin && twainscancancellationToken?.IsCancellationRequested == false);
 
         LoadXpsFile = new RelayCommand<object>(
             parameter =>
@@ -5398,7 +5385,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private async void Twain_TransferImage(object sender, TransferImageEventArgs e)
     {
-        if ((e.Image is null) || (twainscancancellationToken?.IsCancellationRequested == true))
+        if (e.Image is null)
         {
             return;
         }
