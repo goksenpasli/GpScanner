@@ -73,6 +73,7 @@
                                     d:Visibility="Visible"
                                     Background="{x:Null}"
                                     BorderBrush="{x:Null}"
+                                    IsDefault="True"
                                     IsEnabled="{TemplateBinding YesEnabled}"
                                     Visibility="{TemplateBinding YesButton}">
                                     <Button.Content>
@@ -133,6 +134,7 @@
                                     d:Visibility="Visible"
                                     Background="{x:Null}"
                                     BorderBrush="{x:Null}"
+                                    IsCancel="True"
                                     IsEnabled="{TemplateBinding NoEnabled}"
                                     Visibility="{TemplateBinding NoButton}">
                                     <Button.Content>

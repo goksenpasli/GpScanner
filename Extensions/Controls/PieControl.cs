@@ -20,7 +20,7 @@ public class PieControl : GraphControl
 
     protected override void OnRender(DrawingContext drawingContext)
     {
-        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()) || Series?.Count == 0)
+        if (DesignerProperties.GetIsInDesignMode(new DependencyObject()) || Series is null)
         {
             return;
         }

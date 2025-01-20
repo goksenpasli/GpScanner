@@ -337,13 +337,15 @@ namespace Extensions
             await Task.Run(
                 async () =>
                 {
+                    double toplamSıkıştırılmışBoyut = 0;
+                    double toplamBoyut = 0;
                     try
                     {
                         using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
                         if (archive is not null)
                         {
-                            TotalFilesCount = GetArchiveFileCount(archive);
-                            List<ZipArchiveEntry> list = archive.Entries?.Where(z => z.Length > 0).ToList();
+                            List<ZipArchiveEntry> list = archive.Entries?.Where(z => z.Length > 0).ToList() ?? [];
+                            TotalFilesCount = list.Count;
                             for (int i = 0; i < list.Count; i++)
                             {
                                 ZipArchiveEntry item = list[i];
@@ -361,6 +363,8 @@ namespace Extensions
                                 archiveData.PropertyChanged += ArchiveData_PropertyChanged;
                                 CheckBoxItem checkBoxItem = new() { Name = archiveData.DosyaTipi };
                                 checkBoxItem.PropertyChanged += CheckBoxItem_PropertyChanged;
+                                toplamSıkıştırılmışBoyut += item.CompressedLength;
+                                toplamBoyut += item.Length;
                                 await Dispatcher.InvokeAsync(
                                     () =>
                                     {
@@ -378,7 +382,7 @@ namespace Extensions
                     {
                         throw new ArgumentException(ex?.Message);
                     }
-                    ToplamOran = GetCompressedRatio();
+                    ToplamOran = toplamSıkıştırılmışBoyut / toplamBoyut * 100;
                 });
             cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
             return Arşivİçerik;

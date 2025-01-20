@@ -140,13 +140,15 @@ public class SimpleArchiveViewer : ArchiveViewer
         await Task.Run(
             async () =>
             {
+                double toplamSıkıştırılmışBoyut = 0;
+                double toplamBoyut = 0;
                 try
                 {
                     using ArchiveFile archive = new(ArchiveFilePath);
                     if (archive is not null)
                     {
-                        TotalFilesCount = archive.Entries?.Count(z => z.Size > 0) ?? 0;
-                        List<Entry> list = archive.Entries?.Where(z => z.Size > 0).ToList();
+                        List<Entry> list = archive.Entries?.Where(entry => entry.Size > 0).ToList() ?? [];
+                        TotalFilesCount = list.Count;
                         for (int i = 0; i < list.Count; i++)
                         {
                             Entry item = list[i];
@@ -168,6 +170,8 @@ public class SimpleArchiveViewer : ArchiveViewer
                             archiveData.PropertyChanged += ArchiveData_PropertyChanged;
                             CheckBoxItem checkBoxItem = new() { Name = archiveData.DosyaTipi };
                             checkBoxItem.PropertyChanged += CheckBoxItem_PropertyChanged;
+                            toplamSıkıştırılmışBoyut += item.PackedSize;
+                            toplamBoyut += item.Size;
                             await Dispatcher.InvokeAsync(
                                 () =>
                                 {
@@ -186,7 +190,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                     throw new ArgumentException(ex?.Message);
                 }
 
-                ToplamOran = (double)Arşivİçerik.Sum(z => z.SıkıştırılmışBoyut) / Arşivİçerik.Sum(z => z.Boyut) * 100;
+                ToplamOran = toplamSıkıştırılmışBoyut / toplamBoyut * 100;
             });
         cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
         return Arşivİçerik;

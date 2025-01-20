@@ -111,6 +111,7 @@ namespace Extensions
             if (_yesButton is not null)
             {
                 _yesButton.Click += (s, e) => OnYesButtonClick();
+                _yesButton.Focus();
             }
             if (_noButton is not null)
             {
@@ -179,6 +180,7 @@ namespace Extensions
                 Grid.SetRowSpan(dialog, _overlayGrid.RowDefinitions.Count);
             }
             window.DisableCloseButton(true);
+            KeyboardNavigation.SetTabNavigation(window, KeyboardNavigationMode.None);
             _ = _overlayGrid.Children.Add(dialog);
         }
 
@@ -196,6 +198,7 @@ namespace Extensions
             BlockAltF4 = false;
             Window window = Window.GetWindow(_overlayGrid);
             window.DisableCloseButton(false);
+            KeyboardNavigation.SetTabNavigation(window, KeyboardNavigationMode.Cycle);
             if (_overlayGrid.Children.OfType<ExtendedMessageBox>()?.Count() == 1)
             {
                 _overlayGrid.Children.Remove(blockrectangle);

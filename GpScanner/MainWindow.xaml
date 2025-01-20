@@ -744,7 +744,9 @@
                             </StackPanel>
                         </ScrollViewer>
                         <Separator Grid.Row="1" />
-                        <Grid Grid.Row="2" Background="{StaticResource BorderBackground}">
+                        <Grid Grid.Row="2"
+                            Background="{StaticResource BorderBackground}"
+                            IsEnabled="{Binding ElementName=SelectAll, Path=IsEnabled}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -847,7 +849,6 @@
                                 d:Watermark="{twainctrl:Loc DOCUMENT}"
                                 twainctrl:Policy.PolicyName="AramaMetni"
                                 FontSize="22"
-                                IsEnabled="{Binding ElementName=SelectAll, Path=IsEnabled}"
                                 KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"
