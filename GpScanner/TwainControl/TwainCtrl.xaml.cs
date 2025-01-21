@@ -6,6 +6,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using PdfViewer;
+using SevenZipExtractor;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -977,12 +978,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2|" +
-                        "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.webp;*.jb2|" +
+                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt|" +
+                        "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2|" +
                         "Pdf Dosyası (*.pdf)|*.pdf|" +
                         "Docx Dosyası (*.docx;*.odt)|*.docx;*.odt|" +
                         "Xps Dosyası (*.xps)|*.xps|" +
                         "Eyp Dosyası (*.eyp)|*.eyp|" +
+                        "Çizgi Roman Dosyası (*.cbz;*.cbr)|*.cbz;*.cbr|" +
                         "Webp Dosyası (*.webp)|*.webp|" +
                         "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz|" +
                         "Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv;*.ods)|*.xls;*.xlsx;*.xlsb;*.csv;*.ods|" +
@@ -3648,7 +3650,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         try
         {
-            if (eypfilepath is null || !string.Equals(Path.GetExtension(eypfilepath), ".eyp", StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(eypfilepath) || !string.Equals(Path.GetExtension(eypfilepath), ".eyp", StringComparison.OrdinalIgnoreCase))
             {
                 return null;
             }
@@ -3848,6 +3850,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 await AddFilesAsync(filename, fileHandler, DecodeHeight, cancellationTokenSource);
                                 break;
 
+                            case ".cbz":
+                            case ".cbr":
+                                fileHandler = new ImageFileHandler();
+                                await CbzCbrFileExtract(filename, fileHandler, DecodeHeight, cancellationTokenSource);
+                                break;
+
                             case ".zip":
                             case ".7z":
                             case ".arj":
@@ -3945,6 +3953,38 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             });
         return Task.CompletedTask;
+    }
+
+    public async Task CbzCbrFileExtract(string filepath, ILoadFileHandler fileHandler, int decodeHeight = 0, CancellationTokenSource cancellationTokenSource = null)
+    {
+        try
+        {
+            if (string.IsNullOrWhiteSpace(filepath) || fileHandler is null)
+            {
+                return;
+            }
+            await Task.Run(
+                async () =>
+                {
+                    using ArchiveFile archiveFile = new(filepath);
+                    if (archiveFile is not null)
+                    {
+                        foreach (Entry entry in archiveFile.Entries)
+                        {
+                            if (entry is null)
+                            {
+                                continue;
+                            }
+                            string tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetFileName(entry.FileName));
+                            entry.Extract(tempFilePath, true);
+                            await AddFilesAsync(tempFilePath, fileHandler, decodeHeight, cancellationTokenSource);
+                        }
+                    }
+                });
+        }
+        catch (Exception)
+        {
+        }
     }
 
     public void CreateBuiltInScanProfiles()
