@@ -75,10 +75,6 @@
         <KeyBinding Key="Tab"
             Command="{Binding MoveToPreviousTabCommand, ElementName=twainCtrl}"
             Modifiers="Control+Shift" />
-        <KeyBinding Key="Esc"
-            Command="{Binding CancelScan, ElementName=twainCtrl}"
-            Modifiers="Shift" />
-        <KeyBinding Key="Esc" Command="{Binding CancelLoadFile, ElementName=twainCtrl}" />
     </Window.InputBindings>
     <Window.Resources>
         <ViewModel:FoldEffect x:Key="Fold"

@@ -3182,7 +3182,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     {
                         ZipProgressIndeterminate = true;
                         using AppDbContext context = new();
-                        return context.Data.AsNoTracking().Where(z => z.FileContent != null && z.FileContent.Contains(AramaMetni)).Select(z => new { z.FileName }).ToList();
+                        string search = AramaMetni.ToLower();
+                        return context.Data.AsNoTracking().Where(z => z.FileContent != null &&  z.FileContent.ToLower().Contains(search)).Select(z => new { z.FileName }).ToList();
                     });
                 MainWindow.cvs.Filter += (s, x) =>
                                          {
