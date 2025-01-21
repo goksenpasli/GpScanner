@@ -59,9 +59,7 @@
                                                     BorderBrush="{TemplateBinding BorderBrush}"
                                                     BorderThickness="{TemplateBinding BorderThickness}">
                                                     <Border.InputBindings>
-                                                        <MouseBinding Command="{Binding ArşivTekDosyaÇıkar, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}"
-                                                            CommandParameter="{Binding TamYol}"
-                                                            MouseAction="LeftDoubleClick" />
+                                                        <MouseBinding Command="{Binding ArşivTekDosyaÇıkar, RelativeSource={RelativeSource AncestorType=local:ArchiveViewer}}" MouseAction="LeftDoubleClick" />
                                                     </Border.InputBindings>
                                                     <GridViewRowPresenter Margin="0"
                                                         HorizontalAlignment="Stretch"
@@ -162,8 +160,9 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <ProgressBar Width="32"
+                                                    Height="16"
+                                                    IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay}"
                                                     Maximum="1"
-                                                    Style="{Binding Mode=OneWay, Source={StaticResource ProgressBarStyle}}"
                                                     Value="{Binding Oran, Mode=OneWay}" />
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>

@@ -38,11 +38,11 @@ namespace Extensions
                 ];
             }
             ArşivTekDosyaÇıkar = new RelayCommand<object>(
-                parameter =>
+                async parameter =>
                 {
                     try
                     {
-                        string extractedfile = ExtractToFile(parameter as string);
+                        string extractedfile = await ExtractToFileAsync(SelectedFile);
                         _ = Process.Start(extractedfile);
                     }
                     catch (Exception ex)
@@ -279,21 +279,28 @@ namespace Extensions
             }
         }
 
-        protected string ExtractToFile(string entryname)
+        protected async Task<string> ExtractToFileAsync(ArchiveData entryname)
         {
-            using ZipArchive archive = ZipFile.Open(ArchivePath, ZipArchiveMode.Read);
-            if (archive is not null)
-            {
-                ZipArchiveEntry dosya = archive.GetEntry(entryname);
-                string extractpath = $"{Path.GetTempPath()}{dosya?.Name}";
-                if (!File.Exists(extractpath))
+            string archivepath = ArchivePath;
+            return await Task.Run(
+                async () =>
                 {
-                    dosya?.ExtractToFile(extractpath, true);
-                }
-                return extractpath;
-            }
+                    using ZipArchive archive = ZipFile.Open(archivepath, ZipArchiveMode.Read);
+                    if (archive is not null)
+                    {
+                        ZipArchiveEntry dosya = archive.GetEntry(entryname.DosyaAdı);
+                        string extractpath = $"{Path.GetTempPath()}{dosya?.Name}";
+                        if (!File.Exists(extractpath))
+                        {
+                            _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = true);
+                            dosya?.ExtractToFile(extractpath, true);
+                            _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = false);
+                        }
+                        return extractpath;
+                    }
 
-            return null;
+                    return null;
+                });
         }
 
         protected async void LoadDroppedZipFile(string[] droppedfiles)

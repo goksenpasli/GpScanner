@@ -22,25 +22,25 @@ namespace TwainControl;
 public class SimpleArchiveViewer : ArchiveViewer
 {
     public static readonly DependencyProperty SimpleStyleProperty = DependencyProperty.Register("SimpleStyle", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
-    private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps", ".jb2"];
+    private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps", ".jb2", ".cbr", ".cbz"];
 
     public SimpleArchiveViewer()
     {
         PropertyChanged += SimpleArchiveViewer_PropertyChanged;
         ArşivTekDosyaÇıkar = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 try
                 {
-                    if (parameter is string filename && !supportedFilesExtension.Contains(Path.GetExtension(filename).ToLowerInvariant()))
+                    if (!supportedFilesExtension.Contains(Path.GetExtension(SelectedFile.DosyaAdı).ToLowerInvariant()))
                     {
-                        string extractedfile = ExtractToFile(parameter as string);
+                        string extractedfile = await ExtractToFileAsync(SelectedFile);
                         _ = Process.Start(extractedfile);
                         return;
                     }
                     if (DataContext is TwainCtrl twainCtrl)
                     {
-                        string extractedfile = ExtractToFile(parameter as string);
+                        string extractedfile = await ExtractToFileAsync(SelectedFile);
                         _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
                     }
                 }
@@ -235,26 +235,33 @@ public class SimpleArchiveViewer : ArchiveViewer
         }
     }
 
-    private new string ExtractToFile(string entryname)
+    private new async Task<string> ExtractToFileAsync(ArchiveData entryname)
     {
-        using ArchiveFile archiveFile = new(ArchivePath);
-        Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname);
-        string extractpath = $"{Path.GetTempPath()}{entryname}";
-        if (!File.Exists(extractpath))
-        {
-            entry?.Extract(extractpath);
-        }
-        return extractpath;
+        string archivepath = ArchivePath;
+        return await Task.Run(
+            async () =>
+            {
+                using ArchiveFile archiveFile = new(archivepath);
+                Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname.DosyaAdı);
+                string extractpath = $"{Path.GetTempPath()}{entryname.DosyaAdı}";
+                if (!File.Exists(extractpath))
+                {
+                    _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = true);
+                    entry?.Extract(extractpath);
+                    _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = false);
+                }
+                return extractpath;
+            });
     }
 
-    private void SimpleArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void SimpleArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "SelectedFile")
         {
             if (Settings.Default.ShowArchiveViewerThumbs)
             {
                 PreviewPanelWidth = double.PositiveInfinity;
-                ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? ExtractToFile(SelectedFile.DosyaAdı) : null;
+                ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? await ExtractToFileAsync(SelectedFile) : null;
             }
             else
             {

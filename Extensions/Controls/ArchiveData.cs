@@ -86,6 +86,19 @@ public class ArchiveData : InpcBase
         }
     }
 
+    public bool IsIndeterminate
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(IsIndeterminate));
+            }
+        }
+    }
+
     public float Oran
     {
         get;
