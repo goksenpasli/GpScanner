@@ -68,7 +68,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private readonly string AppName;
     private readonly IdleTimeIndexer ıdleTimeIndexer;
     private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
-    private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".ods", ".odt", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2"];
+    private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".ods", ".odt", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2", ".cbz"];
     private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods", ".odt"];
     private int cycleIndex;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);

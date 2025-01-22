@@ -8,6 +8,8 @@ namespace TwainControl
 {
     public class ViewerTemplateSelector : DataTemplateSelector
     {
+        public DataTemplate Cbz { get; set; }
+
         public DataTemplate Docx { get; set; }
 
         public DataTemplate Empty { get; set; }
@@ -49,6 +51,7 @@ namespace TwainControl
                         ".xps" => Xps,
                         ".webp" => Webp,
                         ".jb2" => Jb2,
+                        ".cbz" => Cbz,
                         ".docx" or ".txt" or ".odt" => Docx,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
                         ".csv" or ".xls" or ".xlsx" or ".xlsb" or ".ods" => Xlsx,
