@@ -119,6 +119,8 @@
     <Compile Include="CameraUserControl.xaml.cs">
       <DependentUpon>CameraUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CbrImageViewer.cs" />
+    <Compile Include="CbrViewer.cs" />
     <Compile Include="Converter\BitmapFrameToBitmapFrameConverter.cs" />
     <Compile Include="Converter\CentimetersToInchesConverter.cs" />
     <Compile Include="Converter\DivideConverter.cs" />

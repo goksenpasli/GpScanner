@@ -453,6 +453,12 @@
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Visible" />
+            </DataTemplate>  
+            <DataTemplate x:Key="CbrImgViewerTemplate">
+                <twain:CbrImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="Jb2TemplateMini">
                 <PdfViewer:PdfShadowedImage Width="150"
@@ -782,6 +788,7 @@
                 <TextBlock Text="{Binding Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" TextWrapping="Wrap" />
             </DataTemplate>
             <twain:ViewerTemplateSelector x:Key="DocumentViewerSelector"
+                Cbr="{StaticResource CbrImgViewerTemplate}"
                 Cbz="{StaticResource ImgViewerTemplate}"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
@@ -795,6 +802,7 @@
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplateFull}" />
             <twain:ViewerTemplateSelector x:Key="ContributionViewerSelector"
+                Cbr="{StaticResource EmptyViewerTemplate}"
                 Cbz="{StaticResource EmptyViewerTemplate}"
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
@@ -808,6 +816,7 @@
                 Xps="{StaticResource EmptyViewerTemplate}"
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector"
+                Cbr="{StaticResource EmptyViewerTemplate}"
                 Cbz="{StaticResource EmptyViewerTemplate}"
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
@@ -821,6 +830,7 @@
                 Xps="{StaticResource EmptyViewerTemplate}"
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMonthPreviewSelector"
+                Cbr="{StaticResource EmptyViewerTemplate}"
                 Cbz="{StaticResource EmptyViewerTemplate}"
                 Docx="{StaticResource DocxViewerInternalThumbTemplate}"
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
@@ -834,6 +844,7 @@
                 Xps="{StaticResource EmptyViewerTemplate}"
                 Zip="{StaticResource DocumentViewerMonthPreviewZipViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="ThumbViewerSelector"
+                Cbr="{StaticResource CbrImgViewerTemplate}"
                 Cbz="{StaticResource ImgViewerTemplate}"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
@@ -847,6 +858,7 @@
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="UnIndexedThumbViewerSelector"
+                Cbr="{StaticResource EmptyViewerTemplate}"
                 Cbz="{StaticResource EmptyViewerTemplate}"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
@@ -860,6 +872,7 @@
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="FastPdfThumbViewerSelector"
+                Cbr="{StaticResource EmptyViewerTemplate}"
                 Cbz="{StaticResource EmptyViewerTemplate}"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Eyp="{StaticResource EypViewerTemplateFull}"
@@ -873,6 +886,7 @@
                 Xps="{StaticResource XpsViewerTemplate}"
                 Zip="{StaticResource ZipViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DvdBurnerDocumentViewerSelector"
+                Cbr="{StaticResource EmptyViewerTemplate}"
                 Cbz="{StaticResource EmptyViewerTemplate}"
                 Docx="{StaticResource DocxViewerThumbTemplate}"
                 Empty="{StaticResource DvdBurnerEmptyViewerTemplate}"

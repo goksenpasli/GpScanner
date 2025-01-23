@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.IO.Compression;
@@ -11,16 +10,16 @@ namespace Extensions;
 
 public class CbzViewer : ArchiveViewer
 {
-    public async Task<string> ExtractToFile(ArchiveData entryname) => await ExtractToFileAsync(entryname);
+    internal async Task<string> ExtractToFile(ArchiveData entryname) => await ExtractToFileAsync(entryname);
 
-    public Task<ObservableCollection<ArchiveData>> ReadArchive(string ArchiveFilePath) => ReadArchiveContent(ArchiveFilePath);
+    internal Task<ObservableCollection<ArchiveData>> ReadArchive(string ArchiveFilePath) => ReadArchiveContent(ArchiveFilePath);
 
     protected override async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string ArchiveFilePath)
     {
         using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
         if (archive is not null)
         {
-            string[] cbzfilext = [".jpg" ,".png",".gif"];
+            string[] cbzfilext = [".jpg", ".png", ".gif"];
             Arşivİçerik = [];
             List<ZipArchiveEntry> list = archive.Entries?.Where(z => z.Length > 0 && cbzfilext.Contains(Path.GetExtension(z.Name.ToLowerInvariant()))).ToList() ?? [];
             TotalFilesCount = list.Count;

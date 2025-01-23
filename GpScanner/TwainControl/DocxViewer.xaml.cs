@@ -72,19 +72,24 @@ namespace TwainControl
             FlowDocument fd = new();
             foreach (Paragraph docxparagraph in document?.Paragraphs)
             {
-                System.Windows.Documents.Paragraph paragraph = new();
-                foreach (FormattedText formattedText in docxparagraph?.MagicText)
+                try
                 {
-                    paragraph.Inlines.Add(GetRun(docxparagraph, paragraph, formattedText));
-                    fd.Blocks.Add(paragraph);
-                }
-
-                if (docxparagraph?.Pictures?.Count > 0)
-                {
-                    foreach (Picture picture in docxparagraph?.Pictures)
+                    System.Windows.Documents.Paragraph paragraph = new();
+                    foreach (FormattedText formattedText in docxparagraph?.MagicText)
                     {
-                        fd.Blocks.Add(BlockUIContainerGetPicture(picture));
+                        paragraph.Inlines.Add(GetRun(docxparagraph, paragraph, formattedText));
+                        fd.Blocks.Add(paragraph);
                     }
+                    if (docxparagraph?.Pictures?.Count > 0)
+                    {
+                        foreach (Picture picture in docxparagraph?.Pictures)
+                        {
+                            fd.Blocks.Add(BlockUIContainerGetPicture(picture));
+                        }
+                    }
+                }
+                catch (Exception)
+                {
                 }
             }
 

@@ -119,6 +119,25 @@ public class SimpleArchiveViewer : ArchiveViewer
             });
     }
 
+    protected new async Task<string> ExtractToFileAsync(ArchiveData entryname)
+    {
+        string archivepath = ArchivePath;
+        return await Task.Run(
+            async () =>
+            {
+                using ArchiveFile archiveFile = new(archivepath);
+                Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname.DosyaAdı);
+                string extractpath = $"{Path.GetTempPath()}{entryname.DosyaAdı}";
+                if (!File.Exists(extractpath))
+                {
+                    _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = true);
+                    entry?.Extract(extractpath);
+                    _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = false);
+                }
+                return extractpath;
+            });
+    }
+
     protected override void OnDrop(DragEventArgs e)
     {
         if (e?.Data?.GetData(typeof(Scanner)) is Scanner scanner && File.Exists(scanner.FileName))
@@ -233,25 +252,6 @@ public class SimpleArchiveViewer : ArchiveViewer
             entry?.Extract(Path.Combine(destinationfolder, Path.GetFileName(item.DosyaAdı)));
             SetValue(ProgressProperty, (i + 1) / (double)archivedata.Length);
         }
-    }
-
-    private new async Task<string> ExtractToFileAsync(ArchiveData entryname)
-    {
-        string archivepath = ArchivePath;
-        return await Task.Run(
-            async () =>
-            {
-                using ArchiveFile archiveFile = new(archivepath);
-                Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname.DosyaAdı);
-                string extractpath = $"{Path.GetTempPath()}{entryname.DosyaAdı}";
-                if (!File.Exists(extractpath))
-                {
-                    _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = true);
-                    entry?.Extract(extractpath);
-                    _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = false);
-                }
-                return extractpath;
-            });
     }
 
     private async void SimpleArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)

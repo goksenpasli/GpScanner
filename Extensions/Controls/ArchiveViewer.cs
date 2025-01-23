@@ -288,7 +288,7 @@ namespace Extensions
                     using ZipArchive archive = ZipFile.Open(archivepath, ZipArchiveMode.Read);
                     if (archive is not null)
                     {
-                        ZipArchiveEntry dosya = archive.GetEntry(entryname.DosyaAdı);
+                        ZipArchiveEntry dosya = archive.GetEntry(entryname.TamYol);
                         string extractpath = $"{Path.GetTempPath()}{dosya?.Name}";
                         if (!File.Exists(extractpath))
                         {

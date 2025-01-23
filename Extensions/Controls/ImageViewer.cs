@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Printing;
 using System.Threading.Tasks;
@@ -297,9 +298,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public Visibility ToolBarVisibility { get => (Visibility)GetValue(ToolBarVisibilityProperty); set => SetValue(ToolBarVisibilityProperty, value); }
 
-    public virtual ICommand ViewerBack { get; set; }
+    public virtual RelayCommand<object> ViewerBack { get; set; }
 
-    public virtual ICommand ViewerNext { get; set; }
+    public virtual RelayCommand<object> ViewerNext { get; set; }
 
     public ICommand Yazdır { get; }
 
@@ -396,6 +397,45 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
+    protected virtual  async Task LoadImageAsync(string filepath, ImageViewer imageViewer)
+    {
+        if (filepath is not null && File.Exists(filepath))
+        {
+            int?[] size;
+            switch (Path.GetExtension(filepath).ToLowerInvariant())
+            {
+                case ".tiff" or ".tif":
+                    size = await GetImagePixelSizeAsync(filepath);
+                    imageViewer.OriginalPixelHeight = size[0] ?? 0;
+                    imageViewer.OriginalPixelWidth = size[1] ?? 0;
+                    imageViewer.Sayfa = 1;
+                    imageViewer.TiffDecoder = new TiffBitmapDecoder(new Uri(filepath), BitmapCreateOptions.None, BitmapCacheOption.None);
+                    imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
+                    imageViewer.Source = imageViewer.TiffDecoder.Frames[0];
+                    imageViewer.Pages = Enumerable.Range(1, imageViewer.TiffDecoder.Frames.Count);
+                    return;
+
+                case ".cbz":
+                    imageViewer.Sayfa = 1;
+                    CbzViewer cbzViewer = new() { ArchivePath = filepath };
+                    ObservableCollection<ArchiveData> cbzfilecontents = await cbzViewer.ReadArchive(cbzViewer.ArchivePath);
+                    string cbzimagefile = ExtractToFile(cbzViewer.ArchivePath, cbzfilecontents.FirstOrDefault());
+                    imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
+                    imageViewer.Source = BitmapFrame.Create(new Uri(cbzimagefile), BitmapCreateOptions.None, BitmapCacheOption.None);
+                    imageViewer.Pages = Enumerable.Range(1, cbzfilecontents.Count);
+                    return;
+
+                case ".png" or ".jpg" or ".jpeg" or ".bmp":
+                    size = await GetImagePixelSizeAsync(filepath);
+                    imageViewer.OriginalPixelHeight = size[0] ?? 0;
+                    imageViewer.OriginalPixelWidth = size[1] ?? 0;
+                    imageViewer.TifNavigasyonButtonEtkin = Visibility.Collapsed;
+                    imageViewer.Source = await LoadImageAsync(filepath, imageViewer.DecodeHeight);
+                    return;
+            }
+        }
+    }
+
     protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     private static async void DecodeHeightChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -404,7 +444,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         {
             string path = imageViewer.ImageFilePath;
             imageViewer.DecodeHeight = (int)e.NewValue;
-            await LoadImageAsync(path, imageViewer);
+            await imageViewer.LoadImageAsync(path, imageViewer);
         }
     }
 
@@ -440,49 +480,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         {
             if (e.NewValue is string filepath && File.Exists(filepath))
             {
-                await LoadImageAsync(filepath, imageViewer);
+                await imageViewer.LoadImageAsync(filepath, imageViewer);
                 return;
             }
             imageViewer.Source = null;
-        }
-    }
-
-    private static async Task LoadImageAsync(string filepath, ImageViewer imageViewer)
-    {
-        if (filepath is not null && File.Exists(filepath))
-        {
-            int?[] size;
-            switch (Path.GetExtension(filepath).ToLowerInvariant())
-            {
-                case ".tiff" or ".tif":
-                    size = await GetImagePixelSizeAsync(filepath);
-                    imageViewer.OriginalPixelHeight = size[0] ?? 0;
-                    imageViewer.OriginalPixelWidth = size[1] ?? 0;
-                    imageViewer.Sayfa = 1;
-                    imageViewer.TiffDecoder = new TiffBitmapDecoder(new Uri(filepath), BitmapCreateOptions.None, BitmapCacheOption.None);
-                    imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
-                    imageViewer.Source = imageViewer.TiffDecoder.Frames[0];
-                    imageViewer.Pages = Enumerable.Range(1, imageViewer.TiffDecoder.Frames.Count);
-                    return;
-
-                case ".cbz":
-                    imageViewer.Sayfa = 1;
-                    CbzViewer cbzViewer = new() { ArchivePath = filepath };
-                    ObservableCollection<ArchiveData> cbzfilecontents = await cbzViewer.ReadArchive(cbzViewer.ArchivePath);
-                    string cbzimagefile = await cbzViewer.ExtractToFile(cbzfilecontents.FirstOrDefault());
-                    imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
-                    imageViewer.Source = BitmapFrame.Create(new Uri(cbzimagefile), BitmapCreateOptions.None, BitmapCacheOption.None);
-                    imageViewer.Pages = Enumerable.Range(1, cbzfilecontents.Count);
-                    return;
-
-                case ".png" or ".jpg" or ".jpeg" or ".bmp":
-                    size = await GetImagePixelSizeAsync(filepath);
-                    imageViewer.OriginalPixelHeight = size[0] ?? 0;
-                    imageViewer.OriginalPixelWidth = size[1] ?? 0;
-                    imageViewer.TifNavigasyonButtonEtkin = Visibility.Collapsed;
-                    imageViewer.Source = await LoadImageAsync(filepath, imageViewer.DecodeHeight);
-                    return;
-            }
         }
     }
 
@@ -528,6 +529,22 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         double zoom = (double)value;
         return zoom >= 0.0;
+    }
+
+    private string ExtractToFile(string archivepath, ArchiveData entryname)
+    {
+        using ZipArchive archive = ZipFile.Open(archivepath, ZipArchiveMode.Read);
+        if (archive is not null)
+        {
+            ZipArchiveEntry dosya = archive.GetEntry(entryname.TamYol);
+            string extractpath = $"{Path.GetTempPath()}{dosya?.Name}";
+            if (!File.Exists(extractpath))
+            {
+                dosya?.ExtractToFile(extractpath, true);
+            }
+            return extractpath;
+        }
+        return null;
     }
 
     private async void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
