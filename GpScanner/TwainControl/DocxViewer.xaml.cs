@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Xceed.Document.NET;
@@ -38,7 +40,11 @@ namespace TwainControl
 
         private static BlockUIContainer BlockUIContainerGetPicture(Picture picture)
         {
-            System.Windows.Controls.Image image = new() { Source = BitmapFrame.Create(picture.Stream, BitmapCreateOptions.None, BitmapCacheOption.None) };
+
+            System.Windows.Controls.Image image = new();
+            BitmapFrame bitmapFrame = Path.GetExtension(picture.FileName.ToLowerInvariant()) == ".emf" ? BitmapFrame.Create(EmfFileToBitmapSource(picture.Stream)) : BitmapFrame.Create(picture.Stream, BitmapCreateOptions.None, BitmapCacheOption.None);
+            bitmapFrame?.Freeze();
+            image.Source = bitmapFrame;
             return new BlockUIContainer(image);
         }
 
@@ -83,6 +89,16 @@ namespace TwainControl
             }
 
             return fd;
+        }
+
+        private static BitmapSource EmfFileToBitmapSource(Stream path)
+        {
+            using Metafile emf = new(path);
+            using System.Drawing.Bitmap bmp = new(emf.Width, emf.Height);
+            bmp.SetResolution(emf.HorizontalResolution, emf.VerticalResolution);
+            using System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
+            g.DrawImage(emf, 0, 0);
+            return Imaging.CreateBitmapSourceFromHBitmap(bmp.GetHbitmap(), IntPtr.Zero, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }
 
         private static Run GetRun(Paragraph docxparagraph, System.Windows.Documents.Paragraph paragraph, FormattedText formattedText)
