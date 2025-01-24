@@ -10,8 +10,6 @@ namespace TwainControl
     {
         public DataTemplate Cbr { get; set; }
 
-        public DataTemplate Cbz { get; set; }
-
         public DataTemplate Docx { get; set; }
 
         public DataTemplate Empty { get; set; }
@@ -53,8 +51,7 @@ namespace TwainControl
                         ".xps" => Xps,
                         ".webp" => Webp,
                         ".jb2" => Jb2,
-                        ".cbz" => Cbz,
-                        ".cbr" => Cbr,
+                        ".cbr" or ".cbz" => Cbr,
                         ".docx" or ".txt" or ".odt" => Docx,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,
                         ".csv" or ".xls" or ".xlsx" or ".xlsb" or ".ods" => Xlsx,

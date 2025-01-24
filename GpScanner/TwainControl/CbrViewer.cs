@@ -12,8 +12,6 @@ namespace TwainControl;
 
 public class CbrViewer : SimpleArchiveViewer
 {
-    internal async Task<string> ExtractToFile(ArchiveData entry) => await ExtractToFileAsync(entry);
-
     internal async Task<ObservableCollection<ArchiveData>> ReadArchive(string archivePath) => await ReadArchiveContent(archivePath);
 
     protected override async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string ArchiveFilePath)

@@ -397,7 +397,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    protected virtual  async Task LoadImageAsync(string filepath, ImageViewer imageViewer)
+    protected virtual async Task LoadImageAsync(string filepath, ImageViewer imageViewer)
     {
         if (filepath is not null && File.Exists(filepath))
         {
@@ -423,6 +423,10 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
                     imageViewer.Source = BitmapFrame.Create(new Uri(cbzimagefile), BitmapCreateOptions.None, BitmapCacheOption.None);
                     imageViewer.Pages = Enumerable.Range(1, cbzfilecontents.Count);
+                    if (Resize?.CanExecute(null) == true)
+                    {
+                        Resize.Execute(null);
+                    }
                     return;
 
                 case ".png" or ".jpg" or ".jpeg" or ".bmp":

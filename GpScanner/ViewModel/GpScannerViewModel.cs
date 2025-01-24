@@ -1275,7 +1275,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         mainWindow.twainCtrl.SelectedTabIndex = 3;
                         return;
                     }
-                    if (new string[] { ".zip", ".rar", ".7z" }.Any(z => string.Equals(z, Path.GetExtension(filepath), StringComparison.InvariantCultureIgnoreCase)))
+                    if (new string[] { ".zip", ".rar", ".7z", ".cbr", ".cbz" }.Any(z => string.Equals(z, Path.GetExtension(filepath), StringComparison.InvariantCultureIgnoreCase)))
                     {
                         mainWindow.twainCtrl.ArchiveVwr.ArchivePath = filepath;
                         mainWindow.twainCtrl.SelectedTabIndex = 2;
@@ -3183,7 +3183,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         ZipProgressIndeterminate = true;
                         using AppDbContext context = new();
                         string search = AramaMetni.ToLower();
-                        return context.Data.AsNoTracking().Where(z => z.FileContent != null &&  z.FileContent.ToLower().Contains(search)).Select(z => new { z.FileName }).ToList();
+                        return context.Data.AsNoTracking().Where(z => z.FileContent != null && z.FileContent.ToLower().Contains(search)).Select(z => new { z.FileName }).ToList();
                     });
                 MainWindow.cvs.Filter += (s, x) =>
                                          {

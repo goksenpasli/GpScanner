@@ -32,7 +32,7 @@ public class CbrImageViewer : ImageViewer
         {
             switch (Path.GetExtension(filepath).ToLowerInvariant())
             {
-                case ".cbr":
+                case ".cbr" or ".cbz":
                     imageViewer.Sayfa = 1;
                     CbrViewer cbrViewer = new() { ArchivePath = filepath };
                     cbrFilecontents = await cbrViewer.ReadArchive(cbrViewer.ArchivePath);
@@ -61,10 +61,14 @@ public class CbrImageViewer : ImageViewer
                         entry?.Extract(extractpath);
                     }
                     Source = BitmapFrame.Create(new Uri(extractpath), BitmapCreateOptions.None, BitmapCacheOption.None);
+                    if (Resize?.CanExecute(null) == true)
+                    {
+                        Resize.Execute(null);
+                    }
                 }
             }
         }
     }
 
-    private bool IsCbrFile(string filepath) => string.Equals(Path.GetExtension(filepath), ".cbr", StringComparison.InvariantCultureIgnoreCase);
+    private bool IsCbrFile(string filepath) => string.Equals(Path.GetExtension(filepath), ".cbr", StringComparison.InvariantCultureIgnoreCase) || string.Equals(Path.GetExtension(filepath), ".cbz", StringComparison.InvariantCultureIgnoreCase);
 }
