@@ -868,6 +868,21 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         DateBack = new RelayCommand<object>(
             parameter =>
             {
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
+                {
+                    TimeSpan difference = BitişTarihi - BaşlangıçTarihi;
+                    BaşlangıçTarihi = BaşlangıçTarihi.AddDays(-difference.Days);
+                    BitişTarihi = BitişTarihi.AddDays(-difference.Days);
+                    if (BaşlangıçTarihi < DateTime.MinValue)
+                    {
+                        BaşlangıçTarihi = DateTime.MinValue;
+                    }
+                    if (BitişTarihi < DateTime.MinValue)
+                    {
+                        BitişTarihi = DateTime.MinValue;
+                    }
+                    return;
+                }
                 BaşlangıçTarihi = BaşlangıçTarihi.AddDays(-1);
                 BitişTarihi = BitişTarihi.AddDays(-1);
             },
@@ -876,6 +891,21 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         DateForward = new RelayCommand<object>(
             parameter =>
             {
+                if (Keyboard.Modifiers == ModifierKeys.Alt)
+                {
+                    TimeSpan difference = BitişTarihi - BaşlangıçTarihi;
+                    BaşlangıçTarihi = BaşlangıçTarihi.AddDays(difference.Days);
+                    BitişTarihi = BitişTarihi.AddDays(difference.Days);
+                    if (BitişTarihi > DateTime.Today)
+                    {
+                        BitişTarihi = DateTime.Today;
+                    }
+                    if (BaşlangıçTarihi > DateTime.Today)
+                    {
+                        BaşlangıçTarihi = DateTime.Today;
+                    }
+                    return;
+                }
                 BaşlangıçTarihi = BaşlangıçTarihi.AddDays(1);
                 BitişTarihi = BitişTarihi.AddDays(1);
             },
@@ -984,9 +1014,18 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         AssociateExtension = new RelayCommand<object>(
             parameter =>
             {
-                if (MessageBox.Show(Translation.GetResStringValue("ASSOCIATE"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
+                string message = altkeypressed ? $"{Translation.GetResStringValue("ASSOCIATE")} {Translation.GetResStringValue("DELETE")}" : $"{Translation.GetResStringValue("ASSOCIATE")}";
+                if (MessageBox.Show(message, AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
-                    CreateFileAssociationCurrentUser(".eyp", "Elektronik Yazışma Paketi", Process.GetCurrentProcess()?.MainModule?.FileName);
+                    if (altkeypressed)
+                    {
+                        CreateFileAssociationCurrentUser(".eyp", "Elektronik Yazışma Paketi", Process.GetCurrentProcess()?.MainModule?.FileName, 0, true);
+                    }
+                    else
+                    {
+                        CreateFileAssociationCurrentUser(".eyp", "Elektronik Yazışma Paketi", Process.GetCurrentProcess()?.MainModule?.FileName);
+                    }
                 }
             },
             parameter => true);
@@ -2809,15 +2848,30 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         Settings.Default.Save();
     }
 
-    private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription, string applicationPath, int iconindex = 0)
+    private void CreateFileAssociationCurrentUser(string extension, string fileTypeDescription, string applicationPath, int iconindex = 0, bool delete = false)
     {
-        using RegistryKey extensionKey = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{extension}");
-        extensionKey?.SetValue(string.Empty, fileTypeDescription);
-        using RegistryKey fileTypeKey = Registry.CurrentUser.CreateSubKey($@"Software\Classes\{fileTypeDescription}");
-        using RegistryKey iconKey = fileTypeKey?.CreateSubKey("DefaultIcon");
-        iconKey?.SetValue(string.Empty, $"{applicationPath},{iconindex}");
-        using RegistryKey commandKey = fileTypeKey?.CreateSubKey(@"shell\open\command");
-        commandKey?.SetValue(string.Empty, $@"""{applicationPath}"" ""%1""");
+        string extensionKeyPath = $@"Software\Classes\{extension}";
+        string fileTypeKeyPath = $@"Software\Classes\{fileTypeDescription}";
+
+        if (delete)
+        {
+            using RegistryKey classesKey = Registry.CurrentUser.OpenSubKey("Software\\Classes", true);
+            if (classesKey != null)
+            {
+                classesKey.DeleteSubKeyTree(extensionKeyPath, throwOnMissingSubKey: false);
+                classesKey.DeleteSubKeyTree(fileTypeKeyPath, throwOnMissingSubKey: false);
+            }
+        }
+        else
+        {
+            using RegistryKey extensionKey = Registry.CurrentUser.CreateSubKey(extensionKeyPath);
+            extensionKey?.SetValue(string.Empty, fileTypeDescription);
+            using RegistryKey fileTypeKey = Registry.CurrentUser.CreateSubKey(fileTypeKeyPath);
+            using RegistryKey iconKey = fileTypeKey?.CreateSubKey("DefaultIcon");
+            iconKey?.SetValue(string.Empty, $"{applicationPath},{iconindex}");
+            using RegistryKey commandKey = fileTypeKey?.CreateSubKey(@"shell\open\command");
+            commandKey?.SetValue(string.Empty, $@"""{applicationPath}"" ""%1""");
+        }
     }
 
     private void CreateSingleZipFile(string filepath, string zipsavepath)

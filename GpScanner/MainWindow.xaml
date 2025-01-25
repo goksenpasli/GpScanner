@@ -760,6 +760,7 @@
                             </Grid.RowDefinitions>
                             <RepeatButton Grid.RowSpan="2"
                                 twainctrl:Policy.PolicyName="DateBack"
+                                BorderBrush="Cyan"
                                 Command="{Binding DateBack}"
                                 Content="ç"
                                 FontFamily="Wingdings"
@@ -782,6 +783,7 @@
                             <RepeatButton Grid.RowSpan="2"
                                 Grid.Column="4"
                                 twainctrl:Policy.PolicyName="DateForward"
+                                BorderBrush="Cyan"
                                 Command="{Binding DateForward}"
                                 Content="è"
                                 FontFamily="Wingdings"

@@ -633,7 +633,7 @@
                                                         Height="32"
                                                         Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
                                                     <TextBlock VerticalAlignment="Center">
-                                                        <Hyperlink Command="{Binding AssociateExtension}">
+                                                        <Hyperlink Command="{Binding AssociateExtension}" Foreground="Cyan">
                                                             <Run Text="{twainctrl:Loc EYPOPEN}" />
                                                         </Hyperlink>
                                                     </TextBlock>
