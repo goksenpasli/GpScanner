@@ -12,6 +12,46 @@
             <ItemsPresenter />
         </ScrollViewer>
     </ControlTemplate>
+    <DataTemplate x:Key="DefaultItemTemplate">
+        <local:SplitButton VerticalAlignment="{Binding VerticalAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+            VerticalContentAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+            Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+            BorderBrush="{x:Null}"
+            Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+            CommandParameter="{Binding Mode=OneWay, Path=FullPath}"
+            Content="{Binding Mode=OneWay, Path=FullPath, Converter={StaticResource FolderPathToLocalizedNameConverter}}"
+            SplitPartContent="≻"
+            TopMost="False">
+            <local:SplitButton.InternalContent>
+                <ItemsControl MaxHeight="250"
+                    ItemsSource="{Binding FullPath, Converter={StaticResource GetDirectoriesConverter}}"
+                    Template="{StaticResource ItemsControlTemplate}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock VerticalAlignment="Center">
+                                <InlineUIContainer BaselineAlignment="Center">
+                                    <Image Width="16"
+                                        Height="16"
+                                        Source="{Binding Mode=OneWay, Converter={StaticResource FolderPathToIconConverter}}" />
+                                </InlineUIContainer>
+                                <Hyperlink BaselineAlignment="Center"
+                                    Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
+                                    CommandParameter="{Binding Mode=OneWay}"
+                                    TextDecorations="None">
+                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FolderPathToLocalizedNameConverter}}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Background="{Binding InternalBackground, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </local:SplitButton.InternalContent>
+        </local:SplitButton>
+    </DataTemplate>
     <Style TargetType="local:FileBreadCrumbControl">
         <Setter Property="Background" Value="{DynamicResource BorderBackground}" />
         <Setter Property="InternalBackground" Value="Gray" />
@@ -43,54 +83,13 @@
                             <ItemsControl x:Name="Items"
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                 VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={StaticResource DefaultItemTemplate}, FallbackValue={StaticResource DefaultItemTemplate}}"
                                 ItemsSource="{TemplateBinding PathSegments}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <VirtualizingStackPanel Orientation="{Binding Orientation, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
                                     </ItemsPanelTemplate>
                                 </ItemsControl.ItemsPanel>
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <local:SplitButton VerticalAlignment="{Binding VerticalAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
-                                            VerticalContentAlignment="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
-                                            Background="{Binding Background, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
-                                            BorderBrush="{x:Null}"
-                                            Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
-                                            CommandParameter="{Binding Mode=OneWay, Path=FullPath}"
-                                            Content="{Binding Mode=OneWay, Path=FullPath, Converter={StaticResource FolderPathToLocalizedNameConverter}}"
-                                            SplitPartContent="≻"
-                                            TopMost="False">
-                                            <local:SplitButton.InternalContent>
-                                                <ItemsControl MaxHeight="250"
-                                                    ItemsSource="{Binding FullPath, Converter={StaticResource GetDirectoriesConverter}}"
-                                                    Template="{StaticResource ItemsControlTemplate}">
-                                                    <ItemsControl.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <TextBlock VerticalAlignment="Center">
-                                                                <InlineUIContainer BaselineAlignment="Center">
-                                                                    <Image Width="16"
-                                                                        Height="16"
-                                                                        Source="{Binding Mode=OneWay, Converter={StaticResource FolderPathToIconConverter}}" />
-                                                                </InlineUIContainer>
-                                                                <Hyperlink BaselineAlignment="Center"
-                                                                    Command="{Binding Navigate, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}"
-                                                                    CommandParameter="{Binding Mode=OneWay}"
-                                                                    TextDecorations="None">
-                                                                    <Run Text="{Binding Mode=OneWay, Converter={StaticResource FolderPathToLocalizedNameConverter}}" />
-                                                                </Hyperlink>
-                                                            </TextBlock>
-                                                        </DataTemplate>
-                                                    </ItemsControl.ItemTemplate>
-                                                    <ItemsControl.ItemsPanel>
-                                                        <ItemsPanelTemplate>
-                                                            <VirtualizingStackPanel Background="{Binding InternalBackground, RelativeSource={RelativeSource AncestorType=local:FileBreadCrumbControl}}" />
-                                                        </ItemsPanelTemplate>
-                                                    </ItemsControl.ItemsPanel>
-                                                </ItemsControl>
-                                            </local:SplitButton.InternalContent>
-                                        </local:SplitButton>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
                             </ItemsControl>
                             <local:ButtonedTextBox x:Name="FileNameBtn"
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}"

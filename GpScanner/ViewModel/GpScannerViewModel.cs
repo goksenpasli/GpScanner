@@ -99,6 +99,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         LoadRemainder.Execute(null);
         ıdleTimeIndexer = new(this, Settings.Default.IdleMinuteIndex);
         RunIdleIndexOperation();
+        supportedfilesextension?.ToList().ForEach(item => SupportedFileLists?.Add(new CheckBoxItem() { IsChecked = true, Content = new Image() { Source = ShellIcon.GetExtensionIconBySize(item, ShellIcon.SizeType.large) }, Name = item }));
 
         RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => IsAdministrator);
 
@@ -2465,6 +2466,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> StopFlagAnimation { get; }
 
+    public ObservableCollection<CheckBoxItem> SupportedFileLists { get; } = [];
+
     public ICommand Tersiniİşaretle { get; }
 
     public bool TesseractAnyLanguageSelected => TesseractViewModel?.TesseractFiles?.Count(z => z.Checked) > 0;
@@ -3242,10 +3245,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 MainWindow.cvs.Filter += (s, x) =>
                                          {
                                              Scanner scanner = (Scanner)x.Item;
+                                             bool supportedFileFilter = SupportedFileLists?.Where(item => item.IsChecked)?.Select(item => item.Name)?.Contains(Path.GetExtension(scanner.FileName).ToLowerInvariant()) == true;
                                              bool filearchivefilter = ExistsInArchive(scanner.FileName, Settings.Default.SearchInArchiveFiles, Settings.Default.SearchInArchiveFileLimit * 1_048_576);
                                              bool filenamefilter = Path.GetFileNameWithoutExtension(scanner.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0;
                                              bool filecontentfilter = datas?.Any(z => z.FileName == scanner.FileName) == true;
-                                             x.Accepted = filenamefilter || filecontentfilter || filearchivefilter;
+                                             x.Accepted = (filenamefilter || filecontentfilter || filearchivefilter) && supportedFileFilter;
                                          };
                 DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
                 ZipProgressIndeterminate = false;

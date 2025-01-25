@@ -204,6 +204,7 @@ namespace Extensions
             BitmapSource bitmapsource = Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
             bitmapsource?.Freeze();
             _ = Win32.DestroyIcon(hIcon);
+            icon?.Dispose();
             return bitmapsource;
         }
 
@@ -228,9 +229,8 @@ namespace Extensions
                 return null;
             }
 
-            _ = Icon.FromHandle(hIcon);
             BitmapSource bitmapsource = Imaging.CreateBitmapSourceFromHIcon(hIcon, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-            bitmapsource.Freeze();
+            bitmapsource?.Freeze();
             _ = Win32.DestroyIcon(hIcon);
             return bitmapsource;
         }

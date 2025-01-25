@@ -89,6 +89,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
+        <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxSizeToColorConverter"
             MaxNumber="425"
@@ -842,7 +843,7 @@
                             <Extensions:ButtonedTextBox x:Name="TbSearch"
                                 Grid.Row="3"
                                 Grid.Column="0"
-                                Grid.ColumnSpan="7"
+                                Grid.ColumnSpan="6"
                                 VerticalContentAlignment="Center"
                                 d:Watermark="{twainctrl:Loc DOCUMENT}"
                                 twainctrl:Policy.PolicyName="AramaMetni"
@@ -851,6 +852,25 @@
                                 OpenButtonVisibility="Collapsed"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"
                                 Watermark="{twainctrl:Loc DOCUMENT}" />
+                            <Extensions:ContentToggleButton Grid.Row="3" Grid.Column="7">
+                                <Extensions:ContentToggleButton.OverContent>
+                                    <Extensions:CheckComboBox Items="{Binding SupportedFileLists}" Watermark="{twainctrl:Loc FILE}">
+                                        <Extensions:CheckComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <CheckBox VerticalAlignment="Center"
+                                                    VerticalContentAlignment="Center"
+                                                    IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                                    IsEnabled="{Binding IsEnabled, Mode=TwoWay}">
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <ContentPresenter VerticalAlignment="Center" Content="{Binding Content}" />
+                                                        <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                    </StackPanel>
+                                                </CheckBox>
+                                            </DataTemplate>
+                                        </Extensions:CheckComboBox.ItemTemplate>
+                                    </Extensions:CheckComboBox>
+                                </Extensions:ContentToggleButton.OverContent>
+                            </Extensions:ContentToggleButton>
                         </Grid>
                         <ListBox x:Name="LbDoc"
                             Grid.Row="3"

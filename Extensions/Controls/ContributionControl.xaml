@@ -5,6 +5,28 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <local:ContributionToColorConverter x:Key="ContributionToColorConverter" />
+    <DataTemplate x:Key="DefaultItemTemplate">
+        <Rectangle d:Fill="Green"
+            d:Height="10"
+            d:Width="10"
+            Stroke="{Binding Stroke}">
+            <Rectangle.Fill>
+                <MultiBinding Converter="{StaticResource ContributionToColorConverter}">
+                    <Binding Path="Count" />
+                    <Binding Path="MaxContribution" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
+                    <Binding Path="ContributionColor" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
+                    <Binding Path="ZeroContributionColor" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
+                </MultiBinding>
+            </Rectangle.Fill>
+            <Rectangle.ToolTip>
+                <TextBlock>
+                    <Run Text="{Binding Count}" />
+                    <LineBreak />
+                    <Run Text="{Binding ContrubutionDate}" />
+                </TextBlock>
+            </Rectangle.ToolTip>
+        </Rectangle>
+    </DataTemplate>
     <Style TargetType="local:ContributionControl">
         <Setter Property="Template">
             <Setter.Value>
@@ -66,6 +88,7 @@
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             d:ItemsSource="{d:SampleData ItemCount=10}"
+                            ItemTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue={StaticResource DefaultItemTemplate}, FallbackValue={StaticResource DefaultItemTemplate}}"
                             ItemsSource="{Binding Contributions, RelativeSource={RelativeSource TemplatedParent}}"
                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
                             ScrollViewer.VerticalScrollBarVisibility="Hidden"
@@ -88,30 +111,6 @@
                                     </UniformGrid>
                                 </ItemsPanelTemplate>
                             </ListBox.ItemsPanel>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Rectangle d:Fill="Green"
-                                        d:Height="10"
-                                        d:Width="10"
-                                        Stroke="{Binding Stroke}">
-                                        <Rectangle.Fill>
-                                            <MultiBinding Converter="{StaticResource ContributionToColorConverter}">
-                                                <Binding Path="Count" />
-                                                <Binding Path="MaxContribution" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
-                                                <Binding Path="ContributionColor" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
-                                                <Binding Path="ZeroContributionColor" RelativeSource="{RelativeSource AncestorType=local:ContributionControl}" />
-                                            </MultiBinding>
-                                        </Rectangle.Fill>
-                                        <Rectangle.ToolTip>
-                                            <TextBlock>
-                                                <Run Text="{Binding Count}" />
-                                                <LineBreak />
-                                                <Run Text="{Binding ContrubutionDate}" />
-                                            </TextBlock>
-                                        </Rectangle.ToolTip>
-                                    </Rectangle>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
                 </ControlTemplate>
