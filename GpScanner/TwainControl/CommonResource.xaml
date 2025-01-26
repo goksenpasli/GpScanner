@@ -1268,7 +1268,14 @@
     <DataTemplate x:Key="SimpleArchiveViewerXpsViewerTemplate">
         <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
+    <DataTemplate x:Key="CbrImgViewerTemplate">
+        <local:CbrImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+            ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+            PanoramaButtonVisibility="Collapsed"
+            PrintButtonVisibility="Visible" />
+    </DataTemplate>
     <local:ViewerTemplateSelector x:Key="PdfEypViewerSelector"
+        Cbr="{StaticResource CbrImgViewerTemplate}"
         Docx="{StaticResource SimpleArchiveViewerDocxTemplate}"
         Empty="{StaticResource EmptyTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"
@@ -1280,6 +1287,7 @@
         Xml="{StaticResource XmlViewerTemplate}"
         Zip="{StaticResource ZipViewerTemplate}" />
     <local:ViewerTemplateSelector x:Key="SimpleArchiveViewerSelector"
+        Cbr="{StaticResource CbrImgViewerTemplate}"
         Docx="{StaticResource SimpleArchiveViewerDocxTemplate}"
         Empty="{StaticResource SimpleArchiveViewerEmptyTemplate}"
         Eyp="{StaticResource SimpleArchiveViewerEypViewerTemplate}"
@@ -1293,6 +1301,7 @@
         Xps="{StaticResource SimpleArchiveViewerXpsViewerTemplate}"
         Zip="{StaticResource SimpleArchiveViewerZipViewerTemplate}" />
     <local:ViewerTemplateSelector x:Key="PdfEypListBoxViewerSelector"
+        Cbr="{StaticResource CbrImgViewerTemplate}"
         Docx="{StaticResource SimpleArchiveViewerDocxTemplate}"
         Eyp="{StaticResource EypViewerTemplate}"
         Img="{StaticResource EypImgViewerTemplate}"

@@ -18,86 +18,97 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <converter:MonthContributionDataFileNameConverter x:Key="MonthContributionDataFileNameConverter" />
+        <converter:IntToMonthConverter x:Key="IntToMonthConverter" />
     </UserControl.Resources>
-    <ItemsControl d:ItemsSource="{d:SampleData ItemCount=12}" ItemsSource="{Binding YearlyGroupData}">
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                <Grid Background="{StaticResource BorderBackground}">
-                    <StackPanel Orientation="Horizontal">
-                        <Button x:Name="Btn"
-                            Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
-                            CommandParameter="{Binding Mode=OneWay}">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="32" Height="32">
-                                    <Image.Source>
-                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                            <Binding Source="zipfldr.dll" />
-                                            <Binding Source="0" />
-                                        </MultiBinding>
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock VerticalAlignment="Center">
-                                    <Run Text="{twainctrl:Loc MONTH}" />
-                                    <Run Text="{Binding Key, Mode=OneWay}" />
-                                </TextBlock>
-                            </StackPanel>
-                        </Button>
-                        <TextBlock x:Name="TbView"
-                            VerticalAlignment="Center"
-                            FontFamily="Webdings"
-                            FontSize="20"
-                            Foreground="Red"
-                            IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
-                            Text="N" />
-                    </StackPanel>
-                    <Extensions:FadedToolTipControl Background="{StaticResource BorderBackground}"
-                        BorderBrush="{StaticResource GroupBoxBackGround}"
-                        PopupParent="{Binding ElementName=TbView}"
-                        Position="Bottom"
-                        ShowCloseButton="Visible"
-                        TimeToClose="{x:Static sys:Int32.MaxValue}"
-                        TimeToShow="2000">
-                        <Extensions:FadedToolTipControl.Style>
-                            <Style TargetType="Extensions:FadedToolTipControl">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding ElementName=TbView, Path=IsMouseOver}" Value="true">
-                                        <Setter Property="Show" Value="True" />
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="true">
-                                        <Setter Property="Show" Value="True" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Extensions:FadedToolTipControl.Style>
-                        <Extensions:ResizablePanel Width="720"
-                            Height="480"
-                            MinWidth="360"
-                            MinHeight="240"
-                            Background="{x:Null}"
-                            BorderBrush="Transparent">
-                            <ListBox ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
-                                ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
-                                VirtualizingPanel.CacheLengthUnit="Pixel"
-                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                VirtualizingPanel.ScrollUnit="Pixel"
-                                VirtualizingPanel.VirtualizationMode="Standard">
-                                <ListBox.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                            ItemSize="165,165"
-                                            SpacingMode="None" />
-                                    </ItemsPanelTemplate>
-                                </ListBox.ItemsPanel>
-                            </ListBox>
-                        </Extensions:ResizablePanel>
-                    </Extensions:FadedToolTipControl>
-                </Grid>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <UniformGrid Columns="1" Rows="12" />
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-    </ItemsControl>
+    <Grid Background="{StaticResource BorderBackground}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Extensions:NumericUpDown Grid.Row="0"
+            IsReadOnly="True"
+            Maximum="{Binding Mode=OneWay, Path=Year, Source={x:Static sys:DateTime.Today}}"
+            Minimum="1"
+            Value="{Binding ContributionMonthYear, UpdateSourceTrigger=PropertyChanged}" />
+        <ItemsControl Grid.Row="1"
+            d:ItemsSource="{d:SampleData ItemCount=12}"
+            ItemsSource="{Binding YearlyGroupData}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <Button x:Name="Btn"
+                                Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
+                                CommandParameter="{Binding Mode=OneWay}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="zipfldr.dll" />
+                                                <Binding Source="0" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Key, Mode=OneWay, Converter={StaticResource IntToMonthConverter}}" />
+                                </StackPanel>
+                            </Button>
+                            <TextBlock x:Name="TbView"
+                                VerticalAlignment="Center"
+                                FontFamily="Webdings"
+                                FontSize="20"
+                                Foreground="Red"
+                                IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
+                                Text="N" />
+                        </StackPanel>
+                        <Extensions:FadedToolTipControl Background="{StaticResource BorderBackground}"
+                            BorderBrush="{StaticResource GroupBoxBackGround}"
+                            PopupParent="{Binding ElementName=TbView}"
+                            Position="Bottom"
+                            ShowCloseButton="Visible"
+                            TimeToClose="{x:Static sys:Int32.MaxValue}"
+                            TimeToShow="2000">
+                            <Extensions:FadedToolTipControl.Style>
+                                <Style TargetType="Extensions:FadedToolTipControl">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=TbView, Path=IsMouseOver}" Value="true">
+                                            <Setter Property="Show" Value="True" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsMouseOver}" Value="true">
+                                            <Setter Property="Show" Value="True" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Extensions:FadedToolTipControl.Style>
+                            <Extensions:ResizablePanel Width="720"
+                                Height="480"
+                                MinWidth="360"
+                                MinHeight="240"
+                                Background="{x:Null}"
+                                BorderBrush="Transparent">
+                                <ListBox ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
+                                    ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
+                                    VirtualizingPanel.CacheLengthUnit="Pixel"
+                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                    VirtualizingPanel.ScrollUnit="Pixel"
+                                    VirtualizingPanel.VirtualizationMode="Standard">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                ItemSize="165,165"
+                                                SpacingMode="None" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                </ListBox>
+                            </Extensions:ResizablePanel>
+                        </Extensions:FadedToolTipControl>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="1" Rows="12" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+    </Grid>
 </UserControl>

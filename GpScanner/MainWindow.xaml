@@ -613,7 +613,11 @@
                                     <LineBreak />
                                     <Run Text="{twainctrl:Loc PAGENUMBER}" />
                                 </TextBlock>
-                                <UniformGrid Columns="2" IsEnabled="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}">
+                                <Grid IsEnabled="{Binding FastSimplePdfThumbViewer, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource ReverseBooleanConverter}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
                                     <UniformGrid Rows="2">
                                         <Extensions:NumericUpDown twainctrl:Policy.PolicyName="AllPdfPage"
                                             Interval="1"
@@ -627,30 +631,31 @@
                                             Foreground="Green"
                                             IsChecked="{Binding ShowAllPdfControl, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay, Source={x:Static properties:Settings.Default}}" />
                                     </UniformGrid>
-                                    <ListBox VerticalContentAlignment="Center"
+                                    <ListBox Grid.Column="1"
+                                        VerticalContentAlignment="Center"
                                         Background="{StaticResource BorderBackground}"
                                         BorderBrush="{x:Null}"
                                         SelectedValue="{Binding PdfAllPageOrientation}"
                                         SelectedValuePath="Tag">
                                         <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <VirtualizingStackPanel Orientation="Horizontal" />
+                                                <UniformGrid Columns="1" Rows="2" />
                                             </ItemsPanelTemplate>
                                         </ListBox.ItemsPanel>
                                         <ListBoxItem Tag="Width">
                                             <TextBlock FontFamily="Wingdings 3"
-                                                FontSize="16"
+                                                FontSize="14"
                                                 FontWeight="Bold"
                                                 Text="F" />
                                         </ListBoxItem>
                                         <ListBoxItem Tag="Height">
                                             <TextBlock FontFamily="Wingdings 3"
-                                                FontSize="16"
+                                                FontSize="14"
                                                 FontWeight="Bold"
                                                 Text="G" />
                                         </ListBoxItem>
                                     </ListBox>
-                                </UniformGrid>
+                                </Grid>
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                 <Button HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"

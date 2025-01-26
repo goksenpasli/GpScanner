@@ -1094,7 +1094,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             async parameter =>
             {
                 List<ScannerFileDatas> files = await GetContributionFilesAsync();
-                ObservableCollection<ContributionData> contributiondata = await GetContributionData(files, new DateTime(DateTime.Now.Year, 1, 1), new DateTime(DateTime.Now.Year, 12, 31));
+                ObservableCollection<ContributionData> contributiondata = await GetContributionData(files, new DateTime(ContributionMonthYear, 1, 1), new DateTime(ContributionMonthYear, 12, 31));
                 YearlyGroupData = contributiondata?.GroupBy(z => z.ContrubutionDate.Value.Month);
             },
             parameter => true);
@@ -1653,6 +1653,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     }
+
+    public int ContributionMonthYear
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(ContributionMonthYear));
+            }
+        }
+    } = DateTime.Now.Year;
 
     public double ContributionPreviewSize
     {
@@ -3086,7 +3099,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 contributiondata.Add(new ExtendedContributionData { Name = file.Select(z => z.FileName), ContrubutionDate = file?.Key, Count = file.Count() });
             }
 
-            IEnumerable<ContributionData> collection = contributiondata.Where(z => z.ContrubutionDate >= first && z.ContrubutionDate <= last).OrderBy(z => z.ContrubutionDate);
+            IOrderedEnumerable<ContributionData> collection = contributiondata.Where(z => z.ContrubutionDate >= first && z.ContrubutionDate <= last).OrderBy(z => z.ContrubutionDate);
             return [.. collection];
         }
         catch (Exception ex)
@@ -3312,6 +3325,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         if (e.PropertyName is "SelectedSize")
         {
             Settings.Default.PreviewIndex = SelectedSize;
+        }
+
+        if (e.PropertyName is "ContributionMonthYear" && LoadGroupFilesMonth.CanExecute(null))
+        {
+            LoadGroupFilesMonth.Execute(null);
         }
     }
 
