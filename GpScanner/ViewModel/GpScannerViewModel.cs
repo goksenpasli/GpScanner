@@ -1176,12 +1176,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                             {
                                 string fPath = zippedfiles[i];
                                 _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath), CompressionLevel.Fastest);
+                                ZipProgress = (i + 1) / (double)zippedfiles.Count;
                             }
-                            ZipProgressIndeterminate = true;
                         });
-                    ZipProgressIndeterminate = false;
                 }
-                YearlyGroupData = null;
             },
             parameter => parameter is IGrouping<int, ContributionData> data && data.Count(z => z.Count > 0) > 0);
 

@@ -23,7 +23,8 @@
     <Grid Background="{StaticResource BorderBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Extensions:NumericUpDown Grid.Row="0"
             IsReadOnly="True"
@@ -36,31 +37,27 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <Grid>
-                        <StackPanel Orientation="Horizontal">
-                            <Button x:Name="Btn"
-                                Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
-                                CommandParameter="{Binding Mode=OneWay}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="zipfldr.dll" />
-                                                <Binding Source="0" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Key, Mode=OneWay, Converter={StaticResource IntToMonthConverter}}" />
-                                </StackPanel>
-                            </Button>
-                            <TextBlock x:Name="TbView"
-                                VerticalAlignment="Center"
-                                FontFamily="Webdings"
-                                FontSize="20"
-                                Foreground="Red"
-                                IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
-                                Text="N" />
-                        </StackPanel>
-                        <Extensions:FadedToolTipControl Background="{StaticResource BorderBackground}"
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="Btn"
+                            Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
+                            CommandParameter="{Binding Mode=OneWay}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="32" Height="32">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="zipfldr.dll" />
+                                            <Binding Source="0" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Key, Mode=OneWay, Converter={StaticResource IntToMonthConverter}}" />
+                            </StackPanel>
+                        </Button>
+                        <Extensions:FadedToolTipControl d:IsHidden="True"
+                            Background="{StaticResource BorderBackground}"
                             BorderBrush="{StaticResource GroupBoxBackGround}"
                             PopupParent="{Binding ElementName=TbView}"
                             Position="Bottom"
@@ -101,14 +98,29 @@
                                 </ListBox>
                             </Extensions:ResizablePanel>
                         </Extensions:FadedToolTipControl>
+                        <TextBlock x:Name="TbView"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            FontFamily="Webdings"
+                            FontSize="20"
+                            Foreground="Red"
+                            IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
+                            Text="N" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns="1" Rows="12" />
+                    <UniformGrid Columns="3" Rows="4" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
+        <ProgressBar Grid.Row="2"
+            Height="16"
+            Background="{StaticResource BorderBackground}"
+            BorderBrush="{StaticResource GroupBoxBackGround}"
+            Foreground="{StaticResource GroupBoxBackGround}"
+            Maximum="1"
+            Value="{Binding ZipProgress, Mode=OneWay}" />
     </Grid>
 </UserControl>

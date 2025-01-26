@@ -21,6 +21,9 @@ namespace Extensions;
 
 public static class ExtensionMethods
 {
+    private const int HWND_NOTOPMOST = -2;
+    private const int HWND_TOPMOST = -1;
+    private const int SWP_NOACTIVATE = 0x0010;
     private static readonly Random _random = new();
 
     public enum Format
@@ -198,7 +201,7 @@ public static class ExtensionMethods
 
                             if (Helpers.GetWindowRect(hwnd, out Helpers.RECT rect))
                             {
-                                _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? -1 : -2, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, 0);
+                                _ = Helpers.SetWindowPos(hwnd, (bool)f.NewValue ? HWND_TOPMOST : HWND_NOTOPMOST, rect.Left, rect.Top, (int)popup.Width, (int)popup.Height, SWP_NOACTIVATE);
                             }
                         };
     }

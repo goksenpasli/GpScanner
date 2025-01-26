@@ -25,9 +25,10 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             Background="{x:Null}"
-                            Focusable="False"
+                            Focusable="False" 
                             IsHitTestVisible="False"
-                            Text="{TemplateBinding Text}" />
+                            Text="{TemplateBinding Text}"
+                            TextTrimming="CharacterEllipsis" />
                         <Popup AllowsTransparency="True"
                             Focusable="False"
                             IsOpen="{TemplateBinding IsDropDownOpen}"
