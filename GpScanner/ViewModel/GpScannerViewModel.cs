@@ -3313,8 +3313,11 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                          };
                 DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
                 ZipProgressIndeterminate = false;
-                AddToSearchListoryList();
                 datas = null;
+                if (Settings.Default.ShowSuggestions)
+                {
+                    AddToSearchListoryList();
+                }
             }
             finally
             {
