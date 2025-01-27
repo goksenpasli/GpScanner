@@ -48,24 +48,26 @@ public class CbrImageViewer : ImageViewer
     {
         if (e.PropertyName is "Sayfa")
         {
-            if (IsCbrFile(ImageFilePath))
+            if (!IsCbrFile(ImageFilePath))
             {
-                if (cbrFilecontents is { Count: > 0 } && Sayfa <= cbrFilecontents.Count)
-                {
-                    CbrViewer cbrViewer = new() { ArchivePath = ImageFilePath };
-                    using ArchiveFile archiveFile = new(cbrViewer.ArchivePath);
-                    Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == cbrFilecontents[Sayfa - 1].DosyaAdı);
-                    string extractpath = $"{Path.GetTempPath()}{cbrFilecontents[Sayfa - 1].DosyaAdı}";
-                    if (!File.Exists(extractpath))
-                    {
-                        entry?.Extract(extractpath);
-                    }
-                    Source = BitmapFrame.Create(new Uri(extractpath), BitmapCreateOptions.None, BitmapCacheOption.None);
-                    if (Resize?.CanExecute(null) == true)
-                    {
-                        Resize.Execute(null);
-                    }
-                }
+                return;
+            }
+            if (cbrFilecontents is not { Count: > 0 } || Sayfa > cbrFilecontents.Count)
+            {
+                return;
+            }
+            CbrViewer cbrViewer = new() { ArchivePath = ImageFilePath };
+            using ArchiveFile archiveFile = new(cbrViewer.ArchivePath);
+            Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == cbrFilecontents[Sayfa - 1].DosyaAdı);
+            string extractpath = $"{Path.GetTempPath()}{cbrFilecontents[Sayfa - 1].DosyaAdı}";
+            if (!File.Exists(extractpath))
+            {
+                entry?.Extract(extractpath);
+            }
+            Source = BitmapFrame.Create(new Uri(extractpath), BitmapCreateOptions.None, BitmapCacheOption.None);
+            if (Resize?.CanExecute(null) == true)
+            {
+                Resize.Execute(null);
             }
         }
     }

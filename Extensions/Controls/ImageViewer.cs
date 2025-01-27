@@ -2,10 +2,8 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Printing;
 using System.Threading.Tasks;
@@ -60,7 +58,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         DosyaAç = new RelayCommand<object>(
             parameter =>
             {
-                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Resim Dosyaları (*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.cbz)|*.jpg;*.jpeg;*.tif;*.tiff;*.png;*.cbz" };
+                OpenFileDialog openFileDialog = new() { Multiselect = false, Filter = "Resim Dosyaları (*.jpg;*.jpeg;*.tif;*.tiff;*.png)|*.jpg;*.jpeg;*.tif;*.tiff;*.png" };
                 if (openFileDialog.ShowDialog() == true)
                 {
                     ImageFilePath = openFileDialog.FileName;
@@ -68,9 +66,9 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                 }
             });
 
-        ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => (TiffDecoder is not null && Sayfa > 1 && Sayfa <= TiffDecoder.Frames.Count) || (IsCbzFile(ImageFilePath) && Sayfa > 1 && Sayfa <= Pages?.Count()));
+        ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => TiffDecoder is not null && Sayfa > 1 && Sayfa <= TiffDecoder.Frames.Count);
 
-        ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => (TiffDecoder is not null && Sayfa >= 1 && Sayfa < TiffDecoder.Frames.Count) || (IsCbzFile(ImageFilePath) && Sayfa < Pages?.Count()));
+        ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => TiffDecoder is not null && Sayfa >= 1 && Sayfa < TiffDecoder.Frames.Count);
 
         Resize = new RelayCommand<object>(
             parameter =>
@@ -415,20 +413,6 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
                     imageViewer.Pages = Enumerable.Range(1, imageViewer.TiffDecoder.Frames.Count);
                     return;
 
-                case ".cbz":
-                    imageViewer.Sayfa = 1;
-                    CbzViewer cbzViewer = new() { ArchivePath = filepath };
-                    ObservableCollection<ArchiveData> cbzfilecontents = await cbzViewer.ReadArchive(cbzViewer.ArchivePath);
-                    string cbzimagefile = ExtractToFile(cbzViewer.ArchivePath, cbzfilecontents.FirstOrDefault());
-                    imageViewer.TifNavigasyonButtonEtkin = Visibility.Visible;
-                    imageViewer.Source = BitmapFrame.Create(new Uri(cbzimagefile), BitmapCreateOptions.None, BitmapCacheOption.None);
-                    imageViewer.Pages = Enumerable.Range(1, cbzfilecontents.Count);
-                    if (Resize?.CanExecute(null) == true)
-                    {
-                        Resize.Execute(null);
-                    }
-                    return;
-
                 case ".png" or ".jpg" or ".jpeg" or ".bmp":
                     size = await GetImagePixelSizeAsync(filepath);
                     imageViewer.OriginalPixelHeight = size[0] ?? 0;
@@ -535,45 +519,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
         return zoom >= 0.0;
     }
 
-    private string ExtractToFile(string archivepath, ArchiveData entryname)
+    private void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        using ZipArchive archive = ZipFile.Open(archivepath, ZipArchiveMode.Read);
-        if (archive is not null)
+        if (e.PropertyName is "Sayfa" && TiffDecoder is not null)
         {
-            ZipArchiveEntry dosya = archive.GetEntry(entryname.TamYol);
-            string extractpath = $"{Path.GetTempPath()}{dosya?.Name}";
-            if (!File.Exists(extractpath))
-            {
-                dosya?.ExtractToFile(extractpath, true);
-            }
-            return extractpath;
-        }
-        return null;
-    }
-
-    private async void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is "Sayfa")
-        {
-            if (TiffDecoder is not null)
-            {
-                Source = TiffDecoder.Frames[Sayfa - 1];
-                return;
-            }
-            if (IsCbzFile(ImageFilePath))
-            {
-                CbzViewer cbzViewer = new() { ArchivePath = ImageFilePath };
-                ObservableCollection<ArchiveData> cbzFileContents = await cbzViewer.ReadArchive(cbzViewer.ArchivePath);
-                if (cbzFileContents is { Count: > 0 } && Sayfa <= cbzFileContents.Count)
-                {
-                    string cbzImageFile = await cbzViewer.ExtractToFile(cbzFileContents[Sayfa - 1]);
-                    Source = BitmapFrame.Create(new Uri(cbzImageFile), BitmapCreateOptions.None, BitmapCacheOption.None);
-                }
-            }
+            Source = TiffDecoder.Frames[Sayfa - 1];
         }
     }
-
-    private bool IsCbzFile(string filepath) => string.Equals(Path.GetExtension(filepath), ".cbz", StringComparison.InvariantCultureIgnoreCase);
 
     private void Viewport3D_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
