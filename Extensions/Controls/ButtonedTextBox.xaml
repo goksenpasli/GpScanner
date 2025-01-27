@@ -63,6 +63,21 @@
                                     Focusable="False"
                                     HorizontalScrollBarVisibility="Hidden"
                                     VerticalScrollBarVisibility="Hidden" />
+                                <Popup x:Name="PART_Popup"
+                                    Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=local:ButtonedTextBox}}"
+                                    AllowsTransparency="True"
+                                    IsOpen="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <Border BorderThickness="1">
+                                        <ListBox x:Name="PART_ListBox"
+                                            MaxHeight="200"
+                                            Background="{DynamicResource BorderBackground}"
+                                            BorderBrush="{DynamicResource GroupBoxBackGround}"
+                                            FontSize="12"
+                                            ItemsSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Suggestions}"
+                                            SelectedItem="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            SelectionMode="Single" />
+                                    </Border>
+                                </Popup>
                             </Grid>
                         </Border>
                         <Border Name="remaintext"

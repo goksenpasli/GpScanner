@@ -855,6 +855,8 @@
                                 FontSize="22"
                                 KeyBoardButtonVisibility="Visible"
                                 OpenButtonVisibility="Collapsed"
+                                ShowSuggestions="{Binding ShowSuggestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                Suggestions="{Binding HistoryList}"
                                 Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"
                                 Watermark="{twainctrl:Loc DOCUMENT}" />
                             <Extensions:ContentToggleButton Grid.Row="3" Grid.Column="7">

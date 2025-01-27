@@ -25,7 +25,7 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             Background="{x:Null}"
-                            Focusable="False" 
+                            Focusable="False"
                             IsHitTestVisible="False"
                             Text="{TemplateBinding Text}"
                             TextTrimming="CharacterEllipsis" />

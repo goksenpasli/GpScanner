@@ -1,5 +1,6 @@
 ﻿using Extensions.Controls;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -22,7 +24,13 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register("CommandParameter", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register("Command", typeof(ICommand), typeof(ButtonedTextBox));
     public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null));
+    public static readonly DependencyProperty IsPopupOpenProperty = DependencyProperty.Register("IsPopupOpen", typeof(bool), typeof(ButtonedTextBox), new PropertyMetadata(false));
+    public static readonly DependencyProperty SelectedItemProperty = DependencyProperty.Register("SelectedItem", typeof(object), typeof(ButtonedTextBox), new PropertyMetadata(null, OnSelectedItemChanged));
+    public static readonly DependencyProperty ShowSuggestionsProperty = DependencyProperty.Register("ShowSuggestions", typeof(bool), typeof(ButtonedTextBox), new PropertyMetadata(false));
+    public static readonly DependencyProperty SuggestionsProperty = DependencyProperty.Register("Suggestions", typeof(IEnumerable<string>), typeof(ButtonedTextBox), new PropertyMetadata(null));
     public static readonly DependencyProperty WatermarkProperty = DependencyProperty.Register("Watermark", typeof(string), typeof(ButtonedTextBox), new PropertyMetadata(string.Empty));
+    private ListBox _listBox;
+    private Popup _popup;
 
     static ButtonedTextBox() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonedTextBox), new FrameworkPropertyMetadata(typeof(ButtonedTextBox))); }
 
@@ -79,6 +87,8 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
             }
         }
     } = Visibility.Collapsed;
+
+    public bool IsPopupOpen { get => (bool)GetValue(IsPopupOpenProperty); set => SetValue(IsPopupOpenProperty, value); }
 
     public Visibility KeyBoardButtonVisibility
     {
@@ -185,6 +195,12 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     } = Visibility.Visible;
 
+    public object SelectedItem { get => GetValue(SelectedItemProperty); set => SetValue(SelectedItemProperty, value); }
+
+    public bool ShowSuggestions { get => (bool)GetValue(ShowSuggestionsProperty); set => SetValue(ShowSuggestionsProperty, value); }
+
+    public IEnumerable<string> Suggestions { get => (IEnumerable<string>)GetValue(SuggestionsProperty); set => SetValue(SuggestionsProperty, value); }
+
     public Visibility TextBoxVisibility
     {
         get;
@@ -219,6 +235,31 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
 
     public string Watermark { get => (string)GetValue(WatermarkProperty); set => SetValue(WatermarkProperty, value); }
 
+    public override void OnApplyTemplate()
+    {
+        base.OnApplyTemplate();
+        _popup = GetTemplateChild("PART_Popup") as Popup;
+        _listBox = GetTemplateChild("PART_ListBox") as ListBox;
+        if (_listBox is not null)
+        {
+            _listBox.MouseLeftButtonUp += ListBox_MouseLeftButtonUp;
+        }
+        Window window = Window.GetWindow(this);
+        if (window is not null)
+        {
+            window.PreviewMouseDown += OnPreviewMouseDownOutside;
+        }
+    }
+
+    protected override void OnLostFocus(RoutedEventArgs e)
+    {
+        base.OnLostFocus(e);
+        if (_listBox?.IsKeyboardFocusWithin == false)
+        {
+            IsPopupOpen = false;
+        }
+    }
+
     protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     protected override void OnTextChanged(TextChangedEventArgs e)
@@ -227,7 +268,27 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         {
             RemainingTextLength = MaxLength - Text.Length;
         }
+        IsPopupOpen = !string.IsNullOrWhiteSpace(Text) && Suggestions?.Any(z => z.IndexOf(Text, StringComparison.CurrentCultureIgnoreCase) >= 0) == true && ShowSuggestions;
         base.OnTextChanged(e);
+    }
+
+    protected override void OnVisualParentChanged(DependencyObject oldParent)
+    {
+        base.OnVisualParentChanged(oldParent);
+        Window window = Window.GetWindow(this);
+        if (window != null)
+        {
+            window.PreviewMouseDown -= OnPreviewMouseDownOutside;
+        }
+    }
+
+    private static void OnSelectedItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is ButtonedTextBox buttonedTextBox && buttonedTextBox.SelectedItem is not null)
+        {
+            buttonedTextBox.Text = buttonedTextBox.SelectedItem.ToString();
+            buttonedTextBox.IsPopupOpen = false;
+        }
     }
 
     private void CanCaseExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -262,7 +323,25 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
         }
     }
 
+    private void ListBox_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+    {
+        if (_listBox?.SelectedItem is not null)
+        {
+            SelectedItem = _listBox.SelectedItem;
+            Text = SelectedItem.ToString();
+            IsPopupOpen = false;
+        }
+    }
+
     private void LowerCaseCommand(object sender, ExecutedRoutedEventArgs e) => Text = Text.Remove(SelectionStart, SelectionLength).Insert(SelectionStart, SelectedText.ToLower());
+
+    private void OnPreviewMouseDownOutside(object sender, MouseButtonEventArgs e)
+    {
+        if (_popup?.IsMouseOver == false && !IsMouseOver)
+        {
+            IsPopupOpen = false;
+        }
+    }
 
     private void OpenCanExecute(object sender, CanExecuteRoutedEventArgs e)
     {

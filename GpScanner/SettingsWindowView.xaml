@@ -804,6 +804,58 @@
                                                 Foreground="Blue"
                                                 Text="" />
                                         </ToggleButton>
+                                        <Extensions:ContentToggleButton>
+                                            <Image Width="32" Height="32">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="239" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                            <Extensions:ContentToggleButton.OverContent>
+                                                <Border Background="{StaticResource BorderBackground}"
+                                                    BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                    BorderThickness="1">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto" />
+                                                            <RowDefinition />
+                                                        </Grid.RowDefinitions>
+                                                        <CheckBox IsChecked="{Binding ShowSuggestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <Image Width="16" Height="16">
+                                                                    <Image.Source>
+                                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                            <Binding Source="Shell32.dll" />
+                                                                            <Binding Source="239" />
+                                                                        </MultiBinding>
+                                                                    </Image.Source>
+                                                                </Image>
+                                                                <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc DOCUMENT}" />
+                                                            </StackPanel>
+                                                        </CheckBox>
+                                                        <ListBox Grid.Row="1"
+                                                            d:ItemsSource="{d:SampleData ItemCount=5}"
+                                                            Background="{StaticResource BorderBackground}"
+                                                            ItemsSource="{Binding FileSearchHistory, Source={x:Static properties:Settings.Default}}">
+                                                            <ListBox.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <TextBlock VerticalAlignment="Center">
+                                                                        <Hyperlink BaselineAlignment="Center"
+                                                                            Command="{Binding DataContext.RemoveSearchHistory, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}"
+                                                                            CommandParameter="{Binding Mode=OneWay}"
+                                                                            TextDecorations="None">
+                                                                            <Run Text="{Binding Mode=OneWay}" />
+                                                                        </Hyperlink>
+                                                                    </TextBlock>
+                                                                </DataTemplate>
+                                                            </ListBox.ItemTemplate>
+                                                        </ListBox>
+                                                    </Grid>
+                                                </Border>
+                                            </Extensions:ContentToggleButton.OverContent>
+                                        </Extensions:ContentToggleButton>
                                     </StackPanel>
                                 </ScrollViewer>
                             </StackPanel>

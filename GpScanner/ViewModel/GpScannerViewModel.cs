@@ -10,6 +10,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
@@ -545,6 +546,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
             },
             parameter => Settings.Default.AdditionalIndexFolders?.Count > 0);
+
+        RemoveSearchHistory = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show($"{Translation.GetResStringValue("DELETE")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    string historydata = parameter as string;
+                    Settings.Default.FileSearchHistory?.Remove(historydata);
+                    Settings.Default.Save();
+                    Settings.Default.Reload();
+                }
+            },
+            parameter => Settings.Default.FileSearchHistory?.Count > 0);
 
         UploadSharePoint = new RelayCommand<object>(
             parameter =>
@@ -1890,6 +1904,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
 
+    public ObservableCollection<string> HistoryList
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(HistoryList));
+            }
+        }
+    } = [.. Settings.Default?.FileSearchHistory?.OfType<string>()];
+
     public int IndexedFileCount
     {
         get;
@@ -2234,6 +2261,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> RemoveEsclScanner { get; }
 
     public ICommand RemovePatchProfile { get; }
+
+    public RelayCommand<object> RemoveSearchHistory { get; }
 
     public ICommand RemoveSelectedFtp { get; }
 
@@ -2760,6 +2789,26 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    private void AddToSearchListoryList(int historyCount = 15)
+    {
+        if (string.IsNullOrWhiteSpace(AramaMetni) || (HistoryList?.Contains(AramaMetni)) == true)
+        {
+            return;
+        }
+        StringCollection fileSearchHistory = Settings.Default?.FileSearchHistory;
+        if (fileSearchHistory == null)
+        {
+            return;
+        }
+        if (fileSearchHistory.Count >= historyCount)
+        {
+            fileSearchHistory.RemoveAt(fileSearchHistory.Count - 1);
+        }
+        fileSearchHistory.Insert(0, AramaMetni);
+        Settings.Default.Save();
+        HistoryList = [.. Settings.Default.FileSearchHistory.OfType<string>()];
+    }
+
     private void AnimationOnTick(object sender, EventArgs e)
     {
         if (StillImageHelper.FirstLanuchScan)
@@ -3264,6 +3313,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                          };
                 DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
                 ZipProgressIndeterminate = false;
+                AddToSearchListoryList();
                 datas = null;
             }
             finally

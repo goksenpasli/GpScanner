@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows;
@@ -130,6 +131,7 @@ namespace Extensions
 
         private void UnInitializeNotifyIcon() => Shell_NotifyIcon(NIM_DELETE, ref _notifyIconData);
 
+        [DebuggerStepThrough]
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
             if (msg == WM_TASKBARCREATED)
