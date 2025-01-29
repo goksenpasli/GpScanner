@@ -26,6 +26,8 @@ public class CbrImageViewer : ImageViewer
 
     public override RelayCommand<object> ViewerNext { get; set; }
 
+    public static bool IsCbrFile(string filepath) => string.Equals(Path.GetExtension(filepath), ".cbr", StringComparison.InvariantCultureIgnoreCase) || string.Equals(Path.GetExtension(filepath), ".cbz", StringComparison.InvariantCultureIgnoreCase);
+
     protected override async Task LoadImageAsync(string filepath, ImageViewer imageViewer)
     {
         if (filepath is not null && File.Exists(filepath))
@@ -56,21 +58,20 @@ public class CbrImageViewer : ImageViewer
             {
                 return;
             }
-            CbrViewer cbrViewer = new() { ArchivePath = ImageFilePath };
-            using ArchiveFile archiveFile = new(cbrViewer.ArchivePath);
+            using ArchiveFile archiveFile = new(ImageFilePath);
             Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == cbrFilecontents[Sayfa - 1].DosyaAdı);
             string extractpath = $"{Path.GetTempPath()}{cbrFilecontents[Sayfa - 1].DosyaAdı}";
             if (!File.Exists(extractpath))
             {
                 entry?.Extract(extractpath);
             }
-            Source = BitmapFrame.Create(new Uri(extractpath), BitmapCreateOptions.None, BitmapCacheOption.None);
+            BitmapFrame bitmapFrame = BitmapFrame.Create(new Uri(extractpath), BitmapCreateOptions.None, BitmapCacheOption.None);
+            bitmapFrame.Freeze();
+            Source = bitmapFrame;
             if (Resize?.CanExecute(null) == true)
             {
                 Resize.Execute(null);
             }
         }
     }
-
-    private bool IsCbrFile(string filepath) => string.Equals(Path.GetExtension(filepath), ".cbr", StringComparison.InvariantCultureIgnoreCase) || string.Equals(Path.GetExtension(filepath), ".cbz", StringComparison.InvariantCultureIgnoreCase);
 }

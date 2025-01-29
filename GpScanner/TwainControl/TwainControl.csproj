@@ -91,7 +91,6 @@
     <Reference Include="System.Printing" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
@@ -122,6 +121,7 @@
     <Compile Include="CbrImageViewer.cs" />
     <Compile Include="CbrViewer.cs" />
     <Compile Include="Converter\BitmapFrameToBitmapFrameConverter.cs" />
+    <Compile Include="Converter\CbrCbzFirstpageToBitmapImageConverter.cs" />
     <Compile Include="Converter\CentimetersToInchesConverter.cs" />
     <Compile Include="Converter\DivideConverter.cs" />
     <Compile Include="Converter\EnumOrientationToConvertedLanguageTextConverter.cs" />

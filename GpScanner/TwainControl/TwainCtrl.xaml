@@ -1126,9 +1126,9 @@
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="22.4" />
-                                    <RowDefinition Height="15.2" />
-                                    <RowDefinition Height="34.4" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <CheckBox VerticalContentAlignment="Center"
                                     Content="{local:Loc TWOSIDE}"
