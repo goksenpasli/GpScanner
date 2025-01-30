@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
@@ -187,6 +188,10 @@ namespace Extensions
         protected override void OnInitialized(EventArgs e)
         {
             base.OnInitialized(e);
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
             BlockAltF4 = true;
             IntPtr hwnd = new WindowInteropHelper(Window.GetWindow(this)).Handle;
             HwndSource source = HwndSource.FromHwnd(hwnd);

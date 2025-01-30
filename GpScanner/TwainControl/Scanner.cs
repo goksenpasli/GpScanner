@@ -946,6 +946,19 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     } = 1;
 
+    public string SaveFileFullPath
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(SaveFileFullPath));
+            }
+        }
+    }
+
     public string SaveFileName
     {
         get

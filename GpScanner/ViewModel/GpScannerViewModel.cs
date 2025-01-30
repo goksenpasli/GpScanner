@@ -1917,6 +1917,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = [.. Settings.Default?.FileSearchHistory?.OfType<string>()];
 
+    public ObservableCollection<string> HistorySaveList { get; set; } = [];
+
     public int IndexedFileCount
     {
         get;

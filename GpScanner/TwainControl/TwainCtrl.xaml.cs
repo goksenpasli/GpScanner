@@ -1124,7 +1124,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     }
                     else if (tiffFileHandler.IsValidFile(filename))
                     {
-                        List<BitmapFrame> list = [.. (await tiffFileHandler.LoadTiffPagesAsync(filename))];
+                        List<BitmapFrame> list = [.. await tiffFileHandler.LoadTiffPagesAsync(filename)];
                         for (int i = list.Count - 1; i >= 0; i--)
                         {
                             BitmapFrame bitmapFrame = list[i];
@@ -3826,7 +3826,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
 
                             case ".eyp":
-                                await AddFiles([.. (EypFileExtract(filename))], decodeheight);
+                                await AddFiles([.. EypFileExtract(filename)], decodeheight);
                                 break;
 
                             case ".txt":
@@ -5033,7 +5033,16 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private void SaveJpgImage(BitmapFrame scannedImage, string filename) => Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality)));
+    private void SaveJpgImage(BitmapFrame scannedImage, string filename)
+    {
+        Dispatcher.Invoke(
+            () =>
+            {
+                File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg, Settings.Default.JpegQuality));
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
+    }
 
     private async Task SaveJpgImageAsync(List<ScannedImage> images, string filename, int parallelDegree = 1, Action<double> progressCallback = null)
     {
@@ -5064,6 +5073,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         progressCallback?.Invoke((i + 1) / (double)images.Count);
                     });
             });
+        Dispatcher.Invoke(
+            () =>
+            {
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
     }
 
     private async Task SavePdfImageAsync(ScannedImage scannedImage, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false)
@@ -5084,10 +5099,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         if (blackwhite)
         {
             scannedImage.Resim.GeneratePdf(ocrtext, Format.Tiff, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
+            Dispatcher.Invoke(
+                () =>
+                {
+                    Scanner.SaveFileFullPath = filename;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+                });
             return;
         }
 
         scannedImage.Resim.GeneratePdf(ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
+        Dispatcher.Invoke(
+            () =>
+            {
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
     }
 
     private async Task SavePdfImageAsync(List<ScannedImage> images, string filename, Scanner scanner, Paper paper, bool applyocr, bool blackwhite = false, int dpi = 120)
@@ -5109,7 +5136,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     });
                 scanner.PdfSaveProgressValue = (i + 1) / (double)images.Count;
             }
-
+            Dispatcher.Invoke(
+                () =>
+                {
+                    Scanner.SaveFileFullPath = filename;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+                });
             scanner.PdfSaveProgressValue = 0;
         }
 
@@ -5117,23 +5149,47 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         if (blackwhite)
         {
             (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress)).Save(filename);
+            Dispatcher.Invoke(
+                () =>
+                {
+                    Scanner.SaveFileFullPath = filename;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+                });
             return;
         }
 
         (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress)).Save(filename);
+        Dispatcher.Invoke(
+            () =>
+            {
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
     }
 
     private void SaveTifImage(BitmapFrame scannedImage, string filename)
     {
         if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
         {
-            Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Tiff)));
+            Dispatcher.Invoke(
+                () =>
+                {
+                    File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Tiff));
+                    Scanner.SaveFileFullPath = filename;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+                });
             return;
         }
 
         if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
         {
-            Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.TiffRenkli)));
+            Dispatcher.Invoke(
+                () =>
+                {
+                    File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.TiffRenkli));
+                    Scanner.SaveFileFullPath = filename;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+                });
         }
     }
 
@@ -5152,6 +5208,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 using FileStream stream = new(filename, FileMode.Create);
                 tifccittencoder.Save(stream);
             });
+        Dispatcher.Invoke(
+            () =>
+            {
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
     }
 
     private async Task SaveTxtFileAsync(BitmapFrame bitmapFrame, string fileName)
@@ -5165,6 +5227,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 ObservableCollection<OcrData> ocrtext = await bitmapFrame.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
                 File.WriteAllText(fileName, string.Join(" ", ocrtext.Select(z => z.Text)));
+                Scanner.SaveFileFullPath = fileName;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
             });
     }
 
@@ -5184,9 +5248,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     progressCallback?.Invoke((i + 1) / (double)images.Count);
                 });
         }
+        Dispatcher.Invoke(
+            () =>
+            {
+                Scanner.SaveFileFullPath = fileName;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
     }
 
-    private void SaveWebpImage(BitmapFrame scannedImage, string filename) => Dispatcher.Invoke(() => File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality)));
+    private void SaveWebpImage(BitmapFrame scannedImage, string filename)
+    {
+        Dispatcher.Invoke(
+            () =>
+            {
+                File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Jpg).WebpEncode(Settings.Default.WebpQuality));
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
+    }
 
     private async Task SaveWebpImageAsync(List<ScannedImage> images, string filename, int parallelDegree = 1, Action<double> progressCallback = null)
     {
@@ -5217,6 +5296,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         progressCallback?.Invoke((i + 1) / (double)images.Count);
                     });
             });
+        Dispatcher.Invoke(
+            () =>
+            {
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
     }
 
     private void SaveXpsImage(BitmapFrame scannedImage, string filename)
@@ -5245,6 +5330,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 XpsDocumentWriter xw = XpsDocument.CreateXpsDocumentWriter(xpsd);
                 xw.Write(fixedDoc);
                 image = null;
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
             });
     }
 
@@ -5259,6 +5346,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             File.Delete(fPath);
             progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
         }
+        Dispatcher.Invoke(
+            () =>
+            {
+                Scanner.SaveFileFullPath = fileName;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
     }
 
     private async void ScanComplete(object sender, ScanningCompleteEventArgs e)
