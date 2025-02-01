@@ -96,7 +96,9 @@ public partial class App : Application
     {
         splashWindow?.Dispatcher.Invoke(splashWindow.Close);
         mainwindow.Topmost = true;
+        mainwindow.Show();
         mainwindow.Topmost = false;
         _ = mainwindow.Activate();
+        _ = mainwindow.Focus();
     }
 }

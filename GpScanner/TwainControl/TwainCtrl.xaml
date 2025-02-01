@@ -2232,13 +2232,10 @@
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                 <Binding Source="Shell32.dll" />
-                                                <Binding Source="139" />
+                                                <Binding Source="1" />
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <Image Width="32"
-                                        Height="32"
-                                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                     <TextBlock VerticalAlignment="Center"
                                         FontWeight="Bold"
                                         Text="{local:Loc FILE}" />

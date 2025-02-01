@@ -7,6 +7,8 @@ using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using PdfViewer;
 using SevenZipExtractor;
+using SharpCompress.Writers;
+using SharpCompress.Writers.Zip;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -74,7 +76,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public const double Inch = 2.54d;
     public static readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
     public static DispatcherTimer CameraQrCodeTimer;
-    public static Task Filesavetask;
+    public static Task FileSaveTask;
     private readonly object _lockObject = new();
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
@@ -137,7 +139,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         FastScanImage = new RelayCommand<object>(
             async parameter =>
             {
-                if (Filesavetask?.IsCompleted == false)
+                if (FileSaveTask?.IsCompleted == false)
                 {
                     ExtendedMessageBox extendedMessageBox = new();
                     extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
@@ -170,7 +172,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ResimSil = new RelayCommand<object>(
             parameter =>
             {
-                if (Filesavetask?.IsCompleted == false)
+                if (FileSaveTask?.IsCompleted == false)
                 {
                     ExtendedMessageBox extendedMessageBox = new();
                     extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
@@ -197,7 +199,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         TekResimSil = new RelayCommand<object>(
             parameter =>
             {
-                if (Filesavetask?.IsCompleted == false)
+                if (FileSaveTask?.IsCompleted == false)
                 {
                     ExtendedMessageBox extendedMessageBox = new();
                     extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
@@ -598,7 +600,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    Filesavetask = Task.Run(
+                    FileSaveTask = Task.Run(
                         async () =>
                         {
                             if (altkeypressed)
@@ -636,7 +638,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    Filesavetask = Task.Run(
+                    FileSaveTask = Task.Run(
                         async () =>
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
@@ -663,7 +665,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    Filesavetask = Task.Run(
+                    FileSaveTask = Task.Run(
                         async () =>
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
@@ -689,7 +691,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Tif Dosyası (*.tif)|*.tif", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    Filesavetask = Task.Run(
+                    FileSaveTask = Task.Run(
                         async () =>
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
@@ -715,7 +717,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    Filesavetask = Task.Run(
+                    FileSaveTask = Task.Run(
                         async () =>
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
@@ -742,7 +744,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Webp Dosyası (*.webp)|*.webp", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    Filesavetask = Task.Run(
+                    FileSaveTask = Task.Run(
                         async () =>
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
@@ -769,7 +771,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası (*.zip)|*.zip", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    Filesavetask = Task.Run(
+                    FileSaveTask = Task.Run(
                         () =>
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
@@ -790,7 +792,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
-                Filesavetask =
+                FileSaveTask =
                 Task.Run(
                     async () =>
                     {
@@ -845,7 +847,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ListeTemizle = new RelayCommand<object>(
             parameter =>
             {
-                if (Filesavetask?.IsCompleted == false)
+                if (FileSaveTask?.IsCompleted == false)
                 {
                     ExtendedMessageBox extendedMessageBox = new();
                     extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
@@ -968,7 +970,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         LoadImage = new RelayCommand<object>(
             async parameter =>
             {
-                if (fileloadtask?.IsCompleted == false)
+                if (FileLoadTask?.IsCompleted == false)
                 {
                     ExtendedMessageBox extendedMessageBox = new();
                     extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
@@ -1014,7 +1016,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     fileloadcancellationToken?.Cancel();
                 }
             },
-            parameter => fileloadcancellationToken?.IsCancellationRequested == false);
+            parameter => FileLoadTask?.IsCompleted == false);
 
         LoadXpsFile = new RelayCommand<object>(
             parameter =>
@@ -2728,6 +2730,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand FastScanImage { get; }
 
+    public Task FileLoadTask
+    {
+        get => fileloadtask;
+        set
+        {
+            if (fileloadtask != value)
+            {
+                fileloadtask = value;
+                OnPropertyChanged(nameof(FileLoadTask));
+            }
+        }
+    }
+
     public RelayCommand<object> FirstLastGroup { get; }
 
     public RelayCommand<object> FirstLastSortSequenceData { get; }
@@ -3798,7 +3813,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             PdfLoadProgressValue = 0;
             return Task.CompletedTask;
         }
-        fileloadtask = Task.Run(
+        FileLoadTask = Task.Run(
             async () =>
             {
                 foreach (string filename in filenames)
@@ -4023,7 +4038,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public async Task ListBoxDropFileAsync(DragEventArgs e)
     {
-        if (fileloadtask?.IsCompleted == false)
+        if (FileLoadTask?.IsCompleted == false)
         {
             ExtendedMessageBox extendedMessageBox = new();
             extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TRANSLATEPENDING"), AppName);
@@ -4346,7 +4361,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private bool CheckFileSaveProgress()
     {
-        if (Filesavetask?.IsCompleted == false)
+        if (FileSaveTask?.IsCompleted == false)
         {
             ExtendedMessageBox extendedMessageBox = new();
             extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
@@ -5337,13 +5352,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void SaveZipImage(List<ScannedImage> seçiliresimler, string fileName, Action<double> progressCallback = null)
     {
-        using ZipArchive archive = ZipFile.Open(fileName, ZipArchiveMode.Update);
-        for (int i = 0; i < seçiliresimler.Count; i++)
+        using FileStream zip = File.OpenWrite(fileName);
+        using IWriter zipWriter = WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.Deflate) { UseZip64 = true });
+        int count = seçiliresimler.Count;
+        for (int i = 0; i < count; i++)
         {
-            string fPath = Path.Combine(Path.GetTempPath(), $"{seçiliresimler[i].Index}.jpg");
-            File.WriteAllBytes(fPath, seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
-            _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath), CompressionLevel.NoCompression);
-            File.Delete(fPath);
+            using MemoryStream ms = new(seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
+            zipWriter.Write(Path.GetFileName($"{seçiliresimler[i].Index}.jpg"), ms);
             progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
         }
         Dispatcher.Invoke(
