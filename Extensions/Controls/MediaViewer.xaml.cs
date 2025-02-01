@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -870,7 +871,22 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        if (string.IsNullOrEmpty(propertyName))
+        {
+            return;
+        }
+
+        if (Dispatcher.CheckAccess())
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        else
+        {
+            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+        }
+    }
 
     private static void AutoplayChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

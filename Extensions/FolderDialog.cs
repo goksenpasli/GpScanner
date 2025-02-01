@@ -76,12 +76,7 @@ namespace Extensions
             }
 
             IntPtr mainWindow = Process.GetCurrentProcess().MainWindowHandle;
-            if (mainWindow != IntPtr.Zero)
-            {
-                return mainWindow;
-            }
-
-            return IntPtr.Zero;
+            return mainWindow != IntPtr.Zero ? mainWindow : IntPtr.Zero;
         }
 
         [DllImport("user32.dll", SetLastError = true)]

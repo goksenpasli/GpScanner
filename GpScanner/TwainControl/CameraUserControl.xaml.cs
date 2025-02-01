@@ -3,6 +3,7 @@ using Extensions;
 using Microsoft.Win32;
 using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -145,7 +146,22 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
         return bitmapframe;
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        if (string.IsNullOrEmpty(propertyName))
+        {
+            return;
+        }
+
+        if (Dispatcher.CheckAccess())
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        else
+        {
+            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+        }
+    }
 
     private void CameraUserControl_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

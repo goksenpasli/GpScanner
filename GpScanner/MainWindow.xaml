@@ -1253,11 +1253,15 @@
                         <Extensions:ContentToggleButton.OverContent>
                             <ListBox MaxHeight="250"
                                 Background="{StaticResource BorderBackground}"
-                                ItemsSource="{Binding HistorySaveList}">
+                                ItemsSource="{Binding HistorySaveList}"
+                                VirtualizingPanel.CacheLengthUnit="Pixel"
+                                VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                VirtualizingPanel.ScrollUnit="Pixel"
+                                VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <ContentControl Content="{Binding Mode=OneWay}" ContentTemplateSelector="{StaticResource ContributionViewerSelector}" />
+                                            <ContentControl Content="{Binding Mode=OneWay}" ContentTemplateSelector="{StaticResource FastPdfThumbViewerSelector}" />
                                             <TextBlock VerticalAlignment="Center"><Hyperlink twainctrl:Policy.PolicyName="ExploreFile"
                                                     Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
                                                     CommandParameter="{Binding Mode=OneWay}"

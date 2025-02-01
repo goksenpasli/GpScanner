@@ -14,29 +14,26 @@ public sealed class CbrCbzFirstpageToBitmapImageConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is string filepath)
-        {
-            return Task.Run(
-                () =>
+        return value is string filepath
+               ? Task.Run(
+            () =>
+            {
+                if (!CbrImageViewer.IsCbrFile(filepath))
                 {
-                    if (!CbrImageViewer.IsCbrFile(filepath))
-                    {
-                        return null;
-                    }
-                    using ArchiveFile archiveFile = new(filepath);
-                    Entry entry = archiveFile?.Entries?.Where(z => !z.IsFolder).OrderBy(z => z.FileName).FirstOrDefault();
-                    string extractpath = $"{Path.GetTempPath()}{entry.FileName}";
-                    if (!File.Exists(extractpath))
-                    {
-                        entry?.Extract(extractpath);
-                    }
-                    BitmapImage bitmapFrame = BitmapFrame.Create(new Uri(extractpath), BitmapCreateOptions.None, BitmapCacheOption.None).ToBitmapImage(150);
-                    bitmapFrame.Freeze();
-                    return bitmapFrame;
-                });
-        }
-
-        return null;
+                    return null;
+                }
+                using ArchiveFile archiveFile = new(filepath);
+                Entry entry = archiveFile?.Entries?.Where(z => !z.IsFolder).OrderBy(z => z.FileName).FirstOrDefault();
+                string extractpath = $"{Path.GetTempPath()}{entry.FileName}";
+                if (!File.Exists(extractpath))
+                {
+                    entry?.Extract(extractpath);
+                }
+                BitmapImage bitmapFrame = BitmapFrame.Create(new Uri(extractpath), BitmapCreateOptions.None, BitmapCacheOption.None).ToBitmapImage(150);
+                bitmapFrame.Freeze();
+                return bitmapFrame;
+            })
+               : (object)null;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();

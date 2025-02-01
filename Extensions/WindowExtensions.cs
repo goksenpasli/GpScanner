@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
@@ -14,8 +13,8 @@ namespace Extensions
         public const uint MF_ENABLED = 0x00000000;
         public const uint MF_GRAYED = 0x00000001;
         public const uint SC_CLOSE = 0xF060;
-        public const int WM_SYSCOMMAND = 0x112;
         public const int VK_F4 = 0x73;
+        public const int WM_SYSCOMMAND = 0x112;
         public const int WM_SYSKEYDOWN = 0x0104;
 
         public static void DisableCloseButton(this Window window, bool disable)
@@ -47,6 +46,5 @@ namespace Extensions
 
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hwnd, int index, int value);
-
     }
 }

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.IO;
 using System.IO.Packaging;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -60,7 +61,22 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
         return xpsDocument.GetFixedDocumentSequence();
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        if (string.IsNullOrEmpty(propertyName))
+        {
+            return;
+        }
+
+        if (Dispatcher.CheckAccess())
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        else
+        {
+            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+        }
+    }
 
     private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {

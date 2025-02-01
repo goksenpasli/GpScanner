@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -91,7 +92,22 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> UploadFtp { get; }
 
-    protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        if (string.IsNullOrEmpty(propertyName))
+        {
+            return;
+        }
+
+        if (Dispatcher.CheckAccess())
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        else
+        {
+            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+        }
+    }
 
     private async Task CopyFileAsync(string sourceFilePath, string destinationFilePath, bool overwrite, Action<double> progressCallback = null)
     {

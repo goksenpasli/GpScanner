@@ -3161,7 +3161,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private async Task<List<ScannerFileDatas>> GetContributionFilesAsync()
     {
         return await Task.Run(
-            () => Dosyalar?.Where(scanner => Directory.GetParent(scanner.FileName) is not null)
+            () => Dosyalar?.Where(scanner => File.Exists(scanner.FileName) && Directory.GetParent(scanner.FileName) is not null)
             .Select(
                 scanner =>
                 {

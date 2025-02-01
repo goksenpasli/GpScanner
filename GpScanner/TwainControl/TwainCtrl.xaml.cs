@@ -23,6 +23,7 @@ using System.IO.Compression;
 using System.Linq;
 using System.Media;
 using System.Printing;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
@@ -2738,14 +2739,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if (fileloadtask != value)
             {
                 fileloadtask = value;
-                if (Dispatcher.CheckAccess())
-                {
-                    OnPropertyChanged(nameof(FileLoadTask));
-                }
-                else
-                {
-                    Dispatcher.Invoke(() => OnPropertyChanged(nameof(FileLoadTask)));
-                }
+                OnPropertyChanged(nameof(FileLoadTask));
             }
         }
     }
@@ -4117,7 +4111,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    protected virtual void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    {
+        if (string.IsNullOrEmpty(propertyName))
+        {
+            return;
+        }
+
+        if (Dispatcher.CheckAccess())
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        else
+        {
+            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+        }
+    }
 
     private static PdfCharacterInformation CreateWordFromCharacters(List<PdfCharacterInformation> characters)
     {
