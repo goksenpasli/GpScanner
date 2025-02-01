@@ -69,135 +69,139 @@
                             </ModelVisual3D>
                         </Viewport3D>
                         <ContentControl x:Name="Cnt" Grid.Row="1">
-                            <Grid IsEnabled="{Binding ToolBarIsEnabled, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition />
-                                    <ColumnDefinition Width="Auto" />
-                                </Grid.ColumnDefinitions>
-                                <Button Grid.Column="0"
-                                    Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <Button.Content>
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="3" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </Button.Content>
-                                </Button>
-                                <ListBox Grid.Column="1"
-                                    SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SelectedValuePath="Tag">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <VirtualizingStackPanel Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                    <ListBoxItem Tag="None">
-                                        <TextBlock FontFamily="Webdings"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Text="1" />
-                                    </ListBoxItem>
-                                    <ListBoxItem Tag="Width">
-                                        <TextBlock FontFamily="Wingdings 3"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Text="F" />
-                                    </ListBoxItem>
-                                    <ListBoxItem Tag="Height">
-                                        <TextBlock FontFamily="Wingdings 3"
-                                            FontSize="16"
-                                            FontWeight="Bold"
-                                            Text="G" />
-                                    </ListBoxItem>
-                                </ListBox>
-                                <StackPanel Grid.Column="2"
-                                    Orientation="Horizontal"
-                                    Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="246" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </RepeatButton>
-                                    <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}" SelectedItem="{Binding Sayfa, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                        <ComboBox.ItemsPanel>
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                                Template="{DynamicResource HorizontalScrollViewerTemplate}"
+                                VerticalScrollBarVisibility="Disabled">
+                                <Grid IsEnabled="{Binding ToolBarIsEnabled, RelativeSource={RelativeSource TemplatedParent}}" Visibility="{Binding ToolBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="0"
+                                        Command="{Binding DosyaAç, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding OpenButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Button.Content>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="3" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </Button.Content>
+                                    </Button>
+                                    <ListBox Grid.Column="1"
+                                        SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
+                                        SelectedValuePath="Tag">
+                                        <ListBox.ItemsPanel>
                                             <ItemsPanelTemplate>
-                                                <VirtualizingStackPanel />
+                                                <VirtualizingStackPanel Orientation="Horizontal" />
                                             </ItemsPanelTemplate>
-                                        </ComboBox.ItemsPanel>
-                                    </ComboBox>
-                                    <RepeatButton Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="247" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </RepeatButton>
-                                </StackPanel>
-                                <local:SplitButton Grid.Column="3"
-                                    Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SplitContentPartIsEnabled="{Binding PrintDpiSettingsListEnabled, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
-                                    <local:SplitButton.Content>
-                                        <Image Width="16" Height="16">
-                                            <Image.Source>
-                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                    <Binding Source="Shell32.dll" />
-                                                    <Binding Source="16" />
-                                                </MultiBinding>
-                                            </Image.Source>
-                                        </Image>
-                                    </local:SplitButton.Content>
-                                    <local:SplitButton.InternalContent>
-                                        <ListBox ItemStringFormat="{}{0} Dpi"
-                                            ItemsSource="{Binding DpiList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                                            SelectedItem="{Binding PrintDpi, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                                    </local:SplitButton.InternalContent>
-                                </local:SplitButton>
-                                <Slider Grid.Column="4"
-                                    Margin="2"
-                                    AutoToolTipPlacement="TopLeft"
-                                    AutoToolTipPrecision="2"
-                                    IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
-                                    Maximum="{Binding MaxZoom, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Minimum="{Binding MinZoom, RelativeSource={RelativeSource TemplatedParent}}"
-                                    SmallChange="1"
-                                    Style="{DynamicResource Slider}"
-                                    Visibility="{Binding ZoomButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <Slider Grid.Column="5"
-                                    Margin="2"
-                                    AutoToolTipPlacement="TopLeft"
-                                    IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
-                                    IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Maximum="360"
-                                    SmallChange="1"
-                                    Style="{DynamicResource Slider}"
-                                    Ticks="0, 90, 180, 270, 360"
-                                    Visibility="{Binding AngleButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
-                                <ToggleButton Grid.Column="6"
-                                    Content="360°"
-                                    IsChecked="{Binding PanoramaMode, RelativeSource={RelativeSource TemplatedParent}}"
-                                    Visibility="{Binding PanoramaButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
-                            </Grid>
+                                        </ListBox.ItemsPanel>
+                                        <ListBoxItem Tag="None">
+                                            <TextBlock FontFamily="Webdings"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="1" />
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="Width">
+                                            <TextBlock FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="F" />
+                                        </ListBoxItem>
+                                        <ListBoxItem Tag="Height">
+                                            <TextBlock FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="G" />
+                                        </ListBoxItem>
+                                    </ListBox>
+                                    <StackPanel Grid.Column="2"
+                                        Orientation="Horizontal"
+                                        Visibility="{Binding TifNavigasyonButtonEtkin, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <RepeatButton Command="{Binding ViewerBack, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Önceki Sayfa">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="246" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </RepeatButton>
+                                        <ComboBox ItemsSource="{Binding Pages, RelativeSource={RelativeSource TemplatedParent}}" SelectedItem="{Binding Sayfa, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            <ComboBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <VirtualizingStackPanel />
+                                                </ItemsPanelTemplate>
+                                            </ComboBox.ItemsPanel>
+                                        </ComboBox>
+                                        <RepeatButton Command="{Binding ViewerNext, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}" ToolTip="Sonraki Sayfa">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="247" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </RepeatButton>
+                                    </StackPanel>
+                                    <local:SplitButton Grid.Column="3"
+                                        Command="{Binding Yazdır, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                        SplitContentPartIsEnabled="{Binding PrintDpiSettingsListEnabled, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding PrintButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <local:SplitButton.Content>
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="16" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </local:SplitButton.Content>
+                                        <local:SplitButton.InternalContent>
+                                            <ListBox ItemStringFormat="{}{0} Dpi"
+                                                ItemsSource="{Binding DpiList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                                                SelectedItem="{Binding PrintDpi, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                                        </local:SplitButton.InternalContent>
+                                    </local:SplitButton>
+                                    <Slider Grid.Column="4"
+                                        Margin="2"
+                                        AutoToolTipPlacement="TopLeft"
+                                        AutoToolTipPrecision="2"
+                                        IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
+                                        Maximum="{Binding MaxZoom, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Minimum="{Binding MinZoom, RelativeSource={RelativeSource TemplatedParent}}"
+                                        SmallChange="1"
+                                        Style="{DynamicResource Slider}"
+                                        Visibility="{Binding ZoomButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Slider Grid.Column="5"
+                                        Margin="2"
+                                        AutoToolTipPlacement="TopLeft"
+                                        IsEnabled="{Binding Source, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NullableToBooleanConverter}}"
+                                        IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Maximum="360"
+                                        SmallChange="1"
+                                        Style="{DynamicResource Slider}"
+                                        Ticks="0, 90, 180, 270, 360"
+                                        Visibility="{Binding AngleButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <ToggleButton Grid.Column="6"
+                                        Content="360°"
+                                        IsChecked="{Binding PanoramaMode, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Visibility="{Binding PanoramaButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
+                                </Grid>
+                            </ScrollViewer>
                         </ContentControl>
                     </Grid>
                     <ControlTemplate.Triggers>
