@@ -2738,7 +2738,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if (fileloadtask != value)
             {
                 fileloadtask = value;
-                Dispatcher.Invoke(() => OnPropertyChanged(nameof(FileLoadTask)));
+                if (Dispatcher.CheckAccess())
+                {
+                    OnPropertyChanged(nameof(FileLoadTask));
+                }
+                else
+                {
+                    Dispatcher.Invoke(() => OnPropertyChanged(nameof(FileLoadTask)));
+                }
             }
         }
     }
