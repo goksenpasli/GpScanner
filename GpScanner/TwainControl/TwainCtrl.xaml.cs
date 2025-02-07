@@ -1653,7 +1653,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     PdfPages = [];
                     for (int i = 1; i <= pdfViewer.ToplamSayfa; i++)
                     {
-                        PdfPages.Add(new PdfData { PageNumber = i });
+                        PdfData data = new() { PageNumber = i };
+                        data.PropertyChanged -= PdfData_PropertyChanged;
+                        data.PropertyChanged += PdfData_PropertyChanged;
+                        PdfPages.Add(data);
                     }
                 }
             },
@@ -4892,6 +4895,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Scanner.Resimler.Insert(targetIdx, droppedData);
         Scanner.Resimler.RemoveAt(remIdx);
         Scanner.RefreshIndexNumbers();
+    }
+
+    private void PdfData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "PageNumber")
+        {
+            foreach (PdfData page in PdfPages)
+            {
+                page.BorderBrush = null;
+            }
+            foreach (PdfData item in PdfPages?.GroupBy(x => x.PageNumber).Where(g => g.Count() > 1).SelectMany(g => g))
+            {
+                item.BorderBrush = Brushes.Red;
+            }
+        }
     }
 
     private void PdfImportViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)

@@ -382,10 +382,13 @@
                                 VirtualizingPanel.VirtualizationMode="Standard">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate>
-                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Selected}">
+                                        <CheckBox VerticalContentAlignment="Center"
+                                            BorderThickness="1"
+                                            IsChecked="{Binding Selected}">
                                             <CheckBox.Content>
                                                 <StackPanel>
-                                                    <Extensions:NumericUpDown Maximum="{Binding Items.Count, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                    <Extensions:NumericUpDown BorderBrush="{Binding BorderBrush}"
+                                                        Maximum="{Binding Items.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                                         Minimum="1"
                                                         Value="{Binding PageNumber}" />
                                                     <TextBlock HorizontalAlignment="Center">
