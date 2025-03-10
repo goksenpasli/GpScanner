@@ -667,8 +667,7 @@
                                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                 </Button>
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-
-                                <Button HorizontalContentAlignment="Stretch"
+                                <Extensions:SplitButton HorizontalContentAlignment="Stretch"
                                     VerticalContentAlignment="Stretch"
                                     twainctrl:Policy.PolicyName="PdfZipBirleştir"
                                     Command="{Binding PdfZipBirleştir}">
@@ -684,8 +683,29 @@
                                         <TextBlock Canvas.Top="3"
                                             Canvas.Right="3"
                                             Text="ZIP" />
+                                        <Image Canvas.Bottom="0"
+                                            Width="16"
+                                            Height="16"
+                                            Visibility="{Binding UseLzma, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="20" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
                                     </Canvas>
-                                </Button>
+                                    <Extensions:SplitButton.InternalContent>
+                                        <Border Background="{StaticResource BorderBackground}">
+                                            <CheckBox IsChecked="{Binding UseLzma, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <TextBlock>
+                                                    <Run Text="LZMA" />
+                                                    <Run Text="{twainctrl:Loc COMPRESS}" />
+                                                </TextBlock>
+                                            </CheckBox>
+                                        </Border>
+                                    </Extensions:SplitButton.InternalContent>
+                                </Extensions:SplitButton>
                                 <Button Command="{Binding CancelZipFile}">
                                     <Image Width="16"
                                         Height="16"

@@ -140,10 +140,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         FastScanImage = new RelayCommand<object>(
             async parameter =>
             {
-                if (FileSaveTask?.IsCompleted == false)
+                if (!CheckFileSaveProgress())
                 {
-                    ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
                 GC.Collect();
@@ -173,13 +171,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ResimSil = new RelayCommand<object>(
             parameter =>
             {
-                if (FileSaveTask?.IsCompleted == false)
+                if (!CheckFileSaveProgress())
                 {
-                    ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
-
                 ScannedImage item = parameter as ScannedImage;
                 UndoImageIndex = Scanner.Resimler?.IndexOf(item);
                 UndoImage = item;
@@ -200,10 +195,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         TekResimSil = new RelayCommand<object>(
             parameter =>
             {
-                if (FileSaveTask?.IsCompleted == false)
+                if (!CheckFileSaveProgress())
                 {
-                    ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
                 ExtendedMessageBox extendedmessagebox = new()
@@ -848,13 +841,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ListeTemizle = new RelayCommand<object>(
             parameter =>
             {
-                if (FileSaveTask?.IsCompleted == false)
+                if (!CheckFileSaveProgress())
                 {
-                    ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(Window.GetWindow(this), Translation.GetResStringValue("TASKSRUNNING"), AppName);
                     return;
                 }
-
                 if (MessageBox.Show(Window.GetWindow(this), Translation.GetResStringValue("LISTREMOVEWARN"), AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     Scanner.Resimler?.Clear();

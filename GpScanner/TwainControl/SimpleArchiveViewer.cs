@@ -97,13 +97,15 @@ public class SimpleArchiveViewer : ArchiveViewer
         }
     }
 
-    public static async Task ZipCompress(List<string> files, string savepath, IProgress<double> progress = null, CancellationTokenSource cancellationTokenSource = null)
+    public static async Task ZipCompress(List<string> files, string savepath, IProgress<double> progress = null, CancellationTokenSource cancellationTokenSource = null, bool lzma = false)
     {
         await Task.Run(
             () =>
             {
                 using FileStream zip = File.OpenWrite(savepath);
-                using IWriter zipWriter = WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.Deflate) { UseZip64 = true });
+                using IWriter zipWriter = lzma
+                                          ? WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, SharpCompress.Common.CompressionType.LZMA)
+                                          : WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.Deflate) { UseZip64 = true });
                 int count = files.Count;
                 for (int i = 0; i < count; i++)
                 {

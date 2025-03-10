@@ -158,7 +158,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
                 zipfilecancellationToken = new CancellationTokenSource();
                 List<string> filelist = [.. Dosyalar.Where(z => z.Seçili).Select(z => z.FileName)];
-                await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = progress), zipfilecancellationToken);
+                await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = progress), zipfilecancellationToken, UseLzma);
             },
             parameter => Dosyalar?.Count(z => z.Seçili) > 0);
 
@@ -1094,12 +1094,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             parameter => true);
 
         SaveZipErrorEvents = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = "Error.zip" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    CreateSingleZipFile(ErrorLogPath, saveFileDialog.FileName);
+                    await SimpleArchiveViewer.ZipCompress([ErrorLogPath], saveFileDialog.FileName, null, null, true);
                 }
             },
             parameter => File.Exists(ErrorLogPath));
@@ -2588,6 +2588,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> UploadSharePoint { get; }
 
+    public bool UseLzma
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(UseLzma));
+            }
+        }
+    }
+
     public IWindowService WindowService { get; }
 
     public RelayCommand<object> WordOcrPdfThumbnailPage { get; }
@@ -2937,12 +2950,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             using RegistryKey commandKey = fileTypeKey?.CreateSubKey(@"shell\open\command");
             commandKey?.SetValue(string.Empty, $@"""{applicationPath}"" ""%1""");
         }
-    }
-
-    private void CreateSingleZipFile(string filepath, string zipsavepath)
-    {
-        using ZipArchive archive = ZipFile.Open(zipsavepath, ZipArchiveMode.Update);
-        _ = archive.CreateEntryFromFile(filepath, Path.GetFileName(filepath));
     }
 
     private void Default_PropertyChanged(object sender, PropertyChangedEventArgs e)
