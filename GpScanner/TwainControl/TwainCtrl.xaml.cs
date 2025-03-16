@@ -42,7 +42,6 @@ using System.Windows.Threading;
 using System.Windows.Xps;
 using System.Windows.Xps.Packaging;
 using System.Xml.Linq;
-using System.Xml.Serialization;
 using TwainControl.Properties;
 using TwainWpf;
 using TwainWpf.TwainNative;
@@ -119,20 +118,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 Scanner.ArayüzEtkin = false;
-                if (Settings.Default.SeçiliTarayıcı.Contains("|http"))
-                {
-                    BitmapImage bitmapimage = await ESCLScanner.ScanDocumentAsync(Settings.Default.SeçiliTarayıcı.Split('|')[1], (int)Settings.Default.Çözünürlük);
-                    if (bitmapimage is not null)
-                    {
-                        bitmapimage.Freeze();
-                        Scanner.Resimler.Add(new ScannedImage() { Resim = BitmapFrame.Create(bitmapimage) });
-                    }
-                }
-                else
-                {
-                    Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
-                    Twain.StartScanning(DefaultScanSettings());
-                }
+                await DefaultScanAsync();
                 Twain.ScanningComplete += ScanComplete;
             },
             parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Policy.CheckPolicy(nameof(ScanImage)));
@@ -147,23 +133,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 GC.Collect();
                 await Task.Delay(TimeSpan.FromSeconds(Settings.Default.ScanDelay));
                 Scanner.ArayüzEtkin = false;
-                Scanner.Resimler = [];
+                if (Keyboard.Modifiers != ModifierKeys.Alt)
+                {
+                    Scanner.Resimler = [];
+                }
                 Scanner.Resimler.CollectionChanged -= Scanner.Resimler_CollectionChanged;
                 Scanner.Resimler.CollectionChanged += Scanner.Resimler_CollectionChanged;
-                if (Settings.Default.SeçiliTarayıcı.Contains("|http"))
-                {
-                    BitmapImage bitmapimage = await ESCLScanner.ScanDocumentAsync(Settings.Default.SeçiliTarayıcı.Split('|')[1], (int)Settings.Default.Çözünürlük);
-                    if (bitmapimage is not null)
-                    {
-                        bitmapimage.Freeze();
-                        Scanner.Resimler.Add(new ScannedImage() { Resim = BitmapFrame.Create(bitmapimage) });
-                    }
-                }
-                else
-                {
-                    Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
-                    Twain.StartScanning(DefaultScanSettings());
-                }
+                await DefaultScanAsync();
                 Twain.ScanningComplete += FastScanComplete;
             },
             parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Scanner?.AutoSave == true && FileNameValid(Scanner?.FileName) && Policy.CheckPolicy(nameof(FastScanImage)));
@@ -239,30 +215,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
+                BitmapFrame processedImage = null;
                 if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
-                    BitmapFrame bitmapframe = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
-                    bitmapframe?.Freeze();
-                    item.Resim = bitmapframe;
-                    bitmapframe = null;
-                    GC.Collect();
-                    return;
+                    processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
                 }
-
-                if (Keyboard.Modifiers == ModifierKeys.Shift)
+                else if (Keyboard.Modifiers == ModifierKeys.Shift)
                 {
-                    BitmapFrame bitmapframe = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
-                    bitmapframe?.Freeze();
-                    item.Resim = bitmapframe;
-                    bitmapframe = null;
-                    GC.Collect();
-                    return;
+                    processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
                 }
-
-                BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
-                bitmapFrame?.Freeze();
-                item.Resim = bitmapFrame;
-                bitmapFrame = null;
+                else
+                {
+                    processedImage = BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
+                }
+                processedImage?.Freeze();
+                item.Resim = processedImage;
+                processedImage = null;
                 GC.Collect();
             },
             parameter => true);
@@ -338,30 +306,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 foreach (ScannedImage item in GetSelectedImages())
                 {
+                    BitmapFrame processedImage = null;
                     if (bw)
                     {
-                        BitmapFrame blackandwhiteimage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
-                        blackandwhiteimage?.Freeze();
-                        item.Resim = blackandwhiteimage;
-                        blackandwhiteimage = null;
-                        GC.Collect();
-                        continue;
+                        processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
                     }
-
-                    if (grayscale)
+                    else if (grayscale)
                     {
-                        BitmapFrame grayimage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
-                        grayimage?.Freeze();
-                        item.Resim = grayimage;
-                        grayimage = null;
-                        GC.Collect();
-                        continue;
+                        processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
                     }
-
-                    BitmapFrame bitmapFrame = BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
-                    bitmapFrame?.Freeze();
-                    item.Resim = bitmapFrame;
-                    bitmapFrame = null;
+                    else
+                    {
+                        processedImage = BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
+                    }
+                    processedImage?.Freeze();
+                    item.Resim = processedImage;
+                    processedImage = null;
                     GC.Collect();
                 }
             },
@@ -1441,31 +1401,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
-                string path = pdfviewer.PdfFilePath;
                 using PdfDocument pdfdocument = PdfReader.Open(pdfviewer.PdfFilePath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
                 if (pdfdocument is null)
                 {
                     return;
                 }
                 PdfToolBarControlIsEnabled = false;
-                if (Keyboard.Modifiers == (ModifierKeys.Control | ModifierKeys.Alt))
-                {
-                    if (Keyboard.Modifiers == ModifierKeys.Shift)
-                    {
-                        SavePageRotated(path, pdfdocument, -90);
-                        PdfToolBarControlIsEnabled = true;
-                        pdfviewer.PdfFilePath = null;
-                        pdfviewer.PdfFilePath = path;
-                        return;
-                    }
-
-                    SavePageRotated(path, pdfdocument, 90);
-                    PdfToolBarControlIsEnabled = true;
-                    pdfviewer.PdfFilePath = null;
-                    pdfviewer.PdfFilePath = path;
-                    return;
-                }
-
+                string path = pdfviewer.PdfFilePath;
                 SavePageRotated(path, pdfdocument, Keyboard.Modifiers == ModifierKeys.Alt ? -90 : 90, pdfviewer.Sayfa - 1);
                 PdfToolBarControlIsEnabled = true;
                 pdfviewer.Source = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
@@ -3774,20 +3716,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         return document;
     }
 
-    public static void SavePageRotated(string savepath, PdfDocument inputDocument, int angle)
-    {
-        foreach (PdfPage page in inputDocument?.Pages)
-        {
-            if (page?.Rotate is > 360 or < (-360))
-            {
-                page.Rotate = 0;
-            }
-            page.Rotate += angle;
-        }
-
-        inputDocument.Save(savepath);
-    }
-
     public static void SavePageRotated(string savepath, PdfDocument inputDocument, int angle, int pageindex)
     {
         PdfPage page = inputDocument?.Pages[pageindex];
@@ -4071,20 +3999,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
 
             outputDocument.Save(savefolder.SetUniqueFile(Translation.GetResStringValue("SPLIT"), "pdf"));
-        }
-    }
-
-    internal static T DeSerialize<T>(string xmldatapath) where T : class, new()
-    {
-        try
-        {
-            XmlSerializer serializer = new(typeof(T));
-            using StreamReader stream = new(xmldatapath);
-            return serializer.Deserialize(stream) as T;
-        }
-        catch (Exception ex)
-        {
-            throw new ArgumentException(ex?.Message);
         }
     }
 
@@ -4469,6 +4383,24 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Settings.Default.Save();
     }
 
+    private async Task DefaultScanAsync()
+    {
+        if (Settings.Default.SeçiliTarayıcı.Contains("|http"))
+        {
+            BitmapImage bitmapimage = await ESCLScanner.ScanDocumentAsync(Settings.Default.SeçiliTarayıcı.Split('|')[1], (int)Settings.Default.Çözünürlük);
+            if (bitmapimage is not null)
+            {
+                bitmapimage.Freeze();
+                Scanner.Resimler.Add(new ScannedImage() { Resim = BitmapFrame.Create(bitmapimage) });
+            }
+        }
+        else
+        {
+            Twain.SelectSource(Settings.Default.SeçiliTarayıcı);
+            Twain.StartScanning(DefaultScanSettings());
+        }
+    }
+
     private ScanSettings DefaultScanSettings()
     {
         ScanSettings scansettings = new()
@@ -4545,15 +4477,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
 
-        if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-        {
-            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Tiff, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük, progress => Scanner.PdfSaveProgressValue = progress)).Save(Scanner.PdfFilePath);
-        }
-
-        if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-        {
-            (await Scanner.Resimler.ToList().GeneratePdfAsync(Format.Jpg, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük, progress => Scanner.PdfSaveProgressValue = progress)).Save(Scanner.PdfFilePath);
-        }
+        Format fileFormat = (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite ? Format.Tiff : Format.Jpg;
+        (await Scanner.Resimler.ToList().GeneratePdfAsync(fileFormat, SelectedPaper, Settings.Default.JpegQuality, PdfFileOcrData, (int)Settings.Default.Çözünürlük, progress => Scanner.PdfSaveProgressValue = progress)).Save(Scanner.PdfFilePath);
 
         if (Settings.Default.ShowFile)
         {
@@ -5135,19 +5060,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
-        if (blackwhite)
-        {
-            scannedImage.Resim.GeneratePdf(ocrtext, Format.Tiff, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
-            Dispatcher.Invoke(
-                () =>
-                {
-                    Scanner.SaveFileFullPath = filename;
-                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
-                });
-            return;
-        }
-
-        scannedImage.Resim.GeneratePdf(ocrtext, Format.Jpg, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
+        Format fileFormat = blackwhite ? Format.Tiff : Format.Jpg;
+        scannedImage.Resim.GeneratePdf(ocrtext, fileFormat, paper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution).Save(filename);
         Dispatcher.Invoke(
             () =>
             {
@@ -5185,19 +5099,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
 
         scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
-        if (blackwhite)
-        {
-            (await images.GeneratePdfAsync(Format.Tiff, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress)).Save(filename);
-            Dispatcher.Invoke(
-                () =>
-                {
-                    Scanner.SaveFileFullPath = filename;
-                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
-                });
-            return;
-        }
-
-        (await images.GeneratePdfAsync(Format.Jpg, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress)).Save(filename);
+        Format fileFormat = blackwhite ? Format.Tiff : Format.Jpg;
+        (await images.GeneratePdfAsync(fileFormat, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress)).Save(filename);
         Dispatcher.Invoke(
             () =>
             {
@@ -5208,28 +5111,14 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void SaveTifImage(BitmapFrame scannedImage, string filename)
     {
-        if ((ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite)
-        {
-            Dispatcher.Invoke(
-                () =>
-                {
-                    File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.Tiff));
-                    Scanner.SaveFileFullPath = filename;
-                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
-                });
-            return;
-        }
-
-        if ((ColourSetting)Settings.Default.Mode is ColourSetting.Colour or ColourSetting.GreyScale)
-        {
-            Dispatcher.Invoke(
-                () =>
-                {
-                    File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(Format.TiffRenkli));
-                    Scanner.SaveFileFullPath = filename;
-                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
-                });
-        }
+        Format format = (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite ? Format.Tiff : Format.TiffRenkli;
+        Dispatcher.Invoke(
+            () =>
+            {
+                File.WriteAllBytes(filename, scannedImage.ToTiffJpegByteArray(format));
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
     }
 
     private async Task SaveTifImageAsync(List<ScannedImage> images, string filename)

@@ -798,6 +798,7 @@
                                     </Extensions:SplitButton>
                                     <Extensions:SplitButton Grid.Column="2"
                                         local:Policy.PolicyName="FastScanImage"
+                                        BorderBrush="Cyan"
                                         Command="{Binding FastScanImage}"
                                         IsEnabled="{Binding Scanner.ArayüzEtkin}">
                                         <StackPanel Orientation="Horizontal">
