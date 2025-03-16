@@ -8,12 +8,8 @@ public class PdfCompressor : Compressor
 {
     public async Task<PdfDocument> Compress(string pdffilepath)
     {
-        if (IsValidPdfFile(pdffilepath))
-        {
-            using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(pdffilepath);
-            ApplyDefaultPdfCompression(pdfDocument);
-            return pdfDocument;
-        }
-        return null;
+        using PdfDocument pdfDocument = await CompressFilePdfDocumentAsync(pdffilepath);
+        ApplyDefaultPdfCompression(pdfDocument);
+        return pdfDocument;
     }
 }

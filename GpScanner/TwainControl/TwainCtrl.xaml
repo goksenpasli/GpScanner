@@ -2028,7 +2028,13 @@
                                     Grid.ColumnSpan="2"
                                     HorizontalScrollBarVisibility="Auto"
                                     Template="{DynamicResource HorizontalScrollViewerTemplate}">
-                                    <StackPanel Orientation="Horizontal">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
                                         <TextBlock HorizontalAlignment="Center"
                                             FontWeight="Bold"
                                             TextAlignment="Center">
@@ -2106,7 +2112,11 @@
                                                     Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                                             </InlineUIContainer>
                                         </TextBlock>
-                                        <Extensions:SplitButton local:Policy.PolicyName="AddSplitListsIndex" Command="{Binding AddSplitListsIndex}">
+                                        <Extensions:SplitButton Grid.Column="1"
+                                            local:Policy.PolicyName="AddSplitListsIndex"
+                                            Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Command="{Binding AddSplitListsIndex}">
                                             <TextBlock FontFamily="Wingdings 2"
                                                 FontSize="16"
                                                 Text="Ë" />
@@ -2165,30 +2175,24 @@
                                                 </GroupBox>
                                             </Extensions:SplitButton.InternalContent>
                                         </Extensions:SplitButton>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="19.2" />
-                                            </Grid.ColumnDefinitions>
-                                            <Slider Width="64"
-                                                VerticalAlignment="Center"
-                                                AutoToolTipPlacement="TopLeft"
-                                                Maximum="{Binding MaxPreviewWidth}"
-                                                Minimum="{Binding MinPreviewWidth}"
-                                                SmallChange="1"
-                                                Style="{StaticResource Slider}"
-                                                ToolTip="{local:Loc PREVIEWSIZE}"
-                                                Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
-                                            <Button Grid.Column="1"
-                                                Background="{x:Null}"
-                                                BorderBrush="{x:Null}"
-                                                Command="{Binding ResetPreviewSize}">
-                                                <Image Width="16"
-                                                    Height="16"
-                                                    Source="/TwainControl;component/Icons/delete.png" />
-                                            </Button>
-                                        </Grid>
-                                    </StackPanel>
+                                        <Slider Grid.Column="2"
+                                            VerticalAlignment="Center"
+                                            AutoToolTipPlacement="TopLeft"
+                                            Maximum="{Binding MaxPreviewWidth}"
+                                            Minimum="{Binding MinPreviewWidth}"
+                                            SmallChange="1"
+                                            Style="{StaticResource Slider}"
+                                            ToolTip="{local:Loc PREVIEWSIZE}"
+                                            Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
+                                        <Button Grid.Column="3"
+                                            Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Command="{Binding ResetPreviewSize}">
+                                            <Image Width="16"
+                                                Height="16"
+                                                Source="/TwainControl;component/Icons/delete.png" />
+                                        </Button>
+                                    </Grid>
                                 </ScrollViewer>
                             </Grid>
                         </TabItem>

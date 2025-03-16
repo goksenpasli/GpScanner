@@ -63,7 +63,8 @@
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="*" />
+                                    <RowDefinition />
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <UniformGrid Grid.Row="0"
@@ -128,7 +129,7 @@
                                     </Button>
                                 </UniformGrid>
                                 <StackPanel Grid.Row="0"
-                                    Grid.RowSpan="3"
+                                    Grid.RowSpan="2"
                                     Grid.Column="1"
                                     IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                     Orientation="Horizontal">
@@ -176,7 +177,8 @@
                                             d:ItemTemplate="{StaticResource ListBoxItemListTemplate}"
                                             d:ItemsSource="{d:SampleData ItemCount=5}"
                                             AllowDrop="True"
-                                            Background="{DynamicResource BorderBackground}"
+                                            Background="{DynamicResource GroupBoxBackGround}"
+                                            BorderBrush="{x:Null}"
                                             IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                             ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                             VirtualizingPanel.CacheLengthUnit="Pixel"
@@ -226,8 +228,8 @@
                                                                 <Setter.Value>
                                                                     <DataTemplate>
                                                                         <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding IsChecked}">
-                                                                            <ContentControl Width="135"
-                                                                                Height="135"
+                                                                            <ContentControl Width="150"
+                                                                                Height="150"
                                                                                 Content="{Binding IsAsync=True, Mode=OneWay, Path=Filename}"
                                                                                 ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
                                                                         </CheckBox>
@@ -255,7 +257,8 @@
                                             VerticalAlignment="Top"
                                             Background="Transparent"
                                             BorderBrush="Transparent"
-                                            IsChecked="{Binding PdfCompressorItemToggle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            IsChecked="{Binding PdfCompressorItemToggle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsEnabled="{Binding ElementName=ListBox, Path=HasItems, Mode=OneWay}">
                                             <Image Width="16" Height="16">
                                                 <Image.Source>
                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -269,12 +272,13 @@
                                     <GridSplitter Grid.Column="1"
                                         Width="3"
                                         HorizontalAlignment="Stretch"
-                                        Background="{DynamicResource GroupBoxBackGround}" />
+                                        Background="{DynamicResource BorderBackground}" />
                                     <ContentControl Grid.Column="2"
                                         Content="{Binding SelectedItem.Filename, ElementName=ListBox, IsAsync=True, Mode=OneWay}"
                                         ContentTemplateSelector="{StaticResource DvdBurnerDocumentViewerSelector}" />
                                 </Grid>
-                                <UniformGrid Grid.Row="2"
+                                <Separator Grid.Row="2" Grid.ColumnSpan="2" />
+                                <UniformGrid Grid.Row="3"
                                     Columns="2"
                                     IsEnabled="{Binding CompressFinished, ElementName=Compressor}">
                                     <CheckBox VerticalAlignment="Center"
