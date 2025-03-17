@@ -462,12 +462,32 @@
                     PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="CbrMiniImgViewerTemplate">
-                <PdfViewer:PdfShadowedImage Width="150"
-                    Height="150"
-                    IsHitTestVisible="False"
-                    ShowShadow="True"
-                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
-                    Tag="{Binding Path=DataContext, Converter={StaticResource CbrCbzFirstpageToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Grid>
+                    <PdfViewer:PdfShadowedImage Width="150"
+                        Height="150"
+                        IsHitTestVisible="False"
+                        ShowShadow="True"
+                        Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                        Tag="{Binding Path=DataContext, Converter={StaticResource CbrCbzFirstpageToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="64"
+                        Foreground="Red"
+                        IsHitTestVisible="False"
+                        Opacity="0.5"
+                        RenderTransformOrigin="0.5,0.5"
+                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="315" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="Jb2TemplateMini">
                 <PdfViewer:PdfShadowedImage Width="150"
@@ -519,36 +539,56 @@
                 </PdfViewer:PdfShadowedImage>
             </DataTemplate>
             <DataTemplate x:Key="WebpMonthTemplateMini">
-                <PdfViewer:PdfShadowedImage Width="150"
-                    Height="150"
-                    ShowShadow="True"
-                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
-                    <PdfViewer:PdfShadowedImage.Tag>
-                        <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
-                            <Binding IsAsync="True"
-                                Mode="OneWay"
-                                Path="DataContext"
-                                RelativeSource="{RelativeSource Mode=TemplatedParent}"
-                                UpdateSourceTrigger="PropertyChanged" />
-                            <Binding Mode="OneWay"
-                                Path="Width"
-                                RelativeSource="{RelativeSource Mode=Self}"
-                                UpdateSourceTrigger="PropertyChanged" />
-                        </MultiBinding>
-                    </PdfViewer:PdfShadowedImage.Tag>
-                    <PdfViewer:PdfShadowedImage.InputBindings>
-                        <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
-                            <MouseBinding.CommandParameter>
-                                <MultiBinding Converter="{StaticResource CloneConverter}">
-                                    <Binding Mode="OneWay" />
-                                    <Binding Mode="OneWay"
-                                        Path="TwainCtrl"
-                                        RelativeSource="{RelativeSource AncestorType=Window}" />
-                                </MultiBinding>
-                            </MouseBinding.CommandParameter>
-                        </MouseBinding>
-                    </PdfViewer:PdfShadowedImage.InputBindings>
-                </PdfViewer:PdfShadowedImage>
+                <Grid>
+                    <PdfViewer:PdfShadowedImage Width="150"
+                        Height="150"
+                        ShowShadow="True"
+                        Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
+                        <PdfViewer:PdfShadowedImage.Tag>
+                            <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
+                                <Binding IsAsync="True"
+                                    Mode="OneWay"
+                                    Path="DataContext"
+                                    RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                    UpdateSourceTrigger="PropertyChanged" />
+                                <Binding Mode="OneWay"
+                                    Path="Width"
+                                    RelativeSource="{RelativeSource Mode=Self}"
+                                    UpdateSourceTrigger="PropertyChanged" />
+                            </MultiBinding>
+                        </PdfViewer:PdfShadowedImage.Tag>
+                        <PdfViewer:PdfShadowedImage.InputBindings>
+                            <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
+                                <MouseBinding.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                                        <Binding Mode="OneWay" />
+                                        <Binding Mode="OneWay"
+                                            Path="TwainCtrl"
+                                            RelativeSource="{RelativeSource AncestorType=Window}" />
+                                    </MultiBinding>
+                                </MouseBinding.CommandParameter>
+                            </MouseBinding>
+                        </PdfViewer:PdfShadowedImage.InputBindings>
+                    </PdfViewer:PdfShadowedImage>
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="64"
+                        Foreground="Red"
+                        IsHitTestVisible="False"
+                        Opacity="0.5"
+                        RenderTransformOrigin="0.5,0.5"
+                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="315" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="Jb2Template">
                 <Extensions:ImageViewer OpenButtonVisibility="Collapsed"
@@ -652,17 +692,48 @@
                     Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverterEmptyViewerTemplate}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
-                <PdfViewer:ShadowedImage Width="150"
-                    Height="150"
-                    IsHitTestVisible="False"
-                    ShowShadow="True">
-                    <PdfViewer:ShadowedImage.Source>
-                        <BitmapImage CacheOption="None"
-                            CreateOptions="None"
-                            DecodePixelHeight="150"
-                            UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                    </PdfViewer:ShadowedImage.Source>
-                </PdfViewer:ShadowedImage>
+                <Grid>
+                    <PdfViewer:ShadowedImage Width="150"
+                        Height="150"
+                        ShowShadow="True">
+                        <PdfViewer:ShadowedImage.Source>
+                            <BitmapImage CacheOption="None"
+                                CreateOptions="None"
+                                DecodePixelHeight="150"
+                                UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                        </PdfViewer:ShadowedImage.Source>
+                        <PdfViewer:ShadowedImage.InputBindings>
+                            <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
+                                <MouseBinding.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                                        <Binding Mode="OneWay" />
+                                        <Binding Mode="OneWay"
+                                            Path="TwainCtrl"
+                                            RelativeSource="{RelativeSource AncestorType=Window}" />
+                                    </MultiBinding>
+                                </MouseBinding.CommandParameter>
+                            </MouseBinding>
+                        </PdfViewer:ShadowedImage.InputBindings>
+                    </PdfViewer:ShadowedImage>
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="64"
+                        Foreground="Red"
+                        IsHitTestVisible="False"
+                        Opacity="0.5"
+                        RenderTransformOrigin="0.5,0.5"
+                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="315" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ContributionViewerImgTemplateMini">
                 <PdfViewer:ShadowedImage Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
