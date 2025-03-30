@@ -462,8 +462,8 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         return null;
                     }
-                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
                     using Bitmap bitmap = pdfDoc.Render(page - 1, width, height, dpi, dpi, false) as Bitmap;
                     BitmapImage bitmapImage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
                     if (bitmapImage is null)
@@ -521,8 +521,8 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                         return null;
                     }
-                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 72 * dpi);
+                    int width = (int)(pdfDoc.PageSizes[page - 1].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[page - 1].Height / 96 * dpi);
                     System.Drawing.Image image = pdfDoc.Render(page - 1, width, height, dpi, dpi, false);
                     if (image is null)
                     {
@@ -717,8 +717,8 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     using PdfDocument pdfDoc = PdfDocument.Load(e.NewValue as string);
                     int dpi = pdfViewer.Dpi;
                     pdfViewer.Sayfa = 1;
-                    int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 72 * dpi);
+                    int width = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[pdfViewer.Sayfa - 1].Height / 96 * dpi);
                     pdfViewer.ToplamSayfa = pdfDoc.PageCount;
                     pdfViewer.Pages = Enumerable.Range(1, pdfViewer.ToplamSayfa);
                     pdfViewer.Source = await ConvertToImgAsync(pdfDoc, dpi, pdfViewer.Sayfa - 1, width, height);
@@ -741,7 +741,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         for (int i = start; i <= end; i++)
         {
             SizeF pageSize = pdfiumdocument.PageSizes[i - 1];
-            using Bitmap bitmap = pdfiumdocument.Render(i - 1, (int)(pageSize.Width / 72 * Dpi), (int)(pageSize.Height / 72 * Dpi), Dpi, Dpi, PdfRenderFlags.ForPrinting) as Bitmap;
+            using Bitmap bitmap = pdfiumdocument.Render(i - 1, (int)(pageSize.Width / 96 * Dpi), (int)(pageSize.Height / 96 * Dpi), Dpi, Dpi, PdfRenderFlags.ForPrinting) as Bitmap;
             if (pageSize.Width > pageSize.Height)
             {
                 bitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);

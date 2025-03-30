@@ -23,6 +23,17 @@ namespace Extensions
         public static readonly DependencyProperty TooltipContentProperty = DependencyProperty.Register("TooltipContent", typeof(UIElement), typeof(FadedToolTipControl));
         private Popup popup;
 
+
+        public bool TopMost {
+            get { return (bool)GetValue(TopMostProperty); }
+            set { SetValue(TopMostProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TopMost.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TopMostProperty =
+            DependencyProperty.Register("TopMost", typeof(bool), typeof(FadedToolTipControl), new PropertyMetadata(true));
+
+
         static FadedToolTipControl() { DefaultStyleKeyProperty.OverrideMetadata(typeof(FadedToolTipControl), new FrameworkPropertyMetadata(typeof(FadedToolTipControl))); }
         public FadedToolTipControl() { ClosePopupWindow = new RelayCommand<object>(async parameter => await Application.Current?.Dispatcher?.InvokeAsync(() => popup.IsOpen = false), parameter => true); }
 

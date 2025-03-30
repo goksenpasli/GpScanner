@@ -42,6 +42,7 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
                         <Button x:Name="Btn"
+                            HorizontalContentAlignment="Left"
                             Command="{Binding DataContext.MonthZipFile, RelativeSource={RelativeSource AncestorType=UniformGrid}}"
                             CommandParameter="{Binding Mode=OneWay}">
                             <StackPanel Orientation="Horizontal">
@@ -63,7 +64,8 @@
                             Position="Bottom"
                             ShowCloseButton="Visible"
                             TimeToClose="{x:Static sys:Int32.MaxValue}"
-                            TimeToShow="2000">
+                            TimeToShow="2000"
+                            TopMost="False">
                             <Extensions:FadedToolTipControl.Style>
                                 <Style TargetType="Extensions:FadedToolTipControl">
                                     <Style.Triggers>

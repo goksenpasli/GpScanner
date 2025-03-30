@@ -14,6 +14,8 @@ namespace Extensions.Controls;
 
 public partial class XpsViewer : UserControl, INotifyPropertyChanged
 {
+    public static readonly DependencyProperty ControlsVisibilityProperty = DependencyProperty.Register("ControlsVisibility", typeof(Visibility), typeof(XpsViewer), new PropertyMetadata(Visibility.Visible));
+    public static readonly DependencyProperty FitToHeightProperty = DependencyProperty.Register("FitToHeight", typeof(bool), typeof(XpsViewer), new PropertyMetadata(false, Changed));
     public static readonly DependencyPropertyKey PageNumberProperty = DependencyProperty.RegisterReadOnly("PageNumber", typeof(int), typeof(XpsViewer), new PropertyMetadata(0));
     public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register("XpsDataFilePath", typeof(string), typeof(XpsViewer), new PropertyMetadata(null, XpsDataFilePathChanged));
 
@@ -25,6 +27,8 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
+
+    public Visibility ControlsVisibility { get => (Visibility)GetValue(ControlsVisibilityProperty); set => SetValue(ControlsVisibilityProperty, value); }
 
     public IDocumentPaginatorSource Document
     {
@@ -39,6 +43,8 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
             }
         }
     }
+
+    public bool FitToHeight { get => (bool)GetValue(FitToHeightProperty); set => SetValue(FitToHeightProperty, value); }
 
     public int PageNumber => (int)GetValue(PageNumberProperty.DependencyProperty);
 
@@ -75,6 +81,21 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
         else
         {
             Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+        }
+    }
+
+    private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is XpsViewer xpsViewer)
+        {
+            if ((bool)e.NewValue)
+            {
+                xpsViewer.Viewer.FitToHeight();
+            }
+            else
+            {
+                xpsViewer.Viewer.Zoom = 100;
+            }
         }
     }
 

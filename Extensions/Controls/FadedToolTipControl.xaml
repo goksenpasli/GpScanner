@@ -10,7 +10,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:FadedToolTipControl">
                     <Popup x:Name="PART_Popup"
-                        local:FadedToolTipControl.AlwaysOnTop="False"
+                        local:FadedToolTipControl.AlwaysOnTop="{Binding TopMost, RelativeSource={RelativeSource AncestorType={x:Type local:FadedToolTipControl}}}"
                         AllowsTransparency="True"
                         Placement="{TemplateBinding Position}"
                         PlacementTarget="{TemplateBinding PopupParent}"

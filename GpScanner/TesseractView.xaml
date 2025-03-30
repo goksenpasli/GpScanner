@@ -107,7 +107,8 @@
                 Show="{Binding ShowHelpDesc}"
                 ShowCloseButton="Visible"
                 TimeToClose="10000"
-                TimeToShow="2500">
+                TimeToShow="2500"
+                TopMost="False">
                 <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">
                     <FlowDocument IsOptimalParagraphEnabled="True">
                         <Paragraph>

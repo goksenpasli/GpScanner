@@ -4,13 +4,84 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Extensions.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:System.Windows.Documents;assembly=PresentationUI"
     d:DataContext="{d:DesignInstance Type=local:XpsViewer}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     SnapsToDevicePixels="True"
     UseLayoutRounding="True"
     mc:Ignorable="d">
-    <DocumentViewer x:Name="Viewer" Document="{Binding Document}">
+    <UserControl.Resources>
+        <Style x:Key="DocumentViewerStyle"
+            BasedOn="{x:Null}"
+            TargetType="{x:Type DocumentViewer}">
+            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+            <Setter Property="ContextMenu" Value="{DynamicResource {ComponentResourceKey ResourceId=PUIDocumentViewerContextMenu, TypeInTargetAssembly={x:Type ui:PresentationUIStyleResources}}}" />
+            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type DocumentViewer}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Focusable="False">
+                            <Grid Background="{TemplateBinding Background}" KeyboardNavigation.TabNavigation="Local">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <ContentControl Grid.Row="0"
+                                    Grid.Column="0"
+                                    Focusable="{TemplateBinding Focusable}"
+                                    Style="{DynamicResource {ComponentResourceKey ResourceId=PUIDocumentViewerToolBarStyleKey,
+                                                                                  TypeInTargetAssembly={x:Type ui:PresentationUIStyleResources}}}"
+                                    TabIndex="0"
+                                    Visibility="{Binding ControlsVisibility}" />
+                                <DockPanel Grid.Row="1">
+                                    <FrameworkElement Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" DockPanel.Dock="Right" />
+                                    <Rectangle Height="10"
+                                        VerticalAlignment="top"
+                                        Visibility="Visible">
+                                        <Rectangle.Fill>
+                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                                <LinearGradientBrush.GradientStops>
+                                                    <GradientStopCollection>
+                                                        <GradientStop Offset="0" Color="#66000000" />
+                                                        <GradientStop Offset="1" Color="Transparent" />
+                                                    </GradientStopCollection>
+                                                </LinearGradientBrush.GradientStops>
+                                            </LinearGradientBrush>
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </DockPanel>
+                                <ScrollViewer x:Name="PART_ContentHost"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    CanContentScroll="true"
+                                    Focusable="{TemplateBinding Focusable}"
+                                    HorizontalScrollBarVisibility="Auto"
+                                    IsTabStop="true"
+                                    TabIndex="1" />
+                                <ContentControl x:Name="PART_FindToolBarHost"
+                                    Grid.Row="2"
+                                    Grid.Column="0"
+                                    Focusable="{TemplateBinding Focusable}"
+                                    TabIndex="2"
+                                    Visibility="{Binding ControlsVisibility}" />
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    <DocumentViewer x:Name="Viewer"
+        Document="{Binding Document}"
+        Style="{DynamicResource DocumentViewerStyle}">
         <DocumentViewer.CommandBindings>
             <CommandBinding CanExecute="CommandBinding_CanExecute"
                 Command="ApplicationCommands.Print"

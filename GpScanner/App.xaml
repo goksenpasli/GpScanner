@@ -199,20 +199,53 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerTemplateMini">
-                <PdfViewer:PdfShadowedImage Width="150"
-                    Height="150"
-                    Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
-                    <PdfViewer:PdfShadowedImage.Tag>
-                        <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
-                            <Binding Mode="OneWay" />
-                            <Binding Mode="OneWay">
-                                <Binding.Source>
-                                    <System:Int32>1</System:Int32>
-                                </Binding.Source>
-                            </Binding>
-                        </MultiBinding>
-                    </PdfViewer:PdfShadowedImage.Tag>
-                </PdfViewer:PdfShadowedImage>
+                <Grid>
+                    <PdfViewer:PdfShadowedImage Width="150"
+                        Height="150"
+                        ShowShadow="True"
+                        Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                        <PdfViewer:PdfShadowedImage.InputBindings>
+                            <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
+                                <MouseBinding.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                                        <Binding Mode="OneWay" />
+                                        <Binding Mode="OneWay"
+                                            Path="TwainCtrl"
+                                            RelativeSource="{RelativeSource AncestorType=Window}" />
+                                    </MultiBinding>
+                                </MouseBinding.CommandParameter>
+                            </MouseBinding>
+                        </PdfViewer:PdfShadowedImage.InputBindings>
+                        <PdfViewer:PdfShadowedImage.Tag>
+                            <MultiBinding Converter="{StaticResource PdfPageToThumbImageConverter}">
+                                <Binding Mode="OneWay" />
+                                <Binding Mode="OneWay">
+                                    <Binding.Source>
+                                        <System:Int32>1</System:Int32>
+                                    </Binding.Source>
+                                </Binding>
+                            </MultiBinding>
+                        </PdfViewer:PdfShadowedImage.Tag>
+                    </PdfViewer:PdfShadowedImage>
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="64"
+                        Foreground="Red"
+                        IsHitTestVisible="False"
+                        Opacity="0.5"
+                        RenderTransformOrigin="0.5,0.5"
+                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="315" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerDocumentViewerMonthTemplateMini">
                 <Grid>
@@ -498,25 +531,56 @@
                     Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="WebpTemplateMini">
-                <PdfViewer:PdfShadowedImage Width="150"
-                    Height="150"
-                    IsHitTestVisible="False"
-                    ShowShadow="True"
-                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
-                    <PdfViewer:PdfShadowedImage.Tag>
-                        <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
-                            <Binding IsAsync="True"
-                                Mode="OneWay"
-                                Path="DataContext"
-                                RelativeSource="{RelativeSource Mode=TemplatedParent}"
-                                UpdateSourceTrigger="PropertyChanged" />
-                            <Binding Mode="OneWay"
-                                Path="Width"
-                                RelativeSource="{RelativeSource Mode=Self}"
-                                UpdateSourceTrigger="PropertyChanged" />
-                        </MultiBinding>
-                    </PdfViewer:PdfShadowedImage.Tag>
-                </PdfViewer:PdfShadowedImage>
+                <Grid>
+                    <PdfViewer:PdfShadowedImage Width="150"
+                        Height="150"
+                        ShowShadow="True"
+                        Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
+                        <PdfViewer:PdfShadowedImage.InputBindings>
+                            <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
+                                <MouseBinding.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                                        <Binding Mode="OneWay" />
+                                        <Binding Mode="OneWay"
+                                            Path="TwainCtrl"
+                                            RelativeSource="{RelativeSource AncestorType=Window}" />
+                                    </MultiBinding>
+                                </MouseBinding.CommandParameter>
+                            </MouseBinding>
+                        </PdfViewer:PdfShadowedImage.InputBindings>
+                        <PdfViewer:PdfShadowedImage.Tag>
+                            <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
+                                <Binding IsAsync="True"
+                                    Mode="OneWay"
+                                    Path="DataContext"
+                                    RelativeSource="{RelativeSource Mode=TemplatedParent}"
+                                    UpdateSourceTrigger="PropertyChanged" />
+                                <Binding Mode="OneWay"
+                                    Path="Width"
+                                    RelativeSource="{RelativeSource Mode=Self}"
+                                    UpdateSourceTrigger="PropertyChanged" />
+                            </MultiBinding>
+                        </PdfViewer:PdfShadowedImage.Tag>
+                    </PdfViewer:PdfShadowedImage>
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="64"
+                        Foreground="Red"
+                        IsHitTestVisible="False"
+                        Opacity="0.5"
+                        RenderTransformOrigin="0.5,0.5"
+                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="315" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="Jb2MonthTemplateMini">
                 <PdfViewer:PdfShadowedImage Width="150"
@@ -751,6 +815,13 @@
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
+            <DataTemplate x:Key="XpsViewerTemplateMini">
+                <Controls:XpsViewer Width="150"
+                    Height="150"
+                    ControlsVisibility="Collapsed"
+                    FitToHeight="True"
+                    XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplateFull">
                 <twain:EypPdfViewer ViewModel:AllPdfViewerControl.AllPageNumber="{Binding DataContext.AllPdfPage, RelativeSource={RelativeSource AncestorType=Window}}"
                     ViewModel:AllPdfViewerControl.AllPageOrientation="{Binding DataContext.PdfAllPageOrientation, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -891,7 +962,7 @@
                 Webp="{StaticResource WebpTemplateMini}"
                 Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
-                Xps="{StaticResource EmptyViewerTemplate}"
+                Xps="{StaticResource XpsViewerTemplateMini}"
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMiniSelector"
                 Cbr="{StaticResource CbrMiniImgViewerTemplate}"
@@ -904,7 +975,7 @@
                 Webp="{StaticResource WebpTemplateMini}"
                 Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
-                Xps="{StaticResource EmptyViewerTemplate}"
+                Xps="{StaticResource XpsViewerTemplateMini}"
                 Zip="{StaticResource EmptyViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="DocumentViewerMonthPreviewSelector"
                 Cbr="{StaticResource CbrMiniImgViewerTemplate}"
@@ -917,7 +988,7 @@
                 Webp="{StaticResource WebpMonthTemplateMini}"
                 Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
-                Xps="{StaticResource EmptyViewerTemplate}"
+                Xps="{StaticResource XpsViewerTemplateMini}"
                 Zip="{StaticResource DocumentViewerMonthPreviewZipViewerTemplate}" />
             <twain:ViewerTemplateSelector x:Key="ThumbViewerSelector"
                 Cbr="{StaticResource CbrImgViewerTemplate}"

@@ -67,10 +67,10 @@
             d:ItemsSource="{d:SampleData ItemCount=5}"
             Background="{StaticResource BorderBackground}"
             ItemsSource="{Binding UnIndexedFiles}"
-            VirtualizingPanel.CacheLengthUnit="Item"
+            VirtualizingPanel.CacheLengthUnit="Pixel"
             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-            VirtualizingPanel.ScrollUnit="Item"
-            VirtualizingPanel.VirtualizationMode="Recycling">
+            VirtualizingPanel.ScrollUnit="Pixel"
+            VirtualizingPanel.VirtualizationMode="Standard">
             <ListBox.Style>
                 <Style TargetType="ListBox">
                     <Style.Triggers>

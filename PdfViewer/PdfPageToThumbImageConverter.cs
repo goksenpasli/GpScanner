@@ -46,8 +46,8 @@ public sealed class PdfPageToThumbImageConverter : InpcBase, IMultiValueConverte
     private async Task<BitmapSource> ConvertPdfPageToImageAsync(string pdfFilePath, int index, int dpi)
     {
         using PdfDocument pdfDoc = PdfDocument.Load(pdfFilePath);
-        int width = (int)(pdfDoc.PageSizes[index - 1].Width / 72 * dpi);
-        int height = (int)(pdfDoc.PageSizes[index - 1].Height / 72 * dpi);
+        int width = (int)(pdfDoc.PageSizes[index - 1].Width / 96 * dpi);
+        int height = (int)(pdfDoc.PageSizes[index - 1].Height / 96 * dpi);
         return await PdfViewer.ConvertToImgAsync(pdfDoc, dpi, index - 1, width, height);
     }
 }

@@ -486,8 +486,8 @@ public static class PdfGeneration
                         progresscallback?.Invoke((i + 1) / (double)pdfDoc.PageCount);
                         continue;
                     }
-                    int width = (int)(pdfDoc.PageSizes[i].Width / 72 * dpi);
-                    int height = (int)(pdfDoc.PageSizes[i].Height / 72 * dpi);
+                    int width = (int)(pdfDoc.PageSizes[i].Width / 96 * dpi);
+                    int height = (int)(pdfDoc.PageSizes[i].Height / 96 * dpi);
                     Image image = pdfDoc.Render(i, width, height, dpi, dpi, false);
                     image.Save(outfilename, ImageFormat.Jpeg);
                     jpgfiles.Add(outfilename);

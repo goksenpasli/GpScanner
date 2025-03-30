@@ -19,7 +19,6 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net;
 using System.Security.Principal;
@@ -1181,18 +1180,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = $"{monthname} {Translation.GetResStringValue("MERGE")}" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
-                    await Task.Run(
-                        () =>
-                        {
-                            List<string> zippedfiles = [.. data.Where(z => z.Count > 0).SelectMany(z => ((ExtendedContributionData)z).Name)];
-                            using ZipArchive archive = ZipFile.Open(saveFileDialog.FileName, ZipArchiveMode.Update);
-                            for (int i = 0; i < zippedfiles.Count; i++)
-                            {
-                                string fPath = zippedfiles[i];
-                                _ = archive.CreateEntryFromFile(fPath, Path.GetFileName(fPath), CompressionLevel.Fastest);
-                                ZipProgress = (i + 1) / (double)zippedfiles.Count;
-                            }
-                        });
+                    List<string> zippedfiles = [.. data.Where(z => z.Count > 0).SelectMany(z => ((ExtendedContributionData)z).Name)];
+                    await SimpleArchiveViewer.ZipCompress(zippedfiles, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = progress), zipfilecancellationToken);
                 }
             },
             parameter => parameter is IGrouping<int, ContributionData> data && data.Count(z => z.Count > 0) > 0);
@@ -3271,7 +3260,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                              Scanner scanner = (Scanner)x.Item;
                                              if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
                                              {
-                                                 if (BaşlangıçTarihi > BitişTarihi)
+                                                 if (BaşlangıçTarihi > BitişTarihi || BaşlangıçTarihi>DateTime.Today || BitişTarihi>DateTime.Today)
                                                  {
                                                      x.Accepted = false;
                                                      return;

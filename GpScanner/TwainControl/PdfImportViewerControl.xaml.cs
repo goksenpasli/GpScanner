@@ -214,8 +214,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 pdfDocument.Save(PdfViewer.PdfFilePath);
                 double zoom = PdfViewer.Zoom;
                 using PdfiumViewer.PdfDocument pdfDoc = PdfiumViewer.PdfDocument.Load(PdfViewer.PdfFilePath);
-                int width = (int)(pdfDoc.PageSizes[PdfViewer.Sayfa - 1].Width / 72 * PdfViewer.Dpi);
-                int height = (int)(pdfDoc.PageSizes[PdfViewer.Sayfa - 1].Height / 72 * PdfViewer.Dpi);
+                int width = (int)(pdfDoc.PageSizes[PdfViewer.Sayfa - 1].Width / 96 * PdfViewer.Dpi);
+                int height = (int)(pdfDoc.PageSizes[PdfViewer.Sayfa - 1].Height / 96 * PdfViewer.Dpi);
                 PdfViewer.Source = await Viewer.ConvertToImgAsync(pdfDoc, PdfViewer.Dpi, PdfViewer.Sayfa - 1, width, height);
                 PdfViewer.Zoom = zoom;
                 DrawnImage = null;
