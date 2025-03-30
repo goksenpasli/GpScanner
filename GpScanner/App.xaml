@@ -35,6 +35,7 @@
             <Converter:XlsxInternalThumbnailExtractConverter x:Key="XlsxInternalThumbnailExtractConverter" />
             <converter:PdfPageCountConverter x:Key="PdfPageCountConverter" />
             <converter:CbrCbzFirstpageToBitmapImageConverter x:Key="CbrCbzFirstpageToBitmapImageConverter" />
+            <converter:JpgPngToBitmapImageConverter x:Key="JpgPngToBitmapImageConverter" />
             <System:Double x:Key="Zero">0</System:Double>
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
@@ -759,13 +760,9 @@
                 <Grid>
                     <PdfViewer:ShadowedImage Width="150"
                         Height="150"
-                        ShowShadow="True">
-                        <PdfViewer:ShadowedImage.Source>
-                            <BitmapImage CacheOption="None"
-                                CreateOptions="None"
-                                DecodePixelHeight="150"
-                                UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                        </PdfViewer:ShadowedImage.Source>
+                        ShowShadow="True"
+                        Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                        Tag="{Binding Path=DataContext, Converter={StaticResource JpgPngToBitmapImageConverter}, ConverterParameter=150, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                         <PdfViewer:ShadowedImage.InputBindings>
                             <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
                                 <MouseBinding.CommandParameter>
@@ -803,14 +800,9 @@
                 <PdfViewer:ShadowedImage Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
                     Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
                     IsHitTestVisible="False"
-                    ShowShadow="True">
-                    <PdfViewer:ShadowedImage.Source>
-                        <BitmapImage CacheOption="None"
-                            CreateOptions="None"
-                            DecodePixelHeight="150"
-                            UriSource="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
-                    </PdfViewer:ShadowedImage.Source>
-                </PdfViewer:ShadowedImage>
+                    ShowShadow="True"
+                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                    Tag="{Binding Path=DataContext, Converter={StaticResource JpgPngToBitmapImageConverter}, ConverterParameter=150, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />

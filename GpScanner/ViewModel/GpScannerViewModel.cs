@@ -2644,7 +2644,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public static void BackupDatabaseFile()
     {
-        if (!File.Exists(Settings.Default.DatabaseFile) || !Settings.Default.BackUpDatabase)
+        if (!File.Exists(Settings.Default.DatabaseFile))
         {
             return;
         }

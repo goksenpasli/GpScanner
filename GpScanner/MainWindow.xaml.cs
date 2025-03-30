@@ -389,7 +389,7 @@ public partial class MainWindow : Window
             return;
         }
 
-        if (!_dataBaseBackupTaskStarted)
+        if (!_dataBaseBackupTaskStarted && Settings.Default.BackUpDatabase)
         {
             ShowExtendedMessageBox(Translation.GetResStringValue("BACKUPDB"), true);
             _dataBaseBackupTaskStarted = true;
