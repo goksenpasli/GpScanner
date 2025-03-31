@@ -951,12 +951,21 @@
             Source="{Binding Converter={StaticResource FilePathToIconLargeConverter}, Mode=OneWay}" />
     </DataTemplate>
     <DataTemplate x:Key="WebpTemplate">
-        <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-            OpenButtonVisibility="Collapsed"
+        <Extensions:ImageViewer OpenButtonVisibility="Collapsed"
             PanoramaButtonVisibility="Collapsed"
             PrintButtonVisibility="Visible"
-            Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
-            Tag="{Binding Path=DataContext, Converter={StaticResource WebpFileToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+            Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
+            <Extensions:ImageViewer.Tag>
+                <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
+                    <Binding Mode="OneWay"
+                        Path="DataContext"
+                        RelativeSource="{RelativeSource Mode=TemplatedParent}" />
+                    <Binding Mode="OneWay"
+                        Path="ActualWidth"
+                        RelativeSource="{RelativeSource AncestorType=Grid}" />
+                </MultiBinding>
+            </Extensions:ImageViewer.Tag>
+        </Extensions:ImageViewer>
     </DataTemplate>
     <DataTemplate x:Key="Jb2Template">
         <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
@@ -1266,7 +1275,7 @@
             PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
     <DataTemplate x:Key="SimpleArchiveViewerXpsViewerTemplate">
-        <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+        <Controls:XpsViewer FitToHeight="True" XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
     <DataTemplate x:Key="CbrImgViewerTemplate">
         <local:CbrImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
