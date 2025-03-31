@@ -22,7 +22,24 @@
             MaxNumber="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
             MinNumber="1" />
         <DataTemplate x:Key="ListBoxItemListTemplate">
-            <TextBlock VerticalAlignment="Center"><Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+            <TextBlock VerticalAlignment="Center">
+                <TextBlock Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection, RelativeSource={RelativeSource AncestorType=Window}}"><Hyperlink twainctrl:Policy.PolicyName="AddPdfGroupFilesMonthToControlPanel"
+                        Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
+                        TextDecorations="None">
+                        <Run FontFamily="Wingdings"
+                            FontSize="16"
+                            Foreground="Black"
+                            Text="ç" />
+                        <Hyperlink.CommandParameter>
+                            <MultiBinding Converter="{StaticResource CloneConverter}">
+                                <Binding Mode="OneWay" />
+                                <Binding Mode="OneWay"
+                                    Path="TwainCtrl"
+                                    RelativeSource="{RelativeSource AncestorType=Window}" />
+                            </MultiBinding>
+                        </Hyperlink.CommandParameter>
+                    </Hyperlink></TextBlock>
+                <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
                     Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
                     CommandParameter="{Binding Mode=OneWay}"
                     TextDecorations="None">
@@ -34,6 +51,7 @@
                 </Hyperlink><Run Text=" " /><InlineUIContainer BaselineAlignment="Center">
                     <Image Width="16"
                         Height="16"
+                        d:Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}"
                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay}" />
                 </InlineUIContainer><Run Text=" " /><Hyperlink BaselineAlignment="Center"
                     Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
@@ -64,6 +82,7 @@
         </Grid.ColumnDefinitions>
         <ListBox x:Name="LbUnindexed"
             Margin="1"
+            d:ItemTemplate="{StaticResource ListBoxItemListTemplate}"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             Background="{StaticResource BorderBackground}"
             ItemsSource="{Binding UnIndexedFiles}"

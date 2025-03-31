@@ -2,12 +2,13 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using TwainControl.Properties;
 
 namespace TwainControl.Converter;
 
 public sealed class PdfPageCountConverter : IValueConverter
 {
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is string path ? GetPageCount(path) : Translation.GetResStringValue("ERROR");
+    public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value is string path && Settings.Default.ShowDocumentPageCount ? GetPageCount(path) : null;
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 

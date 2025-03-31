@@ -558,6 +558,25 @@
                                             Minimum="0"
                                             StringFormat="{}{0} MB"
                                             Value="{Binding SearchInArchiveFileLimit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                        <ToggleButton IsChecked="{Binding ShowDocumentPageCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
+                                            <Canvas Width="16" Height="32">
+                                                <TextBlock Canvas.Top="0"
+                                                    FontSize="10"
+                                                    Text="1" />
+                                                <TextBlock Canvas.Left="4"
+                                                    Canvas.Top="2"
+                                                    FontSize="10"
+                                                    Text="2" />
+                                                <TextBlock Canvas.Left="8"
+                                                    Canvas.Top="4"
+                                                    FontSize="10"
+                                                    Text="3" />
+                                                <Image Canvas.Bottom="0"
+                                                    Width="16"
+                                                    Height="16"
+                                                    Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
+                                            </Canvas>
+                                        </ToggleButton>
                                     </StackPanel>
                                 </ScrollViewer>
                                 <Separator Margin="0,1,0,1" />

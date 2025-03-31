@@ -16,6 +16,7 @@
     xmlns:properties="clr-namespace:GpScanner.Properties"
     xmlns:tesseract="clr-namespace:Ocr;assembly=Ocr"
     xmlns:twain="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     Startup="Application_Startup"
     mc:Ignorable="d">
     <Application.Resources>
@@ -238,7 +239,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -286,7 +288,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -315,7 +318,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -529,7 +533,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -589,7 +594,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -661,7 +667,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -800,7 +807,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -826,7 +834,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
@@ -867,7 +876,8 @@
                         Opacity="0.5"
                         RenderTransformOrigin="0.5,0.5"
                         Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
                         <TextBlock.RenderTransform>
                             <TransformGroup>
                                 <ScaleTransform />
