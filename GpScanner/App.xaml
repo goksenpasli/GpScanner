@@ -37,6 +37,7 @@
             <converter:CbrCbzFirstpageToBitmapImageConverter x:Key="CbrCbzFirstpageToBitmapImageConverter" />
             <converter:JpgPngToBitmapImageConverter x:Key="JpgPngToBitmapImageConverter" />
             <converter:XpsFileToBitmapImageConverter x:Key="XpsFileToBitmapImageConverter" />
+            <converter:DivideConverter x:Key="DivideConverter" />
             <System:Double x:Key="Zero">0</System:Double>
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
@@ -298,15 +299,33 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ContributionViewerPdfViewerTemplateMini">
-                <PdfViewer:PdfShadowedImage Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}"
-                    Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}"
-                    Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
-                    <PdfViewer:PdfShadowedImage.Tag>
-                        <MultiBinding Converter="{StaticResource PdfMultiplePageToThumbImageConverter}">
-                            <Binding Mode="OneWay" />
-                        </MultiBinding>
-                    </PdfViewer:PdfShadowedImage.Tag>
-                </PdfViewer:PdfShadowedImage>
+                <Grid Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}" Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Grid, AncestorLevel=3}}">
+                    <PdfViewer:PdfShadowedImage Source="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Tag.Result, IsAsync=True}">
+                        <PdfViewer:PdfShadowedImage.Tag>
+                            <MultiBinding Converter="{StaticResource PdfMultiplePageToThumbImageConverter}">
+                                <Binding Mode="OneWay" />
+                            </MultiBinding>
+                        </PdfViewer:PdfShadowedImage.Tag>
+                    </PdfViewer:PdfShadowedImage>
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="{Binding Width, Mode=OneWay, Converter={StaticResource DivideConverter}, ConverterParameter=2.54, RelativeSource={RelativeSource AncestorType=Grid}}"
+                        Foreground="Red"
+                        IsHitTestVisible="False"
+                        Opacity="0.5"
+                        RenderTransformOrigin="0.5,0.5"
+                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="315" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="PdfViewerTemplateFull">
                 <Grid Margin="2">
@@ -497,16 +516,14 @@
                     PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="CbrMiniImgViewerTemplate">
-                <Grid>
-                    <PdfViewer:PdfShadowedImage Width="150"
-                        Height="150"
-                        IsHitTestVisible="False"
+                <Grid Width="150" Height="150">
+                    <PdfViewer:PdfShadowedImage IsHitTestVisible="False"
                         ShowShadow="True"
                         Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
                         Tag="{Binding Path=DataContext, Converter={StaticResource CbrCbzFirstpageToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                     <TextBlock HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        FontSize="64"
+                        FontSize="{Binding Width, Mode=OneWay, Converter={StaticResource DivideConverter}, ConverterParameter=2.54, RelativeSource={RelativeSource AncestorType=Grid}}"
                         Foreground="Red"
                         IsHitTestVisible="False"
                         Opacity="0.5"
@@ -533,7 +550,7 @@
                     Tag="{Binding Path=DataContext, Converter={StaticResource Jb2ToBitmapImageConverter}, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="WebpTemplateMini">
-                <Grid>
+                <Grid Width="150" Height="150">
                     <PdfViewer:PdfShadowedImage Width="150"
                         Height="150"
                         ShowShadow="True"
@@ -566,7 +583,7 @@
                     </PdfViewer:PdfShadowedImage>
                     <TextBlock HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        FontSize="64"
+                        FontSize="{Binding Width, Mode=OneWay, Converter={StaticResource DivideConverter}, ConverterParameter=2.54, RelativeSource={RelativeSource AncestorType=Grid}}"
                         Foreground="Red"
                         IsHitTestVisible="False"
                         Opacity="0.5"
@@ -758,10 +775,8 @@
                     Source="{Binding Path=DataContext, Converter={StaticResource FilePathToIconConverterEmptyViewerTemplate}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerDocumentViewerTemplateMini">
-                <Grid>
-                    <PdfViewer:ShadowedImage Width="150"
-                        Height="150"
-                        ShowShadow="True"
+                <Grid Width="150" Height="150">
+                    <PdfViewer:ShadowedImage ShowShadow="True"
                         Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
                         Tag="{Binding Path=DataContext, Converter={StaticResource JpgPngToBitmapImageConverter}, ConverterParameter=150, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                         <PdfViewer:ShadowedImage.InputBindings>
@@ -779,7 +794,7 @@
                     </PdfViewer:ShadowedImage>
                     <TextBlock HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        FontSize="64"
+                        FontSize="{Binding Width, Mode=OneWay, Converter={StaticResource DivideConverter}, ConverterParameter=2.54, RelativeSource={RelativeSource AncestorType=Grid}}"
                         Foreground="Red"
                         IsHitTestVisible="False"
                         Opacity="0.5"
@@ -798,21 +813,37 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ContributionViewerImgTemplateMini">
-                <PdfViewer:ShadowedImage Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                    Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}"
-                    IsHitTestVisible="False"
-                    ShowShadow="True"
-                    Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
-                    Tag="{Binding Path=DataContext, Converter={StaticResource JpgPngToBitmapImageConverter}, ConverterParameter=150, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Grid Width="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Height="{Binding DataContext.ContributionPreviewSize, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}">
+                    <PdfViewer:ShadowedImage IsHitTestVisible="False"
+                        ShowShadow="True"
+                        Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                        Tag="{Binding Path=DataContext, Converter={StaticResource JpgPngToBitmapImageConverter}, ConverterParameter=150, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="{Binding Width, Mode=OneWay, Converter={StaticResource DivideConverter}, ConverterParameter=2.54, RelativeSource={RelativeSource AncestorType=Grid}}"
+                        Foreground="Red"
+                        IsHitTestVisible="False"
+                        Opacity="0.5"
+                        RenderTransformOrigin="0.5,0.5"
+                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="315" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
                 <Controls:XpsViewer FitToHeight="True" XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplateMini">
-                <Grid>
-                    <PdfViewer:ShadowedImage Width="150"
-                        Height="150"
-                        ShowShadow="True"
+                <Grid Width="150" Height="150">
+                    <PdfViewer:ShadowedImage ShowShadow="True"
                         Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
                         Tag="{Binding Path=DataContext, Converter={StaticResource XpsFileToBitmapImageConverter}, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
                         <PdfViewer:ShadowedImage.InputBindings>
@@ -830,7 +861,7 @@
                     </PdfViewer:ShadowedImage>
                     <TextBlock HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        FontSize="64"
+                        FontSize="{Binding Width, Mode=OneWay, Converter={StaticResource DivideConverter}, ConverterParameter=2.54, RelativeSource={RelativeSource AncestorType=Grid}}"
                         Foreground="Red"
                         IsHitTestVisible="False"
                         Opacity="0.5"
