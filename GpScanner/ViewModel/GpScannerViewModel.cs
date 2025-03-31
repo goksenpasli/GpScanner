@@ -1679,7 +1679,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 OnPropertyChanged(nameof(ContributionPreviewSize));
             }
         }
-    } = 120;
+    } = 160;
 
     public ICommand CycleSelectedDocuments { get; }
 

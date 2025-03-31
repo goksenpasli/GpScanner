@@ -17,6 +17,7 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
     public static readonly DependencyProperty ControlsVisibilityProperty = DependencyProperty.Register("ControlsVisibility", typeof(Visibility), typeof(XpsViewer), new PropertyMetadata(Visibility.Visible));
     public static readonly DependencyProperty FitToHeightProperty = DependencyProperty.Register("FitToHeight", typeof(bool), typeof(XpsViewer), new PropertyMetadata(false, Changed));
     public static readonly DependencyPropertyKey PageNumberProperty = DependencyProperty.RegisterReadOnly("PageNumber", typeof(int), typeof(XpsViewer), new PropertyMetadata(0));
+    public static readonly DependencyProperty VerticalScrollBarVisibilityProperty = DependencyProperty.Register("VerticalScrollBarVisibility", typeof(ScrollBarVisibility), typeof(XpsViewer), new PropertyMetadata(ScrollBarVisibility.Visible));
     public static readonly DependencyProperty XpsDataFilePathProperty = DependencyProperty.Register("XpsDataFilePath", typeof(string), typeof(XpsViewer), new PropertyMetadata(null, XpsDataFilePathChanged));
 
     public XpsViewer()
@@ -47,6 +48,8 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
     public bool FitToHeight { get => (bool)GetValue(FitToHeightProperty); set => SetValue(FitToHeightProperty, value); }
 
     public int PageNumber => (int)GetValue(PageNumberProperty.DependencyProperty);
+
+    public ScrollBarVisibility VerticalScrollBarVisibility { get => (ScrollBarVisibility)GetValue(VerticalScrollBarVisibilityProperty); set => SetValue(VerticalScrollBarVisibilityProperty, value); }
 
     public string XpsDataFilePath { get => (string)GetValue(XpsDataFilePathProperty); set => SetValue(XpsDataFilePathProperty, value); }
 

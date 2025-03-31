@@ -61,7 +61,7 @@ public class CbrImageViewer : ImageViewer
             using ArchiveFile archiveFile = new(ImageFilePath);
             Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == cbrFilecontents[Sayfa - 1].DosyaAdı);
             string extractpath = $"{Path.GetTempPath()}{cbrFilecontents[Sayfa - 1].DosyaAdı}";
-            if (!File.Exists(extractpath))
+            if (!File.Exists(extractpath) || new FileInfo(extractpath)?.Length == 0)
             {
                 entry?.Extract(extractpath);
             }

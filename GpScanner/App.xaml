@@ -36,6 +36,7 @@
             <converter:PdfPageCountConverter x:Key="PdfPageCountConverter" />
             <converter:CbrCbzFirstpageToBitmapImageConverter x:Key="CbrCbzFirstpageToBitmapImageConverter" />
             <converter:JpgPngToBitmapImageConverter x:Key="JpgPngToBitmapImageConverter" />
+            <converter:XpsFileToBitmapImageConverter x:Key="XpsFileToBitmapImageConverter" />
             <System:Double x:Key="Zero">0</System:Double>
             <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
                 <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
@@ -473,8 +474,8 @@
                 <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
             </DataTemplate>
             <DataTemplate x:Key="DocumentViewerMonthPreviewZipViewerTemplate">
-                <twain:SimpleArchiveViewer Width="155"
-                    Height="155"
+                <twain:SimpleArchiveViewer Width="150"
+                    Height="150"
                     ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
                     SimpleStyle="True"
@@ -805,14 +806,47 @@
                     Tag="{Binding Path=DataContext, Converter={StaticResource JpgPngToBitmapImageConverter}, ConverterParameter=150, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplate">
-                <Controls:XpsViewer XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Controls:XpsViewer FitToHeight="True" XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="XpsViewerTemplateMini">
-                <Controls:XpsViewer Width="150"
-                    Height="150"
-                    ControlsVisibility="Collapsed"
-                    FitToHeight="True"
-                    XpsDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
+                <Grid>
+                    <PdfViewer:ShadowedImage Width="150"
+                        Height="150"
+                        ShowShadow="True"
+                        Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}"
+                        Tag="{Binding Path=DataContext, Converter={StaticResource XpsFileToBitmapImageConverter}, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}">
+                        <PdfViewer:ShadowedImage.InputBindings>
+                            <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
+                                <MouseBinding.CommandParameter>
+                                    <MultiBinding Converter="{StaticResource CloneConverter}">
+                                        <Binding Mode="OneWay" />
+                                        <Binding Mode="OneWay"
+                                            Path="TwainCtrl"
+                                            RelativeSource="{RelativeSource AncestorType=Window}" />
+                                    </MultiBinding>
+                                </MouseBinding.CommandParameter>
+                            </MouseBinding>
+                        </PdfViewer:ShadowedImage.InputBindings>
+                    </PdfViewer:ShadowedImage>
+                    <TextBlock HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="64"
+                        Foreground="Red"
+                        IsHitTestVisible="False"
+                        Opacity="0.5"
+                        RenderTransformOrigin="0.5,0.5"
+                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
+                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}">
+                        <TextBlock.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform />
+                                <SkewTransform />
+                                <RotateTransform Angle="315" />
+                                <TranslateTransform />
+                            </TransformGroup>
+                        </TextBlock.RenderTransform>
+                    </TextBlock>
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="EypViewerTemplateFull">
                 <twain:EypPdfViewer ViewModel:AllPdfViewerControl.AllPageNumber="{Binding DataContext.AllPdfPage, RelativeSource={RelativeSource AncestorType=Window}}"
@@ -822,8 +856,8 @@
                     EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="MonthPreviewSelectorEypViewerTemplate">
-                <twain:EypPdfViewer Width="155"
-                    Height="155"
+                <twain:EypPdfViewer Width="150"
+                    Height="150"
                     AutoFitContent="True"
                     EypFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                     PdfScrollBarVisibility="Hidden"
@@ -831,8 +865,8 @@
                     UpDownButtonVisibility="Collapsed" />
             </DataTemplate>
             <DataTemplate x:Key="DocumentViewerMonthPreviewXlsxTemplate">
-                <twain:XlsxViewer Width="155"
-                    Height="155"
+                <twain:XlsxViewer Width="150"
+                    Height="150"
                     XlsxDataFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="VideoViewerTemplate">
@@ -861,18 +895,18 @@
                 <twain:DocxViewer DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DocxViewerInternalThumbTemplate">
-                <Image Width="145"
-                    Height="145"
+                <Image Width="150"
+                    Height="150"
                     Source="{Binding Path=DataContext, Mode=OneWay, Converter={StaticResource DocxInternalThumbnailExtractConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="XlsxViewerInternalThumbTemplate">
-                <Image Width="145"
-                    Height="145"
+                <Image Width="150"
+                    Height="150"
                     Source="{Binding Path=DataContext, Mode=OneWay, Converter={StaticResource XlsxInternalThumbnailExtractConverter}, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DocumentViewerMonthPreviewDocxViewerTemplate">
-                <twain:DocxViewer Width="155"
-                    Height="155"
+                <twain:DocxViewer Width="150"
+                    Height="150"
                     DocxDataFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
             </DataTemplate>
             <DataTemplate x:Key="DvdBurnerZipViewerTemplate">

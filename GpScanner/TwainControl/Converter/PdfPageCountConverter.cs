@@ -36,6 +36,11 @@ public sealed class PdfPageCountConverter : IValueConverter
                 {
                     return webpFileHandler.GetPageCount(path);
                 }
+                ILoadFileHandler xpsFileHandler = new XpsFileHandler();
+                if (xpsFileHandler.IsValidFile(path))
+                {
+                    return xpsFileHandler.GetPageCount(path);
+                }
                 ILoadFileHandler pdfFileHandler = new PdfFileHandler();
                 return pdfFileHandler.IsValidFile(path) ? pdfFileHandler.GetPageCount(path) : 0;
             });

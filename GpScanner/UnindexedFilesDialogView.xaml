@@ -70,7 +70,7 @@
             VirtualizingPanel.CacheLengthUnit="Pixel"
             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
             VirtualizingPanel.ScrollUnit="Pixel"
-            VirtualizingPanel.VirtualizationMode="Standard">
+            VirtualizingPanel.VirtualizationMode="Recycling">
             <ListBox.Style>
                 <Style TargetType="ListBox">
                     <Style.Triggers>

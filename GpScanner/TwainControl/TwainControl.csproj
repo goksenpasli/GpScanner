@@ -139,6 +139,7 @@
     <Compile Include="Converter\StringToStrokeCollectionConverter.cs" />
     <Compile Include="Converter\WebpFileToBitmapImageConverter.cs" />
     <Compile Include="Converter\XKnownColorToBrushConverter.cs" />
+    <Compile Include="Converter\XpsFileToBitmapImageConverter.cs" />
     <Compile Include="DocxViewer.xaml.cs">
       <DependentUpon>DocxViewer.xaml</DependentUpon>
     </Compile>

@@ -89,7 +89,7 @@
                                     VirtualizingPanel.CacheLengthUnit="Pixel"
                                     VirtualizingPanel.IsVirtualizingWhenGrouping="True"
                                     VirtualizingPanel.ScrollUnit="Pixel"
-                                    VirtualizingPanel.VirtualizationMode="Standard">
+                                    VirtualizingPanel.VirtualizationMode="Recycling">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"

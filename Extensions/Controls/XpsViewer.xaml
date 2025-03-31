@@ -15,7 +15,6 @@
         <Style x:Key="DocumentViewerStyle"
             BasedOn="{x:Null}"
             TargetType="{x:Type DocumentViewer}">
-            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
             <Setter Property="ContextMenu" Value="{DynamicResource {ComponentResourceKey ResourceId=PUIDocumentViewerContextMenu, TypeInTargetAssembly={x:Type ui:PresentationUIStyleResources}}}" />
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}" />
@@ -25,7 +24,7 @@
                         <Border BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Focusable="False">
-                            <Grid Background="{TemplateBinding Background}" KeyboardNavigation.TabNavigation="Local">
+                            <Grid KeyboardNavigation.TabNavigation="Local">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
@@ -41,23 +40,6 @@
                                                                                   TypeInTargetAssembly={x:Type ui:PresentationUIStyleResources}}}"
                                     TabIndex="0"
                                     Visibility="{Binding ControlsVisibility}" />
-                                <DockPanel Grid.Row="1">
-                                    <FrameworkElement Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}" DockPanel.Dock="Right" />
-                                    <Rectangle Height="10"
-                                        VerticalAlignment="top"
-                                        Visibility="Visible">
-                                        <Rectangle.Fill>
-                                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                                                <LinearGradientBrush.GradientStops>
-                                                    <GradientStopCollection>
-                                                        <GradientStop Offset="0" Color="#66000000" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </GradientStopCollection>
-                                                </LinearGradientBrush.GradientStops>
-                                            </LinearGradientBrush>
-                                        </Rectangle.Fill>
-                                    </Rectangle>
-                                </DockPanel>
                                 <ScrollViewer x:Name="PART_ContentHost"
                                     Grid.Row="1"
                                     Grid.Column="0"
@@ -65,7 +47,8 @@
                                     Focusable="{TemplateBinding Focusable}"
                                     HorizontalScrollBarVisibility="Auto"
                                     IsTabStop="true"
-                                    TabIndex="1" />
+                                    TabIndex="1"
+                                    VerticalScrollBarVisibility="{Binding VerticalScrollBarVisibility}" />
                                 <ContentControl x:Name="PART_FindToolBarHost"
                                     Grid.Row="2"
                                     Grid.Column="0"
