@@ -84,20 +84,31 @@
                                 MinHeight="240"
                                 Background="{x:Null}"
                                 BorderBrush="Transparent">
-                                <ListBox ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
-                                    ItemsSource="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}"
-                                    VirtualizingPanel.CacheLengthUnit="Pixel"
-                                    VirtualizingPanel.IsVirtualizingWhenGrouping="True"
-                                    VirtualizingPanel.ScrollUnit="Pixel"
-                                    VirtualizingPanel.VirtualizationMode="Recycling">
-                                    <ListBox.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
-                                                ItemSize="165,165"
-                                                SpacingMode="None" />
-                                        </ItemsPanelTemplate>
-                                    </ListBox.ItemsPanel>
-                                </ListBox>
+                                <Grid Tag="{Binding Mode=OneWay, Converter={StaticResource MonthContributionDataFileNameConverter}}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="*" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock HorizontalAlignment="Center">
+                                        <Run Text="{Binding Mode=OneWay, Path=Tag.Count, RelativeSource={RelativeSource AncestorType=Grid}}" />
+                                        <Run Text="{twainctrl:Loc DOCUMENT}" />
+                                    </TextBlock>
+                                    <ListBox Grid.Row="1"
+                                        ItemTemplateSelector="{StaticResource DocumentViewerMonthPreviewSelector}"
+                                        ItemsSource="{Binding Mode=OneWay, Path=Tag, RelativeSource={RelativeSource AncestorType=Grid}}"
+                                        VirtualizingPanel.CacheLengthUnit="Pixel"
+                                        VirtualizingPanel.IsVirtualizingWhenGrouping="True"
+                                        VirtualizingPanel.ScrollUnit="Pixel"
+                                        VirtualizingPanel.VirtualizationMode="Recycling">
+                                        <ListBox.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <Extensions:VirtualizingWrapPanel CanHorizontallyScroll="False"
+                                                    ItemSize="165,165"
+                                                    SpacingMode="None" />
+                                            </ItemsPanelTemplate>
+                                        </ListBox.ItemsPanel>
+                                    </ListBox>
+                                </Grid>
                             </Extensions:ResizablePanel>
                         </Extensions:FadedToolTipControl>
                         <TextBlock x:Name="TbView"

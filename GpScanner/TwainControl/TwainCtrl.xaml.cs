@@ -768,6 +768,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     });
                                 Scanner.PdfSaveProgressValue = (i + 1) / (double)seçiliresimler.Count;
                             }
+                            Scanner.PdfSaveProgressValue = 0;
                         }
 
                         bool isBlackAndWhiteMode = (ColourSetting)Settings.Default.Mode == ColourSetting.BlackAndWhite;
@@ -780,16 +781,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 for (int i = 0; i < seçiliresimler.Count; i++)
                                 {
                                     ScannedImage scannedImage = seçiliresimler[i];
-                                    await SavePdfImageAsync(scannedImage, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, isBlackAndWhiteMode);
+                                    Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
+                                    await SavePdfImageAsync(scannedImage, Scanner.PdfFilePath, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, isBlackAndWhiteMode);
                                     Scanner.PdfSaveProgressValue = (i + 1) / (double)seçiliresimler.Count;
+                                    OnPropertyChanged(nameof(Scanner.Resimler));
                                 }
+                                Scanner.PdfSaveProgressValue = 0;
                             }
                             else
                             {
                                 await SavePdfImageAsync(seçiliresimler, PdfGeneration.GetPdfScanPath(), Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, isBlackAndWhiteMode, Settings.Default.ImgLoadResolution);
+                                OnPropertyChanged(nameof(Scanner.Resimler));
                             }
                         }
-                        await RemoveProcessedImages(true);
+                        await RemoveProcessedImages();
                     });
             },
             parameter =>
@@ -1106,12 +1111,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         InsertClipBoardImage = new RelayCommand<object>(
             parameter =>
             {
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
                 if (AddFromClipBoard.CanExecute(null))
                 {
                     AddFromClipBoard.Execute(null);
                 }
 
-                if (Keyboard.Modifiers == ModifierKeys.Alt && SeçiliDirektPdfKaydet.CanExecute(null))
+                if (altkeypressed && SeçiliDirektPdfKaydet.CanExecute(null))
                 {
                     SeçiliDirektPdfKaydet.Execute(null);
                 }
@@ -4904,7 +4910,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
-    private async Task RemoveProcessedImages(bool notifyimage = false)
+    private async Task RemoveProcessedImages()
     {
         await Dispatcher.InvokeAsync(
             () =>
@@ -4912,10 +4918,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (Settings.Default.RemoveProcessedImage)
                 {
                     SeçiliListeTemizle.Execute(null);
-                }
-                if (notifyimage)
-                {
-                    OnPropertyChanged(nameof(Scanner.Resimler));
                 }
             });
     }
