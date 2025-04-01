@@ -40,14 +40,6 @@
             <converter:XpsFileToBitmapImageConverter x:Key="XpsFileToBitmapImageConverter" />
             <converter:DivideConverter x:Key="DivideConverter" />
             <System:Double x:Key="Zero">0</System:Double>
-            <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
-                <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
-                <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
-            </LinearGradientBrush>
-            <LinearGradientBrush x:Key="GroupBoxBackGround" ice:Freeze="True" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0" EndPoint="0.5,1">
-                <GradientStop ice:Freeze="True" Offset="1" Color="#FE00B6E8" />
-                <GradientStop ice:Freeze="True" Color="#FF48F3CA" />
-            </LinearGradientBrush>
             <Style TargetType="ComboBoxItem">
                 <Setter Property="HorizontalContentAlignment" Value="Left" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />

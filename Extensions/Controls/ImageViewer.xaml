@@ -97,6 +97,7 @@
                                         </Button.Content>
                                     </Button>
                                     <ListBox Grid.Column="1"
+                                        Background="{DynamicResource BorderBackground}"
                                         SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedValuePath="Tag">
                                         <ListBox.ItemsPanel>

@@ -161,6 +161,7 @@
                                 </Button>
                                 <WrapPanel IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, RelativeSource={RelativeSource TemplatedParent}}" Orientation="Horizontal">
                                     <ListBox VerticalContentAlignment="Center"
+                                        Background="{DynamicResource BorderBackground}"
                                         SelectedValue="{Binding Orientation, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedValuePath="Tag">
                                         <ListBox.ItemsPanel>

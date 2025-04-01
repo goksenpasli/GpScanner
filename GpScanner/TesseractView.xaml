@@ -34,9 +34,9 @@
                 Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                 CommandParameter="{Binding Tessdatafolder}"
                 CopyButtonVisibility="Collapsed"
-                Description="TESSERACT"
                 PasteButtonVisibility="Collapsed"
-                Text="{Binding SeçiliDil, UpdateSourceTrigger=PropertyChanged}" />
+                Text="{Binding SeçiliDil, UpdateSourceTrigger=PropertyChanged}"
+                Watermark="TESSERACT" />
         </GroupBox.Header>
         <Grid>
             <Grid.RowDefinitions>

@@ -46,10 +46,6 @@
                 Height="16"
                 x:Shared="false"
                 Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-            <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
-                <GradientStop ice:Freeze="True" Offset="0" Color="#FFFDFEFF" />
-                <GradientStop ice:Freeze="True" Offset="1" Color="#FFC1D3EA" />
-            </LinearGradientBrush>
         </ResourceDictionary>
     </UserControl.Resources>
     <Grid x:Name="grid" Focusable="True">
@@ -133,7 +129,7 @@
                                     <Extensions:FileBreadCrumbControl VerticalAlignment="Center"
                                         Background="{x:Null}"
                                         FilePath="{Binding Mode=OneWay}"
-                                        InternalBackground="{StaticResource BorderBackground}"
+                                        InternalBackground="{DynamicResource BorderBackground}"
                                         IsEnabled="{Binding ElementName=PdfImg, Path=Source, Mode=OneWay, Converter={StaticResource NullableToBooleanConverter}}"
                                         Orientation="Vertical"
                                         ShowFileName="Visible" />
@@ -1788,9 +1784,9 @@
         </WrapPanel>
         <ProgressBar Grid.Row="1"
             Height="3"
-            Background="{StaticResource BorderBackground}"
-            BorderBrush="{StaticResource BorderBackground}"
-            Foreground="{StaticResource GroupBoxBackGround}"
+            Background="{DynamicResource BorderBackground}"
+            BorderBrush="{DynamicResource BorderBackground}"
+            Foreground="{DynamicResource GroupBoxBackGround}"
             Maximum="1"
             Value="{Binding PdfImportControlProgressValue}" />
         <local:EypPdfViewer x:Name="PdfViewer"
