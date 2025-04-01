@@ -22,8 +22,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Xps;
 using static Extensions.ExtensionMethods;
 using Control = System.Windows.Controls.Control;
-using DataFormats = System.Windows.DataFormats;
-using DragEventArgs = System.Windows.DragEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
 using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using PrintDialog = System.Windows.Controls.PrintDialog;
@@ -31,7 +29,6 @@ using SaveFileDialog = Microsoft.Win32.SaveFileDialog;
 
 namespace PdfViewer;
 
-[TemplatePart(Name = "ScrollVwr", Type = typeof(ScrollViewer))]
 public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 {
     public static readonly DependencyProperty AngleProperty = DependencyProperty.Register("Angle", typeof(double), typeof(PdfViewer), new PropertyMetadata(0.0));
@@ -60,7 +57,6 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty ZoomEnabledProperty = DependencyProperty.Register("ZoomEnabled", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
     private bool disposedValue;
-    private ScrollViewer scrollvwr;
 
     static PdfViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer))); }
 
@@ -634,17 +630,6 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         GC.SuppressFinalize(this);
     }
 
-    public override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-        scrollvwr = GetTemplateChild("ScrollVwr") as ScrollViewer;
-        if (scrollvwr is not null)
-        {
-            scrollvwr.Drop -= Scrollvwr_Drop;
-            scrollvwr.Drop += Scrollvwr_Drop;
-        }
-    }
-
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)
@@ -806,20 +791,6 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         if (AutoFitContent && Resize.CanExecute(null))
         {
             Resize.Execute(null);
-        }
-    }
-
-    private async void Scrollvwr_Drop(object sender, DragEventArgs e)
-    {
-        if (OpenButtonVisibility is Visibility.Hidden or Visibility.Collapsed)
-        {
-            e.Handled = true;
-            return;
-        }
-        string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);
-        if (await IsValidPdfFileAsync(droppedfiles?[0]))
-        {
-            PdfFilePath = droppedfiles?[0];
         }
     }
 }

@@ -230,6 +230,12 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     protected override void OnDrop(DragEventArgs e)
     {
+        if (OpenButtonVisibility is Visibility.Hidden or Visibility.Collapsed)
+        {
+            e.Handled = true;
+            return;
+        }
+
         if (e?.Data?.GetData(typeof(Scanner)) is Scanner droppedData && IsValidPdfFile(droppedData.FileName))
         {
             PdfFilePath = droppedData.FileName;
