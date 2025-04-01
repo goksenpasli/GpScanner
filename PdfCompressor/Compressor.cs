@@ -24,7 +24,6 @@ using Point = System.Drawing.Point;
 
 namespace PdfCompressor;
 
-[TemplatePart(Name = "ListBox", Type = typeof(ListBox))]
 public class Compressor : Control, INotifyPropertyChanged
 {
     public static readonly DependencyProperty BatchPdfListProperty = DependencyProperty.Register("BatchPdfList", typeof(ObservableCollection<BatchPdfData>), typeof(Compressor), new PropertyMetadata(new ObservableCollection<BatchPdfData>()));
@@ -35,8 +34,6 @@ public class Compressor : Control, INotifyPropertyChanged
     public static readonly DependencyProperty LoadedPdfPathProperty = DependencyProperty.Register("LoadedPdfPath", typeof(string), typeof(Compressor), new PropertyMetadata(string.Empty));
     public static readonly DependencyProperty QualityProperty = DependencyProperty.Register("Quality", typeof(int), typeof(Compressor), new PropertyMetadata(Settings.Default.Quality, QualityChanged));
     public static readonly DependencyProperty UseMozJpegProperty = DependencyProperty.Register("UseMozJpeg", typeof(bool), typeof(Compressor), new PropertyMetadata(false, MozpegChanged));
-    private readonly List<string> imagefileextensions = [".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp"];
-    private ListBox listbox;
 
     static Compressor() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Compressor), new FrameworkPropertyMetadata(typeof(Compressor))); }
 
@@ -169,17 +166,6 @@ public class Compressor : Control, INotifyPropertyChanged
         }
 
         return bitmap;
-    }
-
-    public override void OnApplyTemplate()
-    {
-        base.OnApplyTemplate();
-        listbox = GetTemplateChild("ListBox") as ListBox;
-        if (listbox is not null)
-        {
-            listbox.Drop -= Listbox_Drop;
-            listbox.Drop += Listbox_Drop;
-        }
     }
 
     protected void ApplyDefaultPdfCompression(PdfDocument doc)
@@ -408,17 +394,5 @@ public class Compressor : Control, INotifyPropertyChanged
         }
 
         return false;
-    }
-
-    private void Listbox_Drop(object sender, DragEventArgs e)
-    {
-        string[] droppedfiles = (string[])e?.Data?.GetData(DataFormats.FileDrop);
-        if (droppedfiles?.Length > 0)
-        {
-            foreach (string file in droppedfiles.Where(file => imagefileextensions.Contains(Path.GetExtension(file).ToLowerInvariant()) || IsValidPdfFile(file)))
-            {
-                BatchPdfList?.Add(new BatchPdfData() { Filename = file });
-            }
-        }
     }
 }

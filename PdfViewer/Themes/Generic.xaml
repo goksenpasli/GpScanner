@@ -120,10 +120,7 @@
                             FontSize="16"
                             Visibility="{Binding UpDownButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
                         <Grid Grid.Row="1">
-                            <ScrollViewer x:Name="ScrollVwr"
-                                AllowDrop="True"
-                                HorizontalScrollBarVisibility="{Binding PdfScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}"
-                                VerticalScrollBarVisibility="{Binding PdfScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
+                            <ScrollViewer HorizontalScrollBarVisibility="{Binding PdfScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}" VerticalScrollBarVisibility="{Binding PdfScrollBarVisibility, RelativeSource={RelativeSource TemplatedParent}}">
                                 <Image RenderTransformOrigin="0.5,0.5"
                                     ScrollViewer.CanContentScroll="True"
                                     Source="{Binding Source, RelativeSource={RelativeSource TemplatedParent}}"

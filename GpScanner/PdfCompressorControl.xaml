@@ -176,7 +176,6 @@
                                             Margin="20,0,0,0"
                                             d:ItemTemplate="{StaticResource ListBoxItemListTemplate}"
                                             d:ItemsSource="{d:SampleData ItemCount=5}"
-                                            AllowDrop="True"
                                             Background="{DynamicResource GroupBoxBackGround}"
                                             BorderBrush="{x:Null}"
                                             IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource Mode=TemplatedParent}}"

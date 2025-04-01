@@ -136,7 +136,6 @@
                                 <ColumnDefinition />
                             </Grid.ColumnDefinitions>
                             <ListBox x:Name="Lb"
-                                AllowDrop="True"
                                 Background="{DynamicResource BorderBackground}"
                                 BorderBrush="{x:Null}"
                                 ContextMenuService.IsEnabled="{Binding Path=HasItems, RelativeSource={RelativeSource Mode=Self}}"

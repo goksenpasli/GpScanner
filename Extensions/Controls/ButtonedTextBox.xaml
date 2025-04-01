@@ -272,6 +272,5 @@
         <Setter Property="ScrollViewer.PanningMode" Value="VerticalFirst" />
         <Setter Property="Stylus.IsFlicksEnabled" Value="False" />
         <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-        <Setter Property="UIElement.AllowDrop" Value="True" />
     </Style>
 </ResourceDictionary>

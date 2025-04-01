@@ -49,10 +49,8 @@
                                     Style="{DynamicResource Slider}"
                                     Value="{Binding Quality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}" />
                             </UniformGrid>
-                            <ListBox x:Name="ListBox"
-                                Grid.Row="1"
+                            <ListBox Grid.Row="1"
                                 Grid.Column="0"
-                                AllowDrop="True"
                                 IsEnabled="{Binding BatchProcessIsEnabled, RelativeSource={RelativeSource TemplatedParent}}"
                                 ItemsSource="{Binding BatchPdfList, RelativeSource={RelativeSource TemplatedParent}}"
                                 VirtualizingPanel.CacheLengthUnit="Item"

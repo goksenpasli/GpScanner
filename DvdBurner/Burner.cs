@@ -18,7 +18,6 @@ using Control = System.Windows.Controls.Control;
 
 namespace DvdBurner
 {
-    [TemplatePart(Name = "Lb", Type = typeof(ListBox))]
     public class Burner : Control, INotifyPropertyChanged
     {
         public static readonly DependencyProperty FilesProperty = DependencyProperty.Register("Files", typeof(ObservableCollection<string>), typeof(Burner), new PropertyMetadata(new ObservableCollection<string>(), Changed));
@@ -26,7 +25,6 @@ namespace DvdBurner
         private static Task Burntask;
         private static Task Erasetask;
         private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
-        private ListBox lb;
 
         static Burner() { DefaultStyleKeyProperty.OverrideMetadata(typeof(Burner), new FrameworkPropertyMetadata(typeof(Burner))); }
 
@@ -396,17 +394,6 @@ namespace DvdBurner
             }
         }
 
-        public override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
-            lb = GetTemplateChild("Lb") as ListBox;
-            if (lb is not null)
-            {
-                lb.Drop -= Listbox_Drop;
-                lb.Drop += Listbox_Drop;
-            }
-        }
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (string.IsNullOrEmpty(propertyName))
@@ -540,15 +527,6 @@ namespace DvdBurner
         }
 
         private long GetTotalFileSizeMB(string[] files) => files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024 ?? 0;
-
-        private void Listbox_Drop(object sender, DragEventArgs e)
-        {
-            string[] droppedfiles = (string[])e?.Data?.GetData(DataFormats.FileDrop);
-            if (droppedfiles?.Length > 0)
-            {
-                AddFiles(droppedfiles);
-            }
-        }
 
         private void UpdateProgressFileSize(string[] files)
         {

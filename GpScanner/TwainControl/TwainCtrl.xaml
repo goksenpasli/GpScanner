@@ -2681,6 +2681,7 @@
                             FontWeight="Bold" />
                         <Controls:MediaViewer x:Name="mediaViewer"
                             Grid.Column="1"
+                            AllowDrop="True"
                             AutoPlay="True"
                             OpenButtonVisibility="Visible" />
                     </Grid>
@@ -2710,7 +2711,9 @@
                                     Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xls}" />
                             </Extensions:ButtonedTextBox.Description>
                         </Extensions:ButtonedTextBox>
-                        <local:XlsxViewer x:Name="xlsxViewer" Grid.Row="1" />
+                        <local:XlsxViewer x:Name="xlsxViewer"
+                            Grid.Row="1"
+                            AllowDrop="True" />
                     </Grid>
                 </TabItem>
                 <TabItem>
@@ -2732,7 +2735,9 @@
                             Height="32"
                             Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.docx}" />
                     </TabItem.Header>
-                    <local:DocxViewer x:Name="docxViewer" x:FieldModifier="public" />
+                    <local:DocxViewer x:Name="docxViewer"
+                        x:FieldModifier="public"
+                        AllowDrop="True" />
                 </TabItem>
             </TabControl>
         </GroupBox>

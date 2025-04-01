@@ -1794,6 +1794,7 @@
             d:OpenButtonVisibility="Visible"
             local:Policy.PolicyName="EypPdfViewer"
             x:FieldModifier="public"
+            AllowDrop="True"
             AutoFitContent="True"
             OpenButtonVisibility="{Binding PdfToolBarControlIsEnabled, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}"
             Orientation="Height"
