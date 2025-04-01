@@ -813,6 +813,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     {
         if (OpenButtonVisibility is Visibility.Hidden or Visibility.Collapsed)
         {
+            e.Handled = true;
             return;
         }
         string[] droppedfiles = (string[])e.Data.GetData(DataFormats.FileDrop);

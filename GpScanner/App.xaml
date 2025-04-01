@@ -497,12 +497,27 @@
                 <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
             </DataTemplate>
             <DataTemplate x:Key="DocumentViewerMonthPreviewZipViewerTemplate">
-                <twain:SimpleArchiveViewer Width="150"
-                    Height="150"
-                    ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
-                    SimpleStyle="True"
-                    Style="{StaticResource SimpleArchiveViewerStyle}" />
+                <Grid Width="150" Height="150">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock HorizontalAlignment="Right">
+                        <Hyperlink Command="{Binding DataContext.EditWithControlPanel, RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding Mode=OneWay}"
+                            TextDecorations="None">
+                            <Run FontFamily="Wingdings 2"
+                                FontSize="18"
+                                FontWeight="Bold"
+                                Text="$" />
+                        </Hyperlink>
+                    </TextBlock>
+                    <twain:SimpleArchiveViewer Grid.Row="1"
+                        ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                        SimpleStyle="True"
+                        Style="{StaticResource SimpleArchiveViewerStyle}" />
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplateFull">
                 <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" Style="{StaticResource SimpleArchiveViewerStyle}" />
@@ -626,59 +641,6 @@
                         </MouseBinding>
                     </PdfViewer:PdfShadowedImage.InputBindings>
                 </PdfViewer:PdfShadowedImage>
-            </DataTemplate>
-            <DataTemplate x:Key="WebpMonthTemplateMini">
-                <Grid>
-                    <PdfViewer:PdfShadowedImage Width="150"
-                        Height="150"
-                        ShowShadow="True"
-                        Source="{Binding Path=Tag.Result, Mode=OneWay, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}">
-                        <PdfViewer:PdfShadowedImage.Tag>
-                            <MultiBinding Converter="{StaticResource WebpFileToBitmapImageConverter}">
-                                <Binding IsAsync="True"
-                                    Mode="OneWay"
-                                    Path="DataContext"
-                                    RelativeSource="{RelativeSource Mode=TemplatedParent}"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                                <Binding Mode="OneWay"
-                                    Path="Width"
-                                    RelativeSource="{RelativeSource Mode=Self}"
-                                    UpdateSourceTrigger="PropertyChanged" />
-                            </MultiBinding>
-                        </PdfViewer:PdfShadowedImage.Tag>
-                        <PdfViewer:PdfShadowedImage.InputBindings>
-                            <MouseBinding Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType=Extensions:ContentToggleButton}}" Gesture="LeftDoubleClick">
-                                <MouseBinding.CommandParameter>
-                                    <MultiBinding Converter="{StaticResource CloneConverter}">
-                                        <Binding Mode="OneWay" />
-                                        <Binding Mode="OneWay"
-                                            Path="TwainCtrl"
-                                            RelativeSource="{RelativeSource AncestorType=Window}" />
-                                    </MultiBinding>
-                                </MouseBinding.CommandParameter>
-                            </MouseBinding>
-                        </PdfViewer:PdfShadowedImage.InputBindings>
-                    </PdfViewer:PdfShadowedImage>
-                    <TextBlock HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="64"
-                        Foreground="Red"
-                        IsHitTestVisible="False"
-                        Opacity="0.5"
-                        RenderTransformOrigin="0.5,0.5"
-                        Tag="{Binding Path=DataContext, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}, Converter={StaticResource PdfPageCountConverter}}"
-                        Text="{Binding Mode=OneWay, IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
-                        Visibility="{Binding Mode=OneWay, Path=ShowDocumentPageCount, Converter={StaticResource BooleanToVisibilityConverter}, Source={x:Static twainproperties:Settings.Default}}">
-                        <TextBlock.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform Angle="315" />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </TextBlock.RenderTransform>
-                    </TextBlock>
-                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="Jb2Template">
                 <Extensions:ImageViewer OpenButtonVisibility="Collapsed"
@@ -1052,7 +1014,7 @@
                 Jb2="{StaticResource Jb2MonthTemplateMini}"
                 Pdf="{StaticResource PdfViewerDocumentViewerMonthTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
-                Webp="{StaticResource WebpMonthTemplateMini}"
+                Webp="{StaticResource WebpTemplateMini}"
                 Xlsx="{StaticResource XlsxViewerInternalThumbTemplate}"
                 Xml="{StaticResource EmptyViewerTemplate}"
                 Xps="{StaticResource XpsViewerTemplateMini}"
@@ -1105,7 +1067,7 @@
                 Jb2="{StaticResource Jb2TemplateMini}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
-                Webp="{StaticResource WebpTemplateMini}"
+                Webp="{StaticResource WebpTemplate}"
                 Xlsx="{StaticResource DvdBurnerXlsxTemplate}"
                 Xml="{StaticResource XmlViewerThumbTemplate}"
                 Xps="{StaticResource XpsViewerTemplate}"

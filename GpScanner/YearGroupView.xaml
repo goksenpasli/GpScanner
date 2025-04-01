@@ -55,6 +55,12 @@
                                     </Image.Source>
                                 </Image>
                                 <TextBlock VerticalAlignment="Center" Text="{Binding Key, Mode=OneWay, Converter={StaticResource IntToMonthConverter}}" />
+                                <TextBlock x:Name="TbView"
+                                    VerticalAlignment="Center"
+                                    FontFamily="Webdings"
+                                    FontSize="20"
+                                    Foreground="Red"
+                                    Text="N" />
                             </StackPanel>
                         </Button>
                         <Extensions:FadedToolTipControl d:IsHidden="True"
@@ -111,14 +117,6 @@
                                 </Grid>
                             </Extensions:ResizablePanel>
                         </Extensions:FadedToolTipControl>
-                        <TextBlock x:Name="TbView"
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            FontFamily="Webdings"
-                            FontSize="20"
-                            Foreground="Red"
-                            IsEnabled="{Binding ElementName=Btn, Path=IsEnabled}"
-                            Text="N" />
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
