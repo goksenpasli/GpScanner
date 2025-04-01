@@ -328,14 +328,6 @@ namespace Extensions
             }
         }
 
-        protected override void OnDrop(DragEventArgs e)
-        {
-            if ((e?.Data?.GetData(DataFormats.FileDrop) is string[] droppedfiles) && (droppedfiles?.Length > 0))
-            {
-                LoadDroppedZipFile(droppedfiles);
-            }
-        }
-
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if (string.IsNullOrEmpty(propertyName))
