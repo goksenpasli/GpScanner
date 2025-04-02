@@ -16,7 +16,7 @@ public partial class TesseractView : UserControl
         InitializeComponent();
         cvs = TryFindResource("Files") as CollectionViewSource;
         IWindowService windowService = new WindowService();
-        if (windowService?.GetActiveWindow() is MainWindow mainWindow)
+        if (windowService?.GetFirstWindow() is MainWindow mainWindow)
         {
             DataContext = new TesseractViewModel(windowService, mainWindow?.TwainCtrl);
         }
