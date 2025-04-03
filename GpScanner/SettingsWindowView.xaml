@@ -13,7 +13,7 @@
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     Title="GPSCANNER"
     Width="840"
-    Height="500"
+    Height="520"
     d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
     ResizeMode="NoResize"
@@ -233,16 +233,15 @@
                                     ToolTip="{twainctrl:Loc STOP}" />
                                 <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="*" />
+                                        <RowDefinition />
+                                        <RowDefinition Height="35.2" />
+                                        <RowDefinition Height="105.6" />
+                                        <RowDefinition Height="39.2" />
+                                        <RowDefinition Height="36" />
                                     </Grid.RowDefinitions>
                                     <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                        CopyButtonVisibility="Collapsed"
+                                        FontSize="18"
                                         OpenButtonVisibility="Collapsed"
-                                        PasteButtonVisibility="Collapsed"
                                         Text="{Binding StartupMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                                         Watermark="{twainctrl:Loc STARTUPMSG}" />
                                     <ScrollViewer Grid.Row="1"
@@ -1196,7 +1195,9 @@
                         <TextBlock VerticalAlignment="Center" Text="TESSERACT" />
                     </StackPanel>
                 </TabItem.Header>
-                <local:TesseractView />
+                <AdornerDecorator>
+                    <local:TesseractView />
+                </AdornerDecorator>
             </TabItem>
             <TabItem>
                 <TabItem.Header>

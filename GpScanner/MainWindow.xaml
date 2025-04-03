@@ -1141,7 +1141,7 @@
                             <Button HorizontalContentAlignment="Stretch"
                                 twainctrl:Policy.PolicyName="OcrPage"
                                 Command="{Binding OcrPage, Mode=OneWay}"
-                                CommandParameter="{Binding SeçiliResim.Resim, ElementName=twainCtrl}">
+                                CommandParameter="{Binding Scanner.Resimler, ElementName=twainCtrl}">
                                 <Button.Style>
                                     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type Button}">
                                         <Style.Triggers>
@@ -1155,9 +1155,20 @@
                                     </Style>
                                 </Button.Style>
                                 <Grid>
-                                    <ProgressBar Background="{x:Null}"
-                                        BorderBrush="{x:Null}"
-                                        IsIndeterminate="{Binding OcrIsBusy}" />
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition Height="2" />
+                                        </Grid.RowDefinitions>
+                                        <ProgressBar Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            IsIndeterminate="{Binding OcrIsBusy}" />
+                                        <ProgressBar Grid.Row="1"
+                                            Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            Maximum="1"
+                                            Value="{Binding OcrPageCount}" />
+                                    </Grid>
                                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                                         <Image Width="32" Height="32">
                                             <Image.Source>
@@ -1167,7 +1178,10 @@
                                                 </MultiBinding>
                                             </Image.Source>
                                         </Image>
-                                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc READACTIVEPAGE}" />
+                                        <TextBlock VerticalAlignment="Center">
+                                            <Run Text="{Binding ElementName=twainCtrl, Path=Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                            <Run Text="{twainctrl:Loc READACTIVEPAGE}" />
+                                        </TextBlock>
                                     </StackPanel>
                                 </Grid>
                             </Button>

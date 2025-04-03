@@ -30,7 +30,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -164,33 +163,46 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         OcrPage = new RelayCommand<object>(
             async parameter =>
             {
-                if (parameter is not BitmapFrame bitmapframe)
+                if (parameter is not ObservableCollection<ScannedImage> bitmapFrames || !bitmapFrames.Any(z => z.Seçili))
                 {
                     return;
                 }
-                byte[] imgdata = bitmapframe.ToTiffJpegByteArray(Format.Jpg);
+
                 OcrIsBusy = true;
-                ScannedText = await imgdata.OcrAsync(Settings.Default.DefaultTtsLang);
-                OcrIsBusy = false;
-                if (ScannedText is not null)
-                {
-                    TranslateViewModel.Metin = string.Join(" ", ScannedText.Select(z => z.Text));
-                }
+                List<string> accumulatedText = [];
 
-                if (DetectBarCode)
+                int count = bitmapFrames.Count;
+                for (int i = 0; i < count; i++)
                 {
-                    QrCode.QrCode qrcode = new();
-                    string result = await Task.Run(() => qrcode.GetImageBarcodeResult(bitmapframe));
-                    if (result is not null)
+                    ScannedImage bitmapFrame = bitmapFrames[i];
+                    byte[] imgdata = bitmapFrame.Resim.ToTiffJpegByteArray(Format.Jpg);
+                    ObservableCollection<OcrData> scannedText = await imgdata.OcrAsync(Settings.Default.DefaultTtsLang);
+
+                    if (scannedText is not null)
                     {
-                        BarcodeList.Add(result);
+                        accumulatedText.AddRange(scannedText.Select(z => z.Text));
                     }
+
+                    if (DetectBarCode)
+                    {
+                        string barcode = await GetBarcodeFromBitmapFrame(bitmapFrame.Resim);
+                        if (barcode is not null)
+                        {
+                            BarcodeList.Add(barcode);
+                        }
+                    }
+                    OcrPageCount = (i + 1) / (double)count;
+                    imgdata = null;
                 }
 
-                bitmapframe = null;
-                imgdata = null;
+                if (accumulatedText.Any())
+                {
+                    TranslateViewModel.Metin = string.Join(" ", accumulatedText);
+                }
+
+                OcrIsBusy = false;
             },
-            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is BitmapFrame bitmapFrame && bitmapFrame is not null);
+            parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && parameter is ObservableCollection<ScannedImage> bitmapFrames && bitmapFrames.Any(z => z.Seçili));
 
         OcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>
@@ -479,9 +491,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             parameter =>
             {
                 FileVersionInfo version = FileVersionInfo.GetVersionInfo(Process.GetCurrentProcess().MainModule.FileName);
-                _ = Process.Start(
-                    $@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\twux32.exe",
-                    $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
+                _ = Process.Start($@"{Path.GetDirectoryName(Process.GetCurrentProcess().MainModule.FileName)}\twux32.exe", $"https://github.com/goksenpasli/GpScanner/releases/download/{version.FileMajorPart}.{version.FileMinorPart}/GpScanner-Setup.txt");
                 Settings.Default.LastCheckDate = DateTime.Now;
                 Settings.Default.Save();
             },
@@ -2104,6 +2114,20 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand OcrPage { get; }
 
+    public double OcrPageCount
+    {
+        get;
+
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(OcrPageCount));
+            }
+        }
+    }
+
     public ICommand OcrPdfThumbnailPage { get; }
 
     public int? OcrPdfThumbnailPageNumber
@@ -3126,6 +3150,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    private async Task<string> GetBarcodeFromBitmapFrame(BitmapFrame bitmapframe)
+    {
+        QrCode.QrCode qrcode = new();
+        return await Task.Run(() => qrcode.GetImageBarcodeResult(bitmapframe));
+    }
+
     private async Task<ObservableCollection<ContributionData>> GetContributionData(List<ScannerFileDatas> files, DateTime first, DateTime last)
     {
         try
@@ -3260,7 +3290,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                              Scanner scanner = (Scanner)x.Item;
                                              if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
                                              {
-                                                 if (BaşlangıçTarihi > BitişTarihi || BaşlangıçTarihi>DateTime.Today || BitişTarihi>DateTime.Today)
+                                                 if (BaşlangıçTarihi > BitişTarihi || BaşlangıçTarihi > DateTime.Today || BitişTarihi > DateTime.Today)
                                                  {
                                                      x.Accepted = false;
                                                      return;
