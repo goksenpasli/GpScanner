@@ -171,10 +171,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 OcrIsBusy = true;
                 List<string> accumulatedText = [];
 
-                int count = bitmapFrames.Count;
-                for (int i = 0; i < count; i++)
+                int i = 0;
+                int count = bitmapFrames.Count(z => z.Seçili);
+                foreach (ScannedImage bitmapFrame in bitmapFrames.Where(z=>z.Seçili).ToList())
                 {
-                    ScannedImage bitmapFrame = bitmapFrames[i];
                     byte[] imgdata = bitmapFrame.Resim.ToTiffJpegByteArray(Format.Jpg);
                     ObservableCollection<OcrData> scannedText = await imgdata.OcrAsync(Settings.Default.DefaultTtsLang);
 
@@ -185,7 +185,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
                     if (DetectBarCode)
                     {
-                        string barcode = await GetBarcodeFromBitmapFrame(bitmapFrame.Resim);
+                        string barcode = await GetBarcodeFromBitmapFrame(bitmapFrame?.Resim);
                         if (barcode is not null)
                         {
                             BarcodeList.Add(barcode);
@@ -193,6 +193,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     }
                     OcrPageCount = (i + 1) / (double)count;
                     imgdata = null;
+                    i++;
                 }
 
                 if (accumulatedText.Any())
@@ -3152,6 +3153,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private async Task<string> GetBarcodeFromBitmapFrame(BitmapFrame bitmapframe)
     {
+        if (bitmapframe is null)
+        {
+            return null;
+        }
         QrCode.QrCode qrcode = new();
         return await Task.Run(() => qrcode.GetImageBarcodeResult(bitmapframe));
     }

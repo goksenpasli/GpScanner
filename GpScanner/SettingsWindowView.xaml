@@ -1195,9 +1195,7 @@
                         <TextBlock VerticalAlignment="Center" Text="TESSERACT" />
                     </StackPanel>
                 </TabItem.Header>
-                <AdornerDecorator>
-                    <local:TesseractView />
-                </AdornerDecorator>
+                <local:TesseractView />
             </TabItem>
             <TabItem>
                 <TabItem.Header>

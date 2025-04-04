@@ -38,142 +38,144 @@
                 Text="{Binding SeçiliDil, UpdateSourceTrigger=PropertyChanged}"
                 Watermark="TESSERACT" />
         </GroupBox.Header>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <GroupBox>
-                <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}"
-                    IsEnabled="{Binding IsFolderWritable, ValidatesOnDataErrors=True}"
-                    ItemsSource="{Binding Mode=OneWay, Source={StaticResource Files}}"
-                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
-                    <ItemsControl.Template>
-                        <ControlTemplate>
-                            <ScrollViewer Padding="{TemplateBinding Padding}"
-                                CanContentScroll="True"
-                                VerticalScrollBarVisibility="Auto">
-                                <ItemsPresenter />
-                            </ScrollViewer>
-                        </ControlTemplate>
-                    </ItemsControl.Template>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <Button HorizontalContentAlignment="Stretch"
-                                twainctrl:Policy.PolicyName="TesseractDownload"
-                                Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                CommandParameter="{Binding Mode=OneWay}"
-                                IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="16" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Image Width="16" Height="16">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="122" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <ProgressBar Grid.Column="1"
-                                        Background="{x:Null}"
-                                        Maximum="100"
-                                        Minimum="0"
-                                        Value="{Binding ProgressValue}" />
-                                    <TextBlock Grid.Column="1" Text="{Binding OcrLangName}" />
-                                    <TextBlock Grid.Column="1"
-                                        HorizontalAlignment="Right"
-                                        d:Text="0 MB"
-                                        Tag="{Binding OcrName, Converter={StaticResource TesseractDataFilesContentLengthConverter}}"
-                                        Text="{Binding Path=Tag.Result, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}" />
+        <AdornerDecorator>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <GroupBox>
+                    <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}"
+                        IsEnabled="{Binding IsFolderWritable, ValidatesOnDataErrors=True}"
+                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource Files}}"
+                        Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                        <ItemsControl.Template>
+                            <ControlTemplate>
+                                <ScrollViewer Padding="{TemplateBinding Padding}"
+                                    CanContentScroll="True"
+                                    VerticalScrollBarVisibility="Auto">
+                                    <ItemsPresenter />
+                                </ScrollViewer>
+                            </ControlTemplate>
+                        </ItemsControl.Template>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Button HorizontalContentAlignment="Stretch"
+                                    twainctrl:Policy.PolicyName="TesseractDownload"
+                                    Command="{Binding DataContext.TesseractDownload, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                    CommandParameter="{Binding Mode=OneWay}"
+                                    IsEnabled="{Binding IsEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="16" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="122" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <ProgressBar Grid.Column="1"
+                                            Background="{x:Null}"
+                                            Maximum="100"
+                                            Minimum="0"
+                                            Value="{Binding ProgressValue}" />
+                                        <TextBlock Grid.Column="1" Text="{Binding OcrLangName}" />
+                                        <TextBlock Grid.Column="1"
+                                            HorizontalAlignment="Right"
+                                            d:Text="0 MB"
+                                            Tag="{Binding OcrName, Converter={StaticResource TesseractDataFilesContentLengthConverter}}"
+                                            Text="{Binding Path=Tag.Result, IsAsync=True, RelativeSource={RelativeSource Mode=Self}}" />
 
-                                </Grid>
-                            </Button>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <VirtualizingStackPanel />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </GroupBox>
-            <Extension:FadedToolTipControl d:IsHidden="True"
-                Background="{StaticResource BorderBackground}"
-                BorderBrush="{StaticResource GroupBoxBackGround}"
-                PopupParent="{Binding ElementName=LbTessFiles}"
-                Show="{Binding ShowHelpDesc}"
-                ShowCloseButton="Visible"
-                TimeToClose="10000"
-                TimeToShow="2500"
-                TopMost="False">
-                <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                    <FlowDocument IsOptimalParagraphEnabled="True">
-                        <Paragraph>
-                            <Span>
-                                <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">
-                                    <Run Text="{twainctrl:Loc VC}" />
-                                </Hyperlink>
-                            </Span>
-                            <Run Text=" " />
-                            <Run Text="" />
-                            <Run Text=" " />
-                            <Run Text="{twainctrl:Loc CRUNTIME}" />
-                        </Paragraph>
-                        <Paragraph>
-                            <Span>
-                                <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata_best">
-                                    <Run Text="{twainctrl:Loc OTHERTESSERACTLINK}" />
-                                </Hyperlink>
-                            </Span>
-                            <Run Text=" " />
-                            <Run Text="" />
-                            <Run Text=" " />
-                            <Run Text="{twainctrl:Loc OTHERTESSERACT}" />
-                        </Paragraph>
-                    </FlowDocument>
-                </FlowDocumentScrollViewer>
-            </Extension:FadedToolTipControl>
-            <GroupBox Grid.Row="1">
-                <ListBox x:Name="LbTessFiles"
-                    d:ItemsSource="{d:SampleData ItemCount=5}"
-                    twainctrl:Policy.PolicyName="DefaultTtsLang"
+                                    </Grid>
+                                </Button>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </GroupBox>
+                <Extension:FadedToolTipControl d:IsHidden="True"
                     Background="{StaticResource BorderBackground}"
-                    BorderBrush="{Binding CheckedFiles.Count, Converter={StaticResource ListBoxNumberRangeToColorConverter}, Mode=OneWay}"
-                    BorderThickness="2"
-                    ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
-                    SelectionMode="Extended"
-                    Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}">
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate>
-                                        <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
-                                            <TextBlock VerticalAlignment="Center" FontWeight="Bold"><Run d:Text="DisplayName"
-                                                    BaselineAlignment="Center"
-                                                    Text="{Binding DisplayName, Mode=OneWay}" /><Hyperlink BaselineAlignment="Center"
-                                                    Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
-                                                    CommandParameter="{Binding Mode=OneWay}"
-                                                    FontFamily="Segoe UI Black"
-                                                    IsEnabled="{Binding DataContext.IsFolderWritable, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, ValidatesOnDataErrors=True}"
-                                                    TextDecorations="None">
-                                                    <InlineUIContainer>
-                                                        <Image Width="16"
-                                                            Height="16"
-                                                            Source="/TwainControl;component/Icons/delete.png" />
-                                                    </InlineUIContainer>
-                                                </Hyperlink></TextBlock>
-                                        </CheckBox>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
-                </ListBox>
-            </GroupBox>
-        </Grid>
+                    BorderBrush="{StaticResource GroupBoxBackGround}"
+                    PopupParent="{Binding ElementName=LbTessFiles}"
+                    Show="{Binding ShowHelpDesc}"
+                    ShowCloseButton="Visible"
+                    TimeToClose="10000"
+                    TimeToShow="2500"
+                    TopMost="False">
+                    <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                        <FlowDocument IsOptimalParagraphEnabled="True">
+                            <Paragraph>
+                                <Span>
+                                    <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">
+                                        <Run Text="{twainctrl:Loc VC}" />
+                                    </Hyperlink>
+                                </Span>
+                                <Run Text=" " />
+                                <Run Text="" />
+                                <Run Text=" " />
+                                <Run Text="{twainctrl:Loc CRUNTIME}" />
+                            </Paragraph>
+                            <Paragraph>
+                                <Span>
+                                    <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata_best">
+                                        <Run Text="{twainctrl:Loc OTHERTESSERACTLINK}" />
+                                    </Hyperlink>
+                                </Span>
+                                <Run Text=" " />
+                                <Run Text="" />
+                                <Run Text=" " />
+                                <Run Text="{twainctrl:Loc OTHERTESSERACT}" />
+                            </Paragraph>
+                        </FlowDocument>
+                    </FlowDocumentScrollViewer>
+                </Extension:FadedToolTipControl>
+                <GroupBox Grid.Row="1">
+                    <ListBox x:Name="LbTessFiles"
+                        d:ItemsSource="{d:SampleData ItemCount=5}"
+                        twainctrl:Policy.PolicyName="DefaultTtsLang"
+                        Background="{StaticResource BorderBackground}"
+                        BorderBrush="{Binding CheckedFiles.Count, Converter={StaticResource ListBoxNumberRangeToColorConverter}, Mode=OneWay}"
+                        BorderThickness="2"
+                        ItemsSource="{Binding TesseractFiles, ValidatesOnDataErrors=True}"
+                        SelectionMode="Extended"
+                        Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <CheckBox VerticalContentAlignment="Center" IsChecked="{Binding Checked}">
+                                                <TextBlock VerticalAlignment="Center" FontWeight="Bold"><Run d:Text="DisplayName"
+                                                        BaselineAlignment="Center"
+                                                        Text="{Binding DisplayName, Mode=OneWay}" /><Hyperlink BaselineAlignment="Center"
+                                                        Command="{Binding DataContext.TesseractRemove, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}"
+                                                        CommandParameter="{Binding Mode=OneWay}"
+                                                        FontFamily="Segoe UI Black"
+                                                        IsEnabled="{Binding DataContext.IsFolderWritable, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}, ValidatesOnDataErrors=True}"
+                                                        TextDecorations="None">
+                                                        <InlineUIContainer>
+                                                            <Image Width="16"
+                                                                Height="16"
+                                                                Source="/TwainControl;component/Icons/delete.png" />
+                                                        </InlineUIContainer>
+                                                    </Hyperlink></TextBlock>
+                                            </CheckBox>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </GroupBox>
+            </Grid>
+        </AdornerDecorator>
     </GroupBox>
 </UserControl>
