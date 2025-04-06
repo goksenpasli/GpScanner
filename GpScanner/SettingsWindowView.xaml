@@ -12,7 +12,7 @@
     xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
     Title="GPSCANNER"
-    Width="840"
+    Width="842"
     Height="520"
     d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
     twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
@@ -73,8 +73,8 @@
     <Window.InputBindings>
         <KeyBinding Key="Pause" Command="{Binding StopFlagAnimation}" />
     </Window.InputBindings>
-    <Grid>
-        <TabControl Background="{StaticResource BorderBackground}">
+    <Grid Background="{StaticResource GroupBoxBackGround}">
+        <TabControl Background="{StaticResource GroupBoxBackGround}">
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">
@@ -1615,7 +1615,7 @@
                     </StackPanel>
                 </TabItem.Header>
                 <AdornerDecorator>
-                    <Grid>
+                    <Grid Background="{StaticResource BorderBackground}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition />
@@ -1779,7 +1779,7 @@
                         <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc ERROR}" />
                     </StackPanel>
                 </TabItem.Header>
-                <Grid>
+                <Grid Background="{StaticResource BorderBackground}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition />

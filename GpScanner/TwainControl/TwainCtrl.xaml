@@ -261,7 +261,7 @@
             </ItemsPanelTemplate>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
+    <Grid Background="{StaticResource GroupBoxBackGround}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="{Binding TwainGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="5*" />
             <ColumnDefinition Width="3" />
@@ -2217,260 +2217,272 @@
                     BorderBrush="{StaticResource GroupBoxBackGround}"
                     Maximum="1"
                     Value="{Binding AllRotateProgressValue}" />
-                <UniformGrid Grid.Row="3" Columns="3">
+                <ScrollViewer Grid.Row="3"
+                    HorizontalScrollBarVisibility="Auto"
+                    Template="{DynamicResource HorizontalScrollViewerTemplate}"
+                    VerticalScrollBarVisibility="Auto">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
                         </Grid.ColumnDefinitions>
-                        <Button HorizontalContentAlignment="Stretch"
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Button HorizontalContentAlignment="Stretch"
+                                VerticalContentAlignment="Stretch"
+                                local:Policy.PolicyName="LoadImage"
+                                Command="{Binding LoadImage}">
+                                <Grid>
+                                    <ProgressBar Background="{x:Null}"
+                                        BorderBrush="{x:Null}"
+                                        Maximum="1"
+                                        Value="{Binding PdfLoadProgressValue}" />
+                                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock VerticalAlignment="Center"
+                                            FontWeight="Bold"
+                                            Text="{local:Loc FILE}" />
+                                    </StackPanel>
+                                </Grid>
+                            </Button>
+                            <Button Grid.Column="1" Command="{Binding CancelLoadFile}">
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="/TwainControl;component/Icons/delete.png" />
+                            </Button>
+                        </Grid>
+                        <Extensions:SplitButton Grid.Column="1"
+                            HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
-                            local:Policy.PolicyName="LoadImage"
-                            Command="{Binding LoadImage}">
+                            local:Policy.PolicyName="SeçiliKaydet"
+                            BorderBrush="Cyan"
+                            Command="{Binding SaveSelectedFilesPdfFile}">
                             <Grid>
-                                <ProgressBar Background="{x:Null}"
+                                <ProgressBar d:Foreground="#FF06B025"
+                                    Background="{x:Null}"
                                     BorderBrush="{x:Null}"
+                                    Foreground="{Binding Scanner.SaveProgressBarForegroundBrush}"
+                                    IsIndeterminate="{Binding Scanner.SaveProgressIndeterminate}"
                                     Maximum="1"
-                                    Value="{Binding PdfLoadProgressValue}" />
-                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="1" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock VerticalAlignment="Center"
+                                    Value="{Binding Scanner.PdfSaveProgressValue}" />
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32"
+                                            Height="32"
+                                            Source="/TwainControl;component/Icons/save.png" />
+                                        <TextBlock d:Text="0"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="Red"
+                                            Text="{Binding Scanner.SeçiliResimSayısı}" />
+                                    </Canvas>
+                                    <TextBlock Grid.Column="1"
+                                        VerticalAlignment="Center"
                                         FontWeight="Bold"
-                                        Text="{local:Loc FILE}" />
-                                </StackPanel>
+                                        Text="{local:Loc SAVESELECTED}"
+                                        TextWrapping="Wrap" />
+                                </Grid>
                             </Grid>
-                        </Button>
-                        <Button Grid.Column="1" Command="{Binding CancelLoadFile}">
-                            <Image Width="16"
-                                Height="16"
-                                Source="/TwainControl;component/Icons/delete.png" />
+                            <Extensions:SplitButton.InternalContent>
+                                <Border Background="{StaticResource BorderBackground}"
+                                    BorderBrush="{StaticResource GroupBoxBackGround}"
+                                    BorderThickness="1">
+                                    <StackPanel>
+                                        <StackPanel.Resources>
+                                            <Style TargetType="MenuItem">
+                                                <Setter Property="HorizontalContentAlignment" Value="Left" />
+                                                <Setter Property="VerticalContentAlignment" Value="Center" />
+                                            </Style>
+                                            <Style TargetType="Image">
+                                                <Setter Property="Height" Value="16" />
+                                                <Setter Property="Width" Value="16" />
+                                            </Style>
+                                        </StackPanel.Resources>
+                                        <MenuItem Command="{Binding SaveSelectedFilesPdfFile}">
+                                            <MenuItem.Header>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <Extensions:NumericUpDown Interval="1"
+                                                            IsReadOnly="True"
+                                                            Maximum="95"
+                                                            Minimum="10"
+                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                    </InlineUIContainer>
+                                                </TextBlock>
+                                            </MenuItem.Header>
+                                            <MenuItem.Icon>
+                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding SaveSelectedFilesBwPdfFile}">
+                                            <MenuItem.Header>
+                                                <TextBlock>
+                                                    <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                    <Run Text="{local:Loc BW}" />
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <Extensions:NumericUpDown Interval="1"
+                                                            IsReadOnly="True"
+                                                            Maximum="95"
+                                                            Minimum="10"
+                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                    </InlineUIContainer>
+                                                </TextBlock>
+                                            </MenuItem.Header>
+                                            <MenuItem.Icon>
+                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding SaveSelectedFilesJpgFile}">
+                                            <MenuItem.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                    <Extensions:NumericUpDown Interval="1"
+                                                        IsReadOnly="True"
+                                                        Maximum="95"
+                                                        Minimum="10"
+                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="12" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <Extensions:NumericUpDown Interval="1"
+                                                        IsReadOnly="True"
+                                                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
+                                                        Minimum="1"
+                                                        TextBlock.TextAlignment="Center"
+                                                        Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+                                            </MenuItem.Header>
+                                            <MenuItem.Icon>
+                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding SaveSelectedFilesTifFile}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                            <MenuItem.Icon>
+                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding SaveSelectedFilesZipFile}" Header="{Binding Source='.zip', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                            <MenuItem.Icon>
+                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding SaveSelectedFilesWebpFile}" IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
+                                            <MenuItem.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                    <Extensions:NumericUpDown Interval="1"
+                                                        IsReadOnly="True"
+                                                        Maximum="95"
+                                                        Minimum="10"
+                                                        Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                    <Image Width="16" Height="16">
+                                                        <Image.Source>
+                                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                <Binding Source="Shell32.dll" />
+                                                                <Binding Source="12" />
+                                                            </MultiBinding>
+                                                        </Image.Source>
+                                                    </Image>
+                                                    <Extensions:NumericUpDown Interval="1"
+                                                        IsReadOnly="True"
+                                                        Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
+                                                        Minimum="1"
+                                                        TextBlock.TextAlignment="Center"
+                                                        Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                </StackPanel>
+                                            </MenuItem.Header>
+                                            <MenuItem.Icon>
+                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding SaveSelectedFilesTxtFile}"
+                                            Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                            IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
+                                            <MenuItem.Icon>
+                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                    </StackPanel>
+                                </Border>
+                            </Extensions:SplitButton.InternalContent>
+                        </Extensions:SplitButton>
+                        <Button Grid.Column="2"
+                            HorizontalContentAlignment="Stretch"
+                            VerticalContentAlignment="Stretch"
+                            local:Policy.PolicyName="SeçiliDirektPdfKaydet"
+                            BorderBrush="Cyan"
+                            Command="{Binding SeçiliDirektPdfKaydet}">
+                            <Grid>
+                                <ProgressBar d:Foreground="#FF06B025"
+                                    Background="{x:Null}"
+                                    BorderBrush="{x:Null}"
+                                    Foreground="{Binding Scanner.SaveProgressBarForegroundBrush}"
+                                    Maximum="1"
+                                    Value="{Binding Scanner.PdfSaveProgressValue}" />
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Canvas Width="32" Height="32">
+                                        <Image Width="32" Height="32">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="223" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock d:Text="0"
+                                            FontSize="11"
+                                            FontWeight="Bold"
+                                            Foreground="Red"
+                                            Text="{Binding Scanner.SeçiliResimSayısı}" />
+                                    </Canvas>
+                                    <TextBlock Grid.Column="1"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Bold"
+                                        Text="{local:Loc AUTOPATH}"
+                                        TextWrapping="Wrap">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Mode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0">
+                                                        <Setter Property="Foreground" Value="Black" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Mode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="2">
+                                                        <Setter Property="Foreground" Value="{StaticResource Colorfull}" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
+                                </Grid>
+                            </Grid>
                         </Button>
                     </Grid>
-                    <Extensions:SplitButton HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
-                        local:Policy.PolicyName="SeçiliKaydet"
-                        BorderBrush="Cyan"
-                        Command="{Binding SaveSelectedFilesPdfFile}">
-                        <Grid>
-                            <ProgressBar d:Foreground="#FF06B025"
-                                Background="{x:Null}"
-                                BorderBrush="{x:Null}"
-                                Foreground="{Binding Scanner.SaveProgressBarForegroundBrush}"
-                                IsIndeterminate="{Binding Scanner.SaveProgressIndeterminate}"
-                                Maximum="1"
-                                Value="{Binding Scanner.PdfSaveProgressValue}" />
-                            <Grid HorizontalAlignment="Center">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32"
-                                        Height="32"
-                                        Source="/TwainControl;component/Icons/save.png" />
-                                    <TextBlock d:Text="0"
-                                        FontSize="11"
-                                        FontWeight="Bold"
-                                        Foreground="Red"
-                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
-                                </Canvas>
-                                <TextBlock Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Text="{local:Loc SAVESELECTED}"
-                                    TextWrapping="Wrap" />
-                            </Grid>
-                        </Grid>
-                        <Extensions:SplitButton.InternalContent>
-                            <Border Background="{StaticResource BorderBackground}"
-                                BorderBrush="{StaticResource GroupBoxBackGround}"
-                                BorderThickness="1">
-                                <StackPanel>
-                                    <StackPanel.Resources>
-                                        <Style TargetType="MenuItem">
-                                            <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                            <Setter Property="VerticalContentAlignment" Value="Center" />
-                                        </Style>
-                                        <Style TargetType="Image">
-                                            <Setter Property="Height" Value="16" />
-                                            <Setter Property="Width" Value="16" />
-                                        </Style>
-                                    </StackPanel.Resources>
-                                    <MenuItem Command="{Binding SaveSelectedFilesPdfFile}">
-                                        <MenuItem.Header>
-                                            <TextBlock>
-                                                <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                <InlineUIContainer BaselineAlignment="Center">
-                                                    <Extensions:NumericUpDown Interval="1"
-                                                        IsReadOnly="True"
-                                                        Maximum="95"
-                                                        Minimum="10"
-                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                </InlineUIContainer>
-                                            </TextBlock>
-                                        </MenuItem.Header>
-                                        <MenuItem.Icon>
-                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding SaveSelectedFilesBwPdfFile}">
-                                        <MenuItem.Header>
-                                            <TextBlock>
-                                                <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                <Run Text="{local:Loc BW}" />
-                                                <InlineUIContainer BaselineAlignment="Center">
-                                                    <Extensions:NumericUpDown Interval="1"
-                                                        IsReadOnly="True"
-                                                        Maximum="95"
-                                                        Minimum="10"
-                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                </InlineUIContainer>
-                                            </TextBlock>
-                                        </MenuItem.Header>
-                                        <MenuItem.Icon>
-                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding SaveSelectedFilesJpgFile}">
-                                        <MenuItem.Header>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Source='.jpg', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                <Extensions:NumericUpDown Interval="1"
-                                                    IsReadOnly="True"
-                                                    Maximum="95"
-                                                    Minimum="10"
-                                                    Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="12" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <Extensions:NumericUpDown Interval="1"
-                                                    IsReadOnly="True"
-                                                    Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                                                    Minimum="1"
-                                                    TextBlock.TextAlignment="Center"
-                                                    Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            </StackPanel>
-                                        </MenuItem.Header>
-                                        <MenuItem.Icon>
-                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding SaveSelectedFilesTifFile}" Header="{Binding Source='.tif', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                        <MenuItem.Icon>
-                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding SaveSelectedFilesZipFile}" Header="{Binding Source='.zip', Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                        <MenuItem.Icon>
-                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding SaveSelectedFilesWebpFile}" IsEnabled="{Binding Source={x:Static webp:WebP.WebpDllExists}}">
-                                        <MenuItem.Header>
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock VerticalAlignment="Center" Text="{Binding Source='.webp', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                <Extensions:NumericUpDown Interval="1"
-                                                    IsReadOnly="True"
-                                                    Maximum="95"
-                                                    Minimum="10"
-                                                    Value="{Binding Path=WebpQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                <Image Width="16" Height="16">
-                                                    <Image.Source>
-                                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                            <Binding Source="Shell32.dll" />
-                                                            <Binding Source="12" />
-                                                        </MultiBinding>
-                                                    </Image.Source>
-                                                </Image>
-                                                <Extensions:NumericUpDown Interval="1"
-                                                    IsReadOnly="True"
-                                                    Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
-                                                    Minimum="1"
-                                                    TextBlock.TextAlignment="Center"
-                                                    Value="{Binding WebPJpgFileProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            </StackPanel>
-                                        </MenuItem.Header>
-                                        <MenuItem.Icon>
-                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.webp}" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                    <MenuItem Command="{Binding SaveSelectedFilesTxtFile}"
-                                        Header="{Binding Source='.txt', Converter={StaticResource FilePathToFileDescriptionConverter}}"
-                                        IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                                        <MenuItem.Icon>
-                                            <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.txt}" />
-                                        </MenuItem.Icon>
-                                    </MenuItem>
-                                </StackPanel>
-                            </Border>
-                        </Extensions:SplitButton.InternalContent>
-                    </Extensions:SplitButton>
-                    <Button HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Stretch"
-                        local:Policy.PolicyName="SeçiliDirektPdfKaydet"
-                        BorderBrush="Cyan"
-                        Command="{Binding SeçiliDirektPdfKaydet}">
-                        <Grid>
-                            <ProgressBar d:Foreground="#FF06B025"
-                                Background="{x:Null}"
-                                BorderBrush="{x:Null}"
-                                Foreground="{Binding Scanner.SaveProgressBarForegroundBrush}"
-                                Maximum="1"
-                                Value="{Binding Scanner.PdfSaveProgressValue}" />
-                            <Grid HorizontalAlignment="Center">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
-                                <Canvas Width="32" Height="32">
-                                    <Image Width="32" Height="32">
-                                        <Image.Source>
-                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                <Binding Source="Shell32.dll" />
-                                                <Binding Source="223" />
-                                            </MultiBinding>
-                                        </Image.Source>
-                                    </Image>
-                                    <TextBlock d:Text="0"
-                                        FontSize="11"
-                                        FontWeight="Bold"
-                                        Foreground="Red"
-                                        Text="{Binding Scanner.SeçiliResimSayısı}" />
-                                </Canvas>
-                                <TextBlock Grid.Column="1"
-                                    VerticalAlignment="Center"
-                                    FontWeight="Bold"
-                                    Text="{local:Loc AUTOPATH}"
-                                    TextWrapping="Wrap">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Mode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="0">
-                                                    <Setter Property="Foreground" Value="Black" />
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Mode, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="2">
-                                                    <Setter Property="Foreground" Value="{StaticResource Colorfull}" />
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </Grid>
-                        </Grid>
-                    </Button>
-                </UniformGrid>
+                </ScrollViewer>
             </Grid>
         </GroupBox>
         <GridSplitter Grid.Column="1"
