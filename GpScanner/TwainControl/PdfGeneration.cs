@@ -346,11 +346,6 @@ public static class PdfGeneration
                 }
 
                 progressCallback?.Invoke((i + 1) / (double)bitmapFrames.Count);
-
-                if (Settings.Default.RemoveProcessedImage)
-                {
-                    scannedImage.Resim = null;
-                }
             }
 
             if (Scanner.PasswordProtect)

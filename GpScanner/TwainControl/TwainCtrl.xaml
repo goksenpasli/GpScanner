@@ -2382,7 +2382,13 @@
                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
                                             </MenuItem.Icon>
                                         </MenuItem>
-                                        <MenuItem Command="{Binding SaveSelectedFilesZipFile}" Header="{Binding Source='.zip', Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                        <MenuItem Command="{Binding SaveSelectedFilesZipFile}">
+                                            <MenuItem.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock VerticalAlignment="Center" Text="{Binding Source='.zip', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                    <CheckBox VerticalAlignment="Center" Content="WEBP" IsChecked="{Binding EncodeAsWebp}" />
+                                                </StackPanel>
+                                            </MenuItem.Header>
                                             <MenuItem.Icon>
                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.zip}" />
                                             </MenuItem.Icon>

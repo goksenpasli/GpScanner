@@ -85,6 +85,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int cropAllMaximumWidth;
     private bool disposedValue;
     private GridLength documentGridLength = new(5, GridUnitType.Star);
+    private bool encodeAsWebp;
     private CancellationTokenSource fileloadcancellationToken;
     private Task fileloadtask;
     private double height;
@@ -220,13 +221,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
                 }
-                else if (Keyboard.Modifiers == ModifierKeys.Shift)
-                {
-                    processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
-                }
                 else
                 {
-                    processedImage = BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
+                    processedImage = Keyboard.Modifiers == ModifierKeys.Shift
+                                     ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
+                                     : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                 }
                 processedImage?.Freeze();
                 item.Resim = processedImage;
@@ -311,13 +310,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     {
                         processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
                     }
-                    else if (grayscale)
-                    {
-                        processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg));
-                    }
                     else
                     {
-                        processedImage = BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
+                        processedImage = grayscale
+                                         ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
+                                         : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                     }
                     processedImage?.Freeze();
                     item.Resim = processedImage;
@@ -2663,6 +2660,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public RelayCommand<object> DuplicateSelectedImage { get; }
+
+    public bool EncodeAsWebp
+    {
+        get => encodeAsWebp;
+        set
+        {
+            if (encodeAsWebp != value)
+            {
+                encodeAsWebp = value;
+                OnPropertyChanged(nameof(EncodeAsWebp));
+            }
+        }
+    }
 
     public ICommand ExploreFile { get; }
 
@@ -5032,10 +5042,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             File.WriteAllBytes(uniqueFilename, bytes);
                             bytes = null;
                         }
-                        if (Settings.Default.RemoveProcessedImage)
-                        {
-                            scannedimage.Resim = null;
-                        }
                         progressCallback?.Invoke((i + 1) / (double)images.Count);
                     });
             });
@@ -5219,10 +5225,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             File.WriteAllBytes(uniqueFilename, bytes);
                             bytes = null;
                         }
-                        if (Settings.Default.RemoveProcessedImage)
-                        {
-                            scannedimage.Resim = null;
-                        }
                         progressCallback?.Invoke((i + 1) / (double)images.Count);
                     });
             });
@@ -5268,13 +5270,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private void SaveZipImage(List<ScannedImage> seçiliresimler, string fileName, Action<double> progressCallback = null)
     {
         using FileStream zip = File.OpenWrite(fileName);
-        using IWriter zipWriter = WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.Deflate) { UseZip64 = true });
+        using IWriter zipWriter = WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.None) { UseZip64 = true });
         int count = seçiliresimler.Count;
-        for (int i = 0; i < count; i++)
+        using (MemoryStream ms = new())
         {
-            using MemoryStream ms = new(seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
-            zipWriter.Write(Path.GetFileName($"{seçiliresimler[i].Index}.jpg"), ms);
-            progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
+            for (int i = 0; i < count; i++)
+            {
+                byte[] buffer = EncodeAsWebp ? seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(70) : seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg);
+                ms.SetLength(0);
+                ms.Write(buffer, 0, buffer.Length);
+                string fileNameInZip = EncodeAsWebp ? $"{seçiliresimler[i].Index}.webp" : $"{seçiliresimler[i].Index}.jpg";
+                ms.Seek(0, SeekOrigin.Begin);
+                zipWriter.Write(fileNameInZip, ms);
+                progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
+            }
         }
         Dispatcher.Invoke(
             () =>

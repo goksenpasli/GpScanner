@@ -238,7 +238,7 @@ KAYIT</value>
     <value>ŞİFRELE</value>
   </data>
   <data name="PDFWARN" xml:space="preserve">
-    <value>BURDA YAPILAN AYARLAR TÜM PDF KAYITLARINI ETKİLER.
+    <value>BURADA YAPILAN AYARLAR TÜM PDF KAYITLARINI ETKİLER.
 AYRICA PDF KORUMASI 3.PARTİ UYGULAMALAR TARAFINDAN KIRILABİLİR.</value>
   </data>
   <data name="ALLOWPRINT" xml:space="preserve">
@@ -297,6 +297,9 @@ AYRICA PDF KORUMASI 3.PARTİ UYGULAMALAR TARAFINDAN KIRILABİLİR.</value>
   </data>
   <data name="SAVEPDF" xml:space="preserve">
     <value>PDF KAYDET</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>YARDIM</value>
   </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR YAP</value>
@@ -405,171 +408,8 @@ KALDIR</value>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>Her Sayfayı Ayrı Dosyaya Kaydet Dosyalar Aşağıda Belirtilen Klasöre Kaydedilir.</value>
   </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
-    <value>RENK UYGULA</value>
-  </data>
-  <data name="DSTCOLOR" xml:space="preserve">
-    <value>HEDEF RENK</value>
-  </data>
-  <data name="SRCCOLOR" xml:space="preserve">
-    <value>KAYNAK RENK</value>
-  </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Sağ Tıklayıp Renk Seçimi Yapın</value>
-  </data>
-  <data name="THRESHOLD" xml:space="preserve">
-    <value>EŞİK</value>
-  </data>
-  <data name="APPLY" xml:space="preserve">
-    <value>UYGULA</value>
-  </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>Eşik Değeri Ayarladıktan Sonra Buna Tıklarsanız İkinci Bir Renk Seçimi Yapabilirsiniz.</value>
-  </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>OCR PDF SAKLA</value>
-  </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
-    <value>OCR VERİSİNİ KAYDET</value>
-  </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>Bu İşaretliyse Aşağıda İşaretli Evraka Soldaki Aktif Evrakın İçerdiği Metin İçerik Olarak Veritabanına Kaydedilir.</value>
-  </data>
-  <data name="QRDETECT" xml:space="preserve">
-    <value>QR ALGILA</value>
-  </data>
-  <data name="SEPERATOR" xml:space="preserve">
-    <value>AYRAÇ</value>
-  </data>
-  <data name="TAG" xml:space="preserve">
-    <value>ETİKET</value>
-  </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
-    <value>BOŞ SAYFALARI GEÇ</value>
-  </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
-    <value>JPEG KALİTE ORANI</value>
-  </data>
-  <data name="APPDESC" xml:space="preserve">
-    <value>Bu uygulama tarama ve belge takibini kolaylaştırmak amacıyla geliştirilmiştir.</value>
-  </data>
-  <data name="OTHERAPPS" xml:space="preserve">
-    <value>DİĞER UYGULAMALARIM</value>
-  </data>
-  <data name="THIRDPARTY" xml:space="preserve">
-    <value>UYGULAMADA KULLANILAN 3.PARTİ KÜTÜPHANELER</value>
-  </data>
-  <data name="OCRTIME" xml:space="preserve">
-    <value>Pdf Ocr İşlemi Fazladan Zaman Alır.</value>
-  </data>
-  <data name="ADDDOC" xml:space="preserve">
-    <value>DOSYAYA
-BELGE EKLE</value>
-  </data>
-  <data name="SPLIT" xml:space="preserve">
-    <value>Parçalanmış</value>
-  </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>Geri Yüklemek İçin Çift Tıklayın, Genişletmek İçin Sağ Tıklayın</value>
-  </data>
-  <data name="BATCH" xml:space="preserve">
-    <value>TOPLU İŞ</value>
-  </data>
-  <data name="START" xml:space="preserve">
-    <value>BAŞLAT</value>
-  </data>
-  <data name="LOAD" xml:space="preserve">
-    <value>YÜKLE</value>
-  </data>
-  <data name="NOPROFILE" xml:space="preserve">
-    <value>PROFİL SEÇİLMEDİ</value>
-  </data>
-  <data name="CAMERA" xml:space="preserve">
-    <value>KAMERA</value>
-  </data>
-  <data name="FLATBED" xml:space="preserve">
-    <value>DÜZ YATAKLI</value>
-  </data>
-  <data name="Auto" xml:space="preserve">
-    <value>OTOMATİK</value>
-  </data>
-  <data name="AutoPicture" xml:space="preserve">
-    <value>OTOMATİK RESİM</value>
-  </data>
-  <data name="AutoText" xml:space="preserve">
-    <value>OTOMATİK METİN</value>
-  </data>
-  <data name="Default" xml:space="preserve">
-    <value>VARSAYILAN</value>
-  </data>
-  <data name="Rotate180" xml:space="preserve">
-    <value>180 DERECE DÖNDÜR</value>
-  </data>
-  <data name="Rotate270" xml:space="preserve">
-    <value>270 DERECE DÖNDÜR</value>
-  </data>
-  <data name="Rotate90" xml:space="preserve">
-    <value>90 DERECE DÖNDÜR</value>
-  </data>
-  <data name="PDFTRACK" xml:space="preserve">
-    <value>PDF KLASÖR DEĞİŞİMİNİ İZLE</value>
-  </data>
-  <data name="PAGENUMBER" xml:space="preserve">
-    <value>SAYFA NO</value>
-  </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Bazı Görevler Çalışıyor Bitmesini Bekleyin.</value>
-  </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>İşlem Devam Ediyor. Bitmesini Bekleyin.</value>
-  </data>
-  <data name="LIMITED" xml:space="preserve">
-    <value>Bu Dosya Formatının Kısıtlı Desteği Vardır.</value>
-  </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Tesseract Dilini Seçin</value>
-  </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
-    <value>Yama Kodu Algılanmadı</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>SOL</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>SAĞ</value>
-  </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>İşlenen Dosyaları Belge Listesinden Sil</value>
-  </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Sayfaları Yer Değiştir</value>
-  </data>
-  <data name="WATERMARK" xml:space="preserve">
-    <value>FİLİGRAN</value>
-  </data>
-  <data name="BATCHDESC" xml:space="preserve">
-    <value>Aşağıda Belirtilen Klasöre Resim Dosyaları Eklendiğinde Program Açık Olduğu Müddetçe Aynı Klasörde Pdf Dosyasına Otomatik Çevirme İşlemi Yapılır</value>
-  </data>
-  <data name="RESTARTAPP" xml:space="preserve">
-    <value>Uygulamanın Yeniden Başlatılması Gerekir.</value>
-  </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
-    <value>Seçili Resimi Silmek İstiyor musun?</value>
-  </data>
-  <data name="UPDATE" xml:space="preserve">
-    <value>GÜNCELLE</value>
-  </data>
-  <data name="EYPOPEN" xml:space="preserve">
-    <value>Eyp Dosyalarını Direkt Aç</value>
-  </data>
-  <data name="PDFOPEN" xml:space="preserve">
-    <value>Pdf Dosyalarını Direkt Aç</value>
-  </data>
-  <data name="COMPRESS" xml:space="preserve">
-    <value>SIKIŞTIR</value>
-  </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Taranan Belgelerde Sıkıştırılan Dosyayı Direkt Üzerine Yaz</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>DUR</value>
@@ -588,12 +428,6 @@ BELGE EKLE</value>
   </data>
   <data name="CHEIGHT" xml:space="preserve">
     <value>ÖZEL YÜKSEKLİK</value>
-  </data>
-  <data name="CYANCONTROL" xml:space="preserve">
-    <value>Herhangi Bir Camgöbeği Renkli Kontrol, Alt Shift Ctrl Tuşlarından Bir veya Daha Fazlası ile Farklı Şekilde Çalışır!</value>
-  </data>
-  <data name="HELP" xml:space="preserve">
-    <value>YARDIM</value>
   </data>
   <data name="AUTOFOLDERHELP" xml:space="preserve">
     <value>Otomatik Kayıt Klasörünü Belirtin. Hızlı Tarama İşleminde Bu Klasöre Kayıt Yapılır.</value>
@@ -688,11 +522,11 @@ BELGE EKLE</value>
   <data name="OCRALL" xml:space="preserve">
     <value>Tüm Pdf Sayfalarını Ocr Yap</value>
   </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Dosya Adı Geçersiz</value>
-  </data>
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Erişim Reddedildi. Yönetici Oturumu Olduğundan Emin Olun</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Dosya Adı Geçersiz</value>
   </data>
   <data name="BACKUPDB" xml:space="preserve">
     <value>VERİTABANI DOSYASINI YEDEKLE</value>
@@ -795,5 +629,171 @@ BELGE EKLE</value>
   </data>
   <data name="PDFINTERNALDESC" xml:space="preserve">
     <value>Bu İşaretlenirse Ocr Yapılmadan Pdf Metinleri Ocr Olarak Kullanılır</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>DOSYAYA
+BELGE EKLE</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>OCR VERİSİNİ KAYDET</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Bu İşaretliyse Aşağıda İşaretli Evraka Soldaki Aktif Evrakın İçerdiği Metin İçerik Olarak Veritabanına Kaydedilir.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Bu uygulama tarama ve belge takibini kolaylaştırmak amacıyla geliştirilmiştir.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>UYGULA</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>RENK UYGULA</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>OTOMATİK</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>OTOMATİK RESİM</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>OTOMATİK METİN</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>TOPLU İŞ</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Aşağıda Belirtilen Klasöre Resim Dosyaları Eklendiğinde Program Açık Olduğu Müddetçe Aynı Klasörde Pdf Dosyasına Otomatik Çevirme İşlemi Yapılır</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>KAMERA</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Eşik Değeri Ayarladıktan Sonra Buna Tıklarsanız İkinci Bir Renk Seçimi Yapabilirsiniz.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>SIKIŞTIR</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>VARSAYILAN</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>HEDEF RENK</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>BOŞ SAYFALARI GEÇ</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Eyp Dosyalarını Direkt Aç</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>DÜZ YATAKLI</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG KALİTE ORANI</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>SOL</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Bu Dosya Formatının Kısıtlı Desteği Vardır.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>YÜKLE</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Yama Kodu Algılanmadı</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>PROFİL SEÇİLMEDİ</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf Ocr İşlemi Fazladan Zaman Alır.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>DİĞER UYGULAMALARIM</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Taranan Belgelerde Sıkıştırılan Dosyayı Direkt Üzerine Yaz</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>SAYFA NO</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Pdf Dosyalarını Direkt Aç</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>PDF KLASÖR DEĞİŞİMİNİ İZLE</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>QR ALGILA</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>İşlenen Dosyaları Belge Listesinden Sil</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Seçili Resimi Silmek İstiyor musun?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Sayfaları Yer Değiştir</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>Uygulamanın Yeniden Başlatılması Gerekir.</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>SAĞ</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>180 DERECE DÖNDÜR</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>270 DERECE DÖNDÜR</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>90 DERECE DÖNDÜR</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>AYRAÇ</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Parçalanmış</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Geri Yüklemek İçin Çift Tıklayın, Genişletmek İçin Sağ Tıklayın</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>KAYNAK RENK</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Sağ Tıklayıp Renk Seçimi Yapın</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>BAŞLAT</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ETİKET</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Bazı Görevler Çalışıyor Bitmesini Bekleyin.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Tesseract Dilini Seçin</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>UYGULAMADA KULLANILAN 3.PARTİ KÜTÜPHANELER</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>EŞİK</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>İşlem Devam Ediyor. Bitmesini Bekleyin.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>GÜNCELLE</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>FİLİGRAN</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Herhangi Bir Camgöbeği Renkli Kontrol, Alt Shift Ctrl Tuşlarından Bir veya Daha Fazlası ile Farklı Şekilde Çalışır!</value>
   </data>
 </root>
