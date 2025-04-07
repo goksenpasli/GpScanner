@@ -75,6 +75,11 @@
     </Window.InputBindings>
     <Grid Background="{StaticResource GroupBoxBackGround}">
         <TabControl Background="{StaticResource GroupBoxBackGround}">
+            <TabControl.Resources>
+                <Style BasedOn="{StaticResource {x:Type TabItem}}" TargetType="TabItem">
+                    <Setter Property="Padding" Value="1" />
+                </Style>
+            </TabControl.Resources>
             <TabItem>
                 <TabItem.Header>
                     <StackPanel Orientation="Horizontal">

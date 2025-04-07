@@ -2386,7 +2386,9 @@
                                             <MenuItem.Header>
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock VerticalAlignment="Center" Text="{Binding Source='.zip', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                    <CheckBox VerticalAlignment="Center" Content="WEBP" IsChecked="{Binding EncodeAsWebp}" />
+                                                    <CheckBox VerticalAlignment="Center"
+                                                        Content="WEBP"
+                                                        IsChecked="{Binding EncodeAsWebp}" />
                                                 </StackPanel>
                                             </MenuItem.Header>
                                             <MenuItem.Icon>
@@ -2505,6 +2507,11 @@
             <TabControl x:Name="TbCtrl"
                 Background="{StaticResource BorderBackground}"
                 SelectedIndex="{Binding SelectedTabIndex}">
+                <TabControl.Resources>
+                    <Style BasedOn="{StaticResource {x:Type TabItem}}" TargetType="TabItem">
+                        <Setter Property="Padding" Value="1" />
+                    </Style>
+                </TabControl.Resources>
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
