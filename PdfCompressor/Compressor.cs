@@ -250,48 +250,33 @@ public class Compressor : Control, INotifyPropertyChanged
                         if (pdfimage is not null)
                         {
                             PdfPage page = document.AddPage();
-                            double ratio = pdfimage.PixelWidth / (double)pdfimage.PixelHeight;
                             bool portrait = pdfimage.PixelWidth < pdfimage.PixelHeight;
+                            XSize size = PageSizeConverter.ToSize(page.Size);
+                            using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                            BitmapSource resizedimage;
+                            byte[] data = null;
                             if (UseMozJpegEncoding)
                             {
-                                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
+                                resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
                                 using MozJpeg.MozJpeg mozJpeg = new();
-                                BitmapSource resizedimage = pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
-                                byte[] data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
-                                using MemoryStream ms = new(data);
-                                using XImage xImage = XImage.FromStream(ms);
-                                resizedimage = null;
-                                data = null;
-
-                                if (portrait)
-                                {
-                                    gfx?.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
-                                }
-                                else
-                                {
-                                    page.Orientation = PageOrientation.Landscape;
-                                    gfx?.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
-                                }
+                                data = mozJpeg.Encode(BitmapSourceToBitmap(resizedimage), jpegquality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                             }
                             else
                             {
-                                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Append);
-                                BitmapSource resizedimage = bw
-                                                            ? BitmapSourceToBitmap(pdfimage).ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Tiff).Resize(page.Height * ratio, page.Height, 0, dpi, dpi)
-                                                            : pdfimage.Resize(page.Height * ratio, page.Height, 0, dpi, dpi);
-                                using MemoryStream ms = new(resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality));
-                                using XImage xImage = XImage.FromStream(ms);
-                                resizedimage = null;
+                                resizedimage = bw ? BitmapSourceToBitmap(pdfimage).ConvertBlackAndWhite().ToBitmapImage(ImageFormat.Tiff).Resize(page.Width, page.Height, 0, dpi, dpi) : pdfimage.Resize(page.Width, page.Height, 0, dpi, dpi);
+                                data = resizedimage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg, jpegquality);
+                            }
 
-                                if (portrait)
-                                {
-                                    gfx?.DrawImage(xImage, 0, 0, page.Height * ratio, page.Height);
-                                }
-                                else
-                                {
-                                    page.Orientation = PageOrientation.Landscape;
-                                    gfx?.DrawImage(xImage, 0, 0, page.Width, page.Width / ratio);
-                                }
+                            using MemoryStream ms = new(data);
+                            using XImage xImage = XImage.FromStream(ms);
+                            if (portrait)
+                            {
+                                gfx?.DrawImage(xImage, 0, 0, size.Width, size.Height);
+                            }
+                            else
+                            {
+                                page.Orientation = PageOrientation.Landscape;
+                                gfx?.DrawImage(xImage, 0, 0, size.Height, size.Width);
                             }
                         }
 

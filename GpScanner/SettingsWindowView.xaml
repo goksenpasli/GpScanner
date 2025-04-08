@@ -77,7 +77,7 @@
         <TabControl Background="{StaticResource GroupBoxBackGround}">
             <TabControl.Resources>
                 <Style BasedOn="{StaticResource {x:Type TabItem}}" TargetType="TabItem">
-                    <Setter Property="Padding" Value="1" />
+                    <Setter Property="Margin" Value="1,0,1,0" />
                 </Style>
             </TabControl.Resources>
             <TabItem>

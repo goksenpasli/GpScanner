@@ -2507,11 +2507,6 @@
             <TabControl x:Name="TbCtrl"
                 Background="{StaticResource BorderBackground}"
                 SelectedIndex="{Binding SelectedTabIndex}">
-                <TabControl.Resources>
-                    <Style BasedOn="{StaticResource {x:Type TabItem}}" TargetType="TabItem">
-                        <Setter Property="Padding" Value="1" />
-                    </Style>
-                </TabControl.Resources>
                 <TabItem>
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
