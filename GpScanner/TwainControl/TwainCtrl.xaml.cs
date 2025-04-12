@@ -1482,6 +1482,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
+        LoadDocxFile = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new() { Filter = "Word Dosyası(*.docx; *.txt; *.xml; *.xsl; *.xslt; *.xaml; *.log; *.odt) | *.docx; *.txt; *.xml; *.xsl; *.xslt; *.xaml; *.log; *.odt", Multiselect = false };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    docxViewer.DocxDataFilePath = openFileDialog.FileName;
+                }
+            },
+            parameter => true);
+
         ClosePdfFile = new RelayCommand<object>(
             parameter =>
             {
@@ -2815,7 +2826,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand LoadPdfExtractFile { get; }
 
     public RelayCommand<object> LoadXlsFile { get; }
-
+    public RelayCommand<object> LoadDocxFile { get; }
     public ICommand LoadXpsFile { get; }
 
     public RelayCommand<object> ManualDeskewImage { get; }

@@ -53,11 +53,15 @@ namespace TwainControl
             {
                 if (d is DocxViewer viewer && e.NewValue is string uriString)
                 {
-                    if (!File.Exists(uriString))
+                    if (string.IsNullOrWhiteSpace(uriString))
                     {
+                        viewer.Fd.Document = null;
                         return;
                     }
-                    viewer.Fd.Document = viewer.GetFlowDocument(uriString);
+                    if (File.Exists(uriString))
+                    {
+                        viewer.Fd.Document = viewer.GetFlowDocument(uriString);
+                    }
                 }
             }
             catch (Exception ex)

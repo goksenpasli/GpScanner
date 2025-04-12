@@ -104,12 +104,20 @@ public partial class XpsViewer : UserControl, INotifyPropertyChanged
 
     private static void XpsDataFilePathChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is XpsViewer xpsViewer && e.NewValue is not null)
+        if (d is XpsViewer xpsViewer && e.NewValue is string filepath)
         {
             try
             {
-                XpsDocument doc = new(e.NewValue as string, FileAccess.Read);
-                xpsViewer.Document = doc.GetFixedDocumentSequence();
+                if (string.IsNullOrWhiteSpace(filepath))
+                {
+                    xpsViewer.Document = null;
+                    return;
+                }
+                if (File.Exists(filepath))
+                {
+                    XpsDocument doc = new(filepath, FileAccess.Read);
+                    xpsViewer.Document = doc.GetFixedDocumentSequence();
+                }
             }
             catch (Exception ex)
             {

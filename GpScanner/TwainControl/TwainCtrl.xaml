@@ -457,7 +457,8 @@
                                                     </Image>
                                                     <ToggleButton Background="{x:Null}"
                                                         BorderBrush="{x:Null}"
-                                                        IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
+                                                        IsChecked="{Binding LockSelectedPaper, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}"
+                                                        Visibility="{Binding Path=IsSelected, RelativeSource={RelativeSource AncestorType=ComboBoxItem}, Converter={StaticResource BooleanToVisibilityConverter}}">
                                                         <Image Width="16" Height="16">
                                                             <Image.Source>
                                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -505,7 +506,21 @@
                                                             </TextBlock.LayoutTransform>
                                                         </TextBlock>
                                                         <Grid>
-                                                            <Image Visibility="{Binding LockSelectedPaper, Mode=OneWay, Source={x:Static properties:Settings.Default}, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                                            <Image Width="{Binding Width}" Height="{Binding Height}">
+                                                                <Image.Style>
+                                                                    <Style TargetType="Image">
+                                                                        <Setter Property="Visibility" Value="Collapsed" />
+                                                                        <Style.Triggers>
+                                                                            <MultiDataTrigger>
+                                                                                <MultiDataTrigger.Conditions>
+                                                                                    <Condition Binding="{Binding LockSelectedPaper, Mode=OneWay, Source={x:Static properties:Settings.Default}}" Value="true" />
+                                                                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=ComboBoxItem}, Path=IsSelected}" Value="true" />
+                                                                                </MultiDataTrigger.Conditions>
+                                                                                <Setter Property="Visibility" Value="Visible" />
+                                                                            </MultiDataTrigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </Image.Style>
                                                                 <Image.Source>
                                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
                                                                         <Binding Source="Shell32.dll" />
@@ -2637,10 +2652,25 @@
                     </TabItem.Header>
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
-                        <Grid>
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            d:Text="XpsPath"
+                            local:Policy.PolicyName="LoadXpsFile"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding LoadXpsFile}"
+                            CommandParameter="{Binding ElementName=xpsViewer}"
+                            PasteButtonVisibility="Collapsed"
+                            Text="{Binding ElementName=xpsViewer, Path=XpsDataFilePath, UpdateSourceTrigger=PropertyChanged}">
+                            <Extensions:ButtonedTextBox.Description>
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
+                            </Extensions:ButtonedTextBox.Description>
+                        </Extensions:ButtonedTextBox>
+                        <Grid Grid.Row="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition />
@@ -2656,17 +2686,6 @@
                                 Grid.Column="1"
                                 x:FieldModifier="public" />
                         </Grid>
-                        <Button Grid.Row="1"
-                            local:Policy.PolicyName="LoadXpsFile"
-                            Command="{Binding LoadXpsFile}"
-                            CommandParameter="{Binding ElementName=xpsViewer}">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Width="32"
-                                    Height="32"
-                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
-                                <TextBlock VerticalAlignment="Center" Text="{Binding Converter={StaticResource FilePathToFileDescriptionConverter}, Source=.xps}" />
-                            </StackPanel>
-                        </Button>
                     </Grid>
                 </TabItem>
                 <TabItem>
@@ -2755,9 +2774,30 @@
                             Height="32"
                             Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.docx}" />
                     </TabItem.Header>
-                    <local:DocxViewer x:Name="docxViewer"
-                        x:FieldModifier="public"
-                        AllowDrop="True" />
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
+                            d:Text="DocxPath"
+                            local:Policy.PolicyName="LoadDocxFile"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding LoadDocxFile}"
+                            PasteButtonVisibility="Collapsed"
+                            Text="{Binding ElementName=docxViewer, Path=DocxDataFilePath, UpdateSourceTrigger=PropertyChanged}">
+                            <Extensions:ButtonedTextBox.Description>
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.docx}" />
+                            </Extensions:ButtonedTextBox.Description>
+                        </Extensions:ButtonedTextBox>
+                        <local:DocxViewer x:Name="docxViewer"
+                            Grid.Row="1"
+                            x:FieldModifier="public"
+                            AllowDrop="True" />
+                    </Grid>
                 </TabItem>
             </TabControl>
         </GroupBox>
