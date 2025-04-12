@@ -507,6 +507,129 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>НЕІНДЭКСАВАНЫЯ ФАЙЛЫ</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Паказаць інфармацыю пра pdf</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr усе старонкі pdf</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Доступ да папкі забаронены.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Няправільнае імя файла</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>РЭЗЕРВОВАЯ КАПІЯ ФАЙЛА БАЗЫ ДАДЗЕНЫХ</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ФАЙЛ АСАСЦЫЯВАЦЬ</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Згарнуць у сістэмны трэй</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Паведамленне аб запуску</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>ЛІНЕЙНАЯ ЗАЛІНКА</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>ВЫХОД</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>КАПІЯВАЦЬ</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Скапіравана ў буфер абмену</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Гэты працэс можа заняць шмат часу.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ПАМЫЛКА</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>СКАНІРАВАЦЬ КОЖНУЮ СТАРОНКУ Ў АСОБНЫ ФАЙЛ</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ПОСПЕХ</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>АРЫГІНАЛЬНАЯ</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF працуе як JPG. Гэта памяншае загрузку памяці, але файлы JPG запісаны ў часовым каталогу Windsun, бо назіраецца памяншэнне памеру дыска. Лепш выкарыстоўваць толькі ў тым выпадку, калі памяць запаўняецца файламі, якія змяшчаюць занадта шмат (1000) старонак.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>Праставаць</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Паказаць значок SystemTray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Сартаваць</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Дадайце да пачатку</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Дадаць да канца</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Выкарыстоўвайце тэкст змесціва PDF замест вынікаў OCR. Не рэкамендуецца ўключыць функцыю tḣs.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Выдаліце ​​папкі пасля завяршэння аперацый па індэксах, каб атрымаць прадукцыйнасць нагрузкі</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Ёсць шматлікія файлы</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>Вялікі</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Самы вялікі</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Сярэдні</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Маленькі</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Самы маленькі</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Бегчы</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Паказаць экран Splash</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Кампутар</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Больш, чым браўзэр</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Арыентацыя Tesseract і файл выяўлення сцэнарыя павінны быць загружаны для працы па кручэнні аўтаматычнай працы</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Выкарыстоўвайце тэкставы конкурс PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Калі гэта адзначана, тэксты PDF выкарыстоўваюцца ў якасці OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Відэа</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>Карціна</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Архіў</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>ДАДАЦЬ ДАКУМЕНТ</value>
   </data>
@@ -672,118 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Любы элемент кіравання блакітнага колеру працуе па-рознаму з адной або некалькімі клавішамі Alt Shift Ctrl</value>
   </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>Паказаць інфармацыю пра pdf</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr усе старонкі pdf</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Няправільнае імя файла</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>Доступ да папкі забаронены.</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>РЭЗЕРВОВАЯ КАПІЯ ФАЙЛА БАЗЫ ДАДЗЕНЫХ</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>ФАЙЛ АСАСЦЫЯВАЦЬ</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>Згарнуць у сістэмны трэй</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>Паведамленне аб запуску</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>ЛІНЕЙНАЯ ЗАЛІНКА</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>ВЫХОД</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>КАПІЯВАЦЬ</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>Скапіравана ў буфер абмену</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Гэты працэс можа заняць шмат часу.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>ПАМЫЛКА</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>СКАНІРАВАЦЬ КОЖНУЮ СТАРОНКУ Ў АСОБНЫ ФАЙЛ</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>ПОСПЕХ</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>АРЫГІНАЛЬНАЯ</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF працуе як JPG. Гэта памяншае загрузку памяці, але файлы JPG запісаны ў часовым каталогу Windsun, бо назіраецца памяншэнне памеру дыска. Лепш выкарыстоўваць толькі ў тым выпадку, калі памяць запаўняецца файламі, якія змяшчаюць занадта шмат (1000) старонак.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>Праставаць</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Паказаць значок SystemTray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>Сартаваць</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Дадайце да пачатку</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Дадаць да канца</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Выкарыстоўвайце тэкст змесціва PDF замест вынікаў OCR. Не рэкамендуецца ўключыць функцыю tḣs.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Выдаліце ​​папкі пасля завяршэння аперацый па індэксах, каб атрымаць прадукцыйнасць нагрузкі</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Ёсць шматлікія файлы</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>Вялікі</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Самы вялікі</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>Сярэдні</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>Маленькі</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Самы маленькі</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>Бегчы</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Паказаць экран Splash</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>Кампутар</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Больш, чым браўзэр</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Арыентацыя Tesseract і файл выяўлення сцэнарыя павінны быць загружаны для працы па кручэнні аўтаматычнай працы</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Выкарыстоўвайце тэкставы конкурс PDF</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Калі гэта адзначана, тэксты PDF выкарыстоўваюцца ў якасці OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Некаторыя пашырэнні файлаў не былі абраны</value>
   </data>
 </root>

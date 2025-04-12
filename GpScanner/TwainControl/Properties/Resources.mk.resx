@@ -575,6 +575,72 @@
   <data name="PASTE" xml:space="preserve">
     <value>ЗАЛЕПИ</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Покажете ја иконата SystemTray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Сортирај</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Додај на почетокот</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Додадете на крај</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Користете го текстот на содржината на PDF наместо резултатот од OCR. Не се препорачува да се овозможи функцијата на This.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Отстранете ги папките по завршувањето на операциите на индексот за да се здобијат со перформанси на оптоварувањето</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Постојат бројни датотеки</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>ГОЛЕМО</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>НАЈГОЛЕМ</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Среден</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Мал</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Најмал</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Трчај</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Покажете го Splash екранот</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Компјутер</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Повеќе од прелистувач</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Датотеката за ориентација и откривање на скрипти треба да се преземе за да работи автоматска ротација</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Користете натпревар за текст PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Ако ова е обележано, PDF текстовите се користат како OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Видео</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>Слика</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Архива</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>До датотеката
 Додадете документ</value>
@@ -741,61 +807,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Секоја контрола на стакло во боја работи поинаку со едно или повеќе од копчињата со пониска смена CTRL!</value>
   </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Покажете ја иконата SystemTray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>Сортирај</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Додај на почетокот</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Додадете на крај</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Користете го текстот на содржината на PDF наместо резултатот од OCR. Не се препорачува да се овозможи функцијата на This.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Отстранете ги папките по завршувањето на операциите на индексот за да се здобијат со перформанси на оптоварувањето</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Постојат бројни датотеки</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>ГОЛЕМО</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>НАЈГОЛЕМ</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>Среден</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>Мал</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Најмал</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>Трчај</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Покажете го Splash екранот</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>Компјутер</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Повеќе од прелистувач</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Датотеката за ориентација и откривање на скрипти треба да се преземе за да работи автоматска ротација</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Користете натпревар за текст PDF</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Ако ова е обележано, PDF текстовите се користат како OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value />
   </data>
 </root>

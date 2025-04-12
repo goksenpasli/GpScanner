@@ -215,6 +215,7 @@
     <Compile Include="ViewModel\EncryptString.cs" />
     <Compile Include="ViewModel\ExtendedContributionData.cs" />
     <Compile Include="ViewModel\FastFileSearch.cs" />
+    <Compile Include="ViewModel\FileCategory.cs" />
     <Compile Include="ViewModel\FileResult.cs" />
     <Compile Include="ViewModel\FileService.cs" />
     <Compile Include="ViewModel\FileType.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="ViewModel\SplashViewModel.cs" />
     <Compile Include="ViewModel\StillImageHelper.cs" />
     <Compile Include="ViewModel\StrCmpLogicalComparer.cs" />
+    <Compile Include="ViewModel\SupportedExtensions.cs" />
     <Compile Include="ViewModel\TesseractViewModel.cs" />
     <Compile Include="ViewModel\TessFiles.cs" />
     <Compile Include="ViewModel\ThumbnailTranslateViewModel.cs" />

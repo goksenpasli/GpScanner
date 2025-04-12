@@ -617,6 +617,30 @@ Ko'tarmoq</value>
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Ochilgan ekranni ko'rsating</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Kompyuter</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Brauzerdan ko'proq</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesserakt avtomatik aylantirish ishiga yuklab olinishi kerak</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF matni tanlovidan foydalaning</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Agar bu belgilangan bo'lsa, PDF matnlari OCR sifatida ishlatiladi.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>Rasm</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Arxiv</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>Faylga
 Hujjat qo'shing</value>
@@ -783,19 +807,7 @@ Hujjat qo'shing</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Har qanday shisha rangli boshqaruv Ctrl tugmachalari bir yoki bir nechtasi bilan farq qiladi!</value>
   </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>Kompyuter</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Brauzerdan ko'proq</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tesserakt avtomatik aylantirish ishiga yuklab olinishi kerak</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>PDF matni tanlovidan foydalaning</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Agar bu belgilangan bo'lsa, PDF matnlari OCR sifatida ishlatiladi.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Ba'zi fayl kengaytmalari tanlanmagan</value>
   </data>
 </root>

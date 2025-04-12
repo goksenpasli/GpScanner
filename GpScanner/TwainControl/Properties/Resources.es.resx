@@ -399,6 +399,234 @@
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>GUARDAR PDF OCR</value>
   </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Detener</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>VACÍO</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DESPEJAR</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Se recomienda elegir el formato apropiado para el índice de carpetas de su antigua aplicación de navegador.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>ANCHO PERSONALIZADO</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ALTURA PERSONALIZADA</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Especifique la carpeta de guardado automático.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Problemas conocidos</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>A veces, aunque se agrega un archivo a la lista, no aparece en la lista.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>¡Muestra cuántos segundos esperará el escáner antes de escanear!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>ESCÁNER DE PELÍCULA</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Ignorar ancho alto igual.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>BIBLIOTECA</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Seleccione la carpeta para guardar PDF</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Seleccionar carpeta de imágenes</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Reproducir sonido cuando se complete el escaneo</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Si se marca, se pueden realizar OCR en varios documentos al mismo tiempo</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Cerrar el archivo</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>INVERTIR COLOR</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>DOBLAR</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>ESPEJO</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>ONDA</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>INSTALADO</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>El archivo está en uso.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Mantenga presionado el botón Esc para cancelar</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>MATIZ</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>LIGEREZA</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>SATURACIÓN</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Vista previa sencilla en PDF.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Cuando termine, retire el CD</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>HORIZONTAL</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Tomar el primero y el último Continuar</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Dividir y ordenar</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>ALEATORIO</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>ARCHIVOS NO INDEXADOS</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Mostrar información en PDF</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr todas las páginas PDF</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Acceso a la carpeta denegado.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>El nombre del archivo no es válido</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>ARCHIVO DE BASE DE DATOS DE RESPALDO</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ASOCIADO DE ARCHIVO</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimizar a la bandeja del sistema</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Mensaje de inicio</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>RELLENO LINEAL</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>SALIDA</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>COPIAR</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Copiado al portapapeles</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Este proceso puede llevar mucho tiempo.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ERROR</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>ESCANEE CADA PÁGINA EN UN ARCHIVO SEPARADO</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ÉXITO</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORIGINAL</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF funciona como JPG. Esto reduce la carga en la memoria, pero los archivos JPG se registran en el directorio temporal de Windowsun, ya que hay una disminución en el tamaño del disco. Es mejor usar solo si la memoria se llena en archivos que contienen demasiado (1000) páginas.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>PEGAR</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Mostrar ícono de systemtray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>CLASIFICAR</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Agregar al principio</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Agregar a un final</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Use el texto de contenido PDF en lugar del resultado OCR. No se recomienda habilitar la función de este.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Eliminar las carpetas después de que las operaciones de índice completaron para obtener el rendimiento de la carga</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Hay numerosos archivos</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>GRANDE</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>MÁS GRANDE</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>MEDIO</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>PEQUEÑO</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>PEQUEÑÍSIMO</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>CORRER</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Mostrar pantalla de salpicaduras</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>COMPUTADORA</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Más que un navegador</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>El archivo de orientación y detección de script de tesseract debe descargarse para trabajar la rotación automática</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Use el concurso de texto PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Si esto está marcado, los textos PDF se usan como OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDEO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>IMAGEN</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>ARCHIVO</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>AÑADIR DOCUMENTO</value>
   </data>
@@ -561,226 +789,10 @@
   <data name="WATERMARK" xml:space="preserve">
     <value>FILIGRANA</value>
   </data>
-  <data name="STOP" xml:space="preserve">
-    <value>Detener</value>
-  </data>
-  <data name="EMPTY" xml:space="preserve">
-    <value>VACÍO</value>
-  </data>
-  <data name="DESPECKLE" xml:space="preserve">
-    <value>DESPEJAR</value>
-  </data>
-  <data name="FOLDERFORMAT" xml:space="preserve">
-    <value>Se recomienda elegir el formato apropiado para el índice de carpetas de su antigua aplicación de navegador.</value>
-  </data>
-  <data name="CHEIGHT" xml:space="preserve">
-    <value>ALTURA PERSONALIZADA</value>
-  </data>
-  <data name="CWIDTH" xml:space="preserve">
-    <value>ANCHO PERSONALIZADO</value>
-  </data>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Cualquier control de color cian funciona de manera diferente con una o más de las teclas Alt Shift Ctrl</value>
   </data>
-  <data name="AUTOFOLDERHELP" xml:space="preserve">
-    <value>Especifique la carpeta de guardado automático.</value>
-  </data>
-  <data name="KNOWNPROBLEMS" xml:space="preserve">
-    <value>Problemas conocidos</value>
-  </data>
-  <data name="ERROR1" xml:space="preserve">
-    <value>A veces, aunque se agrega un archivo a la lista, no aparece en la lista.</value>
-  </data>
-  <data name="SCANDELAYHELP" xml:space="preserve">
-    <value>¡Muestra cuántos segundos esperará el escáner antes de escanear!</value>
-  </data>
-  <data name="FILMSCANNER" xml:space="preserve">
-    <value>ESCÁNER DE PELÍCULA</value>
-  </data>
-  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
-    <value>Ignorar ancho alto igual.</value>
-  </data>
-  <data name="LIBRARY" xml:space="preserve">
-    <value>BIBLIOTECA</value>
-  </data>
-  <data name="PDFFOLDER" xml:space="preserve">
-    <value>Seleccione la carpeta para guardar PDF</value>
-  </data>
-  <data name="GRAPHFOLDER" xml:space="preserve">
-    <value>Seleccionar carpeta de imágenes</value>
-  </data>
-  <data name="PLAYSOUND" xml:space="preserve">
-    <value>Reproducir sonido cuando se complete el escaneo</value>
-  </data>
-  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
-    <value>Si se marca, se pueden realizar OCR en varios documentos al mismo tiempo</value>
-  </data>
-  <data name="CLOSEFILE" xml:space="preserve">
-    <value>Cerrar el archivo</value>
-  </data>
-  <data name="INVERTCOLOR" xml:space="preserve">
-    <value>INVERTIR COLOR</value>
-  </data>
-  <data name="FOLD" xml:space="preserve">
-    <value>DOBLAR</value>
-  </data>
-  <data name="MIRROR" xml:space="preserve">
-    <value>ESPEJO</value>
-  </data>
-  <data name="RIPPLE" xml:space="preserve">
-    <value>ONDA</value>
-  </data>
-  <data name="INSTALLED" xml:space="preserve">
-    <value>INSTALADO</value>
-  </data>
-  <data name="FILEINUSE" xml:space="preserve">
-    <value>El archivo está en uso.</value>
-  </data>
-  <data name="ESCTOCANCEL" xml:space="preserve">
-    <value>Mantenga presionado el botón Esc para cancelar</value>
-  </data>
-  <data name="HUE" xml:space="preserve">
-    <value>MATIZ</value>
-  </data>
-  <data name="LIGHTNESS" xml:space="preserve">
-    <value>LIGEREZA</value>
-  </data>
-  <data name="SATURATION" xml:space="preserve">
-    <value>SATURACIÓN</value>
-  </data>
-  <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>Vista previa sencilla en PDF.</value>
-  </data>
-  <data name="REMOVECD" xml:space="preserve">
-    <value>Cuando termine, retire el CD</value>
-  </data>
-  <data name="HORIZONTAL" xml:space="preserve">
-    <value>HORIZONTAL</value>
-  </data>
-  <data name="FIRSTLAST" xml:space="preserve">
-    <value>Tomar el primero y el último Continuar</value>
-  </data>
-  <data name="SPLITSORT" xml:space="preserve">
-    <value>Dividir y ordenar</value>
-  </data>
-  <data name="RANDOM" xml:space="preserve">
-    <value>ALEATORIO</value>
-  </data>
-  <data name="UNINDEXED" xml:space="preserve">
-    <value>ARCHIVOS NO INDEXADOS</value>
-  </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>Mostrar información en PDF</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr todas las páginas PDF</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>El nombre del archivo no es válido</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>Acceso a la carpeta denegado.</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>ARCHIVO DE BASE DE DATOS DE RESPALDO</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>ASOCIADO DE ARCHIVO</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>Minimizar a la bandeja del sistema</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>Mensaje de inicio</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>RELLENO LINEAL</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>SALIDA</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>COPIAR</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>Copiado al portapapeles</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Este proceso puede llevar mucho tiempo.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>ERROR</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>ESCANEE CADA PÁGINA EN UN ARCHIVO SEPARADO</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>ÉXITO</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ORIGINAL</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF funciona como JPG. Esto reduce la carga en la memoria, pero los archivos JPG se registran en el directorio temporal de Windowsun, ya que hay una disminución en el tamaño del disco. Es mejor usar solo si la memoria se llena en archivos que contienen demasiado (1000) páginas.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>PEGAR</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Mostrar ícono de systemtray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>CLASIFICAR</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Agregar al principio</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Agregar a un final</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Use el texto de contenido PDF en lugar del resultado OCR. No se recomienda habilitar la función de este.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Eliminar las carpetas después de que las operaciones de índice completaron para obtener el rendimiento de la carga</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Hay numerosos archivos</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>GRANDE</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>MÁS GRANDE</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>MEDIO</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>PEQUEÑO</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>PEQUEÑÍSIMO</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>CORRER</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Mostrar pantalla de salpicaduras</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>COMPUTADORA</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Más que un navegador</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>El archivo de orientación y detección de script de tesseract debe descargarse para trabajar la rotación automática</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Use el concurso de texto PDF</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Si esto está marcado, los textos PDF se usan como OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>No se seleccionaron algunas extensiones de archivos</value>
   </data>
 </root>

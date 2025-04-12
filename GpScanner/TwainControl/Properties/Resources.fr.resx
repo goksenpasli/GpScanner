@@ -117,23 +117,128 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ABOUT" xml:space="preserve">
-    <value>À PROPOS</value>
+  <data name="SRC" xml:space="preserve">
+    <value>SÉLECTIONNER LA SOURCE</value>
   </data>
-  <data name="ADDDOC" xml:space="preserve">
-    <value>AJOUTER UN DOCUMENT</value>
+  <data name="SETTİNGS" xml:space="preserve">
+    <value>PARAMÈTRES</value>
   </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
-    <value>AJOUTER OCR À LA BASE DE DONNÉES</value>
-  </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>Si cette case est cochée, le document marqué ci-dessous est enregistré dans la base de données comme texte du document actif à gauche.</value>
+  <data name="RES" xml:space="preserve">
+    <value>RÉSOLUTION</value>
   </data>
   <data name="ADF" xml:space="preserve">
     <value>FAD</value>
   </data>
+  <data name="BW" xml:space="preserve">
+    <value>NOIR BLANC</value>
+  </data>
+  <data name="GRAY" xml:space="preserve">
+    <value>GRIS</value>
+  </data>
+  <data name="COLOR" xml:space="preserve">
+    <value>COULEUR</value>
+  </data>
+  <data name="TWOSIDE" xml:space="preserve">
+    <value>DEUX CÔTÉS</value>
+  </data>
+  <data name="GUI" xml:space="preserve">
+    <value>AFFICHER L'interface graphique</value>
+  </data>
+  <data name="SEPERATESCAN" xml:space="preserve">
+    <value>ANALYSE SÉPARÉE</value>
+  </data>
+  <data name="SHOWFILE" xml:space="preserve">
+    <value>AFFICHER LE FICHIER APRÈS ANALYSE RAPIDE</value>
+  </data>
+  <data name="OTHERSETTINGS" xml:space="preserve">
+    <value>AUTRES RÉGLAGES</value>
+  </data>
+  <data name="DESKEW" xml:space="preserve">
+    <value>DESKEW</value>
+  </data>
+  <data name="BORDERDETECT" xml:space="preserve">
+    <value>DÉTECTION AUTOMATIQUE DES FRONTIÈRES</value>
+  </data>
+  <data name="SHOWPROGRESS" xml:space="preserve">
+    <value>AFFICHER LES PROGRÈS</value>
+  </data>
+  <data name="AUTOROTATE" xml:space="preserve">
+    <value>ROTATION AUTOMATIQUE</value>
+  </data>
+  <data name="NO ACTION" xml:space="preserve">
+    <value>PAS D'ACTION</value>
+  </data>
+  <data name="CLOSECOMP" xml:space="preserve">
+    <value>FERMER L'ORDINATEUR</value>
+  </data>
+  <data name="RESTARTCOMP" xml:space="preserve">
+    <value>REDÉMARRER L'ORDINATEUR</value>
+  </data>
+  <data name="FILENAME" xml:space="preserve">
+    <value>NOM DE FICHIER</value>
+  </data>
+  <data name="DAY" xml:space="preserve">
+    <value>JOUR</value>
+  </data>
+  <data name="MONTH" xml:space="preserve">
+    <value>MOIS</value>
+  </data>
+  <data name="YEAR" xml:space="preserve">
+    <value>ANNÉE</value>
+  </data>
+  <data name="TIME" xml:space="preserve">
+    <value>TEMPS</value>
+  </data>
+  <data name="MINUTE" xml:space="preserve">
+    <value>MINUTE</value>
+  </data>
+  <data name="SECOND" xml:space="preserve">
+    <value>DEUXIÈME</value>
+  </data>
+  <data name="GUID" xml:space="preserve">
+    <value>GUID</value>
+  </data>
+  <data name="USERNAME" xml:space="preserve">
+    <value>NOM D'UTILISATEUR</value>
+  </data>
+  <data name="SAVEPROFILE" xml:space="preserve">
+    <value>ENREGISTRER LE PROFIL</value>
+  </data>
+  <data name="DELETE" xml:space="preserve">
+    <value>SUPPRIMER</value>
+  </data>
+  <data name="SCAN" xml:space="preserve">
+    <value>ANALYSE</value>
+  </data>
+  <data name="FASTSCAN" xml:space="preserve">
+    <value>RAPIDE</value>
+  </data>
+  <data name="AUTOPATH" xml:space="preserve">
+    <value>SCAN AUTOMATIQUE</value>
+  </data>
   <data name="ALL" xml:space="preserve">
     <value>TOUS</value>
+  </data>
+  <data name="NONE" xml:space="preserve">
+    <value>AUCUN</value>
+  </data>
+  <data name="REVERSE" xml:space="preserve">
+    <value>INVERSE</value>
+  </data>
+  <data name="PREVIEWSIZE" xml:space="preserve">
+    <value>TAILLE DE L'APERÇU DE L'IMAGE</value>
+  </data>
+  <data name="PDFPROTECT" xml:space="preserve">
+    <value>PROTECTION PDF</value>
+  </data>
+  <data name="ENCRYPT" xml:space="preserve">
+    <value>CRYPTER</value>
+  </data>
+  <data name="PDFWARN" xml:space="preserve">
+    <value>LES PARAMÈTRES DÉFINIS ICI AFFECTENT TOUS LES PARAMÈTRES PDF.</value>
+  </data>
+  <data name="ALLOWPRINT" xml:space="preserve">
+    <value>AUTORISER L'IMPRESSION</value>
   </data>
   <data name="ALLOWCOPY" xml:space="preserve">
     <value>AUTORISER LA COPIE</value>
@@ -141,23 +246,119 @@
   <data name="ALLOWEDIT" xml:space="preserve">
     <value>AUTORISER LA MODIFICATION</value>
   </data>
-  <data name="ALLOWPRINT" xml:space="preserve">
-    <value>AUTORISER L'IMPRESSION</value>
+  <data name="SAVESELECTED" xml:space="preserve">
+    <value>ENREGISTRER LA SÉLECTION</value>
   </data>
-  <data name="APPDESC" xml:space="preserve">
-    <value>Cette application a été développée pour faciliter la numérisation et le suivi des documents.</value>
+  <data name="CLEARLIST" xml:space="preserve">
+    <value>EFFACER LA LISTE</value>
   </data>
-  <data name="APPLY" xml:space="preserve">
-    <value>APPLIQUER</value>
+  <data name="MERGEPDF" xml:space="preserve">
+    <value>FUSIONNER PDF</value>
   </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
-    <value>CHANGER DE COULEUR</value>
+  <data name="ABOUT" xml:space="preserve">
+    <value>À PROPOS</value>
   </data>
-  <data name="APPRUNNING" xml:space="preserve">
-    <value>L'application est déjà en cours d'exécution.</value>
+  <data name="DOCUMENT" xml:space="preserve">
+    <value>DOCUMENT</value>
   </data>
-  <data name="Auto" xml:space="preserve">
-    <value>AUTOMATIQUE</value>
+  <data name="TRIMIMAGE" xml:space="preserve">
+    <value>DÉCOUPER L'IMAGE</value>
+  </data>
+  <data name="RESET" xml:space="preserve">
+    <value>RÉINITIALISER</value>
+  </data>
+  <data name="WIDTHCOUNT" xml:space="preserve">
+    <value>COMPTE DE LARGEUR</value>
+  </data>
+  <data name="HEIGHTCOUNT" xml:space="preserve">
+    <value>COMPTE DE HAUTEUR</value>
+  </data>
+  <data name="SLICE" xml:space="preserve">
+    <value>TRANCHE</value>
+  </data>
+  <data name="TEXT" xml:space="preserve">
+    <value>TEXTE</value>
+  </data>
+  <data name="TEXTSIZE" xml:space="preserve">
+    <value>TAILLE DU TEXTE</value>
+  </data>
+  <data name="TEXTANGLE" xml:space="preserve">
+    <value>ANGLE DU TEXTE</value>
+  </data>
+  <data name="FONT" xml:space="preserve">
+    <value>POLICE DE CARACTÈRE</value>
+  </data>
+  <data name="DRAWTEXT" xml:space="preserve">
+    <value>DESSINER UN TEXTE</value>
+  </data>
+  <data name="SAVEPDF" xml:space="preserve">
+    <value>ENREGISTRER LE PDF</value>
+  </data>
+  <data name="HELP" xml:space="preserve">
+    <value>AIDE</value>
+  </data>
+  <data name="OCR" xml:space="preserve">
+    <value>ROC</value>
+  </data>
+  <data name="FILE" xml:space="preserve">
+    <value>DÉPOSER</value>
+  </data>
+  <data name="CALENDAR" xml:space="preserve">
+    <value>CALENDRIER</value>
+  </data>
+  <data name="GRAPH" xml:space="preserve">
+    <value>GRAPHIQUE</value>
+  </data>
+  <data name="VIEWALL" xml:space="preserve">
+    <value>VOIR TOUT</value>
+  </data>
+  <data name="PREVIEWFILE" xml:space="preserve">
+    <value>FICHIER D'APERÇU</value>
+  </data>
+  <data name="TESSERACT" xml:space="preserve">
+    <value>TESSERACT</value>
+  </data>
+  <data name="MERGE" xml:space="preserve">
+    <value>FUSIONNER</value>
+  </data>
+  <data name="MERGESELECTED" xml:space="preserve">
+    <value>FUSIONNER LA SÉLECTION</value>
+  </data>
+  <data name="SELECTTWOPDF" xml:space="preserve">
+    <value>SÉLECTIONNEZ AU MOINS DEUX FICHIERS PDF</value>
+  </data>
+  <data name="READACTIVEPAGE" xml:space="preserve">
+    <value>LIRE ACTIF</value>
+  </data>
+  <data name="CONTENT" xml:space="preserve">
+    <value>CONTENU</value>
+  </data>
+  <data name="SHOWFOLDER" xml:space="preserve">
+    <value>AFFICHER DANS LE DOSSIER</value>
+  </data>
+  <data name="CRUNTIME" xml:space="preserve">
+    <value>Étant donné que les binaires tesseract et leptonica sont compilés avec Visual Studio 2019, vous devez vous assurer que Visual Studio 2019 Runtime est installé.</value>
+  </data>
+  <data name="OTHERTESSERACT" xml:space="preserve">
+    <value>Téléchargez également d'autres fichiers de données de langue pour tesseract 4.1.0 à partir de tesseract-ocr si nécessaire.</value>
+  </data>
+  <data name="VC" xml:space="preserve">
+    <value>Exécutions Visual Studio 2019 x86 et x64</value>
+  </data>
+  <data name="OTHERTESSERACTLINK" xml:space="preserve">
+    <value>Autres données du langage tesseract</value>
+  </data>
+  <data name="SCANNER" xml:space="preserve">
+    <value>SCANNER</value>
+  </data>
+  <data name="PASSWORD" xml:space="preserve">
+    <value>MOT DE PASSE</value>
+  </data>
+  <data name="WARNREBOOT" xml:space="preserve">
+    <value>L'arrêt ou le redémarrage est défini.</value>
+  </data>
+  <data name="FASTSCANAFTER" xml:space="preserve">
+    <value>Après une tâche d'analyse rapide</value>
   </data>
   <data name="AUTOFOLDER" xml:space="preserve">
     <value>Définir le dossier de sauvegarde automatique</value>
@@ -165,422 +366,56 @@
   <data name="AUTOFOLDERCHANGE" xml:space="preserve">
     <value>Chemin d'enregistrement automatique modifié.</value>
   </data>
-  <data name="AUTOPATH" xml:space="preserve">
-    <value>SCAN AUTOMATIQUE</value>
-  </data>
-  <data name="AutoPicture" xml:space="preserve">
-    <value>IMAGE AUTOMATIQUE</value>
-  </data>
-  <data name="AUTOROTATE" xml:space="preserve">
-    <value>ROTATION AUTOMATIQUE</value>
-  </data>
-  <data name="AutoText" xml:space="preserve">
-    <value>TEXTE AUTOMATIQUE</value>
-  </data>
-  <data name="BATCH" xml:space="preserve">
-    <value>LOT</value>
-  </data>
-  <data name="BATCHDESC" xml:space="preserve">
-    <value>Lorsque des fichiers image sont ajoutés au dossier spécifié ci-dessous, la conversion automatique en fichiers PDF dans le même dossier est effectuée tant que le programme est ouvert</value>
-  </data>
-  <data name="BORDERDETECT" xml:space="preserve">
-    <value>DÉTECTION AUTOMATIQUE DES FRONTIÈRES</value>
-  </data>
-  <data name="BW" xml:space="preserve">
-    <value>NOIR BLANC</value>
-  </data>
-  <data name="CALENDAR" xml:space="preserve">
-    <value>CALENDRIER</value>
-  </data>
-  <data name="CAMERA" xml:space="preserve">
-    <value>CAMÉRA</value>
-  </data>
-  <data name="CLEARLIST" xml:space="preserve">
-    <value>EFFACER LA LISTE</value>
-  </data>
-  <data name="CLOSECOMP" xml:space="preserve">
-    <value>FERMER L'ORDINATEUR</value>
-  </data>
-  <data name="COLOR" xml:space="preserve">
-    <value>COULEUR</value>
-  </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>Si vous cliquez dessus après avoir défini la valeur seuil, vous pouvez effectuer une deuxième sélection de couleur.</value>
-  </data>
-  <data name="COMPRESS" xml:space="preserve">
-    <value>COMPRESSE</value>
-  </data>
-  <data name="CONTENT" xml:space="preserve">
-    <value>CONTENU</value>
-  </data>
-  <data name="CRUNTIME" xml:space="preserve">
-    <value>Étant donné que les binaires tesseract et leptonica sont compilés avec Visual Studio 2019, vous devez vous assurer que Visual Studio 2019 Runtime est installé.</value>
-  </data>
-  <data name="DAY" xml:space="preserve">
-    <value>JOUR</value>
-  </data>
-  <data name="Default" xml:space="preserve">
-    <value>DÉFAUT</value>
+  <data name="LISTREMOVEWARN" xml:space="preserve">
+    <value>Tous les documents numérisés de la liste inférieure seront supprimés. Voulez-vous continuer ?</value>
   </data>
   <data name="DEFAULTSCANNAME" xml:space="preserve">
     <value>Analyse</value>
   </data>
-  <data name="DELETE" xml:space="preserve">
-    <value>SUPPRIMER</value>
+  <data name="ROTSAVE" xml:space="preserve">
+    <value>Appliquer la rotation</value>
   </data>
-  <data name="DESKEW" xml:space="preserve">
-    <value>DESKEW</value>
-  </data>
-  <data name="DESPECKLE" xml:space="preserve">
-    <value>DÉPECKLE</value>
-  </data>
-  <data name="DESTLANG" xml:space="preserve">
-    <value>LANGUE DE DESTINATION</value>
-  </data>
-  <data name="DOCUMENT" xml:space="preserve">
-    <value>DOCUMENT</value>
-  </data>
-  <data name="DRAWTEXT" xml:space="preserve">
-    <value>DESSINER UN TEXTE</value>
-  </data>
-  <data name="DSTCOLOR" xml:space="preserve">
-    <value>COULEUR DE LA DESTINATION</value>
-  </data>
-  <data name="EMPTY" xml:space="preserve">
-    <value>VIDE</value>
-  </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
-    <value>SAUTER LA PAGE VIDE</value>
-  </data>
-  <data name="ENCRYPT" xml:space="preserve">
-    <value>CRYPTER</value>
-  </data>
-  <data name="EYPOPEN" xml:space="preserve">
-    <value>Ouvrez les fichiers Eyp directement.</value>
-  </data>
-  <data name="FASTSCAN" xml:space="preserve">
-    <value>RAPIDE</value>
-  </data>
-  <data name="FASTSCANAFTER" xml:space="preserve">
-    <value>Après une tâche d'analyse rapide</value>
-  </data>
-  <data name="FILE" xml:space="preserve">
-    <value>DÉPOSER</value>
-  </data>
-  <data name="FILENAME" xml:space="preserve">
-    <value>NOM DE FICHIER</value>
-  </data>
-  <data name="FLATBED" xml:space="preserve">
-    <value>PLATEAU</value>
-  </data>
-  <data name="FOLDERFORMAT" xml:space="preserve">
-    <value>Il est recommandé de choisir le format approprié pour l'index des dossiers de votre ancienne application de navigateur.</value>
-  </data>
-  <data name="FONT" xml:space="preserve">
-    <value>POLICE DE CARACTÈRE</value>
-  </data>
-  <data name="GRAPH" xml:space="preserve">
-    <value>GRAPHIQUE</value>
-  </data>
-  <data name="GRAY" xml:space="preserve">
-    <value>GRIS</value>
-  </data>
-  <data name="GUI" xml:space="preserve">
-    <value>AFFICHER L'interface graphique</value>
-  </data>
-  <data name="GUID" xml:space="preserve">
-    <value>GUID</value>
-  </data>
-  <data name="HEIGHTCOUNT" xml:space="preserve">
-    <value>COMPTE DE HAUTEUR</value>
-  </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
-    <value>QUALITÉ JPEG</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>GAUCHE</value>
-  </data>
-  <data name="LIMITED" xml:space="preserve">
-    <value>Ce format de fichier a une prise en charge limitée.</value>
-  </data>
-  <data name="LISTREMOVEWARN" xml:space="preserve">
-    <value>Tous les documents numérisés de la liste inférieure seront supprimés. Voulez-vous continuer ?</value>
-  </data>
-  <data name="LOAD" xml:space="preserve">
-    <value>CHARGER</value>
-  </data>
-  <data name="MERGE" xml:space="preserve">
-    <value>FUSIONNER</value>
-  </data>
-  <data name="MERGEPDF" xml:space="preserve">
-    <value>FUSIONNER PDF</value>
-  </data>
-  <data name="MERGESELECTED" xml:space="preserve">
-    <value>FUSIONNER LA SÉLECTION</value>
-  </data>
-  <data name="MINUTE" xml:space="preserve">
-    <value>MINUTE</value>
-  </data>
-  <data name="MONTH" xml:space="preserve">
-    <value>MOIS</value>
-  </data>
-  <data name="NO ACTION" xml:space="preserve">
-    <value>PAS D'ACTION</value>
-  </data>
-  <data name="NONE" xml:space="preserve">
-    <value>AUCUN</value>
-  </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
-    <value>Aucun code de correctif détecté</value>
-  </data>
-  <data name="NOPROFILE" xml:space="preserve">
-    <value>AUCUN PROFIL SÉLECTIONNÉ</value>
-  </data>
-  <data name="OCR" xml:space="preserve">
-    <value>ROC</value>
-  </data>
-  <data name="OCRPDFSAVE" xml:space="preserve">
-    <value>ENREGISTRER LE PDF OCR</value>
-  </data>
-  <data name="OCRTIME" xml:space="preserve">
-    <value>Le processus PDF Ocr prend plus de temps.</value>
-  </data>
-  <data name="OTHERAPPS" xml:space="preserve">
-    <value>MES AUTRES APPLICATIONS</value>
-  </data>
-  <data name="OTHERSETTINGS" xml:space="preserve">
-    <value>AUTRES RÉGLAGES</value>
-  </data>
-  <data name="OTHERTESSERACT" xml:space="preserve">
-    <value>Téléchargez également d'autres fichiers de données de langue pour tesseract 4.1.0 à partir de tesseract-ocr si nécessaire.</value>
-  </data>
-  <data name="OTHERTESSERACTLINK" xml:space="preserve">
-    <value>Autres données du langage tesseract</value>
-  </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Écraser directement le fichier compressé dans les documents numérisés</value>
-  </data>
-  <data name="PAGENUMBER" xml:space="preserve">
-    <value>NUMÉRO DE PAGE</value>
-  </data>
-  <data name="PASSWORD" xml:space="preserve">
-    <value>MOT DE PASSE</value>
-  </data>
-  <data name="PDFOPEN" xml:space="preserve">
-    <value>Ouvrez directement les fichiers PDF.</value>
-  </data>
-  <data name="PDFPROTECT" xml:space="preserve">
-    <value>PROTECTION PDF</value>
-  </data>
-  <data name="PDFTRACK" xml:space="preserve">
-    <value>REGARDER LE CHANGEMENT DE DOSSIER PDF</value>
-  </data>
-  <data name="PDFWARN" xml:space="preserve">
-    <value>LES PARAMÈTRES DÉFINIS ICI AFFECTENT TOUS LES PARAMÈTRES PDF.</value>
-  </data>
-  <data name="PREVIEWFILE" xml:space="preserve">
-    <value>FICHIER D'APERÇU</value>
-  </data>
-  <data name="PREVIEWSIZE" xml:space="preserve">
-    <value>TAILLE DE L'APERÇU DE L'IMAGE</value>
-  </data>
-  <data name="QRDETECT" xml:space="preserve">
-    <value>DÉTECTER LES QR</value>
-  </data>
-  <data name="READACTIVEPAGE" xml:space="preserve">
-    <value>LIRE ACTIF</value>
+  <data name="APPRUNNING" xml:space="preserve">
+    <value>L'application est déjà en cours d'exécution.</value>
   </data>
   <data name="REGSTI" xml:space="preserve">
     <value>INSCRIRE LES IST</value>
   </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>Supprimer les fichiers traités de la liste des documents</value>
-  </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
-    <value>Voulez-vous supprimer l'image sélectionnée ?</value>
-  </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Remplacer les pages</value>
-  </data>
-  <data name="RES" xml:space="preserve">
-    <value>RÉSOLUTION</value>
-  </data>
-  <data name="RESET" xml:space="preserve">
-    <value>RÉINITIALISER</value>
-  </data>
-  <data name="RESTARTAPP" xml:space="preserve">
-    <value>REDÉMARRER L'APP</value>
-  </data>
-  <data name="RESTARTCOMP" xml:space="preserve">
-    <value>REDÉMARRER L'ORDINATEUR</value>
-  </data>
-  <data name="REVERSE" xml:space="preserve">
-    <value>INVERSE</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>DROITE</value>
-  </data>
-  <data name="Rotate180" xml:space="preserve">
-    <value>ROTATION DE 180 DEGRÉS</value>
-  </data>
-  <data name="Rotate270" xml:space="preserve">
-    <value>ROTATION DE 270 DEGRÉS</value>
-  </data>
-  <data name="Rotate90" xml:space="preserve">
-    <value>ROTATION DE 90 DEGRÉS</value>
-  </data>
-  <data name="ROTSAVE" xml:space="preserve">
-    <value>Appliquer la rotation</value>
-  </data>
-  <data name="SAVEPDF" xml:space="preserve">
-    <value>ENREGISTRER LE PDF</value>
-  </data>
-  <data name="SAVEPROFILE" xml:space="preserve">
-    <value>ENREGISTRER LE PROFIL</value>
-  </data>
-  <data name="SAVESELECTED" xml:space="preserve">
-    <value>ENREGISTRER LA SÉLECTION</value>
-  </data>
-  <data name="SCAN" xml:space="preserve">
-    <value>ANALYSE</value>
-  </data>
-  <data name="SCANNER" xml:space="preserve">
-    <value>SCANNER</value>
-  </data>
-  <data name="SECOND" xml:space="preserve">
-    <value>DEUXIÈME</value>
-  </data>
-  <data name="SELECTTWOPDF" xml:space="preserve">
-    <value>SÉLECTIONNEZ AU MOINS DEUX FICHIERS PDF</value>
-  </data>
-  <data name="SEPERATESCAN" xml:space="preserve">
-    <value>ANALYSE SÉPARÉE</value>
-  </data>
-  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
-    <value>Enregistrez chaque page dans un fichier séparé. Les fichiers sont enregistrés dans le dossier spécifié ci-dessous.</value>
-  </data>
-  <data name="SEPERATOR" xml:space="preserve">
-    <value>UTILISER LE SÉPERATEUR</value>
-  </data>
-  <data name="SETTİNGS" xml:space="preserve">
-    <value>PARAMÈTRES</value>
-  </data>
-  <data name="SHOWFILE" xml:space="preserve">
-    <value>AFFICHER LE FICHIER APRÈS ANALYSE RAPIDE</value>
-  </data>
-  <data name="SHOWFOLDER" xml:space="preserve">
-    <value>AFFICHER DANS LE DOSSIER</value>
-  </data>
-  <data name="SHOWPROGRESS" xml:space="preserve">
-    <value>AFFICHER LES PROGRÈS</value>
-  </data>
-  <data name="SLICE" xml:space="preserve">
-    <value>TRANCHE</value>
+  <data name="TRANSLATE" xml:space="preserve">
+    <value>TRADUIRE</value>
   </data>
   <data name="SOURCELANG" xml:space="preserve">
     <value>LANGUE ORIGINELLE</value>
   </data>
-  <data name="SPLIT" xml:space="preserve">
-    <value>Divisé</value>
-  </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>Double-cliquez pour restaurer, faites un clic droit pour développer</value>
-  </data>
-  <data name="SRC" xml:space="preserve">
-    <value>SÉLECTIONNER LA SOURCE</value>
-  </data>
-  <data name="SRCCOLOR" xml:space="preserve">
-    <value>COULEUR SOURCE</value>
-  </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Faites un clic droit pour sélectionner la couleur source.</value>
-  </data>
-  <data name="START" xml:space="preserve">
-    <value>COMMENCER</value>
-  </data>
-  <data name="STOP" xml:space="preserve">
-    <value>Arrêt</value>
-  </data>
-  <data name="TAG" xml:space="preserve">
-    <value>ÉTIQUETER</value>
-  </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Certaines tâches sont en cours d'exécution, attendez qu'elles se terminent.</value>
-  </data>
-  <data name="TESSERACT" xml:space="preserve">
-    <value>TESSERACT</value>
-  </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Sélectionnez la langue Tesseract</value>
-  </data>
-  <data name="TEXT" xml:space="preserve">
-    <value>TEXTE</value>
-  </data>
-  <data name="TEXTANGLE" xml:space="preserve">
-    <value>ANGLE DU TEXTE</value>
-  </data>
-  <data name="TEXTSIZE" xml:space="preserve">
-    <value>TAILLE DU TEXTE</value>
-  </data>
-  <data name="THIRDPARTY" xml:space="preserve">
-    <value>BIBLIOTHÈQUES TIERCES UTILISÉES DANS L'APPLICATION</value>
-  </data>
-  <data name="THRESHOLD" xml:space="preserve">
-    <value>SEUIL</value>
-  </data>
-  <data name="TIME" xml:space="preserve">
-    <value>TEMPS</value>
-  </data>
-  <data name="TRANSLATE" xml:space="preserve">
-    <value>TRADUIRE</value>
-  </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>Le processus est en cours.</value>
-  </data>
-  <data name="TRIMIMAGE" xml:space="preserve">
-    <value>DÉCOUPER L'IMAGE</value>
-  </data>
-  <data name="TWOSIDE" xml:space="preserve">
-    <value>DEUX CÔTÉS</value>
+  <data name="DESTLANG" xml:space="preserve">
+    <value>LANGUE DE DESTINATION</value>
   </data>
   <data name="UNREGSTI" xml:space="preserve">
     <value>DÉSENREGISTRER L'APPAREIL STI</value>
   </data>
-  <data name="UPDATE" xml:space="preserve">
-    <value>MISE À JOUR</value>
+  <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
+    <value>Enregistrez chaque page dans un fichier séparé. Les fichiers sont enregistrés dans le dossier spécifié ci-dessous.</value>
   </data>
-  <data name="USERNAME" xml:space="preserve">
-    <value>NOM D'UTILISATEUR</value>
+  <data name="OCRPDFSAVE" xml:space="preserve">
+    <value>ENREGISTRER LE PDF OCR</value>
   </data>
-  <data name="VC" xml:space="preserve">
-    <value>Exécutions Visual Studio 2019 x86 et x64</value>
+  <data name="STOP" xml:space="preserve">
+    <value>Arrêt</value>
   </data>
-  <data name="VIEWALL" xml:space="preserve">
-    <value>VOIR TOUT</value>
+  <data name="EMPTY" xml:space="preserve">
+    <value>VIDE</value>
   </data>
-  <data name="WARNREBOOT" xml:space="preserve">
-    <value>L'arrêt ou le redémarrage est défini.</value>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>DÉPECKLE</value>
   </data>
-  <data name="WATERMARK" xml:space="preserve">
-    <value>FILIGRANE</value>
-  </data>
-  <data name="WIDTHCOUNT" xml:space="preserve">
-    <value>COMPTE DE LARGEUR</value>
-  </data>
-  <data name="YEAR" xml:space="preserve">
-    <value>ANNÉE</value>
-  </data>
-  <data name="CHEIGHT" xml:space="preserve">
-    <value>HAUTEUR PERSONNALISÉE</value>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Il est recommandé de choisir le format approprié pour l'index des dossiers de votre ancienne application de navigateur.</value>
   </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>LARGEUR PERSONNALISÉE</value>
   </data>
-  <data name="CYANCONTROL" xml:space="preserve">
-    <value>Tout contrôle de couleur cyan fonctionne différemment avec une ou plusieurs des touches Alt Shift Ctrl</value>
-  </data>
-  <data name="HELP" xml:space="preserve">
-    <value>AIDE</value>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>HAUTEUR PERSONNALISÉE</value>
   </data>
   <data name="AUTOFOLDERHELP" xml:space="preserve">
     <value>Spécifiez le dossier d'enregistrement automatique.</value>
@@ -675,11 +510,11 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr Toutes les pages PDF</value>
   </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Le nom du fichier n'est pas valide</value>
-  </data>
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Accès au dossier refusé.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Le nom du fichier n'est pas valide</value>
   </data>
   <data name="BACKUPDB" xml:space="preserve">
     <value>FICHIER DE BASE DE DONNÉES DE SAUVEGARDE</value>
@@ -782,5 +617,182 @@
   </data>
   <data name="PDFINTERNALDESC" xml:space="preserve">
     <value>Si cela est marqué, les textes PDF sont utilisés comme OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDÉO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>IMAGE</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>ARCHIVE</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>AJOUTER UN DOCUMENT</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>AJOUTER OCR À LA BASE DE DONNÉES</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Si cette case est cochée, le document marqué ci-dessous est enregistré dans la base de données comme texte du document actif à gauche.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Cette application a été développée pour faciliter la numérisation et le suivi des documents.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>APPLIQUER</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>CHANGER DE COULEUR</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AUTOMATIQUE</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>IMAGE AUTOMATIQUE</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>TEXTE AUTOMATIQUE</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>LOT</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Lorsque des fichiers image sont ajoutés au dossier spécifié ci-dessous, la conversion automatique en fichiers PDF dans le même dossier est effectuée tant que le programme est ouvert</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>CAMÉRA</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Si vous cliquez dessus après avoir défini la valeur seuil, vous pouvez effectuer une deuxième sélection de couleur.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRESSE</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>DÉFAUT</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>COULEUR DE LA DESTINATION</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>SAUTER LA PAGE VIDE</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Ouvrez les fichiers Eyp directement.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>PLATEAU</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>QUALITÉ JPEG</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>GAUCHE</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Ce format de fichier a une prise en charge limitée.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>CHARGER</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Aucun code de correctif détecté</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>AUCUN PROFIL SÉLECTIONNÉ</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Le processus PDF Ocr prend plus de temps.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>MES AUTRES APPLICATIONS</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Écraser directement le fichier compressé dans les documents numérisés</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>NUMÉRO DE PAGE</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Ouvrez directement les fichiers PDF.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>REGARDER LE CHANGEMENT DE DOSSIER PDF</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>DÉTECTER LES QR</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Supprimer les fichiers traités de la liste des documents</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Voulez-vous supprimer l'image sélectionnée ?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Remplacer les pages</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>REDÉMARRER L'APP</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>DROITE</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ROTATION DE 180 DEGRÉS</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ROTATION DE 270 DEGRÉS</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ROTATION DE 90 DEGRÉS</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>UTILISER LE SÉPERATEUR</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Divisé</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Double-cliquez pour restaurer, faites un clic droit pour développer</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>COULEUR SOURCE</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Faites un clic droit pour sélectionner la couleur source.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>COMMENCER</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ÉTIQUETER</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Certaines tâches sont en cours d'exécution, attendez qu'elles se terminent.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Sélectionnez la langue Tesseract</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>BIBLIOTHÈQUES TIERCES UTILISÉES DANS L'APPLICATION</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>SEUIL</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Le processus est en cours.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>MISE À JOUR</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>FILIGRANE</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Tout contrôle de couleur cyan fonctionne différemment avec une ou plusieurs des touches Alt Shift Ctrl</value>
+  </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Certaines extensions de fichiers n'ont pas été sélectionnées</value>
   </data>
 </root>

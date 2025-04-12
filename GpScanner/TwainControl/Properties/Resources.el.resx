@@ -417,6 +417,216 @@
   <data name="CHEIGHT" xml:space="preserve">
     <value>ΠΡΟΣΑΡΜΟΣΜΕΝΟ ΥΨΟΣ</value>
   </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Καθορίστε τον φάκελο Αυτόματη αποθήκευση.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Γνωστά Προβλήματα</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Μερικές φορές, αν και ένα αρχείο προστίθεται στη λίστα, δεν εμφανίζεται στη λίστα.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Δείχνει πόσα δευτερόλεπτα θα περιμένει ο σαρωτής πριν από τη σάρωση!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>FILM SCANNER</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Αγνοήστε το πλάτος Ύψος ίσο.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>ΒΙΒΛΙΟΘΗΚΗ</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Επιλέξτε Pdf Save Folder</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Επιλέξτε Φάκελο εικόνων</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Αναπαραγωγή ήχου όταν ολοκληρωθεί η σάρωση</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Εάν επιλεγεί, πολλαπλά έγγραφα μπορούν να υποβληθούν σε OCR την ίδια ώρα</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Κλείσιμο αρχείου</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>ΑΝΤΙΣΤΡΟΦΟ ΧΡΩΜΑ</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>ΠΤΥΧΗ</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>ΚΑΘΡΕΦΤΗΣ</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>ΚΥΜΑΤΙΣΜΟΣ</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>ΕΓΚΑΤΑΣΤΑΘΗΚΕ</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Το αρχείο είναι σε χρήση.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Πατήστε και κρατήστε πατημένο το κουμπί Esc για ακύρωση</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>ΑΠΟΧΡΩΣΗ</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>ΕΛΑΦΡΟΤΗΤΑ</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>ΚΟΡΕΣΜΟΣ</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Απλή προεπισκόπηση Pdf.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Όταν τελειώσει Αφαιρέστε το CD</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>ΟΡΙΖΟΝΤΙΟΣ</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Πάρτε πρώτος και τελευταίος Συνέχεια</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Διαίρεση και ταξινόμηση</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>ΤΥΧΑΙΟΣ</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>ΑΡΧΕΙΑ ΜΗ ΑΝΤΙΚΕΙΜΕΝΟΥ</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Εμφάνιση πληροφοριών PDF</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr Όλες οι σελίδες Pdf</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Δεν επιτρέπεται η πρόσβαση σε φάκελο.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Το όνομα αρχείου δεν είναι έγκυρο</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>ΑΡΧΕΙΟ ΒΑΣΗΣ ΔΕΔΟΜΕΝΩΝ ΑΝΤΙΓΡΑΦΩΝ</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ΣΥΝΕΡΓΑΤΗΣ ΑΡΧΕΙΟΥ</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Ελαχιστοποίηση στο δίσκο συστήματος</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Μήνυμα εκκίνησης</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>ΓΡΑΜΜΙΚΟ ΓΕΜΙΣΜΑ</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>ΕΞΟΔΟΣ</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>ΑΝΤΙΓΡΑΦΟ</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Αντιγράφηκε στο Πρόχειρο</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Αυτή η διαδικασία μπορεί να πάρει πολύ χρόνο.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ΛΑΘΟΣ</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>ΣΑΡΩΣΤΕ ΚΑΘΕ ΣΕΛΙΔΑ ΣΕ ΞΕΧΩΡΙΣΤΟ ΑΡΧΕΙΟ</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ΕΠΙΤΥΧΙΑ</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ΠΡΩΤΟΤΥΠΟ</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>Το PDF λειτουργεί ως JPG. Αυτό μειώνει τη φόρτωση στη μνήμη, αλλά τα αρχεία JPG καταγράφονται στον προσωρινό κατάλογο WindowsUN, καθώς υπάρχει μείωση του μεγέθους του δίσκου. Είναι καλύτερο να χρησιμοποιείτε μόνο εάν η μνήμη γεμίζει σε αρχεία που περιέχουν πάρα πολύ (1000) σελίδες.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>ΕΠΙΚΟΛΛΗΣΗ</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Εμφάνιση εικονιδίου SystemTray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>ΕΙΔΟΣ</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Προσθήκη στην αρχή</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Προσθέστε στο τέλος</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Χρησιμοποιήστε κείμενο περιεχομένου PDF αντί για αποτέλεσμα OCR. Δεν συνιστάται η ενεργοποίηση της λειτουργίας της λειτουργίας.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Αφαιρέστε τους φακέλους μετά την ολοκλήρωση των λειτουργιών ευρετηρίου για να αποκτήσετε απόδοση φορτίου</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Υπάρχουν πολλά αρχεία</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>ΜΕΓΑΛΟ</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>ΜΕΓΙΣΤΟΣ</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>ΜΕΣΑΙΑ</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>ΜΙΚΡΟ</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Μικρότερος</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>ΤΡΕΞΙΜΟ</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Εμφάνιση οθόνης εκτόξευσης</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>ΗΛΕΚΤΡΟΝΙΚΟΣ ΥΠΟΛΟΓΙΣΤΗΣ</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Περισσότερο από ένα πρόγραμμα περιήγησης</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Ο προσανατολισμός του Tesseract και το αρχείο ανίχνευσης σεναρίου πρέπει να μεταφορτωθούν για να λειτουργήσουν αυτόματη περιστροφή</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Χρησιμοποιήστε διαγωνισμό κειμένου PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Εάν αυτό επισημανθεί, τα κείμενα PDF χρησιμοποιούνται ως OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>ΒΙΝΤΕΟ</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>ΕΙΚΟΝΑ</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Αρχειοθετώ</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>ΠΡΟΣΘΗΚΗ ΕΓΓΡΑΦΟΥ</value>
   </data>
@@ -582,205 +792,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Οποιοδήποτε στοιχείο ελέγχου κυανού χρώματος λειτουργεί διαφορετικά με ένα ή περισσότερα από τα πλήκτρα Alt Shift Ctrl</value>
   </data>
-  <data name="AUTOFOLDERHELP" xml:space="preserve">
-    <value>Καθορίστε τον φάκελο Αυτόματη αποθήκευση.</value>
-  </data>
-  <data name="KNOWNPROBLEMS" xml:space="preserve">
-    <value>Γνωστά Προβλήματα</value>
-  </data>
-  <data name="ERROR1" xml:space="preserve">
-    <value>Μερικές φορές, αν και ένα αρχείο προστίθεται στη λίστα, δεν εμφανίζεται στη λίστα.</value>
-  </data>
-  <data name="SCANDELAYHELP" xml:space="preserve">
-    <value>Δείχνει πόσα δευτερόλεπτα θα περιμένει ο σαρωτής πριν από τη σάρωση!</value>
-  </data>
-  <data name="FILMSCANNER" xml:space="preserve">
-    <value>FILM SCANNER</value>
-  </data>
-  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
-    <value>Αγνοήστε το πλάτος Ύψος ίσο.</value>
-  </data>
-  <data name="LIBRARY" xml:space="preserve">
-    <value>ΒΙΒΛΙΟΘΗΚΗ</value>
-  </data>
-  <data name="PDFFOLDER" xml:space="preserve">
-    <value>Επιλέξτε Pdf Save Folder</value>
-  </data>
-  <data name="GRAPHFOLDER" xml:space="preserve">
-    <value>Επιλέξτε Φάκελο εικόνων</value>
-  </data>
-  <data name="PLAYSOUND" xml:space="preserve">
-    <value>Αναπαραγωγή ήχου όταν ολοκληρωθεί η σάρωση</value>
-  </data>
-  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
-    <value>Εάν επιλεγεί, πολλαπλά έγγραφα μπορούν να υποβληθούν σε OCR την ίδια ώρα</value>
-  </data>
-  <data name="CLOSEFILE" xml:space="preserve">
-    <value>Κλείσιμο αρχείου</value>
-  </data>
-  <data name="INVERTCOLOR" xml:space="preserve">
-    <value>ΑΝΤΙΣΤΡΟΦΟ ΧΡΩΜΑ</value>
-  </data>
-  <data name="FOLD" xml:space="preserve">
-    <value>ΠΤΥΧΗ</value>
-  </data>
-  <data name="MIRROR" xml:space="preserve">
-    <value>ΚΑΘΡΕΦΤΗΣ</value>
-  </data>
-  <data name="RIPPLE" xml:space="preserve">
-    <value>ΚΥΜΑΤΙΣΜΟΣ</value>
-  </data>
-  <data name="INSTALLED" xml:space="preserve">
-    <value>ΕΓΚΑΤΑΣΤΑΘΗΚΕ</value>
-  </data>
-  <data name="FILEINUSE" xml:space="preserve">
-    <value>Το αρχείο είναι σε χρήση.</value>
-  </data>
-  <data name="ESCTOCANCEL" xml:space="preserve">
-    <value>Πατήστε και κρατήστε πατημένο το κουμπί Esc για ακύρωση</value>
-  </data>
-  <data name="HUE" xml:space="preserve">
-    <value>ΑΠΟΧΡΩΣΗ</value>
-  </data>
-  <data name="LIGHTNESS" xml:space="preserve">
-    <value>ΕΛΑΦΡΟΤΗΤΑ</value>
-  </data>
-  <data name="SATURATION" xml:space="preserve">
-    <value>ΚΟΡΕΣΜΟΣ</value>
-  </data>
-  <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>Απλή προεπισκόπηση Pdf.</value>
-  </data>
-  <data name="REMOVECD" xml:space="preserve">
-    <value>Όταν τελειώσει Αφαιρέστε το CD</value>
-  </data>
-  <data name="HORIZONTAL" xml:space="preserve">
-    <value>ΟΡΙΖΟΝΤΙΟΣ</value>
-  </data>
-  <data name="FIRSTLAST" xml:space="preserve">
-    <value>Πάρτε πρώτος και τελευταίος Συνέχεια</value>
-  </data>
-  <data name="SPLITSORT" xml:space="preserve">
-    <value>Διαίρεση και ταξινόμηση</value>
-  </data>
-  <data name="RANDOM" xml:space="preserve">
-    <value>ΤΥΧΑΙΟΣ</value>
-  </data>
-  <data name="UNINDEXED" xml:space="preserve">
-    <value>ΑΡΧΕΙΑ ΜΗ ΑΝΤΙΚΕΙΜΕΝΟΥ</value>
-  </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>Εμφάνιση πληροφοριών PDF</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr Όλες οι σελίδες Pdf</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Το όνομα αρχείου δεν είναι έγκυρο</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>Δεν επιτρέπεται η πρόσβαση σε φάκελο.</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>ΑΡΧΕΙΟ ΒΑΣΗΣ ΔΕΔΟΜΕΝΩΝ ΑΝΤΙΓΡΑΦΩΝ</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>ΣΥΝΕΡΓΑΤΗΣ ΑΡΧΕΙΟΥ</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>Ελαχιστοποίηση στο δίσκο συστήματος</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>Μήνυμα εκκίνησης</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>ΓΡΑΜΜΙΚΟ ΓΕΜΙΣΜΑ</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>ΕΞΟΔΟΣ</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>ΑΝΤΙΓΡΑΦΟ</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>Αντιγράφηκε στο Πρόχειρο</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Αυτή η διαδικασία μπορεί να πάρει πολύ χρόνο.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>ΛΑΘΟΣ</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>ΣΑΡΩΣΤΕ ΚΑΘΕ ΣΕΛΙΔΑ ΣΕ ΞΕΧΩΡΙΣΤΟ ΑΡΧΕΙΟ</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>ΕΠΙΤΥΧΙΑ</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ΠΡΩΤΟΤΥΠΟ</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>Το PDF λειτουργεί ως JPG. Αυτό μειώνει τη φόρτωση στη μνήμη, αλλά τα αρχεία JPG καταγράφονται στον προσωρινό κατάλογο WindowsUN, καθώς υπάρχει μείωση του μεγέθους του δίσκου. Είναι καλύτερο να χρησιμοποιείτε μόνο εάν η μνήμη γεμίζει σε αρχεία που περιέχουν πάρα πολύ (1000) σελίδες.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>ΕΠΙΚΟΛΛΗΣΗ</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Εμφάνιση εικονιδίου SystemTray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>ΕΙΔΟΣ</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Προσθήκη στην αρχή</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Προσθέστε στο τέλος</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Χρησιμοποιήστε κείμενο περιεχομένου PDF αντί για αποτέλεσμα OCR. Δεν συνιστάται η ενεργοποίηση της λειτουργίας της λειτουργίας.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Αφαιρέστε τους φακέλους μετά την ολοκλήρωση των λειτουργιών ευρετηρίου για να αποκτήσετε απόδοση φορτίου</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Υπάρχουν πολλά αρχεία</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>ΜΕΓΑΛΟ</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>ΜΕΓΙΣΤΟΣ</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>ΜΕΣΑΙΑ</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>ΜΙΚΡΟ</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Μικρότερος</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>ΤΡΕΞΙΜΟ</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Εμφάνιση οθόνης εκτόξευσης</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>ΗΛΕΚΤΡΟΝΙΚΟΣ ΥΠΟΛΟΓΙΣΤΗΣ</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Περισσότερο από ένα πρόγραμμα περιήγησης</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Ο προσανατολισμός του Tesseract και το αρχείο ανίχνευσης σεναρίου πρέπει να μεταφορτωθούν για να λειτουργήσουν αυτόματη περιστροφή</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Χρησιμοποιήστε διαγωνισμό κειμένου PDF</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Εάν αυτό επισημανθεί, τα κείμενα PDF χρησιμοποιούνται ως OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Δεν επιλέχθηκαν ορισμένες επεκτάσεις αρχείων</value>
   </data>
 </root>

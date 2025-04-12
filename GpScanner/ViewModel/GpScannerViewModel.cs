@@ -66,9 +66,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private static DispatcherTimer timer;
     private readonly string AppName;
     private readonly IdleTimeIndexer ıdleTimeIndexer;
-    private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter"];
-    private readonly string[] supportedfilesextension = [".pdf", ".webp", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".zip", ".xps", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xml", ".xsl", ".xslt", ".xaml", ".xls", ".xlsx", ".xlsb", ".csv", ".ods", ".odt", ".docx", ".rar", ".7z", ".xz", ".gz", ".jb2", ".cbz", ".cbr"];
-    private readonly List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods", ".odt"];
+    private readonly string[] sqlitedangerouscommands = ["truncate", "drop", "alter", "delete"];
     private int cycleIndex;
     private GridLength mainWindowDocumentGuiControlLength = new(1, GridUnitType.Star);
     private GridLength mainWindowGuiControlLength = new(3, GridUnitType.Star);
@@ -98,8 +96,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         LoadRemainder.Execute(null);
         ıdleTimeIndexer = new(this, Settings.Default.IdleMinuteIndex);
         RunIdleIndexOperation();
-        supportedfilesextension?.ToList().ForEach(item => SupportedFileLists?.Add(new CheckBoxItem() { IsChecked = true, Content = new Image() { Source = ShellIcon.GetExtensionIconBySize(item, ShellIcon.SizeType.large) }, Name = item }));
-
         RegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Register(), parameter => IsAdministrator);
 
         UnRegisterSti = new RelayCommand<object>(parameter => StillImageHelper.Unregister(), parameter => IsAdministrator);
@@ -173,7 +169,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
                 int i = 0;
                 int count = bitmapFrames.Count(z => z.Seçili);
-                foreach (ScannedImage bitmapFrame in bitmapFrames.Where(z=>z.Seçili).ToList())
+                foreach (ScannedImage bitmapFrame in bitmapFrames.Where(z => z.Seçili).ToList())
                 {
                     byte[] imgdata = bitmapFrame.Resim.ToTiffJpegByteArray(Format.Jpg);
                     ObservableCollection<OcrData> scannedText = await imgdata.OcrAsync(Settings.Default.DefaultTtsLang);
@@ -1361,6 +1357,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ICommand AddToCalendar { get; }
 
+    public bool AllItemChecked
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(AllItemChecked));
+            }
+        }
+    } = true;
+
     public int AllPdfPage
     {
         get;
@@ -2325,15 +2334,18 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ScannerData ScannerData { get; set; }
 
-    public ObservableCollection<CheckBoxItem> SearchArchiveTypes
+    public bool SearchDocumentFilterDialogIsOpen
     {
         get;
-        set;
-    } = [new() { Name = ".zip", IsChecked = true }, new() { Name = ".rar", IsChecked = true }, new() { Name = ".7z", IsChecked = true }, new() { Name = ".tar", IsChecked = true }, new() { Name = ".gzip", IsChecked = true }, new()
-    {
-        Name = ".arj",
-        IsChecked = true
-    }];
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(SearchDocumentFilterDialogIsOpen));
+            }
+        }
+    }
 
     public string SeçiliDil
     {
@@ -2522,7 +2534,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> StopFlagAnimation { get; }
 
-    public ObservableCollection<CheckBoxItem> SupportedFileLists { get; } = [];
+    public SupportedExtensions SupportedExtensions { get; set; } = new();
 
     public ICommand Tersiniİşaretle { get; }
 
@@ -2663,6 +2675,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public string this[string columnName] => columnName switch
     {
         "IsAdministrator" when !IsAdministrator => "FOLDERACCESS",
+        "AllItemChecked" when !AllItemChecked => "WARNEXT",
         "SqlText" when sqlitedangerouscommands.Any(SqlText.ToLower().Contains) => "ERROR",
         _ => null
     };
@@ -2730,7 +2743,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             return await Task.Run(
                 () =>
                 {
-                    List<string> files = GetAllFilesFromPaths(allfilepaths, file => supportedfilesextension.Contains(Path.GetExtension(file).ToLowerInvariant()));
+                    List<string> files = GetAllFilesFromPaths(allfilepaths, file => SupportedExtensions.FileCategories.SelectMany(z => z.Extensions).Select(z => z.Name).Contains(Path.GetExtension(file).ToLowerInvariant()));
                     int totalFiles = files.Count;
                     _ = Parallel.ForEach(
                         files,
@@ -3018,7 +3031,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             try
             {
-                if (SearchArchiveTypes.Where(z => z.IsChecked).Select(z => z.Name).Contains(Path.GetExtension(filename).ToLowerInvariant()) && new FileInfo(filename).Length <= filesize)
+                if (SupportedExtensions.FileCategories?.SelectMany(z => z.Extensions).Where(item => item.SearchInArchive)?.Select(item => item.Name).Contains(Path.GetExtension(filename).ToLowerInvariant()) == true &&
+                new FileInfo(filename).Length <= filesize)
                 {
                     using ArchiveFile archive = new(filename);
                     return archive?.Entries?.Any(z => z.FileName.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;
@@ -3250,6 +3264,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         try
         {
+            List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods", ".odt"];
             HashSet<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z?.FileName?.ToLowerInvariant()))).Select(z => z.FileName).ToHashSet();
             using AppDbContext context = new();
             List<string> scannedDatabaseFiles = await context?.Data?.AsNoTracking()?.Select(x => x.FileName).ToListAsync();
@@ -3338,7 +3353,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 MainWindow.cvs.Filter += (s, x) =>
                                          {
                                              Scanner scanner = (Scanner)x.Item;
-                                             bool supportedFileFilter = SupportedFileLists?.Where(item => item.IsChecked)?.Select(item => item.Name)?.Contains(Path.GetExtension(scanner.FileName).ToLowerInvariant()) == true;
+                                             string filextension = Path.GetExtension(scanner.FileName).ToLowerInvariant();
+                                             bool supportedFileFilter = SupportedExtensions.FileCategories?.SelectMany(z => z.Extensions).Where(item => item.IsChecked)?.Select(item => item.Name)?.Contains(filextension) == true;
                                              bool filearchivefilter = ExistsInArchive(scanner.FileName, Settings.Default.SearchInArchiveFiles, Settings.Default.SearchInArchiveFileLimit * 1_048_576);
                                              bool filenamefilter = Path.GetFileNameWithoutExtension(scanner.FileName).IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0;
                                              bool filecontentfilter = datas?.Any(z => z.FileName == scanner.FileName) == true;
@@ -3414,6 +3430,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         if (e.PropertyName is "ContributionMonthYear" && LoadGroupFilesMonth.CanExecute(null))
         {
             LoadGroupFilesMonth.Execute(null);
+        }
+
+        if (e.PropertyName is "SearchDocumentFilterDialogIsOpen" && !SearchDocumentFilterDialogIsOpen)
+        {
+            AllItemChecked = SupportedExtensions.FileCategories?.SelectMany(z => z.Extensions).Any(item => !item.IsChecked) != true;
+            if (!string.IsNullOrWhiteSpace(AramaMetni))
+            {
+                OnPropertyChanged(nameof(AramaMetni));
+            }
         }
     }
 

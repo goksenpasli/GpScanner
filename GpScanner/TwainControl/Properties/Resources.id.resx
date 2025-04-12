@@ -543,6 +543,93 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Disalin Ke Papan Klip</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Proses Ini Mungkin Membutuhkan Waktu Lama.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>KESALAHAN</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>PINDAI SETIAP HALAMAN KE FILE TERPISAH</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>KESUKSESAN</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ASLI</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF berfungsi sebagai jpg. Ini mengurangi pemuatan pada memori, tetapi file JPG direkam dalam direktori sementara Windowsun, karena ada penurunan ukuran disk. Lebih baik digunakan hanya jika memori diisi dalam file yang berisi terlalu banyak (1000) halaman.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>TEMPEL</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Tampilkan ikon SystemTray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>MENYORTIR</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Tambahkan ke awal</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Tambahkan ke Akhir</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Gunakan teks konten PDF alih -alih hasil OCR. Tidak disarankan untuk mengaktifkan fungsi thi ̇.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Hapus folder setelah operasi indeks selesai untuk mendapatkan kinerja beban</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Ada banyak file</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>BESAR</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Terbesar</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>TENGAH</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>KECIL</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Terkecil</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>BERLARI</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Tampilkan layar splash</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>KOMPUTER</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Lebih dari sekadar browser</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Orientasi tesseract dan file deteksi skrip harus diunduh untuk bekerja rotasi otomatis</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Gunakan Kontes Teks PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Jika ini ditandai, teks PDF digunakan sebagai OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>GAMBAR</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>ARSIP</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>TAMBAHKAN DOKUMEN</value>
   </data>
@@ -708,82 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Kontrol Berwarna Cyan Bekerja Secara Berbeda Dengan Satu atau Lebih Tombol Alt Shift Ctrl</value>
   </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Proses Ini Mungkin Membutuhkan Waktu Lama.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>KESALAHAN</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>PINDAI SETIAP HALAMAN KE FILE TERPISAH</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>KESUKSESAN</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ASLI</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF berfungsi sebagai jpg. Ini mengurangi pemuatan pada memori, tetapi file JPG direkam dalam direktori sementara Windowsun, karena ada penurunan ukuran disk. Lebih baik digunakan hanya jika memori diisi dalam file yang berisi terlalu banyak (1000) halaman.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>TEMPEL</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Tampilkan ikon SystemTray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>MENYORTIR</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Tambahkan ke awal</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Tambahkan ke Akhir</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Gunakan teks konten PDF alih -alih hasil OCR. Tidak disarankan untuk mengaktifkan fungsi thi ̇.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Hapus folder setelah operasi indeks selesai untuk mendapatkan kinerja beban</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Ada banyak file</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>BESAR</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Terbesar</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>TENGAH</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>KECIL</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Terkecil</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>BERLARI</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Tampilkan layar splash</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>KOMPUTER</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Lebih dari sekadar browser</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Orientasi tesseract dan file deteksi skrip harus diunduh untuk bekerja rotasi otomatis</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Gunakan Kontes Teks PDF</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Jika ini ditandai, teks PDF digunakan sebagai OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Beberapa ekstensi file tidak dipilih</value>
   </data>
 </root>

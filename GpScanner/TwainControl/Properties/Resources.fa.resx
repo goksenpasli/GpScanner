@@ -575,6 +575,72 @@
   <data name="PASTE" xml:space="preserve">
     <value>خمیر</value>
   </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>نماد SystemTray را نشان دهید</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>مرتب سازی</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>به ابتدا اضافه کنید</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>به یک پایان اضافه کنید</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>به جای نتیجه OCR از متن محتوای PDF استفاده کنید. توصیه نمی شود عملکرد THiS را فعال کنید.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>برای به دست آوردن عملکرد بار ، پوشه ها را حذف کنید</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>پرونده های بی شماری وجود دارد</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>بزرگ</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>بزرگترین</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>میانه</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>کم اهمیت</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>کوچکترین</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>اجرا کن</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>نمایش صفحه چلپ چلوپ</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>کامپیوتر</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>بیش از یک مرورگر</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>پرونده جهت گیری Tesseract و پرونده تشخیص اسکریپت باید برای کار در چرخش خودکار بارگیری شود</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>از مسابقه متن PDF استفاده کنید</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>اگر این علامت گذاری شود ، از متون PDF به عنوان OCR استفاده می شود.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>ویدئو</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>تصویر</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>بایگانی</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>به پرونده
 سند را اضافه کنید</value>
@@ -741,61 +807,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>هر کنترل رنگی شیشه ای با یک یا چند کلیدهای CTRL تغییر پایین متفاوت کار می کند!</value>
   </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>نماد SystemTray را نشان دهید</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>مرتب سازی</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>به ابتدا اضافه کنید</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>به یک پایان اضافه کنید</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>به جای نتیجه OCR از متن محتوای PDF استفاده کنید. توصیه نمی شود عملکرد THiS را فعال کنید.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>برای به دست آوردن عملکرد بار ، پوشه ها را حذف کنید</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>پرونده های بی شماری وجود دارد</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>بزرگ</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>بزرگترین</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>میانه</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>کم اهمیت</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>کوچکترین</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>اجرا کن</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>نمایش صفحه چلپ چلوپ</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>کامپیوتر</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>بیش از یک مرورگر</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>پرونده جهت گیری Tesseract و پرونده تشخیص اسکریپت باید برای کار در چرخش خودکار بارگیری شود</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>از مسابقه متن PDF استفاده کنید</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>اگر این علامت گذاری شود ، از متون PDF به عنوان OCR استفاده می شود.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>برخی از پسوندهای پرونده انتخاب نشده اند</value>
   </data>
 </root>

@@ -507,6 +507,129 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>НЕИНДЕКСИРАНИ ФАЙЛОВЕ</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Показване на информация за PDF</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr всички pdf страници</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Достъпът до папката е отказан.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Името на файла е невалидно</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>РЕЗЕРВЕН ФАЙЛ НА БАЗАТА ДАННИ</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>ФАЙЛОВ СЪТРУДНИК</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Минимизиране в системната област</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Съобщение при стартиране</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>ЛИНЕЙНО ПЪЛНЕНЕ</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>ИЗХОД</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>КОПИЕ</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Копирано в клипборда</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Този процес може да отнеме много време.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ГРЕШКА</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>СКАНИРАЙТЕ ВСЯКА СТРАНИЦА В ОТДЕЛЕН ФАЙЛ</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>УСПЕХ</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ОРИГИНАЛНИ</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF работи като jpg. Това намалява зареждането на паметта, но JPG файловете се записват във временната директория на Windowsun, тъй като има намаляване на размера на диска. По -добре е да използвате само ако паметта се попълва във файлове, съдържащи твърде много (1000) страници.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>Поставете</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Показване на иконата на SystemTray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>ВИД</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Добавете към началото</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Добавете до края</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Използвайте PDF текст на съдържанието вместо OCR резултат. Не се препоръчва да се активира функцията THiS.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Премахнете папките след завършване на операциите на индекса, за да спечелите натоварване на производителността</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Има много файлове</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>Голям</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Най -голямо</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Средна</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Малък</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Най -малки</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Изпълнете</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Показване на екрана за пръскане</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Компютър</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Повече от браузър</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Файлът за ориентация и откриване на скриптове трябва да бъде изтеглен, за да работи автоматично въртене</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Използвайте PDF Text Contest</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Ако това е маркирано, PDF текстовете се използват като OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Видео</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>Картина</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Архив</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>ДОБАВЯНЕ НА ДОКУМЕНТ</value>
   </data>
@@ -672,118 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Всяка контрола с цвят на циан работи по различен начин с един или повече от клавишите Alt Shift Ctrl</value>
   </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>Показване на информация за PDF</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr всички pdf страници</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Името на файла е невалидно</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>Достъпът до папката е отказан.</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>РЕЗЕРВЕН ФАЙЛ НА БАЗАТА ДАННИ</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>ФАЙЛОВ СЪТРУДНИК</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>Минимизиране в системната област</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>Съобщение при стартиране</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>ЛИНЕЙНО ПЪЛНЕНЕ</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>ИЗХОД</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>КОПИЕ</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>Копирано в клипборда</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Този процес може да отнеме много време.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>ГРЕШКА</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>СКАНИРАЙТЕ ВСЯКА СТРАНИЦА В ОТДЕЛЕН ФАЙЛ</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>УСПЕХ</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ОРИГИНАЛНИ</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF работи като jpg. Това намалява зареждането на паметта, но JPG файловете се записват във временната директория на Windowsun, тъй като има намаляване на размера на диска. По -добре е да използвате само ако паметта се попълва във файлове, съдържащи твърде много (1000) страници.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>Поставете</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Показване на иконата на SystemTray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>ВИД</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Добавете към началото</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Добавете до края</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Използвайте PDF текст на съдържанието вместо OCR резултат. Не се препоръчва да се активира функцията THiS.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Премахнете папките след завършване на операциите на индекса, за да спечелите натоварване на производителността</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Има много файлове</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>Голям</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Най -голямо</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>Средна</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>Малък</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Най -малки</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>Изпълнете</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Показване на екрана за пръскане</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>Компютър</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Повече от браузър</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Файлът за ориентация и откриване на скриптове трябва да бъде изтеглен, за да работи автоматично въртене</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Използвайте PDF Text Contest</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Ако това е маркирано, PDF текстовете се използват като OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Някои разширения на файлове не бяха избрани</value>
   </data>
 </root>

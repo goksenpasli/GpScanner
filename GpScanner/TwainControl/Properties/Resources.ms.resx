@@ -555,6 +555,81 @@
   <data name="SUCCESS" xml:space="preserve">
     <value>BERJAYA</value>
   </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORIGINAL</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF berfungsi sebagai JPG. Ini mengurangkan pemuatan pada ingatan, tetapi fail JPG direkodkan dalam direktori sementara Windowsun, kerana terdapat penurunan saiz cakera. Lebih baik digunakan hanya jika memori diisi dalam fail yang mengandungi terlalu banyak (1000) halaman.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>Tampal</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Tunjukkan Ikon Systemtray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Menyusun</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Tambah ke permulaan</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Tambah ke akhir</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Gunakan teks kandungan PDF dan bukan hasil OCR. Ia tidak disyorkan untuk membolehkan fungsi ini.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Keluarkan folder selepas operasi indeks selesai untuk mendapatkan prestasi beban</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Terdapat banyak fail</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>BESAR</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Terbesar</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Tengah</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Kecil</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Terkecil</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Jalankan</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Tunjukkan skrin percikan</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Komputer</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Lebih daripada penyemak imbas</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Orientasi tesseract dan fail pengesanan skrip harus dimuat turun untuk kerja putaran automatik</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Gunakan pertandingan teks pdf</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Jika ini ditandakan, teks PDF digunakan sebagai OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>Gambar</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Arkib</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>TAMBAH DOKUMEN</value>
   </data>
@@ -720,70 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Mana-mana Kawalan Berwarna Cyan Berfungsi Berbeza Dengan Satu atau Lebih Kekunci Alt Shift Ctrl</value>
   </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ORIGINAL</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF berfungsi sebagai JPG. Ini mengurangkan pemuatan pada ingatan, tetapi fail JPG direkodkan dalam direktori sementara Windowsun, kerana terdapat penurunan saiz cakera. Lebih baik digunakan hanya jika memori diisi dalam fail yang mengandungi terlalu banyak (1000) halaman.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>Tampal</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Tunjukkan Ikon Systemtray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>Menyusun</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Tambah ke permulaan</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Tambah ke akhir</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Gunakan teks kandungan PDF dan bukan hasil OCR. Ia tidak disyorkan untuk membolehkan fungsi ini.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Keluarkan folder selepas operasi indeks selesai untuk mendapatkan prestasi beban</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Terdapat banyak fail</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>BESAR</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Terbesar</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>Tengah</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>Kecil</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Terkecil</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>Jalankan</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Tunjukkan skrin percikan</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>Komputer</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Lebih daripada penyemak imbas</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Orientasi tesseract dan fail pengesanan skrip harus dimuat turun untuk kerja putaran automatik</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Gunakan pertandingan teks pdf</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Jika ini ditandakan, teks PDF digunakan sebagai OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Beberapa sambungan fail tidak dipilih</value>
   </data>
 </root>

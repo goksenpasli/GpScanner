@@ -507,6 +507,129 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>UINDEKSERT FILER</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Vis pdf-information</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr alle pdf-sider</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Mappeadgang nægtet.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Filnavnet er ugyldigt</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>BACKUP DATABASE-FIL</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>FILMAKTOR</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimer til systembakken</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Opstartsmeddelelse</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>LINEÆR FYLDNING</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>AFSLUT</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPI</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Kopieret til udklipsholder</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Denne proces kan tage lang tid.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>FEJL</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SCAN HVER SIDE TIL EN SEPARAT FIL</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SUCCES</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORIGINAL</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF fungerer som JPG. Dette reducerer belastningen på hukommelsen, men JPG -filer registreres i Windowsun midlertidigt bibliotek, da der er et fald i diskstørrelse. Det er bedre at kun bruge, hvis hukommelsen er udfyldt i filer, der indeholder for meget (1000) sider.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>SÆT IND</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Vis systemtray -ikon</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>SORTERE</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Føj til begyndelsen</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Føj til en ende</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Brug PDF -indholdstekst i stedet for OCR -resultat. Det anbefales ikke at aktivere den funktion.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Fjern mapper efter indeksoperationer afsluttet for at få belastningsydelse</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Der er adskillige filer</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>STOR</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Største</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Midten</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>LILLE</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Mindste</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>LØB</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Vis splashskærm</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>COMPUTER</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Mere end en browser</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract -orientering og scriptdetekteringsfil skal downloades for at arbejde auto rotation</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Brug PDF -tekstkonkurrence</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Hvis dette er markeret, bruges PDF -tekster som OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>BILLEDE</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Arkiv</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>TILFØJ DOKUMENT</value>
   </data>
@@ -672,118 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Enhver cyan farvet kontrol fungerer anderledes med en eller flere af Alt Shift Ctrl-tasterne</value>
   </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>Vis pdf-information</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr alle pdf-sider</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Filnavnet er ugyldigt</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>Mappeadgang nægtet.</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>BACKUP DATABASE-FIL</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>FILMAKTOR</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>Minimer til systembakken</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>Opstartsmeddelelse</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>LINEÆR FYLDNING</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>AFSLUT</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>KOPI</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>Kopieret til udklipsholder</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Denne proces kan tage lang tid.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>FEJL</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>SCAN HVER SIDE TIL EN SEPARAT FIL</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>SUCCES</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ORIGINAL</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF fungerer som JPG. Dette reducerer belastningen på hukommelsen, men JPG -filer registreres i Windowsun midlertidigt bibliotek, da der er et fald i diskstørrelse. Det er bedre at kun bruge, hvis hukommelsen er udfyldt i filer, der indeholder for meget (1000) sider.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>SÆT IND</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Vis systemtray -ikon</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>SORTERE</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Føj til begyndelsen</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Føj til en ende</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Brug PDF -indholdstekst i stedet for OCR -resultat. Det anbefales ikke at aktivere den funktion.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Fjern mapper efter indeksoperationer afsluttet for at få belastningsydelse</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Der er adskillige filer</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>STOR</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Største</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>Midten</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>LILLE</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Mindste</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>LØB</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Vis splashskærm</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>COMPUTER</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Mere end en browser</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tesseract -orientering og scriptdetekteringsfil skal downloades for at arbejde auto rotation</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Brug PDF -tekstkonkurrence</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Hvis dette er markeret, bruges PDF -tekster som OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Nogle filforlængelser blev ikke valgt</value>
   </data>
 </root>

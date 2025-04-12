@@ -816,9 +816,21 @@
     <value />
   </data>
   <data name="PDFINTERNAL" xml:space="preserve">
-    <value></value>
+    <value />
   </data>
   <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value></value>
+    <value />
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value />
+  </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value />
   </data>
 </root>

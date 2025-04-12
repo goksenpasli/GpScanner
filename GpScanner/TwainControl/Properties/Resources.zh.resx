@@ -399,6 +399,234 @@
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>保存 OCR PDF</value>
   </data>
+  <data name="STOP" xml:space="preserve">
+    <value>停止</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>空的</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>去斑</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>建议为旧浏览器应用程序的文件夹索引选择适当的格式。</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>定制宽度</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>定制高度</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>指定自动保存文件夹。</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>已知问题</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>有时，虽然文件已添加到列表中，但它并未出现在列表中。</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>显示扫描仪在扫描前等待的秒数！</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>胶片扫描仪</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>忽略宽度高度相等。</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>图书馆</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>选择 PDF 保存文件夹</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>选择图像文件夹</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>扫描完成时播放声音</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>如果选中多个文档可以同时进行 OCR 处理</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>关闭文件</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>反转颜色</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>折叠</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>镜子</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>波纹</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>已安装</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>文件正在使用中。</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>按住 Esc 按钮取消</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>色调</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>亮度</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>饱和</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>简单的 PDF 预览。</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>完成后取出 CD</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>水平的</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>采取第一个和最后一个继续</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>拆分和排序</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>随机的</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>未索引的文件</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>显示 PDF 信息</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr 所有 PDF 页面</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>文件夹访问被拒绝。</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>文件名无效</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>备份数据库文件</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>文件助理</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>最小化到系统托盘</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>启动信息</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>线性填充</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>出口</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>复制</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>复制到剪贴板</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>这个过程可能需要很长时间。</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>错误</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>将每一页扫描到单独的文件</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>成功</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>原来的</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF用作JPG。这减少了内存上的加载，但是JPG文件记录在Windows临时目录中，因为磁盘尺寸的减小。只有在包含过多（1000）页的文件中填充内存时，最好才能使用。</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>粘贴</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>显示SystemTray图标</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>种类</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>添加到开始</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>add</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>使用PDF内容文本而不是OCR结果。不建议启用thís功能。</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>索引操作完成后删除文件夹以获得负载性能</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>有很多文件</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>大的</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>最大</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>中间</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>小的</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>最小</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>跑步</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>显示飞溅屏幕</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>电脑</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>不仅仅是浏览器</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract取向和脚本检测文件应下载以自动旋转</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>使用PDF文字比赛</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>如果标记了这一点，则将PDF文本用作OCR。</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>视频</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>图片</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>档案</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>添加文档</value>
   </data>
@@ -561,226 +789,10 @@
   <data name="WATERMARK" xml:space="preserve">
     <value>水印</value>
   </data>
-  <data name="STOP" xml:space="preserve">
-    <value>停止</value>
-  </data>
-  <data name="EMPTY" xml:space="preserve">
-    <value>空的</value>
-  </data>
-  <data name="DESPECKLE" xml:space="preserve">
-    <value>去斑</value>
-  </data>
-  <data name="FOLDERFORMAT" xml:space="preserve">
-    <value>建议为旧浏览器应用程序的文件夹索引选择适当的格式。</value>
-  </data>
-  <data name="CHEIGHT" xml:space="preserve">
-    <value>定制高度</value>
-  </data>
-  <data name="CWIDTH" xml:space="preserve">
-    <value>定制宽度</value>
-  </data>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>任何青色控件与一个或多个 Alt Shift Ctrl 键的工作方式不同</value>
   </data>
-  <data name="AUTOFOLDERHELP" xml:space="preserve">
-    <value>指定自动保存文件夹。</value>
-  </data>
-  <data name="KNOWNPROBLEMS" xml:space="preserve">
-    <value>已知问题</value>
-  </data>
-  <data name="ERROR1" xml:space="preserve">
-    <value>有时，虽然文件已添加到列表中，但它并未出现在列表中。</value>
-  </data>
-  <data name="SCANDELAYHELP" xml:space="preserve">
-    <value>显示扫描仪在扫描前等待的秒数！</value>
-  </data>
-  <data name="FILMSCANNER" xml:space="preserve">
-    <value>胶片扫描仪</value>
-  </data>
-  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
-    <value>忽略宽度高度相等。</value>
-  </data>
-  <data name="LIBRARY" xml:space="preserve">
-    <value>图书馆</value>
-  </data>
-  <data name="PDFFOLDER" xml:space="preserve">
-    <value>选择 PDF 保存文件夹</value>
-  </data>
-  <data name="GRAPHFOLDER" xml:space="preserve">
-    <value>选择图像文件夹</value>
-  </data>
-  <data name="PLAYSOUND" xml:space="preserve">
-    <value>扫描完成时播放声音</value>
-  </data>
-  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
-    <value>如果选中多个文档可以同时进行 OCR 处理</value>
-  </data>
-  <data name="CLOSEFILE" xml:space="preserve">
-    <value>关闭文件</value>
-  </data>
-  <data name="INVERTCOLOR" xml:space="preserve">
-    <value>反转颜色</value>
-  </data>
-  <data name="FOLD" xml:space="preserve">
-    <value>折叠</value>
-  </data>
-  <data name="MIRROR" xml:space="preserve">
-    <value>镜子</value>
-  </data>
-  <data name="RIPPLE" xml:space="preserve">
-    <value>波纹</value>
-  </data>
-  <data name="INSTALLED" xml:space="preserve">
-    <value>已安装</value>
-  </data>
-  <data name="FILEINUSE" xml:space="preserve">
-    <value>文件正在使用中。</value>
-  </data>
-  <data name="ESCTOCANCEL" xml:space="preserve">
-    <value>按住 Esc 按钮取消</value>
-  </data>
-  <data name="HUE" xml:space="preserve">
-    <value>色调</value>
-  </data>
-  <data name="LIGHTNESS" xml:space="preserve">
-    <value>亮度</value>
-  </data>
-  <data name="SATURATION" xml:space="preserve">
-    <value>饱和</value>
-  </data>
-  <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>简单的 PDF 预览。</value>
-  </data>
-  <data name="REMOVECD" xml:space="preserve">
-    <value>完成后取出 CD</value>
-  </data>
-  <data name="HORIZONTAL" xml:space="preserve">
-    <value>水平的</value>
-  </data>
-  <data name="FIRSTLAST" xml:space="preserve">
-    <value>采取第一个和最后一个继续</value>
-  </data>
-  <data name="SPLITSORT" xml:space="preserve">
-    <value>拆分和排序</value>
-  </data>
-  <data name="RANDOM" xml:space="preserve">
-    <value>随机的</value>
-  </data>
-  <data name="UNINDEXED" xml:space="preserve">
-    <value>未索引的文件</value>
-  </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>显示 PDF 信息</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr 所有 PDF 页面</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>文件名无效</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>文件夹访问被拒绝。</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>备份数据库文件</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>文件助理</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>最小化到系统托盘</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>启动信息</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>线性填充</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>出口</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>复制</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>复制到剪贴板</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>这个过程可能需要很长时间。</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>错误</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>将每一页扫描到单独的文件</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>成功</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>原来的</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF用作JPG。这减少了内存上的加载，但是JPG文件记录在Windows临时目录中，因为磁盘尺寸的减小。只有在包含过多（1000）页的文件中填充内存时，最好才能使用。</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>粘贴</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>显示SystemTray图标</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>种类</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>添加到开始</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>add</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>使用PDF内容文本而不是OCR结果。不建议启用thís功能。</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>索引操作完成后删除文件夹以获得负载性能</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>有很多文件</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>大的</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>最大</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>中间</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>小的</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>最小</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>跑步</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>显示飞溅屏幕</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>电脑</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>不仅仅是浏览器</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tesseract取向和脚本检测文件应下载以自动旋转</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>使用PDF文字比赛</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>如果标记了这一点，则将PDF文本用作OCR。</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>没有选择一些文件扩展名</value>
   </data>
 </root>

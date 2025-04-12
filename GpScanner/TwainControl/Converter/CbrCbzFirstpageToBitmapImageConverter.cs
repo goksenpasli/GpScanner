@@ -18,7 +18,7 @@ public sealed class CbrCbzFirstpageToBitmapImageConverter : IValueConverter
                ? Task.Run(
             () =>
             {
-                if (!CbrImageViewer.IsCbrFile(filepath))
+                if (!CbrImageViewer.IsCbrFile(filepath) || !File.Exists(filepath))
                 {
                     return null;
                 }

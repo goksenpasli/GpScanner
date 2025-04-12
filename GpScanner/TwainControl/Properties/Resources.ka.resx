@@ -606,6 +606,36 @@ PDF</value>
   <data name="SMALLEST" xml:space="preserve">
     <value>პატარა</value>
   </data>
+  <data name="RUN" xml:space="preserve">
+    <value>სირბილი</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>აჩვენეთ Splash ეკრანი</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>კომპიუტერი</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>ბრაუზერზე მეტი</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract- ის ორიენტაცია და სკრიპტის გამოვლენის ფაილი უნდა ჩამოტვირთოთ ავტო როტაციის დასამუშავებლად</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>გამოიყენეთ PDF ტექსტის კონკურსი</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>თუ ეს აღინიშნება, PDF ტექსტები გამოიყენება როგორც OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>ვიდეო</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>სურათი</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>არქივი</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>დოკუმენტის დამატება
 ᲨᲔᲘᲢᲐᲜᲝᲡ</value>
@@ -772,25 +802,7 @@ PDF</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>ნებისმიერი ციანის ფერადი კონტროლი განსხვავებულად მუშაობს ALT SHIFT CTRL კლავიშთან ერთი ან რამდენიმე ან მეტი</value>
   </data>
-  <data name="RUN" xml:space="preserve">
-    <value>სირბილი</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>აჩვენეთ Splash ეკრანი</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>კომპიუტერი</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>ბრაუზერზე მეტი</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tesseract- ის ორიენტაცია და სკრიპტის გამოვლენის ფაილი უნდა ჩამოტვირთოთ ავტო როტაციის დასამუშავებლად</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>გამოიყენეთ PDF ტექსტის კონკურსი</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>თუ ეს აღინიშნება, PDF ტექსტები გამოიყენება როგორც OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>ფაილის ზოგიერთი გაფართოება არ შეირჩა</value>
   </data>
 </root>

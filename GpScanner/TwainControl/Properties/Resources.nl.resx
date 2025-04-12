@@ -399,6 +399,234 @@
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>OPSLAAN OCR-PDF</value>
   </data>
+  <data name="STOP" xml:space="preserve">
+    <value>Stop</value>
+  </data>
+  <data name="EMPTY" xml:space="preserve">
+    <value>LEEG</value>
+  </data>
+  <data name="DESPECKLE" xml:space="preserve">
+    <value>ONTSPECKEL</value>
+  </data>
+  <data name="FOLDERFORMAT" xml:space="preserve">
+    <value>Het wordt aanbevolen om het juiste formaat te kiezen voor de mapindex van uw oude browserapplicatie.</value>
+  </data>
+  <data name="CWIDTH" xml:space="preserve">
+    <value>AANGEPASTE BREEDTE</value>
+  </data>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>AANGEPASTE HOOGTE</value>
+  </data>
+  <data name="AUTOFOLDERHELP" xml:space="preserve">
+    <value>Geef Map voor automatisch opslaan op.</value>
+  </data>
+  <data name="KNOWNPROBLEMS" xml:space="preserve">
+    <value>Bekende problemen</value>
+  </data>
+  <data name="ERROR1" xml:space="preserve">
+    <value>Soms verschijnt een bestand, hoewel het aan de lijst is toegevoegd, niet in de lijst.</value>
+  </data>
+  <data name="SCANDELAYHELP" xml:space="preserve">
+    <value>Toont hoeveel seconden de scanner wacht voordat hij gaat scannen!</value>
+  </data>
+  <data name="FILMSCANNER" xml:space="preserve">
+    <value>FILMSCANNER</value>
+  </data>
+  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
+    <value>Negeer breedte hoogte gelijk.</value>
+  </data>
+  <data name="LIBRARY" xml:space="preserve">
+    <value>BIBLIOTHEEK</value>
+  </data>
+  <data name="PDFFOLDER" xml:space="preserve">
+    <value>Selecteer PDF-opslagmap</value>
+  </data>
+  <data name="GRAPHFOLDER" xml:space="preserve">
+    <value>Selecteer de map Afbeeldingen</value>
+  </data>
+  <data name="PLAYSOUND" xml:space="preserve">
+    <value>Speel geluid af wanneer het scannen is voltooid</value>
+  </data>
+  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
+    <value>Indien aangevinkt kunnen meerdere documenten tegelijkertijd worden OCR-bewerking</value>
+  </data>
+  <data name="CLOSEFILE" xml:space="preserve">
+    <value>Sluit bestand</value>
+  </data>
+  <data name="INVERTCOLOR" xml:space="preserve">
+    <value>KLEUR OMKEREN</value>
+  </data>
+  <data name="FOLD" xml:space="preserve">
+    <value>VOUW</value>
+  </data>
+  <data name="MIRROR" xml:space="preserve">
+    <value>SPIEGEL</value>
+  </data>
+  <data name="RIPPLE" xml:space="preserve">
+    <value>RIMPELING</value>
+  </data>
+  <data name="INSTALLED" xml:space="preserve">
+    <value>GEÏNSTALLEERD</value>
+  </data>
+  <data name="FILEINUSE" xml:space="preserve">
+    <value>Bestand is in gebruik.</value>
+  </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Houd de Esc-knop ingedrukt om te annuleren</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>TINT</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>LICHTHEID</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>VERZADIGING</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Eenvoudig pdf-voorbeeld.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Wanneer u klaar bent Verwijder de cd</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>HORIZONTAAL</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Neem de eerste en de laatste Ga verder</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Splitsen en sorteren</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>WILLEKEURIG</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>NIET-GEINDEXEERDE BESTANDEN</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Pdf-informatie weergeven</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr Alle pdf-pagina's</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Maptoegang geweigerd.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Bestandsnaam is ongeldig</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>BACK-UP DATABASEBESTAND</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>BESTANDSASSOCIAAT</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimaliseren naar het systeemvak</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Opstartbericht</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>LINEAIR VULLEN</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>UITGANG</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPIËREN</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Gekopieerd naar het klembord</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Dit proces kan lang duren.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>FOUT</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SCAN ELKE PAGINA NAAR EEN AFZONDERLIJK BESTAND</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SUCCES</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORIGINEEL</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF werkt als JPG. Dit vermindert het laden op geheugen, maar JPG -bestanden worden opgenomen in de Windowsun -tijdelijke map, omdat er een afname van de schijfgrootte is. Het is beter om alleen te gebruiken als het geheugen in bestanden met te veel (1000) pagina's wordt ingevuld.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>PLAKKEN</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Toon SystemTray -pictogram</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>SOORT</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Voeg toe aan het begin</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Voeg toe aan een einde</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Gebruik PDF -inhoudstekst in plaats van OCR -resultaat. Het wordt niet aanbevolen om de functie mogelijk te maken.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Verwijder mappen nadat indexbewerkingen zijn voltooid om de belastingprestaties te verkrijgen</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Er zijn talloze bestanden</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>GROOT</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Het grootste</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>MIDDEN</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>KLEIN</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Kleinste</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>LOOP</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Toon spatscherm</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>COMPUTER</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Meer dan een browser</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract Orientation en scriptdetectiebestand moeten worden gedownload om automatische rotatie te werken</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Gebruik PDF -tekstwedstrijd</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Als dit wordt gemarkeerd, worden PDF -teksten gebruikt als OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDEO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>AFBEELDING</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>ARCHIEF</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>DOCUMENT TOEVOEGEN</value>
   </data>
@@ -561,226 +789,10 @@
   <data name="WATERMARK" xml:space="preserve">
     <value>WATERMERK</value>
   </data>
-  <data name="STOP" xml:space="preserve">
-    <value>Stop</value>
-  </data>
-  <data name="EMPTY" xml:space="preserve">
-    <value>LEEG</value>
-  </data>
-  <data name="DESPECKLE" xml:space="preserve">
-    <value>ONTSPECKEL</value>
-  </data>
-  <data name="FOLDERFORMAT" xml:space="preserve">
-    <value>Het wordt aanbevolen om het juiste formaat te kiezen voor de mapindex van uw oude browserapplicatie.</value>
-  </data>
-  <data name="CHEIGHT" xml:space="preserve">
-    <value>AANGEPASTE HOOGTE</value>
-  </data>
-  <data name="CWIDTH" xml:space="preserve">
-    <value>AANGEPASTE BREEDTE</value>
-  </data>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Elk cyaan gekleurd besturingselement werkt anders met een of meer van de Alt Shift Ctrl-toetsen</value>
   </data>
-  <data name="AUTOFOLDERHELP" xml:space="preserve">
-    <value>Geef Map voor automatisch opslaan op.</value>
-  </data>
-  <data name="KNOWNPROBLEMS" xml:space="preserve">
-    <value>Bekende problemen</value>
-  </data>
-  <data name="ERROR1" xml:space="preserve">
-    <value>Soms verschijnt een bestand, hoewel het aan de lijst is toegevoegd, niet in de lijst.</value>
-  </data>
-  <data name="SCANDELAYHELP" xml:space="preserve">
-    <value>Toont hoeveel seconden de scanner wacht voordat hij gaat scannen!</value>
-  </data>
-  <data name="FILMSCANNER" xml:space="preserve">
-    <value>FILMSCANNER</value>
-  </data>
-  <data name="IGNOREWIDTHHEIGHTEQUAL" xml:space="preserve">
-    <value>Negeer breedte hoogte gelijk.</value>
-  </data>
-  <data name="LIBRARY" xml:space="preserve">
-    <value>BIBLIOTHEEK</value>
-  </data>
-  <data name="PDFFOLDER" xml:space="preserve">
-    <value>Selecteer PDF-opslagmap</value>
-  </data>
-  <data name="GRAPHFOLDER" xml:space="preserve">
-    <value>Selecteer de map Afbeeldingen</value>
-  </data>
-  <data name="PLAYSOUND" xml:space="preserve">
-    <value>Speel geluid af wanneer het scannen is voltooid</value>
-  </data>
-  <data name="THUMBMULTIPLEOCR" xml:space="preserve">
-    <value>Indien aangevinkt kunnen meerdere documenten tegelijkertijd worden OCR-bewerking</value>
-  </data>
-  <data name="CLOSEFILE" xml:space="preserve">
-    <value>Sluit bestand</value>
-  </data>
-  <data name="INVERTCOLOR" xml:space="preserve">
-    <value>KLEUR OMKEREN</value>
-  </data>
-  <data name="FOLD" xml:space="preserve">
-    <value>VOUW</value>
-  </data>
-  <data name="MIRROR" xml:space="preserve">
-    <value>SPIEGEL</value>
-  </data>
-  <data name="RIPPLE" xml:space="preserve">
-    <value>RIMPELING</value>
-  </data>
-  <data name="INSTALLED" xml:space="preserve">
-    <value>GEÏNSTALLEERD</value>
-  </data>
-  <data name="FILEINUSE" xml:space="preserve">
-    <value>Bestand is in gebruik.</value>
-  </data>
-  <data name="ESCTOCANCEL" xml:space="preserve">
-    <value>Houd de Esc-knop ingedrukt om te annuleren</value>
-  </data>
-  <data name="HUE" xml:space="preserve">
-    <value>TINT</value>
-  </data>
-  <data name="LIGHTNESS" xml:space="preserve">
-    <value>LICHTHEID</value>
-  </data>
-  <data name="SATURATION" xml:space="preserve">
-    <value>VERZADIGING</value>
-  </data>
-  <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>Eenvoudig pdf-voorbeeld.</value>
-  </data>
-  <data name="REMOVECD" xml:space="preserve">
-    <value>Wanneer u klaar bent Verwijder de cd</value>
-  </data>
-  <data name="HORIZONTAL" xml:space="preserve">
-    <value>HORIZONTAAL</value>
-  </data>
-  <data name="FIRSTLAST" xml:space="preserve">
-    <value>Neem de eerste en de laatste Ga verder</value>
-  </data>
-  <data name="SPLITSORT" xml:space="preserve">
-    <value>Splitsen en sorteren</value>
-  </data>
-  <data name="RANDOM" xml:space="preserve">
-    <value>WILLEKEURIG</value>
-  </data>
-  <data name="UNINDEXED" xml:space="preserve">
-    <value>NIET-GEINDEXEERDE BESTANDEN</value>
-  </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>Pdf-informatie weergeven</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr Alle pdf-pagina's</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Bestandsnaam is ongeldig</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>Maptoegang geweigerd.</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>BACK-UP DATABASEBESTAND</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>BESTANDSASSOCIAAT</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>Minimaliseren naar het systeemvak</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>Opstartbericht</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>LINEAIR VULLEN</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>UITGANG</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>KOPIËREN</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>Gekopieerd naar het klembord</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Dit proces kan lang duren.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>FOUT</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>SCAN ELKE PAGINA NAAR EEN AFZONDERLIJK BESTAND</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>SUCCES</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ORIGINEEL</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF werkt als JPG. Dit vermindert het laden op geheugen, maar JPG -bestanden worden opgenomen in de Windowsun -tijdelijke map, omdat er een afname van de schijfgrootte is. Het is beter om alleen te gebruiken als het geheugen in bestanden met te veel (1000) pagina's wordt ingevuld.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>PLAKKEN</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Toon SystemTray -pictogram</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>SOORT</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Voeg toe aan het begin</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Voeg toe aan een einde</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Gebruik PDF -inhoudstekst in plaats van OCR -resultaat. Het wordt niet aanbevolen om de functie mogelijk te maken.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Verwijder mappen nadat indexbewerkingen zijn voltooid om de belastingprestaties te verkrijgen</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Er zijn talloze bestanden</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>GROOT</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Het grootste</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>MIDDEN</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>KLEIN</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Kleinste</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>LOOP</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Toon spatscherm</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>COMPUTER</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Meer dan een browser</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tesseract Orientation en scriptdetectiebestand moeten worden gedownload om automatische rotatie te werken</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Gebruik PDF -tekstwedstrijd</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Als dit wordt gemarkeerd, worden PDF -teksten gebruikt als OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Sommige bestandsextensies zijn niet geselecteerd</value>
   </data>
 </root>

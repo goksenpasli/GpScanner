@@ -543,6 +543,93 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Պատճենվել է սեղմատախտակին</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Այս գործընթացը կարող է երկար տևել:</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>ՍԽԱԼ</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>ՍԿԱՆԱՑԵՔ ՅՈՒՐԱՔԱՆՉՅՈՒՐ ԷՋԸ ԱՌԱՆՁԻՆ Ֆայլի մեջ</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>ՀԱՋՈՂՈՒԹՅՈՒՆ</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ՕՐԻԳԻՆԱԼ</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF- ն աշխատում է որպես JPG: Սա նվազեցնում է հիշողության վրա բեռնումը, բայց JPG ֆայլերը գրանցվում են Windowsun ժամանակավոր գրացուցակում, քանի որ սկավառակի չափի նվազում կա: Ավելի լավ է օգտագործել միայն այն դեպքում, եթե հիշողությունը լցված է չափազանց շատ (1000) էջ պարունակող ֆայլերում:</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>Մածուկ</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Show ույց տալ Systemstray պատկերակը</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>Տեսակավորել</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Ավելացնել սկզբին</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Ավելացնել ավարտին</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>OCR- ի արդյունքի փոխարեն օգտագործեք PDF բովանդակության տեքստ: Առաջարկվում է միացնել Thi̇s- ի գործառույթը:</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Հեռացրեք Թղթապանակները ինդեքսային գործառնություններից հետո ավարտվել են բեռի աշխատանքը ստանալու համար</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Կան բազմաթիվ ֆայլեր</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>ՄԵԾ</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Ամենամեծը</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Կես</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>ՓՈՔՐ</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Ամենափոքր</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Վազք</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Show ույց տալ splash էկրան</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Համակարգիչ</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Ավելի քան զննարկիչ</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract Orientation- ը եւ Script հայտնաբերման ֆայլը պետք է ներբեռնվեն ավտոմատ ռոտացիայի աշխատանքի համար</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Օգտագործեք PDF տեքստի մրցույթ</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Եթե ​​դա նշվում է, PDF տեքստերը օգտագործվում են որպես OCR:</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Տեսանյութ</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>Նկար</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Հետ կապված</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>ԱՎԵԼԱՑՆԵԼ ՓԱՍՏԱԹՂԹ</value>
   </data>
@@ -708,82 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Ցանկացած ցիան գույնի հսկողություն տարբեր կերպ է աշխատում Alt Shift Ctrl ստեղների մեկ կամ մի քանիսի հետ</value>
   </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Այս գործընթացը կարող է երկար տևել:</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>ՍԽԱԼ</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>ՍԿԱՆԱՑԵՔ ՅՈՒՐԱՔԱՆՉՅՈՒՐ ԷՋԸ ԱՌԱՆՁԻՆ Ֆայլի մեջ</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>ՀԱՋՈՂՈՒԹՅՈՒՆ</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ՕՐԻԳԻՆԱԼ</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF- ն աշխատում է որպես JPG: Սա նվազեցնում է հիշողության վրա բեռնումը, բայց JPG ֆայլերը գրանցվում են Windowsun ժամանակավոր գրացուցակում, քանի որ սկավառակի չափի նվազում կա: Ավելի լավ է օգտագործել միայն այն դեպքում, եթե հիշողությունը լցված է չափազանց շատ (1000) էջ պարունակող ֆայլերում:</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>Մածուկ</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Show ույց տալ Systemstray պատկերակը</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>Տեսակավորել</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Ավելացնել սկզբին</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Ավելացնել ավարտին</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>OCR- ի արդյունքի փոխարեն օգտագործեք PDF բովանդակության տեքստ: Առաջարկվում է միացնել Thi̇s- ի գործառույթը:</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Հեռացրեք Թղթապանակները ինդեքսային գործառնություններից հետո ավարտվել են բեռի աշխատանքը ստանալու համար</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Կան բազմաթիվ ֆայլեր</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>ՄԵԾ</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Ամենամեծը</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>Կես</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>ՓՈՔՐ</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Ամենափոքր</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>Վազք</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Show ույց տալ splash էկրան</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>Համակարգիչ</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Ավելի քան զննարկիչ</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tesseract Orientation- ը եւ Script հայտնաբերման ֆայլը պետք է ներբեռնվեն ավտոմատ ռոտացիայի աշխատանքի համար</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Օգտագործեք PDF տեքստի մրցույթ</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Եթե ​​դա նշվում է, PDF տեքստերը օգտագործվում են որպես OCR:</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Որոշ ֆայլերի ընդարձակումներ չեն ընտրվել</value>
   </data>
 </root>

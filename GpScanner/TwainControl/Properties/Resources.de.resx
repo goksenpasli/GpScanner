@@ -399,168 +399,6 @@
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>OCR-PDF SPEICHERN</value>
   </data>
-  <data name="ADDDOC" xml:space="preserve">
-    <value>DOKUMENT HINZUFÜGEN</value>
-  </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
-    <value>OCR zur Datenbank hinzufügen</value>
-  </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>Wenn dies aktiviert ist, wird das unten markierte Dokument als Text des links aktiven Dokuments in der Datenbank gespeichert.</value>
-  </data>
-  <data name="APPDESC" xml:space="preserve">
-    <value>Diese Anwendung wurde entwickelt, um das Scannen und die Dokumentenverfolgung zu erleichtern.</value>
-  </data>
-  <data name="APPLY" xml:space="preserve">
-    <value>ANWENDEN</value>
-  </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
-    <value>FARBE ÄNDERN</value>
-  </data>
-  <data name="Auto" xml:space="preserve">
-    <value>AUTOMATISCH</value>
-  </data>
-  <data name="AutoPicture" xml:space="preserve">
-    <value>AUTOMATISCHES BILD</value>
-  </data>
-  <data name="AutoText" xml:space="preserve">
-    <value>AUTOMATISCHER TEXT</value>
-  </data>
-  <data name="BATCH" xml:space="preserve">
-    <value>CHARGE</value>
-  </data>
-  <data name="BATCHDESC" xml:space="preserve">
-    <value>Wenn Bilddateien dem unten angegebenen Ordner hinzugefügt werden, erfolgt die automatische Konvertierung in PDF-Dateien im selben Ordner, solange das Programm geöffnet ist</value>
-  </data>
-  <data name="CAMERA" xml:space="preserve">
-    <value>KAMERA</value>
-  </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>Wenn Sie nach dem Festlegen des Schwellenwerts darauf klicken, können Sie eine zweite Farbauswahl treffen.</value>
-  </data>
-  <data name="COMPRESS" xml:space="preserve">
-    <value>KOMPRESSE</value>
-  </data>
-  <data name="Default" xml:space="preserve">
-    <value>STANDARD</value>
-  </data>
-  <data name="DSTCOLOR" xml:space="preserve">
-    <value>ZIELFARBE</value>
-  </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
-    <value>LEERE SEITE ÜBERSPRINGEN</value>
-  </data>
-  <data name="EYPOPEN" xml:space="preserve">
-    <value>Öffnen Sie Eyp-Dateien direkt.</value>
-  </data>
-  <data name="FLATBED" xml:space="preserve">
-    <value>FLACHBETT</value>
-  </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
-    <value>JPEG-QUALITÄT</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>LINKS</value>
-  </data>
-  <data name="LIMITED" xml:space="preserve">
-    <value>Dieses Dateiformat wird nur begrenzt unterstützt.</value>
-  </data>
-  <data name="LOAD" xml:space="preserve">
-    <value>BELASTUNG</value>
-  </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
-    <value>Kein Patchcode erkannt</value>
-  </data>
-  <data name="NOPROFILE" xml:space="preserve">
-    <value>KEIN PROFIL AUSGEWÄHLT</value>
-  </data>
-  <data name="OCRTIME" xml:space="preserve">
-    <value>Der PDF-OCR-Prozess nimmt zusätzliche Zeit in Anspruch.</value>
-  </data>
-  <data name="OTHERAPPS" xml:space="preserve">
-    <value>MEINE ANDEREN APPS</value>
-  </data>
-  <data name="PAGENUMBER" xml:space="preserve">
-    <value>SEITENNUMMER</value>
-  </data>
-  <data name="PDFOPEN" xml:space="preserve">
-    <value>Öffnen Sie PDF-Dateien direkt.</value>
-  </data>
-  <data name="PDFTRACK" xml:space="preserve">
-    <value>SEHEN SIE SICH DIE ÄNDERUNG DES PDF-ORDNERS AN</value>
-  </data>
-  <data name="QRDETECT" xml:space="preserve">
-    <value>QR ERKENNEN</value>
-  </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>Verarbeitete Dateien aus der Dokumentenliste löschen</value>
-  </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
-    <value>Möchten Sie das ausgewählte Bild löschen?</value>
-  </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Seiten ersetzen</value>
-  </data>
-  <data name="RESTARTAPP" xml:space="preserve">
-    <value>APP NEU STARTEN</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>RECHTS</value>
-  </data>
-  <data name="Rotate180" xml:space="preserve">
-    <value>UM 180 GRAD DREHEN</value>
-  </data>
-  <data name="Rotate270" xml:space="preserve">
-    <value>UM 270 GRAD DREHEN</value>
-  </data>
-  <data name="Rotate90" xml:space="preserve">
-    <value>UM 90 GRAD DREHEN</value>
-  </data>
-  <data name="SEPERATOR" xml:space="preserve">
-    <value>VERWENDEN SIE SEPERATOR</value>
-  </data>
-  <data name="SPLIT" xml:space="preserve">
-    <value>Gespalten</value>
-  </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>Zum Wiederherstellen doppelklicken, zum Erweitern mit der rechten Maustaste klicken</value>
-  </data>
-  <data name="SRCCOLOR" xml:space="preserve">
-    <value>QUELLFARBE</value>
-  </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Klicken Sie mit der rechten Maustaste, um die Quellfarbe auszuwählen.</value>
-  </data>
-  <data name="START" xml:space="preserve">
-    <value>START</value>
-  </data>
-  <data name="TAG" xml:space="preserve">
-    <value>ETIKETT</value>
-  </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Einige Aufgaben werden ausgeführt und warten darauf, dass sie abgeschlossen werden.</value>
-  </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Wählen Sie Tesseract-Sprache aus</value>
-  </data>
-  <data name="THIRDPARTY" xml:space="preserve">
-    <value>IN DER ANWENDUNG VERWENDETE BIBLIOTHEKEN VON DRITTANBIETERN</value>
-  </data>
-  <data name="THRESHOLD" xml:space="preserve">
-    <value>SCHWELLE</value>
-  </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>Der Prozess ist im Gange.</value>
-  </data>
-  <data name="UPDATE" xml:space="preserve">
-    <value>AKTUALISIEREN</value>
-  </data>
-  <data name="WATERMARK" xml:space="preserve">
-    <value>WASSERZEICHEN</value>
-  </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Komprimierte Dateien in gescannten Dokumenten direkt überschreiben</value>
-  </data>
   <data name="STOP" xml:space="preserve">
     <value>Stoppen</value>
   </data>
@@ -573,14 +411,11 @@
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>Es wird empfohlen, das entsprechende Format für den Ordnerindex Ihrer alten Browseranwendung zu wählen.</value>
   </data>
-  <data name="CHEIGHT" xml:space="preserve">
-    <value>INDIVIDUELLE HÖHE</value>
-  </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>BENUTZERDEFINIERTE BREITE</value>
   </data>
-  <data name="CYANCONTROL" xml:space="preserve">
-    <value>Jedes cyanfarbene Steuerelement funktioniert anders mit einer oder mehreren der Alt-Umschalt-Strg-Tasten</value>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>INDIVIDUELLE HÖHE</value>
   </data>
   <data name="AUTOFOLDERHELP" xml:space="preserve">
     <value>Geben Sie den Ordner zum automatischen Speichern an.</value>
@@ -675,11 +510,11 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Ocr aller PDF-Seiten</value>
   </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Der Dateiname ist ungültig</value>
-  </data>
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Ordnerzugriff verweigert.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Der Dateiname ist ungültig</value>
   </data>
   <data name="BACKUPDB" xml:space="preserve">
     <value>BACKUP-DATENBANKDATEI</value>
@@ -782,5 +617,182 @@
   </data>
   <data name="PDFINTERNALDESC" xml:space="preserve">
     <value>Wenn dies gekennzeichnet ist, werden PDF -Texte als OCR verwendet.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDEO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>BILD</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Archiv</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>DOKUMENT HINZUFÜGEN</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>OCR zur Datenbank hinzufügen</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Wenn dies aktiviert ist, wird das unten markierte Dokument als Text des links aktiven Dokuments in der Datenbank gespeichert.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Diese Anwendung wurde entwickelt, um das Scannen und die Dokumentenverfolgung zu erleichtern.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>ANWENDEN</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>FARBE ÄNDERN</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AUTOMATISCH</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>AUTOMATISCHES BILD</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>AUTOMATISCHER TEXT</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>CHARGE</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Wenn Bilddateien dem unten angegebenen Ordner hinzugefügt werden, erfolgt die automatische Konvertierung in PDF-Dateien im selben Ordner, solange das Programm geöffnet ist</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>KAMERA</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Wenn Sie nach dem Festlegen des Schwellenwerts darauf klicken, können Sie eine zweite Farbauswahl treffen.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>KOMPRESSE</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>STANDARD</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>ZIELFARBE</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>LEERE SEITE ÜBERSPRINGEN</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Öffnen Sie Eyp-Dateien direkt.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>FLACHBETT</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG-QUALITÄT</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>LINKS</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Dieses Dateiformat wird nur begrenzt unterstützt.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>BELASTUNG</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Kein Patchcode erkannt</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>KEIN PROFIL AUSGEWÄHLT</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Der PDF-OCR-Prozess nimmt zusätzliche Zeit in Anspruch.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>MEINE ANDEREN APPS</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Komprimierte Dateien in gescannten Dokumenten direkt überschreiben</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>SEITENNUMMER</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Öffnen Sie PDF-Dateien direkt.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>SEHEN SIE SICH DIE ÄNDERUNG DES PDF-ORDNERS AN</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>QR ERKENNEN</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Verarbeitete Dateien aus der Dokumentenliste löschen</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Möchten Sie das ausgewählte Bild löschen?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Seiten ersetzen</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>APP NEU STARTEN</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>RECHTS</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>UM 180 GRAD DREHEN</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>UM 270 GRAD DREHEN</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>UM 90 GRAD DREHEN</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>VERWENDEN SIE SEPERATOR</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Gespalten</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Zum Wiederherstellen doppelklicken, zum Erweitern mit der rechten Maustaste klicken</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>QUELLFARBE</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Klicken Sie mit der rechten Maustaste, um die Quellfarbe auszuwählen.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ETIKETT</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Einige Aufgaben werden ausgeführt und warten darauf, dass sie abgeschlossen werden.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Wählen Sie Tesseract-Sprache aus</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>IN DER ANWENDUNG VERWENDETE BIBLIOTHEKEN VON DRITTANBIETERN</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>SCHWELLE</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Der Prozess ist im Gange.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>AKTUALISIEREN</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>WASSERZEICHEN</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Jedes cyanfarbene Steuerelement funktioniert anders mit einer oder mehreren der Alt-Umschalt-Strg-Tasten</value>
+  </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Einige Dateierweiterungen wurden nicht ausgewählt</value>
   </data>
 </root>

@@ -297,6 +297,9 @@ ALSO PDF PROTECTION CAN BE BROKEN BY 3rd PARTY APPLICATIONS.</value>
   <data name="SAVEPDF" xml:space="preserve">
     <value>SAVE PDF</value>
   </data>
+  <data name="HELP" xml:space="preserve">
+    <value>HELP</value>
+  </data>
   <data name="OCR" xml:space="preserve">
     <value>OCR</value>
   </data>
@@ -399,171 +402,8 @@ DEVICE</value>
   <data name="SEPERATESCANTOOLTIP" xml:space="preserve">
     <value>Save Each Page to Separate File Files are Saved to the Folder Specified Below.</value>
   </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
-    <value>CHANGE COLOR</value>
-  </data>
-  <data name="DSTCOLOR" xml:space="preserve">
-    <value>DESTINATION COLOR</value>
-  </data>
-  <data name="SRCCOLOR" xml:space="preserve">
-    <value>SOURCE COLOR</value>
-  </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Right click to select source color.</value>
-  </data>
-  <data name="THRESHOLD" xml:space="preserve">
-    <value>THRESHOLD</value>
-  </data>
-  <data name="APPLY" xml:space="preserve">
-    <value>APPLY</value>
-  </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>If You Click This After Setting the Threshold Value, You Can Make a Second Color Selection.</value>
-  </data>
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>SAVE OCR PDF</value>
-  </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
-    <value>ADD OCR TO DATABASE</value>
-  </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>If this is checked, the document marked below is saved in the database as the text of the active document on the left.</value>
-  </data>
-  <data name="QRDETECT" xml:space="preserve">
-    <value>DETECT QR</value>
-  </data>
-  <data name="SEPERATOR" xml:space="preserve">
-    <value>USE SEPERATOR</value>
-  </data>
-  <data name="TAG" xml:space="preserve">
-    <value>TAG</value>
-  </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
-    <value>SKIP EMPTY PAGE</value>
-  </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
-    <value>JPEG QUALITY</value>
-  </data>
-  <data name="APPDESC" xml:space="preserve">
-    <value>This application has been developed to facilitate scanning and document tracking.</value>
-  </data>
-  <data name="OTHERAPPS" xml:space="preserve">
-    <value>MY OTHER APPS</value>
-  </data>
-  <data name="THIRDPARTY" xml:space="preserve">
-    <value>3rd PARTY LIBRARIES USED IN THE APPLICATION</value>
-  </data>
-  <data name="OCRTIME" xml:space="preserve">
-    <value>Pdf Ocr Process Takes Extra Time.</value>
-  </data>
-  <data name="ADDDOC" xml:space="preserve">
-    <value>ADD DOCUMENT
-TO FILE</value>
-  </data>
-  <data name="SPLIT" xml:space="preserve">
-    <value>Splitted</value>
-  </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>Double Click To Restore, Right Click To Expand</value>
-  </data>
-  <data name="BATCH" xml:space="preserve">
-    <value>BATCH</value>
-  </data>
-  <data name="START" xml:space="preserve">
-    <value>START</value>
-  </data>
-  <data name="LOAD" xml:space="preserve">
-    <value>LOAD</value>
-  </data>
-  <data name="NOPROFILE" xml:space="preserve">
-    <value>NO PROFILE SELECTED</value>
-  </data>
-  <data name="CAMERA" xml:space="preserve">
-    <value>CAMERA</value>
-  </data>
-  <data name="FLATBED" xml:space="preserve">
-    <value>FLATBED</value>
-  </data>
-  <data name="Auto" xml:space="preserve">
-    <value>AUTOMATIC</value>
-  </data>
-  <data name="AutoPicture" xml:space="preserve">
-    <value>AUTOMATIC PICTURE</value>
-  </data>
-  <data name="AutoText" xml:space="preserve">
-    <value>AUTOMATIC TEXT</value>
-  </data>
-  <data name="Default" xml:space="preserve">
-    <value>DEFAULT</value>
-  </data>
-  <data name="Rotate180" xml:space="preserve">
-    <value>ROTATE 180 DEGREES</value>
-  </data>
-  <data name="Rotate270" xml:space="preserve">
-    <value>ROTATE 270 DEGREES</value>
-  </data>
-  <data name="Rotate90" xml:space="preserve">
-    <value>ROTATE 90 DEGREES</value>
-  </data>
-  <data name="PDFTRACK" xml:space="preserve">
-    <value>WATCH PDF FOLDER CHANGE</value>
-  </data>
-  <data name="PAGENUMBER" xml:space="preserve">
-    <value>PAGE NUMBER</value>
-  </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Some Tasks Are Running Wait For It To Finish.</value>
-  </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>The Process is in Progress. Wait for it to finish.</value>
-  </data>
-  <data name="LIMITED" xml:space="preserve">
-    <value>This File Format Has Limited Support.</value>
-  </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Select Tesseract Language</value>
-  </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
-    <value>No Patch Code Detected</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>LEFT</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>RIGHT</value>
-  </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>Delete Processed Files From Document List</value>
-  </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Replace Pages</value>
-  </data>
-  <data name="WATERMARK" xml:space="preserve">
-    <value>WATERMARK</value>
-  </data>
-  <data name="BATCHDESC" xml:space="preserve">
-    <value>When Image Files are Added to the Folder Specified Below, Automatic Conversion to Pdf Files in the Same Folder is Made as Long as the Program is Open</value>
-  </data>
-  <data name="RESTARTAPP" xml:space="preserve">
-    <value>RESTARTAPP</value>
-  </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
-    <value>Do You Want to Delete the Selected Image?</value>
-  </data>
-  <data name="UPDATE" xml:space="preserve">
-    <value>UPDATE</value>
-  </data>
-  <data name="EYPOPEN" xml:space="preserve">
-    <value>Open Eyp Files Directly.</value>
-  </data>
-  <data name="PDFOPEN" xml:space="preserve">
-    <value>Open Pdf Files Directly.</value>
-  </data>
-  <data name="COMPRESS" xml:space="preserve">
-    <value>COMPRESS</value>
-  </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Directly Overwrite Compressed File in Scanned Documents</value>
   </data>
   <data name="STOP" xml:space="preserve">
     <value>Stop</value>
@@ -577,17 +417,11 @@ TO FILE</value>
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>It is recommended to choose the appropriate format for the folder index of your old browser application. Here, Filtering Will Be Made According to the Selected Format.</value>
   </data>
-  <data name="CHEIGHT" xml:space="preserve">
-    <value>CUSTOM HEIGHT</value>
-  </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>CUSTOM WIDTH</value>
   </data>
-  <data name="CYANCONTROL" xml:space="preserve">
-    <value>Any Cyan Colored Control Works Differently With One or More Of The Alt Shift Ctrl Keys</value>
-  </data>
-  <data name="HELP" xml:space="preserve">
-    <value>HELP</value>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>CUSTOM HEIGHT</value>
   </data>
   <data name="AUTOFOLDERHELP" xml:space="preserve">
     <value>Specify Auto Save Folder. In the Quick Scan Process, This Folder Is Recorded.</value>
@@ -646,9 +480,6 @@ TO FILE</value>
   <data name="ESCTOCANCEL" xml:space="preserve">
     <value>Press And Hold Esc Button To Cancel</value>
   </data>
-  <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>Simple Pdf Preview. Suitable for Slow Computers</value>
-  </data>
   <data name="HUE" xml:space="preserve">
     <value>HUE</value>
   </data>
@@ -657,6 +488,9 @@ TO FILE</value>
   </data>
   <data name="SATURATION" xml:space="preserve">
     <value>SATURATION</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Simple Pdf Preview. Suitable for Slow Computers</value>
   </data>
   <data name="REMOVECD" xml:space="preserve">
     <value>When Finished Remove CD</value>
@@ -789,5 +623,183 @@ TO FILE</value>
   </data>
   <data name="PDFINTERNALDESC" xml:space="preserve">
     <value>If this is marked, PDF texts are used as OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDEO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>PICTURE</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>ARCHIVE</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>ADD DOCUMENT
+TO FILE</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>ADD OCR TO DATABASE</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>If this is checked, the document marked below is saved in the database as the text of the active document on the left.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>This application has been developed to facilitate scanning and document tracking.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>APPLY</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>CHANGE COLOR</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>AUTOMATIC</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>AUTOMATIC PICTURE</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>AUTOMATIC TEXT</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>BATCH</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>When Image Files are Added to the Folder Specified Below, Automatic Conversion to Pdf Files in the Same Folder is Made as Long as the Program is Open</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>CAMERA</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>If You Click This After Setting the Threshold Value, You Can Make a Second Color Selection.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>COMPRESS</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>DEFAULT</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>DESTINATION COLOR</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>SKIP EMPTY PAGE</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Open Eyp Files Directly.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>FLATBED</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG QUALITY</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>LEFT</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>This File Format Has Limited Support.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>LOAD</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>No Patch Code Detected</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>NO PROFILE SELECTED</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Pdf Ocr Process Takes Extra Time.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>MY OTHER APPS</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Directly Overwrite Compressed File in Scanned Documents</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>PAGE NUMBER</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Open Pdf Files Directly.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>WATCH PDF FOLDER CHANGE</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>DETECT QR</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Delete Processed Files From Document List</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Do You Want to Delete the Selected Image?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Replace Pages</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>RESTARTAPP</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>RIGHT</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ROTATE 180 DEGREES</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ROTATE 270 DEGREES</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ROTATE 90 DEGREES</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>USE SEPERATOR</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Splitted</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Double Click To Restore, Right Click To Expand</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>SOURCE COLOR</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Right click to select source color.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>START</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>TAG</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Some Tasks Are Running Wait For It To Finish.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Select Tesseract Language</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>3rd PARTY LIBRARIES USED IN THE APPLICATION</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>THRESHOLD</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>The Process is in Progress. Wait for it to finish.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>UPDATE</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>WATERMARK</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Any Cyan Colored Control Works Differently With One or More Of The Alt Shift Ctrl Keys</value>
+  </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Some file extensions were not selected</value>
   </data>
 </root>

@@ -471,6 +471,162 @@
   <data name="FILEINUSE" xml:space="preserve">
     <value>İstifadədə olan Fayl.</value>
   </data>
+  <data name="ESCTOCANCEL" xml:space="preserve">
+    <value>Ləğv etmək üçün Esc düyməsini basıb saxlayın</value>
+  </data>
+  <data name="HUE" xml:space="preserve">
+    <value>RƏNG TONU</value>
+  </data>
+  <data name="LIGHTNESS" xml:space="preserve">
+    <value>AÇIQLIQ</value>
+  </data>
+  <data name="SATURATION" xml:space="preserve">
+    <value>DOYMA</value>
+  </data>
+  <data name="FASTPDFVIEW" xml:space="preserve">
+    <value>Sadə pdf önizləmə.</value>
+  </data>
+  <data name="REMOVECD" xml:space="preserve">
+    <value>Bitirdikdən sonra CD-ni çıxarın</value>
+  </data>
+  <data name="HORIZONTAL" xml:space="preserve">
+    <value>Üfüqi</value>
+  </data>
+  <data name="FIRSTLAST" xml:space="preserve">
+    <value>Birinci və Son Səhifələri seçin və çeşidləyin</value>
+  </data>
+  <data name="SPLITSORT" xml:space="preserve">
+    <value>Bölün və çeşidləyin</value>
+  </data>
+  <data name="RANDOM" xml:space="preserve">
+    <value>Təsadüfi</value>
+  </data>
+  <data name="UNINDEXED" xml:space="preserve">
+    <value>QEYRİ İNDEKSİYON FAYLLAR</value>
+  </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Pdf məlumat göstərin</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr bütün pdf səhifələr</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Qovluğa giriş rədd edildi.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Fayl Adı Yanlışdır</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>MƏLUMAT BAZASI FAYININ YEDEK KOMPLESİ</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>FILE ASSOCIATE</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Sistem Tablasına minimuma endir</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Başlanğıc Mesajı</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>XƏTİ DOLDURMA</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>ÇIXIŞ</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPYALA</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Buferə Kopyalandı</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Bu Proses Uzun Zaman Ala bilər.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>SƏHV</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>HƏR SƏHİFƏNİ AYRI FAYLA TARAYIN</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>UĞUR</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORİJİNAL</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF JPG kimi işləyir. Bu, yaddaşda yüklənməni azaldır, lakin JPG sənədləri, Windowsun müvəqqəti qovluğunda qeyd olunur, çünki disk ölçüsündə azalma halında. Yalnız yaddaş çox (1000) səhifə olan fayllarda doldurulduqda istifadə etmək daha yaxşıdır.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>YAPIŞDIR</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>SystemTray simgesini göstərin</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>CÜR</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Başına əlavə edin</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Bir sonuna əlavə edin</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>OCR nəticəsi əvəzinə PDF məzmun mətnindən istifadə edin. THİS funksiyasını aktivləşdirmək tövsiyə edilmir.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Yük performansını qazanmaq üçün indeks əməliyyatları tamamlandıqdan sonra qovluqları çıxarın</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Çox sayda fayl var</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>Yekə</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Ən böyüyən</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Orta</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>Kiçik</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Ən kiçik</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>Qaçmaq</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Sıçratmaq ekranını göstər</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Kompüter</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Bir brauzerdən daha çox</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tezator oriyentasiya və skript aşkarlama faylı iş avtomatik fırlanma üçün yüklənməlidir</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF Mətn Yarışmasından istifadə edin</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Bu qeyd olunarsa, PDF mətnləri OCR kimi istifadə olunur.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Videonuz</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>Şəkil</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Arxiv</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>SƏNƏDLƏŞDİRMƏK</value>
   </data>
@@ -636,151 +792,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>İstənilən Mavi Rəngə Nəzarət Alt Shift Ctrl Düymələrindən Bir və ya Bir neçəsi ilə Fərqli Çalışır!</value>
   </data>
-  <data name="ESCTOCANCEL" xml:space="preserve">
-    <value>Ləğv etmək üçün Esc düyməsini basıb saxlayın</value>
-  </data>
-  <data name="HUE" xml:space="preserve">
-    <value>RƏNG TONU</value>
-  </data>
-  <data name="LIGHTNESS" xml:space="preserve">
-    <value>AÇIQLIQ</value>
-  </data>
-  <data name="SATURATION" xml:space="preserve">
-    <value>DOYMA</value>
-  </data>
-  <data name="FASTPDFVIEW" xml:space="preserve">
-    <value>Sadə pdf önizləmə.</value>
-  </data>
-  <data name="REMOVECD" xml:space="preserve">
-    <value>Bitirdikdən sonra CD-ni çıxarın</value>
-  </data>
-  <data name="HORIZONTAL" xml:space="preserve">
-    <value>Üfüqi</value>
-  </data>
-  <data name="FIRSTLAST" xml:space="preserve">
-    <value>Birinci və Son Səhifələri seçin və çeşidləyin</value>
-  </data>
-  <data name="SPLITSORT" xml:space="preserve">
-    <value>Bölün və çeşidləyin</value>
-  </data>
-  <data name="RANDOM" xml:space="preserve">
-    <value>Təsadüfi</value>
-  </data>
-  <data name="UNINDEXED" xml:space="preserve">
-    <value>QEYRİ İNDEKSİYON FAYLLAR</value>
-  </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>Pdf məlumat göstərin</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr bütün pdf səhifələr</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Fayl Adı Yanlışdır</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>Qovluğa giriş rədd edildi.</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>MƏLUMAT BAZASI FAYININ YEDEK KOMPLESİ</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>FILE ASSOCIATE</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>Sistem Tablasına minimuma endir</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>Başlanğıc Mesajı</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>XƏTİ DOLDURMA</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>ÇIXIŞ</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>KOPYALA</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>Buferə Kopyalandı</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Bu Proses Uzun Zaman Ala bilər.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>SƏHV</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>HƏR SƏHİFƏNİ AYRI FAYLA TARAYIN</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>UĞUR</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ORİJİNAL</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF JPG kimi işləyir. Bu, yaddaşda yüklənməni azaldır, lakin JPG sənədləri, Windowsun müvəqqəti qovluğunda qeyd olunur, çünki disk ölçüsündə azalma halında. Yalnız yaddaş çox (1000) səhifə olan fayllarda doldurulduqda istifadə etmək daha yaxşıdır.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>YAPIŞDIR</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>SystemTray simgesini göstərin</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>CÜR</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Başına əlavə edin</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Bir sonuna əlavə edin</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>OCR nəticəsi əvəzinə PDF məzmun mətnindən istifadə edin. THİS funksiyasını aktivləşdirmək tövsiyə edilmir.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Yük performansını qazanmaq üçün indeks əməliyyatları tamamlandıqdan sonra qovluqları çıxarın</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Çox sayda fayl var</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>Yekə</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Ən böyüyən</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>Orta</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>Kiçik</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Ən kiçik</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>Qaçmaq</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Sıçratmaq ekranını göstər</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>Kompüter</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Bir brauzerdən daha çox</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tezator oriyentasiya və skript aşkarlama faylı iş avtomatik fırlanma üçün yüklənməlidir</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>PDF Mətn Yarışmasından istifadə edin</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Bu qeyd olunarsa, PDF mətnləri OCR kimi istifadə olunur.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Bəzi fayl uzantıları seçilmədi</value>
   </data>
 </root>

@@ -507,6 +507,129 @@
   <data name="UNINDEXED" xml:space="preserve">
     <value>NEINDEKSIRANE DATOTEKE</value>
   </data>
+  <data name="PDFINFO" xml:space="preserve">
+    <value>Prikaži informacije o PDF-u</value>
+  </data>
+  <data name="OCRALL" xml:space="preserve">
+    <value>Ocr Sve Pdf stranice</value>
+  </data>
+  <data name="FOLDERACCESS" xml:space="preserve">
+    <value>Pristup mapi odbijen.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Naziv datoteke nije valjan</value>
+  </data>
+  <data name="BACKUPDB" xml:space="preserve">
+    <value>SIGURNOSNA KOPIJA DATOTEKE BAZE PODATAKA</value>
+  </data>
+  <data name="ASSOCIATE" xml:space="preserve">
+    <value>FILE SURADNIK</value>
+  </data>
+  <data name="MINTOTRAY" xml:space="preserve">
+    <value>Minimiziraj na traku sustava</value>
+  </data>
+  <data name="STARTUPMSG" xml:space="preserve">
+    <value>Poruka pri pokretanju</value>
+  </data>
+  <data name="LINEARFILL" xml:space="preserve">
+    <value>LINEARNO ISPUNJENJE</value>
+  </data>
+  <data name="EXIT" xml:space="preserve">
+    <value>IZLAZ</value>
+  </data>
+  <data name="COPY" xml:space="preserve">
+    <value>KOPIRATI</value>
+  </data>
+  <data name="COPYCLIPBOARD" xml:space="preserve">
+    <value>Kopirano u međuspremnik</value>
+  </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Ovaj proces može trajati dugo.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>POGREŠKA</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SKENIRAJTE SVAKU STRANICU U POSEBNU DATOTEKU</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>USPJEH</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>IZVORNIK</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF radi kao JPG. To smanjuje učitavanje memorije, ali JPG datoteke bilježe se u privremenom direktoriju WindowsUn, jer dođe do smanjenja veličine diska. Bolje je koristiti samo ako je memorija popunjena u datotekama koje sadrže previše (1000) stranica.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>ZALIJEPITI</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Prikaži ikonu Systemtray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>VRSTA</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Dodaj na početak</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Dodaj kraju</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Upotrijebite PDF sadržaj teksta umjesto OCR rezultata. Ne preporučuje se omogućiti funkciju This.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Uklonite mape nakon završetka indeksnih operacija kako biste postigli učinak opterećenja</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Postoje brojne datoteke</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>VELIK</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>NAJVEĆI</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>Srednji</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>MALI</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Najmanji</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>TRČANJE</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Prikaži zaslon za prskanje</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>RAČUNALO</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Više od preglednika</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Datoteka orijentacije i otkrivanja skripte treba preuzeti na rad automatske rotacije</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Koristite PDF Text Contest</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Ako je to označeno, PDF tekstovi koriste se kao OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDEO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>SLIKA</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Arhiva</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>DODAJ DOKUMENT</value>
   </data>
@@ -672,118 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Svaka kontrola cijan boje radi drugačije s jednom ili više tipki Alt Shift Ctrl</value>
   </data>
-  <data name="PDFINFO" xml:space="preserve">
-    <value>Prikaži informacije o PDF-u</value>
-  </data>
-  <data name="OCRALL" xml:space="preserve">
-    <value>Ocr Sve Pdf stranice</value>
-  </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Naziv datoteke nije valjan</value>
-  </data>
-  <data name="FOLDERACCESS" xml:space="preserve">
-    <value>Pristup mapi odbijen.</value>
-  </data>
-  <data name="BACKUPDB" xml:space="preserve">
-    <value>SIGURNOSNA KOPIJA DATOTEKE BAZE PODATAKA</value>
-  </data>
-  <data name="ASSOCIATE" xml:space="preserve">
-    <value>FILE SURADNIK</value>
-  </data>
-  <data name="MINTOTRAY" xml:space="preserve">
-    <value>Minimiziraj na traku sustava</value>
-  </data>
-  <data name="STARTUPMSG" xml:space="preserve">
-    <value>Poruka pri pokretanju</value>
-  </data>
-  <data name="LINEARFILL" xml:space="preserve">
-    <value>LINEARNO ISPUNJENJE</value>
-  </data>
-  <data name="EXIT" xml:space="preserve">
-    <value>IZLAZ</value>
-  </data>
-  <data name="COPY" xml:space="preserve">
-    <value>KOPIRATI</value>
-  </data>
-  <data name="COPYCLIPBOARD" xml:space="preserve">
-    <value>Kopirano u međuspremnik</value>
-  </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Ovaj proces može trajati dugo.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>POGREŠKA</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>SKENIRAJTE SVAKU STRANICU U POSEBNU DATOTEKU</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>USPJEH</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>IZVORNIK</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF radi kao JPG. To smanjuje učitavanje memorije, ali JPG datoteke bilježe se u privremenom direktoriju WindowsUn, jer dođe do smanjenja veličine diska. Bolje je koristiti samo ako je memorija popunjena u datotekama koje sadrže previše (1000) stranica.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>ZALIJEPITI</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Prikaži ikonu Systemtray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>VRSTA</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Dodaj na početak</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Dodaj kraju</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Upotrijebite PDF sadržaj teksta umjesto OCR rezultata. Ne preporučuje se omogućiti funkciju This.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Uklonite mape nakon završetka indeksnih operacija kako biste postigli učinak opterećenja</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Postoje brojne datoteke</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>VELIK</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>NAJVEĆI</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>Srednji</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>MALI</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Najmanji</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>TRČANJE</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Prikaži zaslon za prskanje</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>RAČUNALO</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Više od preglednika</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Datoteka orijentacije i otkrivanja skripte treba preuzeti na rad automatske rotacije</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Koristite PDF Text Contest</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Ako je to označeno, PDF tekstovi koriste se kao OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Neka proširenja datoteka nisu odabrana</value>
   </data>
 </root>

@@ -144,6 +144,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string ARCHIVE {
+            get {
+                return ResourceManager.GetString("ARCHIVE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string ASSOCIATE {
             get {
                 return ResourceManager.GetString("ASSOCIATE", resourceCulture);
@@ -669,6 +678,15 @@ namespace TwainControl.Properties {
         public static string IGNOREWIDTHHEIGHTEQUAL {
             get {
                 return ResourceManager.GetString("IGNOREWIDTHHEIGHTEQUAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string IMG {
+            get {
+                return ResourceManager.GetString("IMG", resourceCulture);
             }
         }
         
@@ -1544,9 +1562,27 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string VID {
+            get {
+                return ResourceManager.GetString("VID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string VIEWALL {
             get {
                 return ResourceManager.GetString("VIEWALL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string WARNEXT {
+            get {
+                return ResourceManager.GetString("WARNEXT", resourceCulture);
             }
         }
         

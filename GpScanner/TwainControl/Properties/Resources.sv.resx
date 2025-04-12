@@ -543,6 +543,93 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Kopierade till Urklipp</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Denna process kan ta lång tid.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>MISSTAG</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SKANNA VARJE SIDA TILL EN SEPARAT FIL</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>FRAMGÅNG</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORIGINAL</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF fungerar som JPG. Detta minskar belastningen på minnet, men JPG -filer spelas in i Windowsun tillfälliga katalogen, eftersom det finns en minskning av diskstorleken. Det är bättre att bara använda om minnet fylls i filer som innehåller för mycket (1000) sidor.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>KLISTRA</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Visa systemTray -ikon</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>SORTERA</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Lägg till början</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Lägg till ett slut</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Använd PDF -innehållstext istället för OCR -resultat. Det rekommenderas inte att aktivera THİS -funktionen.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Ta bort mappar efter att indexoperationer har slutförts för att få lastprestanda</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Det finns många filer</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>STOR</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>STÖRSTA</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>MITTEN</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>SMÅ</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Minsta</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>SPRINGA</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Visa stänkskärm</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>DATOR</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Mer än en webbläsare</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tesseract Orientation och skriptdetekteringsfil bör laddas ner för att fungera auto rotation</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Använd PDF -texttävling</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Om detta är markerat används PDF -texter som OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDEO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>BILD</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Arkiv</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>LÄGG TILL DOKUMENT</value>
   </data>
@@ -708,82 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Alla cyanfärgade kontroller fungerar annorlunda med en eller flera av Alt Shift Ctrl-tangenterna</value>
   </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Denna process kan ta lång tid.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>MISSTAG</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>SKANNA VARJE SIDA TILL EN SEPARAT FIL</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>FRAMGÅNG</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ORIGINAL</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF fungerar som JPG. Detta minskar belastningen på minnet, men JPG -filer spelas in i Windowsun tillfälliga katalogen, eftersom det finns en minskning av diskstorleken. Det är bättre att bara använda om minnet fylls i filer som innehåller för mycket (1000) sidor.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>KLISTRA</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Visa systemTray -ikon</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>SORTERA</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Lägg till början</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Lägg till ett slut</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Använd PDF -innehållstext istället för OCR -resultat. Det rekommenderas inte att aktivera THİS -funktionen.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Ta bort mappar efter att indexoperationer har slutförts för att få lastprestanda</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Det finns många filer</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>STOR</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>STÖRSTA</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>MITTEN</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>SMÅ</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Minsta</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>SPRINGA</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Visa stänkskärm</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>DATOR</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Mer än en webbläsare</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tesseract Orientation och skriptdetekteringsfil bör laddas ner för att fungera auto rotation</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Använd PDF -texttävling</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Om detta är markerat används PDF -texter som OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Vissa filtillägg valdes inte</value>
   </data>
 </root>

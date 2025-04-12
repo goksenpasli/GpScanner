@@ -23,6 +23,7 @@
             <RowDefinition Height="16" />
             <RowDefinition Height="22" />
             <RowDefinition />
+            <RowDefinition Height="3" />
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -138,8 +139,13 @@
                 </Style>
             </ToggleButton.Style>
         </ToggleButton>
+        <GridSplitter Grid.Row="3"
+            Grid.ColumnSpan="4"
+            Height="3"
+            HorizontalAlignment="Stretch"
+            Background="{StaticResource GroupBoxBackGround}" />
         <Extensions:ButtonedTextBox x:Name="BtnTxtÇeviri"
-            Grid.Row="3"
+            Grid.Row="4"
             Grid.ColumnSpan="3"
             VerticalContentAlignment="Top"
             AcceptsReturn="True"
@@ -156,7 +162,7 @@
             TextWrapping="Wrap"
             TitleCaseMenuVisibility="Visible"
             VerticalScrollBarVisibility="Visible" />
-        <ToggleButton Grid.Row="3"
+        <ToggleButton Grid.Row="4"
             Grid.Column="3"
             twainctrl:Policy.PolicyName="Oku"
             Command="{Binding Oku}"
@@ -188,7 +194,7 @@
                 </Style>
             </ToggleButton.Style>
         </ToggleButton>
-        <Button Grid.Row="4"
+        <Button Grid.Row="5"
             Grid.ColumnSpan="3"
             twainctrl:Policy.PolicyName="Sıfırla"
             Command="{Binding Sıfırla}">
@@ -204,7 +210,7 @@
                 <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc RESET}" />
             </StackPanel>
         </Button>
-        <Extensions:ContentToggleButton Grid.Row="4" Grid.Column="4">
+        <Extensions:ContentToggleButton Grid.Row="5" Grid.Column="4">
             <Image Width="32" Height="32">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

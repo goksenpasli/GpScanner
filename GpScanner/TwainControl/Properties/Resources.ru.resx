@@ -399,168 +399,6 @@
   <data name="OCRPDFSAVE" xml:space="preserve">
     <value>СОХРАНИТЬ OCR PDF</value>
   </data>
-  <data name="ADDDOC" xml:space="preserve">
-    <value>ДОБАВИТЬ ДОКУМЕНТ</value>
-  </data>
-  <data name="ADDOCRTODB" xml:space="preserve">
-    <value>ДОБАВИТЬ OCR В БАЗУ ДАННЫХ</value>
-  </data>
-  <data name="ADDOCRTOOLTIP" xml:space="preserve">
-    <value>Если этот флажок установлен, документ, отмеченный ниже, сохраняется в базе данных как текст активного документа слева.</value>
-  </data>
-  <data name="APPDESC" xml:space="preserve">
-    <value>Это приложение было разработано для облегчения сканирования и отслеживания документов.</value>
-  </data>
-  <data name="APPLY" xml:space="preserve">
-    <value>ПРИМЕНЯТЬ</value>
-  </data>
-  <data name="APPLYCOLOR" xml:space="preserve">
-    <value>ИЗМЕНИТЬ ЦВЕТ</value>
-  </data>
-  <data name="Auto" xml:space="preserve">
-    <value>АВТОМАТИЧЕСКИЙ</value>
-  </data>
-  <data name="AutoPicture" xml:space="preserve">
-    <value>АВТОМАТИЧЕСКОЕ ИЗОБРАЖЕНИЕ</value>
-  </data>
-  <data name="AutoText" xml:space="preserve">
-    <value>АВТОМАТИЧЕСКИЙ ТЕКСТ</value>
-  </data>
-  <data name="BATCH" xml:space="preserve">
-    <value>ПАРТИЯ</value>
-  </data>
-  <data name="BATCHDESC" xml:space="preserve">
-    <value>Когда файлы изображений добавляются в папку, указанную ниже, происходит автоматическое преобразование в файлы PDF в той же папке, пока программа открыта.</value>
-  </data>
-  <data name="CAMERA" xml:space="preserve">
-    <value>КАМЕРА</value>
-  </data>
-  <data name="COLORCHANGETIP" xml:space="preserve">
-    <value>Если вы нажмете эту кнопку после установки порогового значения, вы сможете выбрать второй цвет.</value>
-  </data>
-  <data name="COMPRESS" xml:space="preserve">
-    <value>КОМПРЕСС</value>
-  </data>
-  <data name="Default" xml:space="preserve">
-    <value>ПО УМОЛЧАНИЮ</value>
-  </data>
-  <data name="DSTCOLOR" xml:space="preserve">
-    <value>ЦВЕТ НАЗНАЧЕНИЯ</value>
-  </data>
-  <data name="EMPTYPAGE" xml:space="preserve">
-    <value>ПРОПУСТИТЬ ПУСТУЮ СТРАНИЦУ</value>
-  </data>
-  <data name="EYPOPEN" xml:space="preserve">
-    <value>Откройте файлы Eyp напрямую.</value>
-  </data>
-  <data name="FLATBED" xml:space="preserve">
-    <value>ПЛАТФОРТОВЫЙ</value>
-  </data>
-  <data name="JPEGQUALITY" xml:space="preserve">
-    <value>JPEG-КАЧЕСТВО</value>
-  </data>
-  <data name="Left" xml:space="preserve">
-    <value>ЛЕВЫЙ</value>
-  </data>
-  <data name="LIMITED" xml:space="preserve">
-    <value>Этот формат файла имеет ограниченную поддержку.</value>
-  </data>
-  <data name="LOAD" xml:space="preserve">
-    <value>НАГРУЗКА</value>
-  </data>
-  <data name="NOPATCHCODE" xml:space="preserve">
-    <value>Код исправления не обнаружен</value>
-  </data>
-  <data name="NOPROFILE" xml:space="preserve">
-    <value>ПРОФИЛЬ НЕ ВЫБРАН</value>
-  </data>
-  <data name="OCRTIME" xml:space="preserve">
-    <value>Процесс распознавания PDF занимает дополнительное время.</value>
-  </data>
-  <data name="OTHERAPPS" xml:space="preserve">
-    <value>ДРУГИЕ МОИ ПРИЛОЖЕНИЯ</value>
-  </data>
-  <data name="PAGENUMBER" xml:space="preserve">
-    <value>НОМЕР СТРАНИЦЫ</value>
-  </data>
-  <data name="PDFOPEN" xml:space="preserve">
-    <value>Открытие PDF-файлов напрямую.</value>
-  </data>
-  <data name="PDFTRACK" xml:space="preserve">
-    <value>СМОТРЕТЬ ИЗМЕНЕНИЕ ПАПКИ PDF</value>
-  </data>
-  <data name="QRDETECT" xml:space="preserve">
-    <value>ОБНАРУЖИТЬ QR-код</value>
-  </data>
-  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
-    <value>Удалить обработанные файлы из списка документов</value>
-  </data>
-  <data name="REMOVESELECTED" xml:space="preserve">
-    <value>Хотите удалить выбранное изображение?</value>
-  </data>
-  <data name="REPLACEPAGE" xml:space="preserve">
-    <value>Заменить страницы</value>
-  </data>
-  <data name="RESTARTAPP" xml:space="preserve">
-    <value>ПЕРЕЗАПУСТИТЬ ПРИЛОЖЕНИЕ</value>
-  </data>
-  <data name="Right" xml:space="preserve">
-    <value>ВЕРНО</value>
-  </data>
-  <data name="Rotate180" xml:space="preserve">
-    <value>ПОВОРОТ НА 180 ГРАДУСОВ</value>
-  </data>
-  <data name="Rotate270" xml:space="preserve">
-    <value>ПОВОРОТ НА 270 ГРАДУСОВ</value>
-  </data>
-  <data name="Rotate90" xml:space="preserve">
-    <value>ПОВОРОТ НА 90 ГРАДУСОВ</value>
-  </data>
-  <data name="SEPERATOR" xml:space="preserve">
-    <value>ИСПОЛЬЗУЙТЕ СЕПЕРАТОР</value>
-  </data>
-  <data name="SPLIT" xml:space="preserve">
-    <value>Разделенный</value>
-  </data>
-  <data name="SPLITTERTOOLTIP" xml:space="preserve">
-    <value>Дважды щелкните, чтобы восстановить, щелкните правой кнопкой мыши, чтобы развернуть</value>
-  </data>
-  <data name="SRCCOLOR" xml:space="preserve">
-    <value>ИСТОЧНИК ЦВЕТА</value>
-  </data>
-  <data name="SRCCOLORTIP" xml:space="preserve">
-    <value>Щелкните правой кнопкой мыши, чтобы выбрать исходный цвет.</value>
-  </data>
-  <data name="START" xml:space="preserve">
-    <value>НАЧИНАТЬ</value>
-  </data>
-  <data name="TAG" xml:space="preserve">
-    <value>ЯРЛЫК</value>
-  </data>
-  <data name="TASKSRUNNING" xml:space="preserve">
-    <value>Некоторые задачи выполняются. Подождите, пока они завершатся.</value>
-  </data>
-  <data name="TESSLANGSELECT" xml:space="preserve">
-    <value>Выберите язык Тессеракта</value>
-  </data>
-  <data name="THIRDPARTY" xml:space="preserve">
-    <value>СТОРОННИЕ БИБЛИОТЕКИ, ИСПОЛЬЗУЕМЫЕ В ПРИЛОЖЕНИИ</value>
-  </data>
-  <data name="THRESHOLD" xml:space="preserve">
-    <value>ПОРОГ</value>
-  </data>
-  <data name="TRANSLATEPENDING" xml:space="preserve">
-    <value>Процесс продолжается.</value>
-  </data>
-  <data name="UPDATE" xml:space="preserve">
-    <value>ОБНОВЛЯТЬ</value>
-  </data>
-  <data name="WATERMARK" xml:space="preserve">
-    <value>ВОДЯНОЙ ЗНАК</value>
-  </data>
-  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
-    <value>Непосредственная перезапись сжатого файла в отсканированных документах</value>
-  </data>
   <data name="STOP" xml:space="preserve">
     <value>Останавливаться</value>
   </data>
@@ -573,14 +411,11 @@
   <data name="FOLDERFORMAT" xml:space="preserve">
     <value>Рекомендуется выбрать соответствующий формат индекса папки вашего старого браузерного приложения.</value>
   </data>
-  <data name="CHEIGHT" xml:space="preserve">
-    <value>ПОЛЬЗОВАТЕЛЬСКАЯ ВЫСОТА</value>
-  </data>
   <data name="CWIDTH" xml:space="preserve">
     <value>ПОЛЬЗОВАТЕЛЬСКАЯ ШИРИНА</value>
   </data>
-  <data name="CYANCONTROL" xml:space="preserve">
-    <value>Любой элемент управления голубого цвета работает по-разному с одной или несколькими клавишами Alt Shift Ctrl.</value>
+  <data name="CHEIGHT" xml:space="preserve">
+    <value>ПОЛЬЗОВАТЕЛЬСКАЯ ВЫСОТА</value>
   </data>
   <data name="AUTOFOLDERHELP" xml:space="preserve">
     <value>Укажите папку автосохранения.</value>
@@ -675,11 +510,11 @@
   <data name="OCRALL" xml:space="preserve">
     <value>Окр всех страниц PDF</value>
   </data>
-  <data name="INVALIDFILENAME" xml:space="preserve">
-    <value>Имя файла неверно</value>
-  </data>
   <data name="FOLDERACCESS" xml:space="preserve">
     <value>Доступ к папке запрещен.</value>
+  </data>
+  <data name="INVALIDFILENAME" xml:space="preserve">
+    <value>Имя файла неверно</value>
   </data>
   <data name="BACKUPDB" xml:space="preserve">
     <value>РЕЗЕРВНОЕ КОПИРОВАНИЕ ФАЙЛА БАЗЫ ДАННЫХ</value>
@@ -782,5 +617,182 @@
   </data>
   <data name="PDFINTERNALDESC" xml:space="preserve">
     <value>Если это помечено, тексты PDF используются в качестве OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>ВИДЕО</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>КАРТИНА</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>АРХИВ</value>
+  </data>
+  <data name="ADDDOC" xml:space="preserve">
+    <value>ДОБАВИТЬ ДОКУМЕНТ</value>
+  </data>
+  <data name="ADDOCRTODB" xml:space="preserve">
+    <value>ДОБАВИТЬ OCR В БАЗУ ДАННЫХ</value>
+  </data>
+  <data name="ADDOCRTOOLTIP" xml:space="preserve">
+    <value>Если этот флажок установлен, документ, отмеченный ниже, сохраняется в базе данных как текст активного документа слева.</value>
+  </data>
+  <data name="APPDESC" xml:space="preserve">
+    <value>Это приложение было разработано для облегчения сканирования и отслеживания документов.</value>
+  </data>
+  <data name="APPLY" xml:space="preserve">
+    <value>ПРИМЕНЯТЬ</value>
+  </data>
+  <data name="APPLYCOLOR" xml:space="preserve">
+    <value>ИЗМЕНИТЬ ЦВЕТ</value>
+  </data>
+  <data name="Auto" xml:space="preserve">
+    <value>АВТОМАТИЧЕСКИЙ</value>
+  </data>
+  <data name="AutoPicture" xml:space="preserve">
+    <value>АВТОМАТИЧЕСКОЕ ИЗОБРАЖЕНИЕ</value>
+  </data>
+  <data name="AutoText" xml:space="preserve">
+    <value>АВТОМАТИЧЕСКИЙ ТЕКСТ</value>
+  </data>
+  <data name="BATCH" xml:space="preserve">
+    <value>ПАРТИЯ</value>
+  </data>
+  <data name="BATCHDESC" xml:space="preserve">
+    <value>Когда файлы изображений добавляются в папку, указанную ниже, происходит автоматическое преобразование в файлы PDF в той же папке, пока программа открыта.</value>
+  </data>
+  <data name="CAMERA" xml:space="preserve">
+    <value>КАМЕРА</value>
+  </data>
+  <data name="COLORCHANGETIP" xml:space="preserve">
+    <value>Если вы нажмете эту кнопку после установки порогового значения, вы сможете выбрать второй цвет.</value>
+  </data>
+  <data name="COMPRESS" xml:space="preserve">
+    <value>КОМПРЕСС</value>
+  </data>
+  <data name="Default" xml:space="preserve">
+    <value>ПО УМОЛЧАНИЮ</value>
+  </data>
+  <data name="DSTCOLOR" xml:space="preserve">
+    <value>ЦВЕТ НАЗНАЧЕНИЯ</value>
+  </data>
+  <data name="EMPTYPAGE" xml:space="preserve">
+    <value>ПРОПУСТИТЬ ПУСТУЮ СТРАНИЦУ</value>
+  </data>
+  <data name="EYPOPEN" xml:space="preserve">
+    <value>Откройте файлы Eyp напрямую.</value>
+  </data>
+  <data name="FLATBED" xml:space="preserve">
+    <value>ПЛАТФОРТОВЫЙ</value>
+  </data>
+  <data name="JPEGQUALITY" xml:space="preserve">
+    <value>JPEG-КАЧЕСТВО</value>
+  </data>
+  <data name="Left" xml:space="preserve">
+    <value>ЛЕВЫЙ</value>
+  </data>
+  <data name="LIMITED" xml:space="preserve">
+    <value>Этот формат файла имеет ограниченную поддержку.</value>
+  </data>
+  <data name="LOAD" xml:space="preserve">
+    <value>НАГРУЗКА</value>
+  </data>
+  <data name="NOPATCHCODE" xml:space="preserve">
+    <value>Код исправления не обнаружен</value>
+  </data>
+  <data name="NOPROFILE" xml:space="preserve">
+    <value>ПРОФИЛЬ НЕ ВЫБРАН</value>
+  </data>
+  <data name="OCRTIME" xml:space="preserve">
+    <value>Процесс распознавания PDF занимает дополнительное время.</value>
+  </data>
+  <data name="OTHERAPPS" xml:space="preserve">
+    <value>ДРУГИЕ МОИ ПРИЛОЖЕНИЯ</value>
+  </data>
+  <data name="OVERWRITECOMPRESSED" xml:space="preserve">
+    <value>Непосредственная перезапись сжатого файла в отсканированных документах</value>
+  </data>
+  <data name="PAGENUMBER" xml:space="preserve">
+    <value>НОМЕР СТРАНИЦЫ</value>
+  </data>
+  <data name="PDFOPEN" xml:space="preserve">
+    <value>Открытие PDF-файлов напрямую.</value>
+  </data>
+  <data name="PDFTRACK" xml:space="preserve">
+    <value>СМОТРЕТЬ ИЗМЕНЕНИЕ ПАПКИ PDF</value>
+  </data>
+  <data name="QRDETECT" xml:space="preserve">
+    <value>ОБНАРУЖИТЬ QR-код</value>
+  </data>
+  <data name="REMOVEPROCESSEDIMAGE" xml:space="preserve">
+    <value>Удалить обработанные файлы из списка документов</value>
+  </data>
+  <data name="REMOVESELECTED" xml:space="preserve">
+    <value>Хотите удалить выбранное изображение?</value>
+  </data>
+  <data name="REPLACEPAGE" xml:space="preserve">
+    <value>Заменить страницы</value>
+  </data>
+  <data name="RESTARTAPP" xml:space="preserve">
+    <value>ПЕРЕЗАПУСТИТЬ ПРИЛОЖЕНИЕ</value>
+  </data>
+  <data name="Right" xml:space="preserve">
+    <value>ВЕРНО</value>
+  </data>
+  <data name="Rotate180" xml:space="preserve">
+    <value>ПОВОРОТ НА 180 ГРАДУСОВ</value>
+  </data>
+  <data name="Rotate270" xml:space="preserve">
+    <value>ПОВОРОТ НА 270 ГРАДУСОВ</value>
+  </data>
+  <data name="Rotate90" xml:space="preserve">
+    <value>ПОВОРОТ НА 90 ГРАДУСОВ</value>
+  </data>
+  <data name="SEPERATOR" xml:space="preserve">
+    <value>ИСПОЛЬЗУЙТЕ СЕПЕРАТОР</value>
+  </data>
+  <data name="SPLIT" xml:space="preserve">
+    <value>Разделенный</value>
+  </data>
+  <data name="SPLITTERTOOLTIP" xml:space="preserve">
+    <value>Дважды щелкните, чтобы восстановить, щелкните правой кнопкой мыши, чтобы развернуть</value>
+  </data>
+  <data name="SRCCOLOR" xml:space="preserve">
+    <value>ИСТОЧНИК ЦВЕТА</value>
+  </data>
+  <data name="SRCCOLORTIP" xml:space="preserve">
+    <value>Щелкните правой кнопкой мыши, чтобы выбрать исходный цвет.</value>
+  </data>
+  <data name="START" xml:space="preserve">
+    <value>НАЧИНАТЬ</value>
+  </data>
+  <data name="TAG" xml:space="preserve">
+    <value>ЯРЛЫК</value>
+  </data>
+  <data name="TASKSRUNNING" xml:space="preserve">
+    <value>Некоторые задачи выполняются. Подождите, пока они завершатся.</value>
+  </data>
+  <data name="TESSLANGSELECT" xml:space="preserve">
+    <value>Выберите язык Тессеракта</value>
+  </data>
+  <data name="THIRDPARTY" xml:space="preserve">
+    <value>СТОРОННИЕ БИБЛИОТЕКИ, ИСПОЛЬЗУЕМЫЕ В ПРИЛОЖЕНИИ</value>
+  </data>
+  <data name="THRESHOLD" xml:space="preserve">
+    <value>ПОРОГ</value>
+  </data>
+  <data name="TRANSLATEPENDING" xml:space="preserve">
+    <value>Процесс продолжается.</value>
+  </data>
+  <data name="UPDATE" xml:space="preserve">
+    <value>ОБНОВЛЯТЬ</value>
+  </data>
+  <data name="WATERMARK" xml:space="preserve">
+    <value>ВОДЯНОЙ ЗНАК</value>
+  </data>
+  <data name="CYANCONTROL" xml:space="preserve">
+    <value>Любой элемент управления голубого цвета работает по-разному с одной или несколькими клавишами Alt Shift Ctrl.</value>
+  </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Некоторые расширения файлов не были выбраны</value>
   </data>
 </root>

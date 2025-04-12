@@ -617,6 +617,30 @@ Götermek</value>
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>Açylyş ekranyny görkeziň</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>Kompýuter</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Brauzerden has köp</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Tepter Çykyş we skript kesgitleme faýly awtoulag aýlanmagy üçin göçürilmeli</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF tekst bäsleşigini ulanyň</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Bu bellenen bolsa, pdf tekstleri OCR hökmünde ulanylýar.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>Wideo</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>Surat</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Arhiw</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>Faýla
 Resminama goşuň</value>
@@ -783,19 +807,7 @@ Resminama goşuň</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Islendik aýna reňkli dolandyryş aşaky smena düwmeleriniň bir ýa-da köpüsi bilen başgaça işleýär!</value>
   </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>Kompýuter</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Brauzerden has köp</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Tepter Çykyş we skript kesgitleme faýly awtoulag aýlanmagy üçin göçürilmeli</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>PDF tekst bäsleşigini ulanyň</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Bu bellenen bolsa, pdf tekstleri OCR hökmünde ulanylýar.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Käbir faýl giňeltmeleri saýlanmady</value>
   </data>
 </root>

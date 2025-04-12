@@ -630,6 +630,18 @@ KALDIR</value>
   <data name="PDFINTERNALDESC" xml:space="preserve">
     <value>Bu İşaretlenirse Ocr Yapılmadan Pdf Metinleri Ocr Olarak Kullanılır</value>
   </data>
+  <data name="VID" xml:space="preserve">
+    <value>VİDEO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>RESİM</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>ARŞİV</value>
+  </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>BAZI DOSYA UZANTILARI SEÇİLMEDİ</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>DOSYAYA
 BELGE EKLE</value>

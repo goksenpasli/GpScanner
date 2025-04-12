@@ -612,6 +612,30 @@ PDF</value>
   <data name="SHOWSPLASH" xml:space="preserve">
     <value>스플래시 화면 표시</value>
   </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>컴퓨터</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>브라우저 이상</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>자동 회전 작업을 위해 TesserAct 방향 및 스크립트 감지 파일을 다운로드해야합니다.</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>PDF 텍스트 콘테스트를 사용하십시오</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>이것이 표시되면 PDF 텍스트는 OCR로 사용됩니다.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>동영상</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>그림</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value />
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>문서를 추가하십시오
 파일로</value>
@@ -778,19 +802,7 @@ PDF</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>시안 색상 제어는 하나 이상의 Alt Shift Ctrl 키와 다르게 작동합니다.</value>
   </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>컴퓨터</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>브라우저 이상</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>자동 회전 작업을 위해 TesserAct 방향 및 스크립트 감지 파일을 다운로드해야합니다.</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>PDF 텍스트 콘테스트를 사용하십시오</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>이것이 표시되면 PDF 텍스트는 OCR로 사용됩니다.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>일부 파일 확장은 선택되지 않았습니다</value>
   </data>
 </root>

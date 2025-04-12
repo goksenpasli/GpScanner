@@ -244,10 +244,11 @@
                                         <RowDefinition Height="39.2" />
                                         <RowDefinition Height="36" />
                                     </Grid.RowDefinitions>
-                                    <Extensions:ButtonedTextBox VerticalContentAlignment="Center"
-                                        FontSize="18"
+                                    <Extensions:ButtonedTextBox VerticalContentAlignment="Top"
+                                        AcceptsReturn="True"
                                         OpenButtonVisibility="Collapsed"
                                         Text="{Binding StartupMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                        TextWrapping="Wrap"
                                         Watermark="{twainctrl:Loc STARTUPMSG}" />
                                     <ScrollViewer Grid.Row="1"
                                         HorizontalScrollBarVisibility="Auto"
@@ -742,11 +743,6 @@
                                                 </Image>
                                             </Canvas>
                                         </ToggleButton>
-                                        <Extensions:ContentToggleButton IsEnabled="{Binding Path=SearchInArchiveFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <Extensions:ContentToggleButton.OverContent>
-                                                <Extensions:CheckComboBox Items="{Binding SearchArchiveTypes}" Watermark="{twainctrl:Loc FILE}" />
-                                            </Extensions:ContentToggleButton.OverContent>
-                                        </Extensions:ContentToggleButton>
                                         <Extensions:NumericUpDown FontWeight="Bold"
                                             Interval="1"
                                             IsEnabled="{Binding Path=SearchInArchiveFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"

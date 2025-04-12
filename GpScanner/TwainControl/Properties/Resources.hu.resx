@@ -543,6 +543,93 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Vágólapra másolva</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Ez a folyamat sokáig tarthat.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>HIBA</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>MINDEN OLDALOT EGY KÜLÖN FÁJLBA SZKENNELJEN BE</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SIKER</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>EREDETI</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>A PDF JPG -ként működik. Ez csökkenti a memória betöltését, de a JPG fájlokat a Windowsun ideiglenes könyvtárban rögzítik, mivel csökken a lemezméret. Jobb, ha csak akkor használja, ha a memória túl sok (1000) oldalt tartalmazó fájlokat tölt be.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>PASZTA</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>A SystemTray ikon megjelenítése</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>FAJTA</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Adja hozzá az elejét</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Hozzáadás a végéhez</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Az OCR eredmény helyett használja a PDF tartalom szövegét. Nem ajánlott a THİS funkció engedélyezése.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Távolítsa el a mappákat az index műveletek befejezése után a betöltési teljesítmény elérése érdekében</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Számos fájl van</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>NAGY</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>LEGNAGYOBB</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>KÖZÉPSŐ</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>KICSI</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Legkisebb</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>FUSS</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>A Splash képernyő megjelenítése</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>SZÁMÍTÓGÉP</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Több, mint böngésző</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>A Tesseract orientáció és a szkriptdetektálási fájlt le kell tölteni a munka automatikus rotációjára</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Használja a PDF szövegversenyt</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Ha ezt megjelölik, a PDF szövegeket OCR -ként használják.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDEÓ</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>KÉP</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>Archívum</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>DOKUMENTUM HOZZÁADÁSA</value>
   </data>
@@ -708,82 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Bármely cián színű vezérlő másként működik az Alt Shift Ctrl billentyűk közül egy vagy több használatával</value>
   </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Ez a folyamat sokáig tarthat.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>HIBA</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>MINDEN OLDALOT EGY KÜLÖN FÁJLBA SZKENNELJEN BE</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>SIKER</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>EREDETI</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>A PDF JPG -ként működik. Ez csökkenti a memória betöltését, de a JPG fájlokat a Windowsun ideiglenes könyvtárban rögzítik, mivel csökken a lemezméret. Jobb, ha csak akkor használja, ha a memória túl sok (1000) oldalt tartalmazó fájlokat tölt be.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>PASZTA</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>A SystemTray ikon megjelenítése</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>FAJTA</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Adja hozzá az elejét</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Hozzáadás a végéhez</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Az OCR eredmény helyett használja a PDF tartalom szövegét. Nem ajánlott a THİS funkció engedélyezése.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Távolítsa el a mappákat az index műveletek befejezése után a betöltési teljesítmény elérése érdekében</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Számos fájl van</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>NAGY</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>LEGNAGYOBB</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>KÖZÉPSŐ</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>KICSI</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Legkisebb</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>FUSS</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>A Splash képernyő megjelenítése</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>SZÁMÍTÓGÉP</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Több, mint böngésző</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>A Tesseract orientáció és a szkriptdetektálási fájlt le kell tölteni a munka automatikus rotációjára</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Használja a PDF szövegversenyt</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Ha ezt megjelölik, a PDF szövegeket OCR -ként használják.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Néhány fájlbővítést nem választottak ki</value>
   </data>
 </root>

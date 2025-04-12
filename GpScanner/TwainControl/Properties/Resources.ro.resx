@@ -543,6 +543,93 @@
   <data name="COPYCLIPBOARD" xml:space="preserve">
     <value>Copiat în Clipboard</value>
   </data>
+  <data name="LONGTIMEJOB" xml:space="preserve">
+    <value>Acest proces poate dura mult timp.</value>
+  </data>
+  <data name="ERROR" xml:space="preserve">
+    <value>GREŞEALĂ</value>
+  </data>
+  <data name="SEPERATE" xml:space="preserve">
+    <value>SCANAȚI FIECARE PAGINĂ LA UN FIȘIER SEPARAT</value>
+  </data>
+  <data name="SUCCESS" xml:space="preserve">
+    <value>SUCCES</value>
+  </data>
+  <data name="ORİGİNAL" xml:space="preserve">
+    <value>ORIGINAL</value>
+  </data>
+  <data name="PDFTOJPEGDESC" xml:space="preserve">
+    <value>PDF funcționează ca JPG. Acest lucru reduce încărcarea în memorie, dar fișierele JPG sunt înregistrate în directorul temporar Windowsun, deoarece există o scădere a dimensiunii discului. Este mai bine să folosiți numai dacă memoria este completată în fișiere care conțin prea multe (1000) pagini.</value>
+  </data>
+  <data name="PASTE" xml:space="preserve">
+    <value>PASTĂ</value>
+  </data>
+  <data name="SHOWTRAYICON" xml:space="preserve">
+    <value>Afișați pictograma SystemTray</value>
+  </data>
+  <data name="SORT" xml:space="preserve">
+    <value>FEL</value>
+  </data>
+  <data name="ADDFIRST" xml:space="preserve">
+    <value>Adăugați la început</value>
+  </data>
+  <data name="ADDLAST" xml:space="preserve">
+    <value>Adăugați la sfârșit</value>
+  </data>
+  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
+    <value>Utilizați textul de conținut PDF în loc de rezultatul OCR. Nu este recomandat să activați funcția THiS.</value>
+  </data>
+  <data name="INDEXWARN" xml:space="preserve">
+    <value>Eliminați folderele după operațiunile de index finalizate pentru a obține performanță de încărcare</value>
+  </data>
+  <data name="WARNUNINDEXFILES" xml:space="preserve">
+    <value>Există numeroase fișiere</value>
+  </data>
+  <data name="BIG" xml:space="preserve">
+    <value>MARE</value>
+  </data>
+  <data name="BIGGEST" xml:space="preserve">
+    <value>Cel mai mare</value>
+  </data>
+  <data name="MIDDLE" xml:space="preserve">
+    <value>MIJLOC</value>
+  </data>
+  <data name="SMALL" xml:space="preserve">
+    <value>MIC</value>
+  </data>
+  <data name="SMALLEST" xml:space="preserve">
+    <value>Cel mai mic</value>
+  </data>
+  <data name="RUN" xml:space="preserve">
+    <value>ALERGA</value>
+  </data>
+  <data name="SHOWSPLASH" xml:space="preserve">
+    <value>Afișați ecranul Splash</value>
+  </data>
+  <data name="COMPUTER" xml:space="preserve">
+    <value>CALCULATOR</value>
+  </data>
+  <data name="SPLASHTEXT" xml:space="preserve">
+    <value>Mai mult decât un browser</value>
+  </data>
+  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
+    <value>Fișierul de orientare a tesseractului și detectarea scriptului trebuie descărcat pentru a funcționa automat</value>
+  </data>
+  <data name="PDFINTERNAL" xml:space="preserve">
+    <value>Folosiți concurs de text PDF</value>
+  </data>
+  <data name="PDFINTERNALDESC" xml:space="preserve">
+    <value>Dacă acest lucru este marcat, textele PDF sunt utilizate ca OCR.</value>
+  </data>
+  <data name="VID" xml:space="preserve">
+    <value>VIDEO</value>
+  </data>
+  <data name="IMG" xml:space="preserve">
+    <value>IMAGINE</value>
+  </data>
+  <data name="ARCHIVE" xml:space="preserve">
+    <value>ARHIVĂ</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>ADAUGĂ DOCUMENT</value>
   </data>
@@ -708,82 +795,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Orice control de culoare cian funcționează diferit cu una sau mai multe taste Alt Shift Ctrl</value>
   </data>
-  <data name="LONGTIMEJOB" xml:space="preserve">
-    <value>Acest proces poate dura mult timp.</value>
-  </data>
-  <data name="ERROR" xml:space="preserve">
-    <value>GREŞEALĂ</value>
-  </data>
-  <data name="SEPERATE" xml:space="preserve">
-    <value>SCANAȚI FIECARE PAGINĂ LA UN FIȘIER SEPARAT</value>
-  </data>
-  <data name="SUCCESS" xml:space="preserve">
-    <value>SUCCES</value>
-  </data>
-  <data name="ORİGİNAL" xml:space="preserve">
-    <value>ORIGINAL</value>
-  </data>
-  <data name="PDFTOJPEGDESC" xml:space="preserve">
-    <value>PDF funcționează ca JPG. Acest lucru reduce încărcarea în memorie, dar fișierele JPG sunt înregistrate în directorul temporar Windowsun, deoarece există o scădere a dimensiunii discului. Este mai bine să folosiți numai dacă memoria este completată în fișiere care conțin prea multe (1000) pagini.</value>
-  </data>
-  <data name="PASTE" xml:space="preserve">
-    <value>PASTĂ</value>
-  </data>
-  <data name="SHOWTRAYICON" xml:space="preserve">
-    <value>Afișați pictograma SystemTray</value>
-  </data>
-  <data name="SORT" xml:space="preserve">
-    <value>FEL</value>
-  </data>
-  <data name="ADDFIRST" xml:space="preserve">
-    <value>Adăugați la început</value>
-  </data>
-  <data name="ADDLAST" xml:space="preserve">
-    <value>Adăugați la sfârșit</value>
-  </data>
-  <data name="OCRUSEINTERNALPDFCONTENT" xml:space="preserve">
-    <value>Utilizați textul de conținut PDF în loc de rezultatul OCR. Nu este recomandat să activați funcția THiS.</value>
-  </data>
-  <data name="INDEXWARN" xml:space="preserve">
-    <value>Eliminați folderele după operațiunile de index finalizate pentru a obține performanță de încărcare</value>
-  </data>
-  <data name="WARNUNINDEXFILES" xml:space="preserve">
-    <value>Există numeroase fișiere</value>
-  </data>
-  <data name="BIG" xml:space="preserve">
-    <value>MARE</value>
-  </data>
-  <data name="BIGGEST" xml:space="preserve">
-    <value>Cel mai mare</value>
-  </data>
-  <data name="MIDDLE" xml:space="preserve">
-    <value>MIJLOC</value>
-  </data>
-  <data name="SMALL" xml:space="preserve">
-    <value>MIC</value>
-  </data>
-  <data name="SMALLEST" xml:space="preserve">
-    <value>Cel mai mic</value>
-  </data>
-  <data name="RUN" xml:space="preserve">
-    <value>ALERGA</value>
-  </data>
-  <data name="SHOWSPLASH" xml:space="preserve">
-    <value>Afișați ecranul Splash</value>
-  </data>
-  <data name="COMPUTER" xml:space="preserve">
-    <value>CALCULATOR</value>
-  </data>
-  <data name="SPLASHTEXT" xml:space="preserve">
-    <value>Mai mult decât un browser</value>
-  </data>
-  <data name="TESSERACTORIENTATIONFILEWARNING" xml:space="preserve">
-    <value>Fișierul de orientare a tesseractului și detectarea scriptului trebuie descărcat pentru a funcționa automat</value>
-  </data>
-  <data name="PDFINTERNAL" xml:space="preserve">
-    <value>Folosiți concurs de text PDF</value>
-  </data>
-  <data name="PDFINTERNALDESC" xml:space="preserve">
-    <value>Dacă acest lucru este marcat, textele PDF sunt utilizate ca OCR.</value>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Unele extensii de fișiere nu au fost selectate</value>
   </data>
 </root>
