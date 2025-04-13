@@ -74,13 +74,14 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private Size selectedSize;
     private CancellationTokenSource zipfilecancellationToken;
 
-    public GpScannerViewModel(IWindowService windowService, TwainCtrl twainCtrl)
+    public GpScannerViewModel(IWindowService windowService, IScannerService scannerService, ITwainService twainService)
     {
         WindowService = windowService;
-        TwainCtrl = twainCtrl;
+        TwainCtrl = twainService.TwainCtrl;
+        ScannerService = scannerService;
         CreateEmptySqliteDatabase();
         RegisterSimplePdfFileWatcher();
-        TesseractViewModel = new TesseractViewModel(windowService, twainCtrl);
+        TesseractViewModel = new TesseractViewModel(windowService, twainService);
         TranslateViewModel = new TranslateViewModel();
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
@@ -152,7 +153,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
                 zipfilecancellationToken = new CancellationTokenSource();
                 List<string> filelist = [.. Dosyalar.Where(z => z.Seçili).Select(z => z.FileName)];
-                await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = progress), zipfilecancellationToken, UseLzma);
+                ScannerService.GetScanner().ProgressState = TaskbarItemProgressState.Normal;
+                await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = ScannerService.GetScanner().PdfSaveProgressValue = progress), zipfilecancellationToken, UseLzma);
             },
             parameter => Dosyalar?.Count(z => z.Seçili) > 0);
 
@@ -1188,7 +1190,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     List<string> zippedfiles = [.. data.Where(z => z.Count > 0).SelectMany(z => ((ExtendedContributionData)z).Name)];
-                    await SimpleArchiveViewer.ZipCompress(zippedfiles, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = progress), zipfilecancellationToken);
+                    ScannerService.GetScanner().ProgressState = TaskbarItemProgressState.Normal;
+                    await SimpleArchiveViewer.ZipCompress(zippedfiles, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = ScannerService.GetScanner().PdfSaveProgressValue = progress), zipfilecancellationToken);
                 }
             },
             parameter => parameter is IGrouping<int, ContributionData> data && data.Count(z => z.Count > 0) > 0);
@@ -2334,6 +2337,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public ScannerData ScannerData { get; set; }
 
+    public IScannerService ScannerService { get; }
+
     public bool SearchDocumentFilterDialogIsOpen
     {
         get;
@@ -3446,7 +3451,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         files = [.. FastFileSearch.EnumerateFilepaths(BatchFolder).Where(file => BatchImageFileExtensions.Any(z => z.Checked && z.Name == Path.GetExtension(file).ToLowerInvariant()))];
         slicecount = files.Count > Settings.Default.ProcessorCount ? files.Count / Settings.Default.ProcessorCount : 1;
-        scanner = ToolBox.Scanner;
+        scanner = ScannerService.GetScanner();
         scanner.ProgressState = TaskbarItemProgressState.Normal;
         BatchTxtOcrs = [];
         Tasks = [];

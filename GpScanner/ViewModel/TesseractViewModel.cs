@@ -21,7 +21,7 @@ namespace GpScanner.ViewModel;
 public class TesseractViewModel : InpcBase, IDataErrorInfo
 
 {
-    public TesseractViewModel(IWindowService windowService, TwainCtrl twainCtrl)
+    public TesseractViewModel(IWindowService windowService, ITwainService twainService)
     {
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
         Tessdatafolder = $@"{Path.GetDirectoryName(Process.GetCurrentProcess()?.MainModule?.FileName)}\tessdata";
@@ -31,7 +31,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
         ShowHelpDesc = TesseractFiles?.Count == 0;
         PropertyChanged += TesseractViewModel_PropertyChanged;
         WindowService = windowService;
-        TwainCtrl = twainCtrl;
+        TwainCtrl = twainService.TwainCtrl;
         TesseractDataFilesDownloadLink = new RelayCommand<object>(
             parameter =>
             {

@@ -35,8 +35,10 @@ public partial class MainWindow : Window
         InitializeComponent();
         cvs = TryFindResource("Veriler") as CollectionViewSource;
         IWindowService windowService = new WindowService();
-        TwainCtrl = twainCtrl;
-        DataContext = new GpScannerViewModel(windowService, TwainCtrl);
+        IScannerService scannerService = new ScannerService();
+        ITwainService twainService = new TwainService(twainCtrl);
+        TwainCtrl = twainService.TwainCtrl;
+        DataContext = new GpScannerViewModel(windowService, scannerService, twainService);
         TwainCtrl.PropertyChanged += TwainCtrl_PropertyChangedAsync;
         TwainCtrl.Scanner.PropertyChanged += Scanner_PropertyChanged;
     }

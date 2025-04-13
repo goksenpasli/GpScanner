@@ -189,7 +189,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                                 Encrypted = item.IsEncrypted
                             };
                             archiveData.PropertyChanged += ArchiveData_PropertyChanged;
-                            CheckBoxItem checkBoxItem = new() { Name = archiveData.DosyaTipi };
+                            CheckBoxItem checkBoxItem = new() { Content = archiveData.DosyaAdı, Name = archiveData.DosyaTipi };
                             checkBoxItem.PropertyChanged += CheckBoxItem_PropertyChanged;
                             toplamSıkıştırılmışBoyut += item.PackedSize;
                             toplamBoyut += item.Size;

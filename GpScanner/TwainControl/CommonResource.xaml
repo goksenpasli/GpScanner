@@ -235,6 +235,7 @@
                             DisplayMemberBinding="{Binding DosyaTipi, Mode=OneWay}">
                             <GridViewColumn.Header>
                                 <Extensions:CheckComboBox Width="32"
+                                    ItemTemplate="{DynamicResource SimpleArchiveViewerFilterItemTemplate}"
                                     Items="{Binding ArchiveFileTypes, RelativeSource={RelativeSource AncestorType=Extensions:ArchiveViewer}}"
                                     Watermark="TİP" />
                             </GridViewColumn.Header>
@@ -910,6 +911,19 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <DataTemplate x:Key="SimpleArchiveViewerFilterItemTemplate">
+        <CheckBox VerticalAlignment="Center"
+            VerticalContentAlignment="Center"
+            IsChecked="{Binding IsChecked, Mode=TwoWay}">
+            <StackPanel Orientation="Horizontal">
+                <Image Width="16"
+                    Height="16"
+                    VerticalAlignment="Center"
+                    Source="{Binding Content, Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay}" />
+            </StackPanel>
+        </CheckBox>
+    </DataTemplate>
     <DataTemplate x:Key="EmptyTemplate">
         <StackPanel>
             <TextBlock Width="210"

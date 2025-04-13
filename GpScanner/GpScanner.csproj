@@ -172,6 +172,7 @@
     <Compile Include="FtpUserControl.xaml.cs">
       <DependentUpon>FtpUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\ITwainService.cs" />
     <Compile Include="MiniDocumentView.xaml.cs">
       <DependentUpon>MiniDocumentView.xaml</DependentUpon>
     </Compile>
@@ -204,6 +205,7 @@
     <Compile Include="TranslateView.xaml.cs">
       <DependentUpon>TranslateView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\TwainService.cs" />
     <Compile Include="UnindexedFilesDialogView.xaml.cs">
       <DependentUpon>UnindexedFilesDialogView.xaml</DependentUpon>
     </Compile>

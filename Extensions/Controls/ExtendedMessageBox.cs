@@ -19,6 +19,8 @@ namespace Extensions
         Wait = 3,
     }
 
+    [TemplatePart(Name = "Yes", Type = typeof(Button))]
+    [TemplatePart(Name = "No", Type = typeof(Button))]
     public class ExtendedMessageBox : Control
     {
         public static readonly DependencyProperty CheckDescriptionProperty = DependencyProperty.Register("CheckDescription", typeof(string), typeof(ExtendedMessageBox), new PropertyMetadata(string.Empty));
@@ -111,12 +113,12 @@ namespace Extensions
             _noButton = GetTemplateChild("No") as Button;
             if (_yesButton is not null)
             {
-                _yesButton.Click += (s, e) => OnYesButtonClick();
+                _yesButton.Click += YesButton_Click;
                 _ = _yesButton.Focus();
             }
             if (_noButton is not null)
             {
-                _noButton.Click += (s, e) => OnNoButtonClick();
+                _noButton.Click += NoButton_Click;
             }
             MouseDown += OnMouseDown;
             MouseMove += OnMouseMove;
@@ -210,6 +212,29 @@ namespace Extensions
                 blockrectangle = null;
             }
             _overlayGrid.Children.Remove(this);
+            DetachHandlers();
+        }
+
+        private void DetachHandlers()
+        {
+            MouseDown -= OnMouseDown;
+            MouseMove -= OnMouseMove;
+            MouseUp -= OnMouseUp;
+            if (_yesButton != null)
+            {
+                _yesButton.Click -= YesButton_Click;
+            }
+
+            if (_noButton != null)
+            {
+                _noButton.Click -= NoButton_Click;
+            }
+        }
+
+        private void NoButton_Click(object sender, RoutedEventArgs e)
+        {
+            OnNoAction?.Invoke();
+            CloseDialog();
         }
 
         private void OnMouseDown(object sender, MouseButtonEventArgs e)
@@ -247,18 +272,6 @@ namespace Extensions
             }
         }
 
-        private void OnNoButtonClick()
-        {
-            OnNoAction?.Invoke();
-            CloseDialog();
-        }
-
-        private void OnYesButtonClick()
-        {
-            OnYesAction?.Invoke();
-            CloseDialog();
-        }
-
         [DebuggerStepThrough]
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
@@ -274,6 +287,12 @@ namespace Extensions
                 }
             }
             return IntPtr.Zero;
+        }
+
+        private void YesButton_Click(object sender, RoutedEventArgs e)
+        {
+            OnYesAction?.Invoke();
+            CloseDialog();
         }
     }
 }

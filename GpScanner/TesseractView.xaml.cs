@@ -18,7 +18,8 @@ public partial class TesseractView : UserControl
         IWindowService windowService = new WindowService();
         if (windowService?.GetFirstWindow() is MainWindow mainWindow)
         {
-            DataContext = new TesseractViewModel(windowService, mainWindow?.TwainCtrl);
+            ITwainService twainService = new TwainService(mainWindow?.TwainCtrl);
+            DataContext = new TesseractViewModel(windowService, twainService);
         }
     }
 }
