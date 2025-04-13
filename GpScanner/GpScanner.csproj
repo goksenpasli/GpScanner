@@ -145,6 +145,7 @@
     <Compile Include="BatchDialogView.xaml.cs">
       <DependentUpon>BatchDialogView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converter\FileExtToWebInfoConverter.cs" />
     <Compile Include="Converter\IntToMonthConverter.cs" />
     <Compile Include="Converter\TesseractDataFilesContentLengthConverter.cs" />
     <Compile Include="Converter\ContributionDataToGraphConverter.cs" />

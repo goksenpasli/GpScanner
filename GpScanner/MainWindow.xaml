@@ -91,6 +91,7 @@
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
         <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
+        <Converter:FileExtToWebInfoConverter x:Key="FileExtToWebInfoConverter" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxSizeToColorConverter"
             MaxNumber="425"
             MinNumber="190"
@@ -980,7 +981,16 @@
                                                                                 Height="16"
                                                                                 VerticalAlignment="Center"
                                                                                 Source="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                                                <TextBlock.ToolTip>
+                                                                                    <ToolTip>
+                                                                                        <TextBlock Width="200"
+                                                                                            Tag="{Binding Name, Mode=OneWay, IsAsync=True, Converter={StaticResource FileExtToWebInfoConverter}}"
+                                                                                            Text="{Binding Mode=OneWay, FallbackValue='...', IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                                                                                            TextWrapping="Wrap" />
+                                                                                    </ToolTip>
+                                                                                </TextBlock.ToolTip>
+                                                                            </TextBlock>
                                                                         </StackPanel>
                                                                     </CheckBox>
                                                                     <ToggleButton VerticalAlignment="Center"
