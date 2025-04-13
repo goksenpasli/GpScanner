@@ -345,61 +345,72 @@ namespace Extensions
             }
         }
 
-        protected virtual async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string ArchiveFilePath)
+        protected virtual async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string archiveFilePath)
         {
-            Arşivİçerik = [];
-            ArchiveFileTypes = [];
-            await Task.Run(
-                async () =>
-                {
-                    double toplamSıkıştırılmışBoyut = 0;
-                    double toplamBoyut = 0;
-                    try
+            ObservableCollection<ArchiveData> tempContent = [];
+            ObservableCollection<CheckBoxItem> FilterTypes = [];
+
+            double totalCompressed = 0;
+            double totalSize = 0;
+
+            try
+            {
+                using ZipArchive archive = ZipFile.OpenRead(archiveFilePath);
+                List<ZipArchiveEntry> entries = archive.Entries?.Where(e => e.Length > 0).ToList() ?? [];
+
+                TotalFilesCount = entries.Count;
+
+                await Task.Run(
+                    () =>
                     {
-                        using ZipArchive archive = ZipFile.Open(ArchiveFilePath, ZipArchiveMode.Read);
-                        if (archive is not null)
+                        for (int i = 0; i < entries.Count; i++)
                         {
-                            List<ZipArchiveEntry> list = archive.Entries?.Where(z => z.Length > 0).ToList() ?? [];
-                            TotalFilesCount = list.Count;
-                            for (int i = 0; i < list.Count; i++)
+                            ZipArchiveEntry entry = entries[i];
+
+                            string fileType = GetFileType(entry.Name, new SHFILEINFO());
+                            ArchiveData archiveData = new()
                             {
-                                ZipArchiveEntry item = list[i];
-                                ArchiveData archiveData = new()
-                                {
-                                    SıkıştırılmışBoyut = item.CompressedLength,
-                                    DosyaAdı = item.Name,
-                                    DosyaTipi = GetFileType(item.Name, new SHFILEINFO()),
-                                    TamYol = item.FullName,
-                                    Boyut = item.Length,
-                                    Oran = (float)item.CompressedLength / item.Length,
-                                    DüzenlenmeZamanı = item.LastWriteTime.Date,
-                                    Crc = null
-                                };
-                                archiveData.PropertyChanged += ArchiveData_PropertyChanged;
-                                CheckBoxItem checkBoxItem = new() { Name = archiveData.DosyaTipi };
-                                checkBoxItem.PropertyChanged += CheckBoxItem_PropertyChanged;
-                                toplamSıkıştırılmışBoyut += item.CompressedLength;
-                                toplamBoyut += item.Length;
-                                await Dispatcher.InvokeAsync(
-                                    () =>
-                                    {
-                                        Arşivİçerik.Add(archiveData);
-                                        ToplamOran = (i + 1) / (double)TotalFilesCount * 100;
-                                        if (!ArchiveFileTypes.Any(z => z.Name == checkBoxItem.Name))
-                                        {
-                                            ArchiveFileTypes.Add(checkBoxItem);
-                                        }
-                                    });
+                                SıkıştırılmışBoyut = entry.CompressedLength,
+                                DosyaAdı = entry.Name,
+                                TamYol = entry.FullName,
+                                Boyut = entry.Length,
+                                Oran = (float)entry.CompressedLength / entry.Length,
+                                DüzenlenmeZamanı = entry.LastWriteTime.Date,
+                                DosyaTipi = fileType,
+                                Crc = null
+                            };
+
+                            archiveData.PropertyChanged += ArchiveData_PropertyChanged;
+
+                            if (!FilterTypes.Any(t => t.Name == fileType))
+                            {
+                                CheckBoxItem checkboxitem = new() { Content = archiveData.DosyaAdı, Name = fileType};
+                                checkboxitem.PropertyChanged += CheckBoxItem_PropertyChanged;
+                                FilterTypes.Add(checkboxitem);
                             }
+
+                            tempContent.Add(archiveData);
+                            totalCompressed += entry.CompressedLength;
+                            totalSize += entry.Length;
                         }
-                    }
-                    catch (Exception ex)
+                    });
+
+                await Dispatcher.InvokeAsync(
+                    () =>
                     {
-                        throw new ArgumentException(ex?.Message);
-                    }
-                    ToplamOran = toplamSıkıştırılmışBoyut / toplamBoyut * 100;
-                });
-            cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
+                        Arşivİçerik = tempContent;
+                        tempContent = null;
+                        ArchiveFileTypes = FilterTypes;
+                        FilterTypes = null;
+                        ToplamOran = totalCompressed / totalSize * 100;
+                        cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
+                    });
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(ex?.Message);
+            }
+
             return Arşivİçerik;
         }
 

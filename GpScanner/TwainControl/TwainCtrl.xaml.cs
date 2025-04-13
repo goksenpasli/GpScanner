@@ -754,14 +754,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
                             for (int i = 0; i < seçiliresimler.Count; i++)
                             {
-                                byte[] imgdata = null;
-                                _ = await Dispatcher.InvokeAsync(() => imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg));
-                                ObservableCollection<OcrData> ocrdata = await imgdata.OcrAsync(Scanner.SelectedTtsLanguage);
                                 await Dispatcher.InvokeAsync(
-                                    () =>
+                                    async () =>
                                     {
+                                        byte[] imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg);
                                         DataBaseQrData = imgdata;
-                                        DataBaseTextData = ocrdata;
+                                        DataBaseTextData = await imgdata.OcrAsync(Scanner.SelectedTtsLanguage);
                                     });
                                 Scanner.PdfSaveProgressValue = (i + 1) / (double)seçiliresimler.Count;
                             }

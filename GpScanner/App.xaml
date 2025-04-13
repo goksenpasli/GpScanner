@@ -486,7 +486,9 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
-                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" />
+                <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+                    Template="{StaticResource DefaultArchiveViewerTemplate}" />
             </DataTemplate>
             <DataTemplate x:Key="DocumentViewerMonthPreviewZipViewerTemplate">
                 <Grid Width="150" Height="150">

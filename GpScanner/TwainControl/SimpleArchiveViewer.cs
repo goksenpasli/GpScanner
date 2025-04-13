@@ -13,7 +13,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
-using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 using static Extensions.ShellIcon;
 
@@ -21,6 +20,7 @@ namespace TwainControl;
 
 public class SimpleArchiveViewer : ArchiveViewer
 {
+    public static readonly DependencyProperty ShowThumbPanelProperty = DependencyProperty.Register("ShowThumbPanel", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty SimpleStyleProperty = DependencyProperty.Register("SimpleStyle", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
     private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps", ".jb2", ".cbr", ".cbz"];
 
@@ -81,6 +81,8 @@ public class SimpleArchiveViewer : ArchiveViewer
     }
 
     public new RelayCommand<object> SeçiliAyıkla { get; }
+
+    public bool ShowThumbPanel { get => (bool)GetValue(ShowThumbPanelProperty); set => SetValue(ShowThumbPanelProperty, value); }
 
     public bool SimpleStyle { get => (bool)GetValue(SimpleStyleProperty); set => SetValue(SimpleStyleProperty, value); }
 
@@ -154,67 +156,75 @@ public class SimpleArchiveViewer : ArchiveViewer
         }
     }
 
-    protected override async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string ArchiveFilePath)
+    protected override async Task<ObservableCollection<ArchiveData>> ReadArchiveContent(string archiveFilePath)
     {
         Arşivİçerik = [];
         ArchiveFileTypes = [];
-        await Task.Run(
+
+        return await Task.Run(
             async () =>
             {
-                double toplamSıkıştırılmışBoyut = 0;
-                double toplamBoyut = 0;
                 try
                 {
-                    using ArchiveFile archive = new(ArchiveFilePath);
-                    if (archive is not null)
+                    using ArchiveFile archive = new(archiveFilePath);
+                    List<Entry> validEntries = archive?.Entries?.Where(e => e.Size > 0).ToList() ?? [];
+
+                    TotalFilesCount = validEntries.Count;
+                    double toplamSıkıştırılmışBoyut = 0;
+                    double toplamBoyut = 0;
+
+                    List<ExtendedArchiveData> tempArchiveItems = [];
+
+                    for (int i = 0; i < validEntries.Count; i++)
                     {
-                        List<Entry> list = archive.Entries?.Where(entry => entry.Size > 0).ToList() ?? [];
-                        TotalFilesCount = list.Count;
-                        for (int i = 0; i < list.Count; i++)
+                        Entry entry = validEntries[i];
+                        ExtendedArchiveData archiveData = new()
                         {
-                            Entry item = list[i];
-                            ExtendedArchiveData archiveData = new()
-                            {
-                                SıkıştırılmışBoyut = (long)item.PackedSize,
-                                DosyaAdı = item.FileName,
-                                DosyaTipi = GetFileType(item.FileName, new SHFILEINFO()),
-                                TamYol = item.FileName,
-                                Boyut = (long)item.Size,
-                                Oran = (float)item.PackedSize / item.Size,
-                                DüzenlenmeZamanı = item.LastWriteTime.Date,
-                                Crc = item.CRC.ToString("X"),
-                                HostOs = item.HostOS,
-                                Method = item.Method,
-                                Attributes = (FileAttributes)item.Attributes,
-                                Encrypted = item.IsEncrypted
-                            };
-                            archiveData.PropertyChanged += ArchiveData_PropertyChanged;
-                            CheckBoxItem checkBoxItem = new() { Content = archiveData.DosyaAdı, Name = archiveData.DosyaTipi };
-                            checkBoxItem.PropertyChanged += CheckBoxItem_PropertyChanged;
-                            toplamSıkıştırılmışBoyut += item.PackedSize;
-                            toplamBoyut += item.Size;
-                            await Dispatcher.InvokeAsync(
-                                () =>
-                                {
-                                    Arşivİçerik.Add(archiveData);
-                                    ToplamOran = (i + 1) / (double)TotalFilesCount * 100;
-                                    if (!ArchiveFileTypes.Any(z => z.Name == checkBoxItem.Name))
-                                    {
-                                        ArchiveFileTypes.Add(checkBoxItem);
-                                    }
-                                });
-                        }
+                            SıkıştırılmışBoyut = (long)entry.PackedSize,
+                            DosyaAdı = entry.FileName,
+                            DosyaTipi = GetFileType(entry.FileName, new SHFILEINFO()),
+                            TamYol = entry.FileName,
+                            Boyut = (long)entry.Size,
+                            Oran = (float)entry.PackedSize / entry.Size,
+                            DüzenlenmeZamanı = entry.LastWriteTime.Date,
+                            Crc = entry.CRC.ToString("X"),
+                            HostOs = entry.HostOS,
+                            Method = entry.Method,
+                            Attributes = (FileAttributes)entry.Attributes,
+                            Encrypted = entry.IsEncrypted
+                        };
+
+                        archiveData.PropertyChanged += ArchiveData_PropertyChanged;
+                        toplamSıkıştırılmışBoyut += entry.PackedSize;
+                        toplamBoyut += entry.Size;
+                        tempArchiveItems.Add(archiveData);
                     }
+
+                    await Dispatcher.InvokeAsync(
+                        () =>
+                        {
+                            foreach (ExtendedArchiveData item in tempArchiveItems)
+                            {
+                                Arşivİçerik.Add(item);
+
+                                CheckBoxItem checkBoxItem = new() { Content = item.DosyaAdı, Name = item.DosyaTipi };
+                                if (!ArchiveFileTypes.Any(x => x.Name == checkBoxItem.Name))
+                                {
+                                    checkBoxItem.PropertyChanged += CheckBoxItem_PropertyChanged;
+                                    ArchiveFileTypes.Add(checkBoxItem);
+                                }
+                            }
+                            cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
+                            tempArchiveItems = null;
+                            ToplamOran = toplamSıkıştırılmışBoyut / toplamBoyut * 100;
+                        });
                 }
                 catch (Exception ex)
                 {
                     throw new ArgumentException(ex?.Message);
                 }
-
-                ToplamOran = toplamSıkıştırılmışBoyut / toplamBoyut * 100;
+                return Arşivİçerik;
             });
-        cvs = CollectionViewSource.GetDefaultView(Arşivİçerik);
-        return Arşivİçerik;
     }
 
     private void ArchiveData_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -260,7 +270,7 @@ public class SimpleArchiveViewer : ArchiveViewer
     {
         if (e.PropertyName is "SelectedFile")
         {
-            if (Settings.Default.ShowArchiveViewerThumbs)
+            if (ShowThumbPanel)
             {
                 PreviewPanelWidth = double.PositiveInfinity;
                 ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? await ExtractToFileAsync(SelectedFile) : null;

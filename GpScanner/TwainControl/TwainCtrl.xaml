@@ -2631,6 +2631,7 @@
                             Grid.Row="1"
                             x:FieldModifier="public"
                             AllowDrop="True"
+                            ShowThumbPanel="{Binding Mode=OneWay, Path=ShowArchiveViewerThumbs, Source={x:Static properties:Settings.Default}}"
                             Style="{StaticResource SimpleArchiveViewerStyle}" />
                     </Grid>
                 </TabItem>
