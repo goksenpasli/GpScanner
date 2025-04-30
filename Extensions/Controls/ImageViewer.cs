@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -93,48 +94,55 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
             parameter => Source is not null);
 
         Yazdır = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
-                PrintDialog printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)(TiffDecoder?.Frames?.Count ?? 1), MinPage = 1 };
-                if (printdialog.ShowDialog() == true)
+                PrintDialog printDialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)(TiffDecoder?.Frames?.Count ?? 1), MinPage = 1 };
+
+                if (printDialog.ShowDialog() != true)
                 {
-                    if (TiffDecoder is null)
-                    {
-                        DrawingVisual dv = new();
-                        using (DrawingContext dc = dv.RenderOpen())
-                        {
-                            BitmapSource imagesource = Source.Width > Source.Height
-                                                       ? ((BitmapSource)Source)?.Resize((int)printdialog.PrintableAreaHeight, (int)printdialog.PrintableAreaWidth, 90, PrintDpi, PrintDpi)
-                                                       : ((BitmapSource)Source)?.Resize((int)printdialog.PrintableAreaWidth, (int)printdialog.PrintableAreaHeight, 0, PrintDpi, PrintDpi);
-                            imagesource.Freeze();
-                            dc.DrawImage(imagesource, new Rect(0, 0, printdialog.PrintableAreaWidth, printdialog.PrintableAreaHeight));
-                        }
-                        printdialog.PrintVisual(dv, string.Empty);
-                        return;
-                    }
-
-                    int başlangıç;
-                    int bitiş;
-                    if (printdialog.PageRangeSelection == PageRangeSelection.AllPages)
-                    {
-                        başlangıç = 0;
-                        bitiş = TiffDecoder?.Frames?.Count - 1 ?? 0;
-                    }
-                    else
-                    {
-                        başlangıç = printdialog.PageRange.PageFrom - 1;
-                        bitiş = printdialog.PageRange.PageTo - 1;
-                    }
-
-                    FixedDocument fixedDocument = PrintMultipleFixedDocumentPages(printdialog, başlangıç, bitiş, TiffDecoder.Frames, PrintDpi);
-                    XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(printdialog.PrintQueue);
-                    xpsWriter.WriteAsync(fixedDocument, printdialog.PrintTicket);
-                    fixedDocument = null;
+                    return;
                 }
+                TiffBitmapDecoder decoder = TiffDecoder;
+                ReadOnlyCollection<BitmapFrame> frames = decoder?.Frames;
+                int printdpi = PrintDpi;
+                await Task.Run(
+                    () =>
+                    {
+                        if (decoder is null)
+                        {
+                            Application.Current.Dispatcher
+                            .Invoke(
+                                () =>
+                                {
+                                    DrawingVisual visual = new();
+                                    using (DrawingContext dc = visual.RenderOpen())
+                                    {
+                                        BitmapSource resizedImage = Source.Width > Source.Height
+                                                                    ? ((BitmapSource)Source)?.Resize((int)printDialog.PrintableAreaHeight, (int)printDialog.PrintableAreaWidth, 90, PrintDpi, PrintDpi)
+                                                                    : ((BitmapSource)Source)?.Resize((int)printDialog.PrintableAreaWidth, (int)printDialog.PrintableAreaHeight, 0, PrintDpi, PrintDpi);
+                                        resizedImage.Freeze();
+                                        dc.DrawImage(resizedImage, new Rect(0, 0, printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight));
+                                    }
+
+                                    printDialog.PrintVisual(visual, "Image Print");
+                                });
+                            return;
+                        }
+
+                        int startPage = printDialog.PageRangeSelection == PageRangeSelection.AllPages ? 0 : printDialog.PageRange.PageFrom - 1;
+                        int endPage = printDialog.PageRangeSelection == PageRangeSelection.AllPages ? (frames?.Count ?? 1) - 1 : printDialog.PageRange.PageTo - 1;
+
+                        Application.Current.Dispatcher
+                        .Invoke(
+                            () =>
+                            {
+                                FixedDocument document = PrintMultipleFixedDocumentPages(printDialog, startPage, endPage, frames, printdpi);
+                                XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(printDialog.PrintQueue);
+                                xpsWriter.Write(document, printDialog.PrintTicket);
+                            });
+                    });
             },
             parameter => Source is not null);
-
-        PropertyChanged += ImageViewer_PropertyChanged;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

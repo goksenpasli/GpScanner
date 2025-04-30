@@ -89,19 +89,12 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
-        <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
         <Converter:CustomSizeToSizeConverter x:Key="CustomSizeToSizeConverter" />
-        <Converter:FileExtToWebInfoConverter x:Key="FileExtToWebInfoConverter" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxSizeToColorConverter"
             MaxNumber="425"
             MinNumber="190"
             ReverseColors="True" />
         <CollectionViewSource x:Key="Veriler" Source="{Binding Dosyalar}" />
-        <CollectionViewSource x:Key="SupportedFilesExt" Source="{Binding SupportedExtensions.FileCategories}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Category" />
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
         <Style x:Key="ListBoxAnimationStyle" TargetType="{x:Type ListBox}">
             <Setter Property="BorderBrush" Value="Transparent" />
             <Style.Triggers>
@@ -906,116 +899,7 @@
                                     </Image.Source>
                                 </Image>
                                 <Extensions:ContentToggleButton.OverContent>
-                                    <ListBox Background="{StaticResource BorderBackground}"
-                                        IsSynchronizedWithCurrentItem="False"
-                                        ItemsSource="{Binding Mode=OneWay, Source={StaticResource SupportedFilesExt}}">
-                                        <ListBox.GroupStyle>
-                                            <GroupStyle>
-                                                <GroupStyle.HeaderTemplate>
-                                                    <DataTemplate>
-                                                        <TextBlock HorizontalAlignment="Center"
-                                                            FontWeight="Bold"
-                                                            Text="{Binding Name}" />
-                                                    </DataTemplate>
-                                                </GroupStyle.HeaderTemplate>
-                                                <GroupStyle.Panel>
-                                                    <ItemsPanelTemplate>
-                                                        <VirtualizingStackPanel Orientation="Horizontal" />
-                                                    </ItemsPanelTemplate>
-                                                </GroupStyle.Panel>
-                                            </GroupStyle>
-                                        </ListBox.GroupStyle>
-                                        <ListBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto" />
-                                                        <RowDefinition />
-                                                    </Grid.RowDefinitions>
-                                                    <UniformGrid Grid.Row="0"
-                                                        Margin="1"
-                                                        Columns="3"
-                                                        Rows="1">
-                                                        <Button Command="{Binding SelectAllCommand}" CommandParameter="{Binding Extensions}">
-                                                            <Image Width="16"
-                                                                Height="16"
-                                                                Source="/Extensions;component/Icons/selectall.png" />
-                                                        </Button>
-                                                        <Button Command="{Binding SelectInverseCommand}" CommandParameter="{Binding Extensions}">
-                                                            <Image Width="16"
-                                                                Height="16"
-                                                                Source="/Extensions;component/Icons/inverse.png" />
-                                                        </Button>
-                                                        <Button Command="{Binding ClearAllCommand}" CommandParameter="{Binding Extensions}">
-                                                            <Image Width="16"
-                                                                Height="16"
-                                                                Source="/Extensions;component/Icons/none.png" />
-                                                        </Button>
-                                                    </UniformGrid>
-                                                    <ListBox Grid.Row="1"
-                                                        VerticalAlignment="Center"
-                                                        VerticalContentAlignment="Center"
-                                                        Background="{x:Null}"
-                                                        BorderBrush="{x:Null}"
-                                                        IsSynchronizedWithCurrentItem="False"
-                                                        ItemsSource="{Binding Extensions}">
-                                                        <ListBox.ItemTemplate>
-                                                            <DataTemplate>
-                                                                <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
-                                                                    <CheckBox VerticalAlignment="Center"
-                                                                        VerticalContentAlignment="Center"
-                                                                        IsChecked="{Binding IsChecked, Mode=TwoWay}"
-                                                                        IsEnabled="{Binding IsEnabled, Mode=TwoWay}">
-                                                                        <CheckBox.Style>
-                                                                            <Style TargetType="CheckBox">
-                                                                                <Style.Triggers>
-                                                                                    <Trigger Property="IsChecked" Value="False">
-                                                                                        <Setter Property="BorderBrush" Value="Red" />
-                                                                                        <Setter Property="Foreground" Value="Red" />
-                                                                                    </Trigger>
-                                                                                </Style.Triggers>
-                                                                            </Style>
-                                                                        </CheckBox.Style>
-                                                                        <StackPanel Orientation="Horizontal">
-                                                                            <Image Width="16"
-                                                                                Height="16"
-                                                                                VerticalAlignment="Center"
-                                                                                Source="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
-                                                                            <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}">
-                                                                                <TextBlock.ToolTip>
-                                                                                    <ToolTip>
-                                                                                        <TextBlock Width="200"
-                                                                                            Tag="{Binding Name, Mode=OneWay, IsAsync=True, Converter={StaticResource FileExtToWebInfoConverter}}"
-                                                                                            Text="{Binding Mode=OneWay, FallbackValue='...', IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
-                                                                                            TextWrapping="Wrap" />
-                                                                                    </ToolTip>
-                                                                                </TextBlock.ToolTip>
-                                                                            </TextBlock>
-                                                                        </StackPanel>
-                                                                    </CheckBox>
-                                                                    <ToggleButton VerticalAlignment="Center"
-                                                                        Background="{x:Null}"
-                                                                        BorderBrush="{x:Null}"
-                                                                        IsChecked="{Binding SearchInArchive}"
-                                                                        IsEnabled="{Binding Path=SearchInArchiveFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
-                                                                        Visibility="{Binding SearchInArchiveSupported, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                                                        <Image Width="16" Height="16">
-                                                                            <Image.Source>
-                                                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                                                                    <Binding Source="Shell32.dll" />
-                                                                                    <Binding Source="55" />
-                                                                                </MultiBinding>
-                                                                            </Image.Source>
-                                                                        </Image>
-                                                                    </ToggleButton>
-                                                                </StackPanel>
-                                                            </DataTemplate>
-                                                        </ListBox.ItemTemplate>
-                                                    </ListBox>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </ListBox.ItemTemplate>
-                                    </ListBox>
+                                    <local:SearchFilterControl />
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
                         </Grid>
@@ -1072,7 +956,7 @@
                                                             <ColumnDefinition />
                                                         </Grid.ColumnDefinitions>
                                                         <Grid.RowDefinitions>
-                                                            <RowDefinition Height="19.2" />
+                                                            <RowDefinition Height="32" />
                                                             <RowDefinition Height="19.2" />
                                                             <RowDefinition />
                                                         </Grid.RowDefinitions>
@@ -1088,13 +972,17 @@
                                                                         d:Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}"
                                                                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, Mode=OneWay, Path=FileName, IsAsync=True}" />
                                                                 </InlineUIContainer>
+                                                                <Run d:Text="FolderName" Text="{Binding FolderName, Mode=OneWay}" />
+                                                                <LineBreak />
                                                                 <Run d:Text="FileSize" Text="{Binding FileSize, Mode=OneWay, StringFormat=\{0:F\} MB}" />
                                                                 <Run d:Text="FileName"
                                                                     Text="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}"
                                                                     ToolTip="{Binding FileName, Converter={StaticResource FileNameExtractConverter}, Mode=OneWay}" />
                                                             </TextBlock>
                                                         </CheckBox>
-                                                        <TextBlock Grid.Column="2" HorizontalAlignment="Right">
+                                                        <TextBlock Grid.Column="2"
+                                                            HorizontalAlignment="Right"
+                                                            VerticalAlignment="Center">
                                                             <Run Cursor="SizeAll"
                                                                 FontFamily="Wingdings"
                                                                 FontSize="16"

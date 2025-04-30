@@ -1,0 +1,142 @@
+﻿<UserControl x:Class="GpScanner.SearchFilterControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converter="clr-namespace:GpScanner.Converter"
+    xmlns:Extensions="clr-namespace:Extensions;assembly=Extensions"
+    xmlns:ViewModel="clr-namespace:GpScanner.ViewModel"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:properties="clr-namespace:GpScanner.Properties"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    d:DataContext="{d:DesignInstance Type={x:Type ViewModel:GpScannerViewModel}}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
+        <Converter:FileExtToWebInfoConverter x:Key="FileExtToWebInfoConverter" />
+        <CollectionViewSource x:Key="SupportedFilesExt" Source="{Binding SupportedExtensions.FileCategories}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Category" />
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+    </UserControl.Resources>
+    <Grid>
+        <ListBox d:ItemsSource="{d:SampleData ItemCount=5}"
+            Background="{StaticResource BorderBackground}"
+            IsSynchronizedWithCurrentItem="False"
+            ItemsSource="{Binding Mode=OneWay, Source={StaticResource SupportedFilesExt}}">
+            <ListBox.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock HorizontalAlignment="Center"
+                                d:Text="Name"
+                                FontWeight="Bold"
+                                Text="{Binding Name}" />
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.Panel>
+                        <ItemsPanelTemplate>
+                            <VirtualizingStackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </GroupStyle.Panel>
+                </GroupStyle>
+            </ListBox.GroupStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <UniformGrid Grid.Row="0"
+                            Margin="1"
+                            Columns="3"
+                            Rows="1">
+                            <Button Command="{Binding SelectAllCommand}" CommandParameter="{Binding Extensions}">
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="/Extensions;component/Icons/selectall.png" />
+                            </Button>
+                            <Button Command="{Binding SelectInverseCommand}" CommandParameter="{Binding Extensions}">
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="/Extensions;component/Icons/inverse.png" />
+                            </Button>
+                            <Button Command="{Binding ClearAllCommand}" CommandParameter="{Binding Extensions}">
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="/Extensions;component/Icons/none.png" />
+                            </Button>
+                        </UniformGrid>
+                        <ListBox Grid.Row="1"
+                            VerticalAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            IsSynchronizedWithCurrentItem="False"
+                            ItemsSource="{Binding Extensions}">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Margin="0,0,5,0" Orientation="Horizontal">
+                                        <CheckBox VerticalAlignment="Center"
+                                            VerticalContentAlignment="Center"
+                                            IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                            IsEnabled="{Binding IsEnabled, Mode=TwoWay}">
+                                            <CheckBox.Style>
+                                                <Style TargetType="CheckBox">
+                                                    <Style.Triggers>
+                                                        <Trigger Property="IsChecked" Value="False">
+                                                            <Setter Property="BorderBrush" Value="Red" />
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </Trigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </CheckBox.Style>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16"
+                                                    Height="16"
+                                                    VerticalAlignment="Center"
+                                                    Source="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToIconConverter}}" />
+                                                <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}">
+                                                    <TextBlock.ToolTip>
+                                                        <ToolTip>
+                                                            <TextBlock Width="200"
+                                                                Tag="{Binding Name, Mode=OneWay, IsAsync=True, Converter={StaticResource FileExtToWebInfoConverter}}"
+                                                                Text="{Binding Mode=OneWay, FallbackValue='...', IsAsync=True, Path=Tag.Result, RelativeSource={RelativeSource Mode=Self}}"
+                                                                TextWrapping="Wrap" />
+                                                        </ToolTip>
+                                                    </TextBlock.ToolTip>
+                                                </TextBlock>
+                                            </StackPanel>
+                                        </CheckBox>
+                                        <ToggleButton VerticalAlignment="Center"
+                                            Background="{x:Null}"
+                                            BorderBrush="{x:Null}"
+                                            IsChecked="{Binding SearchInArchive}"
+                                            IsEnabled="{Binding Path=SearchInArchiveFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
+                                            Visibility="{Binding SearchInArchiveSupported, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                            <Image Width="16" Height="16">
+                                                <Image.Source>
+                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                        <Binding Source="Shell32.dll" />
+                                                        <Binding Source="55" />
+                                                    </MultiBinding>
+                                                </Image.Source>
+                                            </Image>
+                                        </ToggleButton>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </Grid>
+</UserControl>

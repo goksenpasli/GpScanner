@@ -130,10 +130,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             },
             parameter => TesseractView.cvs is not null);
 
-        if (TwainCtrl.Scanner is not null)
-        {
-            TwainCtrl.Scanner.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
-        }
+        TwainCtrl.Scanner?.SelectedTtsLanguage = Settings.Default.DefaultTtsLang;
     }
 
     public List<TessFiles> CheckedFiles

@@ -77,38 +77,59 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             });
 
         Yazdır = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
-                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PrintDialog printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1 };
-                if (printdialog.ShowDialog() == true)
+                if (!File.Exists(PdfFilePath))
                 {
-                    int startPage = 0;
-                    int endPage = 0;
-                    if (printdialog.PageRangeSelection == PageRangeSelection.AllPages)
-                    {
-                        startPage = 1;
-                        endPage = pdfDocument.PageCount;
-                    }
-                    if (printdialog.PageRangeSelection == PageRangeSelection.UserPages)
-                    {
-                        startPage = printdialog.PageRange.PageFrom;
-                        endPage = printdialog.PageRange.PageTo;
-                        printdialog.PageRange = new PageRange(startPage, endPage);
-                    }
-                    GenerateDocument(printdialog, pdfDocument, startPage, endPage, PrintDpi);
+                    return;
                 }
+
+                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+
+                PrintDialog printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = true, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1 };
+
+                if (printdialog.ShowDialog() != true)
+                {
+                    return;
+                }
+
+                int startPage, endPage;
+
+                if (printdialog.PageRangeSelection == PageRangeSelection.AllPages)
+                {
+                    startPage = 1;
+                    endPage = pdfDocument.PageCount;
+                }
+                else
+                {
+                    startPage = printdialog.PageRange.PageFrom;
+                    endPage = printdialog.PageRange.PageTo;
+                    printdialog.PageRange = new PageRange(startPage, endPage);
+                }
+                int printDpi = PrintDpi;
+                await Task.Run(
+                    async () =>
+                    {
+                        FixedDocument fixedDoc = await RenderPageContents(printdialog, pdfDocument, startPage, endPage, printDpi);
+                        Application.Current.Dispatcher
+                        .Invoke(
+                            () =>
+                            {
+                                XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(printdialog.PrintQueue);
+                                xpsWriter.Write(fixedDoc, printdialog.PrintTicket);
+                            });
+                    });
             },
             parameter => File.Exists(PdfFilePath));
 
         PrintSinglePage = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PrintDialog printdialog = new() { CurrentPageEnabled = true, PageRangeSelection = PageRangeSelection.CurrentPage, UserPageRangeEnabled = false, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1 };
                 if (printdialog.ShowDialog() == true)
                 {
-                    GenerateDocument(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
+                    await GenerateDocument(printdialog, pdfDocument, (int)parameter, (int)parameter, PrintDpi);
                 }
             },
             parameter => File.Exists(PdfFilePath));
@@ -475,7 +496,6 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                     {
                     }
                     return bitmapImage;
-
                 })
             .ConfigureAwait(false);
         }
@@ -537,9 +557,9 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    public static void GenerateDocument(PrintDialog pd, PdfDocument document, int startPage, int endPage, int Dpi)
+    public static async Task GenerateDocument(PrintDialog pd, PdfDocument document, int startPage, int endPage, int Dpi)
     {
-        FixedDocument fixeddocument = RenderPageContents(pd, document, startPage, endPage, Dpi);
+        FixedDocument fixeddocument = await RenderPageContents(pd, document, startPage, endPage, Dpi);
         XpsDocumentWriter xpsWriter = PrintQueue.CreateXpsDocumentWriter(pd.PrintQueue);
         xpsWriter.WriteAsync(fixeddocument, pd.PrintTicket);
     }
@@ -720,26 +740,36 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         }
     }
 
-    private static FixedDocument RenderPageContents(PrintDialog printdialog, PdfDocument pdfiumdocument, int start, int end, int Dpi)
+    private static async Task<FixedDocument> RenderPageContents(PrintDialog printdialog, PdfDocument pdfiumdocument, int start, int end, int Dpi)
     {
-        FixedDocument fixedDocument = new();
+        FixedDocument fixedDocument = null;
+        _ = await Application.Current.Dispatcher.InvokeAsync(() => fixedDocument = new());
+        BitmapImage bitmapimage = null;
         for (int i = start; i <= end; i++)
         {
-            SizeF pageSize = pdfiumdocument.PageSizes[i - 1];
-            using Bitmap bitmap = pdfiumdocument.Render(i - 1, (int)(pageSize.Width / 96 * Dpi), (int)(pageSize.Height / 96 * Dpi), Dpi, Dpi, PdfRenderFlags.ForPrinting) as Bitmap;
-            if (pageSize.Width > pageSize.Height)
-            {
-                bitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
-            }
-            BitmapImage bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
-            bitmapimage.Freeze();
-            FixedPage fixedPage = new() { Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
-            System.Windows.Controls.Image image = new() { Source = bitmapimage, Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
-            _ = fixedPage.Children.Add(image);
-            PageContent pageContent = new();
-            ((IAddChild)pageContent).AddChild(fixedPage);
-            _ = fixedDocument.Pages.Add(pageContent);
-            GC.Collect();
+            await Task.Run(
+                () =>
+                {
+                    SizeF pageSize = pdfiumdocument.PageSizes[i - 1];
+                    using Bitmap bitmap = pdfiumdocument.Render(i - 1, (int)(pageSize.Width / 96 * Dpi), (int)(pageSize.Height / 96 * Dpi), Dpi, Dpi, PdfRenderFlags.ForPrinting) as Bitmap;
+                    if (pageSize.Width > pageSize.Height)
+                    {
+                        bitmap.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                    }
+                    bitmapimage = bitmap.ToBitmapImage(ImageFormat.Jpeg);
+                    bitmapimage.Freeze();
+                });
+            await Application.Current.Dispatcher
+            .InvokeAsync(
+                () =>
+                {
+                    FixedPage fixedPage = new() { Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
+                    System.Windows.Controls.Image image = new() { Source = bitmapimage, Width = printdialog.PrintableAreaWidth, Height = printdialog.PrintableAreaHeight };
+                    _ = fixedPage.Children.Add(image);
+                    PageContent pageContent = new();
+                    ((IAddChild)pageContent).AddChild(fixedPage);
+                    _ = fixedDocument.Pages.Add(pageContent);
+                });
         }
         return fixedDocument;
     }
