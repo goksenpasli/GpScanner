@@ -177,6 +177,7 @@
                         <Grid Grid.Column="1" Visibility="{Binding ElementName=Lv, Path=HasItems, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <ProgressBar Width="20"
                                 Foreground="{DynamicResource ProgressBarPinkForeground}"
+                                IsIndeterminate="{Binding IsBusy, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                                 Maximum="100"
                                 Orientation="Vertical"
                                 Value="{Binding ToplamOran, RelativeSource={RelativeSource Mode=TemplatedParent}}" />

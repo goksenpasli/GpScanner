@@ -16,6 +16,7 @@
     <Converter:ResourceLanguageStringConverter x:Key="ResourceLanguageStringConverter" />
     <Converter:PdfPageCountConverter x:Key="PdfPageCountConverter" />
     <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
+    <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
     <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
     <Extensions:FilePathToFileNameConverter x:Key="FilePathToFileNameConverter" />
     <Extensions:FilePathToIconConverter x:Key="FilePathToIconLargeConverter" IconSize="jumbo" />
@@ -172,10 +173,16 @@
                                         <Border.InputBindings>
                                             <MouseBinding Command="{Binding ArşivTekDosyaÇıkar, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" MouseAction="LeftDoubleClick" />
                                         </Border.InputBindings>
-                                        <GridViewRowPresenter Margin="0"
-                                            HorizontalAlignment="Stretch"
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            Content="{TemplateBinding Content}" />
+                                        <StackPanel>
+                                            <GridViewRowPresenter Margin="0"
+                                                HorizontalAlignment="Stretch"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                Content="{TemplateBinding Content}"
+                                                IsEnabled="{Binding IsIndeterminate, Mode=OneWay, Converter={StaticResource ReverseBooleanConverter}}" />
+                                            <ProgressBar Height="2"
+                                                IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay}"
+                                                Maximum="1" />
+                                        </StackPanel>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
@@ -240,19 +247,6 @@
                                     Watermark="TİP" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
-                        <GridViewColumn Width="45"
-                            Extensions:GridViewSort.PropertyName="Oran"
-                            Header="ORAN">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <ProgressBar Width="32"
-                                        Height="16"
-                                        IsIndeterminate="{Binding IsIndeterminate, Mode=OneWay}"
-                                        Maximum="1"
-                                        Value="{Binding Oran, Mode=OneWay}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                        </GridViewColumn>
                         <GridViewColumn Width="70"
                             Extensions:GridViewSort.PropertyName="Crc"
                             DisplayMemberBinding="{Binding Crc}"
@@ -294,7 +288,6 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
@@ -322,16 +315,13 @@
                             </Image.Style>
                         </Image>
                         <TextBlock VerticalAlignment="Center" Text="{Binding SelectedFile.DosyaAdı, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />
+                        <TextBlock Text="{Binding SelectedFile.DüzenlenmeZamanı, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />
                     </StackPanel>
                 </StatusBarItem>
-                <StatusBarItem Grid.Column="1">
-                    <TextBlock Text="{Binding SelectedFile.DüzenlenmeZamanı, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ArchiveViewer}}}" />
-                </StatusBarItem>
-                <StatusBarItem Grid.Column="2"
-                    HorizontalContentAlignment="Stretch"
-                    Visibility="{Binding ElementName=Lv, Path=HasItems, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Stretch">
                     <Grid>
                         <ProgressBar Foreground="{DynamicResource ProgressBarPinkForeground}"
+                            IsIndeterminate="{Binding IsBusy, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                             Maximum="100"
                             Value="{Binding ToplamOran, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
                         <TextBlock HorizontalAlignment="Center"
@@ -341,7 +331,7 @@
                             Text="{Binding ToplamOran, RelativeSource={RelativeSource Mode=TemplatedParent}, StringFormat={}{0:F0}%}" />
                     </Grid>
                 </StatusBarItem>
-                <StatusBarItem Grid.Column="3">
+                <StatusBarItem Grid.Column="2">
                     <TextBlock>
                         <TextBlock.Style>
                             <Style TargetType="{x:Type TextBlock}">

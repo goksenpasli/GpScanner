@@ -166,9 +166,9 @@ public class SimpleArchiveViewer : ArchiveViewer
             {
                 try
                 {
+                    IsBusy = true;
                     using ArchiveFile archive = new(archiveFilePath);
                     List<Entry> validEntries = archive?.Entries?.Where(e => e.Size > 0).ToList() ?? [];
-
                     TotalFilesCount = validEntries.Count;
                     double toplamSıkıştırılmışBoyut = 0;
                     double toplamBoyut = 0;
@@ -222,6 +222,10 @@ public class SimpleArchiveViewer : ArchiveViewer
                 catch (Exception ex)
                 {
                     throw new ArgumentException(ex?.Message);
+                }
+                finally
+                {
+                    IsBusy = false;
                 }
                 return Arşivİçerik;
             });

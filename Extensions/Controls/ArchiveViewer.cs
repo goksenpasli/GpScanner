@@ -22,6 +22,7 @@ namespace Extensions
         public static readonly DependencyProperty ArchivePathProperty = DependencyProperty.Register("ArchivePath", typeof(string), typeof(ArchiveViewer), new PropertyMetadata(null, Changed));
         public static readonly DependencyPropertyKey ProgressProperty = DependencyProperty.RegisterReadOnly("Progress", typeof(double), typeof(ArchiveViewer), new PropertyMetadata(0d));
         protected ICollectionView cvs;
+        private static bool ısBusy;
         private bool disposedValue;
 
         static ArchiveViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(ArchiveViewer), new FrameworkPropertyMetadata(typeof(ArchiveViewer))); }
@@ -173,6 +174,19 @@ namespace Extensions
                 {
                     field = value;
                     OnPropertyChanged(nameof(CheckedCount));
+                }
+            }
+        }
+
+        public bool IsBusy
+        {
+            get => ısBusy;
+            set
+            {
+                if (ısBusy != value)
+                {
+                    ısBusy = value;
+                    OnPropertyChanged(nameof(IsBusy));
                 }
             }
         }
@@ -357,7 +371,7 @@ namespace Extensions
             {
                 using ZipArchive archive = ZipFile.OpenRead(archiveFilePath);
                 List<ZipArchiveEntry> entries = archive.Entries?.Where(e => e.Length > 0).ToList() ?? [];
-
+                IsBusy = true;
                 TotalFilesCount = entries.Count;
 
                 await Task.Run(
@@ -384,7 +398,7 @@ namespace Extensions
 
                             if (!FilterTypes.Any(t => t.Name == fileType))
                             {
-                                CheckBoxItem checkboxitem = new() { Content = archiveData.DosyaAdı, Name = fileType};
+                                CheckBoxItem checkboxitem = new() { Content = archiveData.DosyaAdı, Name = fileType };
                                 checkboxitem.PropertyChanged += CheckBoxItem_PropertyChanged;
                                 FilterTypes.Add(checkboxitem);
                             }
@@ -410,7 +424,10 @@ namespace Extensions
             {
                 throw new ArgumentException(ex?.Message);
             }
-
+            finally
+            {
+                IsBusy = false;
+            }
             return Arşivİçerik;
         }
 
