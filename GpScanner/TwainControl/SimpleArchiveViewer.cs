@@ -24,6 +24,7 @@ public class SimpleArchiveViewer : ArchiveViewer
     public static readonly DependencyProperty ShowThumbPanelProperty = DependencyProperty.Register("ShowThumbPanel", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty SimpleStyleProperty = DependencyProperty.Register("SimpleStyle", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
     private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps", ".jb2", ".cbr", ".cbz"];
+    private string password;
 
     public SimpleArchiveViewer()
     {
@@ -33,16 +34,23 @@ public class SimpleArchiveViewer : ArchiveViewer
             {
                 try
                 {
+                    password = null;
                     if (!supportedFilesExtension.Contains(Path.GetExtension(SelectedFile.DosyaAdı).ToLowerInvariant()))
                     {
-                        string extractedfile = await ExtractToFileAsync(SelectedFile);
-                        _ = Process.Start(extractedfile);
+                        string extractedfile = await ExtractToFileAsync(SelectedFile, Path.GetTempPath());
+                        if (File.Exists(extractedfile))
+                        {
+                            _ = Process.Start(extractedfile);
+                        }
                         return;
                     }
                     if (DataContext is TwainCtrl twainCtrl)
                     {
-                        string extractedfile = await ExtractToFileAsync(SelectedFile);
-                        _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
+                        string extractedfile = await ExtractToFileAsync(SelectedFile, Path.GetTempPath());
+                        if (File.Exists(extractedfile))
+                        {
+                            _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -50,15 +58,16 @@ public class SimpleArchiveViewer : ArchiveViewer
                     throw new ArgumentException(ex?.Message);
                 }
             },
-            parameter => !string.IsNullOrWhiteSpace(ArchivePath) && !((ExtendedArchiveData)SelectedFile).Encrypted);
+            parameter => !string.IsNullOrWhiteSpace(ArchivePath));
 
         SeçiliAyıkla = new RelayCommand<object>(
-            parameter =>
+            async parameter =>
             {
                 string path = FolderDialog.SelectFolder(Translation.GetResStringValue("AUTOFOLDER"), null);
                 if (!string.IsNullOrEmpty(path))
                 {
-                    ExtractSelectedFiles(ArchivePath, Arşivİçerik.Where(z => z.IsChecked), path);
+                    password = null;
+                    await ExtractSelectedFiles(Arşivİçerik.Where(z => z.IsChecked), path);
                     OpenFolderAndSelectItem(path, string.Empty);
                 }
             },
@@ -121,25 +130,6 @@ public class SimpleArchiveViewer : ArchiveViewer
                         return;
                     }
                 }
-            });
-    }
-
-    protected new async Task<string> ExtractToFileAsync(ArchiveData entryname)
-    {
-        string archivepath = ArchivePath;
-        return await Task.Run(
-            async () =>
-            {
-                using ArchiveFile archiveFile = new(archivepath);
-                Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname.DosyaAdı);
-                string extractpath = $"{Path.GetTempPath()}{entryname.DosyaAdı}";
-                if (!File.Exists(extractpath))
-                {
-                    _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = true);
-                    entry?.Extract(extractpath);
-                    _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = false);
-                }
-                return extractpath;
             });
     }
 
@@ -254,51 +244,64 @@ public class SimpleArchiveViewer : ArchiveViewer
         }
     }
 
-    private new void ExtractSelectedFiles(string archivepath, IEnumerable<ArchiveData> list, string destinationfolder)
+    private async Task ExtractSelectedFiles(IEnumerable<ArchiveData> list, string destinationfolder)
     {
         if (!Directory.Exists(destinationfolder))
         {
             throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
         }
-        using MemoryStream memoryStream = new();
-        using ArchiveFile archiveFile = new(archivepath);
         ArchiveData[] archivedata = [.. list];
-        string password = null;
         for (int i = 0; i < archivedata.Length; i++)
         {
-            ArchiveData item = archivedata[i];
-            Entry entry = archiveFile.Entries?.FirstOrDefault(z => z.FileName == item.DosyaAdı);
-            memoryStream.SetLength(0);
-            try
-            {
-                if (entry.IsEncrypted)
-                {
-                    password ??= Interaction.InputBox($"{Translation.GetResStringValue("ARCHIVE")} {Translation.GetResStringValue("PASSWORD")}", Translation.GetResStringValue("PASSWORD"), string.Empty);
-                    if (string.IsNullOrEmpty(password))
-                    {
-                        continue;
-                    }
-                    entry?.Extract(memoryStream, password);
-                    if (memoryStream.Length == 0)
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    entry?.Extract(memoryStream);
-                }
-            }
-            catch
-            {
-                continue;
-            }
-            memoryStream.Position = 0;
-            string outputPath = Path.Combine(destinationfolder, Path.GetFileName(item.DosyaAdı));
-            using FileStream fileStream = new(outputPath, FileMode.Create, FileAccess.Write);
-            memoryStream.WriteTo(fileStream);
+            _ = await ExtractToFileAsync(archivedata[i], destinationfolder);
             SetValue(ProgressProperty, (i + 1) / (double)archivedata.Length);
         }
+    }
+
+    private async Task<string> ExtractToFileAsync(ArchiveData entryname, string extractfolder)
+    {
+        string archivepath = ArchivePath;
+        using MemoryStream memoryStream = new();
+        return await Task.Run(
+            async () =>
+            {
+                using ArchiveFile archiveFile = new(archivepath);
+                Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname.DosyaAdı);
+                string extractfile = Path.Combine(extractfolder, Path.GetFileName(entryname.DosyaAdı));
+                if (!File.Exists(extractfile))
+                {
+                    try
+                    {
+                        _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = true);
+                        memoryStream.SetLength(0);
+                        if (entry.IsEncrypted)
+                        {
+                            password ??= Interaction.InputBox($"{Translation.GetResStringValue("ARCHIVE")} {Translation.GetResStringValue("PASSWORD")}", Translation.GetResStringValue("PASSWORD"), string.Empty);
+                            if (string.IsNullOrEmpty(password))
+                            {
+                                return extractfile;
+                            }
+                            entry?.Extract(memoryStream, password);
+                            if (memoryStream.Length == 0)
+                            {
+                                return extractfile;
+                            }
+                        }
+                        else
+                        {
+                            entry?.Extract(memoryStream);
+                        }
+                        memoryStream.Position = 0;
+                        using FileStream fileStream = new(extractfile, FileMode.Create, FileAccess.Write);
+                        await memoryStream.CopyToAsync(fileStream).ConfigureAwait(false);
+                    }
+                    finally
+                    {
+                        _ = await Dispatcher.InvokeAsync(() => entryname.IsIndeterminate = false);
+                    }
+                }
+                return extractfile;
+            });
     }
 
     private async void SimpleArchiveViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -308,7 +311,7 @@ public class SimpleArchiveViewer : ArchiveViewer
             if (ShowThumbPanel)
             {
                 PreviewPanelWidth = double.PositiveInfinity;
-                ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? await ExtractToFileAsync(SelectedFile) : null;
+                ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? await ExtractToFileAsync(SelectedFile, Path.GetTempPath()) : null;
             }
             else
             {
