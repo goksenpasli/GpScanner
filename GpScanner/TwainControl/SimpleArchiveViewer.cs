@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using Microsoft.VisualBasic;
 using SevenZipExtractor;
 using SharpCompress.Writers;
 using SharpCompress.Writers.Zip;
@@ -61,7 +62,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                     OpenFolderAndSelectItem(path, string.Empty);
                 }
             },
-            parameter => Arşivİçerik is not null && CollectionViewSource.GetDefaultView(Arşivİçerik).OfType<ArchiveData>().Count(z => z.IsChecked) > 0 && !((ExtendedArchiveData)SelectedFile).Encrypted);
+            parameter => Arşivİçerik is not null && CollectionViewSource.GetDefaultView(Arşivİçerik).OfType<ArchiveData>().Count(z => z.IsChecked) > 0);
     }
 
     public new RelayCommand<object> ArşivTekDosyaÇıkar { get; }
@@ -259,13 +260,43 @@ public class SimpleArchiveViewer : ArchiveViewer
         {
             throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
         }
+        using MemoryStream memoryStream = new();
         using ArchiveFile archiveFile = new(archivepath);
         ArchiveData[] archivedata = [.. list];
+        string password = null;
         for (int i = 0; i < archivedata.Length; i++)
         {
             ArchiveData item = archivedata[i];
             Entry entry = archiveFile.Entries?.FirstOrDefault(z => z.FileName == item.DosyaAdı);
-            entry?.Extract(Path.Combine(destinationfolder, Path.GetFileName(item.DosyaAdı)));
+            memoryStream.SetLength(0);
+            try
+            {
+                if (entry.IsEncrypted)
+                {
+                    password ??= Interaction.InputBox($"{Translation.GetResStringValue("ARCHIVE")} {Translation.GetResStringValue("PASSWORD")}", Translation.GetResStringValue("PASSWORD"), string.Empty);
+                    if (string.IsNullOrEmpty(password))
+                    {
+                        continue;
+                    }
+                    entry?.Extract(memoryStream, password);
+                    if (memoryStream.Length == 0)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    entry?.Extract(memoryStream);
+                }
+            }
+            catch
+            {
+                continue;
+            }
+            memoryStream.Position = 0;
+            string outputPath = Path.Combine(destinationfolder, Path.GetFileName(item.DosyaAdı));
+            using FileStream fileStream = new(outputPath, FileMode.Create, FileAccess.Write);
+            memoryStream.WriteTo(fileStream);
             SetValue(ProgressProperty, (i + 1) / (double)archivedata.Length);
         }
     }
