@@ -11,6 +11,29 @@ public class Policy : DependencyObject
     public static readonly DependencyProperty PolicyNameProperty = DependencyProperty.RegisterAttached("PolicyName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty, Changed));
     public static readonly DependencyProperty PolicyVisibilityNameProperty = DependencyProperty.RegisterAttached("PolicyVisibilityName", typeof(string), typeof(Policy), new PropertyMetadata(string.Empty, VisibilityChanged));
 
+    public static bool AnyPolicyExsist()
+    {
+        try
+        {
+            using RegistryKey localMachineKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Policies\GpScanner");
+            if (HasDisabledValue(localMachineKey))
+            {
+                return true;
+            }
+
+            using RegistryKey currentUserKey = Registry.CurrentUser.OpenSubKey(@"Software\Policies\GpScanner");
+            if (HasDisabledValue(currentUserKey))
+            {
+                return true;
+            }
+        }
+        catch (Exception)
+        {
+        }
+
+        return false;
+    }
+
     public static bool CheckKeyPolicy(string searchvalue, RegistryKey registryKey)
     {
         using RegistryKey key = registryKey;
@@ -65,6 +88,25 @@ public class Policy : DependencyObject
         {
             hyperlink.IsEnabled = CheckPolicy((string)e.NewValue);
         }
+    }
+
+    private static bool HasDisabledValue(RegistryKey key)
+    {
+        if (key is null)
+        {
+            return false;
+        }
+
+        foreach (string valueName in key.GetValueNames())
+        {
+            object value = key.GetValue(valueName);
+            if (value is int intValue && intValue == 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static void VisibilityChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

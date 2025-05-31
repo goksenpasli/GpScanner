@@ -3366,7 +3366,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                              x.Accepted = (filenamefilter || filecontentfilter || filearchivefilter) && supportedFileFilter;
                                          };
                 DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
-                ZipProgressIndeterminate = false;
                 datas = null;
                 if (Settings.Default.ShowSuggestions)
                 {

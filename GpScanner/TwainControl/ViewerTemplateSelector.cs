@@ -22,6 +22,8 @@ namespace TwainControl
 
         public DataTemplate Pdf { get; set; }
 
+        public DataTemplate ProtectedArchive { get; set; }
+
         public DataTemplate Vid { get; set; }
 
         public DataTemplate Webp { get; set; }
@@ -41,6 +43,10 @@ namespace TwainControl
                 string[] imgext = [".jpg", ".jpeg", ".bmp", ".png", ".tif", ".tiff"];
                 string[] archiveext = [".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip", ".gz"];
                 string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
+                if (dosya == "PROTECTEDARCHIVE")
+                {
+                    return ProtectedArchive;
+                }
                 string ext = Path.GetExtension(dosya).ToLowerInvariant();
                 if (ext is not null)
                 {

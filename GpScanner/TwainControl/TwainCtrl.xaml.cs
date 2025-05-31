@@ -216,17 +216,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
-                BitmapFrame processedImage = null;
-                if (Keyboard.Modifiers == ModifierKeys.Alt)
-                {
-                    processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
-                }
-                else
-                {
-                    processedImage = Keyboard.Modifiers == ModifierKeys.Shift
-                                     ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
-                                     : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
-                }
+                BitmapFrame processedImage = Keyboard.Modifiers == ModifierKeys.Alt
+                                             ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg))
+                                             : Keyboard.Modifiers == ModifierKeys.Shift
+                                               ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
+                                               : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                 processedImage?.Freeze();
                 item.Resim = processedImage;
                 processedImage = null;
@@ -305,17 +299,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 foreach (ScannedImage item in GetSelectedImages())
                 {
-                    BitmapFrame processedImage = null;
-                    if (bw)
-                    {
-                        processedImage = BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
-                    }
-                    else
-                    {
-                        processedImage = grayscale
-                                         ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
-                                         : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
-                    }
+                    BitmapFrame processedImage = bw
+                                                 ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg))
+                                                 : grayscale
+                                                   ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
+                                                   : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                     processedImage?.Freeze();
                     item.Resim = processedImage;
                     processedImage = null;
@@ -754,7 +742,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
                             for (int i = 0; i < seçiliresimler.Count; i++)
                             {
-                                await Dispatcher.InvokeAsync(
+                                _ = await Dispatcher.InvokeAsync(
                                     async () =>
                                     {
                                         byte[] imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg);
@@ -2343,7 +2331,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
                 using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(filepath);
                 printdialog = new() { PageRangeSelection = PageRangeSelection.AllPages, UserPageRangeEnabled = false, MaxPage = (uint)pdfDocument.PageCount, MinPage = 1, PrintQueue = localPrintServer.GetPrintQueue(SelectedPrinter) };
-                Viewer.GenerateDocument(printdialog, pdfDocument, (int)printdialog.MinPage, (int)printdialog.MaxPage, PrintDpi);
+                _ = Viewer.GenerateDocument(printdialog, pdfDocument, (int)printdialog.MinPage, (int)printdialog.MaxPage, PrintDpi);
             },
             parameter => true);
     }
@@ -2817,6 +2805,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public ICommand LoadCroppedImage { get; }
 
+    public RelayCommand<object> LoadDocxFile { get; }
+
     public ICommand LoadImage { get; }
 
     public RelayCommand<object> LoadMiniDraw { get; }
@@ -2824,7 +2814,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public ICommand LoadPdfExtractFile { get; }
 
     public RelayCommand<object> LoadXlsFile { get; }
-    public RelayCommand<object> LoadDocxFile { get; }
+
     public ICommand LoadXpsFile { get; }
 
     public RelayCommand<object> ManualDeskewImage { get; }
@@ -3135,6 +3125,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public bool PolicyApplied { get; } = Policy.AnyPolicyExsist();
 
     public RelayCommand<object> PrepareCropCurrentImage { get; }
 
@@ -4205,7 +4197,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 });
             bitmapFrame = null;
         }
-        _ = await Dispatcher.InvokeAsync(() => PdfLoadProgressValue = 0);
+        await Dispatcher.InvokeAsync(
+            () =>
+            {
+                Scanner.RefreshIndexNumbers();
+                PdfLoadProgressValue = 0;
+            });
     }
 
     private void AddPendingFileRenameOperation(string sourceFilePath, string targetFilePath)
@@ -5289,7 +5286,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 ms.SetLength(0);
                 ms.Write(buffer, 0, buffer.Length);
                 string fileNameInZip = EncodeAsWebp ? $"{seçiliresimler[i].Index}.webp" : $"{seçiliresimler[i].Index}.jpg";
-                ms.Seek(0, SeekOrigin.Begin);
+                _ = ms.Seek(0, SeekOrigin.Begin);
                 zipWriter.Write(fileNameInZip, ms);
                 progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
             }

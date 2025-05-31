@@ -1574,6 +1574,17 @@
                                 </Extensions:ResizablePanel>
                             </Extensions:ContentToggleButton.OverContent>
                         </Extensions:ContentToggleButton>
+                        <Image Width="16"
+                            Height="16"
+                            d:Visibility="Visible"
+                            Visibility="{Binding PolicyApplied, ElementName=twainCtrl, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="47" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
                     </StackPanel>
                 </StatusBarItem>
             </StatusBar>

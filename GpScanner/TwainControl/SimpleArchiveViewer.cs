@@ -311,7 +311,7 @@ public class SimpleArchiveViewer : ArchiveViewer
             if (ShowThumbPanel)
             {
                 PreviewPanelWidth = double.PositiveInfinity;
-                ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? await ExtractToFileAsync(SelectedFile, Path.GetTempPath()) : null;
+                ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? await ExtractToFileAsync(SelectedFile, Path.GetTempPath()) : "PROTECTEDARCHIVE";
             }
             else
             {
