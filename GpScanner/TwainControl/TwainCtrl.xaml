@@ -2222,7 +2222,9 @@
                                     </Image.Source>
                                 </Image>
                             </TabItem.Header>
-                            <local:PdfSettings />
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <local:PdfSettings />
+                            </ScrollViewer>
                         </TabItem>
                     </TabControl>
                 </GroupBox>
