@@ -175,6 +175,7 @@
     <Compile Include="SearchFilterControl.xaml.cs">
       <DependentUpon>SearchFilterControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModel\BindingProxy.cs" />
     <Compile Include="ViewModel\ITwainService.cs" />
     <Compile Include="MiniDocumentView.xaml.cs">
       <DependentUpon>MiniDocumentView.xaml</DependentUpon>

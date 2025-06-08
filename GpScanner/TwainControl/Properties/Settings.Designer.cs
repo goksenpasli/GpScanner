@@ -686,5 +686,17 @@ namespace TwainControl.Properties {
                 this["ShowDocumentPageCount"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Black")]
+        public string BorderColor {
+            get {
+                return ((string)(this["BorderColor"]));
+            }
+            set {
+                this["BorderColor"] = value;
+            }
+        }
     }
 }

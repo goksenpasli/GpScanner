@@ -21,6 +21,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -2005,6 +2006,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     }
+
+    public PropertyInfo[] ListBoxColors { get; } = typeof(Colors).GetProperties();
 
     public RelayCommand<object> LoadContributionData { get; }
 

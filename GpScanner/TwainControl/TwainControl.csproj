@@ -117,6 +117,7 @@
       <DependentUpon>AboutView.xaml</DependentUpon>
     </Compile>
     <Compile Include="AboutViewTranslateViewModel.cs" />
+    <Compile Include="BindingProxy.cs" />
     <Compile Include="BitmapMethods.cs" />
     <Compile Include="CameraUserControl.xaml.cs">
       <DependentUpon>CameraUserControl.xaml</DependentUpon>

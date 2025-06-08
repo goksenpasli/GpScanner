@@ -171,5 +171,8 @@
     <Setting Name="ShowDocumentPageCount" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="BorderColor" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Black</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

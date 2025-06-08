@@ -77,6 +77,7 @@
             Modifiers="Control+Shift" />
     </Window.InputBindings>
     <Window.Resources>
+        <ViewModel:BindingProxy x:Key="Proxy" Data="{Binding}" />
         <ViewModel:FoldEffect x:Key="Fold"
             PresentationOptions:Freeze="true"
             FoldAmount="{Binding Fold}" />
@@ -1059,11 +1060,11 @@
                                                                             Description="{twainctrl:Loc TEXT}"
                                                                             OpenButtonVisibility="Collapsed"
                                                                             ResetButtonVisibility="Collapsed"
-                                                                            Text="{Binding DataContext.CalendarDesc, Source={x:Reference Window}, UpdateSourceTrigger=PropertyChanged}"
+                                                                            Text="{Binding Data.CalendarDesc, Source={StaticResource Proxy}, UpdateSourceTrigger=PropertyChanged}"
                                                                             TextWrapping="Wrap"
                                                                             TitleCaseMenuVisibility="Visible" />
-                                                                        <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding DataContext.NotifyDate, Source={x:Reference Window}, UpdateSourceTrigger=PropertyChanged}" />
-                                                                        <Button Command="{Binding DataContext.AddToCalendar, Source={x:Reference Window}}" CommandParameter="{Binding Mode=OneWay}">
+                                                                        <DatePicker DisplayDateStart="{Binding Mode=OneWay, Source={x:Static sys:DateTime.Today}}" SelectedDate="{Binding Data.NotifyDate, Source={StaticResource Proxy}, UpdateSourceTrigger=PropertyChanged}" />
+                                                                        <Button Command="{Binding Data.AddToCalendar, Source={StaticResource Proxy}}" CommandParameter="{Binding Mode=OneWay}">
                                                                             <Image Width="32" Height="32">
                                                                                 <Image.Source>
                                                                                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
