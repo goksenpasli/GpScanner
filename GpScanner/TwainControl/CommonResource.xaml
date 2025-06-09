@@ -755,7 +755,14 @@
                                 </Trigger>
                                 <Trigger Property="ToggleButton.IsChecked" Value="True">
                                     <Setter TargetName="border" Property="Border.BorderBrush" Value="#245A83" />
-                                    <Setter TargetName="border" Property="Panel.Background" Value="{StaticResource BorderBackground}" />
+                                    <Setter TargetName="border" Property="Panel.Background">
+                                        <Setter.Value>
+                                            <LinearGradientBrush ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
+                                                <GradientStop ice:Freeze="True" Offset="1" Color="{Binding Path=BorderBackground1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                <GradientStop ice:Freeze="True" Offset="0" Color="{Binding Path=BorderBackground2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
                                 </Trigger>
                                 <Trigger Property="UIElement.IsEnabled" Value="False">
                                     <Setter TargetName="border" Property="Border.BorderBrush" Value="#ADB2B5" />

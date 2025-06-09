@@ -822,19 +822,19 @@
                                             </Canvas>
                                         </ToggleButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <CheckBox VerticalAlignment="Center"
+                                        <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="DirectOpenPdfFile"
                                             IsChecked="{Binding DirectOpenPdfFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <CheckBox.Content>
+                                            <ToggleButton.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32"
                                                         Height="32"
                                                         Source="{Binding Source='.pdf', Converter={StaticResource FilePathToIconConverter}}" />
                                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PDFOPEN}" />
                                                 </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <CheckBox VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
@@ -854,11 +854,11 @@
                                             </CheckBox.Content>
                                         </CheckBox>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <CheckBox VerticalAlignment="Center"
+                                        <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="ContributionIsImageMode"
                                             IsChecked="{Binding ContributionIsImageMode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
-                                            <CheckBox.Content>
+                                            <ToggleButton.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Canvas Width="32" Height="32">
                                                         <Image Width="32" Height="32">
@@ -878,14 +878,14 @@
                                                     </Canvas>
                                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
                                                 </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <CheckBox VerticalAlignment="Center"
+                                        <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="ShowArchiveViewerThumbs"
                                             IsChecked="{Binding ShowArchiveViewerThumbs, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
-                                            <CheckBox.Content>
+                                            <ToggleButton.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Canvas Width="32" Height="32">
                                                         <Image Width="32" Height="32">
@@ -903,21 +903,21 @@
                                                     </Canvas>
                                                     <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc PREVIEWFILE}" />
                                                 </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                        <CheckBox VerticalAlignment="Center"
+                                        <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             twainctrl:Policy.PolicyName="UsePdfJpgFiles"
                                             IsChecked="{Binding UsePdfJpgFiles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}">
-                                            <CheckBox.ToolTip>
+                                            <ToggleButton.ToolTip>
                                                 <TextBlock Width="200"
                                                     FontWeight="Bold"
                                                     Foreground="Red"
                                                     Text="{twainctrl:Loc PDFTOJPEGDESC}"
                                                     TextWrapping="Wrap" />
-                                            </CheckBox.ToolTip>
-                                            <CheckBox.Content>
+                                            </ToggleButton.ToolTip>
+                                            <ToggleButton.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32"
                                                         Height="32"
@@ -929,8 +929,8 @@
                                                         Height="32"
                                                         Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                                                 </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <ToggleButton twainctrl:Policy.PolicyName="ThumbMultipleOcrEnabled" IsChecked="{Binding Path=ThumbMultipleOcrEnabled, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                             <Canvas Width="32" Height="32">
@@ -1120,14 +1120,13 @@
                                         </StackPanel>
                                     </CheckBox>
                                     <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-                                    <CheckBox VerticalAlignment="Center"
-                                        VerticalContentAlignment="Center"
+                                    <ToggleButton VerticalContentAlignment="Center"
                                         twainctrl:Policy.PolicyName="SetDbBackUpFolder"
                                         IsChecked="{Binding Path=BackUpDatabase, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}">
                                         <TextBlock Width="170"
                                             Text="{twainctrl:Loc BACKUPDB}"
                                             TextWrapping="Wrap" />
-                                    </CheckBox>
+                                    </ToggleButton>
                                     <Button Command="{Binding SetDbBackUpFolder}" IsEnabled="{Binding Path=BackUpDatabase, Mode=OneWay, Source={x:Static properties:Settings.Default}}">
                                         <StackPanel Orientation="Horizontal">
                                             <Image Width="32" Height="32">

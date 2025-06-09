@@ -175,10 +175,10 @@
                                                 TextBlock.TextAlignment="Center"
                                                 Value="{Binding ProcessorCount, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}" />
                                         </Canvas>
-                                        <CheckBox VerticalAlignment="Center"
+                                        <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             IsChecked="{Binding PdfBatchCompress, Source={x:Static properties:Settings.Default}}">
-                                            <CheckBox.Content>
+                                            <ToggleButton.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32" Height="32">
                                                         <Image.Source>
@@ -194,12 +194,12 @@
                                                         <Run Text="{twainctrl:Loc COMPRESS}" />
                                                     </TextBlock>
                                                 </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
-                                        <CheckBox VerticalAlignment="Center"
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
+                                        <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             IsChecked="{Binding ApplyPdfSaveOcr, Source={x:Static twainctrl:ToolBox.Scanner}}">
-                                            <CheckBox.Content>
+                                            <ToggleButton.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32"
                                                         Height="32"
@@ -210,8 +210,8 @@
                                                         <Run BaselineAlignment="Center" Text="{twainctrl:Loc OCR}" />
                                                     </TextBlock>
                                                 </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
                                         <ToggleButton IsChecked="{Binding Shutdown}">
                                             <Canvas Width="32" Height="32">
                                                 <Image Width="32" Height="32">
@@ -377,10 +377,10 @@
                                                     TextWrapping="Wrap" />
                                             </StackPanel>
                                         </Button>
-                                        <CheckBox VerticalAlignment="Center"
+                                        <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"
                                             IsChecked="{Binding PdfBatchCompress, Source={x:Static properties:Settings.Default}}">
-                                            <CheckBox.Content>
+                                            <ToggleButton.Content>
                                                 <StackPanel Orientation="Horizontal">
                                                     <Image Width="32" Height="32">
                                                         <Image.Source>
@@ -396,14 +396,12 @@
                                                         <Run Text="{twainctrl:Loc COMPRESS}" />
                                                     </TextBlock>
                                                 </StackPanel>
-                                            </CheckBox.Content>
-                                        </CheckBox>
-                                        <CheckBox VerticalAlignment="Center"
-                                            VerticalContentAlignment="Center"
-                                            IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}">
+                                            </ToggleButton.Content>
+                                        </ToggleButton>
+                                        <ToggleButton VerticalContentAlignment="Center" IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}">
                                             <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
-                                            <CheckBox.Style>
-                                                <Style TargetType="CheckBox">
+                                            <ToggleButton.Style>
+                                                <Style TargetType="ToggleButton">
                                                     <Setter Property="IsEnabled" Value="False" />
                                                     <Style.Triggers>
                                                         <MultiDataTrigger>
@@ -415,8 +413,8 @@
                                                         </MultiDataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
-                                            </CheckBox.Style>
-                                        </CheckBox>
+                                            </ToggleButton.Style>
+                                        </ToggleButton>
                                     </StackPanel>
                                 </Grid>
                                 <Separator />

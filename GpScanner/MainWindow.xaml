@@ -180,9 +180,6 @@
         <Style TargetType="{x:Type RepeatButton}">
             <Setter Property="Background" Value="{StaticResource BorderBackground}" />
         </Style>
-        <Style TargetType="{x:Type ToggleButton}">
-            <Setter Property="Background" Value="{StaticResource BorderBackground}" />
-        </Style>
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
