@@ -1247,6 +1247,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string SELECTCOLOR {
+            get {
+                return ResourceManager.GetString("SELECTCOLOR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string SELECTTWOPDF {
             get {
                 return ResourceManager.GetString("SELECTTWOPDF", resourceCulture);
@@ -1475,6 +1484,15 @@ namespace TwainControl.Properties {
         public static string TEXTSIZE {
             get {
                 return ResourceManager.GetString("TEXTSIZE", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string THEME {
+            get {
+                return ResourceManager.GetString("THEME", resourceCulture);
             }
         }
         

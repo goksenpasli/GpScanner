@@ -798,4 +798,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Некаторыя пашырэнні файлаў не былі абраны</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>Тэма</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Абярыце Колер</value>
+  </data>
 </root>

@@ -798,4 +798,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Որոշ ֆայլերի ընդարձակումներ չեն ընտրվել</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>Թեմա</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Ընտրեք գույնը</value>
+  </data>
 </root>

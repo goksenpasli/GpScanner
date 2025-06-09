@@ -833,4 +833,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value />
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

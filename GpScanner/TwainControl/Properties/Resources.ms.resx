@@ -798,4 +798,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Beberapa sambungan fail tidak dipilih</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>Tema</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Pilih warna</value>
+  </data>
 </root>

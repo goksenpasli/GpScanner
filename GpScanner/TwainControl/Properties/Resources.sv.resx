@@ -798,4 +798,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Vissa filtillägg valdes inte</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>TEMA</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Välj färg</value>
+  </data>
 </root>

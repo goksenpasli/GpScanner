@@ -798,4 +798,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Néhány fájlbővítést nem választottak ki</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>TÉMA</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Válassza ki a színt</value>
+  </data>
 </root>

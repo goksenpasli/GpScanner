@@ -810,4 +810,10 @@ Hujjat qo'shing</value>
   <data name="WARNEXT" xml:space="preserve">
     <value>Ba'zi fayl kengaytmalari tanlanmagan</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>Mavzuni</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Rangni tanlang</value>
+  </data>
 </root>

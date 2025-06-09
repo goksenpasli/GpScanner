@@ -634,7 +634,16 @@ PDF</value>
     <value>그림</value>
   </data>
   <data name="ARCHIVE" xml:space="preserve">
-    <value />
+    <value>보관소</value>
+  </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>일부 파일 확장은 선택되지 않았습니다</value>
+  </data>
+  <data name="THEME" xml:space="preserve">
+    <value>주제</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>색상을 선택하십시오</value>
   </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>문서를 추가하십시오
@@ -801,8 +810,5 @@ PDF</value>
   </data>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>시안 색상 제어는 하나 이상의 Alt Shift Ctrl 키와 다르게 작동합니다.</value>
-  </data>
-  <data name="WARNEXT" xml:space="preserve">
-    <value>일부 파일 확장은 선택되지 않았습니다</value>
   </data>
 </root>

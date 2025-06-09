@@ -798,4 +798,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Neka proširenja datoteka nisu odabrana</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>TEMA</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Odaberite boju</value>
+  </data>
 </root>

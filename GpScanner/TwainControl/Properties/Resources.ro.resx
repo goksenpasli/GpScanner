@@ -798,4 +798,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Unele extensii de fișiere nu au fost selectate</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>TEMĂ</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Selectați culoare</value>
+  </data>
 </root>

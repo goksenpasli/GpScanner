@@ -810,4 +810,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>برخی از پسوندهای پرونده انتخاب نشده اند</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>موضوع</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>رنگ را انتخاب کنید</value>
+  </data>
 </root>

@@ -795,4 +795,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>لم يتم تحديد بعض ملحقات الملفات</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>سمة</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>حدد اللون</value>
+  </data>
 </root>

@@ -802,4 +802,10 @@ TO FILE</value>
   <data name="WARNEXT" xml:space="preserve">
     <value>Some file extensions were not selected</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>THEME</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>SELECT COLOR</value>
+  </data>
 </root>

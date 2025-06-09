@@ -771,15 +771,6 @@
                                                     Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                                             </Canvas>
                                         </ToggleButton>
-                                        <Extensions:ContentToggleButton>
-                                            <Extensions:ContentToggleButton.OverContent>
-                                                <Border Background="{StaticResource BorderBackground}"
-                                                    BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                    BorderThickness="1">
-                                                    <local:SkinColorChooseDialog />
-                                                </Border>
-                                            </Extensions:ContentToggleButton.OverContent>
-                                        </Extensions:ContentToggleButton>
                                     </StackPanel>
                                 </ScrollViewer>
                                 <Separator Margin="0,1,0,1" />
@@ -1843,6 +1834,22 @@
                         </Button>
                     </UniformGrid>
                 </Grid>
+            </TabItem>
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="32" Height="32">
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="25" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                        <TextBlock VerticalAlignment="Center" Text="{twainctrl:Loc THEME}" />
+                    </StackPanel>
+                </TabItem.Header>
+                <local:SkinColorChooseDialog />
             </TabItem>
         </TabControl>
     </Grid>

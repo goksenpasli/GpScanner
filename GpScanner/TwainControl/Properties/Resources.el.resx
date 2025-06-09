@@ -795,4 +795,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Δεν επιλέχθηκαν ορισμένες επεκτάσεις αρχείων</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>ΘΕΜΑ</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Επιλέξτε χρώμα</value>
+  </data>
 </root>

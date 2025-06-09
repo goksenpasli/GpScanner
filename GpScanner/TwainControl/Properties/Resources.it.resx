@@ -795,4 +795,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Alcune estensioni di file non sono state selezionate</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>TEMA</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Seleziona il colore</value>
+  </data>
 </root>

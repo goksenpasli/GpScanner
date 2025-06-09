@@ -642,6 +642,12 @@ KALDIR</value>
   <data name="WARNEXT" xml:space="preserve">
     <value>BAZI DOSYA UZANTILARI SEÇİLMEDİ</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>TEMA</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>RENK SEÇİN</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>DOSYAYA
 BELGE EKLE</value>

@@ -810,4 +810,10 @@ Resminama goşuň</value>
   <data name="WARNEXT" xml:space="preserve">
     <value>Käbir faýl giňeltmeleri saýlanmady</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>Mowzugy</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Reňkini saýlaň</value>
+  </data>
 </root>

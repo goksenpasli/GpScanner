@@ -798,4 +798,10 @@
   <data name="WARNEXT" xml:space="preserve">
     <value>Beberapa ekstensi file tidak dipilih</value>
   </data>
+  <data name="THEME" xml:space="preserve">
+    <value>TEMA</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Pilih Warna</value>
+  </data>
 </root>
