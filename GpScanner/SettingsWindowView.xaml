@@ -71,11 +71,6 @@
                 </MultiBinding>
             </Image.Source>
         </Image>
-        <DataTemplate x:Key="ColorItemTemplate">
-            <Rectangle Width="16"
-                Height="16"
-                Fill="{Binding Name}" />
-        </DataTemplate>
     </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="Pause" Command="{Binding StopFlagAnimation}" />
@@ -776,23 +771,15 @@
                                                     Source="{Binding Source='.jpg', Converter={StaticResource FilePathToIconConverter}}" />
                                             </Canvas>
                                         </ToggleButton>
-                                        <ComboBox Grid.RowSpan="3"
-                                            VerticalContentAlignment="Center"
-                                            ItemTemplate="{StaticResource ColorItemTemplate}"
-                                            ItemsSource="{Binding ListBoxColors, Mode=OneWay}"
-                                            SelectedValue="{Binding Path=BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}"
-                                            SelectedValuePath="Name">
-                                            <ComboBox.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <UniformGrid Columns="11" />
-                                                </ItemsPanelTemplate>
-                                            </ComboBox.ItemsPanel>
-                                            <ComboBox.ItemContainerStyle>
-                                                <Style TargetType="ComboBoxItem">
-                                                    <Setter Property="Padding" Value="0" />
-                                                </Style>
-                                            </ComboBox.ItemContainerStyle>
-                                        </ComboBox>
+                                        <Extensions:ContentToggleButton>
+                                            <Extensions:ContentToggleButton.OverContent>
+                                                <Border Background="{StaticResource BorderBackground}"
+                                                    BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                    BorderThickness="1">
+                                                    <local:SkinColorChooseDialog />
+                                                </Border>
+                                            </Extensions:ContentToggleButton.OverContent>
+                                        </Extensions:ContentToggleButton>
                                     </StackPanel>
                                 </ScrollViewer>
                                 <Separator Margin="0,1,0,1" />

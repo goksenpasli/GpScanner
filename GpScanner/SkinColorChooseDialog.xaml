@@ -1,0 +1,77 @@
+﻿<UserControl x:Class="GpScanner.SkinColorChooseDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:Converters="clr-namespace:TwainControl.Converter;assembly=TwainControl"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:GpScanner"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:twainctrl="clr-namespace:TwainControl;assembly=TwainControl"
+    xmlns:twainproperties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
+    xmlns:viewmodel="clr-namespace:GpScanner.ViewModel"
+    d:DataContext="{d:DesignInstance Type=viewmodel:GpScannerViewModel}"
+    d:DesignHeight="110"
+    d:DesignWidth="300"
+    twainctrl:Translation.ResourceManager="{x:Static twainproperties:Resources.ResourceManager}"
+    UseLayoutRounding="True"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <Converters:StringToBrushConverter x:Key="StringToBrushConverter" />
+        <DataTemplate x:Key="ColorItemTemplate">
+            <Rectangle Width="16"
+                Height="16"
+                Fill="{Binding Name, Converter={StaticResource StringToBrushConverter}}" />
+        </DataTemplate>
+        <ItemsPanelTemplate x:Key="ComboBoxItemsPanel">
+            <UniformGrid Columns="11" />
+        </ItemsPanelTemplate>
+        <Style x:Key="ComboBoxItemContainerStyle" TargetType="{x:Type ComboBoxItem}">
+            <Setter Property="Padding" Value="0" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <UniformGrid Columns="2" Rows="6">
+            <TextBlock VerticalAlignment="Center" Text="Document Border" />
+            <ComboBox VerticalContentAlignment="Center"
+                ItemContainerStyle="{StaticResource ComboBoxItemContainerStyle}"
+                ItemTemplate="{StaticResource ColorItemTemplate}"
+                ItemsPanel="{StaticResource ComboBoxItemsPanel}"
+                ItemsSource="{Binding ListBoxColors, Mode=OneWay}"
+                SelectedValue="{Binding Path=BorderColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}"
+                SelectedValuePath="Name" />
+            <TextBlock VerticalAlignment="Center" Text="Theme Border 1" />
+            <ComboBox VerticalContentAlignment="Center"
+                ItemContainerStyle="{StaticResource ComboBoxItemContainerStyle}"
+                ItemTemplate="{StaticResource ColorItemTemplate}"
+                ItemsPanel="{StaticResource ComboBoxItemsPanel}"
+                ItemsSource="{Binding ListBoxColors, Mode=OneWay}"
+                SelectedValue="{Binding Path=BorderBackground1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}"
+                SelectedValuePath="Name" />
+            <TextBlock VerticalAlignment="Center" Text="Theme Border 2" />
+            <ComboBox VerticalContentAlignment="Center"
+                ItemContainerStyle="{StaticResource ComboBoxItemContainerStyle}"
+                ItemTemplate="{StaticResource ColorItemTemplate}"
+                ItemsPanel="{StaticResource ComboBoxItemsPanel}"
+                ItemsSource="{Binding ListBoxColors, Mode=OneWay}"
+                SelectedValue="{Binding Path=BorderBackground2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}"
+                SelectedValuePath="Name" />
+            <TextBlock VerticalAlignment="Center" Text="GroupBox Background 1" />
+            <ComboBox VerticalContentAlignment="Center"
+                ItemContainerStyle="{StaticResource ComboBoxItemContainerStyle}"
+                ItemTemplate="{StaticResource ColorItemTemplate}"
+                ItemsPanel="{StaticResource ComboBoxItemsPanel}"
+                ItemsSource="{Binding ListBoxColors, Mode=OneWay}"
+                SelectedValue="{Binding Path=GroupBoxBackGround1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}"
+                SelectedValuePath="Name" />
+            <TextBlock VerticalAlignment="Center" Text="GroupBox Background 2" />
+            <ComboBox VerticalContentAlignment="Center"
+                ItemContainerStyle="{StaticResource ComboBoxItemContainerStyle}"
+                ItemTemplate="{StaticResource ColorItemTemplate}"
+                ItemsPanel="{StaticResource ComboBoxItemsPanel}"
+                ItemsSource="{Binding ListBoxColors, Mode=OneWay}"
+                SelectedValue="{Binding Path=GroupBoxBackGround2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static twainproperties:Settings.Default}}"
+                SelectedValuePath="Name" />
+            <TextBlock />
+            <Button Command="{Binding Path=ResetThemeColor, Mode=OneWay}" Content="{twainctrl:Loc RESET}" />
+        </UniformGrid>
+    </Grid>
+</UserControl>

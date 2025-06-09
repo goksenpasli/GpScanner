@@ -1304,6 +1304,19 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
+        ResetThemeColor = new RelayCommand<object>(
+            parameter =>
+            {
+                Twainsettings.Settings.Default.BorderColor = "Black";
+                Twainsettings.Settings.Default.BorderBackground1 = "#FFFDFEFF";
+                Twainsettings.Settings.Default.BorderBackground2 = "#FFC1D3EA";
+                Twainsettings.Settings.Default.GroupBoxBackGround1 = "#FF48F3CA";
+                Twainsettings.Settings.Default.GroupBoxBackGround2 = "#FE00B6E8";
+                Twainsettings.Settings.Default.Save();
+                Twainsettings.Settings.Default.Reload();
+            },
+            parameter => true);
+
         EditWithControlPanel = new RelayCommand<object>(
             parameter =>
             {
@@ -2298,6 +2311,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public ICommand RemoveSelectedFtp { get; }
 
     public ICommand ResetSettings { get; }
+
+    public RelayCommand<object> ResetThemeColor { get; }
 
     public double Ripple
     {

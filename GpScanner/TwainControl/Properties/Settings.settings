@@ -174,5 +174,17 @@
     <Setting Name="BorderColor" Type="System.String" Scope="User">
       <Value Profile="(Default)">Black</Value>
     </Setting>
+    <Setting Name="BorderBackground1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFFDFEFF</Value>
+    </Setting>
+    <Setting Name="BorderBackground2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FFC1D3EA</Value>
+    </Setting>
+    <Setting Name="GroupBoxBackGround1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FF48F3CA</Value>
+    </Setting>
+    <Setting Name="GroupBoxBackGround2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#FE00B6E8</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

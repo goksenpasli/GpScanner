@@ -54,9 +54,6 @@
             <Style TargetType="RepeatButton">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>
-            <Style TargetType="ToggleButton">
-                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
-            </Style>
             <Style TargetType="Extensions:ContentToggleButton">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>

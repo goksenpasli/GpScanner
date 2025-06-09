@@ -698,5 +698,53 @@ namespace TwainControl.Properties {
                 this["BorderColor"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFFDFEFF")]
+        public string BorderBackground1 {
+            get {
+                return ((string)(this["BorderBackground1"]));
+            }
+            set {
+                this["BorderBackground1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FFC1D3EA")]
+        public string BorderBackground2 {
+            get {
+                return ((string)(this["BorderBackground2"]));
+            }
+            set {
+                this["BorderBackground2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FF48F3CA")]
+        public string GroupBoxBackGround1 {
+            get {
+                return ((string)(this["GroupBoxBackGround1"]));
+            }
+            set {
+                this["GroupBoxBackGround1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#FE00B6E8")]
+        public string GroupBoxBackGround2 {
+            get {
+                return ((string)(this["GroupBoxBackGround2"]));
+            }
+            set {
+                this["GroupBoxBackGround2"] = value;
+            }
+        }
     }
 }

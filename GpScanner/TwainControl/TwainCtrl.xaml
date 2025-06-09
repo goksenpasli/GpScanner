@@ -242,9 +242,6 @@
             <Style TargetType="{x:Type Extensions:SplitButton}">
                 <Setter Property="Background" Value="{StaticResource BorderBackground}" />
             </Style>
-            <Style TargetType="{x:Type ToggleButton}">
-                <Setter Property="Background" Value="{StaticResource BorderBackground}" />
-            </Style>
             <Style BasedOn="{StaticResource NumericUpDownStyle}" TargetType="Extensions:NumericUpDown" />
             <Style x:Key="BorderGroupStyleContainerStyle" TargetType="{x:Type GroupItem}">
                 <Setter Property="Template">

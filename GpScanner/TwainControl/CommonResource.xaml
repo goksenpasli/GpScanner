@@ -9,6 +9,7 @@
     xmlns:ice="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
     xmlns:local="clr-namespace:TwainControl"
     xmlns:pdfsharpdrawing="clr-namespace:PdfSharp.Drawing;assembly=PdfSharp-wpf"
+    xmlns:properties="clr-namespace:TwainControl.Properties;assembly=TwainControl"
     xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
@@ -23,6 +24,14 @@
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <Converter:WebpFileToBitmapImageConverter x:Key="WebpFileToBitmapImageConverter" />
     <Converter:Jb2ToBitmapImageConverter x:Key="Jb2ToBitmapImageConverter" />
+    <LinearGradientBrush x:Key="BorderBackground" ice:Freeze="True" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop ice:Freeze="True" Offset="0" Color="{Binding Path=BorderBackground1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+        <GradientStop ice:Freeze="True" Offset="1" Color="{Binding Path=BorderBackground2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+    </LinearGradientBrush>
+    <LinearGradientBrush x:Key="GroupBoxBackGround" ice:Freeze="True" MappingMode="RelativeToBoundingBox" StartPoint="0.5,0" EndPoint="0.5,1">
+        <GradientStop ice:Freeze="True" Offset="0" Color="{Binding Path=GroupBoxBackGround1, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+        <GradientStop ice:Freeze="True" Offset="1" Color="{Binding Path=GroupBoxBackGround2, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+    </LinearGradientBrush>
     <SolidColorBrush x:Key="ScrollBarDisabledBackground"
         ice:Freeze="True"
         Color="#FFE8E8EC" />
@@ -621,10 +630,6 @@
             </DrawingGroup>
         </DrawingBrush.Drawing>
     </DrawingBrush>
-    <LinearGradientBrush x:Key="ComboBox.Static.Background" ice:Freeze="true" StartPoint="0.5,0" EndPoint="0.5,1">
-        <GradientStop Offset="0" Color="#FFFDFEFF" />
-        <GradientStop Offset="1" Color="#FFC1D3EA" />
-    </LinearGradientBrush>
     <SolidColorBrush x:Key="ComboBox.Static.Border"
         ice:Freeze="true"
         Color="#FFACACAC" />
@@ -710,6 +715,80 @@
     <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Border"
         ice:Freeze="true"
         Color="Transparent" />
+    <Style TargetType="{x:Type ToggleButton}">
+        <Style.BasedOn>
+            <Style TargetType="{x:Type ButtonBase}">
+                <Setter Property="Border.BorderBrush" Value="#707070" />
+                <Setter Property="Border.BorderThickness" Value="1" />
+                <Setter Property="Control.HorizontalContentAlignment" Value="Center" />
+                <Setter Property="Control.Padding" Value="1" />
+                <Setter Property="Control.Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Border Name="border"
+                                Background="{DynamicResource BorderBackground}"
+                                BorderBrush="{TemplateBinding Border.BorderBrush}"
+                                BorderThickness="{TemplateBinding Border.BorderThickness}"
+                                SnapsToDevicePixels="True">
+                                <ContentPresenter Name="contentPresenter"
+                                    Margin="{TemplateBinding Control.Padding}"
+                                    HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}"
+                                    Content="{TemplateBinding ContentControl.Content}"
+                                    ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}"
+                                    ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Button.IsDefaulted" Value="True">
+                                    <Setter TargetName="border" Property="Border.BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                </Trigger>
+                                <Trigger Property="UIElement.IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="Border.BorderBrush" Value="#3C7FB1" />
+                                    <Setter TargetName="border" Property="Panel.Background" Value="#BEE6FD" />
+                                </Trigger>
+                                <Trigger Property="ButtonBase.IsPressed" Value="True">
+                                    <Setter TargetName="border" Property="Border.BorderBrush" Value="#2C628B" />
+                                    <Setter TargetName="border" Property="Panel.Background" Value="#C4E5F6" />
+                                </Trigger>
+                                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                                    <Setter TargetName="border" Property="Border.BorderBrush" Value="#245A83" />
+                                    <Setter TargetName="border" Property="Panel.Background" Value="{StaticResource BorderBackground}" />
+                                </Trigger>
+                                <Trigger Property="UIElement.IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Border.BorderBrush" Value="#ADB2B5" />
+                                    <Setter TargetName="border" Property="Panel.Background" Value="#F4F4F4" />
+                                    <Setter Property="TextElement.Foreground" Value="#838383" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Control.VerticalContentAlignment" Value="Center" />
+                <Setter Property="FrameworkElement.FocusVisualStyle">
+                    <Setter.Value>
+                        <Style TargetType="{x:Type IFrameworkInputElement}">
+                            <Setter Property="Control.Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Rectangle Margin="2"
+                                            SnapsToDevicePixels="True"
+                                            Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"
+                                            StrokeDashArray="1 2"
+                                            StrokeThickness="1" />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Panel.Background" Value="#DDDDDD" />
+                <Setter Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+            </Style>
+        </Style.BasedOn>
+    </Style>
     <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
         <Setter Property="ClickMode" Value="Press" />
         <Setter Property="Focusable" Value="false" />
@@ -719,7 +798,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border x:Name="templateRoot"
-                        Background="{StaticResource ComboBox.Static.Background}"
+                        Background="{StaticResource BorderBackground}"
                         BorderBrush="{StaticResource ComboBox.Static.Border}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         SnapsToDevicePixels="true">

@@ -137,6 +137,7 @@
     <Compile Include="Converter\PdfPageCountConverter.cs" />
     <Compile Include="Converter\RandomColorBrushConverter.cs" />
     <Compile Include="Converter\ResourceLanguageStringConverter.cs" />
+    <Compile Include="Converter\StringToBrushConverter.cs" />
     <Compile Include="Converter\StringToStrokeCollectionConverter.cs" />
     <Compile Include="Converter\WebpFileToBitmapImageConverter.cs" />
     <Compile Include="Converter\XKnownColorToBrushConverter.cs" />
