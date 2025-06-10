@@ -257,6 +257,35 @@ public class EypPdfViewer : PdfViewer.PdfViewer
                 AddToHistoryList(PdfFilePath);
             }
         }
+
+        if (e?.Data?.GetData(typeof(ScannedImage)) is ScannedImage scannedImage && DataContext is TwainCtrl twainCtrl)
+        {
+            string currentfile = PdfFilePath;
+            string temppdf = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.pdf");
+            using PdfDocument pdffile = scannedImage?.Resim?.GeneratePdf(null, ExtensionMethods.Format.Jpg, twainCtrl.SelectedPaper, Settings.Default.JpegQuality, Settings.Default.ImgLoadResolution);
+            pdffile?.Save(temppdf);
+            if (!IsValidPdfFile(temppdf))
+            {
+                return;
+            }
+            string[] files = Keyboard.Modifiers == ModifierKeys.Alt ? [temppdf, currentfile] : [currentfile, temppdf];
+            files.MergePdf().Save(currentfile);
+            PdfFilePath = null;
+            PdfFilePath = currentfile;
+            if (File.Exists(temppdf))
+            {
+                File.Delete(temppdf);
+            }
+        }
+    }
+
+    protected override void OnPreviewDragOver(DragEventArgs e)
+    {
+        if (e?.Data?.GetData(typeof(ScannedImage)) is not ScannedImage || !IsValidPdfFile(PdfFilePath))
+        {
+            e.Handled = true;
+            e.Effects = DragDropEffects.None;
+        }
     }
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)

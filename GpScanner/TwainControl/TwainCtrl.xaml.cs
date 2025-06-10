@@ -5005,13 +5005,20 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     {
         if (sender is Run run)
         {
-            DragMoveStarted = true;
-            StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
-            using Icon icon = Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
-            DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
-            _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
-            DragMoveStarted = false;
-            e.Handled = true;
+            try
+            {
+                DragMoveStarted = true;
+                StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
+                using Icon icon = Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+                DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
+                _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
+                DragMoveStarted = false;
+                e.Handled = true;
+            }
+            finally
+            {
+                DragMoveStarted = false;
+            }
         }
     }
 
