@@ -281,11 +281,20 @@ public class EypPdfViewer : PdfViewer.PdfViewer
 
     protected override void OnPreviewDragOver(DragEventArgs e)
     {
-        if (e?.Data?.GetData(typeof(ScannedImage)) is not ScannedImage || !IsValidPdfFile(PdfFilePath))
+        if (e?.Data?.GetData(typeof(ScannedImage)) is ScannedImage && IsValidPdfFile(PdfFilePath))
         {
-            e.Handled = true;
-            e.Effects = DragDropEffects.None;
+            e.Handled = false;
+            e.Effects = DragDropEffects.Copy;
+            return;
         }
+        if (e?.Data?.GetData(DataFormats.FileDrop) is string[])
+        {
+            e.Handled = false;
+            e.Effects = DragDropEffects.Copy;
+            return;
+        }
+        e.Handled = true;
+        e.Effects = DragDropEffects.None;
     }
 
     private static void Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
