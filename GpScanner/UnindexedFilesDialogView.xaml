@@ -48,12 +48,12 @@
                         FontWeight="Bold"
                         Foreground="Cyan"
                         Text="4" />
-                </Hyperlink><Run Text=" " /><InlineUIContainer BaselineAlignment="Center">
+                </Hyperlink><InlineUIContainer BaselineAlignment="Center">
                     <Image Width="16"
                         Height="16"
                         d:Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}"
                         Source="{Binding Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay}" />
-                </InlineUIContainer><Run Text=" " /><Hyperlink BaselineAlignment="Center"
+                </InlineUIContainer><Hyperlink BaselineAlignment="Center"
                     Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
                     CommandParameter="{Binding Mode=OneWay}"
                     TextDecorations="None">
@@ -67,7 +67,7 @@
                             </Image.Source>
                         </Image>
                     </InlineUIContainer>
-                </Hyperlink><Run Text=" " /><Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" /></TextBlock>
+                </Hyperlink><Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" /></TextBlock>
         </DataTemplate>
     </UserControl.Resources>
     <Grid Background="{StaticResource BorderBackground}">

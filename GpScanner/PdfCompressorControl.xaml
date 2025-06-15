@@ -45,7 +45,7 @@
                                 Background="{x:Null}"
                                 Maximum="100"
                                 Value="{Binding CompressionRatio, Mode=OneWay}" />
-                        </InlineUIContainer><Run Text=" " /><Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" /></TextBlock>
+                        </InlineUIContainer><Run BaselineAlignment="Center" Text="{Binding Filename, Mode=OneWay}" /></TextBlock>
                 </Extensions:ButtonedTextBox>
             </CheckBox>
         </DataTemplate>
