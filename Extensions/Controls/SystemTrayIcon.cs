@@ -16,7 +16,7 @@ namespace Extensions
 {
     [DefaultProperty("Content")]
     [ContentProperty("Content")]
-    public class SystemTrayIcon : Control
+    public class SystemTrayIcon : Control, IDisposable
     {
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(UIElement), typeof(SystemTrayIcon), new PropertyMetadata(null));
         public static readonly DependencyProperty DoubleClickCommandProperty = DependencyProperty.Register("DoubleClickCommand", typeof(ICommand), typeof(SystemTrayIcon));
@@ -42,6 +42,8 @@ namespace Extensions
             Unloaded += OnUnloaded;
         }
 
+        ~SystemTrayIcon() { Dispose(); }
+
         public UIElement Content { get => (UIElement)GetValue(ContentProperty); set => SetValue(ContentProperty, value); }
 
         public ICommand DoubleClickCommand { get => (ICommand)GetValue(DoubleClickCommandProperty); set => SetValue(DoubleClickCommandProperty, value); }
@@ -53,6 +55,12 @@ namespace Extensions
         public string ToolTipText { get => (string)GetValue(ToolTipTextProperty); set => SetValue(ToolTipTextProperty, value); }
 
         public bool TrayIconActive { get => (bool)GetValue(TrayIconActiveProperty); set => SetValue(TrayIconActiveProperty, value); }
+
+        public void Dispose()
+        {
+            UnInitializeNotifyIcon();
+            GC.SuppressFinalize(this);
+        }
 
         private static void TrayIconActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -79,13 +87,12 @@ namespace Extensions
             if (hwndSource is not null)
             {
                 NOTIFYICONDATA newNOTIFYICONDATA = new() { hWnd = hwndSource.Handle, uID = 100, uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP, uCallbackMessage = WM_TRAYICON };
-                StreamResourceInfo streamInfo = Application.GetResourceStream(IconUri);
-                using Icon icon = new(streamInfo.Stream, new System.Drawing.Size(16, 16));
+                using var streamInfo = Application.GetResourceStream(IconUri).Stream;
+                using Icon icon = new(streamInfo);
                 newNOTIFYICONDATA.hIcon = icon.Handle;
                 newNOTIFYICONDATA.szTip = ToolTipText ?? string.Empty;
                 _notifyIconData = newNOTIFYICONDATA;
                 _ = Shell_NotifyIcon(NIM_ADD, ref _notifyIconData);
-                streamInfo?.Stream?.Dispose();
                 hwndSource.AddHook(WndProc);
             }
             else
