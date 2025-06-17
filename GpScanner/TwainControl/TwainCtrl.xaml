@@ -857,6 +857,20 @@
                                                         </MenuItem.Icon>
                                                     </MenuItem>
                                                     <Separator />
+                                                    <MenuItem Header="{local:Loc CLOSECOMP}"
+                                                        IsCheckable="True"
+                                                        IsChecked="{Binding SetShutdown}">
+                                                        <MenuItem.Icon>
+                                                            <Image Width="16" Height="16">
+                                                                <Image.Source>
+                                                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                                        <Binding Source="Shell32.dll" />
+                                                                        <Binding Source="27" />
+                                                                    </MultiBinding>
+                                                                </Image.Source>
+                                                            </Image>
+                                                        </MenuItem.Icon>
+                                                    </MenuItem>
                                                     <MenuItem IsCheckable="True"
                                                         IsChecked="{Binding Path=AutoRotateBasedText, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                         IsEnabled="{Binding TesseractOrientationFileExists}">

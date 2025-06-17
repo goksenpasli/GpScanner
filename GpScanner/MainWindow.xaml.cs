@@ -373,6 +373,11 @@ public partial class MainWindow : Window
             {
                 ViewModel.HistorySaveList.Add(TwainCtrl.Scanner.SaveFileFullPath);
             }
+
+            if (e.PropertyName is "SetShutdown")
+            {
+                ViewModel.Shutdown = TwainCtrl?.SetShutdown == true;
+            }
         }
     }
 

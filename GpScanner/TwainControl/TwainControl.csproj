@@ -337,6 +337,7 @@
     <Compile Include="ScanProfilesView.xaml.cs">
       <DependentUpon>ScanProfilesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Shutdown.cs" />
     <Compile Include="SimpleArchiveViewer.cs" />
     <Compile Include="TiffFileHandler.cs" />
     <Compile Include="ToolBox.xaml.cs">

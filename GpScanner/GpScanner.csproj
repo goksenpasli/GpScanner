@@ -242,7 +242,6 @@
     <Compile Include="ViewModel\ScannerData.cs" />
     <Compile Include="ViewModel\ScannerService.cs" />
     <Compile Include="ViewModel\ScannerStrCmpLogicalComparer.cs" />
-    <Compile Include="ViewModel\Shutdown.cs" />
     <Compile Include="ViewModel\SplashViewModel.cs" />
     <Compile Include="ViewModel\StillImageHelper.cs" />
     <Compile Include="ViewModel\StrCmpLogicalComparer.cs" />

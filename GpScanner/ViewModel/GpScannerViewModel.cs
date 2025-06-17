@@ -269,7 +269,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
                 if (Shutdown)
                 {
-                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
+                    TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
                 }
             },
             parameter => !OcrIsBusy && parameter is string pdffilepath && File.Exists(pdffilepath) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -317,7 +317,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 OcrIsBusy = false;
                 if (Shutdown)
                 {
-                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
+                    TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
                 }
             },
             parameter => !OcrIsBusy && UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -778,7 +778,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 BatchTxtOcrs?.Clear();
                 if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
-                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
+                    TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
@@ -858,7 +858,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 BatchTxtOcrs?.Clear();
                 if (Filesavetask?.IsCompleted == true && Shutdown)
                 {
-                    ViewModel.Shutdown.DoExitWin(ViewModel.Shutdown.EWX_SHUTDOWN);
+                    TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
                 }
             },
             parameter => !string.IsNullOrWhiteSpace(BatchFolder) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
