@@ -6,7 +6,7 @@
     xmlns:local="clr-namespace:Extensions"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DataContext="{d:DesignInstance Type=Controls:MediaViewer}"
-    d:DesignHeight="480"
+    d:DesignHeight="530"
     d:DesignWidth="480"
     FontFamily="Segoe UI"
     FontSize="12"
@@ -15,10 +15,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
-        <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
-        <Style TargetType="{x:Type ComboBox}">
-            <Setter Property="Template" Value="{DynamicResource ComboBoxStyle}" />
-        </Style>
+        <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />      
     </UserControl.Resources>
     <GroupBox>
         <UniformGrid Columns="2">

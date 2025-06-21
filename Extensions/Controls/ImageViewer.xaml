@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="clr-namespace:Extensions">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Extensions;component/Controls/Skin.xaml" />
+    </ResourceDictionary.MergedDictionaries>
     <local:SystemFileIconConverter x:Key="SystemFileIconConverter" />
     <local:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
     <Style TargetType="local:ImageViewer">
@@ -183,7 +186,7 @@
                                         Maximum="{Binding MaxZoom, RelativeSource={RelativeSource TemplatedParent}}"
                                         Minimum="{Binding MinZoom, RelativeSource={RelativeSource TemplatedParent}}"
                                         SmallChange="1"
-                                        Style="{DynamicResource Slider}"
+                                        Style="{StaticResource Slider}"
                                         Visibility="{Binding ZoomButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                         Value="{Binding Zoom, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <Slider Grid.Column="5"
@@ -193,7 +196,7 @@
                                         IsSnapToTickEnabled="{Binding SnapTick, RelativeSource={RelativeSource TemplatedParent}}"
                                         Maximum="360"
                                         SmallChange="1"
-                                        Style="{DynamicResource Slider}"
+                                        Style="{StaticResource Slider}"
                                         Ticks="0, 90, 180, 270, 360"
                                         Visibility="{Binding AngleButtonVisibility, RelativeSource={RelativeSource TemplatedParent}}"
                                         Value="{Binding Angle, RelativeSource={RelativeSource TemplatedParent}}" />

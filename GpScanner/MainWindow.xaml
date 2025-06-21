@@ -990,6 +990,7 @@
                                 <RowDefinition Height="31*" />
                             </Grid.RowDefinitions>
                             <RepeatButton Grid.RowSpan="2"
+                                Extensions:ControlExtensions.FlipHorizontally="{Binding LangFlowDirection}"
                                 twainctrl:Policy.PolicyName="DateBack"
                                 BorderBrush="Cyan"
                                 Command="{Binding DateBack}"
@@ -997,6 +998,7 @@
                                 FontFamily="Wingdings"
                                 FontSize="16" />
                             <RepeatButton Grid.Column="1"
+                                Extensions:ControlExtensions.FlipHorizontally="{Binding LangFlowDirection}"
                                 Command="{Binding StartDateBack}"
                                 Content="ç"
                                 FontFamily="Wingdings"
@@ -1007,12 +1009,14 @@
                                 Language="{Binding CalendarLang}"
                                 SelectedDate="{Binding BaşlangıçTarihi}" />
                             <RepeatButton Grid.Column="3"
+                                Extensions:ControlExtensions.FlipHorizontally="{Binding LangFlowDirection}"
                                 Command="{Binding StartDateForward}"
                                 Content="è"
                                 FontFamily="Wingdings"
                                 FontSize="16" />
                             <RepeatButton Grid.RowSpan="2"
                                 Grid.Column="4"
+                                Extensions:ControlExtensions.FlipHorizontally="{Binding LangFlowDirection}"
                                 twainctrl:Policy.PolicyName="DateForward"
                                 BorderBrush="Cyan"
                                 Command="{Binding DateForward}"
@@ -1053,6 +1057,7 @@
                             </Extensions:ContentToggleButton>
                             <RepeatButton Grid.Row="1"
                                 Grid.Column="1"
+                                Extensions:ControlExtensions.FlipHorizontally="{Binding LangFlowDirection}"
                                 Command="{Binding EndDateBack}"
                                 Content="ç"
                                 FontFamily="Wingdings"
@@ -1066,6 +1071,7 @@
                                 SelectedDate="{Binding BitişTarihi}" />
                             <RepeatButton Grid.Row="1"
                                 Grid.Column="3"
+                                Extensions:ControlExtensions.FlipHorizontally="{Binding LangFlowDirection}"
                                 Command="{Binding EndDateForward}"
                                 Content="è"
                                 FontFamily="Wingdings"

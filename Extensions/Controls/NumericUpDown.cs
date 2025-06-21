@@ -17,7 +17,7 @@ namespace Extensions
         public static readonly DependencyProperty MinimumProperty = DependencyProperty.Register("Minimum", typeof(decimal), typeof(NumericUpDown), new PropertyMetadata(decimal.MinValue));
         public static readonly DependencyProperty NumericUpdownTextBoxVisibilityProperty = DependencyProperty.Register("NumericUpdownTextBoxVisibility", typeof(Visibility), typeof(NumericUpDown), new PropertyMetadata(Visibility.Visible));
         public static readonly DependencyProperty OrientationProperty = DependencyProperty.Register("Orientation", typeof(Orientation), typeof(NumericUpDown), new PropertyMetadata(Orientation.Horizontal));
-        public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register("StringFormat", typeof(string), typeof(NumericUpDown), new PropertyMetadata(null));
+        public static readonly DependencyProperty StringFormatProperty = DependencyProperty.Register("StringFormat", typeof(string), typeof(NumericUpDown), new PropertyMetadata(null, OnStringFormatChanged));
         public static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(decimal), typeof(NumericUpDown), new FrameworkPropertyMetadata(0m, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnValueChanged));
 
         static NumericUpDown() { DefaultStyleKeyProperty?.OverrideMetadata(typeof(NumericUpDown), new FrameworkPropertyMetadata(typeof(NumericUpDown))); }
@@ -93,6 +93,14 @@ namespace Extensions
             else
             {
                 Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            }
+        }
+
+        private static void OnStringFormatChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is NumericUpDown numericUpDown)
+            {
+                numericUpDown.ContentText = string.Format(e.NewValue as string, numericUpDown.Value);
             }
         }
 

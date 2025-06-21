@@ -265,7 +265,6 @@
             </Grid.ColumnDefinitions>
             <RepeatButton x:Name="LeftButton"
                 Grid.Column="0"
-                Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection, RelativeSource={RelativeSource AncestorType=Window}}"
                 Command="{x:Static ScrollBar.LineLeftCommand}"
                 CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                 Content="ç"
@@ -276,7 +275,6 @@
                 Content="{TemplateBinding Content}" />
             <RepeatButton x:Name="RightButton"
                 Grid.Column="2"
-                Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection, RelativeSource={RelativeSource AncestorType=Window}}"
                 Command="{x:Static ScrollBar.LineRightCommand}"
                 CommandTarget="{Binding RelativeSource={RelativeSource TemplatedParent}}"
                 Content="è"
