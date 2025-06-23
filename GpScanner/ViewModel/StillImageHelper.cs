@@ -193,6 +193,7 @@ public static class StillImageHelper
 
     private class StreamString(Stream ioStream)
     {
+        private readonly Stream ioStream = ioStream;
         private readonly UnicodeEncoding streamEncoding = new();
 
         public string ReadString()
@@ -221,7 +222,5 @@ public static class StillImageHelper
 
             return outBuffer.Length + 2;
         }
-
-        private readonly Stream ioStream = ioStream;
     }
 }

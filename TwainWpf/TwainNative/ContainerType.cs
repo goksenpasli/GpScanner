@@ -1,4 +1,4 @@
-namespace TwainWpf.TwainNative
+﻿namespace TwainWpf.TwainNative
 {
     /// <summary>
     /// TWON_...

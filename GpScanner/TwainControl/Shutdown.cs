@@ -5,12 +5,12 @@ namespace TwainControl
 {
     public static class Shutdown
     {
+        public const int EWX_SHUTDOWN = 0x00000001;
         internal const int EWX_FORCE = 0x00000004;
         internal const int EWX_FORCEIFHUNG = 0x00000010;
         internal const int EWX_LOGOFF = 0x00000000;
         internal const int EWX_POWEROFF = 0x00000008;
         internal const int EWX_REBOOT = 0x00000002;
-        public const int EWX_SHUTDOWN = 0x00000001;
         internal const int SE_PRIVILEGE_ENABLED = 0x00000002;
         internal const string SE_SHUTDOWN_NAME = "SeShutdownPrivilege";
         internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;

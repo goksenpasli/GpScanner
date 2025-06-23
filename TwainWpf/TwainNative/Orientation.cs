@@ -1,4 +1,4 @@
-namespace TwainWpf.TwainNative
+﻿namespace TwainWpf.TwainNative
 {
     /// <summary>
     /// Twain spec ICAP_ORIENTATION values.

@@ -1,4 +1,4 @@
-namespace TwainWpf.TwainNative
+﻿namespace TwainWpf.TwainNative
 {
     /// <summary>
     /// ICAP_XFERMECH values (Image Transfer)

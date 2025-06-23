@@ -1,4 +1,4 @@
-using TwainWpf.TwainNative;
+﻿using TwainWpf.TwainNative;
 
 namespace TwainWpf
 {

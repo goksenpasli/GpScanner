@@ -1,4 +1,4 @@
-namespace TwainWpf.TwainNative
+﻿namespace TwainWpf.TwainNative
 {
     /// <summary>
     /// /* TWON_ENUMERATION. Container for a collection of values. */ typedef struct { TW_UINT16  ItemType; TW_UINT32

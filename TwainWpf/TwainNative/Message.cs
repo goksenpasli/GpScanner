@@ -1,4 +1,4 @@
-namespace TwainWpf.TwainNative
+﻿namespace TwainWpf.TwainNative
 {
     public enum Message : short
     {

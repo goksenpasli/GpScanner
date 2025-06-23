@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +10,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Markup;
-using System.Windows.Resources;
 using static Extensions.NativeMethods;
 
 namespace Extensions
@@ -87,7 +87,7 @@ namespace Extensions
             if (hwndSource is not null)
             {
                 NOTIFYICONDATA newNOTIFYICONDATA = new() { hWnd = hwndSource.Handle, uID = 100, uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP, uCallbackMessage = WM_TRAYICON };
-                using var streamInfo = Application.GetResourceStream(IconUri).Stream;
+                using Stream streamInfo = Application.GetResourceStream(IconUri).Stream;
                 using Icon icon = new(streamInfo);
                 newNOTIFYICONDATA.hIcon = icon.Handle;
                 newNOTIFYICONDATA.szTip = ToolTipText ?? string.Empty;

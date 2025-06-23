@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using TwainWpf.TwainNative;
 
 namespace TwainWpf

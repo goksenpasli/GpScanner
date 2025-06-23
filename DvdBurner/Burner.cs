@@ -11,7 +11,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
