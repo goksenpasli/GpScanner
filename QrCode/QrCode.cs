@@ -32,10 +32,17 @@ public class QrCode : InpcBase
         {
             return null;
         }
+        try
+        {
 
-        BarcodeReader reader = new();
-        reader.Options.TryHarder = true;
-        return reader.Decode(bitmapFrame)?.Text;
+            BarcodeReader reader = new();
+            reader.Options.TryHarder = true;
+            return reader.Decode(bitmapFrame)?.Text;
+        }
+        catch (System.Exception)
+        {
+            return null;
+        }
     }
 
     public string GetImageBarcodeResult(byte[] imgbyte)
