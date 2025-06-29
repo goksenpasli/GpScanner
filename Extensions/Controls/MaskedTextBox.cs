@@ -274,9 +274,5 @@ public class MaskedTextBox : TextBox
         }
     }
 
-    private void UpdateText()
-    {
-        Text = MaskProvider?.ToDisplayString() ?? string.Empty;
-        SelectionStart = Text.Length;
-    }
+    private void UpdateText() => Text = MaskProvider?.ToDisplayString() ?? string.Empty;
 }

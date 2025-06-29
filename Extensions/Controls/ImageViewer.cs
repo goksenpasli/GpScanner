@@ -529,10 +529,13 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         if (d is ImageViewer imageViewer && e.NewValue is not null && e.NewValue is BitmapFrame bitmapFrame)
         {
-            imageViewer.Orientation = bitmapFrame.PixelHeight < bitmapFrame.PixelWidth ? FitImageOrientation.Width : FitImageOrientation.Height;
             if (bitmapFrame.PixelHeight * 2 == bitmapFrame.PixelWidth)
             {
                 imageViewer.PanoramaButtonVisibility = Visibility.Visible;
+            }
+            if (imageViewer.Orientation != FitImageOrientation.None)
+            {
+                imageViewer.Resize?.Execute(null);
             }
         }
     }
@@ -541,14 +544,6 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         double zoom = (double)value;
         return zoom >= 0.0;
-    }
-
-    private void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
-    {
-        if (e.PropertyName is "Sayfa" && TiffDecoder is not null)
-        {
-            Source = TiffDecoder.Frames[Sayfa - 1];
-        }
     }
 
     private void Viewport3D_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
