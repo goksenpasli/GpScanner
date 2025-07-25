@@ -57,6 +57,8 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ImageViewer()
     {
+        PropertyChanged += ImageViewer_PropertyChanged;
+
         DosyaAç = new RelayCommand<object>(
             parameter =>
             {
@@ -544,6 +546,14 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
     {
         double zoom = (double)value;
         return zoom >= 0.0;
+    }
+
+    private void ImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "Sayfa" && TiffDecoder is not null)
+        {
+            Source = TiffDecoder.Frames[Sayfa - 1];
+        }
     }
 
     private void Viewport3D_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
