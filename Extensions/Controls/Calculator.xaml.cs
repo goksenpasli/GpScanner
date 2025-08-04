@@ -64,13 +64,13 @@ namespace Extensions.Controls
             }
         }
 
-        private void MemoryAdd_Click(object sender, RoutedEventArgs e) => UpdateMemoryOperation((double currentValue) => memory += currentValue);
+        private void MemoryAdd_Click(object sender, RoutedEventArgs e) => UpdateMemoryOperation(currentValue => memory += currentValue);
 
         private void MemoryClear_Click(object sender, RoutedEventArgs e) => memory = 0;
 
         private void MemoryRecall_Click(object sender, RoutedEventArgs e) => DisplayResult(memory);
 
-        private void MemorySubtract_Click(object sender, RoutedEventArgs e) => UpdateMemoryOperation((double currentValue) => memory -= currentValue);
+        private void MemorySubtract_Click(object sender, RoutedEventArgs e) => UpdateMemoryOperation(currentValue => memory -= currentValue);
 
         private void Negate_Click(object sender, RoutedEventArgs e)
         {
@@ -126,7 +126,7 @@ namespace Extensions.Controls
             }
         }
 
-        private void Square_Click(object sender, RoutedEventArgs e) => PerformUnaryOperation((double currentValue) => currentValue * currentValue);
+        private void Square_Click(object sender, RoutedEventArgs e) => PerformUnaryOperation(currentValue => currentValue * currentValue);
 
         private void SquareRoot_Click(object sender, RoutedEventArgs e) => PerformUnaryOperation(Math.Sqrt);
 

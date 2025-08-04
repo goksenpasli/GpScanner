@@ -17,8 +17,8 @@ namespace TwainWpf
             };
 
             _dataSourceManager = new DataSourceManager(DataSourceManager.DefaultApplicationId, messageHook);
-            _dataSourceManager.ScanningComplete += (object sender, ScanningCompleteEventArgs args) => ScanningComplete(this, args);
-            _dataSourceManager.TransferImage += (object sender, TransferImageEventArgs args) => TransferImage(this, args);
+            _dataSourceManager.ScanningComplete += (sender, args) => ScanningComplete(this, args);
+            _dataSourceManager.TransferImage += (sender, args) => TransferImage(this, args);
         }
 
         /// <summary>

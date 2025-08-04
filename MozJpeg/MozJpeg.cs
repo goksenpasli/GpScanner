@@ -785,8 +785,8 @@ namespace MozJpeg
         /// <param name="jpegBuf">Pointer to a buffer containing the JPEG image to decompress. This buffer is not modified.</param>
         /// <param name="jpegSize">Size of the JPEG image (in bytes)</param>
         /// <param name="dstBuf">
-        /// Pointer to an image buffer that will receive the decompressed image. This buffer should normally be <c>
-        /// pitch * scaledHeight</c> bytes in size, where <c>scaledHeight</c> can be determined by calling <see
+        /// Pointer to an image buffer that will receive the decompressed image. This buffer should normally be <code>
+        /// pitch * scaledHeight</code> bytes in size, where <c>scaledHeight</c> can be determined by calling <see
         /// cref="TJSCALED"/> with the JPEG image height and one of the scaling factors returned by <see
         /// cref="tjGetScalingFactors"/> . The <paramref name="dstBuf"/> pointer may also be used to decompress into a
         /// specific region of a larger buffer.
