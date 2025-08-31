@@ -268,7 +268,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                 using ArchiveFile archiveFile = new(archivepath);
                 Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname.DosyaAdı);
                 string extractfile = Path.Combine(extractfolder, Path.GetFileName(entryname.DosyaAdı));
-                if (!File.Exists(extractfile))
+                if (!File.Exists(extractfile) || (Crc32.ComputeFile(extractfile) != entry.CRC))
                 {
                     try
                     {
