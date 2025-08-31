@@ -18,6 +18,7 @@
     UseLayoutRounding="True"
     mc:Ignorable="d">
     <UserControl.Resources>
+        <CollectionViewSource x:Key="UnindexedFiles" Source="{Binding UnIndexedFiles}" />
         <Converter:NumberRangeToColorConverter x:Key="NumberRangeToColorConverter"
             MaxNumber="{Binding Source={x:Static sys:Environment.ProcessorCount}}"
             MinNumber="1" />
@@ -85,7 +86,8 @@
             d:ItemTemplate="{StaticResource ListBoxItemListTemplate}"
             d:ItemsSource="{d:SampleData ItemCount=5}"
             Background="{StaticResource BorderBackground}"
-            ItemsSource="{Binding UnIndexedFiles}"
+            IsSynchronizedWithCurrentItem="False"
+            ItemsSource="{Binding Source={StaticResource UnindexedFiles}}"
             VirtualizingPanel.CacheLengthUnit="Pixel"
             VirtualizingPanel.IsVirtualizingWhenGrouping="True"
             VirtualizingPanel.ScrollUnit="Pixel"
@@ -134,6 +136,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="12" />
                 <ColumnDefinition />
                 <ColumnDefinition Width="80" />
             </Grid.ColumnDefinitions>
@@ -169,7 +172,11 @@
                 Minimum="1"
                 TextBlock.TextAlignment="Center"
                 Value="{Binding BatchOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Extensions:SplitButton Grid.Column="3"
+            <Extensions:CheckComboBox Grid.Column="3"
+                ItemTemplate="{DynamicResource SimpleArchiveViewerFilterItemTemplate}"
+                Items="{Binding FilterTypes}"
+                Watermark="..." />
+            <Extensions:SplitButton Grid.Column="4"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
                 Command="{Binding UnindexedAllFilesOcr}"
@@ -240,7 +247,7 @@
                     </Border>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
-            <Button Grid.Column="4"
+            <Button Grid.Column="5"
                 twainctrl:Policy.PolicyName="CancelUnindexedBatchOcr"
                 Command="{Binding CancelUnindexedBatchOcr}">
                 <StackPanel Orientation="Horizontal">

@@ -85,6 +85,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private int cropAllMaximumWidth;
     private bool disposedValue;
     private GridLength documentGridLength = new(5, GridUnitType.Star);
+    private bool encodeAsJb2;
     private bool encodeAsWebp;
     private CancellationTokenSource fileloadcancellationToken;
     private Task fileloadtask;
@@ -379,6 +380,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     SaveWebpImage(scannedImage.Resim, saveFileDialog.FileName);
+                }
+            },
+            parameter => FileNameValid(Scanner?.FileName));
+
+        SaveSingleBlackWhiteJb2File = new RelayCommand<object>(
+            parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Jb2 Dosyası (*.jb2)|*.jb2", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
+                {
+                    SaveJb2Image(scannedImage.Resim, saveFileDialog.FileName);
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -2659,6 +2671,25 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> DuplicateSelectedImage { get; }
 
+    public bool EncodeAsJb2
+    {
+        get => encodeAsJb2;
+        set
+        {
+            if (encodeAsJb2 != value)
+            {
+                encodeAsJb2 = value;
+                if (value)
+                {
+                    encodeAsWebp = false;
+                }
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(EncodeAsWebp));
+            }
+        }
+    }
+
     public bool EncodeAsWebp
     {
         get => encodeAsWebp;
@@ -2667,7 +2698,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             if (encodeAsWebp != value)
             {
                 encodeAsWebp = value;
-                OnPropertyChanged(nameof(EncodeAsWebp));
+                if (value)
+                {
+                    encodeAsJb2 = false;
+                }
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(EncodeAsJb2));
             }
         }
     }
@@ -3209,6 +3246,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> SaveSelectedFilesWebpFile { get; }
 
     public RelayCommand<object> SaveSelectedFilesZipFile { get; }
+
+    public RelayCommand<object> SaveSingleBlackWhiteJb2File { get; }
 
     public RelayCommand<object> SaveSingleBwPdfFile { get; }
 
@@ -5047,6 +5086,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     }
 
+    private void SaveJb2Image(BitmapFrame scannedImage, string filename)
+    {
+        Dispatcher.Invoke(
+            () =>
+            {
+                byte[] data = JBig2Encoder.Encode(scannedImage.BitmapSourceToBitmap(), false);
+                File.WriteAllBytes(filename, data);
+                data = null;
+                Scanner.SaveFileFullPath = filename;
+                OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
+            });
+    }
+
     private void SaveJpgImage(BitmapFrame scannedImage, string filename)
     {
         Dispatcher.Invoke(
@@ -5305,24 +5357,38 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             });
     }
 
-    private void SaveZipImage(List<ScannedImage> seçiliresimler, string fileName, Action<double> progressCallback = null)
+    private void SaveZipImage(List<ScannedImage> selectedImages, string fileName, Action<double> progressCallback = null)
     {
-        using FileStream zip = File.OpenWrite(fileName);
-        using IWriter zipWriter = WriterFactory.Open(zip, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.None) { UseZip64 = true });
-        int count = seçiliresimler.Count;
-        using (MemoryStream ms = new())
+        using FileStream zipStream = File.OpenWrite(fileName);
+        using IWriter zipWriter = WriterFactory.Open(zipStream, SharpCompress.Common.ArchiveType.Zip, new ZipWriterOptions(SharpCompress.Common.CompressionType.None) { UseZip64 = true });
+        int count = selectedImages.Count;
+
+        for (int i = 0; i < count; i++)
         {
-            for (int i = 0; i < count; i++)
+            ScannedImage image = selectedImages[i];
+            byte[] buffer;
+            string fileNameInZip;
+
+            if (EncodeAsWebp)
             {
-                byte[] buffer = EncodeAsWebp ? seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(70) : seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg);
-                ms.SetLength(0);
-                ms.Write(buffer, 0, buffer.Length);
-                string fileNameInZip = EncodeAsWebp ? $"{seçiliresimler[i].Index}.webp" : $"{seçiliresimler[i].Index}.jpg";
-                _ = ms.Seek(0, SeekOrigin.Begin);
-                zipWriter.Write(fileNameInZip, ms);
-                progressCallback?.Invoke((i + 1) / (double)seçiliresimler.Count);
+                buffer = image.Resim.ToTiffJpegByteArray(Format.Jpg).WebpEncode(70);
+                fileNameInZip = $"{image.Index}.webp";
             }
+            else if (EncodeAsJb2)
+            {
+                buffer = JBig2Encoder.Encode(image.Resim.BitmapSourceToBitmap(), false);
+                fileNameInZip = $"{image.Index}.jb2";
+            }
+            else
+            {
+                buffer = image.Resim.ToTiffJpegByteArray(Format.Jpg);
+                fileNameInZip = $"{image.Index}.jpg";
+            }
+            using MemoryStream ms = new(buffer, false);
+            zipWriter.Write(fileNameInZip, ms);
+            progressCallback?.Invoke((i + 1) / (double)count);
         }
+
         Dispatcher.Invoke(
             () =>
             {

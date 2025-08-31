@@ -1826,6 +1826,17 @@
                                                                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.tif}" />
                                                                                             </MenuItem.Icon>
                                                                                         </MenuItem>
+                                                                                        <MenuItem Command="{Binding Data.SaveSingleBlackWhiteJb2File, Source={StaticResource Proxy}}">
+                                                                                            <MenuItem.Header>
+                                                                                                <TextBlock VerticalAlignment="Center">
+                                                                                                    <Run Text="{local:Loc BW}" />
+                                                                                                    <Run Text="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                                </TextBlock>
+                                                                                            </MenuItem.Header>
+                                                                                            <MenuItem.Icon>
+                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jb2}" />
+                                                                                            </MenuItem.Icon>
+                                                                                        </MenuItem>
                                                                                         <MenuItem Command="{Binding Data.SaveSingleXpsFile, Source={StaticResource Proxy}}" Header="{Binding Source='.xps', Converter={StaticResource FilePathToFileDescriptionConverter}}">
                                                                                             <MenuItem.Icon>
                                                                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.xps}" />
@@ -2418,9 +2429,17 @@
                                             <MenuItem.Header>
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock VerticalAlignment="Center" Text="{Binding Source='.zip', Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                    <CheckBox VerticalAlignment="Center"
-                                                        Content="WEBP"
-                                                        IsChecked="{Binding EncodeAsWebp}" />
+                                                    <StackPanel>
+                                                        <CheckBox VerticalAlignment="Center"
+                                                            Content="{Binding Source='.webp', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                                            IsChecked="{Binding EncodeAsWebp}" />
+                                                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding EncodeAsJb2}">
+                                                            <TextBlock VerticalAlignment="Center">
+                                                                <Run Text="{local:Loc BW}" />
+                                                                <Run Text="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                            </TextBlock>
+                                                        </CheckBox>
+                                                    </StackPanel>
                                                 </StackPanel>
                                             </MenuItem.Header>
                                             <MenuItem.Icon>

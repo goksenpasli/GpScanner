@@ -1,4 +1,5 @@
 ﻿using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace GpScanner
 {
@@ -7,6 +8,12 @@ namespace GpScanner
     /// </summary>
     public partial class UnindexedFilesDialogView : UserControl
     {
-        public UnindexedFilesDialogView() { InitializeComponent(); }
+        public static CollectionViewSource cvs;
+
+        public UnindexedFilesDialogView()
+        {
+            InitializeComponent();
+            cvs = TryFindResource("UnindexedFiles") as CollectionViewSource;
+        }
     }
 }

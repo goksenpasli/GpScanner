@@ -154,6 +154,7 @@
     <Compile Include="ImageFileHandler.cs" />
     <Compile Include="ImageWidthHeightComparer.cs" />
     <Compile Include="Jb2FileHandler.cs" />
+    <Compile Include="JBig2Encoder.cs" />
     <Compile Include="MoveFileFlags.cs" />
     <Compile Include="OdsReader.cs" />
     <Compile Include="OdtReader.cs" />
@@ -639,6 +640,11 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\left.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="jbig2enc.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

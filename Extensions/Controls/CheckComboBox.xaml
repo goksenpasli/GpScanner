@@ -4,13 +4,9 @@
     <DataTemplate x:Key="DefaultItemTemplate">
         <CheckBox VerticalAlignment="Center"
             VerticalContentAlignment="Center"
+            Content="{Binding Name, Mode=OneWay}"
             IsChecked="{Binding IsChecked, Mode=TwoWay}"
-            IsEnabled="{Binding IsEnabled, Mode=TwoWay}">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Text="{Binding Name, Mode=OneWay}" />
-                <ContentPresenter VerticalAlignment="Center" Content="{Binding Content}" />
-            </StackPanel>
-        </CheckBox>
+            IsEnabled="{Binding IsEnabled, Mode=TwoWay}" />
     </DataTemplate>
     <Style TargetType="{x:Type local:CheckComboBox}">
         <Setter Property="Template">

@@ -41,6 +41,7 @@ using TwainControl;
 using WebPWrapper;
 using Xceed.Words.NET;
 using static Extensions.ExtensionMethods;
+using static Extensions.ShellIcon;
 using Application = System.Windows.Application;
 using File = System.IO.File;
 using FlowDirection = System.Windows.FlowDirection;
@@ -282,7 +283,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 List<Task> Tasks = [];
                 OcrIsBusy = true;
                 unindexedfileocrcancellationToken = new CancellationTokenSource();
-                foreach (List<string> unIndexedFile in TwainCtrl.ChunkBy(UnIndexedFiles.ToList(), slicecount))
+                ICollectionView filteredview = UnindexedFilesDialogView.cvs?.View;
+                foreach (List<string> unIndexedFile in TwainCtrl.ChunkBy(filteredview?.Cast<string>(), slicecount))
                 {
                     Task task = Task.Run(
                         async () =>
@@ -1855,6 +1857,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public ObservableCollection<CheckBoxItem> FilterTypes { get; set; } = [];
+
     public int FlagProgress
     {
         get;
@@ -3293,7 +3297,18 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             List<string> scannedDatabaseFiles = await context?.Data?.AsNoTracking()?.Select(x => x.FileName).ToListAsync();
             if (scannerunindexedfiles is not null && scannedDatabaseFiles is not null)
             {
-                return [.. scannerunindexedfiles.Except(scannedDatabaseFiles)];
+                List<string> UnindexedFiles = scannerunindexedfiles.Except(scannedDatabaseFiles).ToList();
+                foreach (string item in UnindexedFiles)
+                {
+                    string fileType = GetFileType(item, new SHFILEINFO());
+                    if (!FilterTypes.Any(t => t.Name == fileType))
+                    {
+                        CheckBoxItem checkboxitem = new() { Content = item, Name = fileType };
+                        checkboxitem.PropertyChanged += UnindexedCheckBoxItem_PropertyChanged;
+                        FilterTypes.Add(checkboxitem);
+                    }
+                }
+                return [.. UnindexedFiles];
             }
         }
         catch (Exception)
@@ -3436,7 +3451,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 DateTime lastdate = new(SelectedContributionYear, 12, 31);
                 ContributionData = await GetContributionData(files, firstdate, lastdate);
                 ContributionData todaycontribution = ContributionData?.FirstOrDefault(item => item.ContrubutionDate == DateTime.Today);
-                todaycontribution?.Stroke = new SolidColorBrush(Colors.Blue);
+                _ = (todaycontribution?.Stroke = new SolidColorBrush(Colors.Blue));
                 ContributionDocumentCount = ContributionData?.Sum(z => z.Count) ?? 0;
             }
         }
@@ -3677,6 +3692,21 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         _ = context.Data.Add(new Data { FileName = fileName, FileContent = ocrText });
         ocrText = null;
         _ = await context.SaveChangesAsync();
+    }
+
+    private void UnindexedCheckBoxItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "IsChecked" && UnindexedFilesDialogView.cvs is not null)
+        {
+            UnindexedFilesDialogView.cvs.Filter += (s, x) =>
+                                                   {
+                                                       if (FilterTypes?.Any(z => z.IsChecked) == true)
+                                                       {
+                                                           string fileType = GetFileType((string)x.Item, new SHFILEINFO());
+                                                           x.Accepted = FilterTypes.Any(z => z.IsChecked && fileType == z.Name);
+                                                       }
+                                                   };
+        }
     }
 
     private DocX WriteDocxFile(ObservableCollection<OcrData> ocrdata, string filename)
