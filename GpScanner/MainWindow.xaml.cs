@@ -111,7 +111,8 @@ public partial class MainWindow : Window
     {
         if (sender is Grid grid && e.OriginalSource is Run)
         {
-            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(grid.ToRenderTargetBitmap().Resize(230, 370).BitmapSourceToBitmap().GetHicon());
+            using System.Drawing.Bitmap img = grid.ToRenderTargetBitmap().Resize(230, 370).BitmapSourceToBitmap();
+            using System.Drawing.Icon icon = System.Drawing.Icon.FromHandle(img.GetHicon());
             TwainCtrl.DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
             _ = DragDrop.DoDragDrop(grid, grid.DataContext, DragDropEffects.Move);
             e.Handled = true;

@@ -333,7 +333,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         RenderTargetBitmap rtb = new((int)fe.Width, (int)fe.Height, 96, 96, PixelFormats.Pbgra32);
         rtb.Render(fe);
         rtb.Freeze();
-        using Icon icon = Icon.FromHandle(rtb.BitmapSourceToBitmap().GetHicon());
+        using Bitmap img = rtb.BitmapSourceToBitmap();
+        using Icon icon = Icon.FromHandle(img.GetHicon());
         return CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
     }
 

@@ -244,14 +244,16 @@ public static class PdfGeneration
                 BitmapSource resizedImage = resizePaper ? bitmapFrame.Resize(page.Width, page.Height, 0, dpi, dpi) : bitmapFrame;
                 if (format == Format.Tiff)
                 {
-                    BitmapImage bwImage = bitmapFrame.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff);
+                    using Bitmap bitmap = bitmapFrame.BitmapSourceToBitmap();
+                    BitmapImage bwImage = bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff);
                     resizedImage = resizePaper ? bwImage.Resize(page.Width, page.Height, 0, dpi, dpi) : bwImage;
                     imageData = resizedImage?.ToTiffJpegByteArray(format, jpegQuality);
                 }
                 else if (Scanner.UseMozJpegEncoding)
                 {
                     using MozJpeg.MozJpeg mozJpeg = new();
-                    imageData = mozJpeg.Encode(resizedImage.BitmapSourceToBitmap(), jpegQuality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+                    using Bitmap bitmap = resizedImage.BitmapSourceToBitmap();
+                    imageData = mozJpeg.Encode(bitmap, jpegQuality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
                 }
                 else
                 {
@@ -540,7 +542,8 @@ public static class PdfGeneration
     private static byte[] EncodeImageWithMozJpeg(BitmapSource image, int quality)
     {
         using MozJpeg.MozJpeg mozJpeg = new();
-        return mozJpeg.Encode(image.BitmapSourceToBitmap(), quality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
+        using Bitmap bitmap = image.BitmapSourceToBitmap();
+        return mozJpeg.Encode(bitmap, quality, false, TJFlags.ACCURATEDCT | TJFlags.DC_SCAN_OPT2 | TJFlags.TUNE_MS_SSIM);
     }
 
     private static XSize GetPageSize(Paper paper, ScannedImage scannedimage, PdfPage page) => GetPageSize(paper, scannedimage, page, img => img.Resim.PixelWidth, img => img.Resim.PixelHeight);
@@ -579,7 +582,8 @@ public static class PdfGeneration
 
     private static BitmapSource ProcessTiffImage(BitmapSource image, bool resizePaper, PdfPage page, int dpi)
     {
-        BitmapImage bwImage = image.BitmapSourceToBitmap().ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff);
+        using Bitmap bitmap = image.BitmapSourceToBitmap();
+        BitmapImage bwImage = bitmap.ConvertBlackAndWhite(Settings.Default.BwThreshold).ToBitmapImage(ImageFormat.Tiff);
 
         return resizePaper ? bwImage.Resize(page.Width, page.Height, 0, dpi, dpi) : bwImage;
     }

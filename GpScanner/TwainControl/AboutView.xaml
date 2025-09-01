@@ -154,6 +154,20 @@
                         SharpCompress
                     </Hyperlink>
                 </TextBlock>
+                <TextBlock>
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit"
+                        Command="{Binding WebAdreseGit}"
+                        CommandParameter="https://www.nuget.org/packages/JBig2Decoder.NET">
+                        JBIG2 Decoder
+                    </Hyperlink>
+                </TextBlock>
+                <TextBlock>
+                    <Hyperlink local:Policy.PolicyName="WebAdreseGit"
+                        Command="{Binding WebAdreseGit}"
+                        CommandParameter="https://soft.rubypdf.com/software/lossless-jbig2-encoder-windows-dynamic-libary">
+                        JBIG2 Encoder
+                    </Hyperlink>
+                </TextBlock>
             </StackPanel>
             <Grid Grid.Column="1">
                 <Grid.DataContext>

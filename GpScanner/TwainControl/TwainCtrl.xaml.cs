@@ -218,10 +218,11 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
+                using Bitmap bitmap = item.Resim.BitmapSourceToBitmap();
                 BitmapFrame processedImage = Keyboard.Modifiers == ModifierKeys.Alt
-                                             ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg))
+                                             ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg))
                                              : Keyboard.Modifiers == ModifierKeys.Shift
-                                               ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
+                                               ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
                                                : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                 processedImage?.Freeze();
                 item.Resim = processedImage;
@@ -301,11 +302,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 foreach (ScannedImage item in GetSelectedImages())
                 {
+                    using Bitmap bitmap = item.Resim.BitmapSourceToBitmap();
                     BitmapFrame processedImage = bw
-                                                 ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg))
-                                                 : grayscale
-                                                   ? BitmapFrame.Create(item.Resim.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
-                                                   : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
+                                                 ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg))
+                                                 : grayscale ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg)) : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                     processedImage?.Freeze();
                     item.Resim = processedImage;
                     processedImage = null;
@@ -1876,7 +1876,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (parameter is Viewer pdfviewer && MessageBox.Show($"{Translation.GetResStringValue("BW")}", AppName, MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     BitmapImage bitmapImage = await Viewer.ConvertToImgAsync(pdfviewer.PdfFilePath, pdfviewer.Sayfa, pdfviewer.Dpi);
-                    BitmapImage image = bitmapImage.BitmapSourceToBitmap().ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff);
+                    using Bitmap img = bitmapImage.BitmapSourceToBitmap();
+                    BitmapImage image = img.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff);
                     using PdfDocument pdfdocument = RenderPdfPage(pdfviewer, image);
                     PdfToolBarControlIsEnabled = false;
                     pdfdocument.Save(pdfviewer.PdfFilePath);
@@ -2060,7 +2061,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         RemoveSplitListsIndex = new RelayCommand<object>(parameter => ImagesSplitLists?.Remove((int)parameter), parameter => true);
 
         DetectEmptyPages = new RelayCommand<object>(
-            parameter => Parallel.ForEach(Scanner.Resimler, item => item.Seçili = item.Resim.Resize(0.1).BitmapSourceToBitmap().IsEmptyPage(Settings.Default.EmptyThreshold)),
+            parameter => Parallel.ForEach(
+                Scanner.Resimler,
+                item =>
+                {
+                    using Bitmap bmp = item.Resim.Resize(0.1).BitmapSourceToBitmap();
+                    item.Seçili = bmp.IsEmptyPage(Settings.Default.EmptyThreshold);
+                }),
             parameter => Scanner?.Resimler?.Any() == true);
 
         AddActiveVisibleContentImage = new RelayCommand<object>(
@@ -5073,7 +5080,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 DragMoveStarted = true;
                 StackPanel stackPanel = (run.Parent as TextBlock)?.Parent as StackPanel;
-                using Icon icon = Icon.FromHandle(stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap().GetHicon());
+                using Bitmap img = stackPanel.ToRenderTargetBitmap().BitmapSourceToBitmap();
+                using Icon icon = Icon.FromHandle(img.GetHicon());
                 DragCursor = CursorInteropHelper.Create(new SafeIconHandle(icon.Handle));
                 _ = DragDrop.DoDragDrop(run, run.DataContext, DragDropEffects.Move);
                 DragMoveStarted = false;
@@ -5091,7 +5099,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         Dispatcher.Invoke(
             () =>
             {
-                byte[] data = JBig2Encoder.Encode(scannedImage.BitmapSourceToBitmap(), false);
+                byte[] data;
+                using Bitmap bmp = scannedImage.BitmapSourceToBitmap();
+                data = JBig2Encoder.Encode(bmp, false);
                 File.WriteAllBytes(filename, data);
                 data = null;
                 Scanner.SaveFileFullPath = filename;
@@ -5376,7 +5386,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             else if (EncodeAsJb2)
             {
-                buffer = JBig2Encoder.Encode(image.Resim.BitmapSourceToBitmap(), false);
+                using Bitmap bitmap = image.Resim.BitmapSourceToBitmap();
+                buffer = JBig2Encoder.Encode(bitmap, false);
                 fileNameInZip = $"{image.Index}.jb2";
             }
             else
