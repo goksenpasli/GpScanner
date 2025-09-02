@@ -1,7 +1,4 @@
-﻿using Extensions;
-using GpScanner.Properties;
-using GpScanner.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -11,6 +8,10 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
+using Extensions;
+using GpScanner.Properties;
+using GpScanner.ViewModel;
 using TwainControl;
 
 namespace GpScanner;
@@ -94,18 +95,14 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-        if (string.IsNullOrEmpty(propertyName))
-        {
-            return;
-        }
-
-        if (Dispatcher.CheckAccess())
+        Dispatcher dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher?.CheckAccess() == true)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         else
         {
-            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            _ = dispatcher?.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
     }
 

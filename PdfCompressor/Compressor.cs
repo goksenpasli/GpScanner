@@ -1,11 +1,4 @@
-﻿using Extensions;
-using Microsoft.Win32;
-using MozJpeg;
-using PdfCompressor.Properties;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,6 +12,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using Extensions;
+using Microsoft.Win32;
+using MozJpeg;
+using PdfCompressor.Properties;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = System.Drawing.Point;
 
@@ -298,18 +299,14 @@ public class Compressor : Control, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-        if (string.IsNullOrEmpty(propertyName))
-        {
-            return;
-        }
-
-        if (Dispatcher.CheckAccess())
+        Dispatcher dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher?.CheckAccess() == true)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         else
         {
-            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            _ = dispatcher?.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
     }
 

@@ -1,9 +1,4 @@
-﻿using Extensions;
-using Ocr;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.IO;
@@ -15,6 +10,12 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using Extensions;
+using Ocr;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
@@ -419,18 +420,14 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-        if (string.IsNullOrEmpty(propertyName))
-        {
-            return;
-        }
-
-        if (Dispatcher.CheckAccess())
+        Dispatcher dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher?.CheckAccess() == true)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         else
         {
-            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            _ = dispatcher?.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
     }
 

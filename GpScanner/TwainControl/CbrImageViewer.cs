@@ -50,7 +50,7 @@ public class CbrImageViewer : ImageViewer
     {
         if (e.PropertyName is "Sayfa")
         {
-            if (!IsCbrFile(ImageFilePath))
+            if (!IsCbrFile(ImageFilePath) || !File.Exists(ImageFilePath))
             {
                 return;
             }

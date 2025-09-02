@@ -1,6 +1,4 @@
-﻿using Extensions.Controls;
-using Microsoft.Win32;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -17,7 +15,10 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
+using System.Windows.Threading;
 using System.Windows.Xps;
+using Extensions.Controls;
+using Microsoft.Win32;
 
 namespace Extensions;
 
@@ -437,18 +438,14 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-        if (string.IsNullOrEmpty(propertyName))
-        {
-            return;
-        }
-
-        if (Dispatcher.CheckAccess())
+        Dispatcher dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher?.CheckAccess() == true)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         else
         {
-            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            _ = dispatcher?.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
     }
 

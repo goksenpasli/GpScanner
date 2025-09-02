@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace Extensions
 {
@@ -81,18 +82,14 @@ namespace Extensions
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
-            if (string.IsNullOrEmpty(propertyName))
-            {
-                return;
-            }
-
-            if (Dispatcher.CheckAccess())
+            Dispatcher dispatcher = Application.Current?.Dispatcher;
+            if (dispatcher?.CheckAccess() == true)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
             }
             else
             {
-                Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+                _ = dispatcher?.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
             }
         }
 

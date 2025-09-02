@@ -2596,6 +2596,7 @@
                             d:Source="/GpScanner;component/splash.png"
                             d:Zoom="1"
                             Angle="{Binding Scanner.RotateAngle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Orientation="Height"
                             PanoramaButtonVisibility="Collapsed"
                             PreviewMouseDown="ImgViewer_MouseDown"
                             PreviewMouseMove="ImgViewer_MouseMove"

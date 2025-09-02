@@ -50,7 +50,7 @@ public class Jb2ZipImageViewer : ImageViewer
     {
         if (e.PropertyName is "Sayfa")
         {
-            if (!IsJb2ZipFile(ImageFilePath))
+            if (!IsJb2ZipFile(ImageFilePath) || !File.Exists(ImageFilePath))
             {
                 return;
             }

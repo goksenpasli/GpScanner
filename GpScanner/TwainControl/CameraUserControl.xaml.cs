@@ -1,7 +1,4 @@
-﻿using CatenaLogic.Windows.Presentation.WebcamPlayer;
-using Extensions;
-using Microsoft.Win32;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -9,6 +6,10 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
+using CatenaLogic.Windows.Presentation.WebcamPlayer;
+using Extensions;
+using Microsoft.Win32;
 
 namespace TwainControl;
 
@@ -148,18 +149,14 @@ public partial class CameraUserControl : UserControl, INotifyPropertyChanged
 
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
-        if (string.IsNullOrEmpty(propertyName))
-        {
-            return;
-        }
-
-        if (Dispatcher.CheckAccess())
+        Dispatcher dispatcher = Application.Current?.Dispatcher;
+        if (dispatcher?.CheckAccess() == true)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
         else
         {
-            Dispatcher.Invoke(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
+            _ = dispatcher?.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
         }
     }
 
