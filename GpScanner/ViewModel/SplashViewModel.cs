@@ -1,5 +1,4 @@
-﻿using Extensions;
-using GpScanner.Properties;
+﻿using GpScanner.Properties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +9,7 @@ using TwainControl;
 
 namespace GpScanner.ViewModel
 {
-    public class SplashViewModel : InpcBase
+    public class SplashViewModel : INotifyPropertyChanged
     {
         public static readonly Dictionary<string, string> LanguageFlags = new()
         {
@@ -62,6 +61,8 @@ namespace GpScanner.ViewModel
             TranslationSource.Instance.CurrentCulture = ChangeApplicationLanguage(Settings.Default.DefaultLang);
             SplashText = Translation.GetResStringValue("SPLASHTEXT");
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public int FlagProgress
         {
@@ -152,6 +153,8 @@ namespace GpScanner.ViewModel
             }
             return new Uri($"{basePath}{LanguageFlags["TÜRKÇE"]}");
         }
+
+        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
         private void GenerateFlagAnimation()
         {
