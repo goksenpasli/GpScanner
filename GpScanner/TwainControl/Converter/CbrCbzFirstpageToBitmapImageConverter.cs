@@ -25,7 +25,7 @@ public sealed class CbrCbzFirstpageToBitmapImageConverter : IValueConverter
                 using ArchiveFile archiveFile = new(filepath);
                 Entry entry = archiveFile?.Entries?.Where(z => !z.IsFolder).OrderBy(z => z.FileName).FirstOrDefault();
                 string extractpath = $"{Path.GetTempPath()}{entry.FileName}";
-                if (!File.Exists(extractpath))
+                if (!File.Exists(extractpath) || (Crc32.ComputeFile(extractpath) != entry?.CRC))
                 {
                     entry?.Extract(extractpath);
                 }

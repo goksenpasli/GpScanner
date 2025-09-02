@@ -20,6 +20,8 @@ namespace TwainControl
 
         public DataTemplate Jb2 { get; set; }
 
+        public DataTemplate Jb2Zip { get; set; }
+
         public DataTemplate Pdf { get; set; }
 
         public DataTemplate ProtectedArchive { get; set; }
@@ -57,6 +59,7 @@ namespace TwainControl
                         ".xps" => Xps,
                         ".webp" => Webp,
                         ".jb2" => Jb2,
+                        ".jb2zip" => Jb2Zip,
                         ".cbr" or ".cbz" => Cbr,
                         ".docx" or ".txt" or ".odt" => Docx,
                         ".xml" or ".xsl" or ".xslt" or ".xaml" => Xml,

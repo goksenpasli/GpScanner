@@ -33,6 +33,7 @@ namespace GpScanner.ViewModel
             new() { Name = ".png", IsChecked = true },
             new() { Name = ".bmp", IsChecked = true },
             new() { Name = ".jb2", IsChecked = true },
+            new() { Name = ".jb2zip", IsChecked = true },
             new() { Name = ".cbz", IsChecked = true },
             new() { Name = ".cbr", IsChecked = true }]
         },

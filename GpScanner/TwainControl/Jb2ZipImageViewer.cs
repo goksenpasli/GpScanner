@@ -11,22 +11,22 @@ using System.Windows.Media.Imaging;
 
 namespace TwainControl;
 
-public class CbrImageViewer : ImageViewer
+public class Jb2ZipImageViewer : ImageViewer
 {
     private ObservableCollection<ArchiveData> cbrFilecontents = [];
 
-    public CbrImageViewer()
+    public Jb2ZipImageViewer()
     {
-        PropertyChanged += CbrImageViewer_PropertyChanged;
-        ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => IsCbrFile(ImageFilePath) && Sayfa < Pages?.Count());
-        ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => IsCbrFile(ImageFilePath) && Sayfa > 1 && Sayfa <= Pages?.Count());
+        PropertyChanged += Jb2ZipImageViewer_PropertyChanged;
+        ViewerNext = new RelayCommand<object>(parameter => Sayfa++, parameter => IsJb2ZipFile(ImageFilePath) && Sayfa < Pages?.Count());
+        ViewerBack = new RelayCommand<object>(parameter => Sayfa--, parameter => IsJb2ZipFile(ImageFilePath) && Sayfa > 1 && Sayfa <= Pages?.Count());
     }
 
     public override RelayCommand<object> ViewerBack { get; set; }
 
     public override RelayCommand<object> ViewerNext { get; set; }
 
-    public static bool IsCbrFile(string filepath) => string.Equals(Path.GetExtension(filepath), ".cbr", StringComparison.InvariantCultureIgnoreCase) || string.Equals(Path.GetExtension(filepath), ".cbz", StringComparison.InvariantCultureIgnoreCase);
+    public static bool IsJb2ZipFile(string filepath) => string.Equals(Path.GetExtension(filepath), ".jb2zip", StringComparison.InvariantCultureIgnoreCase);
 
     protected override async Task LoadImageAsync(string filepath, ImageViewer imageViewer)
     {
@@ -34,7 +34,7 @@ public class CbrImageViewer : ImageViewer
         {
             switch (Path.GetExtension(filepath).ToLowerInvariant())
             {
-                case ".cbr" or ".cbz":
+                case ".jb2zip":
                     imageViewer.Sayfa = 1;
                     CbrViewer cbrViewer = new() { ArchivePath = filepath };
                     cbrFilecontents = await cbrViewer.ReadArchive(cbrViewer.ArchivePath);
@@ -46,11 +46,11 @@ public class CbrImageViewer : ImageViewer
         }
     }
 
-    private void CbrImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    private async void Jb2ZipImageViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName is "Sayfa")
         {
-            if (!IsCbrFile(ImageFilePath))
+            if (!IsJb2ZipFile(ImageFilePath))
             {
                 return;
             }
@@ -65,7 +65,12 @@ public class CbrImageViewer : ImageViewer
             {
                 entry?.Extract(extractpath);
             }
-            BitmapFrame bitmapFrame = BitmapFrame.Create(new Uri(extractpath), BitmapCreateOptions.None, BitmapCacheOption.None);
+            Jb2FileHandler jb2FileHandler = new();
+            if (!jb2FileHandler.IsValidFile(extractpath))
+            {
+                return;
+            }
+            BitmapFrame bitmapFrame = await jb2FileHandler.LoadImageAsync(extractpath);
             bitmapFrame.Freeze();
             Source = bitmapFrame;
             if (Resize?.CanExecute(null) == true)

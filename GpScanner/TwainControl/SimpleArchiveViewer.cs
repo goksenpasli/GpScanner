@@ -268,7 +268,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                 using ArchiveFile archiveFile = new(archivepath);
                 Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == entryname.DosyaAdı);
                 string extractfile = Path.Combine(extractfolder, Path.GetFileName(entryname.DosyaAdı));
-                if (!File.Exists(extractfile) || (Crc32.ComputeFile(extractfile) != entry.CRC))
+                if (!File.Exists(extractfile) || (Crc32.ComputeFile(extractfile) != entry?.CRC))
                 {
                     try
                     {
@@ -311,7 +311,8 @@ public class SimpleArchiveViewer : ArchiveViewer
             if (ShowThumbPanel)
             {
                 PreviewPanelWidth = double.PositiveInfinity;
-                ThumbFile = ((ExtendedArchiveData)SelectedFile)?.Encrypted == false ? await ExtractToFileAsync(SelectedFile, Path.GetTempPath()) : "PROTECTEDARCHIVE";
+                bool? isencrypted = ((ExtendedArchiveData)SelectedFile)?.Encrypted;
+                ThumbFile = isencrypted == false ? await ExtractToFileAsync(SelectedFile, Path.GetTempPath()) : "PROTECTEDARCHIVE";
             }
             else
             {

@@ -516,12 +516,21 @@
             <DataTemplate x:Key="ImgViewerTemplate">
                 <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    Orientation="Height"
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Visible" />
             </DataTemplate>
             <DataTemplate x:Key="CbrImgViewerTemplate">
                 <twain:CbrImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                     ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    Orientation="Height"
+                    PanoramaButtonVisibility="Collapsed"
+                    PrintButtonVisibility="Visible" />
+            </DataTemplate>
+            <DataTemplate x:Key="Jb2ZipViewerTemplate">
+                <twain:Jb2ZipImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    Orientation="Height"
                     PanoramaButtonVisibility="Collapsed"
                     PrintButtonVisibility="Visible" />
             </DataTemplate>
@@ -964,6 +973,7 @@
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateFull}"
                 Jb2="{StaticResource Jb2Template}"
+                Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
                 Webp="{StaticResource WebpTemplateFull}"
@@ -977,6 +987,7 @@
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ContributionViewerImgTemplateMini}"
                 Jb2="{StaticResource Jb2TemplateMini}"
+                Jb2Zip="{StaticResource EmptyViewerTemplate}"
                 Pdf="{StaticResource ContributionViewerPdfViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
                 Webp="{StaticResource WebpTemplateMini}"
@@ -990,6 +1001,7 @@
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
                 Jb2="{StaticResource Jb2TemplateMini}"
+                Jb2Zip="{StaticResource EmptyViewerTemplate}"
                 Pdf="{StaticResource PdfViewerDocumentViewerTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
                 Webp="{StaticResource WebpTemplateMini}"
@@ -1003,6 +1015,7 @@
                 Eyp="{StaticResource MonthPreviewSelectorEypViewerTemplate}"
                 Img="{StaticResource ImgViewerDocumentViewerTemplateMini}"
                 Jb2="{StaticResource Jb2MonthTemplateMini}"
+                Jb2Zip="{StaticResource EmptyViewerTemplate}"
                 Pdf="{StaticResource PdfViewerDocumentViewerMonthTemplateMini}"
                 Vid="{StaticResource EmptyViewerTemplate}"
                 Webp="{StaticResource WebpTemplateMini}"
@@ -1016,6 +1029,7 @@
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Jb2="{StaticResource Jb2Template}"
+                Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
                 Webp="{StaticResource WebpTemplate}"
@@ -1029,6 +1043,7 @@
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Jb2="{StaticResource Jb2Template}"
+                Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource UnIndexedPdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
                 Webp="{StaticResource WebpTemplate}"
@@ -1042,6 +1057,7 @@
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Jb2="{StaticResource Jb2TemplateMini}"
+                Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource SimplePdfTemplate}"
                 Vid="{StaticResource VideoViewerTemplateMini}"
                 Webp="{StaticResource WebpTemplateMini}"
@@ -1056,6 +1072,7 @@
                 Eyp="{StaticResource EypViewerTemplateFull}"
                 Img="{StaticResource ImgViewerTemplate}"
                 Jb2="{StaticResource Jb2TemplateMini}"
+                Jb2Zip="{StaticResource Jb2ZipViewerTemplate}"
                 Pdf="{StaticResource PdfViewerTemplateFull}"
                 Vid="{StaticResource VideoViewerTemplateFull}"
                 Webp="{StaticResource WebpTemplate}"

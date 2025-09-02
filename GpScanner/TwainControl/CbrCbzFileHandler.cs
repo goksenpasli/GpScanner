@@ -51,10 +51,10 @@ namespace TwainControl
                 return null;
             }
             string extractPath = Path.Combine(Path.GetTempPath(), cbrFileContents[0].DosyaAdı);
-            if (!File.Exists(extractPath))
+            using ArchiveFile archiveFile = new(filename);
+            Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == cbrFileContents[0].DosyaAdı);
+            if (!File.Exists(extractPath) || (Crc32.ComputeFile(extractPath) != entry?.CRC))
             {
-                using ArchiveFile archiveFile = new(filename);
-                Entry entry = archiveFile?.Entries?.FirstOrDefault(z => z.FileName == cbrFileContents[0].DosyaAdı);
                 entry?.Extract(extractPath);
             }
             BitmapFrame bitmapFrame = BitmapFrame.Create(new Uri(extractPath), BitmapCreateOptions.None, BitmapCacheOption.None);

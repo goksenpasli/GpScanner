@@ -154,6 +154,7 @@
     <Compile Include="ImageFileHandler.cs" />
     <Compile Include="ImageWidthHeightComparer.cs" />
     <Compile Include="Jb2FileHandler.cs" />
+    <Compile Include="Jb2ZipImageViewer.cs" />
     <Compile Include="JBig2Encoder.cs" />
     <Compile Include="MoveFileFlags.cs" />
     <Compile Include="OdsReader.cs" />
