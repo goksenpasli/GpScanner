@@ -720,7 +720,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
-                SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası (*.zip)|*.zip", FileName = Scanner.SaveFileName, };
+
+                string filter = EncodeAsJb2 ? "JB2 ZIP Dosyası (*.jb2zip)|*.jb2zip" : "Zip Dosyası (*.zip)|*.zip";
+                SaveFileDialog saveFileDialog = new() { Filter = filter, FileName = Scanner.SaveFileName };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     FileSaveTask = Task.Run(
@@ -932,7 +934,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt|" +
+                    "Tüm Dosyalar (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.jb2zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2;*.docx;*.odt;*.cbz;*.cbr;*.7z;*.arj;*.bzip2;*.cab;*.gzip;*.iso;*.lzh;*.lzma;*.ntfs;*.ppmd;*.rar;*.rar5;*.rpm;*.tar;*.vhd;*.wim;*.xar;*.xz;*.z;*.zip;*.jb2zip;*.gz;*.xls;*.xlsx;*.xlsb;*.csv;*.ods;*.txt|" +
                         "Resim Dosyası (*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2)|*.jpg;*.jpeg;*.jfif;*.jpe;*.png;*.gif;*.tif;*.tiff;*.bmp;*.dib;*.rle;*.pdf;*.xps;*.eyp;*.webp;*.jb2|" +
                         "Pdf Dosyası (*.pdf)|*.pdf|" +
                         "Docx Dosyası (*.docx;*.odt)|*.docx;*.odt|" +
@@ -940,7 +942,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                         "Eyp Dosyası (*.eyp)|*.eyp|" +
                         "Çizgi Roman Dosyası (*.cbz;*.cbr)|*.cbz;*.cbr|" +
                         "Webp Dosyası (*.webp)|*.webp|" +
-                        "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz|" +
+                        "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz; *.jb2zip)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz; *.jb2zip|" +
                         "Excel Dosyası (*.xls;*.xlsx;*.xlsb;*.csv;*.ods)|*.xls;*.xlsx;*.xlsb;*.csv;*.ods|" +
                         "Belge Liste Dosyası (*.txt)|*.txt",
                     Multiselect = true
@@ -1460,7 +1462,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new()
                 {
                     Filter =
-                    "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.gz",
+                    "Arşiv Dosyaları (*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.jb2zip; *.gz)|*.7z; *.arj; *.bzip2; *.cab; *.gzip; *.iso; *.lzh; *.lzma; *.ntfs; *.ppmd; *.rar; *.rar5; *.rpm; *.tar; *.vhd; *.wim; *.xar; *.xz; *.z; *.zip; *.jb2zip; *.gz",
                     Multiselect = false
                 };
                 if (openFileDialog.ShowDialog() == true)
@@ -3870,6 +3872,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
 
                             case ".zip":
+                            case ".jb2zip":
                             case ".7z":
                             case ".arj":
                             case ".bzip2":

@@ -78,15 +78,9 @@
     </Window.InputBindings>
     <Window.Resources>
         <ViewModel:BindingProxy x:Key="Proxy" Data="{Binding}" />
-        <ViewModel:FoldEffect x:Key="Fold"
-            PresentationOptions:Freeze="true"
-            FoldAmount="{Binding Fold}" />
-        <ViewModel:RippleEffect x:Key="Ripple"
-            PresentationOptions:Freeze="true"
-            Progress="{Binding Ripple}" />
-        <ViewModel:MirrorAngleEffect x:Key="Mirror"
-            PresentationOptions:Freeze="true"
-            RelativeHeight="{Binding Mirror}" />
+        <ViewModel:FoldEffect x:Key="Fold" FoldAmount="{Binding Fold}" />
+        <ViewModel:RippleEffect x:Key="Ripple" Progress="{Binding Ripple}" />
+        <ViewModel:MirrorAngleEffect x:Key="Mirror" RelativeHeight="{Binding Mirror}" />
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:SelectedSizeToCacheLengthConverter x:Key="SelectedSizeToCacheLengthConverter" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />

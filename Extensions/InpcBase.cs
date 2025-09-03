@@ -33,6 +33,8 @@ public abstract class InpcBase : INotifyPropertyChanged, INotifyPropertyChanging
 
     protected static void StaticPropertyChanged(string propertyName) => StaticEventPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(propertyName));
 
+    protected virtual void AppDispatcherOnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         Dispatcher dispatcher = Application.Current?.Dispatcher;

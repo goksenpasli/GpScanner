@@ -1883,7 +1883,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             if (field != value)
             {
                 field = value;
-                OnPropertyChanged(nameof(Fold));
+                AppDispatcherOnPropertyChanged(nameof(Fold));
             }
         }
     } = 0.3;
@@ -2074,7 +2074,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             if (field != value)
             {
                 field = value;
-                OnPropertyChanged(nameof(Mirror));
+                AppDispatcherOnPropertyChanged(nameof(Mirror));
             }
         }
     }
@@ -2326,7 +2326,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             if (field != value)
             {
                 field = value;
-                OnPropertyChanged(nameof(Ripple));
+                AppDispatcherOnPropertyChanged(nameof(Ripple));
             }
         }
     }
