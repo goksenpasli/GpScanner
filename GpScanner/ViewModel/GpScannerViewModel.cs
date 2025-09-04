@@ -2775,7 +2775,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     int totalFiles = files.Count;
                     int processed = 0;
 
-                    ParallelOptions opts = new() { MaxDegreeOfParallelism = Environment.ProcessorCount - 1 };
+                    ParallelOptions opts = new() { MaxDegreeOfParallelism = Environment.ProcessorCount };
 
                     _ = Parallel.ForEach(
                         files,
