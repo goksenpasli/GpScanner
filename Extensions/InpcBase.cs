@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace Extensions;
 
@@ -33,20 +31,7 @@ public abstract class InpcBase : INotifyPropertyChanged, INotifyPropertyChanging
 
     protected static void StaticPropertyChanged(string propertyName) => StaticEventPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(propertyName));
 
-    protected virtual void AppDispatcherOnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        Dispatcher dispatcher = Application.Current?.Dispatcher;
-        if (dispatcher?.CheckAccess() == true)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        else
-        {
-            _ = dispatcher?.InvokeAsync(() => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName)));
-        }
-    }
+    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     protected virtual void OnPropertyChanged<T>(string propertyName, T oldValue, T newValue) => PropertyChanged?.Invoke(this, new PropertyChangedExtendedEventArgs<T>(propertyName, oldValue, newValue));
 

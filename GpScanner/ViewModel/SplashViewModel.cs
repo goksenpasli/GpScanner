@@ -71,7 +71,7 @@ namespace GpScanner.ViewModel
                 if (field != value)
                 {
                     field = value;
-                    AppDispatcherOnPropertyChanged(nameof(FlagProgress));
+                    OnPropertyChanged(nameof(FlagProgress));
                 }
             }
         }

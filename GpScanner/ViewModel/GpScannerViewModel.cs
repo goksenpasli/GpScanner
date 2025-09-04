@@ -1883,7 +1883,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             if (field != value)
             {
                 field = value;
-                AppDispatcherOnPropertyChanged(nameof(Fold));
+                OnPropertyChanged(nameof(Fold));
             }
         }
     } = 0.3;
@@ -2074,7 +2074,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             if (field != value)
             {
                 field = value;
-                AppDispatcherOnPropertyChanged(nameof(Mirror));
+                OnPropertyChanged(nameof(Mirror));
             }
         }
     }
@@ -2326,7 +2326,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             if (field != value)
             {
                 field = value;
-                AppDispatcherOnPropertyChanged(nameof(Ripple));
+                OnPropertyChanged(nameof(Ripple));
             }
         }
     }
@@ -2763,33 +2763,42 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         ObservableCollection<Scanner> list = [];
         ConcurrentBag<Scanner> templist = [];
-        object _progressLock = new();
         try
         {
             List<string> allfilepaths = [.. Settings.Default.AdditionalIndexFolders.OfType<string>(), Twainsettings.Settings.Default.AutoFolder,];
+            Progress<double> progress = new(p => FileLoadProgress = p);
             return await Task.Run(
                 () =>
                 {
                     List<string> files = GetAllFilesFromPaths(allfilepaths, file => SupportedExtensions.FileCategories.SelectMany(z => z.Extensions).Select(z => z.Name).Contains(Path.GetExtension(file).ToLowerInvariant()));
+
                     int totalFiles = files.Count;
+                    int processed = 0;
+
+                    ParallelOptions opts = new() { MaxDegreeOfParallelism = Environment.ProcessorCount - 1 };
+
                     _ = Parallel.ForEach(
                         files,
+                        opts,
                         dosya =>
                         {
                             FileInfo fi = new(dosya);
                             if ((fi.Attributes & (FileAttributes.Hidden | FileAttributes.System)) == 0)
                             {
-                                templist.Add(new Scanner { FileName = dosya, FolderName = fi?.Directory?.Name, FileSize = fi.Length / 1048576F });
+                                templist.Add(new Scanner { FileName = dosya, FolderName = fi.Directory?.Name, FileSize = fi.Length / 1048576F });
                             }
-                            lock (_progressLock)
+
+                            int current = Interlocked.Increment(ref processed);
+                            if (current % 100 == 0 || current == totalFiles)
                             {
-                                FileLoadProgress = templist.Count / (double)totalFiles;
+                                ((IProgress<double>)progress).Report(current / (double)totalFiles);
                             }
                         });
-                    List<Scanner> list = [.. templist];
-                    list.Sort(new ScannerStrCmpLogicalComparer());
-                    templist = null;
-                    return new ObservableCollection<Scanner>(list);
+
+                    List<Scanner> sorted = [.. templist];
+                    sorted.Sort(new ScannerStrCmpLogicalComparer());
+
+                    return new ObservableCollection<Scanner>(sorted);
                 });
         }
         catch (UnauthorizedAccessException)
