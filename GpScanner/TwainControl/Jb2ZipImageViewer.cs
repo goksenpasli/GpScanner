@@ -65,12 +65,22 @@ public class Jb2ZipImageViewer : ImageViewer
             {
                 entry?.Extract(extractpath);
             }
-            Jb2FileHandler jb2FileHandler = new();
-            if (!jb2FileHandler.IsValidFile(extractpath))
+
+            ILoadFileHandler loadFileHandler = null;
+            switch (Path.GetExtension(extractpath.ToLowerInvariant()))
+            {
+                case ".webp":
+                    loadFileHandler = new WebpFileHandler();
+                    break;
+                case ".jb2":
+                    loadFileHandler = new Jb2FileHandler();
+                    break;
+            }
+            if (!loadFileHandler.IsValidFile(extractpath))
             {
                 return;
             }
-            BitmapFrame bitmapFrame = await jb2FileHandler.LoadImageAsync(extractpath);
+            BitmapFrame bitmapFrame = await loadFileHandler.LoadImageAsync(extractpath);
             bitmapFrame.Freeze();
             Source = bitmapFrame;
             if (Resize?.CanExecute(null) == true)

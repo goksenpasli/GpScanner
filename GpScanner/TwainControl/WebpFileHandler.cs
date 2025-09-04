@@ -18,7 +18,7 @@ namespace TwainControl
 
         public bool IsValidFile(string filename) => Path.GetExtension(filename.ToLowerInvariant()) == ".webp";
 
-        public Task<BitmapFrame> LoadImageAsync(string filename) => throw new NotImplementedException();
+        public Task<BitmapFrame> LoadImageAsync(string filename) => LoadWebpImage(96, filename);
 
         public Task<BitmapImage> LoadPdfAsync(string filename, int pageNumber) => throw new NotImplementedException();
 

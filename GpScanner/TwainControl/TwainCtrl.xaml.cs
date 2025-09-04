@@ -721,8 +721,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     return;
                 }
 
-                string filter = EncodeAsJb2 ? "JB2 ZIP Dosyası (*.jb2zip)|*.jb2zip" : "Zip Dosyası (*.zip)|*.zip";
-                SaveFileDialog saveFileDialog = new() { Filter = filter, FileName = Scanner.SaveFileName };
+                SaveFileDialog saveFileDialog = new() { Filter = EncodeAsJb2 || EncodeAsWebp ? "JB2 ZIP Dosyası (*.jb2zip)|*.jb2zip" : "Zip Dosyası (*.zip)|*.zip", FileName = Scanner.SaveFileName };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     FileSaveTask = Task.Run(
