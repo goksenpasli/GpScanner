@@ -102,14 +102,14 @@
     <Reference Include="WpfCap, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\WPFCap.1.2.0\lib\net46\WpfCap.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Document.NET, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DocX.4.0.25105.5786\lib\net40\Xceed.Document.NET.dll</HintPath>
+    <Reference Include="Xceed.Document.NET, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DocX.5.0.0\lib\net40\Xceed.Document.NET.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Drawing.NET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DocX.4.0.25105.5786\lib\net40\Xceed.Drawing.NET.dll</HintPath>
+      <HintPath>..\..\packages\DocX.5.0.0\lib\net40\Xceed.Drawing.NET.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Words.NET, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\DocX.4.0.25105.5786\lib\net40\Xceed.Words.NET.dll</HintPath>
+    <Reference Include="Xceed.Words.NET, Version=5.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DocX.5.0.0\lib\net40\Xceed.Words.NET.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -653,8 +653,8 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets'))" />
-    <Error Condition="!Exists('..\..\packages\bblanchon.PDFium.Win32.141.0.7388\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\bblanchon.PDFium.Win32.141.0.7388\build\net461\bblanchon.PDFium.Win32.targets'))" />
+    <Error Condition="!Exists('..\..\packages\bblanchon.PDFium.Win32.142.0.7401\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\bblanchon.PDFium.Win32.142.0.7401\build\net461\bblanchon.PDFium.Win32.targets'))" />
   </Target>
   <Import Project="..\..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets" Condition="Exists('..\..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets')" />
-  <Import Project="..\..\packages\bblanchon.PDFium.Win32.141.0.7388\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\..\packages\bblanchon.PDFium.Win32.141.0.7388\build\net461\bblanchon.PDFium.Win32.targets')" />
+  <Import Project="..\..\packages\bblanchon.PDFium.Win32.142.0.7401\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\..\packages\bblanchon.PDFium.Win32.142.0.7401\build\net461\bblanchon.PDFium.Win32.targets')" />
 </Project>
