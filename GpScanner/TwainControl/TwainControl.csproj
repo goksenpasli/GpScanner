@@ -54,11 +54,11 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExcelDataReader, Version=3.7.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ExcelDataReader.3.7.0\lib\net462\ExcelDataReader.dll</HintPath>
+    <Reference Include="ExcelDataReader, Version=3.8.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExcelDataReader.3.8.0\lib\net462\ExcelDataReader.dll</HintPath>
     </Reference>
-    <Reference Include="ExcelDataReader.DataSet, Version=3.7.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\ExcelDataReader.DataSet.3.7.0\lib\net462\ExcelDataReader.DataSet.dll</HintPath>
+    <Reference Include="ExcelDataReader.DataSet, Version=3.8.0.0, Culture=neutral, PublicKeyToken=93517dbe6a4012fa, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ExcelDataReader.DataSet.3.8.0\lib\net462\ExcelDataReader.DataSet.dll</HintPath>
     </Reference>
     <Reference Include="JBig2Decoder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JBig2Decoder.NET.1.0.3\lib\JBig2Decoder.dll</HintPath>
@@ -653,8 +653,10 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets'))" />
-    <Error Condition="!Exists('..\..\packages\bblanchon.PDFium.Win32.142.0.7415\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\bblanchon.PDFium.Win32.142.0.7415\build\net461\bblanchon.PDFium.Win32.targets'))" />
+    <Error Condition="!Exists('..\..\packages\bblanchon.PDFium.Win32.142.0.7428\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\bblanchon.PDFium.Win32.142.0.7428\build\net461\bblanchon.PDFium.Win32.targets'))" />
+    <Error Condition="!Exists('..\..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets'))" />
   </Target>
   <Import Project="..\..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets" Condition="Exists('..\..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets')" />
-  <Import Project="..\..\packages\bblanchon.PDFium.Win32.142.0.7415\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\..\packages\bblanchon.PDFium.Win32.142.0.7415\build\net461\bblanchon.PDFium.Win32.targets')" />
+  <Import Project="..\..\packages\bblanchon.PDFium.Win32.142.0.7428\build\net461\bblanchon.PDFium.Win32.targets" Condition="Exists('..\..\packages\bblanchon.PDFium.Win32.142.0.7428\build\net461\bblanchon.PDFium.Win32.targets')" />
+  <Import Project="..\..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets" Condition="Exists('..\..\packages\System.ValueTuple.4.6.1\build\net471\System.ValueTuple.targets')" />
 </Project>

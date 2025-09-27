@@ -3306,7 +3306,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             List<string> scannedDatabaseFiles = await context?.Data?.AsNoTracking()?.Select(x => x.FileName).ToListAsync();
             if (scannerunindexedfiles is not null && scannedDatabaseFiles is not null)
             {
-                List<string> UnindexedFiles = scannerunindexedfiles.Except(scannedDatabaseFiles).ToList();
+                List<string> UnindexedFiles = [.. scannerunindexedfiles.Except(scannedDatabaseFiles)];
                 foreach (string item in UnindexedFiles)
                 {
                     string fileType = GetFileType(item, new SHFILEINFO());

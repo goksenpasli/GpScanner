@@ -1,4 +1,11 @@
-﻿using System;
+﻿using Extensions;
+using Microsoft.Win32;
+using MozJpeg;
+using PdfCompressor.Properties;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -13,13 +20,6 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Extensions;
-using Microsoft.Win32;
-using MozJpeg;
-using PdfCompressor.Properties;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
 using Point = System.Drawing.Point;
 

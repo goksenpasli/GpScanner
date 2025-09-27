@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Extensions.Controls;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -13,7 +14,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Threading;
-using Extensions.Controls;
 
 namespace Extensions;
 

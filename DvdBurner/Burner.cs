@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Extensions;
+using IMAPI2;
+using IMAPI2FS;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -9,10 +13,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
-using Extensions;
-using IMAPI2;
-using IMAPI2FS;
-using Microsoft.Win32;
 using Application = System.Windows.Application;
 using Control = System.Windows.Controls.Control;
 

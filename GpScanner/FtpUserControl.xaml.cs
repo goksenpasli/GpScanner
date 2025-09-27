@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Extensions;
+using GpScanner.Properties;
+using GpScanner.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -9,9 +12,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
-using Extensions;
-using GpScanner.Properties;
-using GpScanner.ViewModel;
 using TwainControl;
 
 namespace GpScanner;

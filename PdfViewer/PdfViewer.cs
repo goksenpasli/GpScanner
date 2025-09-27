@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions;
+using PdfiumViewer;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -19,8 +21,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Windows.Xps;
-using Extensions;
-using PdfiumViewer;
 using static Extensions.ExtensionMethods;
 using Control = System.Windows.Controls.Control;
 using ListBox = System.Windows.Controls.ListBox;

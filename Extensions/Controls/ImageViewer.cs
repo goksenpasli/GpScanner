@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Extensions.Controls;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -17,8 +19,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Threading;
 using System.Windows.Xps;
-using Extensions.Controls;
-using Microsoft.Win32;
 
 namespace Extensions;
 

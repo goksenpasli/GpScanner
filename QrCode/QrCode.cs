@@ -1,4 +1,5 @@
 ﻿using Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -39,7 +40,7 @@ public class QrCode : InpcBase
             reader.Options.TryHarder = true;
             return reader.Decode(bitmapFrame)?.Text;
         }
-        catch (System.Exception)
+        catch (Exception)
         {
             return null;
         }

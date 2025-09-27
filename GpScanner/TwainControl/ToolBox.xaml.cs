@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Extensions;
+using Ocr;
+using PdfSharp;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Imaging;
 using System.IO;
@@ -11,11 +16,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-using Extensions;
-using Ocr;
-using PdfSharp;
-using PdfSharp.Drawing;
-using PdfSharp.Pdf;
 using TwainControl.Properties;
 using static Extensions.ExtensionMethods;
 
