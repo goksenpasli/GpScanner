@@ -41,6 +41,7 @@
             <Extensions:FilePathToFileDescriptionConverter x:Key="FilePathToFileDescriptionConverter" />
             <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
             <local:BindingProxy x:Key="Proxy" Data="{Binding}" />
+            <Converter:MultiplyConverter x:Key="MultiplyConverter" />
             <Image x:Key="TimeIcon"
                 Width="16"
                 Height="16"
@@ -526,8 +527,8 @@
                                                                     </MultiBinding>
                                                                 </Image.Source>
                                                             </Image>
-                                                            <Rectangle Width="{Binding Width}"
-                                                                Height="{Binding Height}"
+                                                            <Rectangle Width="{Binding Width, Converter={StaticResource MultiplyConverter}, ConverterParameter=1.5}"
+                                                                Height="{Binding Height, Converter={StaticResource MultiplyConverter}, ConverterParameter=1.5}"
                                                                 Stroke="#7F000000"
                                                                 StrokeThickness="2">
                                                                 <Rectangle.Effect>
@@ -1421,17 +1422,14 @@
                                 </Image>
                             </TabItem.Header>
                             <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto" />
-                                    <ColumnDefinition />
-                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition />
                                     <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
                                 <ScrollViewer Grid.Column="0"
-                                    Grid.ColumnSpan="2"
                                     HorizontalScrollBarVisibility="Auto"
                                     Template="{DynamicResource HorizontalScrollViewerTemplate}">
                                     <StackPanel Orientation="Horizontal">
@@ -1712,8 +1710,9 @@
                                             Value="{Binding AllImageRotationAngle}" />
                                     </StackPanel>
                                 </ScrollViewer>
+                                <Separator Grid.Row="1" />
                                 <ListBox x:Name="Lb"
-                                    Grid.Row="1"
+                                    Grid.Row="2"
                                     Grid.Column="1"
                                     Extensions:ScrollDragDrop.ScrollOnDragDrop="True"
                                     local:Policy.PolicyName="LoadImage"
@@ -2065,18 +2064,25 @@
                                         </ItemsPanelTemplate>
                                     </ListBox.ItemsPanel>
                                 </ListBox>
-                                <ScrollViewer Grid.Row="2"
-                                    Grid.ColumnSpan="2"
+                                <Separator Grid.Row="3" />
+                                <ScrollViewer Grid.Row="4"
                                     HorizontalScrollBarVisibility="Auto"
                                     Template="{DynamicResource HorizontalScrollViewerTemplate}">
                                     <Grid>
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="Auto" />
                                             <ColumnDefinition />
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
                                         <TextBlock HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
                                             FontWeight="Bold"
                                             TextAlignment="Center">
                                             <Run d:Text="0"
@@ -2086,77 +2092,67 @@
                                                 Text="/" /><Run d:Text="0"
                                                 BaselineAlignment="Center"
                                                 Text="{Binding Scanner.Resimler.Count, Mode=OneWay}" />
-                                            <Hyperlink BaselineAlignment="Center"
-                                                Command="{Binding ReverseData}"
-                                                TextDecorations="None"
-                                                ToolTip="{local:Loc REVERSE}">
-                                                <Run BaselineAlignment="Center"
-                                                    FontFamily="Wingdings 3"
-                                                    FontSize="16"
-                                                    Text="E" />
-                                            </Hyperlink>
-                                            <Hyperlink BaselineAlignment="Center"
-                                                Command="{Binding ReverseDataHorizontal}"
-                                                TextDecorations="None"
-                                                ToolTip="{local:Loc HORIZONTAL}">
-                                                <Run BaselineAlignment="Center"
-                                                    FontFamily="Wingdings 3"
-                                                    FontSize="16"
-                                                    Text="D" />
-                                            </Hyperlink>
-                                            <Hyperlink BaselineAlignment="Center"
-                                                Command="{Binding FirstLastSortSequenceData}"
-                                                TextDecorations="None"
-                                                ToolTip="{local:Loc FIRSTLAST}">
-                                                <InlineUIContainer>
-                                                    <Border BorderBrush="Cyan" BorderThickness="1">
-                                                        <TextBlock FontFamily="Wingdings 3"
-                                                            FontSize="16"
-                                                            Text="G" />
-                                                    </Border>
-                                                </InlineUIContainer>
-                                            </Hyperlink>
-                                            <Hyperlink BaselineAlignment="Center"
-                                                Command="{Binding ShuffleData}"
-                                                TextDecorations="None"
-                                                ToolTip="{local:Loc RANDOM}">
-                                                <Border BorderBrush="Cyan" BorderThickness="1">
-                                                    <Canvas Width="16"
-                                                        Height="16"
-                                                        Background="Transparent">
-                                                        <Canvas.Resources>
-                                                            <Style BasedOn="{StaticResource RandomDiceStyle}" TargetType="Ellipse" />
-                                                        </Canvas.Resources>
-                                                        <Ellipse Canvas.Left="6" Canvas.Top="6" />
-                                                        <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
-                                                        <Ellipse Canvas.Left="10.5" Canvas.Top="10.5" />
-                                                        <Ellipse Canvas.Left="10.5" Canvas.Top="2" />
-                                                        <Ellipse Canvas.Left="1.5" Canvas.Top="10.5" />
-                                                    </Canvas>
-                                                </Border>
-                                            </Hyperlink>
-                                            <Run BaselineAlignment="Center" Text="1" />
-                                            <Hyperlink BaselineAlignment="Center"
-                                                Command="{Binding FirstLastGroup}"
-                                                TextDecorations="None"
-                                                ToolTip="{local:Loc SPLITSORT}">
-                                                <Run BaselineAlignment="Center"
-                                                    FontFamily="Wingdings 3"
-                                                    FontSize="18"
-                                                    Text="F" />
-                                            </Hyperlink>
-                                            <InlineUIContainer BaselineAlignment="Center">
-                                                <Extensions:NumericUpDown Interval="1"
-                                                    IsReadOnly="True"
-                                                    Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
-                                                    Minimum="2"
-                                                    Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                                            </InlineUIContainer>
                                         </TextBlock>
-                                        <Extensions:SplitButton Grid.Column="1"
+                                        <Button Grid.Column="1"
+                                            Command="{Binding ReverseData}"
+                                            ToolTip="{local:Loc REVERSE}">
+                                            <TextBlock FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="E" />
+                                        </Button>
+                                        <Button Grid.Column="2"
+                                            Command="{Binding ReverseDataHorizontal}"
+                                            ToolTip="{local:Loc HORIZONTAL}">
+                                            <TextBlock FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="D" />
+                                        </Button>
+                                        <Button Grid.Column="3"
+                                            BorderBrush="Cyan"
+                                            BorderThickness="1"
+                                            Command="{Binding FirstLastSortSequenceData}"
+                                            ToolTip="{local:Loc FIRSTLAST}">
+                                            <TextBlock FontFamily="Wingdings 3"
+                                                FontSize="16"
+                                                FontWeight="Bold"
+                                                Text="G" />
+                                        </Button>
+                                        <Button Grid.Column="4"
+                                            BorderBrush="Cyan"
+                                            BorderThickness="1"
+                                            Command="{Binding ShuffleData}"
+                                            ToolTip="{local:Loc RANDOM}">
+                                            <Canvas Width="16"
+                                                Height="16"
+                                                Background="Transparent">
+                                                <Canvas.Resources>
+                                                    <Style BasedOn="{StaticResource RandomDiceStyle}" TargetType="Ellipse" />
+                                                </Canvas.Resources>
+                                                <Ellipse Canvas.Left="6" Canvas.Top="6" />
+                                                <Ellipse Canvas.Left="1.5" Canvas.Top="2" />
+                                                <Ellipse Canvas.Left="10.5" Canvas.Top="10.5" />
+                                                <Ellipse Canvas.Left="10.5" Canvas.Top="2" />
+                                                <Ellipse Canvas.Left="1.5" Canvas.Top="10.5" />
+                                            </Canvas>
+                                        </Button>
+                                        <Button Grid.Column="5"
+                                            Command="{Binding FirstLastGroup}"
+                                            ToolTip="{local:Loc SPLITSORT}">
+                                            <TextBlock FontFamily="Wingdings 3"
+                                                FontSize="18"
+                                                FontWeight="Bold"
+                                                Text="F" />
+                                        </Button>
+                                        <Extensions:NumericUpDown Grid.Column="6"
+                                            Interval="1"
+                                            IsReadOnly="True"
+                                            Maximum="{Binding Scanner.Resimler.Count, Mode=OneWay}"
+                                            Minimum="2"
+                                            Value="{Binding GroupSplitCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                        <Extensions:SplitButton Grid.Column="7"
                                             local:Policy.PolicyName="AddSplitListsIndex"
-                                            Background="{x:Null}"
-                                            BorderBrush="{x:Null}"
                                             Command="{Binding AddSplitListsIndex}">
                                             <TextBlock FontFamily="Wingdings 2"
                                                 FontSize="16"
@@ -2216,7 +2212,7 @@
                                                 </GroupBox>
                                             </Extensions:SplitButton.InternalContent>
                                         </Extensions:SplitButton>
-                                        <Slider Grid.Column="2"
+                                        <Slider Grid.Column="8"
                                             VerticalAlignment="Center"
                                             AutoToolTipPlacement="TopLeft"
                                             Maximum="{Binding MaxPreviewWidth}"
@@ -2225,7 +2221,7 @@
                                             Style="{StaticResource Slider}"
                                             ToolTip="{local:Loc PREVIEWSIZE}"
                                             Value="{Binding PreviewWidth, Delay=150, Source={x:Static properties:Settings.Default}}" />
-                                        <Button Grid.Column="3"
+                                        <Button Grid.Column="9"
                                             Background="{x:Null}"
                                             BorderBrush="{x:Null}"
                                             Command="{Binding ResetPreviewSize}">
