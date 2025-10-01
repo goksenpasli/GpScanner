@@ -746,5 +746,29 @@ namespace TwainControl.Properties {
                 this["GroupBoxBackGround2"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int Jb2Saturation {
+            get {
+                return ((int)(this["Jb2Saturation"]));
+            }
+            set {
+                this["Jb2Saturation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("25")]
+        public int Jb2Threshold {
+            get {
+                return ((int)(this["Jb2Threshold"]));
+            }
+            set {
+                this["Jb2Threshold"] = value;
+            }
+        }
     }
 }

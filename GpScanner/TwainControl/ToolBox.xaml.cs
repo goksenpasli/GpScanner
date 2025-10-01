@@ -57,13 +57,13 @@ public partial class ToolBox : UserControl, INotifyPropertyChanged
                     foreach (ScannedImage image in Scanner?.Resimler?.Where(z => z.Seçili)?.ToList())
                     {
                         using System.Drawing.Bitmap img = image.Resim.BitmapSourceToBitmap();
-                        BitmapFrame bitmapframe = BitmapFrame.Create(img.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg));
+                        BitmapFrame bitmapframe = BitmapFrame.Create(img.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff));
                         bitmapframe.Freeze();
                         image.Resim = bitmapframe;
                     }
                     return;
                 }
-                Scanner.CroppedImage = bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg);
+                Scanner.CroppedImage = bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff);
             },
             parameter => Scanner?.CroppedImage is not null);
 

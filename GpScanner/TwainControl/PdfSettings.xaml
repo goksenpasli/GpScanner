@@ -202,6 +202,24 @@
                         Text="MOZJPEG" />
                 </CheckBox.Content>
             </CheckBox>
+            <Separator />
+            <TextBlock HorizontalAlignment="Center">
+                <Run Text="JB2/JB2ZIP" />
+                <Run Text="{local:Loc SETTİNGS}" />
+            </TextBlock>
+            <UniformGrid Columns="2">
+                <TextBlock VerticalAlignment="Center">
+                    <Run Text="{local:Loc BW}" />
+                    <Run Text="{local:Loc SATURATION}" />
+                </TextBlock>
+                <ComboBox ItemsSource="{Binding Jb2SaturationValues}" SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Saturation, Source={x:Static properties:Settings.Default}}" />
+                <TextBlock VerticalAlignment="Center">
+                    <Run Text="{local:Loc BW}" />
+                    <Run Text="{local:Loc THRESHOLD}" />
+                </TextBlock>
+                <ComboBox ItemsSource="{Binding Jb2ThresholdValues}" SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Threshold, Source={x:Static properties:Settings.Default}}" />
+            </UniformGrid>
+            <Separator />
         </StackPanel>
     </GroupBox>
 </UserControl>

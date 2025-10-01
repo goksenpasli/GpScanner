@@ -186,5 +186,11 @@
     <Setting Name="GroupBoxBackGround2" Type="System.String" Scope="User">
       <Value Profile="(Default)">#FE00B6E8</Value>
     </Setting>
+    <Setting Name="Jb2Saturation" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="Jb2Threshold" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">25</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

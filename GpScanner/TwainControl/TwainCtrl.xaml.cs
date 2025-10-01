@@ -233,7 +233,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
                 using Bitmap bitmap = item.Resim.BitmapSourceToBitmap();
                 BitmapFrame processedImage = Keyboard.Modifiers == ModifierKeys.Alt
-                                             ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg))
+                                             ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff))
                                              : Keyboard.Modifiers == ModifierKeys.Shift
                                                ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg))
                                                : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
@@ -317,7 +317,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     using Bitmap bitmap = item.Resim.BitmapSourceToBitmap();
                     BitmapFrame processedImage = bw
-                                                 ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Jpeg))
+                                                 ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff))
                                                  : grayscale ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold, true).ToBitmapImage(ImageFormat.Jpeg)) : BitmapFrame.Create(item.Resim.InvertBitmap().ToBitmapImage());
                     processedImage?.Freeze();
                     item.Resim = processedImage;
@@ -824,6 +824,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     Scanner.Resimler?.Clear();
                     undoStack.Clear();
+                    CanUndoImage = false;
                     ToolBox.ResetCropMargin();
                     GC.Collect();
                 }
@@ -835,10 +836,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 foreach (ScannedImage item in GetSelectedImages())
                 {
+                    int index = Scanner.Resimler?.IndexOf(item) ?? -1;
+                    if (index < 0)
+                    {
+                        return;
+                    }
+                    undoStack.Push(new DeletedImageEntry(item, index));
+                    CanUndoImage = undoStack.Count > 0;
                     _ = Scanner.Resimler?.Remove(item);
                 }
-
-                undoStack.Clear();
                 ToolBox.ResetCropMargin();
                 GC.Collect();
             },
@@ -2870,6 +2876,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     } = true;
+
+    public IEnumerable<int> Jb2SaturationValues { get; private set; } = Enumerable.Range(3, 49).Where(n => n % 2 != 0);
+
+    public IEnumerable<int> Jb2ThresholdValues { get; private set; } = Enumerable.Range(0, 51);
 
     public ICommand KayıtYoluBelirle { get; }
 
@@ -5105,7 +5115,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             () =>
             {
                 byte[] data;
-                using Bitmap bmp = scannedImage.BitmapSourceToBitmap();
+                using Bitmap bmp = scannedImage.BwAdaptiveThreshold(Settings.Default.Jb2Saturation, Settings.Default.Jb2Threshold).BitmapSourceToBitmap();
                 data = JBig2Encoder.Encode(bmp, false);
                 File.WriteAllBytes(filename, data);
                 data = null;
@@ -5391,7 +5401,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
             else if (EncodeAsJb2)
             {
-                using Bitmap bitmap = image.Resim.BitmapSourceToBitmap();
+                using Bitmap bitmap = image.Resim.BwAdaptiveThreshold(Settings.Default.Jb2Saturation, Settings.Default.Jb2Threshold).BitmapSourceToBitmap();
                 buffer = JBig2Encoder.Encode(bitmap, false);
                 fileNameInZip = $"{image.Index}.jb2";
             }

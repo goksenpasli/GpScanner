@@ -121,6 +121,68 @@ public static class BitmapMethods
 
     public static Bitmap BitmapSourceToBitmap(this BitmapSource bitmapsource) => Compressor.BitmapSourceToBitmap(bitmapsource);
 
+    public static WriteableBitmap BwAdaptiveThreshold(this BitmapSource source, int blockSize = 5, int c = 25)
+    {
+        if (blockSize % 2 == 0 || blockSize < 3)
+        {
+            throw new ArgumentException("Block size must be an odd number >= 3", nameof(blockSize));
+        }
+
+        int width = source.PixelWidth;
+        int height = source.PixelHeight;
+        int stride = width;
+        int halfBlock = blockSize / 2;
+
+        FormatConvertedBitmap graySource = new(source, PixelFormats.Gray8, null, 0);
+        byte[] pixels = new byte[width * height];
+        graySource.CopyPixels(pixels, stride, 0);
+
+        byte[] resultPixels = new byte[width * height];
+
+        _ = Parallel.For(
+            halfBlock,
+            height - halfBlock,
+            y =>
+            {
+                int yStride = y * stride;
+                for (int x = halfBlock; x < width - halfBlock; x++)
+                {
+                    int sum = 0;
+                    int count = 0;
+
+                    for (int dy = -halfBlock; dy <= halfBlock; dy++)
+                    {
+                        int rowOffset = (y + dy) * stride;
+                        for (int dx = -halfBlock; dx <= halfBlock; dx++)
+                        {
+                            sum += pixels[rowOffset + x + dx];
+                            count++;
+                        }
+                    }
+
+                    int mean = sum / count;
+                    byte current = pixels[yStride + x];
+                    resultPixels[yStride + x] = (byte)(current < (mean - c) ? 0 : 255);
+                }
+            });
+
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (y < halfBlock || y >= height - halfBlock || x < halfBlock || x >= width - halfBlock)
+                {
+                    resultPixels[(y * stride) + x] = 255;
+                }
+            }
+        }
+
+        WriteableBitmap result = new(width, height, 96, 96, PixelFormats.Gray8, null);
+        result.WritePixels(new Int32Rect(0, 0, width, height), resultPixels, stride, 0);
+
+        return result;
+    }
+
     public static byte[] CaptureScreen(this BitmapFrame bitmapFrame, double coordx, double coordy, double selectionwidth, double selectionheight, ScrollViewer scrollviewer)
     {
         try
