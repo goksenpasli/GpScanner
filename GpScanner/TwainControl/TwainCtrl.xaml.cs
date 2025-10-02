@@ -4791,6 +4791,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         if (isMouseDown)
         {
             Point mousemovecoord = e.GetPosition(scrollviewer);
+            Grid grid = scrollviewer.FindVisualParent<ImageViewer>().FindVisualParent<Grid>();
+            Canvas cnv = grid.GetFirstVisualChild<Canvas>();
             if (!cnv.Children.Contains(selectionbox))
             {
                 _ = cnv.Children.Add(selectionbox);

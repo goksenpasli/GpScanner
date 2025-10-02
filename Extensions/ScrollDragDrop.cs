@@ -19,7 +19,7 @@ public static class ScrollDragDrop
 
         IEnumerable<T> FindChildren()
         {
-            Queue<DependencyObject> queue = new([parent]);
+            Queue<DependencyObject> queue = new([ parent ]);
 
             while (queue.Any())
             {
@@ -38,6 +38,23 @@ public static class ScrollDragDrop
                 }
             }
         }
+    }
+
+    public static T FindVisualParent<T>(this DependencyObject child) where T : DependencyObject
+    {
+        DependencyObject parent = VisualTreeHelper.GetParent(child);
+
+        while (parent != null)
+        {
+            if (parent is T typedParent)
+            {
+                return typedParent;
+            }
+
+            parent = VisualTreeHelper.GetParent(parent);
+        }
+
+        return null;
     }
 
     public static T GetFirstVisualChild<T>(this DependencyObject depObj) where T : DependencyObject

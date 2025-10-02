@@ -2600,7 +2600,7 @@
                             PrintButtonVisibility="Visible"
                             SnapTick="True"
                             Source="{Binding SeçiliResim.Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameConverter}}" />
-                        <Canvas x:Name="cnv" />
+                        <Canvas />
                         <Expander HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             ExpandDirection="Right"
@@ -2873,12 +2873,16 @@
                             FontSize="16" />
                         <local:Jb2ZipImageViewer x:Name="jb2zipViewer"
                             Grid.Row="1"
-                            Grid.Column="2"
+                            Grid.Column="1"
                             DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
                             ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                             Orientation="Height"
                             PanoramaButtonVisibility="Collapsed"
+                            PreviewMouseDown="ImgViewer_MouseDown"
+                            PreviewMouseMove="ImgViewer_MouseMove"
+                            PreviewMouseWheel="ImgViewer_PreviewMouseWheel"
                             PrintButtonVisibility="Visible" />
+                        <Canvas Grid.Row="1" Grid.Column="1" />
                     </Grid>
                 </TabItem>
             </TabControl>
