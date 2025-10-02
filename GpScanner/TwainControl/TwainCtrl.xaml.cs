@@ -1512,6 +1512,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => true);
 
+        LoadJb2ZipFile = new RelayCommand<object>(
+            parameter =>
+            {
+                OpenFileDialog openFileDialog = new() { Filter = "Jb2Zip Dosyası(*.jb2zip) | *.jb2zip", Multiselect = false };
+                if (openFileDialog.ShowDialog() == true)
+                {
+                    jb2zipViewer.ImageFilePath = openFileDialog.FileName;
+                }
+            },
+            parameter => true);
+
         ClosePdfFile = new RelayCommand<object>(
             parameter =>
             {
@@ -2300,6 +2311,17 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => parameter is XpsViewer xpsViewer && File.Exists(xpsViewer.XpsDataFilePath));
 
+        Jb2DosyasındanResimYükle = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is Jb2ZipImageViewer jb2ZipViewer && jb2ZipViewer.Source is BitmapFrame bitmapFrame)
+                {
+                    bitmapFrame?.Freeze();
+                    Scanner?.Resimler?.Add(new ScannedImage { Resim = bitmapFrame });
+                }
+            },
+            parameter => parameter is Jb2ZipImageViewer jb2ZipViewer && File.Exists(jb2ZipViewer.ImageFilePath));
+
         SaveDocxFile = new RelayCommand<object>(
             parameter =>
             {
@@ -2877,6 +2899,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         }
     } = true;
 
+    public RelayCommand<object> Jb2DosyasındanResimYükle { get; }
+
     public IEnumerable<int> Jb2SaturationValues { get; private set; } = Enumerable.Range(3, 49).Where(n => n % 2 != 0);
 
     public IEnumerable<int> Jb2ThresholdValues { get; private set; } = Enumerable.Range(0, 51);
@@ -2894,6 +2918,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> LoadDocxFile { get; }
 
     public ICommand LoadImage { get; }
+
+    public RelayCommand<object> LoadJb2ZipFile { get; }
 
     public RelayCommand<object> LoadMiniDraw { get; }
 
@@ -3890,7 +3916,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                 break;
 
                             case ".zip":
-                            case ".jb2zip":
                             case ".7z":
                             case ".arj":
                             case ".bzip2":
@@ -3958,6 +3983,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                                     {
                                         SelectedTabIndex = 8;
                                         docxViewer.DocxDataFilePath = filename;
+                                    });
+                                break;
+
+                            case ".jb2zip":
+                                await Dispatcher.InvokeAsync(
+                                    () =>
+                                    {
+                                        SelectedTabIndex = 9;
+                                        jb2zipViewer.ImageFilePath = filename;
                                     });
                                 break;
 

@@ -2833,6 +2833,54 @@
                             AllowDrop="True" />
                     </Grid>
                 </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <Image Width="32"
+                            Height="32"
+                            Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jb2}" />
+                    </TabItem.Header>
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <Extensions:ButtonedTextBox Grid.ColumnSpan="2"
+                            VerticalContentAlignment="Center"
+                            d:Text="Jb2Path"
+                            local:Policy.PolicyName="LoadJb2ZipFile"
+                            Background="{x:Null}"
+                            BorderBrush="{x:Null}"
+                            Command="{Binding LoadJb2ZipFile}"
+                            PasteButtonVisibility="Collapsed"
+                            Text="{Binding ElementName=jb2zipViewer, Path=ImageFilePath, UpdateSourceTrigger=PropertyChanged}">
+                            <Extensions:ButtonedTextBox.Description>
+                                <Image Width="16"
+                                    Height="16"
+                                    Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jb2}" />
+                            </Extensions:ButtonedTextBox.Description>
+                        </Extensions:ButtonedTextBox>
+                        <Button Grid.Row="1"
+                            Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection}"
+                            local:Policy.PolicyName="Jb2DosyasındanResimYükle"
+                            Command="{Binding Jb2DosyasındanResimYükle}"
+                            CommandParameter="{Binding ElementName=jb2zipViewer, Mode=OneWay}"
+                            Content="ç"
+                            FontFamily="Wingdings"
+                            FontSize="16" />
+                        <local:Jb2ZipImageViewer x:Name="jb2zipViewer"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
+                            ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                            Orientation="Height"
+                            PanoramaButtonVisibility="Collapsed"
+                            PrintButtonVisibility="Visible" />
+                    </Grid>
+                </TabItem>
             </TabControl>
         </GroupBox>
     </Grid>
