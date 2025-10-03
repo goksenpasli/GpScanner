@@ -383,13 +383,13 @@ public static class PdfGeneration
     {
         return Scanner.Layout switch
         {
-            PdfPageLayout.Left => [30, 30],
-            PdfPageLayout.Middle => [(page.Width / 2) - (x / 2), 30],
-            PdfPageLayout.Right => [page.Width - x - 30, 30],
-            PdfPageLayout.LeftBottom => [30, page.Height - 30],
-            PdfPageLayout.MiddleBottom => [(page.Width / 2) - (x / 2), page.Height - 30],
-            PdfPageLayout.RightBottom => [page.Width - x - 30, page.Height - 30],
-            _ => [0, 0]
+            PdfPageLayout.Left => [ 30, 30 ],
+            PdfPageLayout.Middle => [ (page.Width / 2) - (x / 2), 30 ],
+            PdfPageLayout.Right => [ page.Width - x - 30, 30 ],
+            PdfPageLayout.LeftBottom => [ 30, page.Height - 30 ],
+            PdfPageLayout.MiddleBottom => [ (page.Width / 2) - (x / 2), page.Height - 30 ],
+            PdfPageLayout.RightBottom => [ page.Width - x - 30, page.Height - 30 ],
+            _ => [ 0, 0 ]
         };
     }
 
@@ -491,7 +491,7 @@ public static class PdfGeneration
                     progresscallback?.Invoke((i + 1) / (double)pdfDoc.PageCount);
                 }
             });
-        return [.. jpgfiles];
+        return[ .. jpgfiles ];
     }
 
     private static void AddTextContentIfNeeded(BitmapSource image, ObservableCollection<OcrData> textData, PdfPage page, XGraphics gfx)

@@ -23,7 +23,7 @@ public class SimpleArchiveViewer : ArchiveViewer
 {
     public static readonly DependencyProperty ShowThumbPanelProperty = DependencyProperty.Register("ShowThumbPanel", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty SimpleStyleProperty = DependencyProperty.Register("SimpleStyle", typeof(bool), typeof(SimpleArchiveViewer), new PropertyMetadata(false));
-    private readonly string[] supportedFilesExtension = [".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps", ".jb2", ".cbr", ".cbz"];
+    private readonly string[] supportedFilesExtension = [ ".eyp", ".pdf", ".jpg", ".jpeg", ".jfif", ".jpe", ".png", ".gif", ".bmp", ".tiff", ".heic", ".tif", ".webp", ".xps", ".jb2", ".cbr", ".cbz" ];
     private string password;
 
     public SimpleArchiveViewer()
@@ -49,7 +49,7 @@ public class SimpleArchiveViewer : ArchiveViewer
                         string extractedfile = await ExtractToFileAsync(SelectedFile, Path.GetTempPath());
                         if (File.Exists(extractedfile))
                         {
-                            _ = twainCtrl.AddFiles([extractedfile], twainCtrl.DecodeHeight);
+                            _ = twainCtrl.AddFiles([ extractedfile ], twainCtrl.DecodeHeight);
                         }
                     }
                 }
@@ -137,7 +137,7 @@ public class SimpleArchiveViewer : ArchiveViewer
     {
         if (e?.Data?.GetData(typeof(Scanner)) is Scanner scanner && File.Exists(scanner.FileName))
         {
-            LoadDroppedZipFile([scanner.FileName]);
+            LoadDroppedZipFile([ scanner.FileName ]);
             return;
         }
 
@@ -250,7 +250,7 @@ public class SimpleArchiveViewer : ArchiveViewer
         {
             throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
         }
-        ArchiveData[] archivedata = [.. list];
+        ArchiveData[] archivedata = [ .. list ];
         for (int i = 0; i < archivedata.Length; i++)
         {
             _ = await ExtractToFileAsync(archivedata[i], destinationfolder);
@@ -312,7 +312,7 @@ public class SimpleArchiveViewer : ArchiveViewer
             {
                 PreviewPanelWidth = double.PositiveInfinity;
                 bool? isencrypted = ((ExtendedArchiveData)SelectedFile)?.Encrypted;
-                ThumbFile = isencrypted == false ? await ExtractToFileAsync(SelectedFile, Path.GetTempPath()) : "PROTECTEDARCHIVE";
+                ThumbFile = isencrypted == false ? await ExtractToFileAsync(SelectedFile, Path.GetTempPath()) : null;
             }
             else
             {

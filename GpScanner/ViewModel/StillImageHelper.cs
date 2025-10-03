@@ -45,10 +45,7 @@ public static class StillImageHelper
     public static List<Process> GetAllGPScannerProcess()
     {
         Process currentProcess = Process.GetCurrentProcess();
-        return
-        [
-            .. Process.GetProcessesByName(currentProcess.ProcessName).Where(x => x.Id != currentProcess.Id).OrderByDescending(x => x.StartTime),
-        ];
+        return[ .. Process.GetProcessesByName(currentProcess.ProcessName).Where(x => x.Id != currentProcess.Id).OrderByDescending(x => x.StartTime), ];
     }
 
     public static void KillServer()

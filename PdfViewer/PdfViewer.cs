@@ -238,7 +238,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
             {
                 using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
                 PdfMatches matches = pdfDocument.Search(SearchTextContent, MatchCase, WholeWord);
-                PdfMatches = [.. matches.Items];
+                PdfMatches = [ .. matches.Items ];
             },
             parameter => !string.IsNullOrWhiteSpace(SearchTextContent) && File.Exists(PdfFilePath));
     }
@@ -247,7 +247,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     public static IEnumerable<PdfCharacterInformation> CharacterInformations { get; private set; }
 
-    public static int[] DpiList { get; } = [12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200];
+    public static int[] DpiList { get; } = [ 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200 ];
 
     public double Angle { get => (double)GetValue(AngleProperty); set => SetValue(AngleProperty, value); }
 
@@ -575,7 +575,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         byte[] buffer = new byte[4];
         using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
         _ = fs.Read(buffer, 0, buffer.Length);
-        byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
+        byte[] pdfheader = [ 0x25, 0x50, 0x44, 0x46 ];
         return buffer?.SequenceEqual(pdfheader) == true;
     }
 
@@ -704,7 +704,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         byte[] buffer = new byte[4];
         using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
         int bytesRead = await fs.ReadAsync(buffer, 0, buffer.Length);
-        byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
+        byte[] pdfheader = [ 0x25, 0x50, 0x44, 0x46 ];
         return bytesRead == buffer.Length && buffer.SequenceEqual(pdfheader);
     }
 

@@ -74,10 +74,10 @@ public partial class MainWindow : Window
                 droppedData.Resim.GeneratePdf(null, Format.Jpg, TwainCtrl.SelectedPaper).Save(temporarypdf);
                 string[] mergedFiles = Keyboard.Modifiers switch
                 {
-                    ModifierKeys.Alt | ModifierKeys.Shift => [temporarypdf, pdfFilePath],
-                    ModifierKeys.Shift => [temporarypdf, pdfFilePath],
-                    ModifierKeys.Alt => [pdfFilePath, temporarypdf],
-                    _ => [temporarypdf, pdfFilePath]
+                    ModifierKeys.Alt | ModifierKeys.Shift => [ temporarypdf, pdfFilePath ],
+                    ModifierKeys.Shift => [ temporarypdf, pdfFilePath ],
+                    ModifierKeys.Alt => [ pdfFilePath, temporarypdf ],
+                    _ => [ temporarypdf, pdfFilePath ]
                 };
 
                 if ((Keyboard.Modifiers & (ModifierKeys.Alt | ModifierKeys.Shift)) == (ModifierKeys.Alt | ModifierKeys.Shift))
@@ -89,7 +89,7 @@ public partial class MainWindow : Window
             }
             if (e.Data.GetData(DataFormats.FileDrop) is string[] files && files.Length > 0)
             {
-                List<string> DroppedPdfFiles = [.. files.Where(PdfViewer.PdfViewer.IsValidPdfFile)];
+                List<string> DroppedPdfFiles = [ .. files.Where(PdfViewer.PdfViewer.IsValidPdfFile) ];
                 if (DroppedPdfFiles?.Any() == true)
                 {
                     DroppedPdfFiles.Add(pdfFilePath);

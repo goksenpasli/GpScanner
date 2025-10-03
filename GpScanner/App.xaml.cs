@@ -64,7 +64,7 @@ public partial class App : Application
             {
                 continue;
             }
-            List<Process> processes = [.. StillImageHelper.GetAllGPScannerProcess()];
+            List<Process> processes = [ .. StillImageHelper.GetAllGPScannerProcess() ];
             StillImageHelper.FirstLanuchScan = !processes.Any();
             foreach (Process process in processes)
             {

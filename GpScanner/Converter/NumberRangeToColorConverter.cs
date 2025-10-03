@@ -48,7 +48,7 @@ namespace GpScanner.Converter
         {
             if (d is NumberRangeToColorConverter numberRangeToColorConverter && (bool)e.NewValue)
             {
-                numberRangeToColorConverter.Colors = [.. numberRangeToColorConverter.Colors.Reverse()];
+                numberRangeToColorConverter.Colors = [ .. numberRangeToColorConverter.Colors.Reverse() ];
             }
         }
     }

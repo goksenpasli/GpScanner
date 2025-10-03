@@ -73,11 +73,11 @@ public class GridViewSort
                 y2 = tmp;
             }
 
-            PathSegmentCollection pathSegmentCollection = [new LineSegment(new Point(x2, y1), true), new LineSegment(new Point(x3, y2), true)];
+            PathSegmentCollection pathSegmentCollection = [ new LineSegment(new Point(x2, y1), true), new LineSegment(new Point(x3, y2), true) ];
 
             PathFigure pathFigure = new(new Point(x1, y1), pathSegmentCollection, true);
 
-            PathFigureCollection pathFigureCollection = [pathFigure];
+            PathFigureCollection pathFigureCollection = [ pathFigure ];
 
             return new PathGeometry(pathFigureCollection);
         }

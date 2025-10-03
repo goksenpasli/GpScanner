@@ -139,9 +139,9 @@ public abstract class VirtualizingPanelBase : VirtualizingPanel, IScrollInfo
                 return field;
             }
 
-            MethodInfo getItemsOwnerInternalMethod = typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, [typeof(DependencyObject)], null)!;
+            MethodInfo getItemsOwnerInternalMethod = typeof(ItemsControl).GetMethod("GetItemsOwnerInternal", BindingFlags.Static | BindingFlags.NonPublic, null, [ typeof(DependencyObject) ], null)!;
 
-            field = (DependencyObject)getItemsOwnerInternalMethod.Invoke(null, [this])!;
+            field = (DependencyObject)getItemsOwnerInternalMethod.Invoke(null, [ this ])!;
 
             return field;
         }

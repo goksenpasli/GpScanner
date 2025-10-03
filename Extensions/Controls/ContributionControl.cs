@@ -26,16 +26,11 @@ namespace Extensions
         {
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                Contributions =
-                [
-                    new() { Count = 0, ContrubutionDate = DateTime.Today },
-                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(1) },
-                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(2) },
-                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(3) },
-                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(4) },
-                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(5) },
-                    new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(6) },
-                ];
+                Contributions =[ new() { Count = 0, ContrubutionDate = DateTime.Today }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(1) }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(2) }, new()
+                {
+                    Count = 0,
+                    ContrubutionDate = DateTime.Today.AddDays(3)
+                }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(4) }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(5) }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(6) }, ];
             }
             PropertyChanged += ContributionControl_PropertyChanged;
 
@@ -191,13 +186,13 @@ namespace Extensions
         {
             if (Contributions?.Any() == true && e.PropertyName is "SelectedMonth" or "SelectedDay")
             {
-                List<ContributionData> contributionsForSelectedMonth = [.. Contributions.Where(z => z.ContrubutionDate.Value.ToString("MMM") == SelectedMonth)];
+                List<ContributionData> contributionsForSelectedMonth = [ .. Contributions.Where(z => z.ContrubutionDate.Value.ToString("MMM") == SelectedMonth) ];
                 foreach (ContributionData item in Contributions)
                 {
                     item.Stroke = item.ContrubutionDate.HasValue && item.ContrubutionDate.Value.ToString("MMM") == SelectedMonth ? Brushes.Red : null;
                 }
                 MonthTotalContribution = contributionsForSelectedMonth.Sum(z => z.Count);
-                List<ContributionData> contributionsForSelectedDay = [.. contributionsForSelectedMonth.Where(z => z.ContrubutionDate.Value.ToString("ddd") == SelectedDay)];
+                List<ContributionData> contributionsForSelectedDay = [ .. contributionsForSelectedMonth.Where(z => z.ContrubutionDate.Value.ToString("ddd") == SelectedDay) ];
                 MonthDateTotalContribution = contributionsForSelectedDay.Sum(z => z.Count);
             }
         }

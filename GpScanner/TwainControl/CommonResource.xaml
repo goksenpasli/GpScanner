@@ -1030,23 +1030,6 @@
             Height="256"
             Source="{Binding Converter={StaticResource FilePathToIconLargeConverter}, Mode=OneWay}" />
     </DataTemplate>
-    <DataTemplate x:Key="ProtectedArchiveTemplate">
-        <Viewbox>
-            <TextBlock Foreground="Red">
-                <Run>
-                    <MultiBinding Converter="{StaticResource ResourceLanguageStringConverter}">
-                        <Binding Mode="OneWay" Source="ARCHIVE" />
-                    </MultiBinding>
-                </Run>
-                <LineBreak />
-                <Run>
-                    <MultiBinding Converter="{StaticResource ResourceLanguageStringConverter}">
-                        <Binding Mode="OneWay" Source="PASSWORD" />
-                    </MultiBinding>
-                </Run>
-            </TextBlock>
-        </Viewbox>
-    </DataTemplate>
     <DataTemplate x:Key="SimpleArchiveViewerDocxTemplate">
         <local:DocxViewer DocxDataFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}" />
     </DataTemplate>
@@ -1409,7 +1392,6 @@
         Img="{StaticResource SimpleArchiveViewerImgViewerTemplate}"
         Jb2="{StaticResource Jb2Template}"
         Pdf="{StaticResource SimpleArchiveViewerPdfViewerTemplate}"
-        ProtectedArchive="{StaticResource ProtectedArchiveTemplate}"
         Vid="{StaticResource SimpleArchiveViewerVideoViewerTemplate}"
         Webp="{StaticResource WebpTemplate}"
         Xlsx="{StaticResource DvdBurnerXlsxTemplate}"

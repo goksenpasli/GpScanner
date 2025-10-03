@@ -32,5 +32,5 @@ public class RGB
 
     public Color Color() => new() { R = R, G = G, B = B, A = 255 };
 
-    public string Hex(byte Alpha) => BitConverter.ToString([Alpha, R, G, B]).Replace("-", string.Empty);
+    public string Hex(byte Alpha) => BitConverter.ToString([ Alpha, R, G, B ]).Replace("-", string.Empty);
 }

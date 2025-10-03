@@ -4836,10 +4836,10 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private void ImgViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
     {
-        if (Keyboard.Modifiers == ModifierKeys.Control)
+        if (Keyboard.Modifiers == ModifierKeys.Control && sender is ImageViewer imageViewer)
         {
-            ImgViewer.Zoom = e.Delta > 0 ? ImgViewer.Zoom + .05 : ImgViewer.Zoom + -.05;
-            ImgViewer.Zoom = Math.Max(ImgViewer.MinZoom, Math.Min(ImgViewer.MaxZoom, ImgViewer.Zoom));
+            imageViewer.Zoom = e.Delta > 0 ? imageViewer.Zoom + .05 : imageViewer.Zoom - .05;
+            imageViewer.Zoom = Math.Max(imageViewer.MinZoom, Math.Min(imageViewer.MaxZoom, imageViewer.Zoom));
         }
     }
 

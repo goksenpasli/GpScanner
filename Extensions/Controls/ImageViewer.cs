@@ -158,7 +158,7 @@ public class ImageViewer : Control, INotifyPropertyChanged, IDisposable
 
     public ICommand DosyaAç { get; set; }
 
-    public int[] DpiList { get; } = [12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200];
+    public int[] DpiList { get; } = [ 12, 24, 36, 48, 72, 96, 120, 150, 200, 300, 400, 500, 600, 1200 ];
 
     public double Fov { get => (double)GetValue(FovProperty); set => SetValue(FovProperty, value); }
 

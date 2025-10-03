@@ -846,13 +846,25 @@
                                                         Height="32"
                                                         Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
                                                     <TextBlock VerticalAlignment="Center">
-                                                        <Hyperlink Command="{Binding AssociateExtension}" Foreground="Cyan">
+                                                        <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".eyp|Elektronik Yazışma Paketi">
                                                             <Run Text="{twainctrl:Loc EYPOPEN}" />
                                                         </Hyperlink>
                                                     </TextBlock>
                                                 </StackPanel>
                                             </CheckBox.Content>
                                         </CheckBox>
+                                        <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                                        <StackPanel>
+                                            <TextBlock VerticalAlignment="Center">
+                                                <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2|Jb2 File">
+                                                    <Run Text="JB2" />
+                                                </Hyperlink>
+                                                <LineBreak />
+                                                <Hyperlink Command="{Binding AssociateExtension}" CommandParameter=".jb2zip|JB2Zip File">
+                                                    <Run Text="JB2ZIP" />
+                                                </Hyperlink>
+                                            </TextBlock>
+                                        </StackPanel>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <ToggleButton VerticalAlignment="Center"
                                             VerticalContentAlignment="Center"

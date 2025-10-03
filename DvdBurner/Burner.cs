@@ -32,7 +32,7 @@ namespace DvdBurner
         {
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                Files = ["File", "File", "File"];
+                Files = [ "File", "File", "File" ];
             }
             PropertyChanged += Burner_PropertyChanged;
 
@@ -133,7 +133,7 @@ namespace DvdBurner
                     }
                     if (parameter is string file && Files?.Remove(file) == true)
                     {
-                        UpdateProgressFileSize([.. Files]);
+                        UpdateProgressFileSize([ .. Files ]);
                     }
                 },
                 parameter => true);
@@ -185,10 +185,7 @@ namespace DvdBurner
                     dynamic recorder = new MsftDiscRecorder2();
                     recorder.InitializeDiscRecorder(SelectedDrive);
                     IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
-                    List<string> supportedformats =
-                    [
-                        .. from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType),
-                    ];
+                    List<string> supportedformats =[ .. from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType), ];
                     extendedMessageBox.ShowDialog(Window.GetWindow(this), string.Join("\n", supportedformats), AppName);
                     recorder = null;
                 },
@@ -198,7 +195,7 @@ namespace DvdBurner
                 parameter =>
                 {
                     Files?.Clear();
-                    UpdateProgressFileSize([.. Files]);
+                    UpdateProgressFileSize([ .. Files ]);
                 },
                 parameter => Files?.Any() == true);
         }
@@ -411,7 +408,7 @@ namespace DvdBurner
         {
             if (d is Burner burner && !DesignerProperties.GetIsInDesignMode(burner))
             {
-                burner.UpdateProgressFileSize([.. burner.Files]);
+                burner.UpdateProgressFileSize([ .. burner.Files ]);
             }
         }
 
@@ -429,7 +426,7 @@ namespace DvdBurner
                     ActionText = "Aynı İsimde Dosya Var.";
                 }
             }
-            UpdateProgressFileSize([.. Files]);
+            UpdateProgressFileSize([ .. Files ]);
         }
 
         private void Burner_PropertyChanged(object sender, PropertyChangedEventArgs e)

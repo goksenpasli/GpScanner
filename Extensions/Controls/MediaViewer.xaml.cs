@@ -807,10 +807,10 @@ public partial class MediaViewer : UserControl, INotifyPropertyChanged
         {
             ObservableCollection<SubtitleContent> content = [];
             const string pattern = "<[/]?[ib]>";
-            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding(SelectedEncodingCodePage)).Split(["\r\n\r\n"], StringSplitOptions.RemoveEmptyEntries))
+            foreach (string element in File.ReadAllText(filepath, Encoding.GetEncoding(SelectedEncodingCodePage)).Split([ "\r\n\r\n" ], StringSplitOptions.RemoveEmptyEntries))
             {
-                string[] lines = element.Split(['\n'], StringSplitOptions.RemoveEmptyEntries);
-                string[] times = lines[1].Split([" --> "], StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = element.Split([ '\n' ], StringSplitOptions.RemoveEmptyEntries);
+                string[] times = lines[1].Split([ " --> " ], StringSplitOptions.RemoveEmptyEntries);
                 content.Add(new SubtitleContent { StartTime = TimeSpan.Parse(times[0]), EndTime = TimeSpan.Parse(times[1]), Text = Regex.Replace(string.Concat(lines.Skip(2).Take(lines.Length - 2)), pattern, string.Empty), Segment = lines[0] });
             }
 

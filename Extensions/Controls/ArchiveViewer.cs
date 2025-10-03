@@ -32,12 +32,15 @@ namespace Extensions
             PropertyChanged += ArchiveViewer_PropertyChanged;
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                Arşivİçerik =
-                [
-                    new() { DosyaAdı = "DosyaAdı", Oran = 0.4F, Boyut = 100, SıkıştırılmışBoyut = 40, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
-                    new() { DosyaAdı = "DosyaAdı", Oran = 0.6F, Boyut = 100, SıkıştırılmışBoyut = 60, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
-                    new() { DosyaAdı = "DosyaAdı", Oran = 0.8F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today },
-                ];
+                Arşivİçerik =[ new() { DosyaAdı = "DosyaAdı", Oran = 0.4F, Boyut = 100, SıkıştırılmışBoyut = 40, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today }, new()
+                {
+                    DosyaAdı = "DosyaAdı",
+                    Oran = 0.6F,
+                    Boyut = 100,
+                    SıkıştırılmışBoyut = 60,
+                    Crc = "FFFFFFFF",
+                    DüzenlenmeZamanı = DateTime.Today
+                }, new() { DosyaAdı = "DosyaAdı", Oran = 0.8F, Boyut = 100, SıkıştırılmışBoyut = 80, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today }, ];
             }
             ArşivTekDosyaÇıkar = new RelayCommand<object>(
                 async parameter =>
@@ -284,7 +287,7 @@ namespace Extensions
                 throw new ArgumentException("Ayıklanacak Klasörün Yolu Hatalı Veya Klasör Yok");
             }
             using ZipArchive archive = ZipFile.Open(archivepath, ZipArchiveMode.Read) ?? throw new ArgumentException("Arşiv Açılamadı");
-            ArchiveData[] archivedata = [.. files];
+            ArchiveData[] archivedata = [ .. files ];
             for (int i = 0; i < archivedata.Length; i++)
             {
                 ArchiveData item = archivedata[i];

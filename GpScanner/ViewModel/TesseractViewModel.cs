@@ -243,7 +243,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
             if (Directory.Exists(tesseractfolder))
             {
                 string[] defaultTtsLang = Settings.Default?.DefaultTtsLang?.Split('+');
-                ObservableCollection<TessFiles> tesseractfiles = [.. Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
+                ObservableCollection<TessFiles> tesseractfiles = [ .. Directory.EnumerateFiles(tesseractfolder, "*.traineddata")
                 .Select(
                     filePath =>
                     {
@@ -252,7 +252,7 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
                         TessFiles tessfiles = new() { DisplayName = displayName, Name = tessFileName, Checked = defaultTtsLang.Contains(tessFileName), FileSize = new FileInfo(filePath).Length / 1_048_576d };
                         tessfiles.PropertyChanged += Tess_PropertyChanged;
                         return tessfiles;
-                    })];
+                    }) ];
                 CheckedFiles = tesseractfiles?.Where(item => item.Checked).ToList();
                 return tesseractfiles;
             }
@@ -335,119 +335,119 @@ public class TesseractViewModel : InpcBase, IDataErrorInfo
 
     private ObservableCollection<TesseractOcrData> TesseractDownloadData()
     {
-        return
-        [
-            new() { OcrName = "afr.traineddata", OcrLangName = "Afrikaans" },
-            new() { OcrName = "amh.traineddata", OcrLangName = "Amharic" },
-            new() { OcrName = "ara.traineddata", OcrLangName = "Arabic" },
-            new() { OcrName = "asm.traineddata", OcrLangName = "Assamese" },
-            new() { OcrName = "aze.traineddata", OcrLangName = "Azerbaijani" },
-            new() { OcrName = "aze_cyrl.traineddata", OcrLangName = "Azerbaijani (Cyrillic)" },
-            new() { OcrName = "bel.traineddata", OcrLangName = "Belarusian" },
-            new() { OcrName = "ben.traineddata", OcrLangName = "Bengali" },
-            new() { OcrName = "bod.traineddata", OcrLangName = "Tibetan" },
-            new() { OcrName = "bos.traineddata", OcrLangName = "Bosnian" },
-            new() { OcrName = "bre.traineddata", OcrLangName = "Breton" },
-            new() { OcrName = "bul.traineddata", OcrLangName = "Bulgarian" },
-            new() { OcrName = "cat.traineddata", OcrLangName = "Catalan" },
-            new() { OcrName = "ceb.traineddata", OcrLangName = "Cebuano" },
-            new() { OcrName = "ces.traineddata", OcrLangName = "Czech" },
-            new() { OcrName = "chi_sim.traineddata", OcrLangName = "Chinese (Simplified)" },
-            new() { OcrName = "chi_sim_vert.traineddata", OcrLangName = "Chinese (Simplified, vertical)" },
-            new() { OcrName = "chi_tra.traineddata", OcrLangName = "Chinese (Traditional)" },
-            new() { OcrName = "chi_tra_vert.traineddata", OcrLangName = "Chinese (Traditional, vertical)" },
-            new() { OcrName = "chr.traineddata", OcrLangName = "Cherokee" },
-            new() { OcrName = "cos.traineddata", OcrLangName = "Corsican" },
-            new() { OcrName = "cym.traineddata", OcrLangName = "Welsh" },
-            new() { OcrName = "dan.traineddata", OcrLangName = "Danish" },
-            new() { OcrName = "deu.traineddata", OcrLangName = "German" },
-            new() { OcrName = "dzo.traineddata", OcrLangName = "Dzongkha" },
-            new() { OcrName = "ell.traineddata", OcrLangName = "Greek" },
-            new() { OcrName = "eng.traineddata", OcrLangName = "English" },
-            new() { OcrName = "enm.traineddata", OcrLangName = "Middle English" },
-            new() { OcrName = "epo.traineddata", OcrLangName = "Esperanto" },
-            new() { OcrName = "equ.traineddata", OcrLangName = "Math / equation detection" },
-            new() { OcrName = "est.traineddata", OcrLangName = "Estonian" },
-            new() { OcrName = "eus.traineddata", OcrLangName = "Basque" },
-            new() { OcrName = "fas.traineddata", OcrLangName = "Persian" },
-            new() { OcrName = "fin.traineddata", OcrLangName = "Finnish" },
-            new() { OcrName = "fra.traineddata", OcrLangName = "French" },
-            new() { OcrName = "frm.traineddata", OcrLangName = "Middle French" },
-            new() { OcrName = "gle.traineddata", OcrLangName = "Irish" },
-            new() { OcrName = "glg.traineddata", OcrLangName = "Galician" },
-            new() { OcrName = "grc.traineddata", OcrLangName = "Ancient Greek" },
-            new() { OcrName = "guj.traineddata", OcrLangName = "Gujarati" },
-            new() { OcrName = "hat.traineddata", OcrLangName = "Haitian Creole" },
-            new() { OcrName = "heb.traineddata", OcrLangName = "Hebrew", IsEnabled = false },
-            new() { OcrName = "hin.traineddata", OcrLangName = "Hindi" },
-            new() { OcrName = "hrv.traineddata", OcrLangName = "Croatian" },
-            new() { OcrName = "hun.traineddata", OcrLangName = "Hungarian" },
-            new() { OcrName = "hye.traineddata", OcrLangName = "Armenian" },
-            new() { OcrName = "iku.traineddata", OcrLangName = "Inuktitut" },
-            new() { OcrName = "ind.traineddata", OcrLangName = "Indonesian" },
-            new() { OcrName = "isl.traineddata", OcrLangName = "Icelandic" },
-            new() { OcrName = "ita.traineddata", OcrLangName = "Italian" },
-            new() { OcrName = "ita_old.traineddata", OcrLangName = "Italian (Old)" },
-            new() { OcrName = "jav.traineddata", OcrLangName = "Javanese" },
-            new() { OcrName = "jpn.traineddata", OcrLangName = "Japanese" },
-            new() { OcrName = "kan.traineddata", OcrLangName = "Kannada" },
-            new() { OcrName = "kat.traineddata", OcrLangName = "Georgian" },
-            new() { OcrName = "kat_old.traineddata", OcrLangName = "Georgian (Old)" },
-            new() { OcrName = "kaz.traineddata", OcrLangName = "Kazakh" },
-            new() { OcrName = "khm.traineddata", OcrLangName = "Khmer" },
-            new() { OcrName = "kir.traineddata", OcrLangName = "Kirghiz" },
-            new() { OcrName = "kmr.traineddata", OcrLangName = "Kurdish (Kurmanji)" },
-            new() { OcrName = "kor.traineddata", OcrLangName = "Korean" },
-            new() { OcrName = "lao.traineddata", OcrLangName = "Lao" },
-            new() { OcrName = "lat.traineddata", OcrLangName = "Latin" },
-            new() { OcrName = "lav.traineddata", OcrLangName = "Latvian" },
-            new() { OcrName = "lit.traineddata", OcrLangName = "Lithuanian" },
-            new() { OcrName = "ltz.traineddata", OcrLangName = "Luxembourgish" },
-            new() { OcrName = "mal.traineddata", OcrLangName = "Malayalam" },
-            new() { OcrName = "mar.traineddata", OcrLangName = "Marathi" },
-            new() { OcrName = "mkd.traineddata", OcrLangName = "Macedonian" },
-            new() { OcrName = "mlt.traineddata", OcrLangName = "Maltese" },
-            new() { OcrName = "msa.traineddata", OcrLangName = "Malay" },
-            new() { OcrName = "mya.traineddata", OcrLangName = "Burmese" },
-            new() { OcrName = "nep.traineddata", OcrLangName = "Nepali" },
-            new() { OcrName = "nld.traineddata", OcrLangName = "Dutch" },
-            new() { OcrName = "oci.traineddata", OcrLangName = "Occitan" },
-            new() { OcrName = "ori.traineddata", OcrLangName = "Oriya" },
-            new() { OcrName = "osd.traineddata", OcrLangName = "Orientation and Script Detection" },
-            new() { OcrName = "pan.traineddata", OcrLangName = "Punjabi" },
-            new() { OcrName = "pol.traineddata", OcrLangName = "Polish" },
-            new() { OcrName = "por.traineddata", OcrLangName = "Portuguese" },
-            new() { OcrName = "pus.traineddata", OcrLangName = "Pashto" },
-            new() { OcrName = "ron.traineddata", OcrLangName = "Romanian" },
-            new() { OcrName = "rus.traineddata", OcrLangName = "Russian" },
-            new() { OcrName = "san.traineddata", OcrLangName = "Sanskrit" },
-            new() { OcrName = "sin.traineddata", OcrLangName = "Sinhala" },
-            new() { OcrName = "slk.traineddata", OcrLangName = "Slovak" },
-            new() { OcrName = "slv.traineddata", OcrLangName = "Slovenian" },
-            new() { OcrName = "spa.traineddata", OcrLangName = "Spanish" },
-            new() { OcrName = "spa_old.traineddata", OcrLangName = "Spanish (Old)" },
-            new() { OcrName = "sqi.traineddata", OcrLangName = "Albanian" },
-            new() { OcrName = "srp.traineddata", OcrLangName = "Serbian" },
-            new() { OcrName = "srp_latn.traineddata", OcrLangName = "Serbian (Latin)" },
-            new() { OcrName = "sun.traineddata", OcrLangName = "Sundanese" },
-            new() { OcrName = "swa.traineddata", OcrLangName = "Swahili" },
-            new() { OcrName = "swe.traineddata", OcrLangName = "Swedish" },
-            new() { OcrName = "syr.traineddata", OcrLangName = "Syriac" },
-            new() { OcrName = "tam.traineddata", OcrLangName = "Tamil" },
-            new() { OcrName = "tat.traineddata", OcrLangName = "Tatar" },
-            new() { OcrName = "tel.traineddata", OcrLangName = "Telugu" },
-            new() { OcrName = "tgk.traineddata", OcrLangName = "Tajik" },
-            new() { OcrName = "tha.traineddata", OcrLangName = "Thai" },
-            new() { OcrName = "tir.traineddata", OcrLangName = "Tigrinya" },
-            new() { OcrName = "ton.traineddata", OcrLangName = "Tongan" },
-            new() { OcrName = "tur.traineddata", OcrLangName = "Turkish" },
-            new() { OcrName = "uig.traineddata", OcrLangName = "Uighur" },
-            new() { OcrName = "ukr.traineddata", OcrLangName = "Ukrainian" },
-            new() { OcrName = "urd.traineddata", OcrLangName = "Urdu" },
-            new() { OcrName = "uzb.traineddata", OcrLangName = "Uzbek" },
-            new() { OcrName = "uzb_cyrl.traineddata", OcrLangName = "Uzbek (Cyrillic)" },
-            new() { OcrName = "vie.traineddata", OcrLangName = "Vietnamese" },
-            new() { OcrName = "yor.traineddata", OcrLangName = "Yoruba" }];
+        return[ new() { OcrName = "afr.traineddata", OcrLangName = "Afrikaans" }, new() { OcrName = "amh.traineddata", OcrLangName = "Amharic" }, new() { OcrName = "ara.traineddata", OcrLangName = "Arabic" }, new()
+        {
+            OcrName = "asm.traineddata",
+            OcrLangName = "Assamese"
+        }, new() { OcrName = "aze.traineddata", OcrLangName = "Azerbaijani" }, new() { OcrName = "aze_cyrl.traineddata", OcrLangName = "Azerbaijani (Cyrillic)" }, new() { OcrName = "bel.traineddata", OcrLangName = "Belarusian" }, new()
+        {
+            OcrName = "ben.traineddata",
+            OcrLangName = "Bengali"
+        }, new() { OcrName = "bod.traineddata", OcrLangName = "Tibetan" }, new() { OcrName = "bos.traineddata", OcrLangName = "Bosnian" }, new() { OcrName = "bre.traineddata", OcrLangName = "Breton" }, new()
+        {
+            OcrName = "bul.traineddata",
+            OcrLangName = "Bulgarian"
+        }, new() { OcrName = "cat.traineddata", OcrLangName = "Catalan" }, new() { OcrName = "ceb.traineddata", OcrLangName = "Cebuano" }, new() { OcrName = "ces.traineddata", OcrLangName = "Czech" }, new()
+        {
+            OcrName = "chi_sim.traineddata",
+            OcrLangName = "Chinese (Simplified)"
+        }, new() { OcrName = "chi_sim_vert.traineddata", OcrLangName = "Chinese (Simplified, vertical)" }, new() { OcrName = "chi_tra.traineddata", OcrLangName = "Chinese (Traditional)" }, new()
+        {
+            OcrName = "chi_tra_vert.traineddata",
+            OcrLangName = "Chinese (Traditional, vertical)"
+        }, new() { OcrName = "chr.traineddata", OcrLangName = "Cherokee" }, new() { OcrName = "cos.traineddata", OcrLangName = "Corsican" }, new() { OcrName = "cym.traineddata", OcrLangName = "Welsh" }, new()
+        {
+            OcrName = "dan.traineddata",
+            OcrLangName = "Danish"
+        }, new() { OcrName = "deu.traineddata", OcrLangName = "German" }, new() { OcrName = "dzo.traineddata", OcrLangName = "Dzongkha" }, new() { OcrName = "ell.traineddata", OcrLangName = "Greek" }, new()
+        {
+            OcrName = "eng.traineddata",
+            OcrLangName = "English"
+        }, new() { OcrName = "enm.traineddata", OcrLangName = "Middle English" }, new() { OcrName = "epo.traineddata", OcrLangName = "Esperanto" }, new() { OcrName = "equ.traineddata", OcrLangName = "Math / equation detection" }, new()
+        {
+            OcrName = "est.traineddata",
+            OcrLangName = "Estonian"
+        }, new() { OcrName = "eus.traineddata", OcrLangName = "Basque" }, new() { OcrName = "fas.traineddata", OcrLangName = "Persian" }, new() { OcrName = "fin.traineddata", OcrLangName = "Finnish" }, new()
+        {
+            OcrName = "fra.traineddata",
+            OcrLangName = "French"
+        }, new() { OcrName = "frm.traineddata", OcrLangName = "Middle French" }, new() { OcrName = "gle.traineddata", OcrLangName = "Irish" }, new() { OcrName = "glg.traineddata", OcrLangName = "Galician" }, new()
+        {
+            OcrName = "grc.traineddata",
+            OcrLangName = "Ancient Greek"
+        }, new() { OcrName = "guj.traineddata", OcrLangName = "Gujarati" }, new() { OcrName = "hat.traineddata", OcrLangName = "Haitian Creole" }, new() { OcrName = "heb.traineddata", OcrLangName = "Hebrew", IsEnabled = false }, new()
+        {
+            OcrName = "hin.traineddata",
+            OcrLangName = "Hindi"
+        }, new() { OcrName = "hrv.traineddata", OcrLangName = "Croatian" }, new() { OcrName = "hun.traineddata", OcrLangName = "Hungarian" }, new() { OcrName = "hye.traineddata", OcrLangName = "Armenian" }, new()
+        {
+            OcrName = "iku.traineddata",
+            OcrLangName = "Inuktitut"
+        }, new() { OcrName = "ind.traineddata", OcrLangName = "Indonesian" }, new() { OcrName = "isl.traineddata", OcrLangName = "Icelandic" }, new() { OcrName = "ita.traineddata", OcrLangName = "Italian" }, new()
+        {
+            OcrName = "ita_old.traineddata",
+            OcrLangName = "Italian (Old)"
+        }, new() { OcrName = "jav.traineddata", OcrLangName = "Javanese" }, new() { OcrName = "jpn.traineddata", OcrLangName = "Japanese" }, new() { OcrName = "kan.traineddata", OcrLangName = "Kannada" }, new()
+        {
+            OcrName = "kat.traineddata",
+            OcrLangName = "Georgian"
+        }, new() { OcrName = "kat_old.traineddata", OcrLangName = "Georgian (Old)" }, new() { OcrName = "kaz.traineddata", OcrLangName = "Kazakh" }, new() { OcrName = "khm.traineddata", OcrLangName = "Khmer" }, new()
+        {
+            OcrName = "kir.traineddata",
+            OcrLangName = "Kirghiz"
+        }, new() { OcrName = "kmr.traineddata", OcrLangName = "Kurdish (Kurmanji)" }, new() { OcrName = "kor.traineddata", OcrLangName = "Korean" }, new() { OcrName = "lao.traineddata", OcrLangName = "Lao" }, new()
+        {
+            OcrName = "lat.traineddata",
+            OcrLangName = "Latin"
+        }, new() { OcrName = "lav.traineddata", OcrLangName = "Latvian" }, new() { OcrName = "lit.traineddata", OcrLangName = "Lithuanian" }, new() { OcrName = "ltz.traineddata", OcrLangName = "Luxembourgish" }, new()
+        {
+            OcrName = "mal.traineddata",
+            OcrLangName = "Malayalam"
+        }, new() { OcrName = "mar.traineddata", OcrLangName = "Marathi" }, new() { OcrName = "mkd.traineddata", OcrLangName = "Macedonian" }, new() { OcrName = "mlt.traineddata", OcrLangName = "Maltese" }, new()
+        {
+            OcrName = "msa.traineddata",
+            OcrLangName = "Malay"
+        }, new() { OcrName = "mya.traineddata", OcrLangName = "Burmese" }, new() { OcrName = "nep.traineddata", OcrLangName = "Nepali" }, new() { OcrName = "nld.traineddata", OcrLangName = "Dutch" }, new()
+        {
+            OcrName = "oci.traineddata",
+            OcrLangName = "Occitan"
+        }, new() { OcrName = "ori.traineddata", OcrLangName = "Oriya" }, new() { OcrName = "osd.traineddata", OcrLangName = "Orientation and Script Detection" }, new() { OcrName = "pan.traineddata", OcrLangName = "Punjabi" }, new()
+        {
+            OcrName = "pol.traineddata",
+            OcrLangName = "Polish"
+        }, new() { OcrName = "por.traineddata", OcrLangName = "Portuguese" }, new() { OcrName = "pus.traineddata", OcrLangName = "Pashto" }, new() { OcrName = "ron.traineddata", OcrLangName = "Romanian" }, new()
+        {
+            OcrName = "rus.traineddata",
+            OcrLangName = "Russian"
+        }, new() { OcrName = "san.traineddata", OcrLangName = "Sanskrit" }, new() { OcrName = "sin.traineddata", OcrLangName = "Sinhala" }, new() { OcrName = "slk.traineddata", OcrLangName = "Slovak" }, new()
+        {
+            OcrName = "slv.traineddata",
+            OcrLangName = "Slovenian"
+        }, new() { OcrName = "spa.traineddata", OcrLangName = "Spanish" }, new() { OcrName = "spa_old.traineddata", OcrLangName = "Spanish (Old)" }, new() { OcrName = "sqi.traineddata", OcrLangName = "Albanian" }, new()
+        {
+            OcrName = "srp.traineddata",
+            OcrLangName = "Serbian"
+        }, new() { OcrName = "srp_latn.traineddata", OcrLangName = "Serbian (Latin)" }, new() { OcrName = "sun.traineddata", OcrLangName = "Sundanese" }, new() { OcrName = "swa.traineddata", OcrLangName = "Swahili" }, new()
+        {
+            OcrName = "swe.traineddata",
+            OcrLangName = "Swedish"
+        }, new() { OcrName = "syr.traineddata", OcrLangName = "Syriac" }, new() { OcrName = "tam.traineddata", OcrLangName = "Tamil" }, new() { OcrName = "tat.traineddata", OcrLangName = "Tatar" }, new()
+        {
+            OcrName = "tel.traineddata",
+            OcrLangName = "Telugu"
+        }, new() { OcrName = "tgk.traineddata", OcrLangName = "Tajik" }, new() { OcrName = "tha.traineddata", OcrLangName = "Thai" }, new() { OcrName = "tir.traineddata", OcrLangName = "Tigrinya" }, new()
+        {
+            OcrName = "ton.traineddata",
+            OcrLangName = "Tongan"
+        }, new() { OcrName = "tur.traineddata", OcrLangName = "Turkish" }, new() { OcrName = "uig.traineddata", OcrLangName = "Uighur" }, new() { OcrName = "ukr.traineddata", OcrLangName = "Ukrainian" }, new()
+        {
+            OcrName = "urd.traineddata",
+            OcrLangName = "Urdu"
+        }, new() { OcrName = "uzb.traineddata", OcrLangName = "Uzbek" }, new() { OcrName = "uzb_cyrl.traineddata", OcrLangName = "Uzbek (Cyrillic)" }, new() { OcrName = "vie.traineddata", OcrLangName = "Vietnamese" }, new()
+        {
+            OcrName = "yor.traineddata",
+            OcrLangName = "Yoruba"
+        } ];
     }
 
     private void TesseractViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)

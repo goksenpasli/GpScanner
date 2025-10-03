@@ -42,14 +42,7 @@ public class Compressor : Control, INotifyPropertyChanged
     {
         if (DesignerProperties.GetIsInDesignMode(this))
         {
-            BatchPdfList =
-            [
-                new() { Filename = "FileName", Completed = true },
-                new() { Filename = "FileName", Completed = true },
-                new() { Filename = "FileName" },
-                new() { Filename = "FileName" },
-                new() { Filename = "FileName" },
-            ];
+            BatchPdfList =[ new() { Filename = "FileName", Completed = true }, new() { Filename = "FileName", Completed = true }, new() { Filename = "FileName" }, new() { Filename = "FileName" }, new() { Filename = "FileName" }, ];
         }
 
         BatchCompressFile = new RelayCommand<object>(
@@ -371,7 +364,7 @@ public class Compressor : Control, INotifyPropertyChanged
             byte[] buffer = new byte[4];
             using FileStream fs = new(filename, FileMode.Open, FileAccess.Read);
             _ = fs.Read(buffer, 0, buffer.Length);
-            byte[] pdfheader = [0x25, 0x50, 0x44, 0x46];
+            byte[] pdfheader = [ 0x25, 0x50, 0x44, 0x46 ];
             return buffer?.SequenceEqual(pdfheader) == true;
         }
 

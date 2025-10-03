@@ -1030,14 +1030,14 @@ namespace WebPWrapper
     [SuppressUnmanagedCodeSecurity]
     internal sealed class UnsafeNativeMethods
     {
-/// <summary>
-/// The writer type for output compress data
-/// </summary>
-/// <param name="data">Data returned</param>
-/// <param name="data_size">Size of data returned</param>
-/// <param name="wpic">Picture structure</param>
-/// <returns></returns>
-[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        /// <summary>
+        /// The writer type for output compress data
+        /// </summary>
+        /// <param name="data">Data returned</param>
+        /// <param name="data_size">Size of data returned</param>
+        /// <param name="wpic">Picture structure</param>
+        /// <returns></returns>
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
         internal delegate int WebPMemoryWrite([In] IntPtr data, UIntPtr data_size, ref WebPPicture wpic);
 
         [DllImport("kernel32.dll", EntryPoint = "CopyMemory", SetLastError = false)]

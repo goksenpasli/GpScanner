@@ -103,7 +103,7 @@ public static class ExtensionMethods
     {
         ConcurrentBag<string> filesNames = [];
 
-        ConcurrentBag<string> pendingQueue = [path];
+        ConcurrentBag<string> pendingQueue = [ path ];
 
         _ = Parallel.ForEach(
             pendingQueue,
@@ -111,10 +111,10 @@ public static class ExtensionMethods
             {
                 try
                 {
-                    List<string> files = [.. Directory.EnumerateFiles(currentPath, pattern)];
+                    List<string> files = [ .. Directory.EnumerateFiles(currentPath, pattern) ];
                     _ = Parallel.ForEach(files, fileName => filesNames.Add(fileName));
 
-                    List<string> directories = [.. Directory.EnumerateDirectories(currentPath)];
+                    List<string> directories = [ .. Directory.EnumerateDirectories(currentPath) ];
                     _ = Parallel.ForEach(directories, directory => pendingQueue.Add(directory));
                 }
                 catch (UnauthorizedAccessException)
@@ -183,7 +183,7 @@ public static class ExtensionMethods
 
         Helpers.SHParseDisplayName(Path.Combine(folderPath, file), IntPtr.Zero, out IntPtr nativeFile, 0, out _);
 
-        IntPtr[] fileArray = nativeFile == IntPtr.Zero ? [] : [nativeFile];
+        IntPtr[] fileArray = nativeFile == IntPtr.Zero ? [] : [ nativeFile ];
         _ = Helpers.SHOpenFolderAndSelectItems(nativeFolder, (uint)fileArray.Length, fileArray, 0);
 
         Marshal.FreeCoTaskMem(nativeFolder);

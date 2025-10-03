@@ -219,9 +219,9 @@ public class EypPdfViewer : PdfViewer.PdfViewer
         List<string> files = TwainCtrl.EypFileExtract(filename);
         if (files is not null)
         {
-            string[] eypcontentfilesextension = [".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx", ".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip"];
-            EypAttachments = [.. files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant()))];
-            EypNonSuportedAttachments = [.. files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant()))];
+            string[] eypcontentfilesextension = [ ".pdf", ".eyp", ".tiff", ".tif", ".jpg", ".jpeg", ".jpe", ".png", ".bmp", ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg", ".xls", ".xlsx", ".7z", ".arj", ".bzip2", ".cab", ".gzip", ".iso", ".lzh", ".lzma", ".ntfs", ".ppmd", ".rar", ".rar5", ".rpm", ".tar", ".vhd", ".wim", ".xar", ".xz", ".z", ".zip" ];
+            EypAttachments = [ .. files?.Where(z => eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant())) ];
+            EypNonSuportedAttachments = [ .. files?.Where(z => !eypcontentfilesextension.Contains(Path.GetExtension(z)?.ToLowerInvariant())) ];
             using PdfDocument document = PdfReader.Open(files?.First(z => Path.GetExtension(z.ToLowerInvariant()) == ".pdf"), PdfDocumentOpenMode.Import, PdfGeneration.PasswordProvider);
             return document?.FullPath;
         }
@@ -268,7 +268,7 @@ public class EypPdfViewer : PdfViewer.PdfViewer
             {
                 return;
             }
-            string[] files = Keyboard.Modifiers == ModifierKeys.Alt ? [temppdf, currentfile] : [currentfile, temppdf];
+            string[] files = Keyboard.Modifiers == ModifierKeys.Alt ? [ temppdf, currentfile ] : [ currentfile, temppdf ];
             files.MergePdf().Save(currentfile);
             PdfFilePath = null;
             PdfFilePath = currentfile;

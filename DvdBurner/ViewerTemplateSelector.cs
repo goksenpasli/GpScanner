@@ -20,8 +20,8 @@ namespace DvdBurner
         {
             if (!DesignerProperties.GetIsInDesignMode(container) && item is string dosya)
             {
-                string[] imgext = [".jpg", ".bmp", ".png", ".tif", ".tiff"];
-                string[] videoext = [".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg"];
+                string[] imgext = [ ".jpg", ".bmp", ".png", ".tif", ".tiff" ];
+                string[] videoext = [ ".mp4", ".3gp", ".wmv", ".mpg", ".mov", ".avi", ".mpeg" ];
                 string ext = Path.GetExtension(dosya)?.ToLowerInvariant();
                 if (ext is not null)
                 {
