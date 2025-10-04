@@ -81,6 +81,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     private readonly SolidColorBrush bluesaveprogresscolor = Brushes.DeepSkyBlue;
     private readonly Brush defaultsaveprogressforegroundcolor = (Brush)new BrushConverter().ConvertFromString("#FF06B025");
     private readonly string[] imagefileextensions = [ ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp" ];
+    private readonly Stack<DeletedImageEntry> invertundoStack = new();
     private readonly Rectangle selectionbox = new() { Stroke = new SolidColorBrush(Color.FromArgb(80, 255, 0, 0)), Fill = new SolidColorBrush(Color.FromArgb(80, 0, 255, 0)), StrokeThickness = 2, StrokeDashArray = new DoubleCollection([ 1 ]) };
     private readonly Stack<DeletedImageEntry> undoStack = new();
     private int cropAllMaximumWidth;
@@ -231,6 +232,12 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     return;
                 }
+                int index = Scanner.Resimler?.IndexOf(item) ?? -1;
+                if (index < 0)
+                {
+                    return;
+                }
+                invertundoStack.Push(new DeletedImageEntry(new ScannedImage() { Resim = item.Resim }, index));
                 using Bitmap bitmap = item.Resim.BitmapSourceToBitmap();
                 BitmapFrame processedImage = Keyboard.Modifiers == ModifierKeys.Alt
                                              ? BitmapFrame.Create(bitmap.ConvertBlackAndWhite(Scanner.ToolBarBwThreshold).ToBitmapImage(ImageFormat.Tiff))
@@ -241,6 +248,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 item.Resim = processedImage;
                 processedImage = null;
                 GC.Collect();
+            },
+            parameter => true);
+
+        UndoInvertImage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is not ScannedImage item || invertundoStack.Count == 0)
+                {
+                    return;
+                }
+                DeletedImageEntry entry = invertundoStack.Pop();
+                item.Resim = entry.Image.Resim;
             },
             parameter => true);
 
@@ -636,6 +655,34 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
                             await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
+                        });
+                    await RemoveProcessedImages();
+                }
+            },
+            parameter =>
+            {
+                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
+                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+            });
+
+        SaveSelectedFilesJb2BwPdfFile = new RelayCommand<object>(
+            async parameter =>
+            {
+                if (!CheckFileSaveProgress())
+                {
+                    return;
+                }
+                SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    FileSaveTask = Task.Run(
+                        () =>
+                        {
+                            List<ScannedImage> seçiliresimler = GetSelectedImages();
+                            Progress<double> progress = new(percent => Scanner.PdfSaveProgressValue = percent);
+                            string fileName = saveFileDialog.FileName;
+                            File.WriteAllBytes(fileName, seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).ToArray());
+                            Scanner.PdfSaveProgressValue = 0;
                         });
                     await RemoveProcessedImages();
                 }
@@ -3314,6 +3361,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> SaveSelectedFilesBwPdfFile { get; }
 
+    public RelayCommand<object> SaveSelectedFilesJb2BwPdfFile { get; }
+
     public RelayCommand<object> SaveSelectedFilesJpgFile { get; }
 
     public RelayCommand<object> SaveSelectedFilesPdfFile { get; }
@@ -3635,6 +3684,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             }
         }
     }
+
+    public RelayCommand<object> UndoInvertImage { get; }
 
     public bool UseMozJpeg
     {

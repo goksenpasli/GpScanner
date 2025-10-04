@@ -1899,15 +1899,24 @@
                                                                                                         Foreground="Black"
                                                                                                         Text="R" />
                                                                                                 </Button>
-                                                                                                <Button local:Policy.PolicyName="InvertImage"
-                                                                                                    BorderBrush="Cyan"
-                                                                                                    Command="{Binding Data.InvertImage, Source={StaticResource Proxy}}"
-                                                                                                    CommandParameter="{Binding Mode=OneWay}">
-                                                                                                    <TextBlock FontFamily="Wingdings"
-                                                                                                        FontSize="26"
-                                                                                                        Foreground="Black"
-                                                                                                        Text="[" />
-                                                                                                </Button>
+                                                                                                <UniformGrid Columns="2">
+                                                                                                    <Button local:Policy.PolicyName="ResimSilGeriAl"
+                                                                                                        Command="{Binding Data.UndoInvertImage, Source={StaticResource Proxy}}"
+                                                                                                        CommandParameter="{Binding Mode=OneWay}">
+                                                                                                        <Image Width="24"
+                                                                                                            Height="24"
+                                                                                                            Source="/TwainControl;component/Icons/undo.png" />
+                                                                                                    </Button>
+                                                                                                    <Button local:Policy.PolicyName="InvertImage"
+                                                                                                        BorderBrush="Cyan"
+                                                                                                        Command="{Binding Data.InvertImage, Source={StaticResource Proxy}}"
+                                                                                                        CommandParameter="{Binding Mode=OneWay}">
+                                                                                                        <TextBlock FontFamily="Wingdings"
+                                                                                                            FontSize="26"
+                                                                                                            Foreground="Black"
+                                                                                                            Text="[" />
+                                                                                                    </Button>
+                                                                                                </UniformGrid>
                                                                                                 <Extensions:NumericUpDown Width="60"
                                                                                                     IsReadOnly="True"
                                                                                                     Maximum="3"
@@ -2385,6 +2394,25 @@
                                             </MenuItem.Header>
                                             <MenuItem.Icon>
                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
+                                            </MenuItem.Icon>
+                                        </MenuItem>
+                                        <MenuItem Command="{Binding SaveSelectedFilesJb2BwPdfFile}">
+                                            <MenuItem.Header>
+                                                <TextBlock>
+                                                    <Run Text="JB2" />
+                                                    <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                    <Run Text="{local:Loc BW}" />
+                                                    <InlineUIContainer BaselineAlignment="Center">
+                                                        <Extensions:NumericUpDown Interval="1"
+                                                            IsReadOnly="True"
+                                                            Maximum="95"
+                                                            Minimum="10"
+                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                    </InlineUIContainer>
+                                                </TextBlock>
+                                            </MenuItem.Header>
+                                            <MenuItem.Icon>
+                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jb2}" />
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem Command="{Binding SaveSelectedFilesJpgFile}">
