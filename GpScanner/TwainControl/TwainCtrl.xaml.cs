@@ -2068,17 +2068,29 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         ApplyCropAllImages = new RelayCommand<object>(
             parameter =>
             {
-                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
                 foreach (ScannedImage item in GetSelectedImages())
                 {
-                    BitmapFrame bitmapframe = BitmapFrame.Create(GenerateCroppedImage(item.Resim, Settings.Default.Top, Settings.Default.Left, Settings.Default.Bottom, Settings.Default.Right));
-                    bitmapframe.Freeze();
-                    if (altkeypressed)
+                    int index = Scanner.Resimler?.IndexOf(item) ?? -1;
+                    if (index < 0)
                     {
-                        item.Resim = bitmapframe;
+                        return;
+                    }
+                    bool process = TrimPage switch
+                    {
+                        0 => index % 2 == 0,
+                        1 => index % 2 == 1,
+                        _ => true
+                    };
+                    if (!process)
+                    {
                         continue;
                     }
-                    Scanner?.Resimler?.Add(new ScannedImage() { Resim = bitmapframe });
+
+                    undoStack.Push(new DeletedImageEntry(new ScannedImage() { Resim = item.Resim }, index));
+                    CanUndoImage = undoStack.Count > 0;
+                    BitmapFrame bitmapframe = BitmapFrame.Create(GenerateCroppedImage(item.Resim, Settings.Default.Top, Settings.Default.Left, Settings.Default.Bottom, Settings.Default.Right));
+                    bitmapframe.Freeze();
+                    item.Resim = bitmapframe;
                 }
                 if (PrepareCropCurrentImage.CanExecute(null))
                 {
@@ -2778,6 +2790,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             {
                 field = value;
                 OnPropertyChanged(nameof(DocumentPreviewIsExpanded));
+            }
+        }
+    } = true;
+
+    public bool DpiSnap
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(DpiSnap));
             }
         }
     } = true;
@@ -3661,6 +3686,19 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     }
 
     public RelayCommand<object> ToolBoxManualDeskewImage { get; }
+
+    public int TrimPage
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(TrimPage));
+            }
+        }
+    } = -1;
 
     public ICommand Tümünüİşaretle { get; }
 

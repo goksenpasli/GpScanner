@@ -120,7 +120,6 @@
                             </StackPanel>
                         </Button>
                         <Button local:Policy.PolicyName="ApplyCropAllImages"
-                            BorderBrush="Cyan"
                             Command="{Binding ApplyCropAllImages}"
                             ToolTipService.IsEnabled="{Binding SelectedImageWidthHeightIsEqual, Converter={StaticResource ReverseBooleanConverter}}"
                             ToolTipService.ShowOnDisabled="True">
@@ -230,6 +229,11 @@
                         </Button>
                     </UniformGrid>
                 </UniformGrid>
+                <ComboBox SelectedValue="{Binding TrimPage}" SelectedValuePath="Tag">
+                    <ComboBoxItem Content="1.2.3.4.5.6..." Tag="-1" />
+                    <ComboBoxItem Content="1.3.5.7.9..." Tag="0" />
+                    <ComboBoxItem Content="2.4.6.8.10..." Tag="1" />
+                </ComboBox>
                 <Separator />
                 <Grid>
                     <Grid.ColumnDefinitions>

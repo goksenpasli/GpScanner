@@ -127,12 +127,17 @@
             <UniformGrid local:Policy.PolicyName="SaveQuality" Columns="2">
                 <HeaderedContentControl Margin="1">
                     <HeaderedContentControl.Header>
-                        <TextBlock>
-                            <Run Text="{local:Loc RES}" />
-                            <Run Text="{Binding Path=ImgLoadResolution, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
-                        </TextBlock>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock>
+                                <Run Text="{local:Loc RES}" />
+                                <Run Text="{Binding Path=ImgLoadResolution, Mode=OneWay, Source={x:Static properties:Settings.Default}, StringFormat={}{0} DPI}" />
+                            </TextBlock>
+                            <ToggleButton Content="°"
+                                FontFamily="Wingdings"
+                                IsChecked="{Binding DpiSnap}" />
+                        </StackPanel>
                     </HeaderedContentControl.Header>
-                    <Slider IsSnapToTickEnabled="True"
+                    <Slider IsSnapToTickEnabled="{Binding DpiSnap, Mode=OneWay}"
                         Maximum="1200"
                         Minimum="72"
                         SmallChange="1"
