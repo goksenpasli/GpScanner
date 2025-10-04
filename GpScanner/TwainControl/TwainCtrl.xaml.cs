@@ -372,6 +372,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             },
             parameter => FileNameValid(Scanner?.FileName));
 
+        SaveSingleJb2BwPdfFile = new RelayCommand<object>(
+            parameter =>
+            {
+                SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
+                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
+                {
+                    List<ScannedImage> image = [ scannedImage ];
+                    File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().ToArray());
+                }
+            },
+            parameter => FileNameValid(Scanner?.FileName));
+
         SaveSingleJpgFile = new RelayCommand<object>(
             parameter =>
             {
@@ -3378,6 +3390,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> SaveSingleBlackWhiteJb2File { get; }
 
     public RelayCommand<object> SaveSingleBwPdfFile { get; }
+
+    public RelayCommand<object> SaveSingleJb2BwPdfFile { get; }
 
     public RelayCommand<object> SaveSingleJpgFile { get; }
 

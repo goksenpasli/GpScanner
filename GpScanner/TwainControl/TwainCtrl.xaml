@@ -1805,6 +1805,25 @@
                                                                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
                                                                                             </MenuItem.Icon>
                                                                                         </MenuItem>
+                                                                                        <MenuItem Command="{Binding Data.SaveSingleJb2BwPdfFile, Source={StaticResource Proxy}}">
+                                                                                            <MenuItem.Header>
+                                                                                                <StackPanel Orientation="Horizontal">
+                                                                                                    <TextBlock VerticalAlignment="Center">
+                                                                                                        <Run Text="JB2" />
+                                                                                                        <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
+                                                                                                        <Run Text="{local:Loc BW}" />
+                                                                                                    </TextBlock>
+                                                                                                    <Extensions:NumericUpDown Interval="1"
+                                                                                                        IsReadOnly="True"
+                                                                                                        Maximum="95"
+                                                                                                        Minimum="10"
+                                                                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                                </StackPanel>
+                                                                                            </MenuItem.Header>
+                                                                                            <MenuItem.Icon>
+                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jb2}" />
+                                                                                            </MenuItem.Icon>
+                                                                                        </MenuItem>
                                                                                         <MenuItem Command="{Binding Data.SaveSingleJpgFile, Source={StaticResource Proxy}}">
                                                                                             <MenuItem.Header>
                                                                                                 <StackPanel Orientation="Horizontal">
@@ -2020,9 +2039,21 @@
                                                                             </Style>
                                                                         </TextBlock.Style>
                                                                         <TextBlock.ToolTip>
-                                                                            <Image Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
-                                                                                Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
-                                                                                Source="{Binding Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameThumbConverter}}" />
+                                                                            <DockPanel LastChildFill="True">
+                                                                                <TextBlock HorizontalAlignment="Center"
+                                                                                    DockPanel.Dock="Top"
+                                                                                    Text="{Binding Resim.PixelWidth, Mode=OneWay, StringFormat={}{0} PIXEL}" />
+                                                                                <TextBlock VerticalAlignment="Center"
+                                                                                    DockPanel.Dock="Left"
+                                                                                    Text="{Binding Resim.PixelHeight, Mode=OneWay, StringFormat={}{0} PIXEL}">
+                                                                                    <TextBlock.LayoutTransform>
+                                                                                        <RotateTransform Angle="-90" />
+                                                                                    </TextBlock.LayoutTransform>
+                                                                                </TextBlock>
+                                                                                <Image Width="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
+                                                                                    Height="{Binding Source={x:Static SystemParameters.PrimaryScreenWidth}, ConverterParameter=3, Converter={StaticResource DivideConverter}}"
+                                                                                    Source="{Binding Resim, Mode=OneWay, Converter={StaticResource BitmapFrameToBitmapFrameThumbConverter}}" />
+                                                                            </DockPanel>
                                                                         </TextBlock.ToolTip>
                                                                     </TextBlock>
                                                                     <Image Canvas.Right="0"
