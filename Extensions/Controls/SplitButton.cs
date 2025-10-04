@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 
 namespace Extensions;
 
@@ -56,6 +57,16 @@ public class SplitButton : ButtonBase
         if (_PART_Popup is not null && _toggleButton is not null)
         {
             _PART_Popup.Closed += PART_Popup_Closed;
+        }
+    }
+
+    protected override void OnClick()
+    {
+        Point mousePosition = Mouse.GetPosition(this);
+        Rect mainbuttonrect = new(0, 0, ActualWidth - _toggleButton?.ActualWidth ?? 0, ActualHeight);
+        if (mainbuttonrect.Contains(mousePosition))
+        {
+            base.OnClick();
         }
     }
 

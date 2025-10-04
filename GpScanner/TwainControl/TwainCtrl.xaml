@@ -1438,15 +1438,13 @@
                                                 Height="24"
                                                 Source="/TwainControl;component/Icons/undo.png" />
                                         </Button>
-                                        <Button local:Policy.PolicyName="RemoveFiles"
+                                        <Extensions:SplitButton local:Policy.PolicyName="RemoveFiles"
                                             Command="{Binding ListeTemizle}"
                                             IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
                                             <Image Width="24"
                                                 Height="24"
                                                 Source="/TwainControl;component/Icons/delete.png" />
-                                        </Button>
-                                        <Extensions:ContentToggleButton local:Policy.PolicyName="RemoveFiles" IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
-                                            <Extensions:ContentToggleButton.OverContent>
+                                            <Extensions:SplitButton.InternalContent>
                                                 <Border Background="{StaticResource BorderBackground}"
                                                     BorderBrush="{StaticResource GroupBoxBackGround}"
                                                     BorderThickness="1">
@@ -1481,8 +1479,8 @@
                                                             IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
                                                     </StackPanel>
                                                 </Border>
-                                            </Extensions:ContentToggleButton.OverContent>
-                                        </Extensions:ContentToggleButton>
+                                            </Extensions:SplitButton.InternalContent>
+                                        </Extensions:SplitButton>
                                         <Button local:Policy.PolicyName="DuplicateSelectedImage"
                                             BorderBrush="Cyan"
                                             Command="{Binding DuplicateSelectedImage}"
@@ -1524,15 +1522,13 @@
                                                 Height="24"
                                                 Source="/TwainControl;component/Icons/none.png" />
                                         </Button>
-                                        <Button local:Policy.PolicyName="Tersiniİşaretle"
+                                        <Extensions:SplitButton local:Policy.PolicyName="Tersiniİşaretle"
                                             Command="{Binding Tersiniİşaretle}"
                                             ToolTip="{local:Loc REVERSE}">
                                             <Image Width="24"
                                                 Height="24"
                                                 Source="/TwainControl;component/Icons/inverse.png" />
-                                        </Button>
-                                        <Extensions:ContentToggleButton IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
-                                            <Extensions:ContentToggleButton.OverContent>
+                                            <Extensions:SplitButton.InternalContent>
                                                 <Border Background="{StaticResource BorderBackground}"
                                                     BorderBrush="{StaticResource GroupBoxBackGround}"
                                                     BorderThickness="1">
@@ -1566,8 +1562,8 @@
                                                         </Button>
                                                     </UniformGrid>
                                                 </Border>
-                                            </Extensions:ContentToggleButton.OverContent>
-                                        </Extensions:ContentToggleButton>
+                                            </Extensions:SplitButton.InternalContent>
+                                        </Extensions:SplitButton>
                                         <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
                                         <Button local:Policy.PolicyName="CycleSelectedDocuments"
                                             Command="{Binding CycleSelectedDocuments}"
