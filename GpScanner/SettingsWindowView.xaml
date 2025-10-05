@@ -38,7 +38,6 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <Converter:StringToQrBitmapImageConverter x:Key="StringToQrBitmapImageConverter" />
-        <Converter:PdfFileNameToInfoConverter x:Key="PdfFileNameToInfoConverter" IsEnabled="True" />
         <Converter:NumberRangeToColorConverter x:Key="ComboBoxNumberRangeToColorConverter"
             MaxNumber="100"
             MinNumber="5" />
@@ -51,9 +50,7 @@
         <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
         <Extensions:FilePathToIconConverter x:Key="JumboSizeFilePathToIconConverter" IconSize="jumbo" />
         <Extensions:ReverseBooleanConverter x:Key="ReverseBooleanConverter" />
-        <Converter:PageSizePreviewWidthConverter x:Key="PageSizePreviewWidthConverter" />
         <Converter:StringToCountryFlagImageConverter x:Key="StringToCountryFlagImageConverter" />
-        <Converter:PageSizePreviewHeightConverter x:Key="PageSizePreviewHeightConverter" />
         <Style TargetType="{x:Type ComboBox}">
             <Setter Property="Template" Value="{StaticResource ComboBoxStyle}" />
         </Style>
