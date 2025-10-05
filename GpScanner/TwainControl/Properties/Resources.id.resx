@@ -804,4 +804,13 @@
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>Pilih Warna</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>Nomor ganjil</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>Bahkan angka</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>MEMBALIK</value>
+  </data>
 </root>

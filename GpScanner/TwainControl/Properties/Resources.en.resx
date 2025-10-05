@@ -633,6 +633,21 @@ DEVICE</value>
   <data name="ARCHIVE" xml:space="preserve">
     <value>ARCHIVE</value>
   </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Some file extensions were not selected</value>
+  </data>
+  <data name="THEME" xml:space="preserve">
+    <value>THEME</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>SELECT COLOR</value>
+  </data>
+  <data name="ODD" xml:space="preserve">
+    <value>ODD NUMBER</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>EVEN NUMBER</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>ADD DOCUMENT
 TO FILE</value>
@@ -799,13 +814,7 @@ TO FILE</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Any Cyan Colored Control Works Differently With One or More Of The Alt Shift Ctrl Keys</value>
   </data>
-  <data name="WARNEXT" xml:space="preserve">
-    <value>Some file extensions were not selected</value>
-  </data>
-  <data name="THEME" xml:space="preserve">
-    <value>THEME</value>
-  </data>
-  <data name="SELECTCOLOR" xml:space="preserve">
-    <value>SELECT COLOR</value>
+  <data name="FLIP" xml:space="preserve">
+    <value>FLIP</value>
   </data>
 </root>

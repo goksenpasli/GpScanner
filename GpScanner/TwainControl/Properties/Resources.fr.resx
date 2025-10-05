@@ -627,6 +627,21 @@
   <data name="ARCHIVE" xml:space="preserve">
     <value>ARCHIVE</value>
   </data>
+  <data name="WARNEXT" xml:space="preserve">
+    <value>Certaines extensions de fichiers n'ont pas été sélectionnées</value>
+  </data>
+  <data name="THEME" xml:space="preserve">
+    <value>THÈME</value>
+  </data>
+  <data name="SELECTCOLOR" xml:space="preserve">
+    <value>Sélectionner la couleur</value>
+  </data>
+  <data name="ODD" xml:space="preserve">
+    <value>nombre impair</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>nombre pair</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>AJOUTER UN DOCUMENT</value>
   </data>
@@ -792,13 +807,7 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Tout contrôle de couleur cyan fonctionne différemment avec une ou plusieurs des touches Alt Shift Ctrl</value>
   </data>
-  <data name="WARNEXT" xml:space="preserve">
-    <value>Certaines extensions de fichiers n'ont pas été sélectionnées</value>
-  </data>
-  <data name="THEME" xml:space="preserve">
-    <value>THÈME</value>
-  </data>
-  <data name="SELECTCOLOR" xml:space="preserve">
-    <value>Sélectionner la couleur</value>
+  <data name="FLIP" xml:space="preserve">
+    <value>RETOURNER</value>
   </data>
 </root>

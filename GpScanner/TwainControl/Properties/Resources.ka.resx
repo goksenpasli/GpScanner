@@ -811,4 +811,13 @@ PDF</value>
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>შეარჩიეთ ფერი</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>უცნაური ნომერი</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>რიცხვიც კი</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>ბურუ</value>
+  </data>
 </root>

@@ -804,4 +804,13 @@
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>Odaberite boju</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>Neparni broj</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>Čak i broj</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>Okrenuti</value>
+  </data>
 </root>

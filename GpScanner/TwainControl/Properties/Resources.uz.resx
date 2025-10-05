@@ -816,4 +816,13 @@ Hujjat qo'shing</value>
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>Rangni tanlang</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>Toq son</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>Hatto raqam</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>Flip</value>
+  </data>
 </root>

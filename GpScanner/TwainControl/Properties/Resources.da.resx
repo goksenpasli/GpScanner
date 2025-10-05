@@ -804,4 +804,13 @@
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>Vælg farve</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>Ulige nummer</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>Selv nummer</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>Flip</value>
+  </data>
 </root>

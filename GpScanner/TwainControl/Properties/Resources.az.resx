@@ -801,4 +801,13 @@
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>Rəngi ​​seçin</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>Qəribə nömrə</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>Bərabərlik</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>Siymək</value>
+  </data>
 </root>

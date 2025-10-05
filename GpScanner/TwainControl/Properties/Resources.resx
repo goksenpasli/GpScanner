@@ -839,4 +839,13 @@
   <data name="SELECTCOLOR" xml:space="preserve">
     <value></value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value></value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

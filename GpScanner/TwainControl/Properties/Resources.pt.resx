@@ -801,4 +801,13 @@
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>Selecione cor</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>Número ímpar</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>NÚMERO PAR</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>VIRAR</value>
+  </data>
 </root>

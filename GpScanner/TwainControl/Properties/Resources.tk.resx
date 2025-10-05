@@ -816,4 +816,13 @@ Resminama goşuň</value>
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>Reňkini saýlaň</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>Geň san</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>Jübüt san</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>Flip</value>
+  </data>
 </root>

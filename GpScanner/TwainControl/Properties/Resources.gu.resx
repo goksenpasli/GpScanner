@@ -801,4 +801,13 @@
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>રંગ પસંદ કરો</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>અપરિચિત સંખ્યા</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>સમાન સંખ્યા</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>ફાટવું</value>
+  </data>
 </root>

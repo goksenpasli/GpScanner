@@ -816,4 +816,13 @@
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Секоја контрола на стакло во боја работи поинаку со едно или повеќе од копчињата со пониска смена CTRL!</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>Непарен број</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>Дури и број</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>Флип</value>
+  </data>
 </root>

@@ -477,6 +477,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string EVEN {
+            get {
+                return ResourceManager.GetString("EVEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string EXIT {
             get {
                 return ResourceManager.GetString("EXIT", resourceCulture);
@@ -552,6 +561,15 @@ namespace TwainControl.Properties {
         public static string FIRSTLAST {
             get {
                 return ResourceManager.GetString("FIRSTLAST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string FLIP {
+            get {
+                return ResourceManager.GetString("FLIP", resourceCulture);
             }
         }
         
@@ -926,6 +944,15 @@ namespace TwainControl.Properties {
         public static string OCRUSEINTERNALPDFCONTENT {
             get {
                 return ResourceManager.GetString("OCRUSEINTERNALPDFCONTENT", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string ODD {
+            get {
+                return ResourceManager.GetString("ODD", resourceCulture);
             }
         }
         

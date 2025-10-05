@@ -488,7 +488,7 @@
                                                     <Image Width="24"
                                                         Height="24"
                                                         Source="/TwainControl;component/Icons/selectall.png" />
-                                                    <TextBlock VerticalAlignment="Center" Text="1-3-5-7-9-11..." />
+                                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc ODD}" />
                                                 </StackPanel>
                                             </Button>
                                             <Button Command="{Binding PdfImportViewerÇiftİşaretle}">
@@ -496,7 +496,7 @@
                                                     <Image Width="24"
                                                         Height="24"
                                                         Source="/TwainControl;component/Icons/selectall.png" />
-                                                    <TextBlock VerticalAlignment="Center" Text="2-4-6-8-10-12..." />
+                                                    <TextBlock VerticalAlignment="Center" Text="{local:Loc EVEN}" />
                                                 </StackPanel>
                                             </Button>
                                         </UniformGrid>

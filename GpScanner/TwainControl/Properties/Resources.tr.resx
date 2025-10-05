@@ -648,6 +648,15 @@ KALDIR</value>
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>RENK SEÇİN</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>TEK SAYI</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>ÇİFT SAYI</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>TERS ÇEVİR</value>
+  </data>
   <data name="ADDDOC" xml:space="preserve">
     <value>DOSYAYA
 BELGE EKLE</value>

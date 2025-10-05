@@ -816,4 +816,13 @@
   <data name="SELECTCOLOR" xml:space="preserve">
     <value>رنگ را انتخاب کنید</value>
   </data>
+  <data name="ODD" xml:space="preserve">
+    <value>عدد عجیب و غریب</value>
+  </data>
+  <data name="EVEN" xml:space="preserve">
+    <value>حتی تعداد</value>
+  </data>
+  <data name="FLIP" xml:space="preserve">
+    <value>تلنگر</value>
+  </data>
 </root>
