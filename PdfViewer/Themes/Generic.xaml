@@ -275,6 +275,16 @@
                                         ItemsSource="{Binding DpiList, RelativeSource={RelativeSource TemplatedParent}}"
                                         SelectedItem="{Binding Dpi, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding DpiListVisibility, RelativeSource={RelativeSource TemplatedParent}}" />
+                                    <Button Command="{Binding CopyPageBitmap, RelativeSource={RelativeSource TemplatedParent}}">
+                                        <Image Width="16" Height="16">
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="134" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </Button>
                                     <Extensions:ContentToggleButton ArrowVisibility="Collapsed"
                                         Command="{Binding ReadPdfText, Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"
                                         Visibility="{Binding PdfTextContentVisibility, RelativeSource={RelativeSource TemplatedParent}}">

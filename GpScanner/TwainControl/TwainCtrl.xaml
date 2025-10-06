@@ -1442,49 +1442,58 @@
                                                 Height="24"
                                                 Source="/TwainControl;component/Icons/undo.png" />
                                         </Button>
-                                        <Extensions:SplitButton local:Policy.PolicyName="RemoveFiles"
-                                            Command="{Binding ListeTemizle}"
-                                            IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
-                                            <Image Width="24"
-                                                Height="24"
-                                                Source="/TwainControl;component/Icons/delete.png" />
-                                            <Extensions:SplitButton.InternalContent>
-                                                <Border Background="{StaticResource BorderBackground}"
-                                                    BorderBrush="{StaticResource GroupBoxBackGround}"
-                                                    BorderThickness="1">
-                                                    <StackPanel>
-                                                        <MenuItem Command="{Binding SeçiliListeTemizle}">
-                                                            <MenuItem.Icon>
-                                                                <Image Width="16"
-                                                                    Height="16"
-                                                                    Source="/TwainControl;component/Icons/delete.png" />
-                                                            </MenuItem.Icon>
-                                                            <MenuItem.Header>
-                                                                <TextBlock VerticalAlignment="Center">
-                                                                    <Run Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
-                                                                    <Run Text="{local:Loc FILE}" />
-                                                                    <Run Text="{local:Loc CLEARLIST}" />
-                                                                </TextBlock>
-                                                            </MenuItem.Header>
-                                                        </MenuItem>
-                                                        <Separator />
-                                                        <MenuItem IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
-                                                            <MenuItem.Header>
-                                                                <TextBlock>
-                                                                    <Run Text="{local:Loc FILE}" />
-                                                                    <Run Text="{local:Loc DELETE}" />
-                                                                </TextBlock>
-                                                            </MenuItem.Header>
-                                                        </MenuItem>
-                                                        <MenuItem FontWeight="Bold"
-                                                            Foreground="Red"
-                                                            Header="{local:Loc REMOVEPROCESSEDIMAGE}"
-                                                            IsCheckable="True"
-                                                            IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
-                                                    </StackPanel>
-                                                </Border>
-                                            </Extensions:SplitButton.InternalContent>
-                                        </Extensions:SplitButton>
+                                        <Extensions:BadgeControl>
+                                            <Extensions:BadgeControl.BadgeContent>
+                                                <TextBlock Margin="2,-2,2,0"
+                                                    d:Text="0"
+                                                    FontSize="9"
+                                                    FontWeight="Bold"
+                                                    Foreground="Red"
+                                                    Text="{Binding Scanner.SeçiliResimSayısı, Mode=OneWay}" />
+                                            </Extensions:BadgeControl.BadgeContent>
+                                            <Extensions:SplitButton local:Policy.PolicyName="RemoveFiles"
+                                                Command="{Binding SeçiliListeTemizle}"
+                                                IsEnabled="{Binding ElementName=Lb, Path=HasItems, Mode=OneWay}">
+                                                <Image Width="24"
+                                                    Height="24"
+                                                    Source="/TwainControl;component/Icons/delete.png" />
+                                                <Extensions:SplitButton.InternalContent>
+                                                    <Border Background="{StaticResource BorderBackground}"
+                                                        BorderBrush="{StaticResource GroupBoxBackGround}"
+                                                        BorderThickness="1">
+                                                        <StackPanel>
+                                                            <MenuItem Command="{Binding ListeTemizle}">
+                                                                <MenuItem.Icon>
+                                                                    <Image Width="16"
+                                                                        Height="16"
+                                                                        Source="/TwainControl;component/Icons/delete.png" />
+                                                                </MenuItem.Icon>
+                                                                <MenuItem.Header>
+                                                                    <TextBlock VerticalAlignment="Center">
+                                                                        <Run Text="{local:Loc FILE}" />
+                                                                        <Run Text="{local:Loc CLEARLIST}" />
+                                                                    </TextBlock>
+                                                                </MenuItem.Header>
+                                                            </MenuItem>
+                                                            <Separator />
+                                                            <MenuItem IsCheckable="True" IsChecked="{Binding DirectRemoveImage, Source={x:Static properties:Settings.Default}}">
+                                                                <MenuItem.Header>
+                                                                    <TextBlock>
+                                                                        <Run Text="{local:Loc FILE}" />
+                                                                        <Run Text="{local:Loc DELETE}" />
+                                                                    </TextBlock>
+                                                                </MenuItem.Header>
+                                                            </MenuItem>
+                                                            <MenuItem FontWeight="Bold"
+                                                                Foreground="Red"
+                                                                Header="{local:Loc REMOVEPROCESSEDIMAGE}"
+                                                                IsCheckable="True"
+                                                                IsChecked="{Binding RemoveProcessedImage, Source={x:Static properties:Settings.Default}}" />
+                                                        </StackPanel>
+                                                    </Border>
+                                                </Extensions:SplitButton.InternalContent>
+                                            </Extensions:SplitButton>
+                                        </Extensions:BadgeControl>
                                         <Button local:Policy.PolicyName="DuplicateSelectedImage"
                                             BorderBrush="Cyan"
                                             Command="{Binding DuplicateSelectedImage}"

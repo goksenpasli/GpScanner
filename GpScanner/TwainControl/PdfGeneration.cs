@@ -89,23 +89,25 @@ public static class PdfGeneration
 
     public static MemoryStream CreateMultipagePdfWithJbig2Images(this List<ScannedImage> pages, IProgress<double> progress = null)
     {
-        using MemoryStream body = new();
-        List<long> offsets = [0];
+        MemoryStream output = new();
+        List<long> offsets = [ 0 ];
         int objNum = 1;
 
-        offsets.Add(body.Position);
-        Write(body, $"{objNum++} 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+        Write(output, "%PDF-1.4\n%\u00e2\u00e3\u00cf\u00d3\n");
 
-        int pagesObjNum = objNum;
+        offsets.Add(output.Position);
+        Write(output, $"{objNum++} 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n");
+
+        int pagesObjNum = objNum++;
         List<int> pageObjs = [];
-        objNum++;
 
         double totalPages = pages.Count;
-        for (int i = 0; i < totalPages; i++)
+
+        for (int i = 0; i < pages.Count; i++)
         {
             ScannedImage page = pages[i];
-            int width = (int)page.Resim.PixelWidth;
-            int height = (int)page.Resim.PixelHeight;
+            int width = page.Resim.PixelWidth;
+            int height = page.Resim.PixelHeight;
 
             int pageObj = objNum++;
             int contentObj = objNum++;
@@ -113,38 +115,34 @@ public static class PdfGeneration
 
             pageObjs.Add(pageObj);
 
-            offsets.Add(body.Position);
-            Write(body, $"{pageObj} 0 obj\n<< /Type /Page /Parent {pagesObjNum} 0 R\n   /Resources << /XObject << /Im1 {imageObj} 0 R >> >>\n   /MediaBox [0 0 {width} {height}]\n   /Contents {contentObj} 0 R >>\nendobj\n");
+            offsets.Add(output.Position);
+            Write(output, $"{pageObj} 0 obj\n<< /Type /Page /Parent {pagesObjNum} 0 R\n   /Resources << /XObject << /Im1 {imageObj} 0 R >> >>\n   /MediaBox [0 0 {width} {height}]\n   /Contents {contentObj} 0 R >>\nendobj\n");
 
             string content = $"q\n{width} 0 0 {height} 0 0 cm\n/Im1 Do\nQ\n";
-            offsets.Add(body.Position);
-            Write(body, $"{contentObj} 0 obj\n<< /Length {content.Length} >>\nstream\n{content}endstream\nendobj\n");
+            offsets.Add(output.Position);
+            Write(output, $"{contentObj} 0 obj\n<< /Length {content.Length} >>\nstream\n{content}endstream\nendobj\n");
 
-            offsets.Add(body.Position);
-            using Bitmap bmp = page.Resim
-                .BwAdaptiveThreshold(Settings.Default.Jb2Saturation, Settings.Default.Jb2Threshold)
-                .BitmapSourceToBitmap();
+            offsets.Add(output.Position);
+            using Bitmap bmp = page.Resim.BwAdaptiveThreshold(Settings.Default.Jb2Saturation, Settings.Default.Jb2Threshold).BitmapSourceToBitmap();
             byte[] data = JBig2Encoder.Encode(bmp, false);
 
-            Write(
-                body,
-                $"{imageObj} 0 obj\n" +
-                    "<< /Type /XObject /Subtype /Image\n" +
-                    $"   /Width {width} /Height {height}\n" +
-                    "   /ColorSpace /DeviceGray\n" +
-                    "   /BitsPerComponent 1\n" +
-                    "   /Filter /JBIG2Decode\n" +
-                    $"   /Length {data.Length} >>\nstream\n");
-            body.Write(data, 0, data.Length);
-            Write(body, "\nendstream\nendobj\n");
-            progress?.Report((i + 1) / totalPages);
+            Write(output, $"{imageObj} 0 obj\n" + "<< /Type /XObject /Subtype /Image\n" + $"/Width {width} /Height {height}\n" + "/ColorSpace /DeviceGray\n /BitsPerComponent 1\n" + "/Filter /JBIG2Decode\n" + $"/Length {data.Length} >>\nstream\n");
+            output.Write(data, 0, data.Length);
+            Write(output, "\nendstream\nendobj\n");
+
+            progress?.Report((i + 1) / (double)totalPages);
         }
 
-        offsets.Insert(2, body.Position);
-        string kids = string.Join(" ", pageObjs.ConvertAll(id => $"{id} 0 R"));
-        Write(body, $"2 0 obj\n<< /Type /Pages /Count {pageObjs.Count} /Kids [ {kids} ] >>\nendobj\n");
+        long pagesOffset = output.Position;
+        string kids = string.Join(" ", pageObjs.Select(id => $"{id} 0 R"));
+        Write(output, $"2 0 obj\n<< /Type /Pages /Count {pageObjs.Count} /Kids [ {kids} ] >>\nendobj\n");
+        offsets.Insert(2, pagesOffset);
 
-        long xrefPos = body.Position;
+        offsets.Add(output.Position);
+        int infoObj = objNum++;
+        Write(output, $"{infoObj} 0 obj\n" + $"<< /Producer (GPSCANNER) /Creator (GPSCANNER) /CreationDate (D:{DateTime.Now:yyyyMMddHHmmss}) >>\n" + "endobj\n");
+
+        long xrefPos = output.Position;
         StringBuilder xref = new();
         _ = xref.AppendLine("xref");
         _ = xref.AppendLine($"0 {offsets.Count}");
@@ -156,16 +154,11 @@ public static class PdfGeneration
 
         StringBuilder trailer = new();
         _ = trailer.AppendLine("trailer");
-        _ = trailer.AppendLine($"<< /Size {offsets.Count} /Root 1 0 R >>");
+        _ = trailer.AppendLine($"<< /Size {offsets.Count} /Root 1 0 R /Info {infoObj} 0 R >>");
         _ = trailer.AppendLine("startxref");
         _ = trailer.AppendLine($"{xrefPos}");
         _ = trailer.AppendLine("%%EOF");
 
-        MemoryStream output = new();
-        byte[] header = Encoding.ASCII.GetBytes("%PDF-1.4\n%\u00e2\u00e3\u00cf\u00d3\n");
-        output.Write(header, 0, header.Length);
-        body.Position = 0;
-        body.CopyTo(output);
         byte[] xrefBytes = Encoding.ASCII.GetBytes(xref.ToString());
         output.Write(xrefBytes, 0, xrefBytes.Length);
         byte[] trailerBytes = Encoding.ASCII.GetBytes(trailer.ToString());
@@ -174,7 +167,6 @@ public static class PdfGeneration
         output.Position = 0;
         return output;
     }
-
 
     public static void DrawPdfOverlayText(PdfPage page, XGraphics gfx, double textsize, string text, XBrush xBrush, string familyName, double angle = 315)
     {

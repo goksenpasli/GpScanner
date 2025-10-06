@@ -77,6 +77,8 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 }
             });
 
+        CopyPageBitmap = new RelayCommand<object>(parameter => Clipboard.SetImage((BitmapSource)Source));
+
         Yazdır = new RelayCommand<object>(
             async parameter =>
             {
@@ -268,6 +270,8 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public Visibility BookmarkContentVisibility { get => (Visibility)GetValue(BookmarkContentVisibilityProperty); set => SetValue(BookmarkContentVisibilityProperty, value); }
 
     public Visibility ContextMenuVisibility { get => (Visibility)GetValue(ContextMenuVisibilityProperty); set => SetValue(ContextMenuVisibilityProperty, value); }
+
+    public RelayCommand<object> CopyPageBitmap { get; }
 
     public RelayCommand<object> DeleteSinglePage { get; }
 
