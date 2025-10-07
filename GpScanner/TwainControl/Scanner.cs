@@ -21,13 +21,15 @@ public class Scanner : InpcBase, IDataErrorInfo
 {
     private bool fileisPdfFile;
     private string localizedPath;
-    private ObservableCollection<string> mergePdfFiles = [];
+    private ObservableCollection<ExtendedPdfData> mergePdfFiles = [];
 
     public Scanner()
     {
         PropertyChanged += Scanner_PropertyChanged;
         Resimler.CollectionChanged -= Resimler_CollectionChanged;
         Resimler.CollectionChanged += Resimler_CollectionChanged;
+        MergePdfFiles.CollectionChanged -= MergePdfFiles_CollectionChanged;
+        MergePdfFiles.CollectionChanged += MergePdfFiles_CollectionChanged;
     }
 
     public bool AllowCopy
@@ -641,7 +643,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public ObservableCollection<string> MergePdfFiles
+    public ObservableCollection<ExtendedPdfData> MergePdfFiles
     {
         get => mergePdfFiles;
 
@@ -1386,6 +1388,19 @@ public class Scanner : InpcBase, IDataErrorInfo
     }
 
     public void Resimler_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) => RefreshIndexNumbers();
+
+    private void MergePdfFiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    {
+        if (MergePdfFiles == null)
+        {
+            return;
+        }
+
+        for (int i = 0; i < MergePdfFiles.Count; i++)
+        {
+            MergePdfFiles[i].PageNumber = i + 1;
+        }
+    }
 
     private void Scanner_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {

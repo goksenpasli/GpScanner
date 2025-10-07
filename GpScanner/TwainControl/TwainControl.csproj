@@ -150,6 +150,7 @@
     </Compile>
     <Compile Include="ESCLScanner.cs" />
     <Compile Include="ExtendedArchiveData.cs" />
+    <Compile Include="ExtendedPdfData.cs" />
     <Compile Include="EypPdfViewer.cs" />
     <Compile Include="ILoadFileHandler.cs" />
     <Compile Include="ImageFileHandler.cs" />

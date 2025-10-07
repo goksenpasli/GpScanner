@@ -1357,6 +1357,15 @@
                                 </MultiBinding>
                             </Image.Source>
                         </Image>
+                        <Extensions:ContentToggleButton.Style>
+                            <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding HistorySaveList.Count}" Value="0">
+                                        <Setter Property="IsEnabled" Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Extensions:ContentToggleButton.Style>
                         <Extensions:ContentToggleButton.OverContent>
                             <ListBox MaxHeight="250"
                                 Background="{StaticResource BorderBackground}"
@@ -1439,6 +1448,15 @@
                             </Image.Source>
                         </Image>
                         <Extensions:ContentToggleButton Background="{x:Null}" BorderBrush="{x:Null}">
+                            <Extensions:ContentToggleButton.Style>
+                                <Style BasedOn="{StaticResource {x:Type Extensions:ContentToggleButton}}" TargetType="{x:Type Extensions:ContentToggleButton}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RecentFiles.Count}" Value="0">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Extensions:ContentToggleButton.Style>
                             <Extensions:ContentToggleButton.OverContent>
                                 <Extensions:ResizablePanel Width="420"
                                     Height="480"

@@ -16,7 +16,7 @@ public abstract class InpcBase : INotifyPropertyChanged, INotifyPropertyChanging
     [field: NonSerialized]
     public event PropertyChangingEventHandler PropertyChanging;
 
-    public bool IsValid(object data)
+    public static bool IsValid(object data)
     {
         if (data == null)
         {

@@ -248,11 +248,21 @@
                                         <Setter Property="Template">
                                             <Setter.Value>
                                                 <ControlTemplate>
-                                                    <ContentPresenter d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
-                                                        d:Height="315"
-                                                        d:Width="315"
-                                                        Content="{Binding Mode=OneWay}"
-                                                        ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
+                                                    <StackPanel>
+                                                        <TextBlock>
+                                                            <Run d:Text="DOCUMENT" Text="{local:Loc DOCUMENT}" />
+                                                            <Run Text="{Binding PageNumber, Mode=OneTime}" />
+                                                        </TextBlock>
+                                                        <Extensions:NumericUpDown BorderBrush="{Binding BorderBrush}"
+                                                            Maximum="{Binding Items.Count, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                                            Minimum="1"
+                                                            Value="{Binding PageNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                        <ContentPresenter d:ContentTemplateSelector="{StaticResource PdfEypViewerSelector}"
+                                                            d:Height="315"
+                                                            d:Width="315"
+                                                            Content="{Binding Mode=OneWay, Path=FileName}"
+                                                            ContentTemplateSelector="{StaticResource PdfEypViewerSelector}" />
+                                                    </StackPanel>
                                                 </ControlTemplate>
                                             </Setter.Value>
                                         </Setter>

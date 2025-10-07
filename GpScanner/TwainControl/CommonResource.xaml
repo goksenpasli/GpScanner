@@ -1191,7 +1191,7 @@
                 <TextBlock>
                     <Hyperlink BaselineAlignment="Center"
                         Command="{Binding MergePdfListRemoveFile}"
-                        CommandParameter="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        CommandParameter="{Binding DataContext, Mode=OneWay, RelativeSource={RelativeSource AncestorType=ListBoxItem}}"
                         TextDecorations="None">
                         <Image Width="24"
                             Height="24"

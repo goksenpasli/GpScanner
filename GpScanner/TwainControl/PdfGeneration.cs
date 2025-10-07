@@ -130,7 +130,7 @@ public static class PdfGeneration
             output.Write(data, 0, data.Length);
             Write(output, "\nendstream\nendobj\n");
 
-            progress?.Report((i + 1) / (double)totalPages);
+            progress?.Report((i + 1) / totalPages);
         }
 
         long pagesOffset = output.Position;

@@ -357,6 +357,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     await SavePdfImageAsync(scannedImage, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr);
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -368,6 +370,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     await SavePdfImageAsync(scannedImage, saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true);
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -380,6 +384,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 {
                     List<ScannedImage> image = [ scannedImage ];
                     File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().ToArray());
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -391,6 +397,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     SaveJpgImage(scannedImage.Resim, saveFileDialog.FileName);
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -402,6 +410,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     SaveXpsImage(scannedImage.Resim, saveFileDialog.FileName);
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -413,6 +423,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     SaveTifImage(scannedImage.Resim, saveFileDialog.FileName);
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -424,6 +436,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     SaveWebpImage(scannedImage.Resim, saveFileDialog.FileName);
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -435,6 +449,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     SaveJb2Image(scannedImage.Resim, saveFileDialog.FileName);
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter => FileNameValid(Scanner?.FileName));
@@ -616,6 +632,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, false, Settings.Default.ImgLoadResolution);
                         });
                     await RemoveProcessedImages();
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter =>
@@ -643,6 +661,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             Scanner.PdfSaveProgressValue = 0;
                         });
                     await RemoveProcessedImages();
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter =>
@@ -669,6 +689,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
                         });
                     await RemoveProcessedImages();
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter =>
@@ -697,6 +719,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             Scanner.PdfSaveProgressValue = 0;
                         });
                     await RemoveProcessedImages();
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter =>
@@ -723,6 +747,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             await SaveTifImageAsync(seçiliresimler, fileName);
                         });
                     await RemoveProcessedImages();
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter =>
@@ -750,6 +776,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             Scanner.PdfSaveProgressValue = 0;
                         });
                     await RemoveProcessedImages();
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter =>
@@ -777,6 +805,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             Scanner.PdfSaveProgressValue = 0;
                         });
                     await RemoveProcessedImages();
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter =>
@@ -805,6 +835,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             Scanner.PdfSaveProgressValue = 0;
                         });
                     await RemoveProcessedImages();
+                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
+                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
             },
             parameter =>
@@ -1218,17 +1250,18 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 string currentfile = PdfImportViewer.PdfViewer.PdfFilePath;
+                ExtendedPdfData data = new() { FileName = currentfile };
                 if (MergePdfFileToFirst)
                 {
-                    Scanner.MergePdfFiles.Add(currentfile);
+                    Scanner.MergePdfFiles.Add(data);
                 }
                 else
                 {
-                    Scanner.MergePdfFiles.Insert(0, currentfile);
+                    Scanner.MergePdfFiles.Insert(0, data);
                 }
-                string[] files = [ .. Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)) ];
+                ObservableCollection<ExtendedPdfData> files = [ .. Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)) ];
                 PdfToolBarControlIsEnabled = false;
-                files.MergePdf().Save(currentfile);
+                files.Select(z => z.FileName).ToArray().MergePdf().Save(currentfile);
                 Scanner?.MergePdfFiles?.Clear();
                 PdfToolBarControlIsEnabled = true;
                 PdfImportViewer.PdfViewer.PdfFilePath = null;
@@ -1239,19 +1272,31 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         MergePdfListToFile = new RelayCommand<object>(
             parameter =>
             {
-                string[] files = [ .. Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z), ".pdf", StringComparison.OrdinalIgnoreCase)) ];
+                ObservableCollection<ExtendedPdfData> files = [ .. Scanner.MergePdfFiles.Where(z => string.Equals(Path.GetExtension(z.FileName), ".pdf", StringComparison.OrdinalIgnoreCase)) ];
                 SaveFileDialog saveFileDialog = new() { Filter = "Pdf Dosyası(*.pdf)|*.pdf", FileName = $"{Translation.GetResStringValue("MERGE")}" };
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     PdfToolBarControlIsEnabled = false;
-                    files.MergePdf().Save(saveFileDialog.FileName);
+                    files.OrderBy(z => z.PageNumber).Select(z => z.FileName).ToArray().MergePdf().Save(saveFileDialog.FileName);
                     Scanner?.MergePdfFiles?.Clear();
                     PdfToolBarControlIsEnabled = true;
                 }
             },
-            parameter => Scanner?.MergePdfFiles?.Count > 1);
+            parameter =>
+            {
+                ObservableCollection<ExtendedPdfData> files = Scanner?.MergePdfFiles;
+                return files?.Count > 1 && files.Select(f => f.PageNumber).Distinct().Count() == files.Count;
+            });
 
-        MergePdfListRemoveFile = new RelayCommand<object>(parameter => Scanner?.MergePdfFiles?.Remove(parameter as string), parameter => true);
+        MergePdfListRemoveFile = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is ExtendedPdfData extendedPdfData)
+                {
+                    _ = (Scanner?.MergePdfFiles?.Remove(extendedPdfData));
+                }
+            },
+            parameter => true);
 
         MergePdfListAddFile = new RelayCommand<object>(
             parameter =>
@@ -1259,10 +1304,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 OpenFileDialog openFileDialog = new() { Filter = "Pdf Dosyası (*.pdf)|*.pdf", Multiselect = true };
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    string[] files = openFileDialog.FileNames;
-                    foreach (string item in files?.Where(z => Viewer.IsValidPdfFile(z)))
+                    int page = (Scanner?.MergePdfFiles?.Count ?? 0) + 1;
+                    foreach (string file in openFileDialog.FileNames.Where(Viewer.IsValidPdfFile))
                     {
-                        Scanner?.MergePdfFiles?.Add(item);
+                        ExtendedPdfData data = new() { FileName = file, PageNumber = page++ };
+                        data.PropertyChanged -= ExtendedPdfData_PropertyChanged;
+                        data.PropertyChanged += ExtendedPdfData_PropertyChanged;
+                        Scanner?.MergePdfFiles?.Add(data);
                     }
                 }
             },
@@ -4688,6 +4736,21 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 }
             }
         };
+    }
+
+    private void ExtendedPdfData_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName is "PageNumber")
+        {
+            foreach (ExtendedPdfData page in Scanner?.MergePdfFiles)
+            {
+                page.BorderBrush = null;
+            }
+            foreach (ExtendedPdfData item in Scanner?.MergePdfFiles?.GroupBy(x => x.PageNumber).Where(g => g.Count() > 1).SelectMany(g => g))
+            {
+                item.BorderBrush = Brushes.Red;
+            }
+        }
     }
 
     private async void FastScanComplete(object sender, ScanningCompleteEventArgs e)

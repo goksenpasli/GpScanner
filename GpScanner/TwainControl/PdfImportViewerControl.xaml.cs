@@ -1161,7 +1161,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         {
             foreach (string file in from string file in droppedfiles where Viewer.IsValidPdfFile(file) select file)
             {
-                twainCtrl.Scanner.MergePdfFiles.Add(file);
+                twainCtrl.Scanner.MergePdfFiles.Add(new ExtendedPdfData() { FileName = file });
             }
         }
     }
