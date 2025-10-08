@@ -220,12 +220,12 @@ namespace Extensions
             MouseDown -= OnMouseDown;
             MouseMove -= OnMouseMove;
             MouseUp -= OnMouseUp;
-            if (_yesButton != null)
+            if (_yesButton is not null)
             {
                 _yesButton.Click -= YesButton_Click;
             }
 
-            if (_noButton != null)
+            if (_noButton is not null)
             {
                 _noButton.Click -= NoButton_Click;
             }

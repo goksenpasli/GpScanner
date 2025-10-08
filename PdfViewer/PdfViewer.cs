@@ -777,23 +777,28 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void SayfaChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0)
+        if (d is PdfViewer pdfViewer && pdfViewer.ToplamSayfa > 0 && File.Exists(pdfViewer.PdfFilePath))
         {
-            if (pdfViewer.PdfFilePath is null)
+            pdfViewer.Sayfa = (int)e.NewValue;
+
+            if (Keyboard.Modifiers == ModifierKeys.Alt && pdfViewer.Sayfa > (int)e.OldValue)
             {
-                return;
+                pdfViewer.Sayfa = pdfViewer.ToplamSayfa;
             }
-            int sayfa = (int)e.NewValue;
-            if (sayfa > pdfViewer.ToplamSayfa)
+            else if (Keyboard.Modifiers == ModifierKeys.Alt && pdfViewer.Sayfa < (int)e.OldValue)
             {
-                sayfa = pdfViewer.ToplamSayfa;
+                pdfViewer.Sayfa = 1;
             }
 
-            if (sayfa < 1)
+            if (pdfViewer.Sayfa > pdfViewer.ToplamSayfa)
             {
-                sayfa = 1;
+                pdfViewer.Sayfa = pdfViewer.ToplamSayfa;
             }
-            pdfViewer.Source = await ConvertToImgAsync(pdfViewer.PdfFilePath, sayfa, pdfViewer.Dpi);
+            if (pdfViewer.Sayfa < 1)
+            {
+                pdfViewer.Sayfa = 1;
+            }
+            pdfViewer.Source = await ConvertToImgAsync(pdfViewer.PdfFilePath, pdfViewer.Sayfa, pdfViewer.Dpi);
         }
     }
 

@@ -2994,7 +2994,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         if (delete)
         {
             using RegistryKey classesKey = Registry.CurrentUser.OpenSubKey("Software\\Classes", true);
-            if (classesKey != null)
+            if (classesKey is not null)
             {
                 classesKey.DeleteSubKeyTree(extensionKeyPath, throwOnMissingSubKey: false);
                 classesKey.DeleteSubKeyTree(fileTypeKeyPath, throwOnMissingSubKey: false);

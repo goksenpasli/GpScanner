@@ -578,7 +578,7 @@ public static class PdfGeneration
 
     private static void AddTextContentIfNeeded(BitmapSource image, ObservableCollection<OcrData> textData, PdfPage page, XGraphics gfx)
     {
-        if (textData != null)
+        if (textData is not null)
         {
             WritePdfTextContent(image, textData, page, gfx, XBrushes.Transparent);
         }

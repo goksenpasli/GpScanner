@@ -289,7 +289,7 @@ public class ButtonedTextBox : TextBox, INotifyPropertyChanged
     {
         base.OnVisualParentChanged(oldParent);
         Window window = Window.GetWindow(this);
-        if (window != null)
+        if (window is not null)
         {
             window.PreviewMouseDown -= OnPreviewMouseDownOutside;
         }

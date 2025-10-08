@@ -44,7 +44,7 @@ public static class ScrollDragDrop
     {
         DependencyObject parent = VisualTreeHelper.GetParent(child);
 
-        while (parent != null)
+        while (parent is not null)
         {
             if (parent is T typedParent)
             {
