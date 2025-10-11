@@ -2355,7 +2355,6 @@
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             local:Policy.PolicyName="SeçiliKaydet"
-                            BorderBrush="Cyan"
                             Command="{Binding SaveSelectedFilesPdfFile}">
                             <Grid>
                                 <ProgressBar d:Foreground="#FF06B025"
@@ -2555,7 +2554,6 @@
                             HorizontalContentAlignment="Stretch"
                             VerticalContentAlignment="Stretch"
                             local:Policy.PolicyName="SeçiliDirektPdfKaydet"
-                            BorderBrush="Cyan"
                             Command="{Binding SeçiliDirektPdfKaydet}">
                             <Grid>
                                 <ProgressBar d:Foreground="#FF06B025"
