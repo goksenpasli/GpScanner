@@ -421,7 +421,10 @@ public static class PdfGeneration
                     DrawImageOnPage(gfx, xImage, page, pageSize);
                 }
 
-                AddTextContentIfNeeded(scannedImage.Resim, scannedText?[i], page, gfx);
+                if (scannedText?.Count > 0)
+                {
+                    AddTextContentIfNeeded(scannedImage.Resim, scannedText[i], page, gfx);
+                }
 
                 if (Settings.Default.UsePdfInternalTextData)
                 {
@@ -578,7 +581,7 @@ public static class PdfGeneration
 
     private static void AddTextContentIfNeeded(BitmapSource image, ObservableCollection<OcrData> textData, PdfPage page, XGraphics gfx)
     {
-        if (textData is not null)
+        if (textData?.Any() == true)
         {
             WritePdfTextContent(image, textData, page, gfx, XBrushes.Transparent);
         }
