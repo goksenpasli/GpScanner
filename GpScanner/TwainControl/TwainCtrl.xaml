@@ -2295,7 +2295,18 @@
                                 </Image>
                             </TabItem.Header>
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <local:PdfSettings />
+                                <local:PdfSettings d:IsEnabled="true">
+                                    <local:PdfSettings.Style>
+                                        <Style TargetType="{x:Type local:PdfSettings}">
+                                            <Setter Property="IsEnabled" Value="False" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Scanner.PdfSaveProgressValue, Mode=OneWay}" Value="0">
+                                                    <Setter Property="IsEnabled" Value="True" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </local:PdfSettings.Style>
+                                </local:PdfSettings>
                             </ScrollViewer>
                         </TabItem>
                     </TabControl>
