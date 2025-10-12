@@ -192,5 +192,8 @@
     <Setting Name="Jb2Threshold" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">11</Value>
     </Setting>
+    <Setting Name="PdfOcrProcessorCount" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">4</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

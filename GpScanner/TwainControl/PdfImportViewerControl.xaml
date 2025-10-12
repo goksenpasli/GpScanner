@@ -188,7 +188,7 @@
                         Text="ç" />
                 </Button.Content>
             </Button>
-            <Extensions:ContentToggleButton>
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Extensions:ContentToggleButton.OverContent>
                     <Border Background="{DynamicResource BorderBackground}"
                         BorderBrush="{DynamicResource GroupBoxBackGround}"
@@ -1072,6 +1072,22 @@
                     </Extensions:ResizablePanel>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
+            <Image Width="16" Height="16">
+                <Image.Source>
+                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                        <Binding Source="Shell32.dll" />
+                        <Binding Source="12" />
+                    </MultiBinding>
+                </Image.Source>
+            </Image>
+            <Extensions:NumericUpDown Interval="1"
+                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
+                IsReadOnly="True"
+                Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
+                Minimum="1"
+                TextBlock.TextAlignment="Center"
+                Value="{Binding PdfOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
                 <Image Width="16"
                     Height="16"
@@ -1138,6 +1154,7 @@
                     </Extensions:ResizablePanel>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
+            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Extensions:SplitButton Command="{Binding CompressPdfFile}" CommandParameter="{Binding Mode=OneWay, Source={x:Reference PdfViewer}}">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -1184,6 +1201,12 @@
                     </Border>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
+            <ProgressBar Width="10"
+                Background="{DynamicResource BorderBackground}"
+                Foreground="{DynamicResource GroupBoxBackGround}"
+                Maximum="1"
+                Orientation="Vertical"
+                Value="{Binding PdfImportControlProgressValue}" />
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Button local:Policy.PolicyName="ClosePdfFile"
                 Command="{Binding ClosePdfFile}"
@@ -1792,13 +1815,21 @@
                 </WrapPanel>
             </Expander>
         </WrapPanel>
-        <ProgressBar Grid.Row="1"
-            Height="3"
-            Background="{DynamicResource BorderBackground}"
-            BorderBrush="{DynamicResource BorderBackground}"
-            Foreground="{DynamicResource GroupBoxBackGround}"
-            Maximum="1"
-            Value="{Binding PdfImportControlProgressValue}" />
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <ProgressBar Background="{DynamicResource BorderBackground}"
+                Foreground="{DynamicResource GroupBoxBackGround}"
+                Maximum="1"
+                Value="{Binding PdfOcrProgressValue, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+            <Button Grid.Column="1" Command="{Binding CancelPdfOcr, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
+                <Image Width="16"
+                    Height="16"
+                    Source="/TwainControl;component/Icons/delete.png" />
+            </Button>
+        </Grid>
         <local:EypPdfViewer x:Name="PdfViewer"
             Grid.Row="2"
             d:OpenButtonVisibility="Visible"

@@ -770,5 +770,17 @@ namespace TwainControl.Properties {
                 this["Jb2Threshold"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4")]
+        public int PdfOcrProcessorCount {
+            get {
+                return ((int)(this["PdfOcrProcessorCount"]));
+            }
+            set {
+                this["PdfOcrProcessorCount"] = value;
+            }
+        }
     }
 }

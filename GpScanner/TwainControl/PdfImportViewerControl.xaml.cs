@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,6 +44,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
     private bool isDrawMouseDown;
     private bool isMouseDown;
     private Point mousedowncoord;
+    private CancellationTokenSource pdfocrcancellationToken;
     private XImage xImage;
 
     public PdfImportViewerControl()
@@ -224,6 +226,16 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             },
             parameter => true);
 
+        CancelPdfOcr = new RelayCommand<object>(
+            parameter =>
+            {
+                if (MessageBox.Show($"OCR {Translation.GetResStringValue("STOP")}", "GPSCANNER", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
+                {
+                    pdfocrcancellationToken?.Cancel();
+                }
+            },
+            parameter => pdfocrcancellationToken?.IsCancellationRequested == false);
+
         OcrCurrentPdfPage = new RelayCommand<object>(
             async parameter =>
             {
@@ -233,7 +245,15 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 twainCtrl.PdfToolBarControlIsEnabled = false;
                 OcrProgressIndeterminate = true;
-                using PdfDocument pdfDocument = await GenerateOcredPdfPage(PdfViewer.PdfFilePath, Settings.Default.JpegQuality, twainCtrl.Scanner?.SelectedTtsLanguage, progress => twainCtrl.PdfImportControlProgressValue = progress);
+                pdfocrcancellationToken = new CancellationTokenSource();
+                using PdfDocument pdfDocument = await GenerateOcredPdfPage(
+                    PdfViewer.PdfFilePath,
+                    Settings.Default.JpegQuality,
+                    twainCtrl.Scanner?.SelectedTtsLanguage,
+                    progress => PdfOcrProgressValue = progress,
+                    false,
+                    Settings.Default.PdfOcrProcessorCount,
+                    pdfocrcancellationToken);
                 pdfDocument.Save(PdfViewer.PdfFilePath);
                 twainCtrl.PdfToolBarControlIsEnabled = true;
                 OcrProgressIndeterminate = false;
@@ -302,6 +322,8 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             }
         }
     } = true;
+
+    public RelayCommand<object> CancelPdfOcr { get; }
 
     public RelayCommand<object> ClearInkDrawImage { get; }
 
@@ -707,6 +729,19 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> OpenPdfHistoryFile { get; }
 
+    public double PdfOcrProgressValue
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(PdfOcrProgressValue));
+            }
+        }
+    }
+
     public XDashStyle PenDash
     {
         get;
@@ -899,6 +934,68 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> WebAdreseGit { get; }
 
+    public async Task<PdfDocument> GenerateOcredPdfPage(string pdfPath, int dpi, string ocrLang, Action<double> progressCallback = null, bool processFirstPageOnly = false, int parallelcount = 4, CancellationTokenSource cancellationTokenSource = null)
+    {
+        using PdfDocument document = PdfReader.Open(pdfPath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+
+        int totalPages = document.PageCount;
+        int endPage = processFirstPageOnly ? 1 : totalPages;
+        double progressStep = 1.0 / endPage;
+        (BitmapImage Image, ObservableCollection<OcrData> OcrData)[] results = new (BitmapImage Image, ObservableCollection<OcrData> OcrData)[endPage];
+        object progressLock = new();
+        int completed = 0;
+
+        using SemaphoreSlim semaphore = new(parallelcount);
+        IEnumerable<Task> tasks = Enumerable.Range(0, endPage)
+        .Select(
+            async i =>
+            {
+                await semaphore.WaitAsync();
+                try
+                {
+                    if (cancellationTokenSource?.IsCancellationRequested == true)
+                    {
+                        return;
+                    }
+                    BitmapImage scannedImage = await Viewer.ConvertToImgAsync(pdfPath, i + 1, dpi);
+                    byte[] jpegData = scannedImage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+                    ObservableCollection<OcrData> ocrData = await jpegData.OcrAsync(ocrLang);
+                    results[i] = (scannedImage, ocrData);
+
+                    lock (progressLock)
+                    {
+                        completed++;
+                        progressCallback?.Invoke(completed * progressStep);
+                    }
+                }
+                finally
+                {
+                    _ = semaphore.Release();
+                }
+            });
+
+        await Task.WhenAll(tasks);
+
+        StringBuilder textBuilder = new();
+        for (int i = 0; i < endPage; i++)
+        {
+            (BitmapImage image, ObservableCollection<OcrData> ocrData) = results[i];
+            if (ocrData?.Count > 0)
+            {
+                PdfPage page = document.Pages[i];
+                using (XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Prepend))
+                {
+                    PdfGeneration.AddTextContentIfNeeded(image, ocrData, page, gfx);
+                }
+
+                _ = textBuilder.AppendLine(string.Join(" ", ocrData.Select(z => z.Text)));
+            }
+        }
+
+        OcrText = textBuilder.ToString();
+        return document;
+    }
+
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         Dispatcher dispatcher = Application.Current?.Dispatcher;
@@ -1090,31 +1187,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
             gfx.RotateAtTransform(angle, center);
             gfx.DrawString(Text, font, brush, rect, XStringFormats.Center);
         }
-    }
-
-    public async Task<PdfDocument> GenerateOcredPdfPage(string pdfPath, int dpi, string ocrLang, Action<double> progressCallback = null, bool processFirstPageOnly = false)
-    {
-        using PdfDocument document = PdfReader.Open(pdfPath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
-        int totalPages = document.PageCount;
-        double progressStep = 1.0 / totalPages;
-        int endPage = processFirstPageOnly ? 1 : totalPages;
-        StringBuilder stringBuilder = new();
-        for (int i = 0; i < endPage; i++)
-        {
-            PdfPage page = document.Pages[i];
-            BitmapImage scannedImage = await Viewer.ConvertToImgAsync(pdfPath, i + 1, dpi);
-            byte[] jpegData = scannedImage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
-            ObservableCollection<OcrData> ocrData = await jpegData.OcrAsync(ocrLang);
-            if (ocrData is { Count: > 0 })
-            {
-                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Prepend);
-                PdfGeneration.AddTextContentIfNeeded(scannedImage, ocrData, page, gfx);
-                _ = stringBuilder.AppendLine(string.Join(" ", ocrData.Select(z => z.Text)));
-            }
-            progressCallback?.Invoke((i + 1) * progressStep);
-        }
-        OcrText = stringBuilder.ToString();
-        return document;
     }
 
     private PdfTextAnnotation GeneratePdfTextAnnotation(XGraphics gfx, Rect rect, string content)
