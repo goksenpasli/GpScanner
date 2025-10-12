@@ -14,6 +14,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -232,13 +233,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 }
                 twainCtrl.PdfToolBarControlIsEnabled = false;
                 OcrProgressIndeterminate = true;
-                using PdfDocument pdfDocument = await GenerateOcredPdfPage(
-                    PdfViewer,
-                    Settings.Default.JpegQuality,
-                    Settings.Default.ImgLoadResolution,
-                    twainCtrl.Scanner?.SelectedTtsLanguage,
-                    twainCtrl.SelectedPaper,
-                    progress => twainCtrl.PdfImportControlProgressValue = progress);
+                using PdfDocument pdfDocument = await GenerateOcredPdfPage(PdfViewer.PdfFilePath, Settings.Default.JpegQuality, twainCtrl.Scanner?.SelectedTtsLanguage, progress => twainCtrl.PdfImportControlProgressValue = progress);
                 pdfDocument.Save(PdfViewer.PdfFilePath);
                 twainCtrl.PdfToolBarControlIsEnabled = true;
                 OcrProgressIndeterminate = false;
@@ -1097,23 +1092,28 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
         }
     }
 
-    private async Task<PdfDocument> GenerateOcredPdfPage(Viewer pdfViewer, int jpegquality, int dpi, string ocrlang, Paper paper, Action<double> progresscallback = null)
+    public async Task<PdfDocument> GenerateOcredPdfPage(string pdfPath, int dpi, string ocrLang, Action<double> progressCallback = null, bool processFirstPageOnly = false)
     {
-        List<string> tempfiles = [];
-        ObservableCollection<OcrData> ocrdata;
-        OcrText = null;
-        for (int i = 0; i < pdfViewer.ToplamSayfa; i++)
+        using PdfDocument document = PdfReader.Open(pdfPath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+        int totalPages = document.PageCount;
+        double progressStep = 1.0 / totalPages;
+        int endPage = processFirstPageOnly ? 1 : totalPages;
+        StringBuilder stringBuilder = new();
+        for (int i = 0; i < endPage; i++)
         {
-            ocrdata = await (await Viewer.ConvertToImgAsync(pdfViewer.PdfFilePath, i + 1, dpi)).ToTiffJpegByteArray(ExtensionMethods.Format.Jpg).OcrAsync(ocrlang);
-            using PdfDocument scanneddocument = (await Viewer.ConvertToImgAsync(pdfViewer.PdfFilePath, i + 1, dpi)).GeneratePdf(ocrdata, ExtensionMethods.Format.Jpg, paper, jpegquality, dpi);
-            string pdffile = $"{System.IO.Path.GetTempPath()}{i}.pdf";
-            scanneddocument.Save(pdffile);
-            tempfiles.Add(pdffile);
-            progresscallback?.Invoke((i + 1) / (double)pdfViewer.ToplamSayfa);
-            OcrText = OcrText += $"{string.Join(" ", ocrdata?.Select(z => z.Text))}\n";
+            PdfPage page = document.Pages[i];
+            BitmapImage scannedImage = await Viewer.ConvertToImgAsync(pdfPath, i + 1, dpi);
+            byte[] jpegData = scannedImage.ToTiffJpegByteArray(ExtensionMethods.Format.Jpg);
+            ObservableCollection<OcrData> ocrData = await jpegData.OcrAsync(ocrLang);
+            if (ocrData is { Count: > 0 })
+            {
+                using XGraphics gfx = XGraphics.FromPdfPage(page, XGraphicsPdfPageOptions.Prepend);
+                PdfGeneration.AddTextContentIfNeeded(scannedImage, ocrData, page, gfx);
+                _ = stringBuilder.AppendLine(string.Join(" ", ocrData.Select(z => z.Text)));
+            }
+            progressCallback?.Invoke((i + 1) * progressStep);
         }
-        using PdfDocument document = tempfiles.ToArray().MergePdf();
-        tempfiles.ForEach(File.Delete);
+        OcrText = stringBuilder.ToString();
         return document;
     }
 

@@ -212,38 +212,20 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 {
                     return;
                 }
-                byte[] filedata = await PdfViewer.PdfViewer.ReadAllFileAsync(pdfviewer.PdfFilePath);
-                if (filedata is null)
-                {
-                    return;
-                }
                 OcrIsBusy = true;
-                ObservableCollection<OcrData> ocrdata;
-                if (Keyboard.Modifiers == ModifierKeys.Alt)
+                using PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer.GenerateOcredPdfPage(pdfviewer.PdfFilePath, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang);
+                pdfDocument.Save(pdfviewer.PdfFilePath);
+                using PdfiumViewer.PdfDocument Document = PdfiumViewer.PdfDocument.Load(pdfviewer.PdfFilePath);
+                StringBuilder alltext = new();
+                for (int i = 0; i < Document.PageCount; i++)
                 {
-                    for (int i = 1; i <= pdfviewer.ToplamSayfa; i++)
-                    {
-                        using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, i, Twainsettings.Settings.Default.ImgLoadResolution);
-                        ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
-                        using (AppDbContext context = new())
-                        {
-                            _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
-                            _ = context.SaveChanges();
-                        }
-                        OcrPdfThumbnailPageNumber = i;
-                    }
-                    OcrPdfThumbnailPageNumber = null;
+                    _ = alltext.AppendLine(Document.GetPdfText(i));
                 }
-                else
+                using (AppDbContext context = new())
                 {
-                    using MemoryStream ms = await PdfViewer.PdfViewer.ConvertToImgStreamAsync(filedata, pdfviewer.Sayfa, Twainsettings.Settings.Default.ImgLoadResolution);
-                    ocrdata = await ms.ToArray().OcrAsync(Settings.Default.DefaultTtsLang);
-                    using AppDbContext context = new();
-                    _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = string.Join(" ", ocrdata?.Select(z => z.Text)) });
+                    _ = context.Data.Add(new Data { FileName = pdfviewer.PdfFilePath, FileContent = alltext.ToString() });
                     _ = context.SaveChanges();
                 }
-                filedata = null;
-                ocrdata = null;
                 OcrIsBusy = false;
             },
             parameter => !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang) && (Settings.Default.ThumbMultipleOcrEnabled || !OcrIsBusy));
@@ -376,7 +358,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (documentViewerWindow.DataContext is DocumentViewerModel documentViewerModel)
                 {
                     documentViewerModel.FilePath = filepath;
-                    documentViewerWindow.Icon = ShellIcon.GetFileIconBySize(filepath, ShellIcon.SizeType.large);
+                    documentViewerWindow.Icon = GetFileIconBySize(filepath, SizeType.large);
                     documentViewerWindow.Show();
                     documentViewerWindow.Lb?.ScrollIntoView(filepath);
                     if (!RecentFiles.Contains(filepath))
@@ -1343,7 +1325,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         mainWindow.twainCtrl.SelectedTabIndex = 3;
                         return;
                     }
-                    if (new string[] { ".zip", ".rar", ".7z", ".cbr", ".cbz" }.Any(z => string.Equals(z, Path.GetExtension(filepath), StringComparison.InvariantCultureIgnoreCase)))
+                    if (new string[] { ".zip", ".rar", ".7z", ".cbr", ".cbz" , ".jb2zip"}.Any(z => string.Equals(z, Path.GetExtension(filepath), StringComparison.InvariantCultureIgnoreCase)))
                     {
                         mainWindow.twainCtrl.ArchiveVwr.ArchivePath = filepath;
                         mainWindow.twainCtrl.SelectedTabIndex = 2;
@@ -2927,6 +2909,16 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    private StringBuilder AppendPdfText(PdfiumViewer.PdfDocument document)
+    {
+        StringBuilder builder = new();
+        for (int i = 0; i < document.PageCount; i++)
+        {
+            _ = builder.AppendLine(document.GetPdfText(i));
+        }
+        return builder;
+    }
+
     private FlowDirection ChangeApplicationFlowDirection(string lang)
     {
         LangFlowDirection = FlowDirection.LeftToRight;
@@ -3602,38 +3594,34 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private async Task ProcessPdfFileAsync(string unIndexedFile, StringBuilder ocrTextBuilder)
     {
-        int pagecount = PdfViewer.PdfViewer.PdfPageCount(unIndexedFile);
-        BitmapImage bitmapImage;
-        ObservableCollection<OcrData> ocrData;
         if (OcrAllPdfPages)
         {
-            for (int i = 1; i <= pagecount; i++)
+            using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer.GenerateOcredPdfPage(unIndexedFile, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress))
             {
-                if (Settings.Default.OcrContentUseInternalPdfContent)
-                {
-                    using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
-                    _ = ocrTextBuilder.Append(pdfDocument.GetPdfText(i - 1));
-                }
-                else
-                {
-                    bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, i, Twainsettings.Settings.Default.ImgLoadResolution);
-                    ocrData = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
-                    _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
-                }
-                OcrAllPdfPagesProgress = i / (double)pagecount;
+                pdfDocument.Save(unIndexedFile);
+            }
+            using (PdfiumViewer.PdfDocument document = PdfiumViewer.PdfDocument.Load(unIndexedFile))
+            {
+                ocrTextBuilder = AppendPdfText(document);
             }
             OcrAllPdfPagesProgress = 0;
             return;
         }
         if (Settings.Default.OcrContentUseInternalPdfContent)
         {
-            using PdfiumViewer.PdfDocument pdfDocument = PdfiumViewer.PdfDocument.Load(unIndexedFile);
-            _ = ocrTextBuilder.Append(pdfDocument.GetPdfText(0));
+            using PdfiumViewer.PdfDocument document = PdfiumViewer.PdfDocument.Load(unIndexedFile);
+            _ = ocrTextBuilder.Append(document.GetPdfText(0));
             return;
         }
-        bitmapImage = await PdfViewer.PdfViewer.ConvertToImgAsync(unIndexedFile, 1, Twainsettings.Settings.Default.ImgLoadResolution);
-        ocrData = await bitmapImage.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
-        _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
+        using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer.GenerateOcredPdfPage(unIndexedFile, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress, true))
+        {
+            pdfDocument.Save(unIndexedFile);
+        }
+        using (PdfiumViewer.PdfDocument document = PdfiumViewer.PdfDocument.Load(unIndexedFile))
+        {
+            ocrTextBuilder = AppendPdfText(document);
+        }
+        OcrAllPdfPagesProgress = 0;
     }
 
     private void RegisterSimplePdfFileWatcher()

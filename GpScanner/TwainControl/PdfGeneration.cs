@@ -50,6 +50,14 @@ public static class PdfGeneration
 
     public static Scanner Scanner { get; set; }
 
+    public static void AddTextContentIfNeeded(BitmapSource image, ObservableCollection<OcrData> textData, PdfPage page, XGraphics gfx)
+    {
+        if (textData?.Any() == true)
+        {
+            WritePdfTextContent(image, textData, page, gfx, XBrushes.Transparent);
+        }
+    }
+
     public static void ApplyDefaultPdfCompression(this PdfDocument doc)
     {
         if (doc is null)
@@ -577,14 +585,6 @@ public static class PdfGeneration
                 }
             });
         return[ .. jpgfiles ];
-    }
-
-    private static void AddTextContentIfNeeded(BitmapSource image, ObservableCollection<OcrData> textData, PdfPage page, XGraphics gfx)
-    {
-        if (textData?.Any() == true)
-        {
-            WritePdfTextContent(image, textData, page, gfx, XBrushes.Transparent);
-        }
     }
 
     private static XRect AdjustBounds(this Rect rect, double hAdjust, double vAdjust) => new(rect.X * hAdjust, rect.Y * vAdjust, rect.Width * hAdjust, rect.Height * vAdjust);

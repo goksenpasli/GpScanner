@@ -216,6 +216,47 @@
                 <TextBlock VerticalAlignment="Center">
                     <Run Text="{local:Loc BW}" />
                     <Run Text="{local:Loc SATURATION}" />
+                    <InlineUIContainer BaselineAlignment="Center">
+                        <Image Width="16" Height="16">
+                            <Image.ToolTip>
+                                <ToolTip>
+                                    <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                        <Image Width="32" Height="32">
+                                            <Image.Effect>
+                                                <Extensions:BlackWhiteEffect Threshold="0.4" />
+                                            </Image.Effect>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                        <TextBlock FontFamily="Wingdings"
+                                            FontSize="16"
+                                            Text="è" />
+                                        <Image Width="32" Height="32">
+                                            <Image.Effect>
+                                                <Extensions:BlackWhiteEffect Threshold="0.8" />
+                                            </Image.Effect>
+                                            <Image.Source>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="1" />
+                                                </MultiBinding>
+                                            </Image.Source>
+                                        </Image>
+                                    </StackPanel>
+                                </ToolTip>
+                            </Image.ToolTip>
+                            <Image.Source>
+                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="23" />
+                                </MultiBinding>
+                            </Image.Source>
+                        </Image>
+                    </InlineUIContainer>
                 </TextBlock>
                 <ComboBox ItemsSource="{Binding Jb2SaturationValues}" SelectedItem="{Binding Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Path=Jb2Saturation, Source={x:Static properties:Settings.Default}}" />
                 <TextBlock VerticalAlignment="Center">
