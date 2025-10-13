@@ -322,7 +322,6 @@
                                                         <ListBox.ItemTemplate>
                                                             <DataTemplate>
                                                                 <Extensions:ButtonedTextBox Height="96"
-                                                                    Description="{Binding Key, Mode=OneWay}"
                                                                     IsReadOnly="True"
                                                                     OpenButtonVisibility="Collapsed"
                                                                     PasteButtonVisibility="Collapsed"
@@ -331,7 +330,15 @@
                                                                     Text="{Binding Value, Mode=OneWay}"
                                                                     TextWrapping="Wrap"
                                                                     TitleCaseMenuVisibility="Collapsed"
-                                                                    VerticalScrollBarVisibility="Auto" />
+                                                                    VerticalScrollBarVisibility="Auto">
+                                                                    <Extensions:ButtonedTextBox.Description>
+                                                                        <TextBlock>
+                                                                            <Hyperlink Command="{Binding GoToPage, Mode=OneWay, RelativeSource={RelativeSource AncestorType=local:PdfViewer}}" CommandParameter="{Binding Key, Mode=OneWay}">
+                                                                                <Run Text="{Binding Key, Mode=OneWay}" />
+                                                                            </Hyperlink>
+                                                                        </TextBlock>
+                                                                    </Extensions:ButtonedTextBox.Description>
+                                                                </Extensions:ButtonedTextBox>
                                                             </DataTemplate>
                                                         </ListBox.ItemTemplate>
                                                     </ListBox>

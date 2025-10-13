@@ -232,6 +232,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 if (MessageBox.Show($"OCR {Translation.GetResStringValue("STOP")}", "GPSCANNER", MessageBoxButton.YesNo, MessageBoxImage.Question, MessageBoxResult.No) == MessageBoxResult.Yes)
                 {
                     pdfocrcancellationToken?.Cancel();
+                    PdfOcrProgressValue = 0;
                 }
             },
             parameter => pdfocrcancellationToken?.IsCancellationRequested == false);
@@ -257,8 +258,6 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 pdfDocument.Save(PdfViewer.PdfFilePath);
                 twainCtrl.PdfToolBarControlIsEnabled = true;
                 OcrProgressIndeterminate = false;
-                OcrDialogOpen = false;
-                OcrDialogOpen = true;
             },
             parameter => parameter is TwainCtrl twainCtrl && !string.IsNullOrWhiteSpace(twainCtrl.Scanner?.SelectedTtsLanguage) && File.Exists(PdfViewer.PdfFilePath) && !OcrProgressIndeterminate);
 

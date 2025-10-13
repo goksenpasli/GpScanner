@@ -57,6 +57,8 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public static readonly DependencyProperty WholeWordProperty = DependencyProperty.Register("WholeWord", typeof(bool), typeof(PdfViewer), new PropertyMetadata(false));
     public static readonly DependencyProperty ZoomEnabledProperty = DependencyProperty.Register("ZoomEnabled", typeof(bool), typeof(PdfViewer), new PropertyMetadata(true));
     public static readonly DependencyProperty ZoomProperty = DependencyProperty.Register("Zoom", typeof(double), typeof(PdfViewer), new PropertyMetadata(1.0));
+    private readonly ObservableCollection<Dictionary<int, string>> _cachedPdfPages = [];
+    private int _cachedPageCount = 0;
     private bool disposedValue;
 
     static PdfViewer() { DefaultStyleKeyProperty.OverrideMetadata(typeof(PdfViewer), new FrameworkPropertyMetadata(typeof(PdfViewer))); }
@@ -198,12 +200,17 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
         ReadPdfText = new RelayCommand<object>(
             parameter =>
             {
-                using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
-                PdfAllPagesContent = [];
-                for (int i = 0; i < pdfDocument.PageCount; i++)
+                if (_cachedPageCount != ToplamSayfa)
                 {
-                    PdfAllPagesContent.Add(new Dictionary<int, string> { { i + 1, pdfDocument.GetPdfText(i) } });
+                    using PdfDocument pdfDocument = PdfDocument.Load(PdfFilePath);
+                    _cachedPdfPages.Clear();
+                    for (int i = 0; i < pdfDocument.PageCount; i++)
+                    {
+                        _cachedPdfPages.Add(new Dictionary<int, string> { { i + 1, pdfDocument.GetPdfText(i) } });
+                    }
+                    _cachedPageCount = pdfDocument.PageCount;
                 }
+                PdfAllPagesContent = new ObservableCollection<Dictionary<int, string>>(_cachedPdfPages);
             },
             parameter => File.Exists(PdfFilePath));
 
@@ -221,6 +228,16 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 if (parameter is int pagenumber)
                 {
                     Sayfa = pagenumber + 1;
+                }
+            },
+            parameter => File.Exists(PdfFilePath));
+
+        GoToPage = new RelayCommand<object>(
+            parameter =>
+            {
+                if (parameter is int pagenumber)
+                {
+                    Sayfa = pagenumber;
                 }
             },
             parameter => File.Exists(PdfFilePath));
@@ -282,6 +299,8 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
     public Visibility DpiListVisibility { get => (Visibility)GetValue(DpiListVisibilityProperty); set => SetValue(DpiListVisibilityProperty, value); }
 
     public RelayCommand<object> GoPdfBookMarkPage { get; }
+
+    public RelayCommand<object> GoToPage { get; }
 
     public bool MatchCase { get => (bool)GetValue(MatchCaseProperty); set => SetValue(MatchCaseProperty, value); }
 
