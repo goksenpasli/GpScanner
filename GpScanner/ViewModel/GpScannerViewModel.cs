@@ -213,7 +213,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
                 OcrIsBusy = true;
-                using PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer.GenerateOcredPdfPage(pdfviewer.PdfFilePath, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang);
+                bool altkeypressed = Keyboard.Modifiers == ModifierKeys.Alt;
+                using PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer
+                .GenerateOcredPdfPage(pdfviewer.PdfFilePath, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang, null, !altkeypressed, Math.Max(1, Environment.ProcessorCount / 3));
                 pdfDocument.Save(pdfviewer.PdfFilePath);
                 using PdfiumViewer.PdfDocument Document = PdfiumViewer.PdfDocument.Load(pdfviewer.PdfFilePath);
                 StringBuilder alltext = new();
@@ -1325,7 +1327,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                         mainWindow.twainCtrl.SelectedTabIndex = 3;
                         return;
                     }
-                    if (new string[] { ".zip", ".rar", ".7z", ".cbr", ".cbz" , ".jb2zip"}.Any(z => string.Equals(z, Path.GetExtension(filepath), StringComparison.InvariantCultureIgnoreCase)))
+                    if (new string[] { ".zip", ".rar", ".7z", ".cbr", ".cbz", ".jb2zip" }.Any(z => string.Equals(z, Path.GetExtension(filepath), StringComparison.InvariantCultureIgnoreCase)))
                     {
                         mainWindow.twainCtrl.ArchiveVwr.ArchivePath = filepath;
                         mainWindow.twainCtrl.SelectedTabIndex = 2;
@@ -3596,7 +3598,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         if (OcrAllPdfPages)
         {
-            using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer.GenerateOcredPdfPage(unIndexedFile, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress))
+            using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer
+            .GenerateOcredPdfPage(unIndexedFile, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress, false, Math.Max(1, Environment.ProcessorCount / 3)))
             {
                 pdfDocument.Save(unIndexedFile);
             }
@@ -3613,7 +3616,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             _ = ocrTextBuilder.Append(document.GetPdfText(0));
             return;
         }
-        using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer.GenerateOcredPdfPage(unIndexedFile, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress, true))
+        using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer
+        .GenerateOcredPdfPage(unIndexedFile, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress, true, Math.Max(1, Environment.ProcessorCount / 3)))
         {
             pdfDocument.Save(unIndexedFile);
         }
