@@ -817,4 +817,7 @@ TO FILE</value>
   <data name="FLIP" xml:space="preserve">
     <value>FLIP</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>For Performance After Indexing Completed Remove Folder</value>
+  </data>
 </root>

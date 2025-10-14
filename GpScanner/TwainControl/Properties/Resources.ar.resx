@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>نقف</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>للحصول على الأداء بعد اكتمال الفهرسة، قم بإزالة المجلد</value>
+  </data>
 </root>

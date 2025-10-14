@@ -38,13 +38,13 @@
                 Text="{Binding SeçiliDil, UpdateSourceTrigger=PropertyChanged}"
                 Watermark="TESSERACT" />
         </GroupBox.Header>
-        <AdornerDecorator>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <GroupBox>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <GroupBox>
+                <AdornerDecorator>
                     <ItemsControl d:ItemsSource="{d:SampleData ItemCount=5}"
                         IsEnabled="{Binding IsFolderWritable, ValidatesOnDataErrors=True}"
                         ItemsSource="{Binding Mode=OneWay, Source={StaticResource Files}}"
@@ -100,41 +100,43 @@
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
-                </GroupBox>
-                <Extension:FadedToolTipControl d:IsHidden="True"
-                    Background="{StaticResource BorderBackground}"
-                    BorderBrush="{StaticResource GroupBoxBackGround}"
-                    PopupParent="{Binding ElementName=LbTessFiles}"
-                    Show="{Binding ShowHelpDesc}"
-                    ShowCloseButton="Visible"
-                    TimeToClose="10000"
-                    TimeToShow="2500"
-                    TopMost="False">
-                    <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">
-                        <FlowDocument IsOptimalParagraphEnabled="True">
-                            <Paragraph>
-                                <Span>
-                                    <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">
-                                        <Run Text="{twainctrl:Loc VC}" />
-                                    </Hyperlink>
-                                </Span>
-                                <Run Text="{twainctrl:Loc CRUNTIME}" />
-                            </Paragraph>
-                            <Paragraph>
-                                <Span>
-                                    <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata_best">
-                                        <Run Text="{twainctrl:Loc OTHERTESSERACTLINK}" />
-                                    </Hyperlink>
-                                </Span>
-                                <Run Text=" " />
-                                <Run Text="" />
-                                <Run Text=" " />
-                                <Run Text="{twainctrl:Loc OTHERTESSERACT}" />
-                            </Paragraph>
-                        </FlowDocument>
-                    </FlowDocumentScrollViewer>
-                </Extension:FadedToolTipControl>
-                <GroupBox Grid.Row="1">
+                </AdornerDecorator>
+            </GroupBox>
+            <Extension:FadedToolTipControl d:IsHidden="True"
+                Background="{StaticResource BorderBackground}"
+                BorderBrush="{StaticResource GroupBoxBackGround}"
+                PopupParent="{Binding ElementName=LbTessFiles}"
+                Show="{Binding ShowHelpDesc}"
+                ShowCloseButton="Visible"
+                TimeToClose="10000"
+                TimeToShow="2500"
+                TopMost="False">
+                <FlowDocumentScrollViewer ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                    <FlowDocument IsOptimalParagraphEnabled="True">
+                        <Paragraph>
+                            <Span>
+                                <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://docs.microsoft.com/tr-tr/cpp/windows/latest-supported-vc-redist?view=msvc-170">
+                                    <Run Text="{twainctrl:Loc VC}" />
+                                </Hyperlink>
+                            </Span>
+                            <Run Text="{twainctrl:Loc CRUNTIME}" />
+                        </Paragraph>
+                        <Paragraph>
+                            <Span>
+                                <Hyperlink Command="{Binding TesseractDataFilesDownloadLink}" CommandParameter="https://github.com/tesseract-ocr/tessdata_best">
+                                    <Run Text="{twainctrl:Loc OTHERTESSERACTLINK}" />
+                                </Hyperlink>
+                            </Span>
+                            <Run Text=" " />
+                            <Run Text="" />
+                            <Run Text=" " />
+                            <Run Text="{twainctrl:Loc OTHERTESSERACT}" />
+                        </Paragraph>
+                    </FlowDocument>
+                </FlowDocumentScrollViewer>
+            </Extension:FadedToolTipControl>
+            <GroupBox Grid.Row="1">
+                <AdornerDecorator>
                     <ListBox x:Name="LbTessFiles"
                         d:ItemsSource="{d:SampleData ItemCount=5}"
                         twainctrl:Policy.PolicyName="DefaultTtsLang"
@@ -171,8 +173,8 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-                </GroupBox>
-            </Grid>
-        </AdornerDecorator>
+                </AdornerDecorator>
+            </GroupBox>
+        </Grid>
     </GroupBox>
 </UserControl>

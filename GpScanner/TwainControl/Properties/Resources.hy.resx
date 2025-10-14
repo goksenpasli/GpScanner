@@ -813,4 +813,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Մատով խփել</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Ավարտված թղթապանակը Indexing- ի ցուցիչից հետո կատարման համար</value>
+  </data>
 </root>

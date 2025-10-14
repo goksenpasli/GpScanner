@@ -1430,9 +1430,9 @@
                                     </Image>
                                 </InlineUIContainer>
                             </Hyperlink>
-                            <Run Text="{Binding Mode=OneWay, Path=CheckedPdfCount}" />
+                            <Run d:Text="0" Text="{Binding Mode=OneWay, Path=CheckedPdfCount}" />
                             <sys:String>/</sys:String>
-                            <Run Text="{Binding Mode=OneWay, ElementName=LbDoc, Path=Items.Count}" />
+                            <Run d:Text="0" Text="{Binding Mode=OneWay, ElementName=LbDoc, Path=Items.Count}" />
                             <Run Text="{twainctrl:Loc DOCUMENT}" />
                             <Run Text="{Binding TotalFileSize, Mode=OneWay, StringFormat={}{0} MB}" />
                         </TextBlock>
@@ -1645,9 +1645,20 @@
                                             </MultiBinding>
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock VerticalAlignment="Center"
-                                        Foreground="White"
-                                        Text="{twainctrl:Loc UNINDEXED}" />
+                                    <TextBlock VerticalAlignment="Center" Foreground="White">
+                                        <Run BaselineAlignment="Center" Text="{twainctrl:Loc UNINDEXED}" />
+                                        <Run d:Text="0"
+                                            BaselineAlignment="Center"
+                                            FontWeight="Bold"
+                                            Foreground="LawnGreen"
+                                            Text="{Binding IndexedFileCount, Mode=OneWay}" />
+                                        <Run BaselineAlignment="Center">/</Run>
+                                        <Run d:Text="5"
+                                            BaselineAlignment="Center"
+                                            FontWeight="Bold"
+                                            Foreground="Red"
+                                            Text="{Binding UnIndexedFiles.Count, FallbackValue=0, Mode=OneWay}" />
+                                    </TextBlock>
                                 </StackPanel>
                             </Grid>
                             <Extensions:ContentToggleButton.OverContent>

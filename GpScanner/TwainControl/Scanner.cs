@@ -1359,6 +1359,7 @@ public class Scanner : InpcBase, IDataErrorInfo
         "FileName" when !TwainCtrl.FileNameValid(FileName) => "INVALIDFILENAME",
         "ProfileName" when string.IsNullOrWhiteSpace(ProfileName) => "EMPTY",
         "AutoSave" when !AutoSave => "AUTOFOLDER",
+        "SelectedTtsLanguage" when string.IsNullOrWhiteSpace(SelectedTtsLanguage) => "TESSLANGSELECT",
         _ => null
     };
 

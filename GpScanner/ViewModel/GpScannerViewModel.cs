@@ -88,7 +88,44 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         Settings.Default.PropertyChanged += Default_PropertyChanged;
         PropertyChanged += GpScannerViewModel_PropertyChanged;
         AppName = windowService?.GetFirstWindow()?.Title;
-        LoadFiles = new RelayCommand<object>(async parameter => Dosyalar = await GetScannerFileData(), parameter => true);
+        LoadFiles = new RelayCommand<object>(
+            async parameter =>
+            {
+                List<string> allfilepaths = [ .. Settings.Default.AdditionalIndexFolders.OfType<string>() ];
+                Dosyalar = [];
+                if (allfilepaths.Any())
+                {
+                    Dosyalar = await GetScannerFileData();
+                    return;
+                }
+
+                var data = await Task.Run(
+                    () =>
+                    {
+                        ZipProgressIndeterminate = true;
+                        using AppDbContext context = new();
+                        return context.Data.AsNoTracking().Select(z => new { z.FileName }).ToList();
+                    });
+
+                Progress<double> progress = new(v => FileLoadProgress = v);
+                await Task.Run(
+                    () =>
+                    {
+                        for (int i = 0; i < data.Count; i++)
+                        {
+                            var item = data[i];
+                            if (File.Exists(item.FileName))
+                            {
+                                FileInfo fi = new(item.FileName);
+                                Application.Current.Dispatcher.InvokeAsync(() => Dosyalar.Add(new Scanner { FileName = item.FileName, FolderName = fi.Directory?.Name, FileSize = fi.Length / 1048576F }));
+                            }
+
+                        ((IProgress<double>)progress).Report((i + 1) / (double)data.Count);
+                        }
+                    });
+                ZipProgressIndeterminate = false;
+            },
+            parameter => true);
         LoadFiles.Execute(null);
         SeçiliDil = !string.IsNullOrWhiteSpace(Settings.Default.DefaultLang) ? Settings.Default.DefaultLang : "TÜRKÇE";
         BaşlangıçTarihi = BitişTarihi = DateTime.Today;
@@ -524,7 +561,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     Settings.Default.Save();
                     Settings.Default.Reload();
                     ExtendedMessageBox extendedMessageBox = new();
-                    extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), Translation.GetResStringValue("RESTARTAPP"), AppName);
+                    extendedMessageBox.ShowDialog(windowService.GetActiveWindow(), $"{Translation.GetResStringValue("RESTARTAPP")}\n{Translation.GetResStringValue("INDEXREMOVEWARN")}", AppName);
                 }
             },
             parameter => true);
@@ -873,7 +910,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => zipfilecancellationToken?.IsCancellationRequested == false);
 
-        CancelUnindexedBatchOcr = new RelayCommand<object>(parameter => unindexedfileocrcancellationToken?.Cancel());
+        CancelUnindexedBatchOcr = new RelayCommand<object>(parameter => unindexedfileocrcancellationToken?.Cancel(), parameter => unindexedfileocrcancellationToken?.IsCancellationRequested == false);
 
         DateBack = new RelayCommand<object>(
             parameter =>
@@ -3058,8 +3095,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             try
             {
-                if (SupportedExtensions.FileCategories?.SelectMany(z => z.Extensions).Where(item => item.SearchInArchive)?.Select(item => item.Name).Contains(Path.GetExtension(filename).ToLowerInvariant()) == true &&
-                new FileInfo(filename).Length <= filesize)
+                FileInfo fi = new(filename);
+                if (SupportedExtensions.FileCategories?.SelectMany(z => z.Extensions).Where(item => item.SearchInArchive)?.Select(item => item.Name).Contains(Path.GetExtension(filename).ToLowerInvariant()) == true && fi.Length > 0 && fi.Length <= filesize)
                 {
                     using ArchiveFile archive = new(filename);
                     return archive?.Entries?.Any(z => z.FileName.IndexOf(AramaMetni, StringComparison.CurrentCultureIgnoreCase) >= 0) == true;
@@ -3439,7 +3476,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
             BurnFiles = burnfiles;
             CompressedFiles = compressedfiles;
-            TotalFileSize = GetTotalFileSizeMB([ .. BurnFiles ]);
+            TotalFileSize = GetTotalFileSizeMB([ .. BurnFiles.Where(z => File.Exists(z)) ]);
         }
 
         if (e.PropertyName is "SelectedContributionYear")
@@ -3545,7 +3582,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         switch (extension)
         {
             case ".pdf" when PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile):
-                await ProcessPdfFileAsync(unIndexedFile, ocrTextBuilder);
+                ocrTextBuilder.Append(await ProcessPdfFileAsync(unIndexedFile));
                 break;
 
             case ".docx":
@@ -3594,8 +3631,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         return ocrTextBuilder.ToString();
     }
 
-    private async Task ProcessPdfFileAsync(string unIndexedFile, StringBuilder ocrTextBuilder)
+    private async Task<string> ProcessPdfFileAsync(string unIndexedFile)
     {
+        StringBuilder ocrTextBuilder = new();
         if (OcrAllPdfPages)
         {
             using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer
@@ -3608,13 +3646,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 ocrTextBuilder = AppendPdfText(document);
             }
             OcrAllPdfPagesProgress = 0;
-            return;
+            return ocrTextBuilder.ToString();
         }
         if (Settings.Default.OcrContentUseInternalPdfContent)
         {
             using PdfiumViewer.PdfDocument document = PdfiumViewer.PdfDocument.Load(unIndexedFile);
             _ = ocrTextBuilder.Append(document.GetPdfText(0));
-            return;
+            return ocrTextBuilder.ToString();
         }
         using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer
         .GenerateOcredPdfPage(unIndexedFile, Twainsettings.Settings.Default.JpegQuality, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress, true, Math.Max(1, Environment.ProcessorCount / 3)))
@@ -3626,6 +3664,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             ocrTextBuilder = AppendPdfText(document);
         }
         OcrAllPdfPagesProgress = 0;
+        return ocrTextBuilder.ToString();
     }
 
     private void RegisterSimplePdfFileWatcher()

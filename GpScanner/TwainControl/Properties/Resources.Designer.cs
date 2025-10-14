@@ -711,6 +711,15 @@ namespace TwainControl.Properties {
         /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
+        public static string INDEXREMOVEWARN {
+            get {
+                return ResourceManager.GetString("INDEXREMOVEWARN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
         public static string INDEXWARN {
             get {
                 return ResourceManager.GetString("INDEXWARN", resourceCulture);

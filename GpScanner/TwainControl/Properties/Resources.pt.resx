@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>VIRAR</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Para desempenho após a conclusão da indexação, remover pasta</value>
+  </data>
 </root>

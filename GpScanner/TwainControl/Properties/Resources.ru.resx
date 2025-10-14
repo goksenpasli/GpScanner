@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>ПОДБРОСИТЬ</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Для повышения производительности после завершения индексирования удалите папку</value>
+  </data>
 </root>

@@ -79,7 +79,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
                 }
             });
 
-        CopyPageBitmap = new RelayCommand<object>(parameter => Clipboard.SetImage((BitmapSource)Source));
+        CopyPageBitmap = new RelayCommand<object>(parameter => Clipboard.SetImage((BitmapSource)Source), parameter => File.Exists(PdfFilePath));
 
         Yazdır = new RelayCommand<object>(
             async parameter =>
@@ -710,7 +710,7 @@ public partial class PdfViewer : Control, INotifyPropertyChanged, IDisposable
 
     private static async void DpiChangedAsync(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        if (d is PdfViewer pdfViewer && pdfViewer.PdfFilePath is not null)
+        if (d is PdfViewer pdfViewer && File.Exists(pdfViewer.PdfFilePath))
         {
             string pdfFilePath = pdfViewer.PdfFilePath;
             pdfViewer.Source = await ConvertToImgAsync(pdfFilePath, pdfViewer.Sayfa, (int)e.NewValue);

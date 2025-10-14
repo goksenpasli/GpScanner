@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>ΑΝΑΡΡΙΠΤΩ</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Για επιδόσεις μετά την ευρετηρίαση ολοκληρωμένο φάκελο αφαιρέστε το φάκελο</value>
+  </data>
 </root>

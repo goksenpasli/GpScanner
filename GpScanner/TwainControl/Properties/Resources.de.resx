@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Flip</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Für die Leistung nach Abschluss der Indizierung entfernen Sie den Ordner</value>
+  </data>
 </root>

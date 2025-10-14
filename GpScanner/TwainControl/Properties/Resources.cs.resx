@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Převrátit</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Pro výkon po dokončení indexování odebrat složku</value>
+  </data>
 </root>

@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>VOLTEAR</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Para mejorar el rendimiento una vez completada la indexación, eliminar carpeta</value>
+  </data>
 </root>

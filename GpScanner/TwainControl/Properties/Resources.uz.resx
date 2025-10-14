@@ -825,4 +825,7 @@ Hujjat qo'shing</value>
   <data name="FLIP" xml:space="preserve">
     <value>Flip</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Indekslash tugagandan so'ng ishlash papkani o'chiring</value>
+  </data>
 </root>

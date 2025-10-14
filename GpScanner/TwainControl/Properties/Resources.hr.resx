@@ -813,4 +813,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Okrenuti</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Za performanse nakon indeksiranja dovršeno Ukloni mapu</value>
+  </data>
 </root>

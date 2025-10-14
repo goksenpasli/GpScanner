@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>フリップ</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>インデックス作成完了後のパフォーマンスを向上させるため、フォルダーを削除します</value>
+  </data>
 </root>

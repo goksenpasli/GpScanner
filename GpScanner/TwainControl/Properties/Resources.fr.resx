@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>RETOURNER</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Pour les performances une fois l'indexation terminée, supprimer le dossier</value>
+  </data>
 </root>

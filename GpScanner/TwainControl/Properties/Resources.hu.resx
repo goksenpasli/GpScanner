@@ -813,4 +813,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Flip</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>A teljesítményhez az indexelés után a kitöltött mappa eltávolítása után</value>
+  </data>
 </root>

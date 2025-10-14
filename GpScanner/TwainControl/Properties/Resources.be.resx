@@ -813,4 +813,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Перавярнуць</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Для прадукцыйнасці пасля завяршэння індэксацыі папкі выдаліць</value>
+  </data>
 </root>

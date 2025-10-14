@@ -813,4 +813,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>FLIP</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>För prestanda efter indexering Avslutad ta bort mappen</value>
+  </data>
 </root>

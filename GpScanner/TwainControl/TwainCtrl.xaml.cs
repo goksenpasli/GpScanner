@@ -147,7 +147,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 await DefaultScanAsync();
                 Twain.ScanningComplete += FastScanComplete;
             },
-            parameter => !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Scanner?.AutoSave == true && FileNameValid(Scanner?.FileName) && Policy.CheckPolicy(nameof(FastScanImage)));
+            parameter => !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage) && !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Scanner?.AutoSave == true && FileNameValid(Scanner?.FileName) && Policy.CheckPolicy(nameof(FastScanImage)));
 
         ResimSil = new RelayCommand<object>(
             parameter =>
@@ -864,7 +864,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
             parameter =>
             {
                 Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliDirektPdfKaydet)) && Scanner?.AutoSave == true && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
+                return !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage) && Policy.CheckPolicy(nameof(SeçiliDirektPdfKaydet)) && Scanner?.AutoSave == true && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
             });
 
         ListeTemizle = new RelayCommand<object>(

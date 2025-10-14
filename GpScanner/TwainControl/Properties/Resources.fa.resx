@@ -825,4 +825,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>تلنگر</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>برای عملکرد پس از نمایه سازی تکمیل پوشه حذف</value>
+  </data>
 </root>

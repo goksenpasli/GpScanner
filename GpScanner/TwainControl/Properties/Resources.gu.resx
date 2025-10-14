@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>ફાટવું</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>અનુક્રમણિકા પૂર્ણ કર્યા પછી કામગીરી માટે ફોલ્ડર દૂર કરો</value>
+  </data>
 </root>

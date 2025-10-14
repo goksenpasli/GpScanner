@@ -848,4 +848,7 @@
   <data name="FLIP" xml:space="preserve">
     <value></value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value></value>
+  </data>
 </root>

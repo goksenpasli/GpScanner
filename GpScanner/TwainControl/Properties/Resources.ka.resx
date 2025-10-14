@@ -820,4 +820,7 @@ PDF</value>
   <data name="FLIP" xml:space="preserve">
     <value>ბურუ</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>შესრულებისთვის დასრულებული ამოღების საქაღალდის ინდექსირების შემდეგ</value>
+  </data>
 </root>

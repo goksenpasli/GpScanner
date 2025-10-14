@@ -820,4 +820,7 @@ PDF</value>
   <data name="FLIP" xml:space="preserve">
     <value>튀기다</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>인덱싱 완료 후 성능을 위해 폴더 제거</value>
+  </data>
 </root>

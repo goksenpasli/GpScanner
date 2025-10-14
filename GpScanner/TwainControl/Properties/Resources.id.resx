@@ -813,4 +813,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>MEMBALIK</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Untuk Kinerja Setelah Pengindeksan Selesai Hapus Folder</value>
+  </data>
 </root>

@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>翻动</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>为了提高索引完成后的性能，删除文件夹</value>
+  </data>
 </root>

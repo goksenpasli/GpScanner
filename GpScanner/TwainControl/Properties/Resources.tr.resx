@@ -823,4 +823,7 @@ BELGE EKLE</value>
   <data name="CYANCONTROL" xml:space="preserve">
     <value>Herhangi Bir Camgöbeği Renkli Kontrol, Alt Shift Ctrl Tuşlarından Bir veya Daha Fazlası ile Farklı Şekilde Çalışır!</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Performans İçin İndeksleme Tamamlandıktan Sonra Klasörü Kaldırın. </value>
+  </data>
 </root>

@@ -825,4 +825,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Флип</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>За перформанси по индексирање завршена папката за отстранување</value>
+  </data>
 </root>

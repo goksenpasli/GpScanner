@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Siymək</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Tamamlanmadan sonra performans üçün qovluğu çıxarın</value>
+  </data>
 </root>

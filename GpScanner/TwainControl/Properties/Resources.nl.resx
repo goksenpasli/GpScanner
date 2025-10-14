@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Omdraaien</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Voor prestaties nadat het indexeren is voltooid, map verwijderen</value>
+  </data>
 </root>

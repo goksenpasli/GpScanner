@@ -810,4 +810,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Capovolgimento</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Per prestazioni al termine dell'indicizzazione Rimuovi cartella</value>
+  </data>
 </root>

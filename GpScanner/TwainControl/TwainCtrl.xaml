@@ -820,6 +820,19 @@
                                                 Height="32"
                                                 IsEnabled="{Binding Scanner.AutoSave, ValidatesOnDataErrors=True}"
                                                 Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                                                <Canvas.Style>
+                                                    <Style TargetType="Canvas">
+                                                        <Setter Property="IsEnabled" Value="True" />
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding Scanner.AutoSave, ValidatesOnDataErrors=True}" Value="False">
+                                                                <Setter Property="IsEnabled" Value="False" />
+                                                            </DataTrigger>
+                                                            <DataTrigger Binding="{Binding Scanner.SelectedTtsLanguage, Converter={StaticResource NullableToBooleanConverter}, ValidatesOnDataErrors=True}" Value="False">
+                                                                <Setter Property="IsEnabled" Value="False" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Canvas.Style>
                                                 <Image Width="32" Height="32">
                                                     <Image.Source>
                                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

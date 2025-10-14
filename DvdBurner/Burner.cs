@@ -185,7 +185,7 @@ namespace DvdBurner
                     dynamic recorder = new MsftDiscRecorder2();
                     recorder.InitializeDiscRecorder(SelectedDrive);
                     IEnumerable<int> values = Enum.GetValues(typeof(IMAPI_PROFILE_TYPE)).OfType<IMAPI_PROFILE_TYPE>().Select(z => (int)z);
-                    List<string> supportedformats =[ .. from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType), ];
+                    List<string> supportedformats = [ .. from object supportedMediaType in (object[])recorder.SupportedProfiles where values.Contains((int)supportedMediaType) select Enum.GetName(typeof(IMAPI_PROFILE_TYPE), supportedMediaType), ];
                     extendedMessageBox.ShowDialog(Window.GetWindow(this), string.Join("\n", supportedformats), AppName);
                     recorder = null;
                 },
@@ -523,7 +523,7 @@ namespace DvdBurner
 
         private void UpdateProgressFileSize(string[] files)
         {
-            TotalFileSize = files?.Any() == false ? 0 : GetTotalFileSizeMB(files);
+            TotalFileSize = files?.Any() == false ? 0 : GetTotalFileSizeMB([ .. files.Where(z => File.Exists(z)) ]);
             ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
         }
     }

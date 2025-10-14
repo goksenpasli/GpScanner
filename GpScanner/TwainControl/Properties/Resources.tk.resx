@@ -825,4 +825,7 @@ Resminama goşuň</value>
   <data name="FLIP" xml:space="preserve">
     <value>Flip</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Indeksirlemek tamamlanandan soň ýerine ýetiriş bukjasyny aýyryň</value>
+  </data>
 </root>

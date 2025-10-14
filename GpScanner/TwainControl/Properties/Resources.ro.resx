@@ -813,4 +813,7 @@
   <data name="FLIP" xml:space="preserve">
     <value>Flip</value>
   </data>
+  <data name="INDEXREMOVEWARN" xml:space="preserve">
+    <value>Pentru performanță după indexarea finalizată, eliminați folderul</value>
+  </data>
 </root>
