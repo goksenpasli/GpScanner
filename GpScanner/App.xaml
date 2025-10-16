@@ -454,33 +454,14 @@
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="UnIndexedPdfViewerTemplateFull">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <Button BorderBrush="Cyan"
-                        Command="{Binding AddAllFileToControlPanel}"
-                        CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
-                        DataContext="{Binding TwainCtrl, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:MainWindow}}}">
-                        <Button.Content>
-                            <TextBlock Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection}"
-                                FontFamily="Wingdings"
-                                FontSize="16"
-                                Text="ç" />
-                        </Button.Content>
-                    </Button>
-                    <PdfViewer:PdfViewer x:Name="PdfVwr"
-                        Grid.Row="1"
-                        AutoFitContent="True"
-                        Dpi="{Binding DefaultThumbNailDpi, Source={x:Static properties:Settings.Default}}"
-                        OpenButtonVisibility="Collapsed"
-                        Orientation="Width"
-                        PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                        PrintButtonVisibility="Visible"
-                        SliderZoomAngleVisibility="Collapsed"
-                        SnapTick="True" />
-                </Grid>
+                <PdfViewer:PdfViewer AutoFitContent="True"
+                    Dpi="96"
+                    OpenButtonVisibility="Collapsed"
+                    Orientation="Width"
+                    PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                    PrintButtonVisibility="Visible"
+                    SliderZoomAngleVisibility="Collapsed"
+                    SnapTick="True" />
             </DataTemplate>
             <DataTemplate x:Key="ZipViewerTemplate">
                 <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"

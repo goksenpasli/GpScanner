@@ -937,7 +937,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public async Task<PdfDocument> GenerateOcredPdfPage(string pdfPath, int dpi, string ocrLang, Action<double> progressCallback = null, bool processFirstPageOnly = false, int parallelcount = 4, CancellationTokenSource cancellationTokenSource = null)
     {
-        using PdfDocument document = PdfReader.Open(pdfPath, PdfDocumentOpenMode.Modify, PdfGeneration.PasswordProvider);
+        using PdfDocument document = PdfReader.Open(pdfPath, PdfDocumentOpenMode.Modify);
 
         int totalPages = document.PageCount;
         int endPage = processFirstPageOnly ? 1 : totalPages;

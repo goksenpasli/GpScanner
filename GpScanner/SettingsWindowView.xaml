@@ -1702,7 +1702,15 @@
                                                     ResetButtonVisibility="Collapsed"
                                                     SelectionBrush="DarkMagenta"
                                                     Text="{Binding FileName, Mode=OneWay}"
-                                                    TextBoxVisibility="Collapsed" />
+                                                    TextBoxVisibility="Collapsed">
+                                                    <Extensions:ButtonedTextBox.ToolTip>
+                                                        <ToolTip>
+                                                            <TextBlock MaxWidth="400"
+                                                                Text="{Binding FileContent, IsAsync=True, Mode=OneWay}"
+                                                                TextWrapping="Wrap" />
+                                                        </ToolTip>
+                                                    </Extensions:ButtonedTextBox.ToolTip>
+                                                </Extensions:ButtonedTextBox>
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
@@ -1716,29 +1724,12 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Width="300" Header="{twainctrl:Loc CONTENT}">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Extensions:ButtonedTextBox Background="{x:Null}"
-                                                    BorderBrush="{x:Null}"
-                                                    Command="{Binding DataContext.ExploreFile, RelativeSource={RelativeSource AncestorType=Window}}"
-                                                    CommandParameter="{Binding Mode=OneWay, Path=FileName}"
-                                                    CopyButtonVisibility="Collapsed"
-                                                    IsReadOnly="True"
-                                                    PasteButtonVisibility="Collapsed"
-                                                    PrintButtonVisibility="Visible"
-                                                    ResetButtonVisibility="Collapsed"
-                                                    Text="{Binding FileContent, IsAsync=True, Mode=OneWay}"
-                                                    TextWrapping="Wrap" />
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
                         </Grid>
                         <UniformGrid Grid.Row="1"
                             Grid.ColumnSpan="2"
-                            Columns="2">
+                            Columns="3">
                             <Button Command="{Binding RunSqliteCommand}" Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Width="32" Height="32">
@@ -1770,6 +1761,24 @@
                                         FontSize="24"
                                         FontWeight="Bold"
                                         Text="VACUUM" />
+                                </StackPanel>
+                            </Button>
+                            <Button Command="{Binding SelectValidFilesCommand}">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Width="32" Height="32">
+                                        <Image.Source>
+                                            <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                <Binding Source="zipfldr.dll" />
+                                                <Binding Source="0" />
+                                            </MultiBinding>
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock VerticalAlignment="Center"
+                                        FontSize="24"
+                                        FontWeight="Bold">
+                                        <Run Text="{twainctrl:Loc ALL}" />
+                                        <Run Text="{twainctrl:Loc COMPRESS}" />
+                                    </TextBlock>
                                 </StackPanel>
                             </Button>
                         </UniformGrid>

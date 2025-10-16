@@ -99,30 +99,26 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
 
-                var data = await Task.Run(
+                List<Scanner> data = await Task.Run(
                     () =>
                     {
                         ZipProgressIndeterminate = true;
                         using AppDbContext context = new();
-                        return context.Data.AsNoTracking().Select(z => new { z.FileName }).ToList();
-                    });
-
-                Progress<double> progress = new(v => FileLoadProgress = v);
-                await Task.Run(
-                    () =>
-                    {
-                        for (int i = 0; i < data.Count; i++)
-                        {
-                            var item = data[i];
-                            if (File.Exists(item.FileName))
+                        List<string> fileNames = [ .. context.Data.AsNoTracking().Select(z => z.FileName) ];
+                        return fileNames.AsParallel()
+                        .WithDegreeOfParallelism(Environment.ProcessorCount)
+                        .Where(z => File.Exists(z))
+                        .Select(
+                            file =>
                             {
-                                FileInfo fi = new(item.FileName);
-                                Application.Current.Dispatcher.InvokeAsync(() => Dosyalar.Add(new Scanner { FileName = item.FileName, FolderName = fi.Directory?.Name, FileSize = fi.Length / 1048576F }));
-                            }
-
-                        ((IProgress<double>)progress).Report((i + 1) / (double)data.Count);
-                        }
+                                FileInfo fi = new(file);
+                                return new Scanner { FileName = file, FolderName = fi.Directory?.Name, FileSize = fi.Length / 1048576f };
+                            })
+                        .ToList();
                     });
+
+                Dosyalar = new ObservableCollection<Scanner>(data);
+                FileLoadProgress = 1;
                 ZipProgressIndeterminate = false;
             },
             parameter => true);
@@ -272,16 +268,21 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         UnindexedFileOcr = new RelayCommand<object>(
             async parameter =>
             {
+                if (parameter is not UnindexedData unIndexedData || !File.Exists(unIndexedData.FileName))
+                {
+                    return;
+                }
                 OcrIsBusy = true;
                 try
                 {
-                    string unIndexedFile = parameter as string;
-                    string ocrText = await ProcessFileAsync(unIndexedFile);
-                    await SaveOcrTextToFileAsync(unIndexedFile, ocrText);
-                    _ = (UnIndexedFiles?.Remove(unIndexedFile));
+                    string ocrText = await ProcessFileAsync(unIndexedData.FileName);
+                    await SaveOcrTextToFileAsync(unIndexedData.FileName, ocrText);
+                    _ = (UnIndexedFiles?.Remove(unIndexedData));
                 }
                 catch (Exception ex)
                 {
+                    unIndexedData.HasError = true;
+                    unIndexedData.Error = ex?.Message;
                     await WriteToLogFile($@"{ProfileFolder}\{ErrorFile}", ex?.Message);
                 }
                 finally
@@ -294,7 +295,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
                 }
             },
-            parameter => !OcrIsBusy && parameter is string pdffilepath && File.Exists(pdffilepath) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+            parameter => !OcrIsBusy && parameter is UnindexedData unindexedData && File.Exists(unindexedData.FileName) && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         UnindexedAllFilesOcr = new RelayCommand<object>(
             async parameter =>
@@ -305,12 +306,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 OcrIsBusy = true;
                 unindexedfileocrcancellationToken = new CancellationTokenSource();
                 ICollectionView filteredview = UnindexedFilesDialogView.cvs?.View;
-                foreach (List<string> unIndexedFile in TwainCtrl.ChunkBy(filteredview?.Cast<string>(), slicecount))
+                foreach (List<UnindexedData> unIndexedData in TwainCtrl.ChunkBy(filteredview?.Cast<UnindexedData>(), slicecount))
                 {
                     Task task = Task.Run(
                         async () =>
                         {
-                            foreach (string item in unIndexedFile)
+                            foreach (UnindexedData item in unIndexedData)
                             {
                                 if (unindexedfileocrcancellationToken?.IsCancellationRequested != false)
                                 {
@@ -318,13 +319,15 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                 }
                                 try
                                 {
-                                    string ocrText = await ProcessFileAsync(item);
-                                    await SaveOcrTextToFileAsync(item, ocrText);
+                                    string ocrText = await ProcessFileAsync(item.FileName);
+                                    await SaveOcrTextToFileAsync(item.FileName, ocrText);
                                     _ = await Application.Current?.Dispatcher?.InvokeAsync(() => UnIndexedFiles?.Remove(item));
                                     IndexedFileCount = i++;
                                 }
                                 catch (Exception ex)
                                 {
+                                    item.HasError = true;
+                                    item.Error = ex?.Message;
                                     await LogErrorAsync(ex);
                                 }
                                 finally
@@ -1159,8 +1162,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                             SqlQueryData = await context.Database.SqlQuery<Data>(SqlText).ToListAsync();
                             return;
                         }
-                        _ = await context.Database.ExecuteSqlCommandAsync(SqlText);
-                        _ = await context.SaveChangesAsync();
+                        context.Database.ExecuteSqlCommand(SqlText);
                         SqlText = "Select * From Data;";
                         SqlQueryData = await context.Database.SqlQuery<Data>(SqlText).ToListAsync();
                     }
@@ -1171,6 +1173,33 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 }
             },
             parameter => File.Exists(Settings.Default.DatabaseFile) && !string.IsNullOrWhiteSpace(SqlText) && !sqlitedangerouscommands.Any(SqlText.ToLower().Contains));
+
+        SelectValidFilesCommand = new RelayCommand<object>(
+            async parameter =>
+            {
+                try
+                {
+                    using AppDbContext context = new();
+                    if (!context.Database.Exists())
+                    {
+                        return;
+                    }
+
+                    List<Data> rawData = await context.Database.SqlQuery<Data>("Select * From Data;").ToListAsync();
+                    List<string> zipdata = rawData.AsParallel().Where(z => File.Exists(z.FileName)).Select(z => z.FileName).ToList();
+                    SaveFileDialog saveFileDialog = new() { Filter = "Zip Dosyası(*.zip)|*.zip", FileName = "Data.zip" };
+                    if (saveFileDialog.ShowDialog() == true)
+                    {
+                        await SimpleArchiveViewer.ZipCompress(zipdata, saveFileDialog.FileName, new Progress<double>(progress => FileLoadProgress = progress), null, false);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentException(ex?.Message);
+                }
+            },
+            parameter => File.Exists(Settings.Default.DatabaseFile));
 
         RunSqliteVacuumCommand = new RelayCommand<object>(
             async parameter =>
@@ -2499,6 +2528,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
+    public RelayCommand<object> SelectValidFilesCommand { get; }
+
     public ICommand SetBatchFolder { get; }
 
     public RelayCommand<object> SetBatchSaveFolder { get; }
@@ -2638,7 +2669,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> UndoApplyCalendarData { get; }
 
-    public ObservableCollection<string> UnIndexedFiles
+    public ObservableCollection<UnindexedData> UnIndexedFiles
     {
         get;
         set
@@ -3324,7 +3355,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     }
     private long GetTotalFileSizeMB(string[] files) => files?.Aggregate(0L, (accumulator, item) => accumulator += new FileInfo(item).Length) / 1024 / 1024 ?? 0;
 
-    private async Task<ObservableCollection<string>> GetUnindexedFileData()
+    private async Task<ObservableCollection<UnindexedData>> GetUnindexedFileData()
     {
         try
         {
@@ -3334,13 +3365,13 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             List<string> scannedDatabaseFiles = await context?.Data?.AsNoTracking()?.Select(x => x.FileName).ToListAsync();
             if (scannerunindexedfiles is not null && scannedDatabaseFiles is not null)
             {
-                List<string> UnindexedFiles = [ .. scannerunindexedfiles.Except(scannedDatabaseFiles) ];
-                foreach (string item in UnindexedFiles)
+                List<UnindexedData> UnindexedFiles = [ .. scannerunindexedfiles.Except(scannedDatabaseFiles).Select(z => new UnindexedData { FileName = z }) ];
+                foreach (UnindexedData item in UnindexedFiles)
                 {
-                    string fileType = GetFileType(item, new SHFILEINFO());
+                    string fileType = GetFileType(item.FileName, new SHFILEINFO());
                     if (!FilterTypes.Any(t => t.Name == fileType))
                     {
-                        CheckBoxItem checkboxitem = new() { Content = item, Name = fileType };
+                        CheckBoxItem checkboxitem = new() { Content = item.FileName, Name = fileType };
                         checkboxitem.PropertyChanged += UnindexedCheckBoxItem_PropertyChanged;
                         FilterTypes.Add(checkboxitem);
                     }
@@ -3476,7 +3507,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
             BurnFiles = burnfiles;
             CompressedFiles = compressedfiles;
-            TotalFileSize = GetTotalFileSizeMB([ .. BurnFiles.Where(z => File.Exists(z)) ]);
+            TotalFileSize = GetTotalFileSizeMB([ .. BurnFiles.Where(File.Exists) ]);
         }
 
         if (e.PropertyName is "SelectedContributionYear")
@@ -3582,7 +3613,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         switch (extension)
         {
             case ".pdf" when PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile):
-                ocrTextBuilder.Append(await ProcessPdfFileAsync(unIndexedFile));
+                _ = ocrTextBuilder.Append(await ProcessPdfFileAsync(unIndexedFile));
                 break;
 
             case ".docx":
@@ -3739,7 +3770,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                                                    {
                                                        if (FilterTypes?.Any(z => z.IsChecked) == true)
                                                        {
-                                                           string fileType = GetFileType((string)x.Item, new SHFILEINFO());
+                                                           UnindexedData item = (UnindexedData)x.Item;
+                                                           string fileType = GetFileType(item.FileName, new SHFILEINFO());
                                                            x.Accepted = FilterTypes.Any(z => z.IsChecked && fileType == z.Name);
                                                        }
                                                    };

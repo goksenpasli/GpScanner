@@ -24,6 +24,19 @@
             MinNumber="1" />
         <DataTemplate x:Key="ListBoxItemListTemplate">
             <TextBlock VerticalAlignment="Center">
+                <TextBlock d:Text="ERROR"
+                    d:Visibility="Visible"
+                    FontWeight="Bold"
+                    Foreground="Red"
+                    Text="{twainctrl:Loc ERROR}"
+                    Visibility="{Binding HasError, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock.ToolTip>
+                        <TextBlock MaxWidth="300"
+                            Foreground="Red"
+                            Text="{Binding Error}"
+                            TextWrapping="Wrap" />
+                    </TextBlock.ToolTip>
+                </TextBlock>
                 <TextBlock Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection, RelativeSource={RelativeSource AncestorType=Window}}"><Hyperlink twainctrl:Policy.PolicyName="AddPdfGroupFilesMonthToControlPanel"
                         Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
                         TextDecorations="None">
@@ -33,7 +46,7 @@
                             Text="ç" />
                         <Hyperlink.CommandParameter>
                             <MultiBinding Converter="{StaticResource CloneConverter}">
-                                <Binding Mode="OneWay" />
+                                <Binding Mode="OneWay" Path="FileName" />
                                 <Binding Mode="OneWay"
                                     Path="TwainCtrl"
                                     RelativeSource="{RelativeSource AncestorType=Window}" />
@@ -42,7 +55,7 @@
                     </Hyperlink></TextBlock>
                 <Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
                     Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
-                    CommandParameter="{Binding Mode=OneWay}"
+                    CommandParameter="{Binding Mode=OneWay, Path=FileName}"
                     TextDecorations="None">
                     <Run FontFamily="Wingdings 2"
                         FontSize="16"
@@ -53,7 +66,7 @@
                     <Image Width="16"
                         Height="16"
                         d:Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jpg}"
-                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay}" />
+                        Source="{Binding Converter={StaticResource FilePathToIconConverter}, IsAsync=True, Mode=OneWay, Path=FileName}" />
                 </InlineUIContainer><Hyperlink BaselineAlignment="Center"
                     Command="{Binding DataContext.UnindexedFileOcr, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
                     CommandParameter="{Binding Mode=OneWay}"
@@ -68,7 +81,7 @@
                             </Image.Source>
                         </Image>
                     </InlineUIContainer>
-                </Hyperlink><Run BaselineAlignment="Center" Text="{Binding Mode=OneWay}" /></TextBlock>
+                </Hyperlink><Run BaselineAlignment="Center" Text="{Binding Mode=OneWay, Path=FileName}" /></TextBlock>
         </DataTemplate>
     </UserControl.Resources>
     <Grid Background="{StaticResource BorderBackground}">
@@ -101,7 +114,7 @@
                                     <DataTemplate>
                                         <ContentControl Width="150"
                                             Height="150"
-                                            Content="{Binding IsAsync=True, Mode=OneWay}"
+                                            Content="{Binding IsAsync=True, Mode=OneWay, Path=FileName}"
                                             ContentTemplateSelector="{StaticResource DocumentViewerMiniSelector}" />
                                     </DataTemplate>
                                 </Setter.Value>
@@ -129,7 +142,7 @@
             Background="{DynamicResource GroupBoxBackGround}" />
         <ContentControl Grid.Column="2"
             Margin="1"
-            Content="{Binding SelectedItem, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
+            Content="{Binding SelectedItem.FileName, IsAsync=True, Mode=OneWay, Source={x:Reference LbUnindexed}}"
             ContentTemplateSelector="{StaticResource UnIndexedThumbViewerSelector}" />
         <Grid Grid.Row="1" Grid.ColumnSpan="3">
             <Grid.ColumnDefinitions>

@@ -32,6 +32,7 @@
             <Converter:DivideConverter x:Key="DivideConverter" />
             <Converter:FileDateContextMenuConverter x:Key="FileDateContextMenuConverter" />
             <Extensions:NullableToBooleanConverter x:Key="NullableToBooleanConverter" />
+            <Extensions:StringNullableToBooleanConverter x:Key="StringNullableToBooleanConverter" />
             <Extensions:FilePathToIconConverter x:Key="ListFilePathToIconConverter" IconSize="extraLarge" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
@@ -742,7 +743,9 @@
                                                 <StackPanel>
                                                     <MenuItem Header="{local:Loc SEPERATE}"
                                                         IsCheckable="True"
-                                                        IsChecked="{Binding Scanner.ScanSeperate}">
+                                                        IsChecked="{Binding Scanner.ScanSeperate}"
+                                                        IsEnabled="{Binding Scanner.SelectedTtsLanguage, Converter={StaticResource StringNullableToBooleanConverter}, ValidatesOnDataErrors=True}"
+                                                        Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                                                         <MenuItem.Icon>
                                                             <Image Width="16" Height="16">
                                                                 <Image.Source>
@@ -818,7 +821,6 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Canvas Width="32"
                                                 Height="32"
-                                                IsEnabled="{Binding Scanner.AutoSave, ValidatesOnDataErrors=True}"
                                                 Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
                                                 <Canvas.Style>
                                                     <Style TargetType="Canvas">
@@ -827,7 +829,7 @@
                                                             <DataTrigger Binding="{Binding Scanner.AutoSave, ValidatesOnDataErrors=True}" Value="False">
                                                                 <Setter Property="IsEnabled" Value="False" />
                                                             </DataTrigger>
-                                                            <DataTrigger Binding="{Binding Scanner.SelectedTtsLanguage, Converter={StaticResource NullableToBooleanConverter}, ValidatesOnDataErrors=True}" Value="False">
+                                                            <DataTrigger Binding="{Binding Scanner.SelectedTtsLanguage, Converter={StaticResource StringNullableToBooleanConverter}, ValidatesOnDataErrors=True}" Value="False">
                                                                 <Setter Property="IsEnabled" Value="False" />
                                                             </DataTrigger>
                                                         </Style.Triggers>
