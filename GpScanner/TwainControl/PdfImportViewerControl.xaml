@@ -1066,6 +1066,9 @@
                     </Extensions:ResizablePanel>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
+            <TextBlock VerticalAlignment="Center"
+                d:Text="OCR DPI"
+                Text="{Binding ElementName=PdfViewer, Path=Dpi, Mode=OneWay, StringFormat={}OCR DPI {0}}" />
             <Image Width="16" Height="16">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

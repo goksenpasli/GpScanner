@@ -249,7 +249,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 pdfocrcancellationToken = new CancellationTokenSource();
                 using PdfDocument pdfDocument = await GenerateOcredPdfPage(
                     PdfViewer.PdfFilePath,
-                    Settings.Default.JpegQuality,
+                    PdfViewer.Dpi,
                     twainCtrl.Scanner?.SelectedTtsLanguage,
                     progress => PdfOcrProgressValue = progress,
                     false,

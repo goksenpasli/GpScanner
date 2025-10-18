@@ -976,6 +976,7 @@
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="23*" />
@@ -1019,6 +1020,7 @@
                                 FontSize="16" />
                             <Button Grid.RowSpan="2"
                                 Grid.Column="5"
+                                Grid.ColumnSpan="2"
                                 Command="{Binding SetDateToday}">
                                 <Image Width="32" Height="32">
                                     <Image.Source>
@@ -1030,7 +1032,7 @@
                                 </Image>
                             </Button>
                             <Extensions:ContentToggleButton Grid.RowSpan="2"
-                                Grid.Column="6"
+                                Grid.Column="7"
                                 Grid.ColumnSpan="2"
                                 Command="{Binding LoadGroupFilesMonth}"
                                 StaysOpen="True"
@@ -1071,12 +1073,12 @@
                                 FontFamily="Wingdings"
                                 FontSize="16" />
                             <ProgressBar Grid.Row="2"
-                                Grid.ColumnSpan="7"
+                                Grid.ColumnSpan="9"
                                 Height="3"
                                 Background="{StaticResource BorderBackground}"
                                 BorderBrush="{StaticResource BorderBackground}"
                                 Foreground="{StaticResource GroupBoxBackGround}"
-                                IsIndeterminate="{Binding ZipProgressIndeterminate}"
+                                IsIndeterminate="{Binding SearchProgressIndeterminate}"
                                 Maximum="1"
                                 Value="{Binding ZipProgress}" />
                             <Extensions:ButtonedTextBox x:Name="TbSearch"
@@ -1091,10 +1093,23 @@
                                 OpenButtonVisibility="Collapsed"
                                 ShowSuggestions="{Binding ShowSuggestions, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}"
                                 Suggestions="{Binding HistoryList}"
-                                Text="{Binding AramaMetni, Mode=TwoWay, Delay=500, UpdateSourceTrigger=PropertyChanged}"
+                                Text="{Binding AramaMetni, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 Watermark="{twainctrl:Loc DOCUMENT}" />
-                            <Extensions:ContentToggleButton Grid.Row="3"
+                            <Button Grid.Row="3"
                                 Grid.Column="6"
+                                Command="{Binding SearchDocument}"
+                                IsDefault="True">
+                                <Image Width="24" Height="24">
+                                    <Image.Source>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="22" />
+                                        </MultiBinding>
+                                    </Image.Source>
+                                </Image>
+                            </Button>
+                            <Extensions:ContentToggleButton Grid.Row="3"
+                                Grid.Column="7"
                                 IsChecked="{Binding SearchDocumentFilterDialogIsOpen}"
                                 Tag="{Binding AllItemChecked, ValidatesOnDataErrors=True}">
                                 <Image Width="24" Height="24">
@@ -1110,7 +1125,7 @@
                                 </Extensions:ContentToggleButton.OverContent>
                             </Extensions:ContentToggleButton>
                             <ToggleButton Grid.Row="3"
-                                Grid.Column="7"
+                                Grid.Column="8"
                                 d:IsChecked="True"
                                 IsChecked="{Binding SimpleList, Mode=TwoWay, Source={x:Static properties:Settings.Default}, UpdateSourceTrigger=PropertyChanged}">
                                 <ToggleButton.Style>

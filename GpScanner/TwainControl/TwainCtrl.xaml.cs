@@ -147,7 +147,13 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 await DefaultScanAsync();
                 Twain.ScanningComplete += FastScanComplete;
             },
-            parameter => !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage) && !Environment.Is64BitProcess && AnyScannerExist() && !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) && Scanner?.AutoSave == true && FileNameValid(Scanner?.FileName) && Policy.CheckPolicy(nameof(FastScanImage)));
+            parameter => !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage) &&
+            !Environment.Is64BitProcess &&
+            AnyScannerExist() &&
+            !string.IsNullOrWhiteSpace(Settings.Default.SeçiliTarayıcı) &&
+            Scanner?.AutoSave == true &&
+            FileNameValid(Scanner?.FileName) &&
+            Policy.CheckPolicy(nameof(FastScanImage)));
 
         ResimSil = new RelayCommand<object>(
             parameter =>
@@ -840,16 +846,51 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                     List<ScannedImage> seçiliresimler = GetSelectedImages();
                     Scanner.PdfFilePath = PdfGeneration.GetPdfScanPath();
                     DataBaseTextData = [];
+
                     if (Scanner.ApplyDataBaseOcr && !string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
                     {
                         Scanner.SaveProgressBarForegroundBrush = bluesaveprogresscolor;
-                        for (int i = 0; i < seçiliresimler.Count; i++)
+
+                        int total = seçiliresimler.Count;
+                        int maxDegreeOfParallelism = Math.Max(1, Environment.ProcessorCount / 2);
+                        using SemaphoreSlim semaphore = new(maxDegreeOfParallelism);
+                        object listLock = new();
+                        int completed = 0;
+                        IProgress<double> progress = new Progress<double>(value => Scanner.PdfSaveProgressValue = value);
+                        List<Task> tasks = [];
+
+                        for (int i = 0; i < total; i++)
                         {
-                            byte[] imgdata = seçiliresimler[i].Resim.ToTiffJpegByteArray(Format.Jpg);
-                            DataBaseQrData = imgdata;
-                            DataBaseTextData.Add(await imgdata.OcrAsync(Scanner.SelectedTtsLanguage));
-                            Scanner.PdfSaveProgressValue = (i + 1) / (double)seçiliresimler.Count;
+                            int index = i;
+                            await semaphore.WaitAsync();
+
+                            tasks.Add(
+                                Task.Run(
+                                    async () =>
+                                    {
+                                        try
+                                        {
+                                            byte[] imgdata = seçiliresimler[index].Resim.ToTiffJpegByteArray(Format.Jpg);
+                                            DataBaseQrData = imgdata;
+
+                                            ObservableCollection<OcrData> ocrText = await imgdata.OcrAsync(Scanner.SelectedTtsLanguage);
+
+                                            lock (listLock)
+                                            {
+                                                DataBaseTextData.Add(ocrText);
+                                                completed++;
+                                            }
+
+                                            progress.Report(completed / (double)total);
+                                        }
+                                        finally
+                                        {
+                                            _ = semaphore.Release();
+                                        }
+                                    }));
                         }
+
+                        await Task.WhenAll(tasks);
                         Scanner.PdfSaveProgressValue = 0;
                         DataBaseTextDataCompleted = true;
                     }
@@ -5807,7 +5848,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
         if (e.PropertyName is "SelectedPaper" && SelectedPaper is not null)
         {
             ToolBox.Paper = SelectedPaper;
-            DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.ImgLoadResolution);
+            DecodeHeight = (int)(SelectedPaper.Height / Inch * Settings.Default.Çözünürlük);
             SetCropPageResolution();
             Settings.Default.DefaultPaper = SelectedPaper.PaperType;
         }

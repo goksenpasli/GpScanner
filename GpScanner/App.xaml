@@ -361,7 +361,7 @@
                             Command="{Binding DataContext.OcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
                             IsEnabled="{Binding Source={x:Static tesseract:Ocr.TesseractDataExists}}">
-                            <Canvas Width="16" Height="16">
+                            <StackPanel Orientation="Horizontal">
                                 <Image Width="16" Height="16">
                                     <Image.Source>
                                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -370,11 +370,8 @@
                                         </MultiBinding>
                                     </Image.Source>
                                 </Image>
-                                <TextBlock Canvas.Bottom="0"
-                                    FontSize="10"
-                                    Foreground="Red"
-                                    Text="{Binding DataContext.OcrPdfThumbnailPageNumber, RelativeSource={RelativeSource AncestorType=Window}}" />
-                            </Canvas>
+                                <TextBlock Text="{Binding ElementName=PdfVwr, Path=Dpi, Mode=OneWay, StringFormat={}OCR DPI {0}}" />
+                            </StackPanel>
                         </Button>
                         <Button Command="{Binding DataContext.WordOcrPdfThumbnailPage, RelativeSource={RelativeSource AncestorType=Window}}"
                             CommandParameter="{Binding ElementName=PdfVwr, Mode=OneWay}"
@@ -495,11 +492,26 @@
                 <twain:SimpleArchiveViewer ArchivePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}" Style="{StaticResource SimpleArchiveViewerStyle}" />
             </DataTemplate>
             <DataTemplate x:Key="ImgViewerTemplate">
-                <Extensions:ImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"
-                    ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
-                    Orientation="Height"
-                    PanoramaButtonVisibility="Collapsed"
-                    PrintButtonVisibility="Visible" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Slider x:Name="ImgSlider"
+                        LargeChange="1"
+                        Maximum="{Binding ElementName=ImgVwr, Mode=OneWay, Path=OriginalPixelHeight}"
+                        Minimum="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
+                        SmallChange="1"
+                        Style="{StaticResource Slider}"
+                        Value="{Binding ElementName=ImgVwr, Path=DecodeHeight, Delay=100}" />
+                    <Extensions:ImageViewer x:Name="ImgVwr"
+                        Grid.Row="1"
+                        DecodeHeight="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource AncestorType=Grid}}"
+                        ImageFilePath="{Binding Path=DataContext, IsAsync=True, Mode=OneWay, RelativeSource={RelativeSource Mode=TemplatedParent}}"
+                        Orientation="Height"
+                        PanoramaButtonVisibility="Collapsed"
+                        PrintButtonVisibility="Visible" />
+                </Grid>
             </DataTemplate>
             <DataTemplate x:Key="CbrImgViewerTemplate">
                 <twain:CbrImageViewer DecodeHeight="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Grid}}"

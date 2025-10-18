@@ -149,6 +149,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="12" />
                 <ColumnDefinition />
                 <ColumnDefinition Width="80" />
@@ -185,11 +186,19 @@
                 Minimum="1"
                 TextBlock.TextAlignment="Center"
                 Value="{Binding BatchOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Extensions:CheckComboBox Grid.Column="3"
+            <Extensions:NumericUpDown Grid.Column="3"
+                Interval="1"
+                IsReadOnly="True"
+                Maximum="200"
+                Minimum="36"
+                StringFormat="{} OCR DPI {0}"
+                TextBlock.TextAlignment="Center"
+                Value="{Binding UnIndexedPdfOcrDpi, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Extensions:CheckComboBox Grid.Column="4"
                 ItemTemplate="{DynamicResource SimpleArchiveViewerFilterItemTemplate}"
                 Items="{Binding FilterTypes}"
                 Watermark="..." />
-            <Extensions:SplitButton Grid.Column="4"
+            <Extensions:SplitButton Grid.Column="5"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
                 Command="{Binding UnindexedAllFilesOcr}"
@@ -260,7 +269,7 @@
                     </Border>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
-            <Button Grid.Column="5"
+            <Button Grid.Column="6"
                 twainctrl:Policy.PolicyName="CancelUnindexedBatchOcr"
                 Command="{Binding CancelUnindexedBatchOcr}">
                 <StackPanel Orientation="Horizontal">
