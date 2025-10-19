@@ -3475,6 +3475,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
 
+        if (e.PropertyName is "AramaMetni" && string.IsNullOrWhiteSpace(AramaMetni))
+        {
+            OnPropertyChanged(nameof(BaşlangıçTarihi));
+            OnPropertyChanged(nameof(BitişTarihi));
+        }
+
         if (e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
         {
             BaşlangıçTarihi = BitişTarihi = (DateTime)SelectedContribution.ContrubutionDate;
@@ -3491,7 +3497,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
         if (e.PropertyName is "LangFlowDirection")
         {
-            Application.Current?.Windows?.Cast<Window>()?.ToList()?.ForEach(z => z.FlowDirection = LangFlowDirection);
+            Application.Current?.Windows?.OfType<Window>()?.ToList()?.ForEach(z => z.FlowDirection = LangFlowDirection);
         }
 
         if (e.PropertyName is "CheckedPdfCount")

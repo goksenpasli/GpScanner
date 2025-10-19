@@ -51,11 +51,12 @@
     <Grid x:Name="grid" Focusable="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <WrapPanel IsEnabled="{Binding PdfToolBarControlIsEnabled}" Orientation="Horizontal">
-            <Menu Background="{x:Null}" IsMainMenu="False">
+        <WrapPanel Orientation="Horizontal">
+            <Menu Background="{x:Null}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}"
+                IsMainMenu="False">
                 <MenuItem>
                     <MenuItem Name="Clear"
                         Command="{Binding ClearPdfHistory, Mode=OneWay}"
@@ -208,8 +209,9 @@
                     </Border>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            <Extensions:ContentToggleButton StaysOpen="True" TopMost="False">
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfToolBarControlIsEnabled}"
+                StaysOpen="True"
+                TopMost="False">
                 <Grid>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -340,6 +342,7 @@
             </Extensions:ContentToggleButton>
             <Extensions:ContentToggleButton Command="{Binding LoadPdfExtractFile}"
                 CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}"
                 StaysOpen="True"
                 TopMost="False">
                 <Canvas Width="16" Height="16">
@@ -587,7 +590,8 @@
             </Extensions:ContentToggleButton>
             <Button local:Policy.PolicyName="ReversePdfFile"
                 Command="{Binding ReversePdfFile}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+                CommandParameter="{Binding ElementName=PdfViewer}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -599,7 +603,8 @@
             </Button>
             <Button local:Policy.PolicyName="AddPdfAttachmentFile"
                 Command="{Binding AddPdfAttachmentFile}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+                CommandParameter="{Binding ElementName=PdfViewer}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -624,7 +629,8 @@
             <Button local:Policy.PolicyName="PasteFileToPdfFile"
                 BorderBrush="Cyan"
                 Command="{Binding PasteFileToPdfFile}"
-                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Button.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -639,7 +645,8 @@
             <Button local:Policy.PolicyName="RotateSelectedPage"
                 BorderBrush="Cyan"
                 Command="{Binding RotateSelectedPage}"
-                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Image Width="16"
                     Height="16"
                     Source="/TwainControl;component/Icons/rotate.png" />
@@ -647,7 +654,8 @@
             <Button local:Policy.PolicyName="FlipPdfPage"
                 BorderBrush="Cyan"
                 Command="{Binding FlipPdfPage}"
-                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -670,7 +678,8 @@
             <Button local:Policy.PolicyName="MergeSelectedImagesToPdfFile"
                 BorderBrush="Cyan"
                 Command="{Binding MergeSelectedImagesToPdfFile}"
-                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}">
+                CommandParameter="{Binding ElementName=PdfViewer, Mode=OneWay}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Button.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -682,7 +691,7 @@
                     </Image>
                 </Button.Content>
             </Button>
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Extensions:ContentToggleButton.Content>
                     <Image Width="16" Height="16">
                         <Image.Source>
@@ -798,7 +807,7 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Canvas Width="16" Height="16">
                     <TextBlock Canvas.Top="0"
                         FontSize="10"
@@ -939,7 +948,7 @@
                     </GroupBox>
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <TextBlock FontFamily="Wingdings"
                     FontSize="16"
                     Text="[" />
@@ -1006,7 +1015,6 @@
             <Extensions:SplitButton Command="{Binding OcrCurrentPdfPage}"
                 CommandParameter="{Binding DataContext, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
                 DataContext="{Binding RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
                 IsSplitPartOpen="{Binding OcrDialogOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <Image Width="16" Height="16">
                     <Image.Source>
@@ -1066,9 +1074,16 @@
                     </Extensions:ResizablePanel>
                 </Extensions:SplitButton.InternalContent>
             </Extensions:SplitButton>
-            <TextBlock VerticalAlignment="Center"
-                d:Text="OCR DPI"
-                Text="{Binding ElementName=PdfViewer, Path=Dpi, Mode=OneWay, StringFormat={}OCR DPI {0}}" />
+            <Grid>
+                <ProgressBar d:Value="0.65"
+                    Background="{DynamicResource BorderBackground}"
+                    Foreground="{DynamicResource GroupBoxBackGround}"
+                    Maximum="1"
+                    Value="{Binding PdfOcrProgressValue, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
+                <TextBlock VerticalAlignment="Center"
+                    d:Text="OCR DPI"
+                    Text="{Binding ElementName=PdfViewer, Path=Dpi, Mode=OneWay, StringFormat={}DPI {0}}" />
+            </Grid>
             <Image Width="16" Height="16">
                 <Image.Source>
                     <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1078,14 +1093,19 @@
                 </Image.Source>
             </Image>
             <Extensions:NumericUpDown Interval="1"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}"
                 IsReadOnly="True"
                 Maximum="{Binding Source={x:Static System:Environment.ProcessorCount}}"
                 Minimum="1"
                 TextBlock.TextAlignment="Center"
                 Value="{Binding PdfOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Command="{Binding CancelPdfOcr, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding PdfToolBarControlIsEnabled}">
+                <Image Width="16"
+                    Height="16"
+                    Source="/TwainControl;component/Icons/delete.png" />
+            </Button>
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            <Extensions:ContentToggleButton IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}">
+            <Extensions:ContentToggleButton>
                 <Image Width="16"
                     Height="16"
                     Source="{Binding Source='.eyp', Converter={StaticResource FilePathToIconConverter}}" />
@@ -1152,7 +1172,9 @@
                 </Extensions:ContentToggleButton.OverContent>
             </Extensions:ContentToggleButton>
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-            <Extensions:SplitButton Command="{Binding CompressPdfFile}" CommandParameter="{Binding Mode=OneWay, Source={x:Reference PdfViewer}}">
+            <Extensions:SplitButton Command="{Binding CompressPdfFile}"
+                CommandParameter="{Binding Mode=OneWay, Source={x:Reference PdfViewer}}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1207,7 +1229,8 @@
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
             <Button local:Policy.PolicyName="ClosePdfFile"
                 Command="{Binding ClosePdfFile}"
-                CommandParameter="{Binding ElementName=PdfViewer}">
+                CommandParameter="{Binding ElementName=PdfViewer}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}">
                 <Image Width="16" Height="16">
                     <Image.Source>
                         <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
@@ -1219,9 +1242,9 @@
             </Button>
             <Expander d:IsExpanded="True"
                 ExpandDirection="Right"
-                IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}"
+                IsEnabled="{Binding PdfToolBarControlIsEnabled}"
                 IsExpanded="{Binding ToolBoxIsExpanded, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                <WrapPanel Orientation="Horizontal">
+                <WrapPanel IsEnabled="{Binding PdfFilePath, Converter={StaticResource NullableToBooleanConverter}, ElementName=PdfViewer}" Orientation="Horizontal">
                     <ComboBox VerticalContentAlignment="Center"
                         ItemsSource="{Binding Mode=OneWay, Source={StaticResource PdfColor}}"
                         SelectedItem="{Binding GraphObjectColor, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
@@ -1812,23 +1835,8 @@
                 </WrapPanel>
             </Expander>
         </WrapPanel>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <ProgressBar Background="{DynamicResource BorderBackground}"
-                Foreground="{DynamicResource GroupBoxBackGround}"
-                Maximum="1"
-                Value="{Binding PdfOcrProgressValue, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" />
-            <Button Grid.Column="1" Command="{Binding CancelPdfOcr, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
-                <Image Width="16"
-                    Height="16"
-                    Source="/TwainControl;component/Icons/delete.png" />
-            </Button>
-        </Grid>
         <local:EypPdfViewer x:Name="PdfViewer"
-            Grid.Row="2"
+            Grid.Row="1"
             d:OpenButtonVisibility="Visible"
             local:Policy.PolicyName="EypPdfViewer"
             x:FieldModifier="public"

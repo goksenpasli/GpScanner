@@ -645,6 +645,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Jpg Dosyası (*.jpg)|*.jpg", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    Scanner.ProgressState = TaskbarItemProgressState.Normal;
                     FileSaveTask = Task.Run(
                         async () =>
                         {
@@ -702,6 +703,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    Scanner.ProgressState = TaskbarItemProgressState.Normal;
                     FileSaveTask = Task.Run(
                         () =>
                         {
@@ -760,6 +762,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Txt Dosyası (*.txt)|*.txt", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    Scanner.ProgressState = TaskbarItemProgressState.Normal;
                     FileSaveTask = Task.Run(
                         async () =>
                         {
@@ -789,6 +792,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Webp Dosyası (*.webp)|*.webp", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    Scanner.ProgressState = TaskbarItemProgressState.Normal;
                     FileSaveTask = Task.Run(
                         async () =>
                         {
@@ -819,6 +823,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = EncodeAsJb2 || EncodeAsWebp ? "JB2 ZIP Dosyası (*.jb2zip)|*.jb2zip" : "Zip Dosyası (*.zip)|*.zip", FileName = Scanner.SaveFileName };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    Scanner.ProgressState = TaskbarItemProgressState.Normal;
                     FileSaveTask = Task.Run(
                         () =>
                         {
@@ -5477,21 +5482,53 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     private async Task SaveTxtFileAsync(List<ScannedImage> images, string fileName, Action<double> progressCallback = null)
     {
-        if (images is null || string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
+        if (images == null || string.IsNullOrWhiteSpace(Scanner.SelectedTtsLanguage))
         {
             return;
         }
-        for (int i = 0; i < images.Count; i++)
+
+        int total = images.Count;
+        int completed = 0;
+        string directory = Path.GetDirectoryName(fileName);
+        string baseName = Path.GetFileNameWithoutExtension(fileName);
+        int maxParallel = Math.Max(1, Environment.ProcessorCount / 3);
+        SemaphoreSlim semaphore = new(maxParallel);
+        List<Task> tasks = [];
+        object lockObj = new();
+
+        for (int i = 0; i < total; i++)
         {
-            await Dispatcher.Invoke(
-                async () =>
-                {
-                    ObservableCollection<OcrData> ocrtext = await images[i].Resim.ToTiffJpegByteArray(Format.Jpg).OcrAsync(Scanner.SelectedTtsLanguage);
-                    File.WriteAllText(Path.Combine(Path.GetDirectoryName(fileName), $"{Path.GetFileNameWithoutExtension(fileName)}{i}.txt"), string.Join(" ", ocrtext.Select(z => z.Text)));
-                    progressCallback?.Invoke((i + 1) / (double)images.Count);
-                });
+            int index = i;
+            tasks.Add(
+                Task.Run(
+                    async () =>
+                    {
+                        await semaphore.WaitAsync();
+                        try
+                        {
+                            byte[] imgBytes = images[index].Resim.ToTiffJpegByteArray(Format.Jpg);
+                            ObservableCollection<OcrData> ocrText = await imgBytes.OcrAsync(Scanner.SelectedTtsLanguage);
+
+                            string outputPath = Path.Combine(directory, $"{baseName}{index}.txt");
+                            File.WriteAllText(outputPath, string.Join(" ", ocrText.Select(z => z.Text)));
+
+                            lock (lockObj)
+                            {
+                                completed++;
+                            }
+                            await Application.Current.Dispatcher.InvokeAsync(() => progressCallback?.Invoke(completed / (double)total));
+                        }
+                        finally
+                        {
+                            _ = semaphore.Release();
+                        }
+                    }));
         }
-        Dispatcher.Invoke(
+
+        await Task.WhenAll(tasks);
+
+        await Application.Current.Dispatcher
+        .InvokeAsync(
             () =>
             {
                 Scanner.SaveFileFullPath = fileName;
