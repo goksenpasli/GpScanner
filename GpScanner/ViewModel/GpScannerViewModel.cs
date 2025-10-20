@@ -238,7 +238,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
                 zipfilecancellationToken = new CancellationTokenSource();
-                List<string> filelist = [.. Dosyalar.Where(z => z.Seçili).Select(z => z.FileName)];
+                List<string> filelist = [.. Dosyalar.Where(z => File.Exists(z.FileName) && z.Seçili).Select(z => z.FileName)];
                 ScannerService.GetScanner().ProgressState = TaskbarItemProgressState.Normal;
                 await SimpleArchiveViewer.ZipCompress(filelist, saveFileDialog.FileName, new Progress<double>(progress => ZipProgress = ScannerService.GetScanner().PdfSaveProgressValue = progress), zipfilecancellationToken, UseLzma);
             },
@@ -487,7 +487,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
-                    foreach (Scanner item in Dosyalar)
+                    foreach (Scanner item in Dosyalar.Where(z => File.Exists(z.FileName)))
                     {
                         item.Seçili = true;
                     }
@@ -495,7 +495,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     return;
                 }
 
-                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => Path.GetExtension(z.FileName.ToLowerInvariant()) == ".pdf"))
+                foreach (Scanner item in MainWindow.cvs.View.OfType<Scanner>().Where(z => File.Exists(z.FileName) && Path.GetExtension(z.FileName.ToLowerInvariant()) == ".pdf"))
                 {
                     item.Seçili = true;
                 }
@@ -527,7 +527,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 if (Keyboard.Modifiers == ModifierKeys.Alt)
                 {
-                    foreach (Scanner item in Dosyalar)
+                    foreach (Scanner item in Dosyalar.Where(z => File.Exists(z.FileName)))
                     {
                         item.Seçili = !item.Seçili;
                     }
@@ -3062,24 +3062,10 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     }
 
-    private bool FilterDate(FilterEventArgs x)
+    private bool FilterDate(object x)
     {
-        Scanner scanner = (Scanner)x.Item;
-        if (DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result))
-        {
-            if (BaşlangıçTarihi > BitişTarihi || BaşlangıçTarihi > DateTime.Today || BitişTarihi > DateTime.Today)
-            {
-                x.Accepted = false;
-                return false;
-            }
-            x.Accepted = result >= BaşlangıçTarihi && result <= BitişTarihi;
-        }
-        else
-        {
-            x.Accepted = false;
-        }
-
-        return true;
+        Scanner scanner = (Scanner)x;
+        return DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result) && BaşlangıçTarihi <= BitişTarihi && BaşlangıçTarihi <= DateTime.Today && BitişTarihi <= DateTime.Today && result >= BaşlangıçTarihi && result <= BitişTarihi;
     }
 
     private void GenerateAnimationTimer()
@@ -3314,9 +3300,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             {
                 AramaMetni = string.Empty;
             }
-            if (MainWindow.cvs is not null)
+            if (MainWindow.cvs.View is not null)
             {
-                MainWindow.cvs.Filter += (s, x) => FilterDate(x);
+                MainWindow.cvs.View.Filter = FilterDate;
                 DrawFileSizeGraph(Settings.Default.ShowFileSizeGraph);
             }
         }
@@ -3324,7 +3310,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         if (e.PropertyName is "AramaMetni" && string.IsNullOrWhiteSpace(AramaMetni))
         {
             OnPropertyChanged(nameof(BaşlangıçTarihi));
-            OnPropertyChanged(nameof(BitişTarihi));
         }
 
         if (e.PropertyName is "SelectedContribution" && SelectedContribution is not null)
@@ -3350,7 +3335,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         {
             ObservableCollection<string> burnfiles = [];
             ObservableCollection<BatchPdfData> compressedfiles = [];
-            foreach (Scanner item in Dosyalar?.Where(z => z.Seçili))
+            foreach (Scanner item in Dosyalar?.Where(z => File.Exists(z.FileName) && z.Seçili))
             {
                 burnfiles.Add(item.FileName);
                 if (Path.GetExtension(item.FileName.ToLowerInvariant()) == ".pdf")
@@ -3623,19 +3608,28 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private void UnindexedCheckBoxItem_PropertyChanged(object sender, PropertyChangedEventArgs e)
     {
-        if (e.PropertyName is "IsChecked" && UnindexedFilesDialogView.cvs is not null)
+        if (e.PropertyName is not "IsChecked" || UnindexedFilesDialogView.cvs.View is null)
         {
-            UnindexedFilesDialogView.cvs.Filter += (s, x) =>
-                                                   {
-                                                       if (FilterTypes?.Any(z => z.IsChecked) == true)
-                                                       {
-                                                           UnindexedData item = (UnindexedData)x.Item;
-                                                           string fileType = GetFileType(item.FileName, new SHFILEINFO());
-                                                           x.Accepted = FilterTypes.Any(z => z.IsChecked && fileType == z.Name);
-                                                       }
-                                                   };
+            return;
         }
+        CollectionViewSource cvs = UnindexedFilesDialogView.cvs;
+        bool anyChecked = FilterTypes?.Any(z => z.IsChecked) == true;
+        if (!anyChecked)
+        {
+            cvs.View.Filter = null;
+            return;
+        }
+        cvs.View.Filter = x =>
+        {
+            if (x is UnindexedData item)
+            {
+                string fileType = GetFileType(item.FileName, new SHFILEINFO());
+                return FilterTypes.Any(z => z.IsChecked && fileType == z.Name);
+            }
+            return false;
+        };
     }
+
 
     private DocX WriteDocxFile(ObservableCollection<OcrData> ocrdata, string filename)
     {

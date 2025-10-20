@@ -257,7 +257,8 @@
                         Margin="0,0,60,0"
                         VerticalAlignment="Center"
                         VerticalContentAlignment="Center"
-                        IsChecked="{Binding Seçili}">
+                        IsChecked="{Binding Seçili}"
+                        IsEnabled="{Binding ElementName=HypFile, Path=IsEnabled}">
                         <TextBlock><InlineUIContainer BaselineAlignment="Center">
                                 <Image Width="16"
                                     Height="16"
@@ -282,7 +283,8 @@
                                 FontSize="18"
                                 FontWeight="Bold"
                                 Text="$" />
-                        </Hyperlink><Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                        </Hyperlink><Hyperlink x:Name="HypFile"
+                            twainctrl:Policy.PolicyName="OpenOriginalFile"
                             Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                             CommandParameter="{Binding FileName, Mode=OneWay}"
                             TextDecorations="None">
