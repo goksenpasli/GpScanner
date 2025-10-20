@@ -96,6 +96,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (allfilepaths.Any())
                 {
                     Dosyalar = await GetScannerFileData();
+                    OnPropertyChanged(nameof(AramaMetni));
                     return;
                 }
 
@@ -118,6 +119,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                     });
 
                 Dosyalar = new ObservableCollection<Scanner>(data);
+                OnPropertyChanged(nameof(AramaMetni));
                 FileLoadProgress = 1;
                 SearchProgressIndeterminate = false;
             },
