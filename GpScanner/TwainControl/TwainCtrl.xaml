@@ -744,8 +744,20 @@
                                                     <MenuItem Header="{local:Loc SEPERATE}"
                                                         IsCheckable="True"
                                                         IsChecked="{Binding Scanner.ScanSeperate}"
-                                                        IsEnabled="{Binding Scanner.SelectedTtsLanguage, Converter={StaticResource StringNullableToBooleanConverter}, ValidatesOnDataErrors=True}"
                                                         Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                                                        <MenuItem.Style>
+                                                            <Style TargetType="MenuItem">
+                                                                <Setter Property="IsEnabled" Value="True" />
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding Scanner.AutoSave, ValidatesOnDataErrors=True}" Value="False">
+                                                                        <Setter Property="IsEnabled" Value="False" />
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding Scanner.SelectedTtsLanguage, Converter={StaticResource StringNullableToBooleanConverter}, ValidatesOnDataErrors=True}" Value="False">
+                                                                        <Setter Property="IsEnabled" Value="False" />
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </MenuItem.Style>
                                                         <MenuItem.Icon>
                                                             <Image Width="16" Height="16">
                                                                 <Image.Source>
