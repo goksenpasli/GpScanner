@@ -4,17 +4,19 @@ namespace GpScanner
 {
     public class UnindexedData : InpcBase
     {
+        public string Error
+        {
+            get;
+            set => SetProperty(ref field, value);
+        }
+
         public string FileName
         {
             get;
             set => SetProperty(ref field, value);
         }
+
         public bool HasError
-        {
-            get;
-            set => SetProperty(ref field, value);
-        }
-        public string Error
         {
             get;
             set => SetProperty(ref field, value);

@@ -42,7 +42,7 @@ public class Compressor : Control, INotifyPropertyChanged
     {
         if (DesignerProperties.GetIsInDesignMode(this))
         {
-            BatchPdfList =[ new() { Filename = "FileName", Completed = true }, new() { Filename = "FileName", Completed = true }, new() { Filename = "FileName" }, new() { Filename = "FileName" }, new() { Filename = "FileName" }, ];
+            BatchPdfList = [ new() { Filename = "FileName", Completed = true }, new() { Filename = "FileName", Completed = true }, new() { Filename = "FileName" }, new() { Filename = "FileName" }, new() { Filename = "FileName" }, ];
         }
 
         BatchCompressFile = new RelayCommand<object>(

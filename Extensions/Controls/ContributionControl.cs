@@ -26,7 +26,7 @@ namespace Extensions
         {
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                Contributions =[ new() { Count = 0, ContrubutionDate = DateTime.Today }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(1) }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(2) }, new()
+                Contributions = [ new() { Count = 0, ContrubutionDate = DateTime.Today }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(1) }, new() { Count = 0, ContrubutionDate = DateTime.Today.AddDays(2) }, new()
                 {
                     Count = 0,
                     ContrubutionDate = DateTime.Today.AddDays(3)

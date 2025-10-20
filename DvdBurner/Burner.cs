@@ -523,7 +523,7 @@ namespace DvdBurner
 
         private void UpdateProgressFileSize(string[] files)
         {
-            TotalFileSize = files?.Any() == false ? 0 : GetTotalFileSizeMB([ .. files.Where(z => File.Exists(z)) ]);
+            TotalFileSize = files?.Any() == false ? 0 : GetTotalFileSizeMB([ .. files.Where(File.Exists) ]);
             ProgressForegroundBrush = TotalFileSize > (int)SelectedDiscSize ? Brushes.Red : Brushes.Green;
         }
     }

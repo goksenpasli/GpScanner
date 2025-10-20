@@ -17,7 +17,7 @@ namespace GpScanner.ViewModel
                     OnPropertyChanged(nameof(FileCategories));
                 }
             }
-        } =[ new FileCategory
+        } = [ new FileCategory
         {
             Category = Translation.GetResStringValue("IMG"),
             Extensions =

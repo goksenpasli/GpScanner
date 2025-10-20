@@ -32,7 +32,7 @@ namespace Extensions
             PropertyChanged += ArchiveViewer_PropertyChanged;
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                Arşivİçerik =[ new() { DosyaAdı = "DosyaAdı", Oran = 0.4F, Boyut = 100, SıkıştırılmışBoyut = 40, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today }, new()
+                Arşivİçerik = [ new() { DosyaAdı = "DosyaAdı", Oran = 0.4F, Boyut = 100, SıkıştırılmışBoyut = 40, Crc = "FFFFFFFF", DüzenlenmeZamanı = DateTime.Today }, new()
                 {
                     DosyaAdı = "DosyaAdı",
                     Oran = 0.6F,
