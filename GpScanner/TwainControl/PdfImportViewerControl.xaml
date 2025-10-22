@@ -1099,7 +1099,7 @@
                 Minimum="1"
                 TextBlock.TextAlignment="Center"
                 Value="{Binding PdfOcrProcessorCount, Source={x:Static properties:Settings.Default}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Command="{Binding CancelPdfOcr, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}" IsEnabled="{Binding PdfToolBarControlIsEnabled}">
+            <Button Command="{Binding CancelPdfOcr, RelativeSource={RelativeSource AncestorType=local:PdfImportViewerControl}}">
                 <Image Width="16"
                     Height="16"
                     Source="/TwainControl;component/Icons/delete.png" />
