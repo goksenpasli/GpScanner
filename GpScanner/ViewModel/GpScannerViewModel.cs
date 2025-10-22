@@ -91,21 +91,12 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         LoadFiles = new RelayCommand<object>(
             async parameter =>
             {
-                List<string> allfilepaths = [.. Settings.Default.AdditionalIndexFolders.OfType<string>()];
-                Dosyalar = [];
-                if (allfilepaths.Any())
-                {
-                    Dosyalar = await GetScannerFileData();
-                    OnPropertyChanged(nameof(AramaMetni));
-                    return;
-                }
-
                 List<Scanner> data = await Task.Run(
                     () =>
                     {
                         SearchProgressIndeterminate = true;
                         using AppDbContext context = new();
-                        List<string> fileNames = [.. context.Data.AsNoTracking().Select(z => z.FileName)];
+                        List<string> fileNames = [.. context.Data?.AsNoTracking().Select(z => z.FileName)];
                         return fileNames.AsParallel()
                         .WithDegreeOfParallelism(Environment.ProcessorCount)
                         .Where(z => File.Exists(z))
@@ -149,7 +140,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                             SearchProgressIndeterminate = true;
                             using AppDbContext context = new();
                             string search = AramaMetni.ToLower();
-                            return context.Data.AsNoTracking().Where(z => z.FileContent != null && z.FileContent.ToLower().Contains(search)).Select(z => new { z.FileName }).ToList();
+                            return context.Data?.AsNoTracking().Where(z => z.FileContent != null && z.FileContent.ToLower().Contains(search)).Select(z => new { z.FileName }).ToList();
                         });
 
                     ParallelQuery<Scanner> files = await Task.Run(() =>
@@ -2702,7 +2693,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         try
         {
             List<string> allfilepaths = [.. Settings.Default.AdditionalIndexFolders.OfType<string>(), Twainsettings.Settings.Default.AutoFolder,];
-            Progress<double> progress = new(p => FileLoadProgress = p);
+            IProgress<double> progress = new Progress<double>(p => FileLoadProgress = p);
             return await Task.Run(
                 () =>
                 {
@@ -2727,7 +2718,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                             int current = Interlocked.Increment(ref processed);
                             if (current % 100 == 0 || current == totalFiles)
                             {
-                                ((IProgress<double>)progress).Report(current / (double)totalFiles);
+                                progress.Report(current / (double)totalFiles);
                             }
                         });
 
@@ -3252,8 +3243,9 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     {
         try
         {
+
             List<string> unindexedfileextensions = [".pdf", ".webp", ".tiff", ".tif", ".jpg", ".jpe", ".gif", ".jpeg", ".jfif", ".png", ".bmp", ".docx", ".xlsx", ".xls", ".xlsb", ".csv", ".ods", ".odt", ".zip", ".rar", ".7z", ".tar", ".arj", ".gzip"];
-            HashSet<string> scannerunindexedfiles = Dosyalar?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z?.FileName?.ToLowerInvariant()))).Select(z => z.FileName).ToHashSet();
+            HashSet<string> scannerunindexedfiles = (await GetScannerFileData())?.Where(z => unindexedfileextensions.Contains(Path.GetExtension(z?.FileName?.ToLowerInvariant()))).Select(z => z.FileName).ToHashSet();
             using AppDbContext context = new();
             List<string> scannedDatabaseFiles = await context?.Data?.AsNoTracking()?.Select(x => x.FileName).ToListAsync();
             if (scannerunindexedfiles is not null && scannedDatabaseFiles is not null)
