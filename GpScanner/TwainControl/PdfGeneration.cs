@@ -50,6 +50,28 @@ public static class PdfGeneration
 
     public static Scanner Scanner { get; set; }
 
+    public static MemoryStream AddPdfPassword_PdfSharp(this MemoryStream unencryptedPdf)
+    {
+        if (!string.IsNullOrWhiteSpace(Scanner.PdfPassword))
+        {
+            unencryptedPdf.Position = 0;
+            using PdfDocument document = PdfReader.Open(unencryptedPdf, PdfDocumentOpenMode.Modify);
+            document.SecuritySettings.OwnerPassword = Scanner.PdfPassword;
+            document.SecuritySettings.PermitModifyDocument = Scanner.AllowEdit;
+            document.SecuritySettings.PermitPrint = Scanner.AllowPrint;
+            document.SecuritySettings.PermitExtractContent = Scanner.AllowCopy;
+            MemoryStream encryptedPdf = new();
+            document.Save(encryptedPdf);
+            encryptedPdf.Position = 0;
+            return encryptedPdf;
+        }
+        else
+        {
+            unencryptedPdf.Position = 0;
+            return unencryptedPdf;
+        }
+    }
+
     public static void AddTextContentIfNeeded(BitmapSource image, ObservableCollection<OcrData> textData, PdfPage page, XGraphics gfx)
     {
         if (textData?.Any() == true)

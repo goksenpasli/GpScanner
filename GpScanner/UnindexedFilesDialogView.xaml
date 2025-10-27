@@ -37,6 +37,22 @@
                             TextWrapping="Wrap" />
                     </TextBlock.ToolTip>
                 </TextBlock>
+                <TextBlock d:Visibility="Visible" Visibility="{Binding HasError, Mode=OneWay, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Hyperlink Command="{Binding DataContext.IgnoreUnindexedFileError, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
+                        CommandParameter="{Binding Mode=OneWay}"
+                        TextDecorations="None">
+                        <InlineUIContainer>
+                            <Image Width="16" Height="16">
+                                <Image.Source>
+                                    <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                        <Binding Source="Shell32.dll" />
+                                        <Binding Source="77" />
+                                    </MultiBinding>
+                                </Image.Source>
+                            </Image>
+                        </InlineUIContainer>
+                    </Hyperlink>
+                </TextBlock>
                 <TextBlock Extensions:ControlExtensions.FlipHorizontally="{Binding FlowDirection, RelativeSource={RelativeSource AncestorType=Window}}"><Hyperlink twainctrl:Policy.PolicyName="AddPdfGroupFilesMonthToControlPanel"
                         Command="{Binding DataContext.AddPdfGroupFilesMonthToControlPanel, RelativeSource={RelativeSource AncestorType={x:Type Extensions:ContentToggleButton}}}"
                         TextDecorations="None">

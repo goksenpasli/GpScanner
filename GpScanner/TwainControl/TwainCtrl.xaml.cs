@@ -389,7 +389,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
                     List<ScannedImage> image = [ scannedImage ];
-                    File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().ToArray());
+                    File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().AddPdfPassword_PdfSharp().ToArray());
                     Scanner.SaveFileFullPath = saveFileDialog.FileName;
                     OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
@@ -710,7 +710,7 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
                             Progress<double> progress = new(percent => Scanner.PdfSaveProgressValue = percent);
                             string fileName = saveFileDialog.FileName;
-                            File.WriteAllBytes(fileName, seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).ToArray());
+                            File.WriteAllBytes(fileName, seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
                             Scanner.PdfSaveProgressValue = 0;
                         });
                     await RemoveProcessedImages();

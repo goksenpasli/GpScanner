@@ -1275,6 +1275,20 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => true);
 
+        IgnoreUnindexedFileError = new RelayCommand<object>(
+            async parameter =>
+            {
+
+                if (parameter is UnindexedData unIndexedData && File.Exists(unIndexedData.FileName))
+                {
+                    string ocrText = unIndexedData.FileName;
+                    await SaveOcrTextToFileAsync(unIndexedData.FileName, ocrText);
+                    _ = (UnIndexedFiles?.Remove(unIndexedData));
+                }
+
+            },
+            parameter => true);
+
         MonthZipFile = new RelayCommand<object>(
             async parameter =>
             {
@@ -1469,6 +1483,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public RelayCommand<object> AddPdfGroupFilesMonthToControlPanel { get; }
 
     public ICommand AddToCalendar { get; }
+
+    public RelayCommand<object> IgnoreUnindexedFileError { get; }
 
     public bool AllItemChecked {
         get;
