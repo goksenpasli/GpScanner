@@ -1,12 +1,9 @@
 ﻿using Extensions;
-using GpScanner.Properties;
-using GpScanner.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,13 +14,13 @@ using TwainControl;
 namespace GpScanner;
 
 /// <summary>
-/// Interaction logic for FtpUserControl.xaml
+/// Interaction logic for RemovableDriveUserControl.xaml
 /// </summary>
-public partial class FtpUserControl : UserControl, INotifyPropertyChanged
+public partial class RemovableDriveUserControl : UserControl, INotifyPropertyChanged
 {
     private readonly string AppName = Application.Current?.Windows?.Cast<Window>()?.FirstOrDefault()?.Title;
 
-    public FtpUserControl()
+    public RemovableDriveUserControl()
     {
         InitializeComponent();
 
@@ -46,17 +43,6 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
                 }
             },
             parameter => SelectedRemovableDrive?.IsReady == true);
-
-        UploadFtp = new RelayCommand<object>(
-            async parameter =>
-            {
-                if (parameter is Scanner scanner && File.Exists(scanner.FileName))
-                {
-                    string[] ftpdata = Settings.Default.SelectedFtp.Split('|');
-                    await FtpUploadAsync(ftpdata[0], ftpdata[1], ftpdata[2], scanner.FileName, progress => scanner.FtpLoadProgressValue = progress);
-                }
-            },
-            parameter => !string.IsNullOrWhiteSpace(Settings.Default.SelectedFtp));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -91,8 +77,6 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
         }
     }
 
-    public RelayCommand<object> UploadFtp { get; }
-
     protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
     {
         Dispatcher dispatcher = Application.Current?.Dispatcher;
@@ -126,22 +110,6 @@ public partial class FtpUserControl : UserControl, INotifyPropertyChanged
                 progressCallback?.Invoke(totalBytesRead / (double)fileSize);
             }
             buffer = null;
-        }
-        catch (Exception ex)
-        {
-            throw new ArgumentException(ex?.Message);
-        }
-    }
-
-    private async Task FtpUploadAsync(string uri, string userName, string password, string filename, Action<int> ftpProgressCallback)
-    {
-        try
-        {
-            using WebClient webClient = new();
-            webClient.Credentials = new NetworkCredential(userName, password.Decrypt());
-            webClient.UploadProgressChanged += (sender, args) => ftpProgressCallback(args.ProgressPercentage);
-            string address = $"{uri}/{Directory.GetParent(filename).Name}{Path.GetFileName(filename)}";
-            _ = await webClient?.UploadFileTaskAsync(address, WebRequestMethods.Ftp.UploadFile, filename);
         }
         catch (Exception ex)
         {

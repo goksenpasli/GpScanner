@@ -545,20 +545,6 @@ public class Scanner : InpcBase, IDataErrorInfo
         }
     }
 
-    public int FtpLoadProgressValue
-    {
-        get;
-
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(FtpLoadProgressValue));
-            }
-        }
-    }
-
     public double Hue
     {
         get;

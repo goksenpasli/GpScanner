@@ -169,8 +169,8 @@
     <Compile Include="DvdBurnerControl.xaml.cs">
       <DependentUpon>DvdBurnerControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FtpUserControl.xaml.cs">
-      <DependentUpon>FtpUserControl.xaml</DependentUpon>
+    <Compile Include="RemovableDriveUserControl.xaml.cs">
+      <DependentUpon>RemovableDriveUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="SearchFilterControl.xaml.cs">
       <DependentUpon>SearchFilterControl.xaml</DependentUpon>
@@ -270,7 +270,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FtpUserControl.xaml">
+    <Page Include="RemovableDriveUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -498,7 +498,7 @@
     <Error Condition="!Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.5.1\build\EntityFramework.targets'))" />
     <Error Condition="!Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets'))" />
     <Error Condition="!Exists('..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SevenZipExtractor.1.0.19\build\SevenZipExtractor.targets'))" />
-    <Error Condition="!Exists('..\packages\bblanchon.PDFium.Win32.143.0.7483\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\bblanchon.PDFium.Win32.143.0.7483\build\net461\bblanchon.PDFium.Win32.targets'))" />
+    <Error Condition="!Exists('..\packages\bblanchon.PDFium.Win32.143.0.7497\build\net461\bblanchon.PDFium.Win32.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\bblanchon.PDFium.Win32.143.0.7497\build\net461\bblanchon.PDFium.Win32.targets'))" />
   </Target>
   <Import Project="..\packages\EntityFramework.6.5.1\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.5.1\build\EntityFramework.targets')" />
   <Import Project="..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets" Condition="Exists('..\packages\Stub.System.Data.SQLite.Core.NetFramework.1.0.119.0\build\net46\Stub.System.Data.SQLite.Core.NetFramework.targets')" />

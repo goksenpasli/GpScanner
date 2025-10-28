@@ -576,27 +576,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => !string.IsNullOrWhiteSpace(PatchFileName) && !string.IsNullOrWhiteSpace(PatchTag) && !Settings.Default.PatchCodes.Cast<string>().Select(z => z.Split('|')[0]).Contains(PatchTag) && TwainCtrl.FileNameValid(PatchFileName));
 
-        AddFtpSites = new RelayCommand<object>(
-            parameter =>
-            {
-                string profile = $"{FtpSite}|{FtpUserName}|{FtpPassword.Encrypt()}";
-                _ = Settings.Default.FtpSites.Add(profile);
-                Settings.Default.Save();
-                Settings.Default.Reload();
-            },
-            parameter => !string.IsNullOrWhiteSpace(FtpSite));
-
-        RemoveSelectedFtp = new RelayCommand<object>(
-            parameter =>
-            {
-                string ftpSiteToRemove = parameter as string;
-                Settings.Default.FtpSites.Remove(ftpSiteToRemove);
-                FtpSite = FtpUserName = FtpPassword = Settings.Default.SelectedFtp = string.Empty;
-                Settings.Default.Save();
-                Settings.Default.Reload();
-            },
-            parameter => true);
-
         AddAdditionalIndexFolder = new RelayCommand<object>(
             parameter =>
             {
@@ -644,7 +623,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
                 if (parameter is Scanner scanner && File.Exists(scanner.FileName))
                 {
                     using ClientContext clientContext = new(Settings.Default.SharePointUrl);
-                    clientContext.Credentials = new NetworkCredential(Settings.Default.SharePointUserName, Settings.Default.SharePointUserPassword);
+                    clientContext.Credentials = new NetworkCredential(Settings.Default.SharePointUserName, Settings.Default.SharePointUserPassword.Decrypt());
                     FileCreationInformation fileCreationInformation = new() { Url = Path.GetFileName(scanner.FileName), Overwrite = true, Content = File.ReadAllBytes(scanner.FileName) };
                     Web web = clientContext.Web;
                     List list = web.Lists.GetByTitle(Settings.Default.SharePointLibraryName);
@@ -1478,8 +1457,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> AddEsclData { get; }
 
-    public ICommand AddFtpSites { get; }
-
     public RelayCommand<object> AddPdfGroupFilesMonthToControlPanel { get; }
 
     public ICommand AddToCalendar { get; }
@@ -1928,42 +1905,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
     } = 0.3;
 
-    public string FtpPassword {
-        get;
-
-        set {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(FtpPassword));
-            }
-        }
-    } = string.Empty;
-
-    public string FtpSite {
-        get;
-
-        set {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(FtpSite));
-            }
-        }
-    } = string.Empty;
-
-    public string FtpUserName {
-        get;
-
-        set {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(FtpUserName));
-            }
-        }
-    } = string.Empty;
-
     public RelayCommand<object> GridSplitterMouseDoubleClick { get; }
 
     public RelayCommand<object> GridSplitterMouseRightButtonDown { get; }
@@ -2286,8 +2227,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     public RelayCommand<object> RemoveSearchHistory { get; }
 
-    public ICommand RemoveSelectedFtp { get; }
-
     public ICommand ResetSettings { get; }
 
     public RelayCommand<object> ResetThemeColor { get; }
@@ -2410,18 +2349,6 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             }
         }
     } = DateTime.Now.Year;
-
-    public string SelectedFtp {
-        get;
-
-        set {
-            if (field != value)
-            {
-                field = value;
-                OnPropertyChanged(nameof(SelectedFtp));
-            }
-        }
-    }
 
     public ReminderData SelectedReminder {
         get;

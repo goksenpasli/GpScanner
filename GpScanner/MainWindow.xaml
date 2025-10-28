@@ -306,7 +306,7 @@
                                     <Trigger Property="IsChecked" Value="True">
                                         <Setter Property="OverContent">
                                             <Setter.Value>
-                                                <local:FtpUserControl Width="400" Height="200" />
+                                                <local:RemovableDriveUserControl Width="300" Height="200" />
                                             </Setter.Value>
                                         </Setter>
                                     </Trigger>
@@ -316,8 +316,8 @@
                         <Image Width="16" Height="16">
                             <Image.Source>
                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
-                                    <Binding Source="Imageres.dll" />
-                                    <Binding Source="68" />
+                                    <Binding Source="Shell32.dll" />
+                                    <Binding Source="9" />
                                 </MultiBinding>
                             </Image.Source>
                         </Image>
