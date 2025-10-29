@@ -60,7 +60,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public static readonly string ProfileFolder = $"{Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath)}";
     public Task Filesavetask;
     public CancellationTokenSource ocrcancellationToken;
-    public CancellationTokenSource unindexedfileocrcancellationToken;
+    public CancellationTokenSource unindexedfileocrcancellation;
     private const string MinimumVcVersion = "14.21.27702";
     private const int NetFxMinVersion = 461808;
     private static readonly SemaphoreSlim LogSemaphore = new(1, 1);
@@ -343,53 +343,68 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         UnindexedAllFilesOcr = new RelayCommand<object>(
             async parameter =>
             {
-                int i = 1;
-                int slicecount = UnIndexedFiles.Count > Settings.Default.BatchOcrProcessorCount ? UnIndexedFiles.Count / Settings.Default.BatchOcrProcessorCount : 1;
-                List<Task> Tasks = [];
+                SemaphoreSlim semaphore = new(Settings.Default.BatchOcrProcessorCount);
                 OcrIsBusy = true;
-                unindexedfileocrcancellationToken = new CancellationTokenSource();
-                ICollectionView filteredview = UnindexedFilesDialogView.cvs?.View;
-                foreach (List<UnindexedData> unIndexedData in TwainCtrl.ChunkBy(filteredview?.Cast<UnindexedData>(), slicecount))
+                unindexedfileocrcancellation = new CancellationTokenSource();
+                try
                 {
-                    Task task = Task.Run(
-                        async () =>
+                    ICollectionView filteredView = UnindexedFilesDialogView.cvs?.View;
+                    List<UnindexedData> items = filteredView?.Cast<UnindexedData>().ToList() ?? [];
+                    int i = 1;
+                    List<Task> tasks = [];
+                    foreach (UnindexedData item in items)
+                    {
+                        await semaphore.WaitAsync(unindexedfileocrcancellation.Token);
+                        if (unindexedfileocrcancellation?.IsCancellationRequested == true)
                         {
-                            foreach (UnindexedData item in unIndexedData)
+                            _ = semaphore.Release();
+                            break;
+                        }
+                        tasks.Add(Task.Run(async () =>
+                        {
+                            try
                             {
-                                if (unindexedfileocrcancellationToken?.IsCancellationRequested != false)
+                                unindexedfileocrcancellation.Token.ThrowIfCancellationRequested();
+                                string ocrText = await ProcessFileAsync(item.FileName, unindexedfileocrcancellation.Token);
+                                await SaveOcrTextToFileAsync(item.FileName, ocrText);
+                                Application.Current?.Dispatcher?.Invoke(() =>
                                 {
-                                    continue;
-                                }
-                                try
-                                {
-                                    string ocrText = await ProcessFileAsync(item.FileName);
-                                    await SaveOcrTextToFileAsync(item.FileName, ocrText);
-                                    _ = await Application.Current?.Dispatcher?.InvokeAsync(() => UnIndexedFiles?.Remove(item));
+                                    _ = (UnIndexedFiles?.Remove(item));
                                     IndexedFileCount = i++;
-                                }
-                                catch (Exception ex)
-                                {
-                                    item.HasError = true;
-                                    item.Error = ex?.Message;
-                                    await LogErrorAsync(ex);
-                                }
-                                finally
-                                {
-                                    GC.Collect();
-                                }
+                                });
                             }
-                        },
-                        unindexedfileocrcancellationToken.Token);
-                    Tasks.Add(task);
+                            catch (OperationCanceledException)
+                            {
+                            }
+                            catch (Exception ex)
+                            {
+                                item.HasError = true;
+                                item.Error = ex.Message;
+                            }
+                            finally
+                            {
+                                _ = semaphore.Release();
+                            }
+                        }, unindexedfileocrcancellation.Token));
+                    }
+                    await Task.WhenAll(tasks);
                 }
-                await Task.WhenAll(Tasks);
-                OcrIsBusy = false;
-                if (Shutdown)
+                catch (OperationCanceledException)
                 {
-                    TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
+                }
+                finally
+                {
+                    OcrIsBusy = false;
+                    semaphore.Dispose();
+                    unindexedfileocrcancellation = null;
+                    GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
+                    if (Shutdown)
+                    {
+                        TwainControl.Shutdown.DoExitWin(TwainControl.Shutdown.EWX_SHUTDOWN);
+                    }
                 }
             },
-            parameter => !OcrIsBusy && UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
+    parameter => !OcrIsBusy && UnIndexedFiles?.Count > 0 && !string.IsNullOrWhiteSpace(Settings.Default.DefaultTtsLang));
 
         WordOcrPdfThumbnailPage = new RelayCommand<object>(
             async parameter =>
@@ -935,7 +950,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
             },
             parameter => zipfilecancellationToken?.IsCancellationRequested == false);
 
-        CancelUnindexedBatchOcr = new RelayCommand<object>(parameter => unindexedfileocrcancellationToken?.Cancel(), parameter => unindexedfileocrcancellationToken?.IsCancellationRequested == false);
+        CancelUnindexedBatchOcr = new RelayCommand<object>(parameter => unindexedfileocrcancellation?.Cancel(), parameter => unindexedfileocrcancellation?.IsCancellationRequested == false);
 
         DateBack = new RelayCommand<object>(
             parameter =>
@@ -3380,51 +3395,69 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
 
     private ObservableCollection<TessFiles> OrderBatchFiles(ObservableCollection<TessFiles> batchFolderProcessedFileList) => [.. batchFolderProcessedFileList.OrderBy(z => z.Name, new StrCmpLogicalComparer())];
 
-    private async Task<string> ProcessFileAsync(string unIndexedFile)
+    private async Task<string> ProcessFileAsync(string unIndexedFile, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         string extension = Path.GetExtension(unIndexedFile.ToLowerInvariant());
         StringBuilder ocrTextBuilder = new();
         ObservableCollection<OcrData> ocrData;
         switch (extension)
         {
             case ".pdf" when PdfViewer.PdfViewer.IsValidPdfFile(unIndexedFile):
-                _ = ocrTextBuilder.Append(await ProcessPdfFileAsync(unIndexedFile));
+                cancellationToken.ThrowIfCancellationRequested();
+                _ = ocrTextBuilder.Append(await ProcessPdfFileAsync(unIndexedFile, cancellationToken));
                 break;
 
             case ".docx":
+                cancellationToken.ThrowIfCancellationRequested();
                 using (FileStream fileStream = new(unIndexedFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (DocX document = DocX.Load(fileStream))
                 {
-                    using DocX document = DocX.Load(fileStream);
                     _ = ocrTextBuilder.Append(document.Text);
                 }
                 break;
 
             case ".odt":
+                cancellationToken.ThrowIfCancellationRequested();
                 _ = ocrTextBuilder.Append(OdtReader.ParseOdtFile(unIndexedFile));
                 break;
 
             case ".xlsx" or ".xls" or ".xlsb" or ".csv" or ".ods":
-                _ = await Application.Current?.Dispatcher?.Invoke(async () => ocrTextBuilder = await GetXlsFileContentAsync(unIndexedFile));
+                cancellationToken.ThrowIfCancellationRequested();
+                _ = await Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    return await GetXlsFileContentAsync(unIndexedFile);
+                }).Task;
                 break;
 
             case ".webp":
+                cancellationToken.ThrowIfCancellationRequested();
                 WebP webP = new();
-                ocrData = await webP.Load(unIndexedFile).ToBitmapImage(ImageFormat.Jpeg).ToTiffJpegByteArray(Format.Jpg).OcrAsync(Settings.Default.DefaultTtsLang);
+                ocrData = await webP
+                    .Load(unIndexedFile)
+                    .ToBitmapImage(ImageFormat.Jpeg)
+                    .ToTiffJpegByteArray(Format.Jpg)
+                    .OcrAsync(Settings.Default.DefaultTtsLang);
                 _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
                 break;
 
             case ".zip" or ".rar" or ".7z" or ".tar" or ".arj" or ".gzip":
+                cancellationToken.ThrowIfCancellationRequested();
                 _ = ocrTextBuilder.Append(unIndexedFile);
                 break;
 
             default:
+                cancellationToken.ThrowIfCancellationRequested();
                 ocrData = await unIndexedFile.OcrAsync(Settings.Default.DefaultTtsLang);
                 _ = ocrTextBuilder.Append(string.Join(" ", ocrData?.Select(z => z.Text)));
                 break;
         }
 
+        cancellationToken.ThrowIfCancellationRequested();
         return ocrTextBuilder.ToString();
     }
+
 
     private async Task<StringBuilder> GetXlsFileContentAsync(string unIndexedFile)
     {
@@ -3443,41 +3476,70 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         return ocrTextBuilder;
     }
 
-    private async Task<string> ProcessPdfFileAsync(string unIndexedFile)
+    private async Task<string> ProcessPdfFileAsync(string unIndexedFile, CancellationToken cancellationToken = default)
     {
         StringBuilder ocrTextBuilder = new();
+        cancellationToken.ThrowIfCancellationRequested();
         if (OcrAllPdfPages)
         {
-            using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer
-            .GenerateOcredPdfPage(unIndexedFile, UnIndexedPdfOcrDpi, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress, false, Math.Max(1, Environment.ProcessorCount / 3)))
+            using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer.GenerateOcredPdfPage(
+                unIndexedFile,
+                UnIndexedPdfOcrDpi,
+                Settings.Default.DefaultTtsLang,
+                progress => OcrAllPdfPagesProgress = progress,
+                false,
+                Math.Max(1, Environment.ProcessorCount / 3),
+                cancellationToken))
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 pdfDocument.Save(unIndexedFile);
             }
+
+            cancellationToken.ThrowIfCancellationRequested();
+
             using (PdfiumViewer.PdfDocument document = PdfiumViewer.PdfDocument.Load(unIndexedFile))
             {
+                cancellationToken.ThrowIfCancellationRequested();
                 ocrTextBuilder = AppendPdfText(document);
             }
+
             OcrAllPdfPagesProgress = 0;
             return ocrTextBuilder.ToString();
         }
+
         if (Settings.Default.OcrContentUseInternalPdfContent)
         {
+            cancellationToken.ThrowIfCancellationRequested();
             using PdfiumViewer.PdfDocument document = PdfiumViewer.PdfDocument.Load(unIndexedFile);
             _ = ocrTextBuilder.Append(document.GetPdfText(0));
             return ocrTextBuilder.ToString();
         }
-        using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer
-        .GenerateOcredPdfPage(unIndexedFile, UnIndexedPdfOcrDpi, Settings.Default.DefaultTtsLang, progress => OcrAllPdfPagesProgress = progress, true, Math.Max(1, Environment.ProcessorCount / 3)))
+
+        using (PdfDocument pdfDocument = await TwainCtrl.PdfImportViewer.GenerateOcredPdfPage(
+            unIndexedFile,
+            UnIndexedPdfOcrDpi,
+            Settings.Default.DefaultTtsLang,
+            progress => OcrAllPdfPagesProgress = progress,
+            true,
+            Math.Max(1, Environment.ProcessorCount / 3),
+            cancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             pdfDocument.Save(unIndexedFile);
         }
+
+        cancellationToken.ThrowIfCancellationRequested();
+
         using (PdfiumViewer.PdfDocument document = PdfiumViewer.PdfDocument.Load(unIndexedFile))
         {
+            cancellationToken.ThrowIfCancellationRequested();
             ocrTextBuilder = AppendPdfText(document);
         }
+
         OcrAllPdfPagesProgress = 0;
         return ocrTextBuilder.ToString();
     }
+
 
     private void RegisterSimplePdfFileWatcher()
     {

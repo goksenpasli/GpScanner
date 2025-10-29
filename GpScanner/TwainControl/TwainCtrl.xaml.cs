@@ -5420,7 +5420,8 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
         scanner.SaveProgressBarForegroundBrush = defaultsaveprogressforegroundcolor;
         Format fileFormat = blackwhite ? Format.Tiff : Format.Jpg;
-        (await images.GeneratePdfAsync(fileFormat, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress)).Save(filename);
+        using PdfDocument pdfdocument = await images.GeneratePdfAsync(fileFormat, paper, Settings.Default.JpegQuality, scannedtext, dpi, progress => Scanner.PdfSaveProgressValue = progress);
+        pdfdocument.Save(filename);
         Dispatcher.Invoke(
             () =>
             {

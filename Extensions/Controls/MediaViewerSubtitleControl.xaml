@@ -15,7 +15,7 @@
     mc:Ignorable="d">
     <UserControl.Resources>
         <CollectionViewSource x:Key="Subtitle" Source="{Binding ParsedSubtitle}" />
-        <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />      
+        <local:VisibilityToBooleanConverter x:Key="VisibilityToBooleanConverter" />
     </UserControl.Resources>
     <GroupBox>
         <UniformGrid Columns="2">

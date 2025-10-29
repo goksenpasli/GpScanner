@@ -254,7 +254,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                     progress => PdfOcrProgressValue = progress,
                     false,
                     Settings.Default.PdfOcrProcessorCount,
-                    pdfocrcancellationToken);
+                    pdfocrcancellationToken.Token);
                 pdfDocument.Save(PdfViewer.PdfFilePath);
                 twainCtrl.PdfToolBarControlIsEnabled = true;
                 OcrProgressIndeterminate = false;
@@ -935,7 +935,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
 
     public RelayCommand<object> WebAdreseGit { get; }
 
-    public async Task<PdfDocument> GenerateOcredPdfPage(string pdfPath, int dpi, string ocrLang, Action<double> progressCallback = null, bool processFirstPageOnly = false, int parallelcount = 4, CancellationTokenSource cancellationTokenSource = null)
+    public async Task<PdfDocument> GenerateOcredPdfPage(string pdfPath, int dpi, string ocrLang, Action<double> progressCallback = null, bool processFirstPageOnly = false, int parallelcount = 4, CancellationToken cancellationToken = default)
     {
         using PdfDocument document = PdfReader.Open(pdfPath, PdfDocumentOpenMode.Modify);
 
@@ -954,7 +954,7 @@ public partial class PdfImportViewerControl : UserControl, INotifyPropertyChange
                 await semaphore.WaitAsync();
                 try
                 {
-                    if (cancellationTokenSource?.IsCancellationRequested == true)
+                    if (cancellationToken.IsCancellationRequested)
                     {
                         progressCallback?.Invoke(0);
                         return;

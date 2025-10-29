@@ -76,7 +76,7 @@ namespace GpScanner.ViewModel
             }
         }
 
-        private void OnUserActivityDetected() => _gpScannerViewModel?.unindexedfileocrcancellationToken?.Cancel();
+        private void OnUserActivityDetected() => _gpScannerViewModel?.unindexedfileocrcancellation?.Cancel();
 
         [StructLayout(LayoutKind.Sequential)]
         private struct LASTINPUTINFO

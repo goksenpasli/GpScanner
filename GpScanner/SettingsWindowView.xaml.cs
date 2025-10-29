@@ -1,7 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using GpScanner.Properties;
+﻿using GpScanner.Properties;
 using GpScanner.ViewModel;
+using System.Windows;
+using System.Windows.Input;
 
 namespace GpScanner;
 
