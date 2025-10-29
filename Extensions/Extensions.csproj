@@ -114,6 +114,7 @@
     <Compile Include="Converters\FolderPathToIconConverter.cs" />
     <Compile Include="Converters\FolderPathToLocalizedNameConverter.cs" />
     <Compile Include="Converters\GetDirectoriesConverter.cs" />
+    <Compile Include="Converters\ReverseVisibilityConverter.cs" />
     <Compile Include="Converters\StringToColorHexCodeConverter.cs" />
     <Compile Include="Converters\TimespanToTickConverter.cs" />
     <Compile Include="Converters\VisibilityToBooleanConverter.cs" />

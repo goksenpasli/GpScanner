@@ -441,6 +441,8 @@ namespace Extensions
                 else
                 {
                     archiveViewer.Arşivİçerik?.Clear();
+                    archiveViewer.ArchiveFileTypes?.Clear();
+                    archiveViewer.TotalFilesCount = 0;
                     archiveViewer.ToplamOran = 0;
                 }
             }

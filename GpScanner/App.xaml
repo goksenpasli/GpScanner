@@ -30,6 +30,7 @@
             <Extensions:SystemFileIconConverter x:Key="SystemFileIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverter" />
             <Extensions:FilePathToIconConverter x:Key="FilePathToIconConverterEmptyViewerTemplate" IconSize="jumbo" />
+            <Extensions:ReverseVisibilityConverter x:Key="ReverseVisibilityConverter" />
             <Converter:FileNameExtractConverter x:Key="FileNameExtractConverter" />
             <Converter:PdfMultiplePageToThumbImageConverter x:Key="PdfMultiplePageToThumbImageConverter" />
             <Converter:DocxInternalThumbnailExtractConverter x:Key="DocxInternalThumbnailExtractConverter" />
@@ -447,7 +448,8 @@
                         PdfFilePath="{Binding Path=DataContext, RelativeSource={RelativeSource Mode=TemplatedParent}}"
                         PrintButtonVisibility="Visible"
                         SliderZoomAngleVisibility="Collapsed"
-                        SnapTick="True" />
+                        SnapTick="True"
+                        UpDownButtonVisibility="{Binding Path=(ViewModel:AllPdfViewerControl.HideAllPdfControls), RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource ReverseVisibilityConverter}}" />
                 </Grid>
             </DataTemplate>
             <DataTemplate x:Key="UnIndexedPdfViewerTemplateFull">

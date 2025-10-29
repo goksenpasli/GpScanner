@@ -401,7 +401,7 @@
                                         <ToggleButton VerticalContentAlignment="Center" IsChecked="{Binding RegisterBatchWatcher, Source={x:Static properties:Settings.Default}}">
                                             <TextBlock Foreground="Blue" Text="{twainctrl:Loc APPLY}" />
                                             <ToggleButton.Style>
-                                                <Style TargetType="ToggleButton">
+                                                <Style BasedOn="{StaticResource {x:Type ToggleButton}}" TargetType="ToggleButton">
                                                     <Setter Property="IsEnabled" Value="False" />
                                                     <Style.Triggers>
                                                         <MultiDataTrigger>
