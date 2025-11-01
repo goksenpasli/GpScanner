@@ -375,21 +375,15 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
                 {
-                    await SavePdfImageAsync([ scannedImage ], saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
-                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
-                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
-                }
-            },
-            parameter => FileNameValid(Scanner?.FileName));
-
-        SaveSingleJb2BwPdfFile = new RelayCommand<object>(
-            parameter =>
-            {
-                SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true && parameter is ScannedImage scannedImage)
-                {
-                    List<ScannedImage> image = [ scannedImage ];
-                    File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().AddPdfPassword_PdfSharp().ToArray());
+                    if (EncodeAsJb2)
+                    {
+                        List<ScannedImage> image = [scannedImage];
+                        File.WriteAllBytes(saveFileDialog.FileName, image.CreateMultipagePdfWithJbig2Images().AddPdfPassword_PdfSharp().ToArray());
+                    }
+                    else
+                    {
+                        await SavePdfImageAsync([scannedImage], saveFileDialog.FileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
+                    }
                     Scanner.SaveFileFullPath = saveFileDialog.FileName;
                     OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
                 }
@@ -675,43 +669,22 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
                 if (saveFileDialog.ShowDialog() == true)
                 {
+                    Scanner.ProgressState = TaskbarItemProgressState.Normal;
                     FileSaveTask = Task.Run(
                         async () =>
                         {
                             List<ScannedImage> seçiliresimler = GetSelectedImages();
                             string fileName = saveFileDialog.FileName;
-                            await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
-                        });
-                    await RemoveProcessedImages();
-                    Scanner.SaveFileFullPath = saveFileDialog.FileName;
-                    OnPropertyChanged(nameof(Scanner.SaveFileFullPath));
-                }
-            },
-            parameter =>
-            {
-                Scanner.SeçiliResimSayısı = GetSelectedImagesCount() ?? 0;
-                return Policy.CheckPolicy(nameof(SeçiliKaydet)) && Scanner?.SeçiliResimSayısı > 0 && FileNameValid(Scanner?.FileName);
-            });
-
-        SaveSelectedFilesJb2BwPdfFile = new RelayCommand<object>(
-            async parameter =>
-            {
-                if (!CheckFileSaveProgress())
-                {
-                    return;
-                }
-                SaveFileDialog saveFileDialog = new() { Filter = "Siyah Beyaz Pdf Dosyası (*.pdf)|*.pdf", FileName = Scanner.SaveFileName, };
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    Scanner.ProgressState = TaskbarItemProgressState.Normal;
-                    FileSaveTask = Task.Run(
-                        () =>
-                        {
-                            List<ScannedImage> seçiliresimler = GetSelectedImages();
-                            Progress<double> progress = new(percent => Scanner.PdfSaveProgressValue = percent);
-                            string fileName = saveFileDialog.FileName;
-                            File.WriteAllBytes(fileName, seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
-                            Scanner.PdfSaveProgressValue = 0;
+                            if (EncodeAsJb2)
+                            {
+                                Progress<double> progress = new(percent => Scanner.PdfSaveProgressValue = percent);
+                                File.WriteAllBytes(fileName, seçiliresimler.CreateMultipagePdfWithJbig2Images(progress).AddPdfPassword_PdfSharp().ToArray());
+                                Scanner.PdfSaveProgressValue = 0;
+                            }
+                            else
+                            {
+                                await SavePdfImageAsync(seçiliresimler, fileName, Scanner, SelectedPaper, Scanner.ApplyPdfSaveOcr, true, Settings.Default.ImgLoadResolution);
+                            }
                         });
                     await RemoveProcessedImages();
                     Scanner.SaveFileFullPath = saveFileDialog.FileName;
@@ -2904,9 +2877,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (value)
                 {
                     encodeAsWebp = false;
+                    OnPropertyChanged(nameof(EncodeAsWebp));
                 }
-
-                OnPropertyChanged(nameof(EncodeAsWebp));
+                OnPropertyChanged(nameof(EncodeAsJb2));
             }
         }
     }
@@ -2922,9 +2895,9 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
                 if (value)
                 {
                     encodeAsJb2 = false;
+                    OnPropertyChanged(nameof(EncodeAsJb2));
                 }
-
-                OnPropertyChanged(nameof(EncodeAsJb2));
+                OnPropertyChanged(nameof(EncodeAsWebp));
             }
         }
     }
@@ -3468,8 +3441,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
 
     public RelayCommand<object> SaveSelectedFilesBwPdfFile { get; }
 
-    public RelayCommand<object> SaveSelectedFilesJb2BwPdfFile { get; }
-
     public RelayCommand<object> SaveSelectedFilesJpgFile { get; }
 
     public RelayCommand<object> SaveSelectedFilesPdfFile { get; }
@@ -3485,8 +3456,6 @@ public partial class TwainCtrl : UserControl, INotifyPropertyChanged, IDisposabl
     public RelayCommand<object> SaveSingleBlackWhiteJb2File { get; }
 
     public RelayCommand<object> SaveSingleBwPdfFile { get; }
-
-    public RelayCommand<object> SaveSingleJb2BwPdfFile { get; }
 
     public RelayCommand<object> SaveSingleJpgFile { get; }
 

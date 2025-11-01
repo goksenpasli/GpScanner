@@ -42,6 +42,7 @@ public partial class MainWindow : Window
         DataContext = new GpScannerViewModel(windowService, scannerService, twainService);
         TwainCtrl.PropertyChanged += TwainCtrl_PropertyChangedAsync;
         TwainCtrl.Scanner.PropertyChanged += Scanner_PropertyChanged;
+        Twainsettings.Settings.Default.PropertyChanged += TwainSettingsDefault_PropertyChanged;
     }
 
     public TwainCtrl TwainCtrl { get; set; }
@@ -380,6 +381,14 @@ public partial class MainWindow : Window
             {
                 ViewModel.Shutdown = TwainCtrl?.SetShutdown == true;
             }
+        }
+    }
+
+    private void TwainSettingsDefault_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        if (DataContext is GpScannerViewModel ViewModel && e.PropertyName is "FolderDateFormat")
+        {
+            ViewModel.NotifyBaşlangıçTarihi();
         }
     }
 

@@ -1836,29 +1836,13 @@
                                                                                                         Maximum="95"
                                                                                                         Minimum="10"
                                                                                                         Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                                                                    <CheckBox VerticalAlignment="Center"
+                                                                                                        Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                                                                                        IsChecked="{Binding Data.EncodeAsJb2, Source={StaticResource Proxy}}" />
                                                                                                 </StackPanel>
                                                                                             </MenuItem.Header>
                                                                                             <MenuItem.Icon>
                                                                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                                                                            </MenuItem.Icon>
-                                                                                        </MenuItem>
-                                                                                        <MenuItem Command="{Binding Data.SaveSingleJb2BwPdfFile, Source={StaticResource Proxy}}">
-                                                                                            <MenuItem.Header>
-                                                                                                <StackPanel Orientation="Horizontal">
-                                                                                                    <TextBlock VerticalAlignment="Center">
-                                                                                                        <Run Text="JB2" />
-                                                                                                        <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                                                                        <Run Text="{local:Loc BW}" />
-                                                                                                    </TextBlock>
-                                                                                                    <Extensions:NumericUpDown Interval="1"
-                                                                                                        IsReadOnly="True"
-                                                                                                        Maximum="95"
-                                                                                                        Minimum="10"
-                                                                                                        Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                                                                </StackPanel>
-                                                                                            </MenuItem.Header>
-                                                                                            <MenuItem.Icon>
-                                                                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jb2}" />
                                                                                             </MenuItem.Icon>
                                                                                         </MenuItem>
                                                                                         <MenuItem Command="{Binding Data.SaveSingleJpgFile, Source={StaticResource Proxy}}">
@@ -2462,35 +2446,21 @@
                                                     <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
                                                     <Run Text="{local:Loc BW}" />
                                                     <InlineUIContainer BaselineAlignment="Center">
-                                                        <Extensions:NumericUpDown Interval="1"
-                                                            IsReadOnly="True"
-                                                            Maximum="95"
-                                                            Minimum="10"
-                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Extensions:NumericUpDown Interval="1"
+                                                                IsReadOnly="True"
+                                                                Maximum="95"
+                                                                Minimum="10"
+                                                                Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
+                                                            <CheckBox VerticalAlignment="Center"
+                                                                Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                                                IsChecked="{Binding EncodeAsJb2}" />
+                                                        </StackPanel>
                                                     </InlineUIContainer>
                                                 </TextBlock>
                                             </MenuItem.Header>
                                             <MenuItem.Icon>
                                                 <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.pdf}" />
-                                            </MenuItem.Icon>
-                                        </MenuItem>
-                                        <MenuItem Command="{Binding SaveSelectedFilesJb2BwPdfFile}">
-                                            <MenuItem.Header>
-                                                <TextBlock>
-                                                    <Run Text="JB2" />
-                                                    <Run Text="{Binding Source='.pdf', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                    <Run Text="{local:Loc BW}" />
-                                                    <InlineUIContainer BaselineAlignment="Center">
-                                                        <Extensions:NumericUpDown Interval="1"
-                                                            IsReadOnly="True"
-                                                            Maximum="95"
-                                                            Minimum="10"
-                                                            Value="{Binding Path=JpegQuality, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Source={x:Static properties:Settings.Default}}" />
-                                                    </InlineUIContainer>
-                                                </TextBlock>
-                                            </MenuItem.Header>
-                                            <MenuItem.Icon>
-                                                <Image Source="{Binding Converter={StaticResource FilePathToIconConverter}, Source=.jb2}" />
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem Command="{Binding SaveSelectedFilesJpgFile}">
@@ -2535,12 +2505,9 @@
                                                         <CheckBox VerticalAlignment="Center"
                                                             Content="{Binding Source='.webp', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
                                                             IsChecked="{Binding EncodeAsWebp}" />
-                                                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding EncodeAsJb2}">
-                                                            <TextBlock VerticalAlignment="Center">
-                                                                <Run Text="{local:Loc BW}" />
-                                                                <Run Text="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}" />
-                                                            </TextBlock>
-                                                        </CheckBox>
+                                                        <CheckBox VerticalAlignment="Center"
+                                                            Content="{Binding Source='.jb2', Mode=OneWay, Converter={StaticResource FilePathToFileDescriptionConverter}}"
+                                                            IsChecked="{Binding EncodeAsJb2}" />
                                                     </StackPanel>
                                                 </StackPanel>
                                             </MenuItem.Header>
@@ -2605,7 +2572,22 @@
                                         <ColumnDefinition Width="Auto" />
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
-                                    <Canvas Width="32" Height="32">
+                                    <Canvas Width="32"
+                                        Height="32"
+                                        Validation.ErrorTemplate="{StaticResource ValidationErrorTemplate}">
+                                        <Canvas.Style>
+                                            <Style TargetType="Canvas">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Scanner.AutoSave, ValidatesOnDataErrors=True}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Scanner.SelectedTtsLanguage, Converter={StaticResource StringNullableToBooleanConverter}, ValidatesOnDataErrors=True}" Value="False">
+                                                        <Setter Property="IsEnabled" Value="False" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Canvas.Style>
                                         <Image Width="32" Height="32">
                                             <Image.Source>
                                                 <MultiBinding Converter="{StaticResource SystemFileIconConverter}">

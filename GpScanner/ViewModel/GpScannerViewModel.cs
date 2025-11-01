@@ -62,7 +62,7 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     public CancellationTokenSource ocrcancellationToken;
     public CancellationTokenSource unindexedfileocrcancellation;
     private const string MinimumVcVersion = "14.21.27702";
-    private const int NetFxMinVersion = 461808;
+    private const int NetFxMinVersion = 528040;
     private static readonly SemaphoreSlim LogSemaphore = new(1, 1);
     private static DispatcherTimer flaganimationtimer;
     private static DispatcherTimer timer;
@@ -3016,7 +3016,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
     private bool FilterDate(object x)
     {
         Scanner scanner = (Scanner)x;
-        return DateTime.TryParse(Directory.GetParent(scanner?.FileName).Name, out DateTime result) && BaşlangıçTarihi <= BitişTarihi && BaşlangıçTarihi <= DateTime.Today && BitişTarihi <= DateTime.Today && result >= BaşlangıçTarihi && result <= BitişTarihi;
+        return DateTime.TryParseExact(Directory.GetParent(scanner?.FileName).Name, Twainsettings.Settings.Default.FolderDateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime result) &&
+            BaşlangıçTarihi <= BitişTarihi && BaşlangıçTarihi <= DateTime.Today && BitişTarihi <= DateTime.Today && result >= BaşlangıçTarihi && result <= BitişTarihi;
     }
 
     private void GenerateAnimationTimer()
@@ -3642,6 +3643,8 @@ public class GpScannerViewModel : InpcBase, IDataErrorInfo
         }
         return document;
     }
+
+    internal void NotifyBaşlangıçTarihi() => OnPropertyChanged(nameof(BaşlangıçTarihi));
 
     internal class ScannerFileDatas()
     {
