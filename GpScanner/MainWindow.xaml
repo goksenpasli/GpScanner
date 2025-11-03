@@ -205,8 +205,10 @@
         <DataTemplate x:Key="ListBoxDocumentListItemTemplate">
             <CheckBox VerticalAlignment="Center"
                 VerticalContentAlignment="Center"
-                IsChecked="{Binding Seçili}">
-                <TextBlock VerticalAlignment="Center"><Hyperlink twainctrl:Policy.PolicyName="OpenOriginalFile"
+                IsChecked="{Binding Seçili}"
+                IsEnabled="{Binding ElementName=HypFile, Path=IsEnabled}">
+                <TextBlock VerticalAlignment="Center"><Hyperlink x:Name="HypFile"
+                        twainctrl:Policy.PolicyName="OpenOriginalFile"
                         Command="{Binding DataContext.OpenOriginalFile, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                         CommandParameter="{Binding FileName, Mode=OneWay}"
                         TextDecorations="None">
