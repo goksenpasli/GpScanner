@@ -16,6 +16,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using TwainControl;
 using static Extensions.ExtensionMethods;
 using static GpScanner.ViewModel.GpScannerViewModel;
@@ -155,9 +156,9 @@ public partial class MainWindow : Window
                 ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.SelectedPaper, Settings.Default.BatchFolder, Settings.Default.BatchSaveFolder);
             }
 
-            if (ViewModel.NeedAppUpdate() && ViewModel.CheckUpdate.CanExecute(null))
+            if (ViewModel.NeedAppUpdate())
             {
-                ViewModel.CheckUpdate.Execute(null);
+                TrayIcon.ShowBalloonNearTray(Title, Translation.GetResStringValue("UPDATE"));
             }
 
             if (Settings.Default.IsFirstRun)

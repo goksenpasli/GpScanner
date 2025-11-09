@@ -453,7 +453,8 @@
             <ColumnDefinition Width="{Binding MainWindowDocumentGuiControlLength, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" d:Width="2*" />
         </Grid.ColumnDefinitions>
         <twainctrl:TwainCtrl x:Name="twainCtrl" twainctrl:Policy.PolicyName="TwainCtrl" />
-        <Extensions:SystemTrayIcon d:IsHidden="True"
+        <Extensions:SystemTrayIcon x:Name="TrayIcon"
+            d:IsHidden="True"
             IconUri="scanner.ico"
             SingleClickCommand="{Binding AppBringToFront}"
             ToolTipText="GPSCANNER"

@@ -4,12 +4,14 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Markup;
+using System.Windows.Media;
 using static Extensions.NativeMethods;
 
 namespace Extensions
@@ -40,6 +42,7 @@ namespace Extensions
         {
             Loaded += OnLoaded;
             Unloaded += OnUnloaded;
+            popup.Closed += (s, e) => popup.Child = null;
         }
 
         ~SystemTrayIcon() { Dispose(); }
@@ -60,6 +63,42 @@ namespace Extensions
         {
             UnInitializeNotifyIcon();
             GC.SuppressFinalize(this);
+        }
+
+        public void ShowBalloonNearTray(string title, string message, int timeoutMs = 2500, int marginx = 2, int marginy = 2, SolidColorBrush backgroundColor = null, SolidColorBrush borderColor = null, SolidColorBrush textColor = null)
+        {
+            try
+            {
+                Border balloon = new()
+                {
+                    Background = backgroundColor ?? System.Windows.Media.Brushes.LightYellow,
+                    BorderBrush = borderColor ?? System.Windows.Media.Brushes.Gray,
+                    BorderThickness = new Thickness(1),
+                    CornerRadius = new CornerRadius(6),
+                    Child =
+                    new StackPanel
+                    {
+                        Margin = new Thickness(8),
+                        Children =
+                        {
+                            new TextBlock { Text = title, FontWeight = FontWeights.Bold, Foreground = textColor ?? System.Windows.Media.Brushes.Black, Margin = new Thickness(0, 0, 0, 2) },
+                            new TextBlock { Text = message, Foreground = textColor ?? System.Windows.Media.Brushes.Black, TextWrapping = TextWrapping.Wrap }
+                        }
+                    }
+                };
+                balloon.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+                balloon.Arrange(new Rect(balloon.DesiredSize));
+                double desiredWidth = balloon.DesiredSize.Width;
+                double desiredHeight = balloon.DesiredSize.Height;
+                double x = SystemParameters.WorkArea.Right - desiredWidth - marginx;
+                double y = SystemParameters.WorkArea.Bottom - desiredHeight - marginy;
+                Popup trayPopup = new() { AllowsTransparency = true, Placement = PlacementMode.Absolute, HorizontalOffset = x, VerticalOffset = y, StaysOpen = false, Child = balloon, IsOpen = true };
+                _ = Task.Delay(timeoutMs).ContinueWith(_ => Dispatcher.Invoke(() => trayPopup.IsOpen = false));
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ShowBalloonNearTray error: {ex}");
+            }
         }
 
         private static void TrayIconActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -86,10 +125,10 @@ namespace Extensions
             HwndSource hwndSource = PresentationSource.FromDependencyObject(this) as HwndSource;
             if (hwndSource is not null)
             {
-                NOTIFYICONDATA newNOTIFYICONDATA = new() { hWnd = hwndSource.Handle, uID = 100, uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP, uCallbackMessage = WM_TRAYICON };
+                NOTIFYICONDATA newNOTIFYICONDATA = new() { cbSize = Marshal.SizeOf(typeof(NOTIFYICONDATA)), hWnd = hwndSource.Handle, uID = 100, uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP, uCallbackMessage = WM_TRAYICON };
                 using Stream streamInfo = Application.GetResourceStream(IconUri).Stream;
                 using Icon icon = new(streamInfo);
-                newNOTIFYICONDATA.hIcon = icon.Handle;
+                newNOTIFYICONDATA.hIcon = CopyIcon(icon.Handle);
                 newNOTIFYICONDATA.szTip = ToolTipText ?? string.Empty;
                 _notifyIconData = newNOTIFYICONDATA;
                 _ = Shell_NotifyIcon(NIM_ADD, ref _notifyIconData);
@@ -141,7 +180,7 @@ namespace Extensions
         [DebuggerStepThrough]
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == WM_TASKBARCREATED)
+            if (msg == WM_TASKBARCREATED && TrayIconActive)
             {
                 InitializeNotifyIcon();
             }
@@ -204,8 +243,8 @@ namespace Extensions
         internal const int WM_MOUSEMOVE = 0x0200;
         internal const int WM_TASKBARCREATED = 0x8000;
 
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        internal static extern IntPtr LoadImage(int Hinstance, string name, int type, int width, int height, int load);
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern IntPtr CopyIcon(IntPtr hIcon);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern uint RegisterWindowMessage(string msgString);
