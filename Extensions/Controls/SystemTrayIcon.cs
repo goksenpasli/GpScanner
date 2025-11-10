@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using static Extensions.NativeMethods;
 
 namespace Extensions
@@ -65,40 +66,28 @@ namespace Extensions
             GC.SuppressFinalize(this);
         }
 
-        public void ShowBalloonNearTray(string title, string message, int timeoutMs = 2500, int marginx = 2, int marginy = 2, SolidColorBrush backgroundColor = null, SolidColorBrush borderColor = null, SolidColorBrush textColor = null)
+        public void ShowBalloonNearTray(UIElement element,
+                                        int timeoutMs = 2500,
+                                        int marginX = 2,
+                                        int marginY = 2,
+                                        SolidColorBrush backgroundColor = null,
+                                        SolidColorBrush borderColor = null,
+                                        bool staysOpen = true,
+                                        Visibility showClosebutton = Visibility.Visible) => ShowBalloonNearTrayInternal(element, timeoutMs, marginX, marginY, backgroundColor, borderColor, staysOpen, showClosebutton);
+
+        public void ShowBalloonNearTray(string title, string message, int timeoutMs = 2500, int marginX = 2, int marginY = 2, SolidColorBrush backgroundColor = null, SolidColorBrush borderColor = null, SolidColorBrush textColor = null)
         {
-            try
+            StackPanel panel = new()
             {
-                Border balloon = new()
+                Margin = new Thickness(8),
+                Children =
                 {
-                    Background = backgroundColor ?? System.Windows.Media.Brushes.LightYellow,
-                    BorderBrush = borderColor ?? System.Windows.Media.Brushes.Gray,
-                    BorderThickness = new Thickness(1),
-                    CornerRadius = new CornerRadius(6),
-                    Child =
-                    new StackPanel
-                    {
-                        Margin = new Thickness(8),
-                        Children =
-                        {
-                            new TextBlock { Text = title, FontWeight = FontWeights.Bold, Foreground = textColor ?? System.Windows.Media.Brushes.Black, Margin = new Thickness(0, 0, 0, 2) },
-                            new TextBlock { Text = message, Foreground = textColor ?? System.Windows.Media.Brushes.Black, TextWrapping = TextWrapping.Wrap }
-                        }
-                    }
-                };
-                balloon.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-                balloon.Arrange(new Rect(balloon.DesiredSize));
-                double desiredWidth = balloon.DesiredSize.Width;
-                double desiredHeight = balloon.DesiredSize.Height;
-                double x = SystemParameters.WorkArea.Right - desiredWidth - marginx;
-                double y = SystemParameters.WorkArea.Bottom - desiredHeight - marginy;
-                Popup trayPopup = new() { AllowsTransparency = true, Placement = PlacementMode.Absolute, HorizontalOffset = x, VerticalOffset = y, StaysOpen = false, Child = balloon, IsOpen = true };
-                _ = Task.Delay(timeoutMs).ContinueWith(_ => Dispatcher.Invoke(() => trayPopup.IsOpen = false));
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine($"ShowBalloonNearTray error: {ex}");
-            }
+                    new TextBlock { Text = title, FontWeight = FontWeights.Bold, Foreground = textColor ?? System.Windows.Media.Brushes.Black, Margin = new Thickness(0, 0, 0, 2) },
+                    new TextBlock { Text = message, Foreground = textColor ?? System.Windows.Media.Brushes.Black, TextWrapping = TextWrapping.Wrap }
+                }
+            };
+
+            ShowBalloonNearTrayInternal(panel, timeoutMs, marginX, marginY, backgroundColor, borderColor, false, Visibility.Collapsed);
         }
 
         private static void TrayIconActiveChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -122,9 +111,10 @@ namespace Extensions
             {
                 return;
             }
-            HwndSource hwndSource = PresentationSource.FromDependencyObject(this) as HwndSource;
+            HwndSource hwndSource = (HwndSource)PresentationSource.FromVisual(Window.GetWindow(this));
             if (hwndSource is not null)
             {
+                UnInitializeNotifyIcon();
                 NOTIFYICONDATA newNOTIFYICONDATA = new() { cbSize = Marshal.SizeOf(typeof(NOTIFYICONDATA)), hWnd = hwndSource.Handle, uID = 100, uFlags = NIF_ICON | NIF_MESSAGE | NIF_TIP, uCallbackMessage = WM_TRAYICON };
                 using Stream streamInfo = Application.GetResourceStream(IconUri).Stream;
                 using Icon icon = new(streamInfo);
@@ -151,6 +141,89 @@ namespace Extensions
 
         private void OnUnloaded(object sender, RoutedEventArgs e) => UnInitializeNotifyIcon();
 
+        private void ShowBalloonNearTrayInternal(UIElement content, int timeoutMs, int marginX, int marginY, SolidColorBrush backgroundColor, SolidColorBrush borderColor, bool staysOpen = false, Visibility showClosebutton = Visibility.Visible)
+        {
+            try
+            {
+                Button closeButton = new()
+                {
+                    Content = "X",
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 12,
+                    Padding = new Thickness(0),
+                    Width = 18,
+                    Height = 18,
+                    Background = System.Windows.Media.Brushes.Transparent,
+                    BorderThickness = new Thickness(0),
+                    Foreground = System.Windows.Media.Brushes.Gray,
+                    Cursor = Cursors.Hand,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    Margin = new Thickness(0, 2, 2, 0),
+                    Visibility = showClosebutton
+                };
+                closeButton.MouseEnter += (s, e) => closeButton.Foreground = System.Windows.Media.Brushes.Black;
+                closeButton.MouseLeave += (s, e) => closeButton.Foreground = System.Windows.Media.Brushes.Gray;
+
+                Grid grid = new();
+                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+                Grid.SetRow(closeButton, 0);
+                Grid.SetRow(content, 1);
+                _ = grid.Children.Add(closeButton);
+                _ = grid.Children.Add(content);
+
+                Border balloon = new()
+                {
+                    Background = backgroundColor ?? System.Windows.Media.Brushes.LightYellow,
+                    BorderBrush = borderColor ?? System.Windows.Media.Brushes.Gray,
+                    BorderThickness = new Thickness(1),
+                    CornerRadius = new CornerRadius(6),
+                    Child = grid,
+                    Opacity = 0
+                };
+
+                balloon.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+                balloon.Arrange(new Rect(balloon.DesiredSize));
+
+                double desiredWidth = balloon.DesiredSize.Width;
+                double desiredHeight = balloon.DesiredSize.Height;
+                double x = SystemParameters.WorkArea.Right - desiredWidth - marginX;
+                double y = SystemParameters.WorkArea.Bottom - desiredHeight - marginY;
+
+                Popup trayPopup = new() { AllowsTransparency = true, Placement = PlacementMode.Absolute, HorizontalOffset = x, VerticalOffset = y, StaysOpen = staysOpen, PopupAnimation = PopupAnimation.None, Child = balloon, IsOpen = true };
+
+                DoubleAnimation fadeIn = new(0, 1, TimeSpan.FromMilliseconds(200));
+                balloon.BeginAnimation(OpacityProperty, fadeIn);
+
+                closeButton.Click += (s, e) =>
+                                     {
+                                         DoubleAnimation fadeOut = new(1, 0, TimeSpan.FromMilliseconds(200));
+                                         fadeOut.Completed += (_, _) => trayPopup.IsOpen = false;
+                                         balloon.BeginAnimation(OpacityProperty, fadeOut);
+                                     };
+
+                if (!staysOpen)
+                {
+                    _ = Task.Delay(timeoutMs)
+                    .ContinueWith(
+                        _ => Dispatcher.Invoke(
+                            () =>
+                            {
+                                DoubleAnimation fadeOut = new(1, 0, TimeSpan.FromMilliseconds(300));
+                                fadeOut.Completed += (_, _) => trayPopup.IsOpen = false;
+                                balloon.BeginAnimation(OpacityProperty, fadeOut);
+                            }));
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"ShowBalloonNearTray error: {ex}");
+            }
+        }
+
         private void ShowContextMenu()
         {
             if (ContextMenu is null)
@@ -175,7 +248,15 @@ namespace Extensions
             popup.Placement = PlacementMode.MousePoint;
         }
 
-        private void UnInitializeNotifyIcon() => Shell_NotifyIcon(NIM_DELETE, ref _notifyIconData);
+        private void UnInitializeNotifyIcon()
+        {
+            _ = Shell_NotifyIcon(NIM_DELETE, ref _notifyIconData);
+            if (_notifyIconData.hIcon != IntPtr.Zero)
+            {
+                _ = DestroyIcon(_notifyIconData.hIcon);
+                _notifyIconData.hIcon = IntPtr.Zero;
+            }
+        }
 
         [DebuggerStepThrough]
         private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
@@ -245,6 +326,9 @@ namespace Extensions
 
         [DllImport("user32.dll", SetLastError = true)]
         internal static extern IntPtr CopyIcon(IntPtr hIcon);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern bool DestroyIcon(IntPtr hIcon);
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
         internal static extern uint RegisterWindowMessage(string msgString);

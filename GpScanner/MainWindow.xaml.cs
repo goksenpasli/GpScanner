@@ -156,9 +156,10 @@ public partial class MainWindow : Window
                 ViewModel.RegisterBatchImageFileWatcher(TwainCtrl.SelectedPaper, Settings.Default.BatchFolder, Settings.Default.BatchSaveFolder);
             }
 
-            if (ViewModel.NeedAppUpdate())
+            if (ViewModel.NeedAppUpdate() && ViewModel.CheckUpdate.CanExecute(null))
             {
                 TrayIcon.ShowBalloonNearTray(Title, Translation.GetResStringValue("UPDATE"));
+                ViewModel.CheckUpdate.Execute(null);
             }
 
             if (Settings.Default.IsFirstRun)
