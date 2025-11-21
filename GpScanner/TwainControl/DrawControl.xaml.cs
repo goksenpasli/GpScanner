@@ -217,6 +217,19 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     public RelayCommand<object> FitImage { get; }
 
+    public bool FlatFixMode
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                OnPropertyChanged(nameof(FlatFixMode));
+            }
+        }
+    }
+
     public RelayCommand<object> FlattenImage { get; }
 
     public bool Highlighter
@@ -600,7 +613,6 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     private void OverlayCanvas_MouseClick(object sender, MouseButtonEventArgs e)
     {
-
         if (TemporaryImage == null)
         {
             return;
@@ -610,11 +622,8 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
         {
             return;
         }
-        if (Keyboard.Modifiers == ModifierKeys.Control)
-        {
-            Point clickPoint = e.GetPosition(OverlayCanvas);
-            AddCorner(clickPoint);
-        }
+        Point clickPoint = e.GetPosition(OverlayCanvas);
+        AddCorner(clickPoint);
     }
 
     private WriteableBitmap PerspectiveWarpBilinear(BitmapSource src, List<Point> srcPts, int w, int h)
@@ -709,9 +718,9 @@ public partial class DrawControl : UserControl, INotifyPropertyChanged
 
     private List<Point> SortPoints(List<Point> pts)
     {
-        List<Point> sortedY = [.. pts.OrderBy(p => p.Y)];
-        List<Point> top = [.. sortedY.Take(2).OrderBy(p => p.X)];
-        List<Point> bottom = [.. sortedY.Skip(2).OrderBy(p => p.X)];
+        List<Point> sortedY = [ .. pts.OrderBy(p => p.Y) ];
+        List<Point> top = [ .. sortedY.Take(2).OrderBy(p => p.X) ];
+        List<Point> bottom = [ .. sortedY.Skip(2).OrderBy(p => p.X) ];
 
         return[ top[0], top[1], bottom[1], bottom[0] ];
     }

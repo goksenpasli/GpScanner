@@ -154,6 +154,7 @@
                     </local:ZoomableInkCanvas.Background>
                 </local:ZoomableInkCanvas>
                 <Canvas Background="Transparent"
+                    IsHitTestVisible="{Binding FlatFixMode, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                     MouseLeftButtonDown="OverlayCanvas_MouseClick"
                     Name="OverlayCanvas" />
             </Grid>
@@ -290,6 +291,34 @@
                         Source="/TwainControl;component/Icons/delete.png" />
                 </Button>
                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+                <ToggleButton IsChecked="{Binding FlatFixMode, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                    <Image Width="24" Height="24">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Setter Property="Source">
+                                    <Setter.Value>
+                                        <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                            <Binding Source="Shell32.dll" />
+                                            <Binding Source="294" />
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <DataTrigger Value="True" Binding="{Binding FlatFixMode, RelativeSource={RelativeSource AncestorType=local:DrawControl}}">
+                                        <Setter Property="Source">
+                                            <Setter.Value>
+                                                <MultiBinding Converter="{StaticResource SystemFileIconConverter}">
+                                                    <Binding Source="Shell32.dll" />
+                                                    <Binding Source="297" />
+                                                </MultiBinding>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </ToggleButton>
                 <Button Command="{Binding FlattenImage, RelativeSource={RelativeSource AncestorType=local:DrawControl}}"
                     CommandParameter="{Binding SeçiliResim}"
                     local:Policy.PolicyName="FlattenImage">
